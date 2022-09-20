@@ -48,6 +48,19 @@
             "react-app/jest"
         ]
     },
+    "lint-staged": {
+        "*.{ts,tsx}": [
+            "eslint --fix"
+        ],
+        "*.{ts,tsx,json,md}": [
+            "prettier --write"
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged -v"
+        }
+    },
     "jest": {
         "coverageReporters": [
             "jest-sonar-reporter"
