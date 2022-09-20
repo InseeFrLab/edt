@@ -34,7 +34,13 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "lint:check": "eslint . --ext .ts,.tsx",
+        "lint": "npm run lint:check -- --fix",
+        "_format": "prettier '**/*.{ts,tsx,json,md}'",
+        "format": "npm run _format -- --write",
+        "format:check": "npm run _format -- --list-different",
+        "prepare": "husky install"
     },
     "eslintConfig": {
         "extends": [
