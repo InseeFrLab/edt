@@ -26,7 +26,6 @@
         "eslint-plugin-storybook": "^0.6.4",
         "eslint-plugin-tss-unused-classes": "^0.0.4",
         "husky": "^8.0.1",
-        "jest-sonar-reporter": "^2.0.0",
         "lint-staged": "^13.0.3",
         "prettier": "^2.3.2"
     },
@@ -34,6 +33,7 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
+        "test-ci": "react-scripts test --watchAll=false",
         "eject": "react-scripts eject",
         "lint:check": "eslint . --ext .ts,.tsx",
         "lint": "npm run lint:check -- --fix",
@@ -60,11 +60,6 @@
         "hooks": {
             "pre-commit": "lint-staged -v"
         }
-    },
-    "jest": {
-        "coverageReporters": [
-            "jest-sonar-reporter"
-        ]
     },
     "browserslist": {
         "production": [

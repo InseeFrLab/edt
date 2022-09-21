@@ -45,11 +45,11 @@ jobs:
             - if: steps.step1.outputs.npm_or_yarn == 'yarn'
               run: |
                   yarn build
-                  yarn test --coverage
+                  yarn test-ci --coverage
             - if: steps.step1.outputs.npm_or_yarn == 'npm'
               run: |
                   npm run build
-                  npm test --coverage
+                  npm test-ci --coverage
             # Build sonar reports
             - name: Upload deploy artifact
               uses: actions/upload-artifact@v2
