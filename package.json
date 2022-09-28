@@ -5,7 +5,7 @@
     "dependencies": {
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",
-        "@inseefr/lunatic": "^0.3.4-experimental",
+        "@inseefr/lunatic": "^0.4.24-v2",
         "@mui/material": "^5.10.7",
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^13.4.0",
@@ -18,7 +18,7 @@
         "@types/react-dom": "^18.0.6",
         "dexie": "^3.2.2",
         "i18next": "^21.9.2",
-        "lunatic-edt": "C:\\Users\\isnmg\\Documents\\CARNET_EDT\\repo-insee\\lunatic-edt",
+        "lunatic-edt": "0.0.1",
         "node-sass": "^7.0.3",
         "react": "^18.2.0",
         "react-detect-offline": "^2.4.5",
@@ -45,6 +45,7 @@
         "@commitlint/config-conventional": "^17.1.0",
         "@typescript-eslint/eslint-plugin": "^5.38.0",
         "@typescript-eslint/parser": "^5.38.0",
+        "concurrently": "^7.4.0",
         "eslint": "^7.11.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-storybook": "^0.6.4",
@@ -52,10 +53,12 @@
         "husky": "^8.0.1",
         "lint-staged": "^13.0.3",
         "prettier": "^2.3.2",
-        "serve": "^14.0.1"
+        "react-app-rewired": "^2.2.1",
+        "serve": "^14.0.1",
+        "tsc-watch": "^5.0.3"
     },
     "scripts": {
-        "start": "react-scripts start",
+        "start": "react-app-rewired start",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "test-ci": "react-scripts test --watchAll=false",
@@ -66,7 +69,8 @@
         "format": "npm run _format -- --write",
         "format:check": "npm run _format -- --list-different",
         "prepare": "husky install",
-        "serve-build": "npm run build && npx serve -s ./build -l 8000"
+        "serve-build": "npm run build && npx serve -s ./build -l 8000",
+        "start-with-lib": "concurrently \"yarn start\"  \"tsc-watch -p ./node_modules/lunatic-edt\""
     },
     "eslintConfig": {
         "extends": [
