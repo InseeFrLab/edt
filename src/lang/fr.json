@@ -1,5 +1,8 @@
 {
     "common": {
         "welcome": "Bienvenue sur la PWA Carnet EDT"
+    },
+    "asset": {
+        "reminder-notes-alt": "Alt pour reminder-note"
     }
 }
