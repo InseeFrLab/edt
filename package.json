@@ -60,7 +60,7 @@
     },
     "scripts": {
         "start": "react-app-rewired start",
-        "build": "react-scripts build",
+        "build": "react-app-rewired build",
         "test": "react-scripts test",
         "test-ci": "react-scripts test --watchAll=false",
         "eject": "react-scripts eject",
