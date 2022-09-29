@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import "./Home.scss";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -12,12 +11,6 @@ const Home = () => {
                 <img src={reminder_note} alt={t("asset.reminder-notes-alt")} />
             </div>
             <header>{t("common.welcome")}</header>
-            <Button color="primary" variant="contained">
-                Test primary
-            </Button>
-            <Button color="secondary" variant="contained">
-                Test secondary
-            </Button>
         </div>
     );
 };

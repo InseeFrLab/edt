@@ -1,27 +1,12 @@
 import React from "react";
 import * as lunatic from "@inseefr/lunatic";
 import * as lunaticEDT from "lunatic-edt";
-const { Button } = lunatic;
+import { Pager } from "lunatic-edt";
+import { useTranslation } from "react-i18next";
 const { ThemeProvider, ...edtComponents } = lunaticEDT;
-export type Props = {
-    goPrevious: () => void;
-    goNext: () => void;
-    isLast: boolean;
-    isFirst: boolean;
-};
-const Pager = (props: Props) => {
-    const { goPrevious, goNext, isLast, isFirst } = props;
-    return (
-        <div className="pagination">
-            <Button onClick={goPrevious} disabled={isFirst}>
-                Previous
-            </Button>
-            <Button onClick={goNext} disabled={isLast}>
-                Next
-            </Button>
-        </div>
-    );
-};
+import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
+import NavigatePreviousRoundedIcon from "@mui/icons-material/NavigateBeforeRounded";
+
 const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
 export type OrchestratorProps = {
     source: object;
@@ -35,6 +20,8 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         });
     const components = getComponents();
     const currentErrors = getCurrentErrors();
+    const { t } = useTranslation();
+
     return (
         <ThemeProvider>
             <div className="components">
@@ -60,6 +47,10 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 goNext={goNextPage}
                 isLast={isLastPage}
                 isFirst={isFirstPage}
+                previousButtonText={t("common.navigation.previous")}
+                previousIcon={<NavigatePreviousRoundedIcon />}
+                nextButtonText={t("common.navigation.next")}
+                nextIcon={<NavigateNextRoundedIcon />}
             />
         </ThemeProvider>
     );
