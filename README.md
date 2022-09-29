@@ -8,5 +8,6 @@
 
 ## TO LINK EDT TO LUNATIC-EDT LOCALLY :
 
--   Lancer 'npm link' dans le projet lunatic-edt (https://github.com/InseeFrLab/lunatic-edt) afin de créer un lien global à la lib lunatic-edt
--   Lancer 'npm link lunatic-edt' dans le projet edt afin de créer un lien local vers la lib globale lunatic-edt
+- Lancer 'yarn link' dans le projet lunatic-edt (https://github.com/InseeFrLab/lunatic-edt) afin de créer un lien global à la lib lunatic-edt
+- Lancer 'yarn link lunatic-edt' dans le projet edt afin de créer un lien local vers la lib globale lunatic-edt
+- Pour lancer le dev server faire 'yarn start-with-lib'
