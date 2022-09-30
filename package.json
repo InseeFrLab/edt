@@ -10,7 +10,7 @@
         "@mui/material": "^5.10.7",
         "dexie": "^3.2.2",
         "i18next": "^21.9.2",
-        "lunatic-edt": "0.0.1",
+        "lunatic-edt": "^0.0.1",
         "react": "^18.2.0",
         "react-detect-offline": "^2.4.5",
         "react-dom": "^18.2.0",
