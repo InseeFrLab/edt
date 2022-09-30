@@ -8729,7 +8729,7 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-lunatic-edt@0.0.1:
+lunatic-edt@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/lunatic-edt/-/lunatic-edt-0.0.1.tgz#6049e06525f5856eb204ef17f0b722093adf7192"
   integrity sha512-QQKhqpvyA9pe1ov7WQOnl6t7W5lkH2pjWztU+UyGr3eRm2ZJPCrk0ikuym5Vsqg7ROcuJLrF3I3lU8+xo9EYUg==

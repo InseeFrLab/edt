@@ -1,9 +1,9 @@
 import React, { Component, useEffect } from "react";
 import "./App.scss";
 
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import { OrchestratorForStories } from "./orchestrator/Orchestrator";
-import { theme } from "lunatic-edt";
+import { ThemeProvider } from "lunatic-edt";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import frFile from "./i18n/fr.json";
@@ -49,7 +49,7 @@ export default class App extends Component<{}, Source> {
 
     render() {
         return this.state.source ? (
-            <ThemeProvider theme={theme}>
+            <ThemeProvider>
                 <CssBaseline enableColorScheme />
                 <Home></Home>
                 <OrchestratorForStories source={this.state.source!} data={{}}></OrchestratorForStories>

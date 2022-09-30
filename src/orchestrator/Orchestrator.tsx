@@ -1,7 +1,8 @@
 import React from "react";
 import * as lunatic from "@inseefr/lunatic";
 import * as lunaticEDT from "lunatic-edt";
-import { Pager } from "lunatic-edt";
+// Pager is not exported by lunatic-edt
+// import { Pager } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 const { ThemeProvider, ...edtComponents } = lunaticEDT;
 import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
@@ -42,16 +43,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     );
                 })}
             </div>
-            <Pager
-                goPrevious={goPreviousPage}
-                goNext={goNextPage}
-                isLast={isLastPage}
-                isFirst={isFirstPage}
-                previousButtonText={t("common.navigation.previous")}
-                previousIcon={<NavigatePreviousRoundedIcon />}
-                nextButtonText={t("common.navigation.next")}
-                nextIcon={<NavigateNextRoundedIcon />}
-            />
         </ThemeProvider>
     );
 };
