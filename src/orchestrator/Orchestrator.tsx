@@ -1,12 +1,8 @@
 import React from "react";
 import * as lunatic from "@inseefr/lunatic";
 import * as lunaticEDT from "lunatic-edt";
-// Pager is not exported by lunatic-edt
-// import { Pager } from "lunatic-edt";
-import { useTranslation } from "react-i18next";
+
 const { ThemeProvider, ...edtComponents } = lunaticEDT;
-import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
-import NavigatePreviousRoundedIcon from "@mui/icons-material/NavigateBeforeRounded";
 
 const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
 export type OrchestratorProps = {
@@ -15,13 +11,11 @@ export type OrchestratorProps = {
 };
 export const OrchestratorForStories = (props: OrchestratorProps) => {
     const { source, data } = props;
-    const { getComponents, goPreviousPage, goNextPage, isFirstPage, isLastPage, getCurrentErrors } =
-        lunatic.useLunatic(source, data, {
-            onChange: onLogChange,
-        });
+    const { getComponents, getCurrentErrors } = lunatic.useLunatic(source, data, {
+        onChange: onLogChange,
+    });
     const components = getComponents();
     const currentErrors = getCurrentErrors();
-    const { t } = useTranslation();
 
     return (
         <ThemeProvider>
