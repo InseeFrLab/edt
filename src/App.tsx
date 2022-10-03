@@ -5,10 +5,12 @@ import { CssBaseline } from "@mui/material";
 import { OrchestratorForStories } from "./orchestrator/Orchestrator";
 import { ThemeProvider } from "lunatic-edt";
 import Home from "./page/home/Home";
+import { LunaticData } from "./service/lunatic-database";
+
 import "i18n/i18n";
 
 const App = () => {
-    const data = {};
+    const [data, setData] = useState(null as LunaticData | null);
     const [source, setSource] = useState(null as object | null);
 
     useEffect(() => {
@@ -19,6 +21,10 @@ const App = () => {
         fetch(url)
             .then(sourcePromise => sourcePromise.json())
             .then(source => setSource(source));
+
+        lunaticDatabase.get("edt").then(d => {
+            setData(d ? d : {});
+        });
     }, []);
 
     return source && data ? (

@@ -2,6 +2,7 @@ import React from "react";
 import * as lunatic from "@inseefr/lunatic";
 import * as lunaticEDT from "lunatic-edt";
 import { Button } from "@mui/material";
+import { lunaticDatabase } from "../service/lunatic-database";
 
 const { ...edtComponents } = lunaticEDT;
 
@@ -33,12 +34,24 @@ export type OrchestratorProps = {
 };
 export const OrchestratorForStories = (props: OrchestratorProps) => {
     const { source, data } = props;
-    const { goPreviousPage, goNextPage, isLastPage, isFirstPage, getComponents, getCurrentErrors } =
-        lunatic.useLunatic(source, data, {
-            onChange: onLogChange,
-        });
+    const {
+        goPreviousPage,
+        goNextPage,
+        isLastPage,
+        isFirstPage,
+        getComponents,
+        getCurrentErrors,
+        getData,
+    } = lunatic.useLunatic(source, data, {
+        onChange: onLogChange,
+    });
     const components = getComponents();
     const currentErrors = getCurrentErrors();
+
+    const saveAndNext = () => {
+        lunaticDatabase.save("edt", getData());
+        goNextPage();
+    };
 
     return (
         <>
@@ -62,7 +75,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
             </div>
             <Pager
                 goPrevious={goPreviousPage}
-                goNext={goNextPage}
+                goNext={saveAndNext}
                 isLast={isLastPage}
                 isFirst={isFirstPage}
             />
