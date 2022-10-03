@@ -8,6 +8,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import frFile from "./i18n/fr.json";
 import Home from "./page/home/Home";
+import { LunaticData, lunaticDatabase } from 'service/lunatic-database';
 
 i18n.use(initReactI18next).init({
     resources: {
@@ -23,7 +24,7 @@ i18n.use(initReactI18next).init({
 });
 
 const App = () => {
-    const data = {};
+    const [data, setData] = useState(null as LunaticData | null);
     const [source, setSource] = useState(null as object | null);
 
     useEffect(() => {
@@ -33,6 +34,10 @@ const App = () => {
         fetch(url)
             .then(sourcePromise => sourcePromise.json())
             .then(source => setSource(source));
+
+        lunaticDatabase.get('edt').then(d => {
+            setData(d ? d : {});
+        });
     }, []);
 
     return source && data ? (
