@@ -1,6 +1,7 @@
 import React from "react";
 import * as lunatic from "@inseefr/lunatic";
 import * as lunaticEDT from "lunatic-edt";
+import { Pager } from "@inseefr/lunatic";
 
 const { ThemeProvider, ...edtComponents } = lunaticEDT;
 
@@ -11,7 +12,7 @@ export type OrchestratorProps = {
 };
 export const OrchestratorForStories = (props: OrchestratorProps) => {
     const { source, data } = props;
-    const { getComponents, getCurrentErrors } = lunatic.useLunatic(source, data, {
+    const { goPreviousPage, goNextPage, isLastPage, isFirstPage, getComponents, getCurrentErrors } = lunatic.useLunatic(source, data, {
         onChange: onLogChange,
     });
     const components = getComponents();
@@ -37,6 +38,12 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     );
                 })}
             </div>
+            <Pager
+                goPrevious={goPreviousPage}
+                goNext={goNextPage}
+                isLast={isLastPage}
+                isFirst={isFirstPage}
+            />
         </ThemeProvider>
     );
 };
