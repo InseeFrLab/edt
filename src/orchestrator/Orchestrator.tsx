@@ -1,9 +1,30 @@
 import React from "react";
 import * as lunatic from "@inseefr/lunatic";
 import * as lunaticEDT from "lunatic-edt";
-import { Pager } from "@inseefr/lunatic";
+import { Button } from "@mui/material";
 
 const { ThemeProvider, ...edtComponents } = lunaticEDT;
+
+export type Props = {
+    goPrevious: () => void;
+    goNext: () => void;
+    isLast: boolean;
+    isFirst: boolean;
+};
+const Pager = (props: Props) => {
+    const { goPrevious, goNext, isLast, isFirst } = props;
+
+    return (
+        <div className="pagination">
+            <Button onClick={goPrevious} disabled={isFirst}>
+                Previous
+            </Button>
+            <Button onClick={goNext} disabled={isLast}>
+                Next
+            </Button>
+        </div>
+    );
+};
 
 const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
 export type OrchestratorProps = {
@@ -12,9 +33,10 @@ export type OrchestratorProps = {
 };
 export const OrchestratorForStories = (props: OrchestratorProps) => {
     const { source, data } = props;
-    const { goPreviousPage, goNextPage, isLastPage, isFirstPage, getComponents, getCurrentErrors } = lunatic.useLunatic(source, data, {
-        onChange: onLogChange,
-    });
+    const { goPreviousPage, goNextPage, isLastPage, isFirstPage, getComponents, getCurrentErrors } =
+        lunatic.useLunatic(source, data, {
+            onChange: onLogChange,
+        });
     const components = getComponents();
     const currentErrors = getCurrentErrors();
 
