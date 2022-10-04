@@ -1,20 +1,5 @@
-@import './variables.scss';
+@import "./variables.scss";
 
-button{
-  text-transform: none !important;
-}
-
-.edt-custom-toggle-button{
-  margin-bottom: 0.5rem !important;
-  border: 2px solid $white !important;
-  border-radius: 6px !important;
-  background-color: $white !important;
-  color: $primary !important;
-}
-
-.edt-custom-toggle-button-active{
-  margin-bottom: 0.5rem !important;
-  border-radius: 6px !important;
-  border-color: $primary !important;
-  font-weight: bold !important;
+button {
+    text-transform: none !important;
 }
