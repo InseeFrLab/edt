@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.scss";
 
 import { CssBaseline } from "@mui/material";
