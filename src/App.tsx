@@ -5,9 +5,7 @@ import { CssBaseline } from "@mui/material";
 import { OrchestratorForStories } from "./orchestrator/Orchestrator";
 import { ThemeProvider } from "lunatic-edt";
 import Home from "./page/home/Home";
-import { LunaticData } from "./service/lunatic-database";
-
-import "i18n/i18n";
+import { LunaticData, lunaticDatabase } from "service/lunatic-database";
 
 const App = () => {
     const [data, setData] = useState(null as LunaticData | null);

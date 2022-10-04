@@ -1,8 +1,8 @@
 import React from "react";
 import * as lunatic from "@inseefr/lunatic";
 import * as lunaticEDT from "lunatic-edt";
+import { lunaticDatabase } from "service/lunatic-database";
 import { Button } from "@mui/material";
-import { lunaticDatabase } from "../service/lunatic-database";
 
 const { ...edtComponents } = lunaticEDT;
 
