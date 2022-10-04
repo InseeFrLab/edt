@@ -4,23 +4,8 @@ import "./App.scss";
 import { CssBaseline } from "@mui/material";
 import { OrchestratorForStories } from "./orchestrator/Orchestrator";
 import { ThemeProvider } from "lunatic-edt";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import frFile from "./i18n/fr.json";
 import Home from "./page/home/Home";
-
-i18n.use(initReactI18next).init({
-    resources: {
-        fr: {
-            translation: frFile,
-        },
-    },
-    lng: "fr",
-    fallbackLng: "fr",
-    interpolation: {
-        escapeValue: false,
-    },
-});
+import "i18n/i18n";
 
 const App = () => {
     const data = {};
@@ -28,7 +13,8 @@ const App = () => {
 
     useEffect(() => {
         // this is temporary !!! TODO : replace when we know how we shoulmd do it ! This was to prenvent a source.json in the repo
-        const url = "https://pogues-back-office-insee.k8s.keyconsulting.fr/api/persistence/questionnaire/json-lunatic/l8lq5lp6";
+        const url =
+            "https://pogues-back-office-insee.k8s.keyconsulting.fr/api/persistence/questionnaire/json-lunatic/l8lq5lp6";
 
         fetch(url)
             .then(sourcePromise => sourcePromise.json())
@@ -44,6 +30,6 @@ const App = () => {
     ) : (
         <div>Chargement du questionnaire...</div>
     );
-}
+};
 
 export default App;
