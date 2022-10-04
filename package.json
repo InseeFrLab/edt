@@ -53,12 +53,14 @@
         "husky": "^8.0.1",
         "lint-staged": "^13.0.3",
         "prettier": "^2.3.2",
+        "react-app-rewired": "^2.2.1",
         "tsc-watch": "^5.0.3",
         "typescript": "^4.8.3"
     },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-app-rewired build",
+        "start-rewired": "react-app-rewired start",
         "test": "react-scripts test",
         "test-ci": "react-scripts test --watchAll=false",
         "eject": "react-scripts eject",
@@ -69,7 +71,7 @@
         "format:check": "npm run _format -- --list-different",
         "prepare": "husky install",
         "serve-build": "npm run build && npx serve -s ./build -l 8000",
-        "start-with-lib": "concurrently \"yarn start\"  \"cd ./node_modules/lunatic-edt && tsc-watch\""
+        "start-with-lib": "concurrently \"yarn start-rewired\"  \"cd ./node_modules/lunatic-edt && tsc-watch\""
     },
     "eslintConfig": {
         "extends": [
