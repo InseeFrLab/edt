@@ -5,7 +5,7 @@ import { CssBaseline } from "@mui/material";
 import { OrchestratorForStories } from "./orchestrator/Orchestrator";
 import { ThemeProvider } from "lunatic-edt";
 import Home from "./page/home/Home";
-import { LunaticData, lunaticDatabase } from 'service/lunatic-database';
+import { LunaticData, lunaticDatabase } from "service/lunatic-database";
 
 const App = () => {
     const [data, setData] = useState(null as LunaticData | null);
@@ -20,7 +20,7 @@ const App = () => {
             .then(sourcePromise => sourcePromise.json())
             .then(source => setSource(source));
 
-        lunaticDatabase.get('edt').then(d => {
+        lunaticDatabase.get("edt").then(d => {
             setData(d ? d : {});
         });
     }, []);
