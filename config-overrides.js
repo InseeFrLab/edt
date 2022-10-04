@@ -7,7 +7,7 @@ module.exports = function override(config, env) {
     config.resolve.alias["react-dom"] = path.resolve('./node_modules/react-dom');
 
     config.optimization = {
-        minimize: true,
+        minimize: false,
         splitChunks: {
             chunks: 'all',
             name: true
