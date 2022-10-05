@@ -55,10 +55,10 @@ registerRoute(
 // cache every url for offline mode
 registerRoute(
     // Cache all url.
-    ({ }) => true,
+    () => true,
     // Customize this strategy as needed, e.g., by changing to CacheFirst.
     new NetworkFirst({
-        cacheName: "data"
+        cacheName: "data",
     }),
 );
 
