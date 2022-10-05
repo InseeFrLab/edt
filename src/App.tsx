@@ -7,6 +7,8 @@ import { ThemeProvider } from "lunatic-edt";
 import Home from "./page/home/Home";
 import { LunaticData, lunaticDatabase } from "service/lunatic-database";
 
+import "i18n/i18n";
+
 const App = () => {
     const [data, setData] = useState(null as LunaticData | null);
     const [source, setSource] = useState(null as object | null);
