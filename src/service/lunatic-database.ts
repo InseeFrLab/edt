@@ -68,19 +68,21 @@ export interface LunaticData {
 }
 
 // this is somewhat complexe as browser sometime cannot work with dexie in private mode
-export const lunaticDatabasePromise = new Promise<LunaticDatabase>((resolve) => {
+export const lunaticDatabasePromise = new Promise<LunaticDatabase>(resolve => {
     // validate dexie is working on this computer
     const database = new LunaticDatabaseImpl();
     try {
-        database.get("")
-        .then(() => resolve(database))
-        .catch(e => {
-            console.warn("- Dexie will not work in this environment. We will use a memory database.");
-            console.debug(e);
-            resolve(new MemoryLunaticDatabaseImpl());
-        });
-        
-    } catch(e) {
+        database
+            .get("")
+            .then(() => resolve(database))
+            .catch(e => {
+                console.warn(
+                    "- Dexie will not work in this environment. We will use a memory database.",
+                );
+                console.debug(e);
+                resolve(new MemoryLunaticDatabaseImpl());
+            });
+    } catch (e) {
         console.warn("Dexie will not work in this environment. We will use a memory database.");
         console.debug(e);
         resolve(new MemoryLunaticDatabaseImpl());
