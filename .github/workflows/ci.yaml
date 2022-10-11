@@ -2,7 +2,8 @@ name: EDT CI
 on:
     push:
         branches:
-            - main
+            - "main"
+            - "feat/*"
     pull_request:
         branches:
             - main
