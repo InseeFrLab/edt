@@ -41,7 +41,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     const currentErrors = getCurrentErrors();
 
     return (
-        <ThemeProvider>
+        <>
             <div className="components">
                 {components.map(function (component: any) {
                     const { id, componentType, response, ...other } = component;
@@ -66,6 +66,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 isLast={isLastPage}
                 isFirst={isFirstPage}
             />
-        </ThemeProvider>
+        </>
     );
 };
