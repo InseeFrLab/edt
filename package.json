@@ -5,7 +5,7 @@
     "dependencies": {
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",
-        "@inseefr/lunatic": "^0.4.31-v2",
+        "@inseefr/lunatic": "^2.0.2-v2",
         "@mui/icons-material": "^5.10.6",
         "@mui/material": "^5.10.7",
         "dexie": "^3.2.2",

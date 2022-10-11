@@ -1459,12 +1459,12 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@inseefr/lunatic@^0.4.31-v2":
-  version "0.4.31-v2"
-  resolved "https://registry.yarnpkg.com/@inseefr/lunatic/-/lunatic-0.4.31-v2.tgz#151c156f82372a2602dbf39cf78f825bbb1e7e7c"
-  integrity sha512-uIKIh7XZrYVx7EK9d8d7IJgDiujihf0Bd3RPmQPJ+oxSdcg0mpwDIJeQWow2QpyZSsfl5WvqSv+BYHdMgGnbcg==
+"@inseefr/lunatic@^2.0.2-v2":
+  version "2.0.2-v2"
+  resolved "https://registry.yarnpkg.com/@inseefr/lunatic/-/lunatic-2.0.2-v2.tgz#1998d9b6704eb1dd104ea148ffa935ec8c82ae6a"
+  integrity sha512-EqxAd2IwdJXmSmMtQwKaRfLGX7Mor9o22Lun3P7E3D8IyB3vguFDTbUs1S3swR1xA4dmRNDc9y5GENTms4BmJA==
   dependencies:
-    "@inseefr/trevas" "^0.1.15"
+    "@inseefr/trevas" "^0.1.16"
     "@inseefr/vtl-2.0-antlr-tools" "^0.1.0-bundle"
     antlr4 "4.8.0"
     classnames "^2.3.1"
@@ -1483,10 +1483,10 @@
     snowball "^0.3.1"
     string-tokenizer "^0.0.8"
 
-"@inseefr/trevas@^0.1.15":
-  version "0.1.15"
-  resolved "https://registry.yarnpkg.com/@inseefr/trevas/-/trevas-0.1.15.tgz#e12245a6b45027878136de3d61d668b034ed3bbe"
-  integrity sha512-EKY9grC8DjeIiBIpXtJlHpX86eWdvNwZxV+AUXwooNyX8fB1sF1zt6iamgfkrVTPVPE+ySIWU6I+h8YQa0DxEw==
+"@inseefr/trevas@^0.1.16":
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/@inseefr/trevas/-/trevas-0.1.16.tgz#179bbde45b0b67b70bae3e26848049f84701b2f1"
+  integrity sha512-VCsPEzCtHpYHQljIErn86lWhEZWg0iAlxkl46ZgyfDrMpfD4wsByH3pUKKSidz24396Em3CqvOQ1EfPHUE+7mw==
   dependencies:
     "@inseefr/vtl-2.0-antlr-tools" "0.1.0"
     antlr4 "4.8.0"
