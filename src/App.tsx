@@ -1,26 +1,35 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import { useEffect, useState } from "react";
+import "./App.scss";
 
-function App() {
-    return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    Edit <code>src/App.tsx</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-            </header>
-        </div>
+import { CssBaseline } from "@mui/material";
+import { OrchestratorForStories } from "./orchestrator/Orchestrator";
+import { ThemeProvider } from "lunatic-edt";
+import Home from "./page/home/Home";
+import "i18n/i18n";
+
+const App = () => {
+    const data = {};
+    const [source, setSource] = useState(null as object | null);
+
+    useEffect(() => {
+        // this is temporary !!! TODO : replace when we know how we shoulmd do it ! This was to prenvent a source.json in the repo
+        const url =
+            "https://pogues-back-office-insee.k8s.keyconsulting.fr/api/persistence/questionnaire/json-lunatic/l8lq5lp6";
+
+        fetch(url)
+            .then(sourcePromise => sourcePromise.json())
+            .then(source => setSource(source));
+    }, []);
+
+    return source && data ? (
+        <ThemeProvider>
+            <CssBaseline enableColorScheme />
+            <Home></Home>
+            <OrchestratorForStories source={source} data={data}></OrchestratorForStories>
+        </ThemeProvider>
+    ) : (
+        <div>Chargement du questionnaire...</div>
     );
-}
+};
 
 export default App;

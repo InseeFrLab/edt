@@ -1,0 +1,12 @@
+{
+    "common": {
+        "welcome": "Bienvenue sur la PWA Carnet EDT",
+        "navigation": {
+            "previous": "Précédent",
+            "next": "Suivant"
+        }
+    },
+    "asset": {
+        "reminder-notes-alt": "Alt pour reminder-note"
+    }
+}

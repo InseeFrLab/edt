@@ -1,0 +1,14 @@
+@import "./variables.scss";
+
+@font-face {
+    font-family: "Marianne";
+    src: url("./assets/fonts/marianne-regular-webfont.woff");
+}
+
+html * {
+    font-family: Marianne, sans-serif !important;
+}
+
+button {
+    text-transform: none !important;
+}
