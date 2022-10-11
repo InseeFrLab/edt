@@ -3,7 +3,7 @@ import * as lunatic from "@inseefr/lunatic";
 import * as lunaticEDT from "lunatic-edt";
 import { Button } from "@mui/material";
 
-const { ThemeProvider, ...edtComponents } = lunaticEDT;
+const { ...edtComponents } = lunaticEDT;
 
 export type Props = {
     goPrevious: () => void;
