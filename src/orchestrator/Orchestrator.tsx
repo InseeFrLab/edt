@@ -3,7 +3,7 @@ import * as lunatic from "@inseefr/lunatic";
 import * as lunaticEDT from "lunatic-edt";
 import { Button } from "@mui/material";
 
-const { ThemeProvider, ...edtComponents } = lunaticEDT;
+const { ...edtComponents } = lunaticEDT;
 
 export type Props = {
     goPrevious: () => void;
@@ -41,7 +41,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     const currentErrors = getCurrentErrors();
 
     return (
-        <ThemeProvider>
+        <>
             <div className="components">
                 {components.map(function (component: any) {
                     const { id, componentType, response, ...other } = component;
@@ -66,6 +66,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 isLast={isLastPage}
                 isFirst={isFirstPage}
             />
-        </ThemeProvider>
+        </>
     );
 };

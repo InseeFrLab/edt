@@ -24,7 +24,7 @@ const App = () => {
     return source && data ? (
         <ThemeProvider>
             <CssBaseline enableColorScheme />
-            <Home></Home>
+            <Home />
             <OrchestratorForStories source={source} data={data}></OrchestratorForStories>
         </ThemeProvider>
     ) : (
