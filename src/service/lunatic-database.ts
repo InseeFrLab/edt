@@ -71,22 +71,14 @@ export interface LunaticData {
 export const lunaticDatabasePromise = new Promise<LunaticDatabase>(resolve => {
     // validate dexie is working on this computer
     const database = new LunaticDatabaseImpl();
-    try {
-        database
-            .get("")
-            .then(() => resolve(database))
-            .catch(e => {
-                console.warn(
-                    "- Dexie will not work in this environment. We will use a memory database.",
-                );
-                console.debug(e);
-                resolve(new MemoryLunaticDatabaseImpl());
-            });
-    } catch (e) {
-        console.warn("Dexie will not work in this environment. We will use a memory database.");
-        console.debug(e);
-        resolve(new MemoryLunaticDatabaseImpl());
-    }
+    database
+        .get("")
+        .then(() => resolve(database))
+        .catch(e => {
+            console.warn("- Dexie will not work in this environment. We will use a memory database.");
+            console.debug(e);
+            resolve(new MemoryLunaticDatabaseImpl());
+        });
 });
 
 export const lunaticDatabase = new PromiseProxyLunaticDatabaseImpl(lunaticDatabasePromise);
