@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import "./App.scss";
 
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { OrchestratorForStories } from "./orchestrator/Orchestrator";
-import { ThemeProvider } from "lunatic-edt";
+import { theme } from "lunatic-edt";
 import Home from "./page/home/Home";
 import { LunaticData, lunaticDatabase } from "service/lunatic-database";
+import "i18n/i18n";
 
 const App = () => {
     const [data, setData] = useState(null as LunaticData | null);
@@ -26,7 +27,7 @@ const App = () => {
     }, []);
 
     return source && data ? (
-        <ThemeProvider>
+        <ThemeProvider theme={theme}>
             <CssBaseline enableColorScheme />
             <Home />
             <OrchestratorForStories source={source} data={data}></OrchestratorForStories>
