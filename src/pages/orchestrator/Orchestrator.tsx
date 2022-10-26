@@ -1,5 +1,5 @@
-import source2 from "local-test-source.json";
 import { OrchestratorForStories } from "orchestrator/Orchestrator";
+import source2 from "questionnaire-edt.json";
 import { useEffect, useState } from "react";
 import { LunaticData, lunaticDatabase } from "service/lunatic-database";
 const OrchestratorPage = () => {
@@ -7,7 +7,8 @@ const OrchestratorPage = () => {
     const [source, setSource] = useState(null as object | null);
 
     useEffect(() => {
-        // this is temporary !!! TODO : replace when we know how we shoulmd do it ! This was to prenvent a source.json in the repo
+        // TODO : this will be used when the questionnaire-edt.json will be available from insee endpoint
+        // url will be extracted in a properties file in this moment
         const url =
             "https://pogues-back-office-insee.k8s.keyconsulting.fr/api/persistence/questionnaire/json-lunatic/l8lq5lp6";
 

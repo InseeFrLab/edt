@@ -1,0 +1,369 @@
+{
+    "variables": [
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "COMMENT_QE",
+            "componentRef": "COMMENT-QUESTION"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "AVEZVOUSUT",
+            "componentRef": "l8mytgji"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "CHECKBOXGR1",
+            "componentRef": "l8lr55fc"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "CHECKBOXGR2",
+            "componentRef": "l8lr55fc"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "CHECKBOXGR3",
+            "componentRef": "l8lr55fc"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "16h15",
+            "componentRef": "hourchecker"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "16h30",
+            "componentRef": "hourchecker"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "16h45",
+            "componentRef": "hourchecker"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "17h00",
+            "componentRef": "hourchecker"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "CHECKBOXON",
+            "componentRef": "l8lr9pkh"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "INPUTTEXT",
+            "componentRef": "l8lrc7kt"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "DATEPICKER",
+            "componentRef": "l8lqzaqy"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "RADIO",
+            "componentRef": "l8lqxzmw"
+        },
+        {
+            "variableType": "CALCULATED",
+            "expression": "true",
+            "name": "FILTER_RESULT_AVEZVOUSUT",
+            "inFilter": "false"
+        },
+        {
+            "variableType": "CALCULATED",
+            "expression": "true",
+            "name": "FILTER_RESULT_CHECKBOXGR",
+            "inFilter": "false"
+        },
+        {
+            "variableType": "CALCULATED",
+            "expression": "true",
+            "name": "FILTER_RESULT_CHECKBOXON",
+            "inFilter": "false"
+        },
+        {
+            "variableType": "CALCULATED",
+            "expression": "true",
+            "name": "FILTER_RESULT_INPUTTEXT",
+            "inFilter": "false"
+        },
+        {
+            "variableType": "CALCULATED",
+            "expression": "true",
+            "name": "FILTER_RESULT_DATEPICKER",
+            "inFilter": "false"
+        },
+        {
+            "variableType": "CALCULATED",
+            "expression": "true",
+            "name": "FILTER_RESULT_RADIO",
+            "inFilter": "false"
+        }
+    ],
+    "components": [
+        {
+            "componentType": "Sequence",
+            "hierarchy": {
+                "sequence": { "id": "l8lpwmxj", "page": "1", "label": "\"I - \" || \"Durée test\"" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "l8lpwmxj",
+            "page": "1",
+            "label": "\"I - \" || \"Durée test\""
+        },
+        {
+            "componentType": "CheckboxGroup",
+            "bindingDependencies": ["CHECKBOXGR1", "CHECKBOXGR2", "CHECKBOXGR3"],
+            "hierarchy": {
+                "sequence": { "id": "l8lpwmxj", "page": "1", "label": "\"I - \" || \"Durée test\"" }
+            },
+            "responses": [
+                {
+                    "response": { "name": "CHECKBOXGR1" },
+                    "id": "l8lr55fc-QOP-l8lracn4",
+                    "label": "\"Item 1\""
+                },
+                {
+                    "response": { "name": "CHECKBOXGR2" },
+                    "id": "l8lr55fc-QOP-l8lqzsty",
+                    "label": "\"Item 2\""
+                },
+                {
+                    "response": { "name": "CHECKBOXGR3" },
+                    "id": "l8lr55fc-QOP-l8lr6tro",
+                    "label": "\"Item 3\""
+                }
+            ],
+            "conditionFilter": { "value": "true" },
+            "id": "l8lr55fc",
+            "page": "2",
+            "label": "\"➡ 2. \" || \"Checkbox group\""
+        },
+        {
+            "componentType": "HourChecker",
+            "bindingDependencies": ["16h15", "16h30", "16h45", "17h00"],
+            "hierarchy": {
+                "sequence": { "id": "l8lpwmxj", "page": "1", "label": "\"I - \" || \"Durée test\"" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "hourchecker",
+            "page": "3",
+            "label": "\"➡ 1. \" || \"Avez-vous utilisé un écran\"",
+            "mandatory": false,
+            "responses": [
+                {
+                    "id": "1",
+                    "label": "\"16h15\"",
+                    "response": { "name": "16h15" }
+                },
+                {
+                    "id": "2",
+                    "label": "\"16h30\"",
+                    "response": { "name": "16h30" }
+                },
+                {
+                    "id": "3",
+                    "label": "\"16h45\"",
+                    "response": { "name": "16h45" }
+                },
+                {
+                    "id": "4",
+                    "label": "\"17h00\"",
+                    "response": { "name": "17h00" }
+                }
+            ]
+        },
+        {
+            "componentType": "CheckboxOne",
+            "bindingDependencies": ["CHECKBOXON"],
+            "response": { "name": "CHECKBOXON" },
+            "hierarchy": {
+                "sequence": { "id": "l8lpwmxj", "page": "1", "label": "\"I - \" || \"Durée test\"" }
+            },
+            "options": [
+                { "label": "\"Item 1\"", "value": "Item1" },
+                { "label": "\"Item2\"", "value": "Item2" },
+                { "label": "\"Item 3\"", "value": "Item3" }
+            ],
+            "conditionFilter": { "value": "true" },
+            "id": "l8lr9pkh",
+            "page": "4",
+            "label": "\"➡ 3. \" || \"Checkbox one\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "Input",
+            "bindingDependencies": ["INPUTTEXT"],
+            "response": { "name": "INPUTTEXT" },
+            "hierarchy": {
+                "sequence": { "id": "l8lpwmxj", "page": "1", "label": "\"I - \" || \"Durée test\"" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "l8lrc7kt",
+            "page": "5",
+            "label": "\"➡ 4. \" || \"Input text\"",
+            "mandatory": false,
+            "maxLength": 100
+        },
+        {
+            "componentType": "Datepicker",
+            "bindingDependencies": ["DATEPICKER"],
+            "min": "1900-01-01",
+            "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
+            "dateFormat": "YYYY-MM-DD",
+            "response": { "name": "DATEPICKER" },
+            "hierarchy": {
+                "sequence": { "id": "l8lpwmxj", "page": "1", "label": "\"I - \" || \"Durée test\"" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "l8lqzaqy",
+            "page": "6",
+            "label": "\"➡ 6. \" || \"Datepicker\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "Radio",
+            "bindingDependencies": ["RADIO"],
+            "response": { "name": "RADIO" },
+            "hierarchy": {
+                "sequence": { "id": "l8lpwmxj", "page": "1", "label": "\"I - \" || \"Durée test\"" }
+            },
+            "options": [
+                { "label": "\"Item 1\"", "value": "Item1" },
+                { "label": "\"Item 2\"", "value": "Item2" },
+                { "label": "\"Item 3\"", "value": "Item3" }
+            ],
+            "conditionFilter": { "value": "true" },
+            "id": "l8lqxzmw",
+            "page": "7",
+            "label": "\"➡ 7. \" || \"Radio\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "Sequence",
+            "hierarchy": {
+                "sequence": { "id": "COMMENT-SEQ", "page": "8", "label": "\"Commentaire\"" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "COMMENT-SEQ",
+            "page": "8",
+            "label": "\"Commentaire\""
+        },
+        {
+            "componentType": "Textarea",
+            "bindingDependencies": ["COMMENT_QE"],
+            "response": { "name": "COMMENT_QE" },
+            "hierarchy": {
+                "sequence": { "id": "COMMENT-SEQ", "page": "8", "label": "\"Commentaire\"" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "COMMENT-QUESTION",
+            "page": "9",
+            "label": "\"Avez-vous des remarques concernant l'enquête ou des commentaires ?\"",
+            "mandatory": false,
+            "maxLength": 2000
+        }
+    ],
+    "pagination": "question",
+    "lunaticModelVersion": "2.2.10",
+    "modele": "TIME",
+    "enoCoreVersion": "2.3.11",
+    "generatingDate": "29-09-2022 13:56:00",
+    "missing": false,
+    "id": "l8lq5lp6",
+    "label": "Time",
+    "maxPage": "9"
+}
