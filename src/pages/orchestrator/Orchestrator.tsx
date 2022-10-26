@@ -1,7 +1,7 @@
+import source2 from "local-test-source.json";
 import { OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useEffect, useState } from "react";
 import { LunaticData, lunaticDatabase } from "service/lunatic-database";
-
 const OrchestratorPage = () => {
     const [data, setData] = useState(null as LunaticData | null);
     const [source, setSource] = useState(null as object | null);
@@ -22,7 +22,7 @@ const OrchestratorPage = () => {
 
     return source && data ? (
         <>
-            <OrchestratorForStories source={source} data={data}></OrchestratorForStories>
+            <OrchestratorForStories source={source2} data={data}></OrchestratorForStories>
         </>
     ) : (
         <div>Chargement du questionnaire lunatic...</div>
