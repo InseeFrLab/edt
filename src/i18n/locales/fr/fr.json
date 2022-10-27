@@ -17,5 +17,10 @@
         "navigation": {
             "link-help-label": "Aide"
         }
+    },
+    "component": {
+        "orchestrator": {
+            "loading": "Chargement du questionnaire lunatic..."
+        }
     }
 }
