@@ -6,6 +6,7 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FlexEnd from "components/commons/FlexEnd/FlexEnd";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { EdtRoutesNameEnum, getNavigatePath } from "routes/EdtRoutes";
 
 const HomePage = () => {
     const { t } = useTranslation();
@@ -13,17 +14,29 @@ const HomePage = () => {
     return (
         <>
             <FlexEnd>
-                <Button startIcon={<HelpIcon />} onClick={() => navigate("/help")}>
+                <Button
+                    startIcon={<HelpIcon />}
+                    onClick={() => navigate(getNavigatePath(EdtRoutesNameEnum.HELP))}
+                >
                     {t("home-page.navigation.link-help-label")}
                 </Button>
                 {/* DEV : this will be removed */}
-                <Button startIcon={<CodeIcon />} onClick={() => navigate("/orchestrator")}>
+                <Button
+                    startIcon={<CodeIcon />}
+                    onClick={() => navigate(getNavigatePath(EdtRoutesNameEnum.ORCHESTRATOR))}
+                >
                     Orchestrator
                 </Button>
-                <Button startIcon={<CodeIcon />} onClick={() => navigate("/activity")}>
+                <Button
+                    startIcon={<CodeIcon />}
+                    onClick={() => navigate(getNavigatePath(EdtRoutesNameEnum.ACTIVITY))}
+                >
                     Activity
                 </Button>
-                <Button startIcon={<CodeIcon />} onClick={() => navigate("/who-are-you")}>
+                <Button
+                    startIcon={<CodeIcon />}
+                    onClick={() => navigate(getNavigatePath(EdtRoutesNameEnum.WHO_ARE_YOU))}
+                >
                     Who are you
                 </Button>
             </FlexEnd>
