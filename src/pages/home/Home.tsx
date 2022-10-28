@@ -18,7 +18,7 @@ const HomePage = () => {
                     startIcon={<HelpIcon />}
                     onClick={() => navigate(getNavigatePath(EdtRoutesNameEnum.HELP))}
                 >
-                    {t("home-page.navigation.link-help-label")}
+                    {t("page.home.navigation.link-help-label")}
                 </Button>
                 {/* DEV : this will be removed */}
                 <Button
@@ -42,9 +42,9 @@ const HomePage = () => {
             </FlexEnd>
             <div>
                 <FlexCenter>
-                    <img src={reminder_note} alt={t("asset.reminder-notes-alt")} />
+                    <img src={reminder_note} alt={t("accessibility.asset.reminder-notes-alt")} />
                 </FlexCenter>
-                <header>{t("home-page.welcome")}</header>
+                <header>{t("page.home.welcome")}</header>
             </div>
         </>
     );
