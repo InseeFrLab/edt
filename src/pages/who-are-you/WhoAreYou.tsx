@@ -7,9 +7,9 @@ const WhoAreYouPage = () => {
     return (
         <>
             <FlexCenter>
-                <img src={who_are_you} alt={t("asset.who-are-you-alt")} />
+                <img src={who_are_you} alt={t("accessibility.asset.who-are-you-alt")} />
             </FlexCenter>
-            <header>Who are You -{t("home-page.welcome")}</header>
+            <header>Who are You -{t("page.home.welcome")}</header>
         </>
     );
 };

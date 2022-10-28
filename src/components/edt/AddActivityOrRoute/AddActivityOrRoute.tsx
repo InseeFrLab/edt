@@ -1,14 +1,21 @@
 import { Box, Button, Modal } from "@mui/material";
+import activity from "assets/illustration/activity.svg";
+import route from "assets/illustration/route.svg";
+import yellow_plus from "assets/illustration/yellow-plus.svg";
+import { Default, Mobile } from "components/commons/Responsive/Responsive";
 import React from "react";
 import { makeStyles } from "tss-react/mui";
-
+import AddActivityOrRouteDefault from "./AddActivityOrRouteDefault";
+import AddActivityOrRouteMobile from "./AddActivityOrRouteMobile";
 interface AddActivityOrRouteProps {
     labelledBy: string;
     describedBy: string;
+    onClickActivity(): void;
+    onClickRoute(): void;
 }
 
 const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
-    const { labelledBy, describedBy } = props;
+    const { labelledBy, describedBy, onClickActivity, onClickRoute } = props;
     const { classes } = useStyles();
     const [open, setOpen] = React.useState(false);
 
@@ -35,18 +42,30 @@ const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
                     aria-labelledby={labelledBy}
                     aria-describedby={describedBy}
                 >
-                    <Box className={classes.modal}>
-                        <Box id="modal-title" sx={{ display: "flex" }}>
-                            caca
-                        </Box>
-                        <Box id="add-activity" className={classes.navigateBox}>
-                            pipi
-                        </Box>
-                        <Box id="add-route" className={classes.navigateBox}>
-                            popo
-                        </Box>
-                        <Button onClick={handleClose}>Close Child Modal</Button>
-                    </Box>
+                    <>
+                        <Default>
+                            <AddActivityOrRouteDefault
+                                handleClose={handleClose}
+                                onClickActivity={onClickActivity}
+                                onClickRoute={onClickRoute}
+                                className={classes.modal}
+                                iconTitle={yellow_plus}
+                                iconActivity={activity}
+                                iconRoute={route}
+                            />
+                        </Default>
+                        <Mobile>
+                            <AddActivityOrRouteMobile
+                                handleClose={handleClose}
+                                onClickActivity={onClickActivity}
+                                onClickRoute={onClickRoute}
+                                className={classes.modal}
+                                iconTitle={yellow_plus}
+                                iconActivity={activity}
+                                iconRoute={route}
+                            />
+                        </Mobile>
+                    </>
                 </Modal>
             </React.Fragment>
         </>
@@ -54,18 +73,10 @@ const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
 };
 
 const useStyles = makeStyles({ "name": { AddActivityOrRoute } })(theme => ({
-    navigateBox: {
-        cursor: "pointer",
-    },
     modal: {
         position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
         backgroundColor: theme.palette.background.default,
-        padding: "3.5rem",
         border: "2px solid transparent",
-        borderRadius: "37px",
         boxShadow: "24",
         index: "2",
     },

@@ -4,7 +4,6 @@ import { Button } from "@mui/material";
 import reminder_note from "assets/illustration/reminder-note.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FlexEnd from "components/commons/FlexEnd/FlexEnd";
-import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +14,7 @@ const HomePage = () => {
         <>
             <FlexEnd>
                 <Button startIcon={<HelpIcon />} onClick={() => navigate("/help")}>
-                    {t("home-page.navigation.link-help-label")}
+                    {t("page.home.navigation.link-help-label")}
                 </Button>
                 {/* DEV : this will be removed */}
                 <Button startIcon={<CodeIcon />} onClick={() => navigate("/orchestrator")}>
@@ -30,13 +29,9 @@ const HomePage = () => {
             </FlexEnd>
             <div>
                 <FlexCenter>
-                    <img src={reminder_note} alt={t("asset.reminder-notes-alt")} />
+                    <img src={reminder_note} alt={t("accessibility.asset.reminder-notes-alt")} />
                 </FlexCenter>
-                <header>{t("home-page.welcome")}</header>
-                <AddActivityOrRoute
-                    labelledBy={t("accessibility.component.add-activity-or-route.labelled-by")}
-                    describedBy={t("accessibility.component.add-activity-or-route.described-by")}
-                />
+                <header>{t("page.home.welcome")}</header>
             </div>
         </>
     );
