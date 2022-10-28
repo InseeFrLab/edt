@@ -1,17 +1,9 @@
 import { useMediaQuery } from "react-responsive";
+import { destktopMinWidth, mobileMaxWidth, tabletMaxWidth, tabletMinWidth } from "service/responsive";
 
 interface ResponsiveProps {
     children: JSX.Element[] | JSX.Element;
 }
-
-const mobileMaxWidth = 767;
-const tabletMaxWidth = 991;
-const tabletMinWidth = 768;
-const destktopMinWidth = 992;
-
-const isMobile = (): boolean => {
-    return useMediaQuery({ query: "(max-width: " + mobileMaxWidth + "px)" });
-};
 
 const Desktop = ({ children }: ResponsiveProps) => {
     const isDesktop = useMediaQuery({ minWidth: destktopMinWidth });
@@ -30,4 +22,4 @@ const Default = ({ children }: ResponsiveProps) => {
     return isNotMobile ? <>{children}</> : <></>;
 };
 
-export { Desktop, Tablet, Mobile, Default, isMobile };
+export { Desktop, Tablet, Mobile, Default };
