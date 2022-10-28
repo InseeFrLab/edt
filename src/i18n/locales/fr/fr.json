@@ -3,6 +3,9 @@
         "navigation": {
             "previous": "Précédent",
             "next": "Suivant"
+        },
+        "stepper": {
+            "step": "Étape"
         }
     },
     "asset": {
