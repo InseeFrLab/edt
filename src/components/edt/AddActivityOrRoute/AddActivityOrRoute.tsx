@@ -34,6 +34,7 @@ const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
                 sx={{ display: open ? "visible" : "none" }}
             ></Box>
             <React.Fragment>
+                {/* DEV : this will be replaced when integrated in page */}
                 <Button onClick={handleOpen}>Open Child Modal</Button>
                 <Modal
                     hideBackdrop
