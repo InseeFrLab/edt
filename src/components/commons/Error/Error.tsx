@@ -1,0 +1,95 @@
+import { Box, Button, Modal } from "@mui/material";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { makeStyles } from "tss-react/mui";
+import FlexCenter from "../FlexCenter/FlexCenter";
+import FlexEvenly from "../FlexEvenly/FlexEvenly";
+
+interface ErrorProps {
+    labelledBy: string;
+    describedBy: string;
+    errorMessage: string;
+    errorIcon: string;
+    errorIconAlt: string;
+    onIgnore(): void;
+    onComplete(): void;
+}
+
+const Error = (props: ErrorProps) => {
+    const { labelledBy, describedBy, errorMessage, errorIcon, errorIconAlt, onIgnore, onComplete } =
+        props;
+    const { t } = useTranslation();
+    const { classes } = useStyles();
+    const [open, setOpen] = React.useState(true);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    return (
+        <>
+            <Box
+                component="div"
+                className={classes.shadowBackground}
+                sx={{ display: open ? "visible" : "none" }}
+            ></Box>
+            <React.Fragment>
+                <Modal
+                    hideBackdrop
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby={labelledBy}
+                    aria-describedby={describedBy}
+                >
+                    <Box className={classes.errorModal}>
+                        <FlexCenter>
+                            <img src={errorIcon} alt={errorIconAlt} />
+                        </FlexCenter>
+                        <FlexCenter className={classes.errorMessageBox}>
+                            <p>{errorMessage}</p>
+                        </FlexCenter>
+                        <FlexEvenly>
+                            <Button variant="outlined" onClick={onIgnore}>
+                                {t("common.navigation.ignore")}
+                            </Button>
+                            <Button variant="contained" onClick={onComplete}>
+                                {t("common.navigation.complete")}
+                            </Button>
+                        </FlexEvenly>
+                    </Box>
+                </Modal>
+            </React.Fragment>
+        </>
+    );
+};
+
+const useStyles = makeStyles({ "name": { Error } })(theme => ({
+    errorModal: {
+        position: "absolute",
+        transform: "translate(-50%, -50%)",
+        top: "50%",
+        left: "50%",
+        backgroundColor: theme.palette.error.light,
+        border: "2px solid",
+        borderColor: theme.palette.error.light,
+        boxShadow: "24",
+        index: "2",
+        padding: "1rem",
+        borderRadius: "10px",
+        minWidth: "300px",
+    },
+    shadowBackground: {
+        position: "absolute",
+        top: "0",
+        left: "0",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "#0000004D",
+        index: "1",
+    },
+    errorMessageBox: {
+        color: theme.palette.error.main,
+    },
+}));
+
+export default Error;
