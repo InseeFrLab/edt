@@ -6,6 +6,9 @@
             "ignore": "Ignorer",
             "complete": "Completer"
         },
+        "stepper": {
+            "step": "Étape"
+        },
         "error": {
             "error-location": {
                 "message": "Aucun lieu n'a été renseigné"
