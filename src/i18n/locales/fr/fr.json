@@ -4,7 +4,17 @@
             "previous": "Précédent",
             "next": "Suivant",
             "close": "Fermer",
-            "cancel": "Annuler"
+            "cancel": "Annuler",
+            "ignore": "Ignorer",
+            "complete": "Completer"
+        },
+        "stepper": {
+            "step": "Étape"
+        },
+        "error": {
+            "error-location": {
+                "message": "Aucun lieu n'a été renseigné"
+            }
         }
     },
     "accessibility": {
@@ -19,7 +29,10 @@
             "who-are-you-alt": "Alt pour who-are-you",
             "yellow-plus-alt": "Alt pour yellow-plus",
             "activity-alt": "Alt pour activity",
-            "route-alt": "Alt pour route"
+            "route-alt": "Alt pour route",
+            "error": {
+                "location-error-alt": "Alt pour position"
+            }
         }
     },
     "page": {
