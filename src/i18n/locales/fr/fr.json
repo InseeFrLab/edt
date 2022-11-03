@@ -3,6 +3,8 @@
         "navigation": {
             "previous": "Précédent",
             "next": "Suivant",
+            "close": "Fermer",
+            "cancel": "Annuler",
             "ignore": "Ignorer",
             "complete": "Completer"
         },
@@ -15,23 +17,43 @@
             }
         }
     },
-    "asset": {
-        "reminder-notes-alt": "Alt pour reminder-note",
-        "who-are-you-alt": "Alt pour who-are-you",
-        "error": {
-            "location-error-alt": "Alt pour position"
+    "accessibility": {
+        "component": {
+            "add-activity-or-route": {
+                "labelled-by": "Ajouter une activité ou un trajet",
+                "described-by": "navigue vers l'ajout d'une activité ou d'un trajet"
+            }
+        },
+        "asset": {
+            "reminder-notes-alt": "Alt pour reminder-note",
+            "who-are-you-alt": "Alt pour who-are-you",
+            "yellow-plus-alt": "Alt pour yellow-plus",
+            "activity-alt": "Alt pour activity",
+            "route-alt": "Alt pour route",
+            "error": {
+                "location-error-alt": "Alt pour position"
+            }
         }
     },
-    "not-found-page": {
-        "not-found": "Oups ! Cette page n'existe pas :("
-    },
-    "home-page": {
-        "welcome": "Bienvenue sur la PWA Carnet EDT",
-        "navigation": {
-            "link-help-label": "Aide"
+    "page": {
+        "home": {
+            "welcome": "Bienvenue sur la PWA Carnet EDT",
+            "navigation": {
+                "link-help-label": "Aide"
+            }
+        },
+        "not-found": {
+            "not-found": "Oups ! Cette page n'existe pas :("
         }
     },
     "component": {
+        "add-activity-or-route": {
+            "title": "Ajouter une nouvelle activité",
+            "activity-label": "Activité",
+            "activity-description": "Tout type d'activité",
+            "route-label": "Trajet",
+            "route-description": "À pied, en voiture, en bus..."
+        },
         "orchestrator": {
             "loading": "Chargement du questionnaire lunatic..."
         }
