@@ -205,34 +205,22 @@
             "label": "\"I - \" || \"Durée test\""
         },
         {
-            "componentType": "Input",
-            "bindingDependencies": ["INPUTTEXT"],
-            "response": { "name": "INPUTTEXT" },
+            "componentType": "WeeklyPlanner",
+            "bindingDependencies": ["CHECKBOXON"],
+            "response": { "name": "CHECKBOXON" },
             "hierarchy": {
-                "sequence": { "id": "l8lpwmxj", "page": "1" }
+                "sequence": { "id": "l8lpwmxj", "page": "1", "label": "\"I - \" || \"Durée test\"" }
             },
+            "options": [
+                { "label": "\"Item 1\"", "value": "Item1" },
+                { "label": "\"Item2\"", "value": "Item2" },
+                { "label": "\"Item 3\"", "value": "Item3" }
+            ],
             "conditionFilter": { "value": "true" },
-            "id": "l8lrc7kt",
+            "id": "l8lr9pkh",
             "page": "1",
-            "label": "\"Qui êtes-vous ?\"",
-            "placeholder": "Nom",
-            "mandatory": false,
-            "maxLength": 100
-        },
-        {
-            "componentType": "Input",
-            "bindingDependencies": ["INPUTTEXT"],
-            "response": { "name": "INPUTTEXT" },
-            "hierarchy": {
-                "sequence": { "id": "l8lpwmxj", "page": "1" }
-            },
-            "conditionFilter": { "value": "true" },
-            "id": "l8lrc7ko",
-            "page": "1",
-            "label": "",
-            "placeholder": "Prénom",
-            "mandatory": false,
-            "maxLength": 100
+            "label": "\"➡ 3. \" || \"Checkbox one\"",
+            "mandatory": false
         },
         {
             "componentType": "CheckboxGroup",
