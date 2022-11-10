@@ -15,6 +15,9 @@
             "error-location": {
                 "message": "Aucun lieu n'a été renseigné"
             }
+        },
+        "user": {
+            "person": "PERSONNE"
         }
     },
     "accessibility": {
@@ -32,6 +35,12 @@
             "route-alt": "Alt pour route",
             "error": {
                 "location-error-alt": "Alt pour position"
+            },
+            "stepper": {
+                "step-location-alt": "Alt pour step-location"
+            },
+            "card": {
+                "person-sun-alt": "Alt pour person-sun"
             }
         }
     },
@@ -56,6 +65,12 @@
         },
         "orchestrator": {
             "loading": "Chargement du questionnaire lunatic..."
+        },
+        "day-card": {
+            "day": "Journée"
+        },
+        "week-card": {
+            "week": "Semainier"
         }
     }
 }
