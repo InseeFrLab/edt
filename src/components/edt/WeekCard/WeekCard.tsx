@@ -2,9 +2,8 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 import Box from "@mui/material/Box";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
+import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
-import { makeStyles } from "tss-react/mui";
-
 interface WeekCardProps {
     labelledBy: string;
     describedBy: string;
@@ -40,7 +39,7 @@ const WeekCard = (props: WeekCardProps) => {
     );
 };
 
-const useStyles = makeStyles({ "name": { WeekCard } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { WeekCard } })(theme => ({
     weekCardBox: {
         width: "90%",
         border: "1px solid transparent",

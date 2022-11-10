@@ -1,7 +1,7 @@
 import DoneIcon from "@mui/icons-material/Done";
 import { Box } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { makeStyles } from "tss-react/mui";
+import { makeStylesEdt } from "lunatic-edt";
 
 interface SuccessProps {
     labelledBy: string;
@@ -31,7 +31,7 @@ const Success = (props: SuccessProps) => {
     );
 };
 
-const useStyles = makeStyles({ "name": { Success } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { Success } })(theme => ({
     successBox: {
         width: "90%",
         display: "flex",

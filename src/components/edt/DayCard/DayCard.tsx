@@ -2,8 +2,8 @@ import Box from "@mui/material/Box";
 import PersonSunIcon from "assets/illustration/card/person-sun.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
+import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
-import { makeStyles } from "tss-react/mui";
 
 interface DayCardProps {
     labelledBy: string;
@@ -41,7 +41,7 @@ const DayCard = (props: DayCardProps) => {
     );
 };
 
-const useStyles = makeStyles({ "name": { DayCard } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { DayCard } })(theme => ({
     dayCardBox: {
         width: "90%",
         border: "1px solid transparent",

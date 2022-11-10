@@ -3,8 +3,8 @@ import activity from "assets/illustration/activity.svg";
 import route from "assets/illustration/route.svg";
 import yellow_plus from "assets/illustration/yellow-plus.svg";
 import { Default, Mobile } from "components/commons/Responsive/Responsive";
+import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
-import { makeStyles } from "tss-react/mui";
 import AddActivityOrRouteDefault from "./AddActivityOrRouteDefault";
 import AddActivityOrRouteMobile from "./AddActivityOrRouteMobile";
 interface AddActivityOrRouteProps {
@@ -72,7 +72,7 @@ const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
     );
 };
 
-const useStyles = makeStyles({ "name": { AddActivityOrRoute } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { AddActivityOrRoute } })(theme => ({
     modal: {
         position: "absolute",
         backgroundColor: theme.palette.background.default,

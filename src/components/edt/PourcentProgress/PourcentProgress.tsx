@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { makeStyles } from "tss-react/mui";
+import { makeStylesEdt } from "lunatic-edt";
 
 interface PourcentProgressProps {
     labelledBy: string;
@@ -17,7 +17,7 @@ const PourcentProgress = (props: PourcentProgressProps) => {
     );
 };
 
-const useStyles = makeStyles({ "name": { PourcentProgress } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { PourcentProgress } })(() => ({
     roundedBox: {
         border: "1px solid transparent",
         borderRadius: "50%",

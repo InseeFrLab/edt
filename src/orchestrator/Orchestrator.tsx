@@ -1,8 +1,6 @@
 import * as lunatic from "@inseefr/lunatic";
-import { Button } from "@mui/material";
 import * as lunaticEDT from "lunatic-edt";
 import React from "react";
-import { lunaticDatabase } from "service/lunatic-database";
 
 const { ...edtComponents } = lunaticEDT;
 
@@ -17,7 +15,7 @@ export type Props = {
     isLast: boolean;
     isFirst: boolean;
 };
-const Pager = (props: Props) => {
+/*const Pager = (props: Props) => {
     const { goPrevious, goNext, isLast, isFirst } = props;
 
     return (
@@ -30,7 +28,7 @@ const Pager = (props: Props) => {
             </Button>
         </div>
     );
-};
+};*/
 
 const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
 export type OrchestratorProps = {
@@ -39,24 +37,18 @@ export type OrchestratorProps = {
 };
 export const OrchestratorForStories = (props: OrchestratorProps) => {
     const { source, data } = props;
-    const {
-        goPreviousPage,
-        goNextPage,
-        isLastPage,
-        isFirstPage,
-        getComponents,
-        getCurrentErrors,
-        getData,
-    } = lunatic.useLunatic(source, data, {
+    console.log(props);
+    //goNextPage, getData
+    const { getComponents, getCurrentErrors } = lunatic.useLunatic(source, data, {
         onChange: onLogChange,
     });
     const components = getComponents();
     const currentErrors = getCurrentErrors();
 
-    const saveAndNext = () => {
+    /*const saveAndNext = () => {
         lunaticDatabase.save("edt", getData());
         goNextPage();
-    };
+    };*/
 
     return (
         <>
@@ -78,12 +70,12 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     );
                 })}
             </div>
-            <Pager
+            {/* <Pager
                 goPrevious={goPreviousPage}
                 goNext={saveAndNext}
                 isLast={isLastPage}
                 isFirst={isFirstPage}
-            />
+            /> */}
         </>
     );
 };
