@@ -1,7 +1,7 @@
 import { Box, Button, Modal } from "@mui/material";
+import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { makeStyles } from "tss-react/mui";
 import FlexCenter from "../FlexCenter/FlexCenter";
 import FlexEvenly from "../FlexEvenly/FlexEvenly";
 
@@ -63,7 +63,7 @@ const Error = (props: ErrorProps) => {
     );
 };
 
-const useStyles = makeStyles({ "name": { Error } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { Error } })(theme => ({
     errorBox: {
         position: "absolute",
         transform: "translate(-50%, -50%)",

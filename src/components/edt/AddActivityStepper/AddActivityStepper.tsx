@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
+import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { makeStyles } from "tss-react/mui";
 
 interface AddActivityStepperProps {
     numberOfSteps: number;
@@ -47,7 +47,7 @@ const AddActivityStepper = (props: AddActivityStepperProps) => {
     );
 };
 
-const useStyles = makeStyles({ "name": { AddActivityStepper } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { AddActivityStepper } })(theme => ({
     stepper: {
         padding: "1rem",
     },
