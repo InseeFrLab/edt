@@ -205,6 +205,24 @@
             "label": "\"I - \" || \"Durée test\""
         },
         {
+            "componentType": "WeeklyPlanner",
+            "bindingDependencies": ["CHECKBOXON"],
+            "response": { "name": "CHECKBOXON" },
+            "hierarchy": {
+                "sequence": { "id": "l8lpwmxj", "page": "1", "label": "\"I - \" || \"Durée test\"" }
+            },
+            "options": [
+                { "label": "\"Item 1\"", "value": "Item1" },
+                { "label": "\"Item2\"", "value": "Item2" },
+                { "label": "\"Item 3\"", "value": "Item3" }
+            ],
+            "conditionFilter": { "value": "true" },
+            "id": "l8lr9pkh",
+            "page": "1",
+            "label": "\"➡ 3. \" || \"Checkbox one\"",
+            "mandatory": false
+        },
+        {
             "componentType": "CheckboxGroup",
             "bindingDependencies": ["CHECKBOXGR1", "CHECKBOXGR2", "CHECKBOXGR3"],
             "hierarchy": {
