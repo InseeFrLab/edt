@@ -8,7 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const enum EdtRoutesNameEnum {
     HELP = "help",
-    ACTIVITY = "activity",
+    ACTIVITY = "activity/*",
     WHO_ARE_YOU = "who-are-you",
     //dev purpose only
     ORCHESTRATOR = "orchestrator",
@@ -21,8 +21,9 @@ const EdtRoutes = () => {
                 <Route path="*" element={<NotFoundPage />} />
                 <Route path="/" element={<HomePage />} />
                 <Route path={EdtRoutesNameEnum.HELP} element={<HelpPage />} />
-                <Route path={EdtRoutesNameEnum.ACTIVITY} element={<ActivityPage />} />
-                <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
+                <Route path={EdtRoutesNameEnum.ACTIVITY} element={<ActivityPage />}>
+                    <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
+                </Route>
                 {/* DEV : dev purpose only*/}
                 <Route path={EdtRoutesNameEnum.ORCHESTRATOR} element={<OrchestratorPage />} />
             </Routes>

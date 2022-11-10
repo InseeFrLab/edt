@@ -1,10 +1,10 @@
-import { useTranslation } from "react-i18next";
+import { Outlet } from "react-router-dom";
 
 const ActivityPage = () => {
-    const { t } = useTranslation();
     return (
         <>
-            <header>Activity -{t("home-page.welcome")}</header>
+            <header>Activité</header>
+            <Outlet />
         </>
     );
 };
