@@ -8547,10 +8547,10 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-lunatic-edt@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/lunatic-edt/-/lunatic-edt-0.3.0.tgz#854676901b95a02fc0c276933571a8f78698c9e2"
-  integrity sha512-1oodeEZH21FgoLY3BgvjIzviQGYVuyjj6p1Suvsi6SNL6KCWuR86jtWqaI4KUASEvSNC/n6UuV4OkFQovCZnNg==
+lunatic-edt@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/lunatic-edt/-/lunatic-edt-0.4.0.tgz#be981a70000928636dac3719fa0e5d04b4bc543c"
+  integrity sha512-QoBleroXBubcjfVISefEDkLBw2+W3Lz4Rkqdohqkb0Ywo+4tRuyE/9wc/OGltcqlrNMW7OfkpnOri3+k870QUg==
   dependencies:
     "@date-io/dayjs" "^2.16.0"
     "@emotion/react" "^11.10.4"
