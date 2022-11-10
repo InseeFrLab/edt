@@ -1,10 +1,15 @@
-import React from "react";
 import * as lunatic from "@inseefr/lunatic";
-import * as lunaticEDT from "lunatic-edt";
-import { lunaticDatabase } from "service/lunatic-database";
 import { Button } from "@mui/material";
+import * as lunaticEDT from "lunatic-edt";
+import React from "react";
+import { lunaticDatabase } from "service/lunatic-database";
 
 const { ...edtComponents } = lunaticEDT;
+
+//notLunaticComponents contains all components that don't come directly from lunatic.
+lunaticEDT.notLunaticComponents.forEach((component: React.MemoExoticComponent<any>, name: string) => {
+    lunatic[name] = component;
+});
 
 export type Props = {
     goPrevious: () => void;
