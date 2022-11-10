@@ -205,6 +205,36 @@
             "label": "\"I - \" || \"Durée test\""
         },
         {
+            "componentType": "Input",
+            "bindingDependencies": ["INPUTTEXT"],
+            "response": { "name": "INPUTTEXT" },
+            "hierarchy": {
+                "sequence": { "id": "l8lpwmxj", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "l8lrc7kt",
+            "page": "1",
+            "label": "\"Qui êtes-vous ?\"",
+            "placeholder": "Nom",
+            "mandatory": false,
+            "maxLength": 100
+        },
+        {
+            "componentType": "Input",
+            "bindingDependencies": ["INPUTTEXT"],
+            "response": { "name": "INPUTTEXT" },
+            "hierarchy": {
+                "sequence": { "id": "l8lpwmxj", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "l8lrc7ko",
+            "page": "1",
+            "label": "",
+            "placeholder": "Prénom",
+            "mandatory": false,
+            "maxLength": 100
+        },
+        {
             "componentType": "CheckboxGroup",
             "bindingDependencies": ["CHECKBOXGR1", "CHECKBOXGR2", "CHECKBOXGR3"],
             "hierarchy": {
@@ -229,7 +259,7 @@
             ],
             "conditionFilter": { "value": "true" },
             "id": "l8lr55fc",
-            "page": "2",
+            "page": "6",
             "label": "\"➡ 2. \" || \"Checkbox group\""
         },
         {
@@ -283,20 +313,6 @@
             "page": "4",
             "label": "\"➡ 3. \" || \"Checkbox one\"",
             "mandatory": false
-        },
-        {
-            "componentType": "Input",
-            "bindingDependencies": ["INPUTTEXT"],
-            "response": { "name": "INPUTTEXT" },
-            "hierarchy": {
-                "sequence": { "id": "l8lpwmxj", "page": "1", "label": "\"I - \" || \"Durée test\"" }
-            },
-            "conditionFilter": { "value": "true" },
-            "id": "l8lrc7kt",
-            "page": "5",
-            "label": "\"➡ 4. \" || \"Input text\"",
-            "mandatory": false,
-            "maxLength": 100
         },
         {
             "componentType": "Datepicker",

@@ -1,11 +1,9 @@
 import { OrchestratorForStories } from "orchestrator/Orchestrator";
 import localSource from "questionnaire-edt.json";
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { LunaticData, lunaticDatabase } from "service/lunatic-database";
 const OrchestratorPage = () => {
     const { t } = useTranslation();
-    const [data, setData] = useState(null as LunaticData | null);
+    /*const [data, setData] = useState(null as LunaticData | null);
     const [source, setSource] = useState(null as object | null);
 
     useEffect(() => {
@@ -21,11 +19,11 @@ const OrchestratorPage = () => {
         lunaticDatabase.get("edt").then(d => {
             setData(d ? d : {});
         });
-    }, []);
+    }, []);*/
 
-    return source && data ? (
+    return localSource ? (
         <>
-            <OrchestratorForStories source={localSource} data={data}></OrchestratorForStories>
+            <OrchestratorForStories source={localSource} data={{}}></OrchestratorForStories>
         </>
     ) : (
         <div>{t("component.orchestrator.loading")}</div>
