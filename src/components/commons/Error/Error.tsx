@@ -41,7 +41,7 @@ const Error = (props: ErrorProps) => {
                     aria-labelledby={labelledBy}
                     aria-describedby={describedBy}
                 >
-                    <Box className={classes.errorModal}>
+                    <Box className={classes.errorBox}>
                         <FlexCenter>
                             <img src={errorIcon} alt={errorIconAlt} />
                         </FlexCenter>
@@ -64,19 +64,22 @@ const Error = (props: ErrorProps) => {
 };
 
 const useStyles = makeStyles({ "name": { Error } })(theme => ({
-    errorModal: {
+    errorBox: {
         position: "absolute",
         transform: "translate(-50%, -50%)",
         top: "50%",
         left: "50%",
         backgroundColor: theme.palette.error.light,
-        border: "2px solid",
+        border: "2px solid transparent",
         borderColor: theme.palette.error.light,
         boxShadow: "24",
         index: "2",
         padding: "1rem",
         borderRadius: "10px",
         minWidth: "300px",
+        "&:focus": {
+            outline: "none",
+        },
     },
     shadowBackground: {
         position: "absolute",
