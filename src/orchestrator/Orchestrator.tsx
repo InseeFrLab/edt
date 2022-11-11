@@ -1,6 +1,8 @@
 import * as lunatic from "@inseefr/lunatic";
+import { Box, Button } from "@mui/material";
 import * as lunaticEDT from "lunatic-edt";
 import React from "react";
+import { lunaticDatabase } from "service/lunatic-database";
 
 const { ...edtComponents } = lunaticEDT;
 
@@ -15,20 +17,20 @@ export type Props = {
     isLast: boolean;
     isFirst: boolean;
 };
-/*const Pager = (props: Props) => {
+const Pager = (props: Props) => {
     const { goPrevious, goNext, isLast, isFirst } = props;
 
     return (
-        <div className="pagination">
+        <Box sx={{ visibility: "hidden", height: "1px" }}>
             <Button onClick={goPrevious} disabled={isFirst}>
                 Previous
             </Button>
             <Button onClick={goNext} disabled={isLast}>
                 Next
             </Button>
-        </div>
+        </Box>
     );
-};*/
+};
 
 const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
 export type OrchestratorProps = {
@@ -38,17 +40,23 @@ export type OrchestratorProps = {
 export const OrchestratorForStories = (props: OrchestratorProps) => {
     const { source, data } = props;
     console.log(props);
-    //goNextPage, getData
-    const { getComponents, getCurrentErrors } = lunatic.useLunatic(source, data, {
+    const {
+        goPreviousPage,
+        goNextPage,
+        isLastPage,
+        isFirstPage,
+        getComponents,
+        getCurrentErrors,
+        getData,
+    } = lunatic.useLunatic(source, data, {
         onChange: onLogChange,
     });
     const components = getComponents();
     const currentErrors = getCurrentErrors();
 
-    /*const saveAndNext = () => {
+    const save = () => {
         lunaticDatabase.save("edt", getData());
-        goNextPage();
-    };*/
+    };
 
     return (
         <>
@@ -70,12 +78,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     );
                 })}
             </div>
-            {/* <Pager
-                goPrevious={goPreviousPage}
-                goNext={saveAndNext}
-                isLast={isLastPage}
-                isFirst={isFirstPage}
-            /> */}
+            <Pager goPrevious={goPreviousPage} goNext={save} isLast={isLastPage} isFirst={isFirstPage} />
         </>
     );
 };

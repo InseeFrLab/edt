@@ -29,9 +29,21 @@ const HomePage = () => {
                 <FlexCenter className={classes.spacing}>
                     <img src={reminder_note} alt={t("accessibility.asset.reminder-notes-alt")} />
                 </FlexCenter>
-                <DayCard labelledBy={""} describedBy={""} onClick={() => console.log("dayCard")} />
-                <DayCard labelledBy={""} describedBy={""} onClick={() => console.log("dayCard")} />
-                <DayCard labelledBy={""} describedBy={""} onClick={() => console.log("dayCard")} />
+                <DayCard
+                    labelledBy={""}
+                    describedBy={""}
+                    onClick={() => navigate(getNavigatePath(EdtRoutesNameEnum.ACTIVITY))}
+                />
+                <DayCard
+                    labelledBy={""}
+                    describedBy={""}
+                    onClick={() => navigate(getNavigatePath(EdtRoutesNameEnum.ACTIVITY))}
+                />
+                <DayCard
+                    labelledBy={""}
+                    describedBy={""}
+                    onClick={() => navigate(getNavigatePath(EdtRoutesNameEnum.ACTIVITY))}
+                />
                 <WeekCard labelledBy={""} describedBy={""} onClick={() => console.log("weekCard")} />
                 <WeekCard labelledBy={""} describedBy={""} onClick={() => console.log("weekCard")} />
             </Box>
