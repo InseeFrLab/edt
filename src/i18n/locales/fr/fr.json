@@ -6,7 +6,8 @@
             "close": "Fermer",
             "cancel": "Annuler",
             "ignore": "Ignorer",
-            "complete": "Completer"
+            "complete": "Completer",
+            "validate": "Valider"
         },
         "stepper": {
             "step": "Étape"
@@ -30,6 +31,7 @@
         "asset": {
             "reminder-notes-alt": "Alt pour reminder-note",
             "who-are-you-alt": "Alt pour who-are-you",
+            "day-of-survey-alt": "Alt pour day-of-survey",
             "yellow-plus-alt": "Alt pour yellow-plus",
             "activity-alt": "Alt pour activity",
             "route-alt": "Alt pour route",
