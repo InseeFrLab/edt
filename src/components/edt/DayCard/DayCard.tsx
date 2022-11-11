@@ -44,6 +44,7 @@ const DayCard = (props: DayCardProps) => {
 const useStyles = makeStylesEdt({ "name": { DayCard } })(theme => ({
     dayCardBox: {
         width: "90%",
+        maxWidth: "800px",
         border: "1px solid transparent",
         borderRadius: "10px",
         padding: "1rem",

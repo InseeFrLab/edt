@@ -42,6 +42,7 @@ const WeekCard = (props: WeekCardProps) => {
 const useStyles = makeStylesEdt({ "name": { WeekCard } })(theme => ({
     weekCardBox: {
         width: "90%",
+        maxWidth: "800px",
         border: "1px solid transparent",
         borderRadius: "10px",
         padding: "1rem",
