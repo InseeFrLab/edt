@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { getCurrentNavigatePath } from "service/navigation-service";
 import { getCurrentSurveyParentPage } from "service/orchestrator-service";
-import { saveData } from "service/survey-activity-service";
+import { saveData } from "service/survey-service";
 
 const WhoAreYouPage = () => {
     const { t } = useTranslation();

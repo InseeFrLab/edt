@@ -15,6 +15,12 @@ lunaticEDT.notLunaticComponents.forEach((component: React.MemoExoticComponent<an
 
 const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
 
+export const callbackHolder: { getData(): LunaticData } = {
+    getData: () => {
+        return {};
+    },
+};
+
 export type OrchestratorProps = {
     source: LunaticModel | undefined;
     data?: object;
@@ -60,10 +66,10 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
     styleOverride: {
         width: "90%",
-        maxWidth: "300px",
+        maxWidth: "350px",
         "& .sequence-lunatic": {
             display: "none",
         },

@@ -9,8 +9,8 @@
                 "FORCED": null,
                 "PREVIOUS": null
             },
-            "name": "NOM",
-            "componentRef": "inputtext_nom"
+            "name": "LASTNAME",
+            "componentRef": "inputtext_lastName"
         },
         {
             "variableType": "COLLECTED",
@@ -21,8 +21,8 @@
                 "FORCED": null,
                 "PREVIOUS": null
             },
-            "name": "PRENOM",
-            "componentRef": "inputtext_prenom"
+            "name": "FIRSTNAME",
+            "componentRef": "inputtext_firstName"
         },
         {
             "variableType": "COLLECTED",
@@ -33,8 +33,8 @@
                 "FORCED": null,
                 "PREVIOUS": null
             },
-            "name": "DATESURVEY",
-            "componentRef": "date_survey"
+            "name": "SURVEYDATE",
+            "componentRef": "datepicker_surveyDate"
         },
         {
             "variableType": "CALCULATED",
@@ -53,36 +53,22 @@
         {
             "componentType": "Sequence",
             "hierarchy": {
-                "sequence": {
-                    "id": "sequence_1",
-                    "page": "1"
-                }
+                "sequence": { "id": "sequence_1", "page": "1" }
             },
-            "conditionFilter": {
-                "value": "true"
-            },
+            "conditionFilter": { "value": "true" },
             "id": "sequence_1",
             "page": "1",
             "label": ""
         },
         {
             "componentType": "Input",
-            "bindingDependencies": [
-                "NOM"
-            ],
-            "response": {
-                "name": "NOM"
-            },
+            "bindingDependencies": ["LASTNAME"],
+            "response": { "name": "LASTNAME" },
             "hierarchy": {
-                "sequence": {
-                    "id": "sequence_1",
-                    "page": "1"
-                }
+                "sequence": { "id": "sequence_1", "page": "1" }
             },
-            "conditionFilter": {
-                "value": "true"
-            },
-            "id": "inputtext_nom",
+            "conditionFilter": { "value": "true" },
+            "id": "inputtext_lastName",
             "page": "1",
             "label": "\"Qui êtes-vous ?\"",
             "placeholder": "Nom",
@@ -91,22 +77,13 @@
         },
         {
             "componentType": "Input",
-            "bindingDependencies": [
-                "PRENOM"
-            ],
-            "response": {
-                "name": "PRENOM"
-            },
+            "bindingDependencies": ["FIRSTNAME"],
+            "response": { "name": "FIRSTNAME" },
             "hierarchy": {
-                "sequence": {
-                    "id": "sequence_1",
-                    "page": "1"
-                }
+                "sequence": { "id": "sequence_1", "page": "1" }
             },
-            "conditionFilter": {
-                "value": "true"
-            },
-            "id": "inputtext_prenom",
+            "conditionFilter": { "value": "true" },
+            "id": "inputtext_firstName",
             "page": "1",
             "label": "",
             "placeholder": "Prénom",
@@ -115,34 +92,23 @@
         },
         {
             "componentType": "Datepicker",
-            "bindingDependencies": [
-                "DATESURVEY"
-            ],
+            "bindingDependencies": ["SURVEYDATE"],
             "min": "1900-01-01",
             "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
             "dateFormat": "YYYY-MM-DD",
-            "response": {
-                "name": "DATESURVEY"
-            },
+            "response": { "name": "SURVEYDATE" },
             "hierarchy": {
-                "sequence": {
-                    "id": "sequence_1",
-                    "page": "2"
-                }
+                "sequence": { "id": "sequence_1", "page": "2" }
             },
-            "conditionFilter": {
-                "value": "true"
-            },
-            "id": "date_survey",
+            "conditionFilter": { "value": "true" },
+            "id": "datepicker_surveyDate",
             "page": "2",
             "label": "\"Quelle est la date du jour sélectionnée pour l'enquête ?\"",
             "mandatory": false
         },
         {
             "componentType": "WeeklyPlanner",
-            "bindingDependencies": [
-                "WEEKLYPLANNER"
-            ],
+            "bindingDependencies": ["WEEKLYPLANNER"],
             "response": {
                 "name": "WEEKLYPLANNER"
             },

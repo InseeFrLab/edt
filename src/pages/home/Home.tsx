@@ -11,8 +11,13 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutes";
 import { getNavigatePath, getParameterizedNavigatePath } from "service/navigation-service";
-import { activitySurveysIds, workingTimeSurveysIds, initializeDatas } from "service/survey-activity-service";
-import { v4 as uuidv4 } from 'uuid';
+import {
+    activitySurveysIds,
+    getFirstName,
+    getSurveyDate,
+    initializeDatas,
+    workingTimeSurveysIds,
+} from "service/survey-service";
 
 const HomePage = () => {
     const { t } = useTranslation();
@@ -41,7 +46,7 @@ const HomePage = () => {
                     srcIcon={reminder_note}
                     altIcon={t("accessibility.asset.reminder-notes-alt")}
                 />
-                {activitySurveysIds.map(idSurvey => (
+                {activitySurveysIds.map((idSurvey, index) => (
                     <DayCard
                         key={idSurvey + "-dayCard"}
                         labelledBy={""}
@@ -49,17 +54,26 @@ const HomePage = () => {
                         onClick={() =>
                             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey))
                         }
+                        firstName={getFirstName(idSurvey) || t("common.user.person") + " " + (index + 1)}
+                        surveyDate={
+                            getSurveyDate(idSurvey) || t("component.day-card.day") + " " + (index + 1)
+                        }
                     />
                 ))}
 
-                {workingTimeSurveysIds.map(idSurvey => (
-                    < WeekCard
+                {workingTimeSurveysIds.map((idSurvey, index) => (
+                    <WeekCard
                         key={idSurvey + "-weekCard"}
-                        labelledBy={""} 
-                        describedBy={""} 
+                        labelledBy={""}
+                        describedBy={""}
                         onClick={() =>
                             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey))
-                        } />
+                        }
+                        firstName={getFirstName(idSurvey) || t("common.user.person") + " " + (index + 1)}
+                        surveyDate={
+                            getSurveyDate(idSurvey) || t("component.day-card.day") + " " + (index + 1)
+                        }
+                    />
                 ))}
             </Box>
         </>
