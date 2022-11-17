@@ -103,7 +103,7 @@
             "conditionFilter": { "value": "true" },
             "id": "date_survey",
             "page": "2",
-            "label": "\"Quelle est la date du jour sélectionné pour l'enquête ?\"",
+            "label": "\"Quelle est la date du jour sélectionnée pour l'enquête ?\"",
             "mandatory": false
         }
     ],
