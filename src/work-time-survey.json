@@ -37,6 +37,18 @@
             "componentRef": "datepicker_surveyDate"
         },
         {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "WEEKLYPLANNER",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
             "variableType": "CALCULATED",
             "expression": "true",
             "name": "FILTER_RESULT_INPUTTEXT",
@@ -115,40 +127,15 @@
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
-                    "page": "1"
+                    "page": "3"
                 }
             },
             "conditionFilter": {
                 "value": "true"
             },
-            "id": "weekly_planner",
+            "id": "weeklyplanner_value",
             "page": "3",
-            "mandatory": false,
-            "startDate": "2022-11-13",
-            "data": [
-                {
-                    "date": "2022-11-14",
-                    "day": "lundi",
-                    "detail": [
-                        {
-                            "start": "9h45",
-                            "end": "10h45",
-                            "duration": 60
-                        }
-                    ]
-                },
-                {
-                    "date": "2022-11-15",
-                    "day": "mardi",
-                    "detail": [
-                        {
-                            "start": "12h0",
-                            "end": "13h15",
-                            "duration": 75
-                        }
-                    ]
-                }
-            ]
+            "mandatory": false
         }
     ],
     "pagination": "question",
