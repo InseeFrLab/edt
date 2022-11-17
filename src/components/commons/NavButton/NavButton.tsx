@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
-import { makeStyles } from "tss-react/mui";
+import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { makeStylesEdt } from "lunatic-edt";
 
 interface NavButtonProps {
     onClick(): void;
@@ -11,19 +12,25 @@ const NavButton = (props: NavButtonProps) => {
     const { classes } = useStyles();
 
     return (
-        <Button variant="contained" onClick={onClick} className={classes.navButton}>
-            {text}
-        </Button>
+        <FlexCenter className={classes.navButtonBox}>
+            <Button variant="contained" onClick={onClick} className={classes.navButton}>
+                {text}
+            </Button>
+        </FlexCenter>
     );
 };
 
-const useStyles = makeStyles({ "name": { NavButton } })(() => ({
+const useStyles = makeStylesEdt({ "name": { NavButton } })(theme => ({
+    navButtonBox: {
+        width: "100%",
+        position: "fixed",
+        bottom: "0",
+        backgroundColor: theme.variables.white,
+    },
     navButton: {
         width: "80%",
         maxWidth: "18rem",
-        marginTop: "1rem",
-        position: "fixed",
-        bottom: "1rem",
+        margin: "1rem 0",
     },
 }));
 

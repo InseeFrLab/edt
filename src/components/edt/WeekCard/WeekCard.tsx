@@ -8,10 +8,12 @@ interface WeekCardProps {
     labelledBy: string;
     describedBy: string;
     onClick(): void;
+    firstName: string;
+    surveyDate: string;
 }
 
 const WeekCard = (props: WeekCardProps) => {
-    const { labelledBy, describedBy, onClick } = props;
+    const { labelledBy, describedBy, onClick, firstName, surveyDate } = props;
     const { classes } = useStyles();
     const { t } = useTranslation();
     return (
@@ -27,8 +29,8 @@ const WeekCard = (props: WeekCardProps) => {
                         <CalendarMonthOutlinedIcon />
                     </Box>
                     <Box>
-                        <Box>{t("component.week-card.week")}</Box>
-                        <Box>{t("common.user.person")}</Box>
+                        <Box>{surveyDate}</Box>
+                        <Box>{firstName}</Box>
                     </Box>
                 </Box>
                 <Box>

@@ -16,7 +16,7 @@ const PageIcon = (props: PageIconProps) => {
     );
 };
 
-const useStyles = makeStyles({ "name": { PageIcon } })(theme => ({
+const useStyles = makeStyles({ "name": { PageIcon } })(() => ({
     spacing: {
         margin: "2rem 0",
     },
