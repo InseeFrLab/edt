@@ -51,6 +51,10 @@
             "welcome": "Bienvenue sur la PWA Carnet EDT",
             "navigation": {
                 "link-help-label": "Aide"
+            },
+            "loading": {
+                "message": "Nous mettons à jour vos données.",
+                "thanking": "Merci pour votre patience."
             }
         },
         "not-found": {
@@ -64,9 +68,6 @@
             "activity-description": "Tout type d'activité",
             "route-label": "Trajet",
             "route-description": "À pied, en voiture, en bus..."
-        },
-        "orchestrator": {
-            "loading": "Chargement du questionnaire lunatic..."
         },
         "day-card": {
             "day": "Journée"
