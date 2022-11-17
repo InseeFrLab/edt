@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { getCurrentNavigatePath } from "service/navigation-service";
 import { getCurrentPageSource, getCurrentSurveyParentPage } from "service/orchestrator-service";
-import { getData } from "service/survey-activity-service";
+import { getData } from "service/survey-service";
 
 const WorkTimePage = () => {
     const { idSurvey } = useParams();

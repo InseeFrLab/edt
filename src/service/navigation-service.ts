@@ -1,5 +1,5 @@
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutes";
-import { getCurrentPage, getData } from "service/survey-activity-service";
+import { getCurrentPage, getData } from "service/survey-service";
 
 const getNavigatePath = (page: EdtRoutesNameEnum): string => {
     return "/" + page;

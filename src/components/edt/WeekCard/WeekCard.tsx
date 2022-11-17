@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
 import { makeStylesEdt } from "lunatic-edt";
-import { useTranslation } from "react-i18next";
 interface WeekCardProps {
     labelledBy: string;
     describedBy: string;
@@ -15,7 +14,6 @@ interface WeekCardProps {
 const WeekCard = (props: WeekCardProps) => {
     const { labelledBy, describedBy, onClick, firstName, surveyDate } = props;
     const { classes } = useStyles();
-    const { t } = useTranslation();
     return (
         <FlexCenter>
             <Box
