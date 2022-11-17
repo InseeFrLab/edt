@@ -1,9 +1,9 @@
 import { Box, Button, Modal } from "@mui/material";
+import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import FlexEvenly from "components/commons/FlexEvenly/FlexEvenly";
 import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import FlexCenter from "../FlexCenter/FlexCenter";
-import FlexEvenly from "../FlexEvenly/FlexEvenly";
 
 interface ErrorProps {
     labelledBy: string;
