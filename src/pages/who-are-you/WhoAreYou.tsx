@@ -2,8 +2,8 @@ import who_are_you from "assets/illustration/who-are-you.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import NavButton from "components/commons/NavButton/NavButton";
 import PageIcon from "components/commons/PageIcon/PageIcon";
-import { LunaticData, OrchestratorContext } from "interface/lunatic/Lunatic";
-import { OrchestratorForStories } from "orchestrator/Orchestrator";
+import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { getCurrentNavigatePath } from "service/navigation-service";
@@ -19,12 +19,6 @@ const WhoAreYouPage = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
             navigate(getCurrentNavigatePath(context.idSurvey, getCurrentSurveyParentPage()));
         });
-    };
-
-    const callbackHolder: { getData(): LunaticData } = {
-        getData: () => {
-            return {};
-        },
     };
 
     return (

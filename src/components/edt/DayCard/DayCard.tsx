@@ -9,10 +9,12 @@ interface DayCardProps {
     labelledBy: string;
     describedBy: string;
     onClick(): void;
+    firstName: string;
+    surveyDate: string;
 }
 
 const DayCard = (props: DayCardProps) => {
-    const { labelledBy, describedBy, onClick } = props;
+    const { labelledBy, describedBy, onClick, firstName, surveyDate } = props;
     const { classes } = useStyles();
     const { t } = useTranslation();
 
@@ -29,8 +31,8 @@ const DayCard = (props: DayCardProps) => {
                         <img src={PersonSunIcon} alt={t("accessibility.asset.card.person-sun-alt")} />
                     </Box>
                     <Box>
-                        <Box>{t("component.day-card.day")}</Box>
-                        <Box>{t("common.user.person")}</Box>
+                        <Box>{surveyDate}</Box>
+                        <Box>{firstName}</Box>
                     </Box>
                 </Box>
                 <Box>
