@@ -5,24 +5,41 @@ import HelpPage from "pages/help/Help";
 import HomePage from "pages/home/Home";
 import NotFoundPage from "pages/not-found/NotFound";
 import WhoAreYouPage from "pages/who-are-you/WhoAreYou";
+import WorkTimePage from "pages/work-time/WorkTime";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const enum EdtRoutesNameEnum {
     HELP = "help",
     ACTIVITY = "activity/:idSurvey",
-    ACTIVITY_WHO_ARE_YOU = "who-are-you",
-    ACTIVITY_DAY_OF_SURVEY = "day-of-survey",
+    WHO_ARE_YOU = "who-are-you",
+    DAY_OF_SURVEY = "day-of-survey",
+    WORK_TIME = "work-time/:idSurvey",
+    WEEKLY_PLANNER = "weekly-planner",
 }
 
 const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
     {
-        page: EdtRoutesNameEnum.ACTIVITY_WHO_ARE_YOU,
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.WHO_ARE_YOU,
         surveySource: "activity-survey.json",
         surveyPage: "1",
     },
     {
-        page: EdtRoutesNameEnum.ACTIVITY_DAY_OF_SURVEY,
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.DAY_OF_SURVEY,
         surveySource: "activity-survey.json",
+        surveyPage: "2",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.WORK_TIME,
+        page: EdtRoutesNameEnum.WHO_ARE_YOU,
+        surveySource: "work-time-survey.json",
+        surveyPage: "1",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.WORK_TIME,
+        page: EdtRoutesNameEnum.DAY_OF_SURVEY,
+        surveySource: "work-time-survey.json",
         surveyPage: "2",
     },
 ];
@@ -35,11 +52,13 @@ const EdtRoutes = (): JSX.Element => {
                 <Route path="/" element={<HomePage />} />
                 <Route path={EdtRoutesNameEnum.HELP} element={<HelpPage />} />
                 <Route path={EdtRoutesNameEnum.ACTIVITY} element={<ActivityPage />}>
-                    <Route path={EdtRoutesNameEnum.ACTIVITY_WHO_ARE_YOU} element={<WhoAreYouPage />} />
-                    <Route
-                        path={EdtRoutesNameEnum.ACTIVITY_DAY_OF_SURVEY}
-                        element={<DayOfSurveyPage />}
-                    />
+                    <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
+                    <Route path={EdtRoutesNameEnum.DAY_OF_SURVEY} element={<DayOfSurveyPage />} />
+                </Route>
+                <Route path={EdtRoutesNameEnum.WORK_TIME} element={<WorkTimePage />}>
+                    <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
+                    <Route path={EdtRoutesNameEnum.DAY_OF_SURVEY} element={<DayOfSurveyPage />} />
+                    <Route path={EdtRoutesNameEnum.DAY_OF_SURVEY} element={<DayOfSurveyPage />} />
                 </Route>
                 {/* DEV : dev purpose only*/}
             </Routes>
