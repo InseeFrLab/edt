@@ -30,7 +30,7 @@ export interface LunaticModelVariable {
 }
 
 export interface OrchestratorContext {
-    source: object;
+    source: LunaticModel | undefined;
     data: LunaticData;
     idSurvey: string;
 }

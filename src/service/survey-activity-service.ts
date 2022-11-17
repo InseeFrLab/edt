@@ -4,8 +4,8 @@ import { getCurrentPageSource } from "service/orchestrator-service";
 
 const datas = new Map<string, LunaticData>();
 const activitySurveysIds = ["activitySurvey1", "activitySurvey2", "activitySurvey3"];
-const workingSurveysIds = ["workingSurvey1", "workingSurvey2"];
-const surveysIds = [...activitySurveysIds, ...workingSurveysIds];
+const workingTimeSurveysIds = ["workingSurvey1", "workingSurvey2"];
+const surveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
 
 /*
  *
@@ -37,7 +37,7 @@ const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => 
 //Return the last lunatic model page that has been fill with data
 const getCurrentPage = (data: LunaticData | undefined): number => {
     //TODO : redirect if we got error page and data is undefined
-    const source = getCurrentPageSource(data?.id || "");
+    const source = getCurrentPageSource();
     if (!data || !source?.components) {
         return 0;
     }
@@ -72,5 +72,5 @@ export {
     getCurrentPage,
     getValue,
     activitySurveysIds,
-    workingSurveysIds,
+    workingTimeSurveysIds,
 };
