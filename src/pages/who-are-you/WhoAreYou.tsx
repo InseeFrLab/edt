@@ -6,7 +6,8 @@ import { LunaticData, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { getCurrentActivityNavigatePath } from "service/navigation-service";
+import { getCurrentNavigatePath } from "service/navigation-service";
+import { getCurrentSurveyParentPage } from "service/orchestrator-service";
 import { saveData } from "service/survey-activity-service";
 
 const WhoAreYouPage = () => {
@@ -16,7 +17,7 @@ const WhoAreYouPage = () => {
 
     const validate = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getCurrentActivityNavigatePath(context.idSurvey));
+            navigate(getCurrentNavigatePath(context.idSurvey, getCurrentSurveyParentPage()));
         });
     };
 

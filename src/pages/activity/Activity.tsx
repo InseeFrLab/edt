@@ -1,19 +1,20 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { getCurrentActivityNavigatePath } from "service/navigation-service";
-import { getCurrentPageSource } from "service/orchestrator-service";
+import { EdtRoutesNameEnum } from "routes/EdtRoutes";
+import { getCurrentNavigatePath } from "service/navigation-service";
+import { getCurrentPageSource, getCurrentSurveyParentPage } from "service/orchestrator-service";
 import { getData } from "service/survey-activity-service";
 
 const ActivityPage = () => {
     const { idSurvey } = useParams();
     //handle error empty idSurvey and remove ?? "" and || ""
     const data = getData(idSurvey || "");
-    const source = getCurrentPageSource(idSurvey || "") as object | null;
+    const source = getCurrentPageSource();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (idSurvey && source) {
-            navigate(getCurrentActivityNavigatePath(idSurvey));
+            navigate(getCurrentNavigatePath(idSurvey, getCurrentSurveyParentPage()));
         } else {
             //TODO : redirect to error page ??
         }

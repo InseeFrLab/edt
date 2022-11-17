@@ -5,15 +5,20 @@ import PageIcon from "components/commons/PageIcon/PageIcon";
 import { LunaticData, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useTranslation } from "react-i18next";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { getCurrentNavigatePath } from "service/navigation-service";
+import { getCurrentSurveyParentPage } from "service/orchestrator-service";
+import { saveData } from "service/survey-activity-service";
 
 const DayOfSurveyPage = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const context = useOutletContext() as OrchestratorContext;
 
     const validate = () => {
-        //save lunatic
-        //nav next
+        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            navigate(getCurrentNavigatePath(context.idSurvey, getCurrentSurveyParentPage()));
+        });
     };
 
     const callbackHolder: { getData(): LunaticData } = {

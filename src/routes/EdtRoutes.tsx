@@ -42,6 +42,12 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         surveySource: "work-time-survey.json",
         surveyPage: "2",
     },
+    {
+        parentPage: EdtRoutesNameEnum.WORK_TIME,
+        page: EdtRoutesNameEnum.WEEKLY_PLANNER,
+        surveySource: "work-time-survey.json",
+        surveyPage: "3",
+    },
 ];
 
 const EdtRoutes = (): JSX.Element => {
@@ -58,7 +64,7 @@ const EdtRoutes = (): JSX.Element => {
                 <Route path={EdtRoutesNameEnum.WORK_TIME} element={<WorkTimePage />}>
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
                     <Route path={EdtRoutesNameEnum.DAY_OF_SURVEY} element={<DayOfSurveyPage />} />
-                    <Route path={EdtRoutesNameEnum.DAY_OF_SURVEY} element={<DayOfSurveyPage />} />
+                    <Route path={EdtRoutesNameEnum.WEEKLY_PLANNER} element={<DayOfSurveyPage />} />
                 </Route>
                 {/* DEV : dev purpose only*/}
             </Routes>

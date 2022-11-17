@@ -53,21 +53,35 @@
         {
             "componentType": "Sequence",
             "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "1" }
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
             },
-            "conditionFilter": { "value": "true" },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "sequence_1",
             "page": "1",
             "label": ""
         },
         {
             "componentType": "Input",
-            "bindingDependencies": ["NOM"],
-            "response": { "name": "NOM" },
-            "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "1" }
+            "bindingDependencies": [
+                "NOM"
+            ],
+            "response": {
+                "name": "NOM"
             },
-            "conditionFilter": { "value": "true" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "inputtext_nom",
             "page": "1",
             "label": "\"Qui êtes-vous ?\"",
@@ -77,12 +91,21 @@
         },
         {
             "componentType": "Input",
-            "bindingDependencies": ["PRENOM"],
-            "response": { "name": "PRENOM" },
-            "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "1" }
+            "bindingDependencies": [
+                "PRENOM"
+            ],
+            "response": {
+                "name": "PRENOM"
             },
-            "conditionFilter": { "value": "true" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "inputtext_prenom",
             "page": "1",
             "label": "",
@@ -92,19 +115,74 @@
         },
         {
             "componentType": "Datepicker",
-            "bindingDependencies": ["DATESURVEY"],
+            "bindingDependencies": [
+                "DATESURVEY"
+            ],
             "min": "1900-01-01",
             "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
             "dateFormat": "YYYY-MM-DD",
-            "response": { "name": "DATESURVEY" },
-            "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "2" }
+            "response": {
+                "name": "DATESURVEY"
             },
-            "conditionFilter": { "value": "true" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "2"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "date_survey",
             "page": "2",
             "label": "\"Quelle est la date du jour sélectionnée pour l'enquête ?\"",
             "mandatory": false
+        },
+        {
+            "componentType": "WeeklyPlanner",
+            "bindingDependencies": [
+                "WEEKLYPLANNER"
+            ],
+            "response": {
+                "name": "WEEKLYPLANNER"
+            },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
+            "id": "weekly_planner",
+            "page": "3",
+            "mandatory": false,
+            "startDate": "2022-11-13",
+            "data": [
+                {
+                    "date": "2022-11-14",
+                    "day": "lundi",
+                    "detail": [
+                        {
+                            "start": "9h45",
+                            "end": "10h45",
+                            "duration": 60
+                        }
+                    ]
+                },
+                {
+                    "date": "2022-11-15",
+                    "day": "mardi",
+                    "detail": [
+                        {
+                            "start": "12h0",
+                            "end": "13h15",
+                            "duration": 75
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "pagination": "question",

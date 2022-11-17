@@ -1,7 +1,7 @@
 import * as lunatic from "@inseefr/lunatic";
 import { CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { LunaticData } from "interface/lunatic/Lunatic";
+import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import * as lunaticEDT from "lunatic-edt";
 import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
@@ -16,7 +16,7 @@ lunaticEDT.notLunaticComponents.forEach((component: React.MemoExoticComponent<an
 const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
 
 export type OrchestratorProps = {
-    source: object;
+    source: LunaticModel | undefined;
     data?: object;
     callbackHolder: { getData(): LunaticData };
     page: string;

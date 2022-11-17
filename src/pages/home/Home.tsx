@@ -11,7 +11,8 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutes";
 import { getNavigatePath, getParameterizedNavigatePath } from "service/navigation-service";
-import { activitySurveysIds, initializeDatas } from "service/survey-activity-service";
+import { activitySurveysIds, workingTimeSurveysIds, initializeDatas } from "service/survey-activity-service";
+import { v4 as uuidv4 } from 'uuid';
 
 const HomePage = () => {
     const { t } = useTranslation();
@@ -51,8 +52,15 @@ const HomePage = () => {
                     />
                 ))}
 
-                <WeekCard labelledBy={""} describedBy={""} onClick={() => console.log("weekCard")} />
-                <WeekCard labelledBy={""} describedBy={""} onClick={() => console.log("weekCard")} />
+                {workingTimeSurveysIds.map(idSurvey => (
+                    < WeekCard
+                        key={idSurvey + "-weekCard"}
+                        labelledBy={""} 
+                        describedBy={""} 
+                        onClick={() =>
+                            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey))
+                        } />
+                ))}
             </Box>
         </>
     ) : (
