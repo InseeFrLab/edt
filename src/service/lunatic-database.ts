@@ -1,4 +1,5 @@
 import Dexie from "dexie";
+import { LunaticData } from "interface/lunatic/Lunatic";
 
 export interface LunaticDatabase {
     save(id: string, data: LunaticData): Promise<string>;
@@ -50,21 +51,6 @@ class PromiseProxyLunaticDatabaseImpl implements LunaticDatabase {
     public get(id: string): Promise<LunaticData | undefined> {
         return lunaticDatabasePromise.then(database => database.get(id));
     }
-}
-
-export interface Collected {
-    COLLECTED: string | boolean | null;
-    EDITED: any;
-    FORCED: any;
-    INPUTED: any;
-    PREVIOUS: any;
-}
-
-export interface LunaticData {
-    id?: string;
-    EXTERNAL?: any;
-    CALCULATED?: any;
-    COLLECTED?: Map<string, Collected>;
 }
 
 // this is somewhat complexe as browser sometime cannot work with dexie in private mode

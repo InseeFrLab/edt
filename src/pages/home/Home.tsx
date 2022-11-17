@@ -1,20 +1,30 @@
 import HelpIcon from "@mui/icons-material/Help";
 import { Box, Button } from "@mui/material";
 import reminder_note from "assets/illustration/reminder-note.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FlexEnd from "components/commons/FlexEnd/FlexEnd";
+import LoadingFull from "components/commons/LoadingFull/LoadingFull";
+import PageIcon from "components/commons/PageIcon/PageIcon";
 import DayCard from "components/edt/DayCard/DayCard";
 import WeekCard from "components/edt/WeekCard/WeekCard";
-import { makeStylesEdt } from "lunatic-edt";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { EdtRoutesNameEnum, getNavigatePath } from "routes/EdtRoutes";
+import { EdtRoutesNameEnum } from "routes/EdtRoutes";
+import { getNavigatePath, getParameterizedNavigatePath } from "service/navigation-service";
+import { activitySurveysIds, initializeDatas } from "service/survey-activity-service";
 
 const HomePage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { classes } = useStyles();
-    return (
+    const [initialized, setInitialized] = useState(false);
+
+    useEffect(() => {
+        initializeDatas()
+            .then(() => setInitialized(true))
+            .catch(err => console.error(err));
+    }, []);
+
+    return initialized ? (
         <>
             <FlexEnd>
                 <Button
@@ -26,35 +36,31 @@ const HomePage = () => {
                 </Button>
             </FlexEnd>
             <Box>
-                <FlexCenter className={classes.spacing}>
-                    <img src={reminder_note} alt={t("accessibility.asset.reminder-notes-alt")} />
-                </FlexCenter>
-                <DayCard
-                    labelledBy={""}
-                    describedBy={""}
-                    onClick={() => navigate(getNavigatePath(EdtRoutesNameEnum.ACTIVITY))}
+                <PageIcon
+                    srcIcon={reminder_note}
+                    altIcon={t("accessibility.asset.reminder-notes-alt")}
                 />
-                <DayCard
-                    labelledBy={""}
-                    describedBy={""}
-                    onClick={() => navigate(getNavigatePath(EdtRoutesNameEnum.ACTIVITY))}
-                />
-                <DayCard
-                    labelledBy={""}
-                    describedBy={""}
-                    onClick={() => navigate(getNavigatePath(EdtRoutesNameEnum.ACTIVITY))}
-                />
+                {activitySurveysIds.map(idSurvey => (
+                    <DayCard
+                        key={idSurvey + "-dayCard"}
+                        labelledBy={""}
+                        describedBy={""}
+                        onClick={() =>
+                            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey))
+                        }
+                    />
+                ))}
+
                 <WeekCard labelledBy={""} describedBy={""} onClick={() => console.log("weekCard")} />
                 <WeekCard labelledBy={""} describedBy={""} onClick={() => console.log("weekCard")} />
             </Box>
         </>
+    ) : (
+        <LoadingFull
+            message={t("page.home.loading.message")}
+            thanking={t("page.home.loading.thanking")}
+        />
     );
 };
-
-const useStyles = makeStylesEdt({ "name": { HomePage } })(() => ({
-    spacing: {
-        margin: "2rem 0",
-    },
-}));
 
 export default HomePage;
