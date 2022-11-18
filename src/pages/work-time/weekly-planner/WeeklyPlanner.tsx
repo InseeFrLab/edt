@@ -1,5 +1,5 @@
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import NavButton from "components/commons/NavButton/NavButton";
+import ValidateButton from "components/commons/ValidateButton/ValidateButton";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useTranslation } from "react-i18next";
@@ -31,7 +31,7 @@ const WeeklyPlannerPage = () => {
             </FlexCenter>
 
             <FlexCenter>
-                <NavButton text={t("common.navigation.validate")} onClick={validate} />
+                <ValidateButton text={t("common.navigation.validate")} onClick={validate} />
             </FlexCenter>
         </>
     );
