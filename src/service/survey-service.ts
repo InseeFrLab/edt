@@ -101,7 +101,11 @@ const getPrintedSurveyDate = (idSurvey: string): string => {
 };
 
 const getPersonNumber = (idSurvey: string) => {
-    return (activitySurveysIds.indexOf(idSurvey) || workingTimeSurveysIds.indexOf(idSurvey)) + 1;
+    const index =
+        activitySurveysIds.indexOf(idSurvey) !== -1
+            ? activitySurveysIds.indexOf(idSurvey)
+            : workingTimeSurveysIds.indexOf(idSurvey);
+    return index + 1;
 };
 
 export {
