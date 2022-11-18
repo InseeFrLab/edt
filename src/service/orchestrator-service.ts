@@ -1,7 +1,7 @@
 import activitySurveySource from "activity-survey.json";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { EdtRoutesNameEnum } from "routes/EdtRoutes";
-import { getNavigatePath } from "service/navigation-service";
+import { getNavigatePath, getParameterizedNavigatePath } from "service/navigation-service";
 import workTimeSurveySource from "work-time-survey.json";
 
 const getCurrentPageSource = (): LunaticModel => {
@@ -12,8 +12,8 @@ const getCurrentPageSource = (): LunaticModel => {
     }
 };
 
-const getCurrentSurveyParentPage = (): EdtRoutesNameEnum => {
-    if (window.location.pathname.includes(getNavigatePath(EdtRoutesNameEnum.ACTIVITY))) {
+const getCurrentSurveyParentPage = (idSurvey: string): EdtRoutesNameEnum => {
+    if (window.location.pathname.includes(getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey))) {
         return EdtRoutesNameEnum.ACTIVITY;
     } else {
         return EdtRoutesNameEnum.WORK_TIME;
