@@ -16,6 +16,7 @@ export interface LunaticData {
 export interface LunaticModel {
     variables: LunaticModelVariable[];
     components: LunaticModelComponent[];
+    maxPage: string;
 }
 
 export interface LunaticModelComponent {
@@ -30,7 +31,7 @@ export interface LunaticModelVariable {
 }
 
 export interface OrchestratorContext {
-    source: LunaticModel | undefined;
+    source: LunaticModel;
     data: LunaticData;
     idSurvey: string;
 }

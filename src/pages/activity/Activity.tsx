@@ -13,7 +13,7 @@ const ActivityPage = () => {
 
     useEffect(() => {
         if (idSurvey && source) {
-            navigate(getCurrentNavigatePath(idSurvey, getCurrentSurveyParentPage()));
+            navigate(getCurrentNavigatePath(idSurvey, getCurrentSurveyParentPage(), source.maxPage));
         } else {
             //TODO : redirect to error page ??
         }
