@@ -1,28 +1,42 @@
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import ValidateButton from "components/commons/ValidateButton/ValidateButton";
+import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { getCurrentNavigatePath } from "service/navigation-service";
-import { getCurrentSurveyParentPage } from "service/orchestrator-service";
-import { getSurveyDate, saveData } from "service/survey-service";
+import {
+    getPrintedFirstName,
+    getPrintedSurveyDate,
+    getSurveyDate,
+    saveData,
+} from "service/survey-service";
 
 const WeeklyPlannerPage = () => {
     const context = useOutletContext() as OrchestratorContext;
     const navigate = useNavigate();
-    const { t } = useTranslation();
 
-    const validate = () => {
+    const saveAndGoHome = (): void => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getCurrentNavigatePath(context.idSurvey, getCurrentSurveyParentPage(context.idSurvey), context.source.maxPage));
+            navigate("/");
         });
     };
 
-    const startDate: string | undefined= getSurveyDate(context.idSurvey);
+    const validate = () => {
+        saveAndGoHome();
+    };
+
+    const navBack = () => {
+        saveAndGoHome();
+    };
+
+    const startDate: string | undefined = getSurveyDate(context.idSurvey);
 
     return (
-        <>
+        <SurveyPage
+            validate={validate}
+            onNavigateBack={navBack}
+            firstName={getPrintedFirstName(context.idSurvey)}
+            surveyDate={getPrintedSurveyDate(context.idSurvey)}
+        >
             <FlexCenter>
                 <OrchestratorForStories
                     source={context.source}
@@ -32,11 +46,7 @@ const WeeklyPlannerPage = () => {
                     surveyDate={startDate}
                 ></OrchestratorForStories>
             </FlexCenter>
-
-            <FlexCenter>
-                <ValidateButton text={t("common.navigation.validate")} onClick={validate} />
-            </FlexCenter>
-        </>
+        </SurveyPage>
     );
 };
 

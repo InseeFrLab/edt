@@ -93,8 +93,8 @@ const getPrintedFirstName = (idSurvey: string): string => {
 const getPrintedSurveyDate = (idSurvey: string): string => {
     const savedSurveyDate = getSurveyDate(idSurvey);
     if (savedSurveyDate) {
-        const [_year, month, day] = savedSurveyDate.split("-");
-        return t("component.day-card.day") + " - " + [month, day].join("/");
+        const [year, month, day] = savedSurveyDate.split("-");
+        return t("component.day-card.day") + " - " + [day, month, year].join("/");
     } else {
         return t("component.day-card.day") + " 1";
     }

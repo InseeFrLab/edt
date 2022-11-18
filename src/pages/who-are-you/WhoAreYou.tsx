@@ -16,7 +16,13 @@ const WhoAreYouPage = () => {
 
     const validate = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getCurrentNavigatePath(context.idSurvey, getCurrentSurveyParentPage(context.idSurvey), context.source.maxPage));
+            navigate(
+                getCurrentNavigatePath(
+                    context.idSurvey,
+                    getCurrentSurveyParentPage(),
+                    context.source.maxPage,
+                ),
+            );
         });
     };
 
