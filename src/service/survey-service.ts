@@ -29,6 +29,10 @@ const initializeDatas = (): Promise<LunaticData[]> => {
     return Promise.all(promises);
 };
 
+const getDatas = (): Map<string, LunaticData> => {
+    return datas;
+};
+
 const getData = (idSurvey: string): LunaticData => {
     return datas.get(idSurvey) || {};
 };
@@ -85,6 +89,7 @@ const getSurveyDate = (idSurvey: string) => {
 
 export {
     getData,
+    getDatas,
     initializeDatas,
     saveData,
     getCurrentPage,

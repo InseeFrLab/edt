@@ -22,15 +22,8 @@ import {
 const HomePage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const [initialized, setInitialized] = useState(false);
 
-    useEffect(() => {
-        initializeDatas()
-            .then(() => setInitialized(true))
-            .catch(err => console.error(err));
-    }, []);
-
-    return initialized ? (
+    return (
         <>
             <FlexEnd>
                 <Button
@@ -77,11 +70,6 @@ const HomePage = () => {
                 ))}
             </Box>
         </>
-    ) : (
-        <LoadingFull
-            message={t("page.home.loading.message")}
-            thanking={t("page.home.loading.thanking")}
-        />
     );
 };
 
