@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { LunaticData } from "interface/lunatic/Lunatic";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
@@ -13,9 +14,6 @@ const enum FieldNameEnum {
     surveyDate = "SURVEYDATE",
 }
 
-/*
- *
- */
 const initializeDatas = (): Promise<LunaticData[]> => {
     const promises: Promise<LunaticData>[] = [];
     for (const idSurvey of surveysIds) {
@@ -86,6 +84,26 @@ const getSurveyDate = (idSurvey: string) => {
     return getValue(idSurvey, FieldNameEnum.surveyDate)?.toString();
 };
 
+// return survey firstname if exist or default value
+const getPrintedFirstName = (idSurvey: string): string => {
+    return getFirstName(idSurvey) || t("common.user.person") + " " + getPersonNumber(idSurvey);
+};
+
+// return survey date in french format (day x - dd/mm) if exist or default value
+const getPrintedSurveyDate = (idSurvey: string): string => {
+    const savedSurveyDate = getSurveyDate(idSurvey);
+    if (savedSurveyDate) {
+        const [_year, month, day] = savedSurveyDate.split("-");
+        return t("component.day-card.day") + " - " + [month, day].join("/");
+    } else {
+        return t("component.day-card.day") + " 1";
+    }
+};
+
+const getPersonNumber = (idSurvey: string) => {
+    return (activitySurveysIds.indexOf(idSurvey) || workingTimeSurveysIds.indexOf(idSurvey)) + 1;
+};
+
 export {
     getData,
     getDatas,
@@ -94,7 +112,9 @@ export {
     getCurrentPage,
     getLastName,
     getFirstName,
+    getPrintedFirstName,
     getSurveyDate,
+    getPrintedSurveyDate,
     activitySurveysIds,
     workingTimeSurveysIds,
 };

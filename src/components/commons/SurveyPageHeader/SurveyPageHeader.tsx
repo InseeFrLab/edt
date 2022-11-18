@@ -12,9 +12,9 @@ const SurveyPageHeader = (props: SurveyPageHeaderProps) => {
     const { surveyDate, firstName, onNavigateBack } = props;
     const { classes } = useStyles();
     return (
-        <Box sx={{ width: "100%", display: "flex" }}>
+        <Box className={classes.headerBox}>
             <Box>
-                <Typography>{surveyDate + " - " + firstName}</Typography>
+                <Typography className={classes.infoText}>{surveyDate + " - " + firstName}</Typography>
             </Box>
             <Box>
                 <CloseIcon className={classes.actionIcon} onClick={onNavigateBack} />
@@ -24,6 +24,16 @@ const SurveyPageHeader = (props: SurveyPageHeaderProps) => {
 };
 
 const useStyles = makeStylesEdt({ "name": { SurveyPageHeader } })(() => ({
+    headerBox: {
+        display: "flex",
+        flexGrow: "1",
+        justifyContent: "space-between",
+        alignItems: "center",
+        margin: "1rem",
+    },
+    infoText: {
+        fontSize: "14px",
+    },
     actionIcon: {
         cursor: "pointer",
     },

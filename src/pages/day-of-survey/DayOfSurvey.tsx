@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { getCurrentNavigatePath } from "service/navigation-service";
 import { getCurrentSurveyParentPage } from "service/orchestrator-service";
-import { getFirstName, getSurveyDate, saveData } from "service/survey-service";
+import { getPrintedFirstName, getPrintedSurveyDate, saveData } from "service/survey-service";
 
 const DayOfSurveyPage = () => {
     const { t } = useTranslation();
@@ -33,8 +33,8 @@ const DayOfSurveyPage = () => {
                 srcIcon={day_of_survey}
                 altIcon={t("accessibility.asset.day-of-survey-alt")}
                 onNavigateBack={navBack}
-                firstName={getFirstName(context.idSurvey) || "PERSONNETOFIX"}
-                surveyDate={getSurveyDate(context.idSurvey) || "JOURNEETOFIX"}
+                firstName={getPrintedFirstName(context.idSurvey)}
+                surveyDate={getPrintedSurveyDate(context.idSurvey)}
             >
                 <FlexCenter>
                     <OrchestratorForStories
