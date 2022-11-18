@@ -90,18 +90,23 @@ const getPrintedFirstName = (idSurvey: string): string => {
 };
 
 // return survey date in french format (day x - dd/mm) if exist or default value
-const getPrintedSurveyDate = (idSurvey: string): string => {
+const getPrintedSurveyDate = (idSurvey: string, isSemainier = false): string => {
     const savedSurveyDate = getSurveyDate(idSurvey);
+    const label = isSemainier ? t("component.week-card.week") : t("component.day-card.day");
     if (savedSurveyDate) {
         const [year, month, day] = savedSurveyDate.split("-");
-        return t("component.day-card.day") + " - " + [day, month, year].join("/");
+        return label + " - " + [day, month, year].join("/");
     } else {
-        return t("component.day-card.day") + " 1";
+        return label + " 1";
     }
 };
 
 const getPersonNumber = (idSurvey: string) => {
-    return (activitySurveysIds.indexOf(idSurvey) || workingTimeSurveysIds.indexOf(idSurvey)) + 1;
+    const index =
+        activitySurveysIds.indexOf(idSurvey) !== -1
+            ? activitySurveysIds.indexOf(idSurvey)
+            : workingTimeSurveysIds.indexOf(idSurvey);
+    return index + 1;
 };
 
 export {

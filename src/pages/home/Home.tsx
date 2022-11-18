@@ -36,7 +36,7 @@ const HomePage = () => {
                     srcIcon={reminder_note}
                     altIcon={t("accessibility.asset.reminder-notes-alt")}
                 />
-                {activitySurveysIds.map((idSurvey, index) => (
+                {activitySurveysIds.map(idSurvey => (
                     <DayCard
                         key={idSurvey + "-dayCard"}
                         labelledBy={""}
@@ -49,7 +49,7 @@ const HomePage = () => {
                     />
                 ))}
 
-                {workingTimeSurveysIds.map((idSurvey, index) => (
+                {workingTimeSurveysIds.map(idSurvey => (
                     <WeekCard
                         key={idSurvey + "-weekCard"}
                         labelledBy={""}
@@ -58,7 +58,7 @@ const HomePage = () => {
                             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey))
                         }
                         firstName={getPrintedFirstName(idSurvey)}
-                        surveyDate={getPrintedSurveyDate(idSurvey)}
+                        surveyDate={getPrintedSurveyDate(idSurvey, true)}
                     />
                 ))}
             </Box>

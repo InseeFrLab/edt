@@ -1,6 +1,5 @@
 import { CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { makeStyles } from "tss-react/mui";
 interface LoadingFullProps {
     message: string;
     thanking?: string;
@@ -8,7 +7,6 @@ interface LoadingFullProps {
 
 const LoadingFull = (props: LoadingFullProps) => {
     const { message, thanking } = props;
-    const { classes } = useStyles();
     return (
         <>
             <FlexCenter>
@@ -19,7 +17,5 @@ const LoadingFull = (props: LoadingFullProps) => {
         </>
     );
 };
-
-const useStyles = makeStyles({ "name": { LoadingFull } })(theme => ({}));
 
 export default LoadingFull;
