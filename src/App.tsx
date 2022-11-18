@@ -17,7 +17,6 @@ const App = () => {
         if (getDatas().size === 0) {
             initializeDatas()
                 .then(() => {
-                    console.log("DATA collected !!");
                     setInitialized(true)
                 })
                 .catch(err => console.error(err));

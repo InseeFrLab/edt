@@ -26,9 +26,11 @@ export type OrchestratorProps = {
     data?: object;
     callbackHolder: { getData(): LunaticData };
     page: string;
+    surveyDate?: string;
 };
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    const { source, data, callbackHolder, page } = props;
+    const { source, data, callbackHolder, page, surveyDate } = props;
+
     const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
         onChange: onLogChange,
         initialPage: page,
@@ -53,6 +55,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                 {...component}
                                 errors={currentErrors}
                                 custom={edtComponents}
+                                surveyDate={surveyDate}
                             />
                         </div>
                     );

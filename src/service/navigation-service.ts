@@ -10,10 +10,14 @@ const getParameterizedNavigatePath = (page: EdtRoutesNameEnum, param: string): s
 };
 
 // Function to retrieve the last completed step to go back to the right activity subpage
-const getCurrentNavigatePath = (idSurvey: string, parentPage: EdtRoutesNameEnum): string => {
+const getCurrentNavigatePath = (idSurvey: string, parentPage: EdtRoutesNameEnum, maxPage: string): string => {
     const surveyData = getData(idSurvey);
+
+    const lastFilledPage = getCurrentPage(surveyData);
+    const firstEmptyPage = lastFilledPage + 1;
+
     const subpage = mappingPageOrchestrator.find(
-        link => link.surveyPage === (getCurrentPage(surveyData) + 1).toString(),
+        link => link.surveyPage === (firstEmptyPage > Number(maxPage) ? maxPage : firstEmptyPage).toString(),
     )?.page;
     if (subpage) {
         return getParameterizedNavigatePath(parentPage, idSurvey) + getNavigatePath(subpage);

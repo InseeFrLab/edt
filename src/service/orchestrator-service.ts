@@ -4,7 +4,7 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutes";
 import { getNavigatePath } from "service/navigation-service";
 import workTimeSurveySource from "work-time-survey.json";
 
-const getCurrentPageSource = (): LunaticModel | undefined => {
+const getCurrentPageSource = (): LunaticModel => {
     if (window.location.pathname.includes(getNavigatePath(EdtRoutesNameEnum.ACTIVITY))) {
         return activitySurveySource;
     } else {

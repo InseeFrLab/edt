@@ -67,7 +67,6 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
             }
         }
     }
-    console.log("next page : " + currentPage);
     return currentPage;
 };
 
