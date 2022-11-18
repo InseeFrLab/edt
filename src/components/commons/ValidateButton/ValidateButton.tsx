@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { makeStylesEdt } from "lunatic-edt";
 
@@ -12,11 +12,14 @@ const ValidateButton = (props: ValidateButtonProps) => {
     const { classes } = useStyles();
 
     return (
-        <FlexCenter className={classes.validateButtonBox}>
-            <Button variant="contained" onClick={onClick} className={classes.validateButton}>
-                {text}
-            </Button>
-        </FlexCenter>
+        <>
+            <Box sx={{ height: "4.25rem", width: "100%" }}></Box>
+            <FlexCenter className={classes.validateButtonBox}>
+                <Button variant="contained" onClick={onClick} className={classes.validateButton}>
+                    {text}
+                </Button>
+            </FlexCenter>
+        </>
     );
 };
 

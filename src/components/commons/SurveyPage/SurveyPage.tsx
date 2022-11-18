@@ -3,7 +3,6 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPageHeader from "components/commons/SurveyPageHeader/SurveyPageHeader";
 import ValidateButton from "components/commons/ValidateButton/ValidateButton";
-import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 
 interface SurveyPageProps {
@@ -21,9 +20,8 @@ const SurveyPage = (props: SurveyPageProps) => {
     const { children, className, srcIcon, altIcon, validate, onNavigateBack, firstName, surveyDate } =
         props;
     const { t } = useTranslation();
-    const { classes, cx } = useStyles();
     return (
-        <Box className={cx(classes.navGap, className)}>
+        <Box className={className}>
             <SurveyPageHeader
                 surveyDate={surveyDate}
                 firstName={firstName}
@@ -37,11 +35,5 @@ const SurveyPage = (props: SurveyPageProps) => {
         </Box>
     );
 };
-
-const useStyles = makeStylesEdt({ "name": { SurveyPage } })(() => ({
-    navGap: {
-        marginBottom: "4.25rem",
-    },
-}));
 
 export default SurveyPage;
