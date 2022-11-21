@@ -5,6 +5,7 @@ import FlexEnd from "components/commons/FlexEnd/FlexEnd";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import DayCard from "components/edt/DayCard/DayCard";
 import WeekCard from "components/edt/WeekCard/WeekCard";
+import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutes";
@@ -19,6 +20,7 @@ import {
 const HomePage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { classes } = useStyles();
 
     return (
         <>
@@ -31,7 +33,7 @@ const HomePage = () => {
                     {t("page.home.navigation.link-help-label")}
                 </Button>
             </FlexEnd>
-            <Box>
+            <Box className={classes.cardsBox}>
                 <PageIcon
                     srcIcon={reminder_note}
                     altIcon={t("accessibility.asset.reminder-notes-alt")}
@@ -65,5 +67,11 @@ const HomePage = () => {
         </>
     );
 };
+
+const useStyles = makeStylesEdt({ "name": { NavButton: HomePage } })(() => ({
+    cardsBox: {
+        marginBottom: "2rem",
+    },
+}));
 
 export default HomePage;
