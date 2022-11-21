@@ -74,6 +74,9 @@
         },
         "week-card": {
             "week": "Semainier"
+        },
+        "survey-page-edit-header": {
+            "week-of": "Semainier de "
         }
     }
 }

@@ -4,12 +4,7 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import {
-    getPrintedFirstName,
-    getPrintedSurveyDate,
-    getSurveyDate,
-    saveData,
-} from "service/survey-service";
+import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 
 const WeeklyPlannerPage = () => {
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
@@ -45,14 +40,18 @@ const WeeklyPlannerPage = () => {
         }
     };
 
+    const onEdit = () => {
+        //TODO : sprint 5 edition des données
+    };
+
     const startDate: string | undefined = getSurveyDate(context.idSurvey);
 
     return (
         <SurveyPage
             validate={validate}
             onNavigateBack={navBack}
+            onEdit={onEdit}
             firstName={getPrintedFirstName(context.idSurvey)}
-            surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyParentPage)}
         >
             <FlexCenter>
                 <OrchestratorForStories
