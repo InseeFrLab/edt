@@ -17,15 +17,13 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
     return (
         <>
             <Box className={classes.headerBox}>
-                <Box>
+                <Box className={classes.leftPartBox}>
                     <Button
                         variant="outlined"
                         startIcon={<ArrowBackIosNewIcon />}
                         onClick={onNavigateBack}
                         aria-label={t("common.navigation.previous")}
                     ></Button>
-                </Box>
-                <Box>
                     <Typography className={classes.infoText}>
                         {t("component.survey-page-edit-header.week-of") + firstName}
                     </Typography>
@@ -48,7 +46,12 @@ const useStyles = makeStylesEdt({ "name": { SurveyPageEditHeader } })(theme => (
         padding: "1rem",
         backgroundColor: theme.variables.white,
     },
+    leftPartBox: {
+        display: "flex",
+        alignItems: "center",
+    },
     infoText: {
+        marginLeft: "2rem",
         fontSize: "14px",
         fontWeight: "bold",
     },
