@@ -23,14 +23,7 @@ const AddActivityOrRouteMobile = (props: AddActivityOrRouteMobileProps) => {
     return (
         <>
             <Box className={cx(className, classes.modalMobile)}>
-                <Box
-                    id="modal-title"
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                    }}
-                >
+                <Box id="modal-title" className={classes.titleBoxMobile}>
                     <Box className={classes.iconPlusBoxMobile}>
                         <img src={iconTitle} alt={t("accessibility.asset.yellow-plus-alt")} />
                     </Box>
@@ -83,6 +76,11 @@ const useStyles = makeStylesEdt({ "name": { AddActivityOrRouteMobile } })(theme 
         "img": {
             width: "70px",
         },
+    },
+    titleBoxMobile: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
     },
     iconPlusBoxMobile: {
         "img": {

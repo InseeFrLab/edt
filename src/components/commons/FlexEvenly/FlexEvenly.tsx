@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import { makeStylesEdt } from "lunatic-edt";
 
 interface FlexEvenlyProps {
     children: JSX.Element[] | JSX.Element;
@@ -7,11 +8,15 @@ interface FlexEvenlyProps {
 
 const FlexEvenly = (props: FlexEvenlyProps) => {
     const { children, className } = props;
-    return (
-        <Box sx={{ display: "flex", justifyContent: "space-evenly" }} className={className}>
-            {children}
-        </Box>
-    );
+    const { classes, cx } = useStyles();
+    return <Box className={cx(className, classes.box)}>{children}</Box>;
 };
+
+const useStyles = makeStylesEdt({ "name": { FlexEvenly } })(() => ({
+    box: {
+        display: "flex",
+        justifyContent: "space-evenly",
+    },
+}));
 
 export default FlexEvenly;

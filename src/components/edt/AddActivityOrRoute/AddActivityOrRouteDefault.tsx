@@ -23,14 +23,7 @@ const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
     return (
         <>
             <Box className={cx(className, classes.modalDefault)}>
-                <Box
-                    id="modal-title"
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                    }}
-                >
+                <Box id="modal-title" className={classes.titleBox}>
                     <Box className={classes.iconBox}>
                         <img src={iconTitle} alt={t("accessibility.asset.yellow-plus-alt")} />
                     </Box>
@@ -93,6 +86,11 @@ const useStyles = makeStylesEdt({ "name": { AddActivityOrRouteDefault } })(theme
     },
     navIconBox: {
         color: theme.palette.primary.light,
+    },
+    titleBox: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
     },
     iconBox: {
         width: "20%",

@@ -13,7 +13,7 @@ const ValidateButton = (props: ValidateButtonProps) => {
 
     return (
         <>
-            <Box sx={{ height: "4.25rem", width: "100%" }}></Box>
+            <Box className={classes.gap}></Box>
             <FlexCenter className={classes.validateButtonBox}>
                 <Button variant="contained" onClick={onClick} className={classes.validateButton}>
                     {text}
@@ -34,6 +34,10 @@ const useStyles = makeStylesEdt({ "name": { NavButton: ValidateButton } })(theme
         width: "80%",
         maxWidth: "18rem",
         margin: "1rem 0",
+    },
+    gap: {
+        height: "4.25rem",
+        width: "100%",
     },
 }));
 
