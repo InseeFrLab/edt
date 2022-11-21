@@ -10,9 +10,9 @@ const workingTimeSurveysIds = ["workingSurvey1", "workingSurvey2"];
 const surveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
 
 const enum FieldNameEnum {
-    lastName = "LASTNAME",
-    firstName = "FIRSTNAME",
-    surveyDate = "SURVEYDATE",
+    LASTNAME = "LASTNAME",
+    FIRSTNAME = "FIRSTNAME",
+    SURVEYDATE = "SURVEYDATE",
 }
 
 const initializeDatas = (): Promise<LunaticData[]> => {
@@ -74,15 +74,15 @@ const getValue = (idSurvey: string, variableName: FieldNameEnum) => {
 };
 
 const getLastName = (idSurvey: string) => {
-    return getValue(idSurvey, FieldNameEnum.lastName)?.toString();
+    return getValue(idSurvey, FieldNameEnum.LASTNAME)?.toString();
 };
 
 const getFirstName = (idSurvey: string) => {
-    return getValue(idSurvey, FieldNameEnum.firstName)?.toString();
+    return getValue(idSurvey, FieldNameEnum.FIRSTNAME)?.toString();
 };
 
 const getSurveyDate = (idSurvey: string) => {
-    return getValue(idSurvey, FieldNameEnum.surveyDate)?.toString();
+    return getValue(idSurvey, FieldNameEnum.SURVEYDATE)?.toString();
 };
 
 // return survey firstname if exist or default value
