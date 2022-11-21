@@ -8,8 +8,6 @@ import { useTranslation } from "react-i18next";
 import { EdtRoutes } from "routes/EdtRoutes";
 import { getDatas, initializeDatas } from "service/survey-service";
 
-import "i18n/i18n";
-
 const App = () => {
     const { t } = useTranslation();
     const [initialized, setInitialized] = useState(false);

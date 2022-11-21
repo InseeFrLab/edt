@@ -27,9 +27,19 @@ export type OrchestratorProps = {
     callbackHolder: { getData(): LunaticData };
     page: string;
     surveyDate?: string;
+    isSubChildDisplayed?: boolean;
+    setIsSubChildDisplayed?(value: boolean): void;
 };
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    const { source, data, callbackHolder, page, surveyDate } = props;
+    const {
+        source,
+        data,
+        callbackHolder,
+        page,
+        surveyDate,
+        isSubChildDisplayed,
+        setIsSubChildDisplayed,
+    } = props;
 
     const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
         onChange: onLogChange,
@@ -56,6 +66,8 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                 errors={currentErrors}
                                 custom={edtComponents}
                                 surveyDate={surveyDate}
+                                isSubChildDisplayed={isSubChildDisplayed}
+                                setIsSubChildDisplayed={setIsSubChildDisplayed}
                             />
                         </div>
                     );
