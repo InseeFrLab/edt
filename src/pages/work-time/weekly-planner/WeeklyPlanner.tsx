@@ -12,7 +12,6 @@ import {
 } from "service/survey-service";
 
 const WeeklyPlannerPage = () => {
-
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
 
     const context = useOutletContext() as OrchestratorContext;
