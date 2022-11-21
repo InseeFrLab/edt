@@ -1,0 +1,87 @@
+[
+    {
+        "id": "1",
+        "label": "DORMIR (HORS SIESTE)",
+        "synonymes": "sommeil,  lit,  endormi, dodo, réveil, éveil"
+    },
+    {
+        "id": "2",
+        "label": "SE COUCHER",
+        "synonymes": "heure du coucher, sommeil, lit, repos, canapé, endormi"
+    },
+    {
+        "id": "3",
+        "label": "SE LEVER",
+        "synonymes": "heure du lever, sommeil, lit, repos, canapé, endormi, se réveiller, réveil, éveil"
+    },
+    {
+        "id": "4",
+        "label": "MANGER",
+        "synonymes": "repas, dîner, petit-déjeuner, se faire un café, boire un café, souper, passer à table, déjeuner, goûter, pause déjeuner, dessert, thé, eau, jus, soda, grignoter, nourriture"
+    },
+    {
+        "id": "5",
+        "label": "REGARDER LA TELEVISION",
+        "synonymes": "regarder, en direct, diffuser, Télé, programme, en ligne, film, série, documentaire, Netflix, streaming, DVD, vidéo, YouTube, clip, TV"
+    },
+    {
+        "id": "6",
+        "label": "TRAVAILLER",
+        "synonymes": "Travail, boulot, rémunéré, emploi, job"
+    },
+    {
+        "id": "7",
+        "label": "PRENDRE l’APERITIF",
+        "synonymes": "APERO, vin, spiritueux, boire un coup, jus, prendre un verre"
+    },
+    {
+        "id": "8",
+        "label": "FAIRE SA TOILETTE",
+        "synonymes": "quotidien, soins, hygiène, personnel, se raser, se brosser les dents, pieds, peigner, cheveux, utiliser du fil dentaire, visage, peau, couper, ongles, bain, douche, se laver, maquillage"
+    },
+    {
+        "id": "9",
+        "label": "FAIRE LA VAISSELLE",
+        "synonymes": "laver la vaisselle, lave-vaisselle, vider, remplir"
+    },
+    {
+        "id": "10",
+        "label": "SE REPOSER (HORS SOMMEIL)",
+        "synonymes": "DETENTE, cigarette, canapé, pause cigarette, repos, méditer, ne rien faire, s’ennuyer, se détendre, bronzer, bain de soleil, se prélasser"
+    },
+    {
+        "id": "11",
+        "label": "FAIRE LA SIESTE",
+        "synonymes": "sommeil,  lit, repos, se reposer, canapé, éveil, réveil, endormi"
+    },
+    {
+        "id": "12",
+        "label": "DISCUTER, CONVERSER",
+        "synonymes": "famille, parler, se disputer, fréquenter des gens, parler, converser, conversation, discussion"
+    },
+    {
+        "id": "13",
+        "label": "COMMUNIQUER PAR INTERNET",
+        "synonymes": "Publier, blog, Facebook, Twitter, Instagram, LinkedIn, Netlog, internet, forums, annonces, blog post, like, ordinateur, mails, consulter, répondre, envoyer, réseaux sociaux, messages, web"
+    },
+    {
+        "id": "14",
+        "label": "SURFER SUR INTERNET",
+        "synonymes": "Informer, informations, sites de journaux, consulter, ordinateur, forums, réseaux sociaux, twitter, sites web, mails"
+    },
+    {
+        "id": "15",
+        "label": "s’habiller, se déshabiller",
+        "synonymes": "s'habiller, se changer, se déshabiller, vêtements"
+    },
+    {
+        "id": "16",
+        "label": "LIRE UN JOURNAL, UN MAGAZINE",
+        "synonymes": "Lecture, livre, littérature, bande dessinée, roman, fiction, numérique, papier, caricatures, magazine, mode, people, scientifique, publicité, catalogue, journal, hebdo, abonnement"
+    },
+    {
+        "id": "17",
+        "label": "LIRE UN LIVRE",
+        "synonymes": "Lecture, livre, littérature, bande dessinée, roman, fiction, numérique, papier, caricatures, magazine, mode, people, scientifique, publicité, catalogue, journal, hebdo, abonnement"
+    }
+]
