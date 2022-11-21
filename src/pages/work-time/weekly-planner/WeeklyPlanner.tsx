@@ -52,7 +52,7 @@ const WeeklyPlannerPage = () => {
             validate={validate}
             onNavigateBack={navBack}
             firstName={getPrintedFirstName(context.idSurvey)}
-            surveyDate={getPrintedSurveyDate(context.idSurvey)}
+            surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyParentPage)}
         >
             <FlexCenter>
                 <OrchestratorForStories

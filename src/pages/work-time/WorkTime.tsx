@@ -10,6 +10,7 @@ const WorkTimePage = () => {
     const data = getData(idSurvey || "");
     const source = getCurrentPageSource();
     const navigate = useNavigate();
+    const surveyParentPage = getCurrentSurveyParentPage();
 
     useEffect(() => {
         window.onpopstate = () => {
@@ -17,7 +18,7 @@ const WorkTimePage = () => {
         };
 
         if (idSurvey && source) {
-            navigate(getCurrentNavigatePath(idSurvey, getCurrentSurveyParentPage(), source.maxPage));
+            navigate(getCurrentNavigatePath(idSurvey, surveyParentPage, source.maxPage));
         } else {
             //TODO : redirect to error page ??
         }
@@ -25,7 +26,14 @@ const WorkTimePage = () => {
 
     return (
         <>
-            <Outlet context={{ source: source, data: data, idSurvey: idSurvey }} />
+            <Outlet
+                context={{
+                    source: source,
+                    data: data,
+                    idSurvey: idSurvey,
+                    surveyParentPage: surveyParentPage,
+                }}
+            />
         </>
     );
 };

@@ -1,5 +1,6 @@
 import { t } from "i18next";
 import { LunaticData } from "interface/lunatic/Lunatic";
+import { EdtRoutesNameEnum } from "routes/EdtRoutes";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
 
@@ -90,9 +91,12 @@ const getPrintedFirstName = (idSurvey: string): string => {
 };
 
 // return survey date in french format (day x - dd/mm) if exist or default value
-const getPrintedSurveyDate = (idSurvey: string, isSemainier = false): string => {
+const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesNameEnum): string => {
     const savedSurveyDate = getSurveyDate(idSurvey);
-    const label = isSemainier ? t("component.week-card.week") : t("component.day-card.day");
+    const label =
+        surveyParentPage === EdtRoutesNameEnum.WORK_TIME
+            ? t("component.week-card.week")
+            : t("component.day-card.day");
     if (savedSurveyDate) {
         const [year, month, day] = savedSurveyDate.split("-");
         return label + " - " + [day, month, year].join("/");

@@ -60,7 +60,7 @@ const HomePage = () => {
                             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey))
                         }
                         firstName={getPrintedFirstName(idSurvey)}
-                        surveyDate={getPrintedSurveyDate(idSurvey, true)}
+                        surveyDate={getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME)}
                     />
                 ))}
             </Box>

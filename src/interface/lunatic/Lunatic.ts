@@ -1,3 +1,4 @@
+import { EdtRoutesNameEnum } from "routes/EdtRoutes";
 export interface Collected {
     COLLECTED: string | boolean | null;
     EDITED: any;
@@ -34,4 +35,5 @@ export interface OrchestratorContext {
     source: LunaticModel;
     data: LunaticData;
     idSurvey: string;
+    surveyParentPage: EdtRoutesNameEnum;
 }
