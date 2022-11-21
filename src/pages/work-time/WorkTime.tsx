@@ -12,6 +12,10 @@ const WorkTimePage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        window.onpopstate = () => {
+            navigate("/");
+        };
+
         if (idSurvey && source) {
             navigate(getCurrentNavigatePath(idSurvey, getCurrentSurveyParentPage(), source.maxPage));
         } else {
