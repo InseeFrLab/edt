@@ -135,7 +135,11 @@
             },
             "id": "weeklyplanner_value",
             "page": "3",
-            "mandatory": false
+            "mandatory": false,
+            "title": "Planning de votre semaine",
+            "workSumLabel": "Durée totale travaillée : ",
+            "presentButtonLabel": "Continuer",
+            "pastButtonLabel": "Commencer"
         }
     ],
     "pagination": "question",
