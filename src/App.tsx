@@ -9,7 +9,6 @@ import { EdtRoutes } from "routes/EdtRoutes";
 import { initializeDatas, getDatas } from "service/survey-service";
 
 const App = () => {
-
     const { t } = useTranslation();
     const [initialized, setInitialized] = useState(false);
 
@@ -17,28 +16,27 @@ const App = () => {
         if (getDatas().size === 0) {
             initializeDatas()
                 .then(() => {
-                    setInitialized(true)
+                    setInitialized(true);
                 })
                 .catch(err => console.error(err));
         }
-
     }, []);
 
     return (
         <>
             <ThemeProvider theme={theme}>
                 <CssBaseline enableColorScheme />
-                {initialized ? (<EdtRoutes />)
-                    : (
-                        <LoadingFull
-                            message={t("page.home.loading.message")}
-                            thanking={t("page.home.loading.thanking")}
-                        />
-                    )}
-
+                {initialized ? (
+                    <EdtRoutes />
+                ) : (
+                    <LoadingFull
+                        message={t("page.home.loading.message")}
+                        thanking={t("page.home.loading.thanking")}
+                    />
+                )}
             </ThemeProvider>
         </>
-    )
+    );
 };
 
 export default App;
