@@ -5,6 +5,7 @@ import SurveyPageHeader from "components/commons/SurveyPageHeader/SurveyPageHead
 import ValidateButton from "components/commons/ValidateButton/ValidateButton";
 import { useTranslation } from "react-i18next";
 import SurveyPageEditHeader from "../SurveyPageEditHeader/SurveyPageEditHeader";
+import SurveyPageSimpleHeader from "../SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;
@@ -16,6 +17,7 @@ interface SurveyPageProps {
     firstName?: string;
     surveyDate?: string;
     onEdit?(): void;
+    simpleHeader?: boolean;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -29,23 +31,27 @@ const SurveyPage = (props: SurveyPageProps) => {
         onEdit,
         firstName,
         surveyDate,
+        simpleHeader = false,
     } = props;
     const { t } = useTranslation();
     return (
         <Box className={className}>
-            {firstName && surveyDate && onNavigateBack && (
+            {!simpleHeader && firstName && surveyDate && onNavigateBack && (
                 <SurveyPageHeader
                     surveyDate={surveyDate}
                     firstName={firstName}
                     onNavigateBack={onNavigateBack}
                 />
             )}
-            {firstName && onEdit && onNavigateBack && (
+            {!simpleHeader && firstName && onEdit && onNavigateBack && (
                 <SurveyPageEditHeader
                     firstName={firstName}
                     onNavigateBack={onNavigateBack}
                     onEdit={onEdit}
                 />
+            )}
+            {simpleHeader && onNavigateBack && (
+                <SurveyPageSimpleHeader onNavigateBack={onNavigateBack} />
             )}
             {srcIcon && altIcon && <PageIcon srcIcon={srcIcon} altIcon={altIcon} />}
             {children}

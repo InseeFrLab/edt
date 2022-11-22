@@ -52,6 +52,7 @@ const WeeklyPlannerPage = () => {
             onNavigateBack={navBack}
             onEdit={onEdit}
             firstName={getPrintedFirstName(context.idSurvey)}
+            simpleHeader={displayDayOverview}
         >
             <FlexCenter>
                 <OrchestratorForStories
