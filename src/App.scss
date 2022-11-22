@@ -7,6 +7,11 @@ html * {
     font-family: Marianne, sans-serif !important;
 }
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden !important;
+}
+
 button {
     text-transform: none !important;
 }
