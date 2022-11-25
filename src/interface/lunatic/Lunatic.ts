@@ -7,11 +7,19 @@ export interface Collected {
     PREVIOUS: any;
 }
 
+export interface MultiCollected {
+    COLLECTED: string[] | boolean[] | null[];
+    EDITED: any;
+    FORCED: any;
+    INPUTED: any;
+    PREVIOUS: any;
+}
+
 export interface LunaticData {
     id?: string;
     EXTERNAL?: any;
     CALCULATED?: any;
-    COLLECTED?: { [key: string]: Collected };
+    COLLECTED?: { [key: string]: Collected | MultiCollected }; // TOFIX : good var type with collected array
 }
 
 export interface LunaticModel {
@@ -22,11 +30,11 @@ export interface LunaticModel {
 
 export interface LunaticModelComponent {
     bindingDependencies?: string[];
-    page: string;
+    page?: string;
 }
 
 export interface LunaticModelVariable {
-    values?: Collected;
+    values?: Collected | MultiCollected;
     variableType: string;
     name: string;
 }

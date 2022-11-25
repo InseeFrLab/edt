@@ -1,16 +1,16 @@
 import { Box } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
-import SurveyPageHeader from "components/commons/SurveyPageHeader/SurveyPageHeader";
-import ValidateButton from "components/commons/ValidateButton/ValidateButton";
+import SurveyPageEditHeader from "components/commons/SurveyPage/SurveyPageEditHeader/SurveyPageEditHeader";
+import SurveyPageHeader from "components/commons/SurveyPage/SurveyPageHeader/SurveyPageHeader";
+import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
+import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
 import { useTranslation } from "react-i18next";
-import SurveyPageEditHeader from "../SurveyPageEditHeader/SurveyPageEditHeader";
-import SurveyPageSimpleHeader from "../SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;
     className?: string;
-    validate(): void;
+    validate?(): void;
     srcIcon?: string;
     altIcon?: string;
     onNavigateBack?(): void;
@@ -55,9 +55,11 @@ const SurveyPage = (props: SurveyPageProps) => {
             )}
             {srcIcon && altIcon && <PageIcon srcIcon={srcIcon} altIcon={altIcon} />}
             {children}
-            <FlexCenter>
-                <ValidateButton onClick={validate} text={t("common.navigation.validate")} />
-            </FlexCenter>
+            {validate && (
+                <FlexCenter>
+                    <ValidateButton onClick={validate} text={t("common.navigation.validate")} />
+                </FlexCenter>
+            )}
         </Box>
     );
 };
