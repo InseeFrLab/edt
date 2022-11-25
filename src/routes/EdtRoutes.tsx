@@ -1,5 +1,6 @@
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import ActivityPage from "pages/activity/Activity";
+import ActivityPlannerPage from "pages/activity/activity-planner/ActivityPlanner";
 import DayOfSurveyPage from "pages/day-of-survey/DayOfSurvey";
 import HelpPage from "pages/help/Help";
 import HomePage from "pages/home/Home";
@@ -16,6 +17,7 @@ const enum EdtRoutesNameEnum {
     DAY_OF_SURVEY = "day-of-survey",
     WORK_TIME = "work-time/:idSurvey",
     WEEKLY_PLANNER = "weekly-planner",
+    ACTIVITY_PLANNER = "activity-planner",
 }
 
 const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
@@ -30,6 +32,12 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         page: EdtRoutesNameEnum.DAY_OF_SURVEY,
         surveySource: "activity-survey.json",
         surveyPage: "2",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.ACTIVITY_PLANNER,
+        surveySource: "activity-survey.json",
+        surveyPage: "3",
     },
     {
         parentPage: EdtRoutesNameEnum.WORK_TIME,
@@ -61,13 +69,13 @@ const EdtRoutes = (): JSX.Element => {
                 <Route path={EdtRoutesNameEnum.ACTIVITY} element={<ActivityPage />}>
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
                     <Route path={EdtRoutesNameEnum.DAY_OF_SURVEY} element={<DayOfSurveyPage />} />
+                    <Route path={EdtRoutesNameEnum.ACTIVITY_PLANNER} element={<ActivityPlannerPage />} />
                 </Route>
                 <Route path={EdtRoutesNameEnum.WORK_TIME} element={<WorkTimePage />}>
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
                     <Route path={EdtRoutesNameEnum.DAY_OF_SURVEY} element={<DayOfSurveyPage />} />
                     <Route path={EdtRoutesNameEnum.WEEKLY_PLANNER} element={<WeeklyPlannerPage />} />
                 </Route>
-                {/* DEV : dev purpose only*/}
             </Routes>
         </BrowserRouter>
     );

@@ -60,7 +60,7 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
                 if (variable) {
                     const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
                     if (value !== undefined && value !== null) {
-                        currentPage = Math.max(currentPage, +component.page);
+                        currentPage = Math.max(currentPage, component.page ? +component?.page : 0);
                     }
                 }
             }
