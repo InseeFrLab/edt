@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { getCurrentNavigatePath } from "service/navigation-service";
-import { getCurrentPageSource, getCurrentSurveyParentPage } from "service/orchestrator-service";
+import { getCurrentPageSource, getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { getData } from "service/survey-service";
 
 const WorkTimePage = () => {
@@ -10,7 +10,7 @@ const WorkTimePage = () => {
     const data = getData(idSurvey || "");
     const source = getCurrentPageSource();
     const navigate = useNavigate();
-    const surveyParentPage = getCurrentSurveyParentPage();
+    const surveyRootPage = getCurrentSurveyRootPage();
 
     useEffect(() => {
         window.onpopstate = () => {
@@ -18,7 +18,7 @@ const WorkTimePage = () => {
         };
 
         if (idSurvey && source) {
-            navigate(getCurrentNavigatePath(idSurvey, surveyParentPage, source.maxPage));
+            navigate(getCurrentNavigatePath(idSurvey, surveyRootPage, source.maxPage));
         } else {
             //TODO : redirect to error page ??
         }
@@ -31,7 +31,7 @@ const WorkTimePage = () => {
                     source: source,
                     data: data,
                     idSurvey: idSurvey,
-                    surveyParentPage: surveyParentPage,
+                    surveyRootPage: surveyRootPage,
                 }}
             />
         </>

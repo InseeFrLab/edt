@@ -54,12 +54,13 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
     for (const component of source?.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
+                console.log(component);
                 const variable = source.variables.find(
                     v => v.variableType === "COLLECTED" && v.name === dependency,
                 );
                 if (variable) {
                     const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-                    if (value !== undefined && value !== null) {
+                    if (value !== undefined && value !== null && !Array.isArray(value)) {
                         currentPage = Math.max(currentPage, component.page ? +component?.page : 0);
                     }
                 }
@@ -67,6 +68,50 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
         }
     }
     return currentPage;
+};
+
+const getCurrentLoopPage = (
+    data: LunaticData | undefined,
+    loopPage: string | undefined,
+    iteration: number | undefined,
+) => {
+    if (!loopPage || iteration === undefined) {
+        return 0;
+    }
+    const source = getCurrentPageSource();
+    if (!data || !source?.components) {
+        console.log("out2");
+        return 0;
+    }
+    const loop = source?.components.find(component => component.page === loopPage);
+    if (!loop || !loop.components) {
+        console.log("out3");
+        return 0;
+    }
+    let currentLoopPage = 2; //Page 1 is for subsequence, see in source
+    for (const component of loop.components) {
+        if (component.bindingDependencies) {
+            for (const dependency of component.bindingDependencies) {
+                const variable = source.variables.find(
+                    v => v.variableType === "COLLECTED" && v.name === dependency,
+                );
+                if (variable) {
+                    const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+                    if (
+                        Array.isArray(value) &&
+                        value[iteration] !== undefined &&
+                        value[iteration] !== null
+                    ) {
+                        currentLoopPage = Math.max(
+                            currentLoopPage,
+                            component.page ? +component?.page : 0,
+                        );
+                    }
+                }
+            }
+        }
+    }
+    return currentLoopPage;
 };
 
 const getValue = (idSurvey: string, variableName: FieldNameEnum) => {
@@ -119,6 +164,7 @@ export {
     initializeDatas,
     saveData,
     getCurrentPage,
+    getCurrentLoopPage,
     getLastName,
     getFirstName,
     getPrintedFirstName,

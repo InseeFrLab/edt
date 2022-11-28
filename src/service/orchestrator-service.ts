@@ -11,7 +11,7 @@ const getCurrentPageSource = (): LunaticModel => {
     }
 };
 
-const getCurrentSurveyParentPage = (): EdtRoutesNameEnum => {
+const getCurrentSurveyRootPage = (): EdtRoutesNameEnum => {
     if (window.location.pathname.includes(EdtRoutesNameEnum.ACTIVITY.split(":")[0])) {
         return EdtRoutesNameEnum.ACTIVITY;
     } else {
@@ -19,4 +19,4 @@ const getCurrentSurveyParentPage = (): EdtRoutesNameEnum => {
     }
 };
 
-export { getCurrentPageSource, getCurrentSurveyParentPage };
+export { getCurrentPageSource, getCurrentSurveyRootPage };

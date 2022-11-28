@@ -16,11 +16,7 @@ const DayOfSurveyPage = () => {
     const validate = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
             navigate(
-                getCurrentNavigatePath(
-                    context.idSurvey,
-                    context.surveyParentPage,
-                    context.source.maxPage,
-                ),
+                getCurrentNavigatePath(context.idSurvey, context.surveyRootPage, context.source.maxPage),
             );
         });
     };
@@ -39,7 +35,7 @@ const DayOfSurveyPage = () => {
                 altIcon={t("accessibility.asset.day-of-survey-alt")}
                 onNavigateBack={navBack}
                 firstName={getPrintedFirstName(context.idSurvey)}
-                surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyParentPage)}
+                surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
             >
                 <FlexCenter>
                     <OrchestratorForStories
