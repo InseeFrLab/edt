@@ -13,6 +13,12 @@ const enum FieldNameEnum {
     LASTNAME = "LASTNAME",
     FIRSTNAME = "FIRSTNAME",
     SURVEYDATE = "SURVEYDATE",
+    DEBUT = "DEBUT",
+    FIN = "FIN",
+}
+
+const enum LoopPage {
+    ACTIVITY = "4",
 }
 
 const initializeDatas = (): Promise<LunaticData[]> => {
@@ -54,13 +60,14 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
     for (const component of source?.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
+                console.log(component);
                 const variable = source.variables.find(
                     v => v.variableType === "COLLECTED" && v.name === dependency,
                 );
                 if (variable) {
                     const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-                    if (value !== undefined && value !== null) {
-                        currentPage = Math.max(currentPage, +component.page);
+                    if (value !== undefined && value !== null && !Array.isArray(value)) {
+                        currentPage = Math.max(currentPage, component.page ? +component?.page : 0);
                     }
                 }
             }
@@ -69,7 +76,90 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
     return currentPage;
 };
 
-const getValue = (idSurvey: string, variableName: FieldNameEnum) => {
+const getCurrentLoopPage = (
+    data: LunaticData | undefined,
+    loopPage: string | undefined,
+    iteration: number | undefined,
+) => {
+    if (!loopPage || iteration === undefined) {
+        return 0;
+    }
+    const source = getCurrentPageSource();
+    if (!data || !source?.components) {
+        return 0;
+    }
+    const loop = source?.components.find(component => component.page === loopPage);
+    if (!loop || !loop.components) {
+        return 0;
+    }
+    let currentLoopPage = 2; //Page 1 is for subsequence, see in source
+    for (const component of loop.components) {
+        if (component.bindingDependencies) {
+            for (const dependency of component.bindingDependencies) {
+                const variable = source.variables.find(
+                    v => v.variableType === "COLLECTED" && v.name === dependency,
+                );
+                if (variable) {
+                    const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+                    if (
+                        Array.isArray(value) &&
+                        value[iteration] !== undefined &&
+                        value[iteration] !== null
+                    ) {
+                        currentLoopPage = Math.max(
+                            currentLoopPage,
+                            component.page ? +component?.page : 0,
+                        );
+                    }
+                }
+            }
+        }
+    }
+    return currentLoopPage;
+};
+
+const getLoopSize = (idSurvey: string, loopPage: LoopPage): number => {
+    if (!loopPage) {
+        return 0;
+    }
+    const source = getCurrentPageSource();
+    if (!source?.components) {
+        return 0;
+    }
+    const loop = source?.components.find(component => component.page === loopPage);
+    if (!loop || !loop.components) {
+        return 0;
+    }
+    const data = getData(idSurvey);
+    let currentLoopSize = 0; //Page 1 is for subsequence, see in source
+    for (const component of loop.components) {
+        if (component.bindingDependencies) {
+            for (const dependency of component.bindingDependencies) {
+                const variable = source.variables.find(
+                    v => v.variableType === "COLLECTED" && v.name === dependency,
+                );
+                if (variable) {
+                    const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+                    if (Array.isArray(value)) {
+                        currentLoopSize = Math.max(currentLoopSize, value.length);
+                    }
+                }
+            }
+        }
+    }
+    return currentLoopSize;
+};
+
+const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
+    if (iteration) {
+        console.log(datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED);
+        //return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED?.[iteration];
+    } else {
+        return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+    }
+};
+
+const getValues = (idSurvey: string, variableName: FieldNameEnum) => {
     return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
 };
 
@@ -119,11 +209,17 @@ export {
     initializeDatas,
     saveData,
     getCurrentPage,
+    getCurrentLoopPage,
     getLastName,
     getFirstName,
     getPrintedFirstName,
     getSurveyDate,
     getPrintedSurveyDate,
+    getValue,
+    getValues,
+    getLoopSize,
     activitySurveysIds,
     workingTimeSurveysIds,
+    LoopPage,
+    FieldNameEnum,
 };

@@ -54,7 +54,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "QUESTION1",
+            "name": "DEBUT",
             "componentRef": "law89hhb"
         },
         {
@@ -66,7 +66,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "QUESTION2",
+            "name": "FIN",
             "componentRef": "law89hhb"
         },
         {
@@ -161,7 +161,7 @@
             "depth": 1,
             "paginatedLoop": true,
             "conditionFilter": { "value": "true" },
-            "bindingDependencies": ["QUESTION1", "QUESTION2"],
+            "bindingDependencies": ["DEBUT", "FIN"],
             "loopDependencies": [],
             "iterations": { "value": "3", "type": "VTL" },
             "components": [
@@ -181,8 +181,8 @@
                 },
                 {
                     "componentType": "Input",
-                    "bindingDependencies": ["QUESTION1"],
-                    "response": { "name": "QUESTION1" },
+                    "bindingDependencies": ["DEBUT"],
+                    "response": { "name": "DEBUT" },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -199,8 +199,8 @@
                 },
                 {
                     "componentType": "Input",
-                    "bindingDependencies": ["QUESTION2"],
-                    "response": { "name": "QUESTION2" },
+                    "bindingDependencies": ["FIN"],
+                    "response": { "name": "FIN" },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",

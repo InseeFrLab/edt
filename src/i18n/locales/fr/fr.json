@@ -7,7 +7,9 @@
             "cancel": "Annuler",
             "ignore": "Ignorer",
             "complete": "Completer",
-            "validate": "Valider"
+            "validate": "Valider",
+            "add": "Ajouter",
+            "finish": "Clore"
         },
         "stepper": {
             "step": "Étape"
@@ -19,6 +21,9 @@
         },
         "user": {
             "person": "PERSONNE"
+        },
+        "activity": {
+            "unknown-activity": "Activité "
         }
     },
     "accessibility": {
@@ -35,6 +40,7 @@
             "yellow-plus-alt": "Alt pour yellow-plus",
             "activity-alt": "Alt pour activity",
             "route-alt": "Alt pour route",
+            "empty-activity-alt": "Alt pour empty-activity",
             "error": {
                 "location-error-alt": "Alt pour position"
             },
@@ -59,6 +65,10 @@
         },
         "not-found": {
             "not-found": "Oups ! Cette page n'existe pas :("
+        },
+        "activity-planner": {
+            "activity-for-day": "Activité de votre journée du",
+            "no-activity": "Aucune activité renseignée"
         }
     },
     "component": {
@@ -75,8 +85,13 @@
         "week-card": {
             "week": "Semainier"
         },
+        "activity-card": {
+            "activity": "Semainier",
+            "route": "Trajet"
+        },
         "survey-page-edit-header": {
-            "week-of": "Semainier de "
+            "week-of": "Semainier de ",
+            "planning-of": "Emploi du temps de "
         }
     }
 }
