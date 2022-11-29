@@ -101,7 +101,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         subPage: string | undefined,
         iteration: number | undefined,
     ) => {
-        console.log("myGoToPage");
         if (!pager.page) {
             return;
         }
@@ -140,7 +139,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 }
                 pager.previous = pager.currentPage();
                 pager.attempts = 10;
-                console.log("goNextPage");
                 goNextPage();
                 waitThenNext();
             }, 1);
@@ -148,7 +146,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         waitThenNext();
     };
     if (subPage) {
-        console.log("subPage is defined");
         //Complicated case with subPage, useLunatic needs to navigate page by page from the boucle sequence to the wished page
         waitForStablePager(pager, goNextPage, () => {
             myGoToPage(stablePager, stableGoNextPage, page, subPage, iteration);

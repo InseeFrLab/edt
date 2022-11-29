@@ -6,12 +6,13 @@ import { useTranslation } from "react-i18next";
 
 interface SurveyPageEditHeaderProps {
     firstName: string;
+    firstNamePrefix: string;
     onNavigateBack(): void;
     onEdit(): void;
 }
 
 const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
-    const { firstName, onNavigateBack, onEdit } = props;
+    const { firstName, firstNamePrefix, onNavigateBack, onEdit } = props;
     const { classes } = useStyles();
     const { t } = useTranslation();
     return (
@@ -24,9 +25,7 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
                         onClick={onNavigateBack}
                         aria-label={t("common.navigation.previous")}
                     ></Button>
-                    <Typography className={classes.infoText}>
-                        {t("component.survey-page-edit-header.week-of") + firstName}
-                    </Typography>
+                    <Typography className={classes.infoText}>{firstNamePrefix + firstName}</Typography>
                 </Box>
                 <Box>
                     <MoreHorizIcon className={classes.actionIcon} onClick={onEdit}></MoreHorizIcon>

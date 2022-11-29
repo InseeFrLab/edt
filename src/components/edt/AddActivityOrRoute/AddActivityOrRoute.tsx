@@ -1,4 +1,4 @@
-import { Box, Button, Modal } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import activity from "assets/illustration/activity.svg";
 import route from "assets/illustration/route.svg";
 import yellow_plus from "assets/illustration/yellow-plus.svg";
@@ -12,20 +12,13 @@ interface AddActivityOrRouteProps {
     describedBy: string;
     onClickActivity(): void;
     onClickRoute(): void;
+    handleClose(): void;
+    open: boolean;
 }
 
 const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
-    const { labelledBy, describedBy, onClickActivity, onClickRoute } = props;
+    const { labelledBy, describedBy, onClickActivity, onClickRoute, open, handleClose } = props;
     const { classes } = useStyles();
-    const [open, setOpen] = React.useState(false);
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     return (
         <>
             <Box
@@ -34,9 +27,7 @@ const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
                 sx={{ display: open ? "visible" : "none" }}
             ></Box>
             <React.Fragment>
-                <Button onClick={handleOpen}>Open Child Modal</Button>
                 <Modal
-                    hideBackdrop
                     open={open}
                     onClose={handleClose}
                     aria-labelledby={labelledBy}
