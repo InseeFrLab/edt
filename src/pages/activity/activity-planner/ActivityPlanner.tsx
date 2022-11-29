@@ -1,18 +1,29 @@
+import { Box, Typography } from "@mui/material";
+import empty_activity from "assets/illustration/empty-activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
+import ActivityCard from "components/edt/ActivityCard/ActivityCard";
+import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { makeStylesEdt } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
 import { getCurrentNavigatePath } from "service/navigation-service";
-import { getPrintedFirstName, saveData } from "service/survey-service";
+import { getActivities } from "service/survey-activity-service";
+import { getPrintedFirstName, getSurveyDate, LoopPage, saveData } from "service/survey-service";
 
 const ActivityPlannerPage = () => {
     const navigate = useNavigate();
     const context = useOutletContext() as OrchestratorContext;
-    const { classes } = useStyles();
+    const { classes, cx } = useStyles();
+    const { t } = useTranslation();
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
+    const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
+
+    const activities = getActivities(context.idSurvey);
 
     const saveAndGoHome = (): void => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
@@ -24,10 +35,24 @@ const ActivityPlannerPage = () => {
         saveData(context.idSurvey, callbackHolder.getData());
     };
 
-    const validate = () => {
-        console.log(callbackHolder.getData());
-        save();
-        //save();
+    const onFinish = () => {
+        saveAndGoHome();
+    };
+
+    const onAddActivity = () => {
+        navigate("");
+    };
+
+    const onAddRoute = () => {
+        navigate("");
+    };
+
+    const onOpenAddActivityOrRoute = () => {
+        setIsAddActivityOrRouteOpen(true);
+    };
+
+    const onCloseAddActivityOrRoute = () => {
+        setIsAddActivityOrRouteOpen(false);
     };
 
     const navBack = () => {
@@ -45,7 +70,7 @@ const ActivityPlannerPage = () => {
                 context.idSurvey,
                 context.surveyRootPage,
                 context.source.maxPage,
-                "4",
+                LoopPage.ACTIVITY,
                 iteration,
             ),
         );
@@ -54,18 +79,62 @@ const ActivityPlannerPage = () => {
     return (
         <>
             {!isSubchildDisplayed && (
-                <SurveyPage
-                    onNavigateBack={navBack}
-                    onEdit={onEdit}
-                    firstName={getPrintedFirstName(context.idSurvey)}
-                    validate={validate}
-                >
-                    <FlexCenter>
-                        <h1>ici la liste des activites avec redirection iteration</h1>
-                    </FlexCenter>
-                    <div onClick={() => navToActivity(0)}>Activite 1</div>
-                    <div onClick={() => navToActivity(1)}>Activite 2</div>
-                </SurveyPage>
+                <>
+                    <SurveyPage
+                        onNavigateBack={navBack}
+                        onEdit={onEdit}
+                        firstName={getPrintedFirstName(context.idSurvey)}
+                        firstNamePrefix={t("component.survey-page-edit-header.planning-of")}
+                        onFinish={onFinish}
+                        onAdd={onOpenAddActivityOrRoute}
+                        finishLabel={t("common.navigation.finish")}
+                        addLabel={activities.length === 0 ? t("common.navigation.add") : undefined}
+                    >
+                        <FlexCenter>
+                            <Box className={classes.infoBox}>
+                                <Typography className={classes.label}>
+                                    {t("page.activity-planner.activity-for-day")}
+                                </Typography>
+                                <Typography className={classes.date}>
+                                    {getSurveyDate(context.idSurvey) + " TODO : print plain text"}
+                                </Typography>
+                            </Box>
+                        </FlexCenter>
+                        {activities.length === 0 ? (
+                            <>
+                                <PageIcon
+                                    srcIcon={empty_activity}
+                                    altIcon={t("accessibility.asset.empty-activity-alt")}
+                                />
+                                <FlexCenter>
+                                    <Typography className={cx(classes.label, classes.grey)}>
+                                        {t("page.activity-planner.no-activity")}
+                                    </Typography>
+                                </FlexCenter>
+                            </>
+                        ) : (
+                            <FlexCenter>
+                                {activities.map((activity, iteration) => (
+                                    <ActivityCard
+                                        labelledBy={""}
+                                        describedBy={""}
+                                        key={"activity-" + iteration}
+                                        label={activity.label}
+                                        onClick={() => navToActivity(iteration)}
+                                    />
+                                ))}
+                            </FlexCenter>
+                        )}
+                    </SurveyPage>
+                    <AddActivityOrRoute
+                        labelledBy={""}
+                        describedBy={""}
+                        onClickActivity={onAddActivity}
+                        onClickRoute={onAddRoute}
+                        handleClose={onCloseAddActivityOrRoute}
+                        open={isAddActivityOrRouteOpen}
+                    />
+                </>
             )}
             <Outlet
                 context={{
@@ -79,6 +148,19 @@ const ActivityPlannerPage = () => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { ActivityPlannerPage } })(() => ({}));
+const useStyles = makeStylesEdt({ "name": { ActivityPlannerPage } })(theme => ({
+    infoBox: {
+        width: "350px",
+    },
+    label: {
+        fontSize: "14px",
+    },
+    date: {
+        fontSize: "18px",
+    },
+    grey: {
+        color: theme.palette.action.hover,
+    },
+}));
 
 export default ActivityPlannerPage;

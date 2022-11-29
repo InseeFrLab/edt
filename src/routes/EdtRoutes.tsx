@@ -12,6 +12,7 @@ import WhoAreYouPage from "pages/who-are-you/WhoAreYou";
 import WeeklyPlannerPage from "pages/work-time/weekly-planner/WeeklyPlanner";
 import WorkTimePage from "pages/work-time/WorkTime";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { LoopPage } from "service/survey-service";
 
 const enum EdtRoutesNameEnum {
     HELP = "help",
@@ -49,14 +50,14 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         parentPage: EdtRoutesNameEnum.ACTIVITY_PLANNER,
         page: EdtRoutesNameEnum.ACTIVITY_DURATION,
         surveySource: "activity-survey.json",
-        surveyPage: "4",
+        surveyPage: LoopPage.ACTIVITY,
         surveySubPage: "2",
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY_PLANNER,
         page: EdtRoutesNameEnum.MAIN_ACTIVITY,
         surveySource: "activity-survey.json",
-        surveyPage: "4",
+        surveyPage: LoopPage.ACTIVITY,
         surveySubPage: "3",
     },
     {
