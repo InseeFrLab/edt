@@ -31,6 +31,7 @@ export interface LunaticModel {
 export interface LunaticModelComponent {
     bindingDependencies?: string[];
     page?: string;
+    iterations?: { value: string };
     components?: LunaticModelComponent[];
 }
 
@@ -45,4 +46,5 @@ export interface OrchestratorContext {
     data: LunaticData;
     idSurvey: string;
     surveyRootPage: EdtRoutesNameEnum;
+    iteration?: number;
 }

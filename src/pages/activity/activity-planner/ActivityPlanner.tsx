@@ -12,8 +12,14 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
 import { getCurrentNavigatePath } from "service/navigation-service";
-import { getActivities } from "service/survey-activity-service";
-import { getPrintedFirstName, getSurveyDate, LoopPage, saveData } from "service/survey-service";
+import { getActivities, setLoopSize } from "service/survey-activity-service";
+import {
+    getLoopSize,
+    getPrintedFirstName,
+    getSurveyDate,
+    LoopPage,
+    saveData,
+} from "service/survey-service";
 
 const ActivityPlannerPage = () => {
     const navigate = useNavigate();
@@ -22,6 +28,7 @@ const ActivityPlannerPage = () => {
     const { t } = useTranslation();
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
+    const [contextIteration, setContextIteration] = React.useState(0);
 
     const activities = getActivities(context.idSurvey);
 
@@ -31,20 +38,27 @@ const ActivityPlannerPage = () => {
         });
     };
 
-    const save = (): void => {
-        saveData(context.idSurvey, callbackHolder.getData());
-    };
-
     const onFinish = () => {
         saveAndGoHome();
     };
 
     const onAddActivity = () => {
-        navigate("");
+        const loopSize = setLoopSize(
+            context.source,
+            getLoopSize(context.idSurvey, LoopPage.ACTIVITY) + 1,
+        );
+        setContextIteration(loopSize - 1);
+        navToActivity(contextIteration);
     };
 
     const onAddRoute = () => {
-        navigate("");
+        //TODO : check the good path for routes when it will be done
+        const loopSize = setLoopSize(
+            context.source,
+            getLoopSize(context.idSurvey, LoopPage.ACTIVITY) + 1,
+        );
+        setContextIteration(loopSize - 1);
+        navToActivity(contextIteration);
     };
 
     const onOpenAddActivityOrRoute = () => {
@@ -142,6 +156,7 @@ const ActivityPlannerPage = () => {
                     data: context.data,
                     idSurvey: context.idSurvey,
                     surveyRootPage: context.surveyRootPage,
+                    iteration: contextIteration,
                 }}
             />
         </>

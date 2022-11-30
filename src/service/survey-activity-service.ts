@@ -1,4 +1,5 @@
 import { Activity } from "interface/entity/Activity";
+import { LunaticModel } from "interface/lunatic/Lunatic";
 import { useTranslation } from "react-i18next";
 import { FieldNameEnum, getLoopSize, getValue, LoopPage } from "./survey-service";
 
@@ -15,4 +16,13 @@ const getActivities = (idSurvey: string): Array<Activity> => {
     return activities;
 };
 
-export { getActivities };
+const setLoopSize = (source: LunaticModel, size: number): number => {
+    const loop = source.components.find(composant => composant.page === LoopPage.ACTIVITY);
+    if (loop && loop.iterations) {
+        loop.iterations.value = size.toString();
+        return +loop.iterations.value;
+    }
+    return 0;
+};
+
+export { getActivities, setLoopSize };
