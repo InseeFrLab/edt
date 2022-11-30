@@ -13,7 +13,7 @@ export interface StepData {
     stepIconAlt: string;
 }
 
-const loopStepperData: StepData[] = [
+const loopActivityStepperData: StepData[] = [
     {
         stepNumber: 1,
         stepLabel: t("component.add-activity-stepper.step-1-label"),
@@ -53,7 +53,7 @@ const loopStepperData: StepData[] = [
 ];
 
 const getStepData = (stepNumber: number): StepData => {
-    return loopStepperData[stepNumber - 1];
+    return loopActivityStepperData[stepNumber - 1];
 };
 
-export { loopStepperData, getStepData };
+export { loopActivityStepperData, getStepData };

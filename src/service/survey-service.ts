@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { LunaticData } from "interface/lunatic/Lunatic";
-import { EdtRoutesNameEnum } from "routes/EdtRoutes";
+import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutes";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
 
@@ -60,7 +60,6 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
     for (const component of source?.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
-                console.log(component);
                 const variable = source.variables.find(
                     v => v.variableType === "COLLECTED" && v.name === dependency,
                 );
@@ -118,6 +117,15 @@ const getCurrentLoopPage = (
     return currentLoopPage;
 };
 
+const getLoopLastCompletedStep = (idSurvey: string, loopPage: string, iteration: number): number => {
+    const data = getData(idSurvey);
+    const currentLoopPage = getCurrentLoopPage(data, LoopPage.ACTIVITY, iteration);
+    const page = mappingPageOrchestrator.find(
+        page => page.surveySubPage && page.surveySubPage === currentLoopPage.toString(),
+    );
+    return page?.surveyStep ?? 0;
+};
+
 const getLoopSize = (idSurvey: string, loopPage: LoopPage): number => {
     if (!loopPage) {
         return 0;
@@ -152,7 +160,8 @@ const getLoopSize = (idSurvey: string, loopPage: LoopPage): number => {
 
 const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
     if (iteration) {
-        console.log(datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED);
+        // TODO : complete if useful
+        //console.log(datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED);
         //return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED?.[iteration];
     } else {
         return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
@@ -218,6 +227,7 @@ export {
     getValue,
     getValues,
     getLoopSize,
+    getLoopLastCompletedStep,
     activitySurveysIds,
     workingTimeSurveysIds,
     LoopPage,

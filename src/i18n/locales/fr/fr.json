@@ -12,7 +12,9 @@
             "finish": "Clore"
         },
         "stepper": {
-            "step": "Étape"
+            "step": "Étape",
+            "add-activity": "AJOUT D'UNE ACTIVITÉ",
+            "add-route": "AJOUT D'UN TRAJET"
         },
         "error": {
             "error-location": {

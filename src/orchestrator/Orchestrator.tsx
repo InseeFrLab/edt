@@ -119,8 +119,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         }
         const waitThenNext = () => {
             setTimeout(() => {
-                console.log("waitThenNext");
-                console.log({ ...pager });
                 if (pager.attempts == 0) {
                     return;
                 }

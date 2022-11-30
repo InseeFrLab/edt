@@ -31,7 +31,6 @@ const getCurrentNavigatePath = (
     } else {
         const lastFilledPage = getCurrentPage(surveyData);
         const firstEmptyPage = lastFilledPage + 1;
-        console.log(firstEmptyPage);
         page = mappingPageOrchestrator.find(
             link =>
                 link.surveyPage ===
@@ -39,13 +38,12 @@ const getCurrentNavigatePath = (
         )?.page;
     }
     if (page && subpage && iteration !== undefined) {
-        const toreturn =
+        return (
             getParameterizedNavigatePath(rootPage, idSurvey) +
             (parentPage ? getNavigatePath(parentPage) : "") +
-            getParameterizedNavigatePath(page, iteration.toString());
-        return toreturn;
+            getParameterizedNavigatePath(page, iteration.toString())
+        );
     } else if (page) {
-        console.log("cas simple nav");
         return getParameterizedNavigatePath(rootPage, idSurvey) + getNavigatePath(page);
     } else {
         return EdtRoutesNameEnum.ERROR;
