@@ -6,7 +6,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { getStepData } from "service/loop-stepper-service";
 import { LoopPage } from "service/survey-service";
 
-const WithSomeone = () => {
+const WithSomeonePage = () => {
     const navigate = useNavigate();
     const context = useOutletContext() as OrchestratorContext;
     const stepData = getStepData(5);
@@ -44,4 +44,4 @@ const WithSomeone = () => {
     );
 };
 
-export default WithSomeone;
+export default WithSomeonePage;

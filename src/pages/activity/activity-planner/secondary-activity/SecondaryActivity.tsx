@@ -6,7 +6,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { getStepData } from "service/loop-stepper-service";
 import { LoopPage } from "service/survey-service";
 
-const SecondaryActivity = () => {
+const SecondaryActivityPage = () => {
     const navigate = useNavigate();
     const context = useOutletContext() as OrchestratorContext;
     const stepData = getStepData(3);
@@ -44,4 +44,4 @@ const SecondaryActivity = () => {
     );
 };
 
-export default SecondaryActivity;
+export default SecondaryActivityPage;

@@ -6,4 +6,5 @@ export interface OrchestratorEdtNavigation {
     surveySource: string;
     surveyPage: string;
     surveySubPage?: string;
+    surveyStep?: number;
 }

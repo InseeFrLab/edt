@@ -6,7 +6,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { getStepData } from "service/loop-stepper-service";
 import { LoopPage } from "service/survey-service";
 
-const WithScreen = () => {
+const WithScreenPage = () => {
     const navigate = useNavigate();
     const context = useOutletContext() as OrchestratorContext;
     const stepData = getStepData(6);
@@ -44,4 +44,4 @@ const WithScreen = () => {
     );
 };
 
-export default WithScreen;
+export default WithScreenPage;

@@ -24,15 +24,9 @@ const ActivityDurationPage = () => {
         );
     };
 
-    const onPrevious = () => {
-        //TODO : see nav on previous
-        navigate("");
-    };
-
     return (
         <LoopSurveyPage
             onNext={onNext}
-            onPrevious={onPrevious}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
