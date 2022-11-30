@@ -33,10 +33,10 @@ const MainActivityPage = () => {
         <LoopSurveyPage
             onNext={onNext}
             onPrevious={onPrevious}
-            currentStepIcon={""}
-            currentStepIconAlt={""}
-            currentStepNumber={2}
-            currentStepLabel={""}
+            currentStepIcon={stepData.stepIcon}
+            currentStepIconAlt={stepData.stepIconAlt}
+            currentStepNumber={stepData.stepNumber}
+            currentStepLabel={stepData.stepLabel}
         >
             <FlexCenter>
                 <OrchestratorForStories
