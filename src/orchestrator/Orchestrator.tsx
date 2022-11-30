@@ -15,8 +15,11 @@ lunaticEDT.notLunaticComponents.forEach((component: React.MemoExoticComponent<an
 
 const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
 
-export const callbackHolder: { getData(): LunaticData } = {
+export const callbackHolder: { getData(): LunaticData; getErrors(): any } = {
     getData: () => {
+        return {};
+    },
+    getErrors: () => {
         return {};
     },
 };
@@ -24,7 +27,7 @@ export const callbackHolder: { getData(): LunaticData } = {
 export type OrchestratorProps = {
     source: LunaticModel | undefined;
     data?: object;
-    callbackHolder: { getData(): LunaticData };
+    callbackHolder: { getData(): LunaticData; getErrors(): any };
     page: string;
     surveyDate?: string;
     isSubChildDisplayed?: boolean;
@@ -44,11 +47,13 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
         onChange: onLogChange,
         initialPage: page,
+        activeControls: true,
     });
     const { classes, cx } = useStyles();
     const components = getComponents();
     const currentErrors = getCurrentErrors();
     callbackHolder.getData = getData;
+    callbackHolder.getErrors = getCurrentErrors;
 
     return source && data ? (
         <>
