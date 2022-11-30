@@ -45,7 +45,12 @@
                 "location-error-alt": "Alt pour position"
             },
             "stepper": {
-                "step-location-alt": "Alt pour step-location"
+                "step-activity-duration-alt": "Alt pour step-activity-duration",
+                "step-main-activity-alt": "Alt pour step-main-activity",
+                "step-secondary-activity-alt": "Alt pour step-secondary-activity",
+                "step-activity-location-alt": "Alt pour step-location",
+                "step-with-someone-alt": "Alt pour step-with-someone",
+                "step-with-screen-alt": "Alt pour step-with-screen"
             },
             "card": {
                 "person-sun-alt": "Alt pour person-sun"
@@ -78,6 +83,14 @@
             "activity-description": "Tout type d'activité",
             "route-label": "Trajet",
             "route-description": "À pied, en voiture, en bus..."
+        },
+        "add-activity-stepper": {
+            "step-1-label": "Durée",
+            "step-2-label": "Activité principale",
+            "step-3-label": "Activité secondaire",
+            "step-4-label": "Lieu",
+            "step-5-label": "Présence",
+            "step-6-label": "Écran"
         },
         "day-card": {
             "day": "Journée"

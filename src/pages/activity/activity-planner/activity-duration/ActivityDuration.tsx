@@ -1,28 +1,55 @@
+import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { makeStylesEdt } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { getStepData } from "service/loop-stepper-service";
+import { getCurrentNavigatePath } from "service/navigation-service";
 import { LoopPage } from "service/survey-service";
 
 const ActivityDurationPage = () => {
-    const { classes } = useStyles();
+    const navigate = useNavigate();
     const context = useOutletContext() as OrchestratorContext;
-    const { iteration } = useParams();
+    const stepData = getStepData(1);
+
+    const onNext = () => {
+        navigate(
+            getCurrentNavigatePath(
+                context.idSurvey,
+                context.surveyRootPage,
+                context.source.maxPage,
+                LoopPage.ACTIVITY,
+                context.iteration,
+            ),
+        );
+    };
+
+    const onPrevious = () => {
+        //TODO : see nav on previous
+        navigate("");
+    };
 
     return (
-        <>
-            <OrchestratorForStories
-                source={context.source}
-                data={context.data}
-                callbackHolder={callbackHolder}
-                page={LoopPage.ACTIVITY}
-                subPage="2"
-                iteration={iteration ? +iteration : 0}
-            ></OrchestratorForStories>
-        </>
+        <LoopSurveyPage
+            onNext={onNext}
+            onPrevious={onPrevious}
+            currentStepIcon={stepData.stepIcon}
+            currentStepIconAlt={stepData.stepIconAlt}
+            currentStepNumber={stepData.stepNumber}
+            currentStepLabel={stepData.stepLabel}
+        >
+            <FlexCenter>
+                <OrchestratorForStories
+                    source={context.source}
+                    data={context.data}
+                    callbackHolder={callbackHolder}
+                    page={LoopPage.ACTIVITY}
+                    subPage={(stepData.stepNumber + 1).toString()}
+                    iteration={context.iteration ?? 0}
+                ></OrchestratorForStories>
+            </FlexCenter>
+        </LoopSurveyPage>
     );
 };
-
-const useStyles = makeStylesEdt({ "name": { ActivityDurationPage } })(() => ({}));
 
 export default ActivityDurationPage;

@@ -4,28 +4,20 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { getStepData } from "service/loop-stepper-service";
-import { getCurrentNavigatePath } from "service/navigation-service";
 import { LoopPage } from "service/survey-service";
 
-const MainActivityPage = () => {
+const WithScreen = () => {
     const navigate = useNavigate();
     const context = useOutletContext() as OrchestratorContext;
-    const stepData = getStepData(2);
+    const stepData = getStepData(6);
 
     const onNext = () => {
-        navigate(
-            getCurrentNavigatePath(
-                context.idSurvey,
-                context.surveyRootPage,
-                context.source.maxPage,
-                LoopPage.ACTIVITY,
-                context.iteration,
-            ),
-        );
+        //TODO : fill
+        navigate("");
     };
 
     const onPrevious = () => {
-        //TODO : see nav on previous
+        //TODO : fill
         navigate("");
     };
 
@@ -33,10 +25,10 @@ const MainActivityPage = () => {
         <LoopSurveyPage
             onNext={onNext}
             onPrevious={onPrevious}
-            currentStepIcon={""}
-            currentStepIconAlt={""}
-            currentStepNumber={2}
-            currentStepLabel={""}
+            currentStepIcon={stepData.stepIcon}
+            currentStepIconAlt={stepData.stepIconAlt}
+            currentStepNumber={stepData.stepNumber}
+            currentStepLabel={stepData.stepLabel}
         >
             <FlexCenter>
                 <OrchestratorForStories
@@ -44,7 +36,7 @@ const MainActivityPage = () => {
                     data={context.data}
                     callbackHolder={callbackHolder}
                     page={LoopPage.ACTIVITY}
-                    subPage="3"
+                    subPage={(stepData.stepNumber + 1).toString()}
                     iteration={context.iteration ?? 0}
                 ></OrchestratorForStories>
             </FlexCenter>
@@ -52,4 +44,4 @@ const MainActivityPage = () => {
     );
 };
 
-export default MainActivityPage;
+export default WithScreen;
