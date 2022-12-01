@@ -6,8 +6,6 @@ import SurveyPageEditHeader from "components/commons/SurveyPage/SurveyPageEditHe
 import SurveyPageHeader from "components/commons/SurveyPage/SurveyPageHeader/SurveyPageHeader";
 import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
-import { callbackHolder } from "orchestrator/Orchestrator";
-import React from "react";
 import { useTranslation } from "react-i18next";
 
 interface SurveyPageProps {
@@ -26,6 +24,7 @@ interface SurveyPageProps {
     surveyDate?: string;
     onEdit?(): void;
     simpleHeader?: boolean;
+    disableNav?: boolean;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -45,19 +44,9 @@ const SurveyPage = (props: SurveyPageProps) => {
         firstNamePrefix,
         surveyDate,
         simpleHeader = false,
+        disableNav,
     } = props;
     const { t } = useTranslation();
-    let [disabledButton, setDisabledButton] = React.useState<boolean>(true);
-
-    React.useEffect(() => {
-        const keydownChange = (e: any) => {
-            setDisabledButton(
-                callbackHolder.getErrors() == undefined ||
-                    callbackHolder.getErrors()["inputtext_firstName"].length > 0,
-            );
-        };
-        document.addEventListener("keyup", keydownChange);
-    }, [callbackHolder]);
 
     return (
         <Box className={className}>
@@ -83,7 +72,11 @@ const SurveyPage = (props: SurveyPageProps) => {
             {children}
             {validate && (
                 <FlexCenter>
-                    <ValidateButton onClick={validate} text={t("common.navigation.validate")} />
+                    <ValidateButton
+                        onClick={validate}
+                        text={t("common.navigation.validate")}
+                        disabled={disableNav}
+                    />
                 </FlexCenter>
             )}
             {onFinish && onAdd && finishLabel && !validate && (
