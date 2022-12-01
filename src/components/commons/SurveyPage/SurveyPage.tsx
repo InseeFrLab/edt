@@ -6,8 +6,6 @@ import ValidateButton from "components/commons/ValidateButton/ValidateButton";
 import { useTranslation } from "react-i18next";
 import SurveyPageEditHeader from "../SurveyPageEditHeader/SurveyPageEditHeader";
 import SurveyPageSimpleHeader from "../SurveyPageSimpleHeader/SurveyPageSimpleHeader";
-import React from "react";
-import { callbackHolder } from "orchestrator/Orchestrator";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;
@@ -20,6 +18,7 @@ interface SurveyPageProps {
     surveyDate?: string;
     onEdit?(): void;
     simpleHeader?: boolean;
+    disableNav?: boolean;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -34,19 +33,9 @@ const SurveyPage = (props: SurveyPageProps) => {
         firstName,
         surveyDate,
         simpleHeader = false,
+        disableNav,
     } = props;
     const { t } = useTranslation();
-    let [disabledButton, setDisabledButton] = React.useState<boolean>(true);
-
-    React.useEffect(() => {
-        const keydownChange = (e: any) => {
-            setDisabledButton(
-                callbackHolder.getErrors() == undefined ||
-                    callbackHolder.getErrors()["inputtext_firstName"].length > 0,
-            );
-        };
-        document.addEventListener("keyup", keydownChange);
-    }, [callbackHolder]);
 
     return (
         <Box className={className}>
@@ -73,7 +62,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                 <ValidateButton
                     onClick={validate}
                     text={t("common.navigation.validate")}
-                    disabled={disabledButton}
+                    disabled={disableNav}
                 />
             </FlexCenter>
         </Box>
