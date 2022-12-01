@@ -34,7 +34,8 @@ const getCurrentNavigatePath = (
         page = mappingPageOrchestrator.find(
             link =>
                 link.surveyPage ===
-                (firstEmptyPage > Number(maxPage) ? maxPage : firstEmptyPage).toString(),
+                    (firstEmptyPage > Number(maxPage) ? maxPage : firstEmptyPage).toString() &&
+                link.parentPage === rootPage,
         )?.page;
     }
     if (page && subpage && iteration !== undefined) {
