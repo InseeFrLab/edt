@@ -34,7 +34,7 @@ const WhoAreYouPage = () => {
     };
 
     React.useEffect(() => {
-        const keydownChange = (_e: any) => {
+        const keydownChange = () => {
             setDisabledButton(
                 callbackHolder.getErrors() == undefined ||
                     callbackHolder.getErrors()["inputtext_firstName"].length > 0,
