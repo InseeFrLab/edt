@@ -29,33 +29,133 @@ export type OrchestratorProps = {
     data?: object;
     callbackHolder: { getData(): LunaticData; getErrors(): any };
     page: string;
+    subPage?: string;
+    iteration?: number;
     surveyDate?: string;
     isSubChildDisplayed?: boolean;
     setIsSubChildDisplayed?(value: boolean): void;
 };
+
+let i = 0;
+let stablePager: any;
+let stableGoNextPage: any;
+
+const setStablePager = (pager: any, goNextPage: any): void => {
+    if (pager !== stablePager) {
+        stablePager = pager;
+        stableGoNextPage = goNextPage;
+        i = 0;
+    }
+};
+let waiting = false;
+const waitForStablePager = (pager: any, goNextPage: any, callback: () => void): void => {
+    setStablePager(pager, goNextPage);
+    if (waiting) return;
+    waiting = true;
+
+    const wait = () => {
+        setTimeout(() => {
+            if (i++ > 10) {
+                callback();
+                waiting = false;
+                i = 0;
+                return;
+            }
+            wait();
+        }, 1);
+    };
+    wait();
+};
+
 export const OrchestratorForStories = (props: OrchestratorProps) => {
     const {
         source,
         data,
         callbackHolder,
         page,
+        subPage,
+        iteration,
         surveyDate,
         isSubChildDisplayed,
         setIsSubChildDisplayed,
     } = props;
-
-    const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
-        onChange: onLogChange,
-        initialPage: page,
-        activeControls: true,
-    });
     const { classes, cx } = useStyles();
+
+    const [loaded, setLoaded] = React.useState(true);
+
+    const { getComponents, getCurrentErrors, getData, goNextPage, pager } = lunatic.useLunatic(
+        source,
+        data,
+        {
+            onChange: onLogChange,
+            initialPage: subPage ? "3" : page, //Page 3 if we have subpage because we start from the sequence before the loop
+            activeControls: true,
+        },
+    );
+
     const components = getComponents();
     const currentErrors = getCurrentErrors();
+
     callbackHolder.getData = getData;
     callbackHolder.getErrors = getCurrentErrors;
 
-    return source && data ? (
+    const myGoToPage = (
+        pager: any,
+        goNextPage: any,
+        page: string,
+        subPage: string | undefined,
+        iteration: number | undefined,
+    ) => {
+        if (!pager.page) {
+            return;
+        }
+        pager.currentPage = () =>
+            pager.page +
+            (pager.subPage === undefined ? "" : `.${pager.subPage + 1}`) +
+            (pager.iteration === undefined ? "" : `#${pager.iteration + 1}`);
+        pager.cible =
+            page +
+            (subPage === undefined ? "" : `.${subPage}`) +
+            (iteration === undefined ? "" : `#${iteration + 1}`);
+        pager.previous = undefined;
+        pager.attempts = 10;
+        if (pager.cible === pager.currentPage()) {
+            return;
+        }
+        const waitThenNext = () => {
+            setTimeout(() => {
+                if (pager.attempts == 0) {
+                    return;
+                }
+                if (pager.previous === pager.currentPage()) {
+                    pager.attempts--;
+                    waitThenNext();
+                    return;
+                }
+                if (pager.cible === pager.currentPage()) {
+                    setLoaded(true);
+                    return;
+                }
+                if (pager.page === pager.maxPage) {
+                    setLoaded(true);
+                    return;
+                }
+                pager.previous = pager.currentPage();
+                pager.attempts = 10;
+                goNextPage();
+                waitThenNext();
+            }, 1);
+        };
+        waitThenNext();
+    };
+    if (subPage) {
+        //Complicated case with subPage, useLunatic needs to navigate page by page from the boucle sequence to the wished page
+        waitForStablePager(pager, goNextPage, () => {
+            myGoToPage(stablePager, stableGoNextPage, page, subPage, iteration);
+        });
+    }
+
+    return source && data && (loaded || !subPage) ? (
         <>
             <div className={cx("components", classes.styleOverride)}>
                 {components.map(function (component: any) {

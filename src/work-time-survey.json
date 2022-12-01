@@ -127,7 +127,7 @@
             "title": "Planning de votre semaine",
             "workSumLabel": "Durée totale travaillée : ",
             "presentButtonLabel": "Continuer",
-            "pastButtonLabel": "Commencer"
+            "futureButtonLabel": "Commencer"
         }
     ],
     "pagination": "question",

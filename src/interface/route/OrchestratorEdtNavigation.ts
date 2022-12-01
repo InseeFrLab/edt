@@ -5,4 +5,6 @@ export interface OrchestratorEdtNavigation {
     page: EdtRoutesNameEnum;
     surveySource: string;
     surveyPage: string;
+    surveySubPage?: string;
+    surveyStep?: number;
 }

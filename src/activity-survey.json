@@ -1,4 +1,13 @@
 {
+    "pagination": "question",
+    "lunaticModelVersion": "2.2.10",
+    "modele": "TIME",
+    "enoCoreVersion": "2.3.11",
+    "generatingDate": "29-09-2022 13:56:00",
+    "missing": false,
+    "id": "l8lq5lp6",
+    "label": "Time",
+    "maxPage": "5",
     "variables": [
         {
             "variableType": "COLLECTED",
@@ -35,6 +44,30 @@
             },
             "name": "SURVEYDATE",
             "componentRef": "datepicker_surveyDate"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "DEBUT",
+            "componentRef": "law89hhb"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "FIN",
+            "componentRef": "law89hhb"
         },
         {
             "variableType": "CALCULATED",
@@ -98,22 +131,105 @@
             "dateFormat": "YYYY-MM-DD",
             "response": { "name": "SURVEYDATE" },
             "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "2" }
+                "sequence": { "id": "sequence_1", "page": "1" }
             },
             "conditionFilter": { "value": "true" },
             "id": "datepicker_surveyDate",
             "page": "2",
             "label": "\"Quelle est la date du jour sélectionnée pour l'enquête ?\"",
             "mandatory": false
+        },
+        {
+            "id": "j6p0ti5h",
+            "componentType": "Sequence",
+            "page": "3",
+            "label": "\"Debut\"",
+            "conditionFilter": { "value": "true", "type": "VTL" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "j6p0ti5h",
+                    "page": "3",
+                    "label": { "value": "\"Debut\"", "type": "VTL|MD" }
+                }
+            }
+        },
+        {
+            "id": "law89hhb",
+            "componentType": "Loop",
+            "page": "4",
+            "maxPage": "3",
+            "depth": 1,
+            "paginatedLoop": true,
+            "conditionFilter": { "value": "true" },
+            "bindingDependencies": ["DEBUT", "FIN"],
+            "loopDependencies": [],
+            "iterations": { "value": "3", "type": "VTL" },
+            "components": [
+                {
+                    "componentType": "Sequence",
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "law86mv7",
+                    "page": "4.1",
+                    "label": "\"I - \" || \"Sequence\""
+                },
+                {
+                    "componentType": "Input",
+                    "bindingDependencies": ["DEBUT"],
+                    "response": { "name": "DEBUT" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "law89usi",
+                    "page": "4.2",
+                    "label": "\":arrow_right: 1. \" || \"Question1\"",
+                    "mandatory": false,
+                    "maxLength": 249
+                },
+                {
+                    "componentType": "Input",
+                    "bindingDependencies": ["FIN"],
+                    "response": { "name": "FIN" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "law82ezy",
+                    "page": "4.3",
+                    "label": "\":arrow_right: 2. \" || \"Question2\"",
+                    "mandatory": false,
+                    "maxLength": 249
+                }
+            ]
+        },
+        {
+            "id": "End",
+            "componentType": "Sequence",
+            "page": "5",
+            "label": { "value": "\"End\"", "type": "VTL|MD" },
+            "conditionFilter": { "value": "true" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "End",
+                    "page": "4",
+                    "label": { "value": "\"End\"", "type": "VTL|MD" }
+                }
+            }
         }
-    ],
-    "pagination": "question",
-    "lunaticModelVersion": "2.2.10",
-    "modele": "TIME",
-    "enoCoreVersion": "2.3.11",
-    "generatingDate": "29-09-2022 13:56:00",
-    "missing": false,
-    "id": "l8lq5lp6",
-    "label": "Time",
-    "maxPage": "2"
+    ]
 }

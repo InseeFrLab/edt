@@ -1,22 +1,28 @@
 import { Box } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
-import SurveyPageHeader from "components/commons/SurveyPageHeader/SurveyPageHeader";
-import ValidateButton from "components/commons/ValidateButton/ValidateButton";
-import { useTranslation } from "react-i18next";
-import SurveyPageEditHeader from "../SurveyPageEditHeader/SurveyPageEditHeader";
-import SurveyPageSimpleHeader from "../SurveyPageSimpleHeader/SurveyPageSimpleHeader";
-import React from "react";
+import ActivityButtons from "components/commons/SurveyPage/ActivityButtons/ActivityButtons";
+import SurveyPageEditHeader from "components/commons/SurveyPage/SurveyPageEditHeader/SurveyPageEditHeader";
+import SurveyPageHeader from "components/commons/SurveyPage/SurveyPageHeader/SurveyPageHeader";
+import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
+import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
 import { callbackHolder } from "orchestrator/Orchestrator";
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;
     className?: string;
-    validate(): void;
+    validate?(): void;
+    onFinish?(): void;
+    onAdd?(): void;
+    finishLabel?: string;
+    addLabel?: string;
     srcIcon?: string;
     altIcon?: string;
     onNavigateBack?(): void;
     firstName?: string;
+    firstNamePrefix?: string;
     surveyDate?: string;
     onEdit?(): void;
     simpleHeader?: boolean;
@@ -29,9 +35,14 @@ const SurveyPage = (props: SurveyPageProps) => {
         srcIcon,
         altIcon,
         validate,
+        onFinish,
+        onAdd,
+        finishLabel,
+        addLabel,
         onNavigateBack,
         onEdit,
         firstName,
+        firstNamePrefix,
         surveyDate,
         simpleHeader = false,
     } = props;
@@ -57,9 +68,10 @@ const SurveyPage = (props: SurveyPageProps) => {
                     onNavigateBack={onNavigateBack}
                 />
             )}
-            {!simpleHeader && firstName && onEdit && onNavigateBack && (
+            {!simpleHeader && firstName && firstNamePrefix && onEdit && onNavigateBack && (
                 <SurveyPageEditHeader
                     firstName={firstName}
+                    firstNamePrefix={firstNamePrefix}
                     onNavigateBack={onNavigateBack}
                     onEdit={onEdit}
                 />
@@ -69,13 +81,21 @@ const SurveyPage = (props: SurveyPageProps) => {
             )}
             {srcIcon && altIcon && <PageIcon srcIcon={srcIcon} altIcon={altIcon} />}
             {children}
-            <FlexCenter>
-                <ValidateButton
-                    onClick={validate}
-                    text={t("common.navigation.validate")}
-                    disabled={disabledButton}
-                />
-            </FlexCenter>
+            {validate && (
+                <FlexCenter>
+                    <ValidateButton onClick={validate} text={t("common.navigation.validate")} />
+                </FlexCenter>
+            )}
+            {onFinish && onAdd && finishLabel && !validate && (
+                <FlexCenter>
+                    <ActivityButtons
+                        onClickFinish={onFinish}
+                        onClickAdd={onAdd}
+                        finishLabel={finishLabel}
+                        addLabel={addLabel}
+                    />
+                </FlexCenter>
+            )}
         </Box>
     );
 };

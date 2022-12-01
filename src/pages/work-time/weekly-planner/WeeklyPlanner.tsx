@@ -3,6 +3,7 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 
@@ -11,6 +12,7 @@ const WeeklyPlannerPage = () => {
 
     const context = useOutletContext() as OrchestratorContext;
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const saveAndGoHome = (): void => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
@@ -52,6 +54,7 @@ const WeeklyPlannerPage = () => {
             onNavigateBack={navBack}
             onEdit={onEdit}
             firstName={getPrintedFirstName(context.idSurvey)}
+            firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={displayDayOverview}
         >
             <FlexCenter>
