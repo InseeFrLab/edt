@@ -1,4 +1,4 @@
-import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutes";
+import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentLoopPage, getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getCurrentPage, getData } from "service/survey-service";
 
@@ -20,7 +20,7 @@ const getCurrentNavigatePath = (
 ): string => {
     const surveyData = getData(idSurvey);
     const subpage = getCurrentLoopPage(surveyData, loop, iteration);
-    console.log(`subpage : ${subpage}`);
+
     let page: EdtRoutesNameEnum | undefined;
     let parentPage: EdtRoutesNameEnum | undefined;
     if (subpage !== 0 && loop) {
@@ -41,7 +41,6 @@ const getCurrentNavigatePath = (
         )?.page;
     }
     if (page && subpage && iteration !== undefined) {
-        console.log(`currentNavigatePath page:${page} subpage:${subpage} iteration:${iteration}`);
         return (
             getParameterizedNavigatePath(rootPage, idSurvey) +
             (parentPage ? getNavigatePath(parentPage) : "") +

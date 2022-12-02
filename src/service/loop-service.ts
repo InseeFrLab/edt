@@ -1,5 +1,5 @@
 import { LoopData, LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
-import { mappingPageOrchestrator } from "routes/EdtRoutes";
+import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentPageSource } from "service/orchestrator-service";
 import { getData } from "service/survey-service";
 
@@ -26,6 +26,14 @@ const getLoopInitialSequencePage = (loop: LoopEnum): string => {
     return loopPageInfo.get(loop)?.loopInitialSequencePage || "";
 };
 
+const getNextLoopPage = (currentPage: EdtRoutesNameEnum) => {
+    return "";
+};
+const getPreviousLoopPage = (currentPage: EdtRoutesNameEnum) => {
+    return "";
+};
+
+// Give the first loop subpage that don't have any data fill
 const getCurrentLoopPage = (
     data: LunaticData | undefined,
     currentLoop: LoopEnum | undefined,
@@ -46,7 +54,6 @@ const getCurrentLoopPage = (
     }
     const initialLoopSubPage = getLoopInitialSubPage(currentLoop);
     let currentLoopSubpage = +initialLoopSubPage;
-    console.log(initialLoopSubPage);
     for (const component of loop.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
@@ -95,7 +102,7 @@ const getLoopSize = (idSurvey: string, currentLoop: LoopEnum): number => {
         return 0;
     }
     const data = getData(idSurvey);
-    let currentLoopSize = 0; //Page 1 is for subsequence, see in source
+    let currentLoopSize = 0;
     for (const component of loop.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
@@ -104,7 +111,6 @@ const getLoopSize = (idSurvey: string, currentLoop: LoopEnum): number => {
                 );
                 if (variable) {
                     const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-                    console.log(data);
                     if (Array.isArray(value) && value[0] !== null) {
                         currentLoopSize = Math.max(currentLoopSize, value.length);
                     }

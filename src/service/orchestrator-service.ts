@@ -1,6 +1,6 @@
 import activitySurveySource from "activity-survey.json";
 import { LunaticModel } from "interface/lunatic/Lunatic";
-import { EdtRoutesNameEnum } from "routes/EdtRoutes";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import workTimeSurveySource from "work-time-survey.json";
 
 const getCurrentPageSource = (): LunaticModel => {

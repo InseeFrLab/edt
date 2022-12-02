@@ -11,7 +11,7 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import { EdtRoutesNameEnum } from "routes/EdtRoutes";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
 import { getCurrentNavigatePath } from "service/navigation-service";
 import { getActivities } from "service/survey-activity-service";
@@ -25,7 +25,7 @@ const ActivityPlannerPage = () => {
     const { t } = useTranslation();
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
-    const [contextIteration, setContextIteration] = React.useState(0);
+    let contextIteration = 0;
 
     const activities = getActivities(context.idSurvey);
 
@@ -56,7 +56,7 @@ const ActivityPlannerPage = () => {
             LoopEnum.ACTIVITY,
             getLoopSize(context.idSurvey, LoopEnum.ACTIVITY) + 1,
         );
-        setContextIteration(loopSize - 1);
+        contextIteration = loopSize - 1;
         navToActivity(contextIteration);
     };
 
@@ -67,7 +67,7 @@ const ActivityPlannerPage = () => {
             LoopEnum.ACTIVITY,
             getLoopSize(context.idSurvey, LoopEnum.ACTIVITY) + 1,
         );
-        setContextIteration(loopSize - 1);
+        contextIteration = loopSize - 1;
         navToActivity(contextIteration);
     };
 
@@ -167,7 +167,6 @@ const ActivityPlannerPage = () => {
                     data: context.data,
                     idSurvey: context.idSurvey,
                     surveyRootPage: context.surveyRootPage,
-                    iteration: contextIteration,
                 }}
             />
         </>

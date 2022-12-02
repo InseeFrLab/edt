@@ -15,6 +15,19 @@ const WhoAreYouPage = () => {
     const context = useOutletContext() as OrchestratorContext;
     let [disabledButton, setDisabledButton] = React.useState<boolean>(true);
 
+    const keydownChange = () => {
+        //TODO: recover component Id by the current page
+        setDisabledButton(
+            callbackHolder.getErrors() == undefined ||
+                callbackHolder.getErrors()["inputtext_firstName"].length > 0,
+        );
+    };
+
+    React.useEffect(() => {
+        document.addEventListener("keyup", keydownChange, true);
+        return () => document.removeEventListener("keyup", keydownChange, true);
+    }, [callbackHolder]);
+
     const validate = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
             navigate(
@@ -28,16 +41,6 @@ const WhoAreYouPage = () => {
             navigate("/");
         });
     };
-
-    React.useEffect(() => {
-        const keydownChange = () => {
-            setDisabledButton(
-                callbackHolder.getErrors() == undefined ||
-                    callbackHolder.getErrors()["inputtext_firstName"].length > 0,
-            );
-        };
-        document.addEventListener("keyup", keydownChange);
-    }, [callbackHolder]);
 
     return (
         <>
