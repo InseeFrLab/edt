@@ -1,5 +1,6 @@
 import { t } from "i18next";
 import { LunaticData } from "interface/lunatic/Lunatic";
+import { generateDateFromStringInput, getFrenchDayFromDate } from "lunatic-edt";
 import { EdtRoutesNameEnum } from "routes/EdtRoutes";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
@@ -110,8 +111,11 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
             ? t("component.week-card.week")
             : t("component.day-card.day");
     if (savedSurveyDate) {
-        const [year, month, day] = savedSurveyDate.split("-");
-        return label + " - " + [day, month, year].join("/");
+        const dayName = getFrenchDayFromDate(generateDateFromStringInput(savedSurveyDate));
+        const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+
+        const splittedDate = savedSurveyDate.split("-");
+        return label + " - " + capitalizedDayName + " " + [splittedDate[1], splittedDate[2]].join("/");
     } else {
         return label + " 1";
     }

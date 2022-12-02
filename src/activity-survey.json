@@ -95,21 +95,6 @@
         },
         {
             "componentType": "Input",
-            "bindingDependencies": ["LASTNAME"],
-            "response": { "name": "LASTNAME" },
-            "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "1" }
-            },
-            "conditionFilter": { "value": "true" },
-            "id": "inputtext_lastName",
-            "page": "1",
-            "label": "\"Qui êtes-vous ?\"",
-            "placeholder": "Nom",
-            "mandatory": false,
-            "maxLength": 100
-        },
-        {
-            "componentType": "Input",
             "bindingDependencies": ["FIRSTNAME"],
             "response": { "name": "FIRSTNAME" },
             "hierarchy": {
@@ -118,10 +103,25 @@
             "conditionFilter": { "value": "true" },
             "id": "inputtext_firstName",
             "page": "1",
-            "label": "",
+            "label": "\"Qui êtes-vous ?\"",
             "placeholder": "Prénom",
-            "mandatory": false,
-            "maxLength": 100
+            "mandatory": true,
+            "maxLength": 100,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" La valeur doit être rempli.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(FIRSTNAME)) and length(FIRSTNAME) >= 1"
+                    },
+                    "id": "kze792d8-formatBorneInfSup"
+                }
+            ]
         },
         {
             "componentType": "Datepicker",

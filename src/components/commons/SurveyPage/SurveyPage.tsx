@@ -24,6 +24,7 @@ interface SurveyPageProps {
     surveyDate?: string;
     onEdit?(): void;
     simpleHeader?: boolean;
+    disableNav?: boolean;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -43,8 +44,10 @@ const SurveyPage = (props: SurveyPageProps) => {
         firstNamePrefix,
         surveyDate,
         simpleHeader = false,
+        disableNav,
     } = props;
     const { t } = useTranslation();
+
     return (
         <Box className={className}>
             {!simpleHeader && firstName && surveyDate && onNavigateBack && (
@@ -69,7 +72,11 @@ const SurveyPage = (props: SurveyPageProps) => {
             {children}
             {validate && (
                 <FlexCenter>
-                    <ValidateButton onClick={validate} text={t("common.navigation.validate")} />
+                    <ValidateButton
+                        onClick={validate}
+                        text={t("common.navigation.validate")}
+                        disabled={disableNav}
+                    />
                 </FlexCenter>
             )}
             {onFinish && onAdd && finishLabel && !validate && (
