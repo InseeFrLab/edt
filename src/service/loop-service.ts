@@ -38,13 +38,15 @@ const getCurrentLoopPage = (
     if (!data || !source?.components) {
         return 0;
     }
-    const loop = source?.components.find(component => component.page === currentLoop);
+    const loop = source?.components.find(
+        component => component.page === getLoopInitialPage(currentLoop),
+    );
     if (!loop || !loop.components) {
         return 0;
     }
     const initialLoopSubPage = getLoopInitialSubPage(currentLoop);
     let currentLoopSubpage = +initialLoopSubPage;
-    //Page 1 is for subsequence, see in source
+    console.log(initialLoopSubPage);
     for (const component of loop.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
