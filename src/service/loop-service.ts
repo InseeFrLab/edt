@@ -1,5 +1,5 @@
 import { LoopData, LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
-import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
+import { mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentPageSource } from "service/orchestrator-service";
 import { getData } from "service/survey-service";
 
@@ -24,13 +24,6 @@ const getLoopInitialSubPage = (loop: LoopEnum): string => {
 
 const getLoopInitialSequencePage = (loop: LoopEnum): string => {
     return loopPageInfo.get(loop)?.loopInitialSequencePage || "";
-};
-
-const getNextLoopPage = (currentPage: EdtRoutesNameEnum) => {
-    return "";
-};
-const getPreviousLoopPage = (currentPage: EdtRoutesNameEnum) => {
-    return "";
 };
 
 // Give the first loop subpage that don't have any data fill

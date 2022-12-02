@@ -66,4 +66,13 @@ const getStepData = (page: EdtRoutesNameEnum): StepData => {
     );
 };
 
-export { loopActivityStepperData, getStepData };
+const getNextLoopPage = (currentPage: EdtRoutesNameEnum) => {
+    let index = loopActivityStepperData.findIndex(stepData => stepData.page === currentPage);
+    return loopActivityStepperData[index + 1].page;
+};
+const getPreviousLoopPage = (currentPage: EdtRoutesNameEnum) => {
+    let index = loopActivityStepperData.findIndex(stepData => stepData.page === currentPage);
+    return loopActivityStepperData[index - 1].page;
+};
+
+export { loopActivityStepperData, getStepData, getPreviousLoopPage, getNextLoopPage };

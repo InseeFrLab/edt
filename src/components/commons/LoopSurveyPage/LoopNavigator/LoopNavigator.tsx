@@ -1,5 +1,6 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import DoneIcon from "@mui/icons-material/Done";
 import { Box, Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { makeStylesEdt } from "lunatic-edt";
@@ -7,14 +8,16 @@ import { makeStylesEdt } from "lunatic-edt";
 interface LoopNavigatorProps {
     onNext?(): void;
     onPrevious?(): void;
+    onValidate?(): void;
     nextLabel: string;
     previousLabel: string;
+    validateLabel: string;
 }
 
 const LoopNavigator = (props: LoopNavigatorProps) => {
-    const { onNext, onPrevious, nextLabel, previousLabel } = props;
+    const { onNext, onPrevious, onValidate, nextLabel, previousLabel, validateLabel } = props;
     const { classes, cx } = useStyles();
-    const hasBothButtons = onNext && onPrevious;
+    const hasTwoButtons = (onPrevious && onNext) || (onPrevious && onValidate);
     return (
         <>
             <Box className={classes.gap}></Box>
@@ -27,23 +30,36 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                             onClick={onPrevious}
                             className={cx(
                                 classes.navButton,
-                                hasBothButtons ? classes.navButtons : classes.singleNavButton,
+                                hasTwoButtons ? classes.navButtons : classes.singleNavButton,
                             )}
                         >
                             <Box className={classes.label}>{previousLabel}</Box>
                         </Button>
                     )}
-                    {onNext && (
+                    {onNext && !onValidate && (
                         <Button
                             variant="outlined"
                             endIcon={<ArrowForwardIosIcon />}
                             onClick={onNext}
                             className={cx(
                                 classes.navButton,
-                                hasBothButtons ? classes.navButtons : classes.singleNavButton,
+                                hasTwoButtons ? classes.navButtons : classes.singleNavButton,
                             )}
                         >
                             <Box className={classes.label}>{nextLabel}</Box>
+                        </Button>
+                    )}
+                    {onValidate && (
+                        <Button
+                            variant="outlined"
+                            endIcon={<DoneIcon />}
+                            onClick={onValidate}
+                            className={cx(
+                                classes.navButton,
+                                hasTwoButtons ? classes.navButtons : classes.singleNavButton,
+                            )}
+                        >
+                            <Box className={classes.label}>{validateLabel}</Box>
                         </Button>
                     )}
                 </>

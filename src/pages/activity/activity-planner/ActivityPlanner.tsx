@@ -138,17 +138,19 @@ const ActivityPlannerPage = () => {
                                 </FlexCenter>
                             </>
                         ) : (
-                            <FlexCenter>
+                            <>
                                 {activities.map((activity, iteration) => (
-                                    <ActivityCard
-                                        labelledBy={""}
-                                        describedBy={""}
-                                        key={"activity-" + iteration}
-                                        label={activity.label}
-                                        onClick={() => navToActivity(iteration)}
-                                    />
+                                    <FlexCenter>
+                                        <ActivityCard
+                                            labelledBy={""}
+                                            describedBy={""}
+                                            key={"activity-" + iteration}
+                                            label={activity.label}
+                                            onClick={() => navToActivity(iteration)}
+                                        />
+                                    </FlexCenter>
                                 ))}
-                            </FlexCenter>
+                            </>
                         )}
                     </SurveyPage>
                     <AddActivityOrRoute

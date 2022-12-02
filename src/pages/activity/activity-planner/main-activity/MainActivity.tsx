@@ -5,32 +5,37 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getStepData } from "service/loop-stepper-service";
-import { getCurrentNavigatePath } from "service/navigation-service";
+import { getNextLoopPage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
+import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
 import { saveData } from "service/survey-service";
 
 const MainActivityPage = () => {
     const navigate = useNavigate();
     const context = useOutletContext() as OrchestratorContext;
-    const stepData = getStepData(EdtRoutesNameEnum.MAIN_ACTIVITY);
+    const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY;
+    const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
+    const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
+        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            navigate(
+                getLoopParameterizedNavigatePath(
+                    page,
+                    context.idSurvey,
+                    LoopEnum.ACTIVITY,
+                    currentIteration,
+                ),
+            );
+        });
+    };
+
     const onNext = () => {
-        navigate(
-            getCurrentNavigatePath(
-                context.idSurvey,
-                context.surveyRootPage,
-                context.source.maxPage,
-                LoopEnum.ACTIVITY,
-                currentIteration,
-            ),
-        );
+        saveAndLoopNavigate(getNextLoopPage(currentPage));
     };
 
     const onPrevious = () => {
-        //TODO : see nav on previous
-        navigate("");
+        saveAndLoopNavigate(getPreviousLoopPage(currentPage));
     };
 
     const onClose = () => {

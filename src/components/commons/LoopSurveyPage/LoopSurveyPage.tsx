@@ -10,6 +10,7 @@ import LoopSurveyPageHeader from "./LoopSurveyPageHeader/LoopSurveyPageHeader";
 interface LoopSurveyPageProps {
     onNext?(): void;
     onPrevious?(): void;
+    onValidate?(): void;
     onClose?(): void;
     className?: string;
     children: JSX.Element[] | JSX.Element;
@@ -27,6 +28,7 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
         currentStepLabel,
         onNext,
         onPrevious,
+        onValidate,
         onClose,
         className,
         children,
@@ -57,8 +59,10 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
             <LoopNavigator
                 onNext={onNext}
                 onPrevious={onPrevious}
+                onValidate={onValidate}
                 nextLabel={t("common.navigation.next")}
                 previousLabel={t("common.navigation.previous")}
+                validateLabel={t("common.navigation.validate")}
             />
         </Box>
     );

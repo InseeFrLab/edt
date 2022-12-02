@@ -5,23 +5,37 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getStepData } from "service/loop-stepper-service";
+import { getNextLoopPage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
+import { getLoopParameterizedNavigatePath } from "service/navigation-service";
+import { saveData } from "service/survey-service";
 
 const ActivityLocationPage = () => {
     const navigate = useNavigate();
     const context = useOutletContext() as OrchestratorContext;
-    const stepData = getStepData(EdtRoutesNameEnum.ACTIVITY_LOCATION);
+    const currentPage = EdtRoutesNameEnum.ACTIVITY_LOCATION;
+    const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
+    const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
+        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            navigate(
+                getLoopParameterizedNavigatePath(
+                    page,
+                    context.idSurvey,
+                    LoopEnum.ACTIVITY,
+                    currentIteration,
+                ),
+            );
+        });
+    };
+
     const onNext = () => {
-        //TODO : fill
-        navigate("");
+        saveAndLoopNavigate(getNextLoopPage(currentPage));
     };
 
     const onPrevious = () => {
-        //TODO : fill
-        navigate("");
+        saveAndLoopNavigate(getPreviousLoopPage(currentPage));
     };
 
     return (
