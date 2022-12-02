@@ -73,7 +73,12 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
 };
 
 const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
-    return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+    if (iteration) {
+        let value = datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+        return Array.isArray(value) ? value[iteration] : null;
+    } else {
+        return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+    }
 };
 
 const getLastName = (idSurvey: string) => {
