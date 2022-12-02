@@ -3,9 +3,9 @@ import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getStepData } from "service/loop-stepper-service";
 import { getCurrentNavigatePath } from "service/navigation-service";
-import { LoopPage } from "service/survey-service";
 
 const MainActivityPage = () => {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const MainActivityPage = () => {
                 context.idSurvey,
                 context.surveyRootPage,
                 context.source.maxPage,
-                LoopPage.ACTIVITY,
+                LoopEnum.ACTIVITY,
                 context.iteration,
             ),
         );
@@ -43,8 +43,8 @@ const MainActivityPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page={LoopPage.ACTIVITY}
-                    subPage="3"
+                    page={getLoopInitialPage(LoopEnum.ACTIVITY)}
+                    subPage={(stepData.stepNumber + 1).toString()}
                     iteration={context.iteration ?? 0}
                 ></OrchestratorForStories>
             </FlexCenter>

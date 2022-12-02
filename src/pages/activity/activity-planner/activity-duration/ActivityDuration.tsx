@@ -3,9 +3,11 @@ import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { EdtRoutesNameEnum } from "routes/EdtRoutes";
+import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getStepData } from "service/loop-stepper-service";
 import { getCurrentNavigatePath } from "service/navigation-service";
-import { LoopPage } from "service/survey-service";
+import { saveData } from "service/survey-service";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
@@ -13,20 +15,29 @@ const ActivityDurationPage = () => {
     const stepData = getStepData(1);
 
     const onNext = () => {
-        navigate(
-            getCurrentNavigatePath(
-                context.idSurvey,
-                context.surveyRootPage,
-                context.source.maxPage,
-                LoopPage.ACTIVITY,
-                context.iteration,
-            ),
-        );
+        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            navigate(
+                getCurrentNavigatePath(
+                    context.idSurvey,
+                    context.surveyRootPage,
+                    context.source.maxPage,
+                    LoopEnum.ACTIVITY,
+                    context.iteration,
+                ),
+            );
+        });
+    };
+
+    const onClose = () => {
+        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
+        });
     };
 
     return (
         <LoopSurveyPage
             onNext={onNext}
+            onClose={onClose}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -37,7 +48,7 @@ const ActivityDurationPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page={LoopPage.ACTIVITY}
+                    page={getLoopInitialPage(LoopEnum.ACTIVITY)}
                     subPage={(stepData.stepNumber + 1).toString()}
                     iteration={context.iteration ?? 0}
                 ></OrchestratorForStories>

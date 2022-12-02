@@ -8,21 +8,18 @@ import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrR
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { makeStylesEdt } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { EdtRoutesNameEnum } from "routes/EdtRoutes";
+import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
 import { getCurrentNavigatePath } from "service/navigation-service";
-import { getActivities, setLoopSize } from "service/survey-activity-service";
-import {
-    getLoopSize,
-    getPrintedFirstName,
-    getSurveyDate,
-    LoopPage,
-    saveData,
-} from "service/survey-service";
+import { getActivities } from "service/survey-activity-service";
+import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 
 const ActivityPlannerPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const context = useOutletContext() as OrchestratorContext;
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
@@ -31,6 +28,17 @@ const ActivityPlannerPage = () => {
     const [contextIteration, setContextIteration] = React.useState(0);
 
     const activities = getActivities(context.idSurvey);
+
+    const isChildDisplayed = (path: string): boolean => {
+        return path.split(EdtRoutesNameEnum.ACTIVITY_PLANNER)[1].length > 0 ? true : false;
+    };
+
+    useEffect(() => {
+        const currentIsChildDisplay = isChildDisplayed(location.pathname);
+        if (currentIsChildDisplay !== isSubchildDisplayed) {
+            setIsSubChildDisplayed(currentIsChildDisplay);
+        }
+    }, [location]);
 
     const saveAndGoHome = (): void => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
@@ -45,7 +53,8 @@ const ActivityPlannerPage = () => {
     const onAddActivity = () => {
         const loopSize = setLoopSize(
             context.source,
-            getLoopSize(context.idSurvey, LoopPage.ACTIVITY) + 1,
+            LoopEnum.ACTIVITY,
+            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY) + 1,
         );
         setContextIteration(loopSize - 1);
         navToActivity(contextIteration);
@@ -55,7 +64,8 @@ const ActivityPlannerPage = () => {
         //TODO : check the good path for routes when it will be done
         const loopSize = setLoopSize(
             context.source,
-            getLoopSize(context.idSurvey, LoopPage.ACTIVITY) + 1,
+            LoopEnum.ACTIVITY,
+            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY) + 1,
         );
         setContextIteration(loopSize - 1);
         navToActivity(contextIteration);
@@ -84,10 +94,11 @@ const ActivityPlannerPage = () => {
                 context.idSurvey,
                 context.surveyRootPage,
                 context.source.maxPage,
-                LoopPage.ACTIVITY,
+                LoopEnum.ACTIVITY,
                 iteration,
             ),
         );
+        setIsAddActivityOrRouteOpen(false);
     };
 
     return (

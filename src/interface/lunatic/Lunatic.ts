@@ -48,3 +48,9 @@ export interface OrchestratorContext {
     surveyRootPage: EdtRoutesNameEnum;
     iteration?: number;
 }
+
+export interface LoopData {
+    loopInitialSequencePage: string;
+    loopInitialPage: string;
+    loopInitialSubpage: string;
+}

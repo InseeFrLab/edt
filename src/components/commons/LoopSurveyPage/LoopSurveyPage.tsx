@@ -2,8 +2,8 @@ import { Box } from "@mui/material";
 import AddActivityStepper from "components/edt/AddActivityStepper/AddActivityStepper";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import { getLoopLastCompletedStep, LoopEnum } from "service/loop-service";
 import { loopActivityStepperData } from "service/loop-stepper-service";
-import { getLoopLastCompletedStep, LoopPage } from "service/survey-service";
 import LoopNavigator from "./LoopNavigator/LoopNavigator";
 import LoopSurveyPageHeader from "./LoopSurveyPageHeader/LoopSurveyPageHeader";
 
@@ -42,7 +42,7 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
                     numberOfSteps={loopActivityStepperData.length}
                     lastCompletedStepNumber={getLoopLastCompletedStep(
                         idSurvey ?? "",
-                        LoopPage.ACTIVITY,
+                        LoopEnum.ACTIVITY,
                         iteration ? +iteration : 0,
                     )}
                     currentStepIcon={currentStepIcon}
