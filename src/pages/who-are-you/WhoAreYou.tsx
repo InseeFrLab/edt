@@ -9,11 +9,11 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { getCurrentNavigatePath } from "service/navigation-service";
 import {
     FieldNameEnum,
+    getComponentId,
     getPrintedFirstName,
     getPrintedSurveyDate,
     saveData,
 } from "service/survey-service";
-import { getComponentId } from "service/survey-service";
 
 const WhoAreYouPage = () => {
     const { t } = useTranslation();
