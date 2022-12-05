@@ -7,7 +7,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { getCurrentNavigatePath } from "service/navigation-service";
-import { getPrintedFirstName, getPrintedSurveyDate, saveData } from "service/survey-service";
+import {
+    FieldNameEnum,
+    getPrintedFirstName,
+    getPrintedSurveyDate,
+    saveData,
+} from "service/survey-service";
+import { getComponentId } from "service/survey-service";
 
 const WhoAreYouPage = () => {
     const { t } = useTranslation();
@@ -16,10 +22,11 @@ const WhoAreYouPage = () => {
     let [disabledButton, setDisabledButton] = React.useState<boolean>(true);
 
     const keydownChange = () => {
-        //TODO: recover component Id by the current page
+        //TODO: nav to error page when componentId empty
+        const componentId = getComponentId(FieldNameEnum.FIRSTNAME, context.source) || "";
         setDisabledButton(
             callbackHolder.getErrors() == undefined ||
-                callbackHolder.getErrors()["inputtext_firstName"].length > 0,
+                callbackHolder.getErrors()[componentId].length > 0,
         );
     };
 
