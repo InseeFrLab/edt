@@ -15,7 +15,7 @@ lunaticEDT.notLunaticComponents.forEach((component: React.MemoExoticComponent<an
 
 const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
 
-export const callbackHolder: { getData(): LunaticData; getErrors(): any } = {
+export const callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } } = {
     getData: () => {
         return {};
     },
@@ -27,13 +27,14 @@ export const callbackHolder: { getData(): LunaticData; getErrors(): any } = {
 export type OrchestratorProps = {
     source: LunaticModel | undefined;
     data?: object;
-    callbackHolder: { getData(): LunaticData; getErrors(): any };
+    callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } };
     page: string;
     subPage?: string;
     iteration?: number;
     surveyDate?: string;
     isSubChildDisplayed?: boolean;
     setIsSubChildDisplayed?(value: boolean): void;
+    componentSpecificProps?: any;
 };
 
 let i = 0;
@@ -78,6 +79,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         surveyDate,
         isSubChildDisplayed,
         setIsSubChildDisplayed,
+        componentSpecificProps,
     } = props;
     const { classes, cx } = useStyles();
 
@@ -194,6 +196,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                     surveyDate={surveyDate}
                                     isSubChildDisplayed={isSubChildDisplayed}
                                     setIsSubChildDisplayed={setIsSubChildDisplayed}
+                                    componentSpecificProps={componentSpecificProps}
                                 />
                             </div>
                         );

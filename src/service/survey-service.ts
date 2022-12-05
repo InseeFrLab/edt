@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { LunaticData } from "interface/lunatic/Lunatic";
+import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import { generateDateFromStringInput, getFrenchDayFromDate } from "lunatic-edt";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
@@ -72,6 +72,10 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
     return currentPage;
 };
 
+const getComponentId = (variableName: FieldNameEnum, source: LunaticModel) => {
+    return source?.variables.find(variable => variable.name === variableName)?.componentRef;
+};
+
 const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
     if (iteration) {
         let value = datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
@@ -136,6 +140,7 @@ export {
     getSurveyDate,
     getPrintedSurveyDate,
     getValue,
+    getComponentId,
     activitySurveysIds,
     workingTimeSurveysIds,
     FieldNameEnum,
