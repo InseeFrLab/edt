@@ -1,5 +1,5 @@
 import * as lunatic from "@inseefr/lunatic";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import * as lunaticEDT from "lunatic-edt";
@@ -81,7 +81,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     } = props;
     const { classes, cx } = useStyles();
 
-    const [loaded, setLoaded] = React.useState(true);
+    const [loaded, setLoaded] = React.useState(false);
 
     const { getComponents, getCurrentErrors, getData, goNextPage, pager } = lunatic.useLunatic(
         source,
@@ -120,6 +120,9 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         pager.previous = undefined;
         pager.attempts = 10;
         if (pager.cible === pager.currentPage()) {
+            console.log(`pager.cible : ${pager.cible} , pager.currentPage : ${pager.currentPage()}`);
+            console.log("loaded true");
+            setLoaded(true);
             return;
         }
         const waitThenNext = () => {
@@ -133,10 +136,14 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     return;
                 }
                 if (pager.cible === pager.currentPage()) {
+                    console.log(
+                        `pager.cible : ${pager.cible} , pager.currentPage : ${pager.currentPage()}`,
+                    );
                     setLoaded(true);
                     return;
                 }
                 if (pager.page === pager.maxPage) {
+                    console.log("maxpage loaded true");
                     setLoaded(true);
                     return;
                 }
@@ -155,29 +162,44 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         });
     }
 
-    return source && data && (loaded || !subPage) ? (
+    return source && data ? (
         <>
-            <div className={cx("components", classes.styleOverride)}>
-                {components.map(function (component: any) {
-                    const { id, componentType, response, ...other } = component;
-                    const Component = lunatic[componentType];
-                    return (
-                        <div className="lunatic lunatic-component" key={`component-${id}`}>
-                            <Component
-                                id={id}
-                                response={response}
-                                {...other}
-                                {...component}
-                                errors={currentErrors}
-                                custom={edtComponents}
-                                surveyDate={surveyDate}
-                                isSubChildDisplayed={isSubChildDisplayed}
-                                setIsSubChildDisplayed={setIsSubChildDisplayed}
-                            />
-                        </div>
-                    );
-                })}
-            </div>
+            <Box className={classes.orchestratorBox}>
+                <FlexCenter
+                    className={loaded || !subPage ? classes.loaderWhenLoaded : classes.loaderWhenLoading}
+                >
+                    <CircularProgress />
+                </FlexCenter>
+                <div
+                    className={cx(
+                        "components",
+                        classes.styleOverride,
+                        loaded || !subPage
+                            ? classes.orchestratorWhenLoaded
+                            : classes.orchestratorWhenLoading,
+                    )}
+                >
+                    {components.map(function (component: any) {
+                        const { id, componentType, response, ...other } = component;
+                        const Component = lunatic[componentType];
+                        return (
+                            <div className="lunatic lunatic-component" key={`component-${id}`}>
+                                <Component
+                                    id={id}
+                                    response={response}
+                                    {...other}
+                                    {...component}
+                                    errors={currentErrors}
+                                    custom={edtComponents}
+                                    surveyDate={surveyDate}
+                                    isSubChildDisplayed={isSubChildDisplayed}
+                                    setIsSubChildDisplayed={setIsSubChildDisplayed}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+            </Box>
         </>
     ) : (
         <FlexCenter>
@@ -201,5 +223,22 @@ const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
         "& .field-container": {
             margin: "1rem 0",
         },
+    },
+    loaderWhenLoaded: {
+        display: "none !important",
+    },
+    loaderWhenLoading: {
+        display: "visible",
+    },
+    orchestratorWhenLoading: {
+        visibility: "hidden",
+        height: "1px",
+    },
+    orchestratorWhenLoaded: {
+        visibility: "visible",
+    },
+    orchestratorBox: {
+        display: "flex",
+        flexDirection: "column",
     },
 }));
