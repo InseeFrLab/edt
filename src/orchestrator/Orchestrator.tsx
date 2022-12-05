@@ -34,6 +34,7 @@ export type OrchestratorProps = {
     surveyDate?: string;
     isSubChildDisplayed?: boolean;
     setIsSubChildDisplayed?(value: boolean): void;
+    componentSpecificProps?: any;
 };
 
 let i = 0;
@@ -78,6 +79,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         surveyDate,
         isSubChildDisplayed,
         setIsSubChildDisplayed,
+        componentSpecificProps,
     } = props;
     const { classes, cx } = useStyles();
 
@@ -194,6 +196,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                     surveyDate={surveyDate}
                                     isSubChildDisplayed={isSubChildDisplayed}
                                     setIsSubChildDisplayed={setIsSubChildDisplayed}
+                                    componentSpecificProps={componentSpecificProps}
                                 />
                             </div>
                         );
