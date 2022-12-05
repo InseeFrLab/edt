@@ -9,7 +9,6 @@ import { getNextLoopPage, getPreviousLoopPage, getStepData } from "service/loop-
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
 import { saveData } from "service/survey-service";
 
-
 import catIcon1 from "assets/illustration/activity-categories/1.svg";
 import catIcon2 from "assets/illustration/activity-categories/2.svg";
 import catIcon3 from "assets/illustration/activity-categories/3.svg";
@@ -54,9 +53,9 @@ const MainActivityPage = () => {
             saveAndLoopNavigate(getPreviousLoopPage(currentPage));
         },
         nextClickCallback: () => {
-            saveAndLoopNavigate(getNextLoopPage(currentPage))
+            saveAndLoopNavigate(getNextLoopPage(currentPage));
         },
-        setDisplayStepper: setDisplayStepper
+        setDisplayStepper: setDisplayStepper,
     };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {

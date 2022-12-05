@@ -54,8 +54,20 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "DEBUT",
-            "componentRef": "law89hhb"
+            "name": "STARTTIME",
+            "componentRef": "timepicker_startTime"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "ENDTIME",
+            "componentRef": "timepicker_endTime"
         },
         {
             "variableType": "COLLECTED",
@@ -176,9 +188,9 @@
             "depth": 1,
             "paginatedLoop": true,
             "conditionFilter": { "value": "true" },
-            "bindingDependencies": ["DEBUT", "FIN"],
+            "bindingDependencies": ["STARTTIME", "ENDTIME", "MAINACTIVITY"],
             "loopDependencies": [],
-            "iterations": { "value": "3", "type": "VTL" },
+            "iterations": { "value": "1", "type": "VTL" },
             "components": [
                 {
                     "componentType": "Sequence",
@@ -195,9 +207,9 @@
                     "label": "\"I - \" || \"Sequence\""
                 },
                 {
-                    "componentType": "Input",
-                    "bindingDependencies": ["DEBUT"],
-                    "response": { "name": "DEBUT" },
+                    "componentType": "Timepicker",
+                    "bindingDependencies": ["STARTTIME"],
+                    "response": { "name": "STARTTIME" },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -206,9 +218,27 @@
                         }
                     },
                     "conditionFilter": { "value": "true" },
-                    "id": "law89usi",
+                    "id": "timepicker_startTime",
                     "page": "4.2",
-                    "label": "\":arrow_right: 1. \" || \"Question1\"",
+                    "label": "\"Heure de début\"",
+                    "mandatory": false,
+                    "maxLength": 249
+                },
+                {
+                    "componentType": "Timepicker",
+                    "bindingDependencies": ["ENDTIME"],
+                    "response": { "name": "ENDTIME" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "timepicker_endTime",
+                    "page": "4.2",
+                    "label": "\"Heure de fin\"",
                     "mandatory": false,
                     "maxLength": 249
                 },

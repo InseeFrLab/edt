@@ -27,7 +27,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                         <Button
                             variant="outlined"
                             startIcon={<ArrowBackIosIcon />}
-                            onClick={(e) => onPrevious(e)}
+                            onClick={e => onPrevious(e)}
                             className={cx(
                                 classes.navButton,
                                 hasTwoButtons ? classes.navButtons : classes.singleNavButton,
@@ -40,7 +40,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                         <Button
                             variant="outlined"
                             endIcon={<ArrowForwardIosIcon />}
-                            onClick={(e) => onNext(e)}
+                            onClick={e => onNext(e)}
                             className={cx(
                                 classes.navButton,
                                 hasTwoButtons ? classes.navButtons : classes.singleNavButton,
