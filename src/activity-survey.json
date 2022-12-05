@@ -48,13 +48,37 @@
         {
             "variableType": "COLLECTED",
             "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "SURVEYDATE",
+            "componentRef": "timepicker_startTime"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "SURVEYDATE",
+            "componentRef": "timepicker_endTime"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
                 "COLLECTED": [null],
                 "EDITED": [null],
                 "INPUTED": [null],
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "DEBUT",
+            "name": "STARTTIME",
             "componentRef": "law89hhb"
         },
         {
@@ -66,7 +90,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "FIN",
+            "name": "ENDTIME",
             "componentRef": "law89hhb"
         },
         {
@@ -161,7 +185,7 @@
             "depth": 1,
             "paginatedLoop": true,
             "conditionFilter": { "value": "true" },
-            "bindingDependencies": ["DEBUT", "FIN"],
+            "bindingDependencies": ["STARTTIME", "ENDTIME"],
             "loopDependencies": [],
             "iterations": { "value": "3", "type": "VTL" },
             "components": [
@@ -180,9 +204,9 @@
                     "label": "\"I - \" || \"Sequence\""
                 },
                 {
-                    "componentType": "Input",
-                    "bindingDependencies": ["DEBUT"],
-                    "response": { "name": "DEBUT" },
+                    "componentType": "Timepicker",
+                    "bindingDependencies": ["STARTTIME"],
+                    "response": { "name": "STARTTIME" },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -191,16 +215,16 @@
                         }
                     },
                     "conditionFilter": { "value": "true" },
-                    "id": "law89usi",
+                    "id": "timepicker_startTime",
                     "page": "4.2",
-                    "label": "\":arrow_right: 1. \" || \"Question1\"",
+                    "label": "\"Heure de début\"",
                     "mandatory": false,
                     "maxLength": 249
                 },
                 {
-                    "componentType": "Input",
-                    "bindingDependencies": ["FIN"],
-                    "response": { "name": "FIN" },
+                    "componentType": "Timepicker",
+                    "bindingDependencies": ["ENDTIME"],
+                    "response": { "name": "ENDTIME" },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -209,9 +233,9 @@
                         }
                     },
                     "conditionFilter": { "value": "true" },
-                    "id": "law82ezy",
-                    "page": "4.3",
-                    "label": "\":arrow_right: 2. \" || \"Question2\"",
+                    "id": "timepicker_endTime",
+                    "page": "4.2",
+                    "label": "\"Heure de fin\"",
                     "mandatory": false,
                     "maxLength": 249
                 }

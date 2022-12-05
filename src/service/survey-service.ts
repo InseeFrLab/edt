@@ -14,8 +14,8 @@ const enum FieldNameEnum {
     LASTNAME = "LASTNAME",
     FIRSTNAME = "FIRSTNAME",
     SURVEYDATE = "SURVEYDATE",
-    DEBUT = "DEBUT",
-    FIN = "FIN",
+    STARTTIME = "STARTTIME",
+    ENDTIME = "ENDTIME",
 }
 
 const initializeDatas = (): Promise<LunaticData[]> => {

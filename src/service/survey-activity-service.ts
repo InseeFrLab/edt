@@ -9,8 +9,8 @@ const getActivities = (idSurvey: string): Array<Activity> => {
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY);
     for (let i = 0; i < activityLoopSize; i++) {
         let activity: Activity = { label: t("common.activity.unknown-activity") + (i + 1) };
-        activity.dateDebut = getValue(idSurvey, FieldNameEnum.DEBUT, i)?.toString() || undefined;
-        activity.dateFin = getValue(idSurvey, FieldNameEnum.DEBUT, i)?.toString() || undefined;
+        activity.dateDebut = getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
+        activity.dateFin = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
         activities.push(activity);
     }
     return activities;
