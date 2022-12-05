@@ -8,8 +8,8 @@ import LoopNavigator from "./LoopNavigator/LoopNavigator";
 import LoopSurveyPageHeader from "./LoopSurveyPageHeader/LoopSurveyPageHeader";
 
 interface LoopSurveyPageProps {
-    onNext?(): void;
-    onPrevious?(): void;
+    onNext?(event?: React.MouseEvent): void;
+    onPrevious?(event?: React.MouseEvent): void;
     onValidate?(): void;
     onClose?(): void;
     className?: string;

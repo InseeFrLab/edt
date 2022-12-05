@@ -9,6 +9,20 @@ import { getNextLoopPage, getPreviousLoopPage, getStepData } from "service/loop-
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
 import { saveData } from "service/survey-service";
 
+
+import catIcon1 from "assets/illustration/activity-categories/1.svg";
+import catIcon2 from "assets/illustration/activity-categories/2.svg";
+import catIcon3 from "assets/illustration/activity-categories/3.svg";
+import catIcon4 from "assets/illustration/activity-categories/4.svg";
+import catIcon5 from "assets/illustration/activity-categories/5.svg";
+import catIcon6 from "assets/illustration/activity-categories/6.svg";
+import catIcon7 from "assets/illustration/activity-categories/7.svg";
+import catIcon8 from "assets/illustration/activity-categories/8.svg";
+
+import iconNoResult from "assets/illustration/error/puzzle.svg";
+import activites from "activites.json";
+import React from "react";
+
 const MainActivityPage = () => {
     const navigate = useNavigate();
     const context = useOutletContext() as OrchestratorContext;
@@ -16,6 +30,32 @@ const MainActivityPage = () => {
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
+
+    const [backClickEvent, setBackClickEvent] = React.useState<React.MouseEvent>();
+    const [nextClickEvent, setNextClickEvent] = React.useState<React.MouseEvent>();
+
+    const specificProps = {
+        categoriesIcons: [
+            catIcon1,
+            catIcon2,
+            catIcon3,
+            catIcon4,
+            catIcon5,
+            catIcon6,
+            catIcon7,
+            catIcon8,
+        ],
+        clickableListIconNoResult: iconNoResult,
+        activitiesRef: activites,
+        backClickEvent: backClickEvent,
+        nextClickEvent: nextClickEvent,
+        backClickCallback: () => {
+            saveAndLoopNavigate(getPreviousLoopPage(currentPage));
+        },
+        nextClickCallback: () => {
+            saveAndLoopNavigate(getNextLoopPage(currentPage))
+        },
+    };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
@@ -30,12 +70,12 @@ const MainActivityPage = () => {
         });
     };
 
-    const onNext = () => {
-        saveAndLoopNavigate(getNextLoopPage(currentPage));
+    const onNext = (e: React.MouseEvent) => {
+        setNextClickEvent(e);
     };
 
-    const onPrevious = () => {
-        saveAndLoopNavigate(getPreviousLoopPage(currentPage));
+    const onPrevious = (e: React.MouseEvent) => {
+        setBackClickEvent(e);
     };
 
     const onClose = () => {
@@ -62,6 +102,7 @@ const MainActivityPage = () => {
                     page={getLoopInitialPage(LoopEnum.ACTIVITY)}
                     subPage={(stepData.stepNumber + 1).toString()}
                     iteration={currentIteration}
+                    componentSpecificProps={specificProps}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>

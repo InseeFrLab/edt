@@ -66,8 +66,8 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "FIN",
-            "componentRef": "law89hhb"
+            "name": "MAINACTIVITY",
+            "componentRef": "activityselecter_mainactivity"
         },
         {
             "variableType": "CALCULATED",
@@ -198,9 +198,9 @@
                     "maxLength": 249
                 },
                 {
-                    "componentType": "Input",
-                    "bindingDependencies": ["FIN"],
-                    "response": { "name": "FIN" },
+                    "componentType": "ActivitySelecter",
+                    "bindingDependencies": ["MAINACTIVITY"],
+                    "response": { "name": "MAINACTIVITY" },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -209,11 +209,10 @@
                         }
                     },
                     "conditionFilter": { "value": "true" },
-                    "id": "law82ezy",
+                    "id": "activityselecter_mainactivity",
                     "page": "4.3",
-                    "label": "\":arrow_right: 2. \" || \"Question2\"",
-                    "mandatory": false,
-                    "maxLength": 249
+                    "label": "\"Que faisiez-vous ?\"",
+                    "mandatory": false
                 }
             ]
         },

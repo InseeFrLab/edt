@@ -6,8 +6,8 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { makeStylesEdt } from "lunatic-edt";
 
 interface LoopNavigatorProps {
-    onNext?(): void;
-    onPrevious?(): void;
+    onNext?(event?: React.MouseEvent): void;
+    onPrevious?(event?: React.MouseEvent): void;
     onValidate?(): void;
     nextLabel: string;
     previousLabel: string;
@@ -27,7 +27,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                         <Button
                             variant="outlined"
                             startIcon={<ArrowBackIosIcon />}
-                            onClick={onPrevious}
+                            onClick={(e) => onPrevious(e)}
                             className={cx(
                                 classes.navButton,
                                 hasTwoButtons ? classes.navButtons : classes.singleNavButton,
@@ -40,7 +40,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                         <Button
                             variant="outlined"
                             endIcon={<ArrowForwardIosIcon />}
-                            onClick={onNext}
+                            onClick={(e) => onNext(e)}
                             className={cx(
                                 classes.navButton,
                                 hasTwoButtons ? classes.navButtons : classes.singleNavButton,
