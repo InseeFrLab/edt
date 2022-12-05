@@ -12,6 +12,7 @@ interface LoopSurveyPageProps {
     onPrevious?(event?: React.MouseEvent): void;
     onValidate?(): void;
     onClose?(): void;
+    displayStepper?: boolean;
     className?: string;
     children: JSX.Element[] | JSX.Element;
     currentStepIcon: string;
@@ -30,7 +31,8 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
         onPrevious,
         onValidate,
         onClose,
-        className,
+        displayStepper =true,
+        className, 
         children,
     } = props;
 
@@ -39,7 +41,8 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
 
     return (
         <Box className={className}>
-            <LoopSurveyPageHeader onClose={onClose} label={t("common.stepper.add-activity")}>
+
+            {displayStepper && <LoopSurveyPageHeader onClose={onClose} label={t("common.stepper.add-activity")}>
                 <AddActivityStepper
                     numberOfSteps={loopActivityStepperData.length}
                     lastCompletedStepNumber={getLoopLastCompletedStep(
@@ -53,6 +56,7 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
                     currentStepLabel={currentStepLabel}
                 />
             </LoopSurveyPageHeader>
+            }
 
             {children}
 

@@ -33,6 +33,7 @@ const MainActivityPage = () => {
 
     const [backClickEvent, setBackClickEvent] = React.useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = React.useState<React.MouseEvent>();
+    const [displayStepper, setDisplayStepper] = React.useState<boolean>(true);
 
     const specificProps = {
         categoriesIcons: [
@@ -55,6 +56,7 @@ const MainActivityPage = () => {
         nextClickCallback: () => {
             saveAndLoopNavigate(getNextLoopPage(currentPage))
         },
+        setDisplayStepper: setDisplayStepper
     };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
@@ -93,6 +95,7 @@ const MainActivityPage = () => {
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}
+            displayStepper={displayStepper}
         >
             <FlexCenter>
                 <OrchestratorForStories
