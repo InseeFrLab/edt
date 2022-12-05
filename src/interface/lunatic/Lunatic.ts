@@ -39,6 +39,7 @@ export interface LunaticModelVariable {
     values?: Collected | MultiCollected;
     variableType: string;
     name: string;
+    componentRef?: string;
 }
 
 export interface OrchestratorContext {
