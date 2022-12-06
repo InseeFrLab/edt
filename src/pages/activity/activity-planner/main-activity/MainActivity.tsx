@@ -22,9 +22,12 @@ import iconNoResult from "assets/illustration/error/puzzle.svg";
 import activitesAutoCompleteRef from "activitesAutoCompleteRef.json";
 import categoriesAndActivitesNomenclature from "activitiesCategoriesNomenclature.json";
 import React from "react";
+import { useTranslation } from "react-i18next";
+import { ActivitySelecterSpecificProps } from "lunatic-edt";
 
 const MainActivityPage = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const context = useOutletContext() as OrchestratorContext;
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY;
     const stepData = getStepData(currentPage);
@@ -35,7 +38,7 @@ const MainActivityPage = () => {
     const [nextClickEvent, setNextClickEvent] = React.useState<React.MouseEvent>();
     const [displayStepper, setDisplayStepper] = React.useState<boolean>(true);
 
-    const specificProps = {
+    const specificProps: ActivitySelecterSpecificProps = {
         categoriesIcons: [
             catIcon1,
             catIcon2,
@@ -57,7 +60,19 @@ const MainActivityPage = () => {
             saveAndLoopNavigate(getNextLoopPage(currentPage));
         },
         setDisplayStepper: setDisplayStepper,
-        categoriesAndActivitesNomenclature: categoriesAndActivitesNomenclature
+        categoriesAndActivitesNomenclature: categoriesAndActivitesNomenclature,
+        labels: {
+            selectInCategory: t("component.activity-selecter.select-in-category"),
+            addActivity: t("component.activity-selecter.add-activity"),
+            alertMessage: t("component.activity-selecter.alert-message"),
+            alertIgnore: t("component.activity-selecter.alert-ignore"),
+            alertComplete: t("component.activity-selecter.alert-complete"),
+            clickableListPlaceholder: t("component.activity-selecter.clickable-list-placeholder"),
+            clickableListNotFoundLabel: t("component.activity-selecter.clickable-list-not-found-label"),
+            clickableListNotFoundComment: t("component.activity-selecter.clickable-list-not-found-comment"),
+            clickableListAddActivityButton: t("component.activity-selecter.clickable-list-add-activity-button"),
+            otherButton: t("component.activity-selecter.other-button"),
+        }
     };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
