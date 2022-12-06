@@ -239,7 +239,8 @@
                         "label": "Couper du bois, allumer le feu, arroser ",
                         "rang": 3,
                         "id": "341"
-                    },{
+                    },
+                    {
                         "label": "Vider les poubelles",
                         "rang": 3,
                         "id": "325"
@@ -505,7 +506,8 @@
                         "label": "Aider à des travaux de bricolage ou jardinage",
                         "rang": 3,
                         "id": "376"
-                    }, {
+                    },
+                    {
                         "label": "Aide aux personnes en difficulté",
                         "rang": 3,
                         "id": "542"
@@ -759,7 +761,7 @@
                 "label": "Informatique, réseaux sociaux",
                 "rang": 2,
                 "id": "670",
-                "subs": [   
+                "subs": [
                     {
                         "label": "Programmation, logiciels, réparation de l’ordinateur",
                         "rang": 3,

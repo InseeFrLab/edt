@@ -69,10 +69,14 @@ const MainActivityPage = () => {
             alertComplete: t("component.activity-selecter.alert-complete"),
             clickableListPlaceholder: t("component.activity-selecter.clickable-list-placeholder"),
             clickableListNotFoundLabel: t("component.activity-selecter.clickable-list-not-found-label"),
-            clickableListNotFoundComment: t("component.activity-selecter.clickable-list-not-found-comment"),
-            clickableListAddActivityButton: t("component.activity-selecter.clickable-list-add-activity-button"),
+            clickableListNotFoundComment: t(
+                "component.activity-selecter.clickable-list-not-found-comment",
+            ),
+            clickableListAddActivityButton: t(
+                "component.activity-selecter.clickable-list-add-activity-button",
+            ),
             otherButton: t("component.activity-selecter.other-button"),
-        }
+        },
     };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
