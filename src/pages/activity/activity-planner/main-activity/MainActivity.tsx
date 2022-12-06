@@ -19,7 +19,8 @@ import catIcon7 from "assets/illustration/activity-categories/7.svg";
 import catIcon8 from "assets/illustration/activity-categories/8.svg";
 
 import iconNoResult from "assets/illustration/error/puzzle.svg";
-import activites from "activites.json";
+import activitesAutoCompleteRef from "activitesAutoCompleteRef.json";
+import categoriesAndActivitesNomenclature from "activitiesCategoriesNomenclature.json";
 import React from "react";
 
 const MainActivityPage = () => {
@@ -46,7 +47,7 @@ const MainActivityPage = () => {
             catIcon8,
         ],
         clickableListIconNoResult: iconNoResult,
-        activitiesRef: activites,
+        activitesAutoCompleteRef: activitesAutoCompleteRef,
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
@@ -56,6 +57,7 @@ const MainActivityPage = () => {
             saveAndLoopNavigate(getNextLoopPage(currentPage));
         },
         setDisplayStepper: setDisplayStepper,
+        categoriesAndActivitesNomenclature: categoriesAndActivitesNomenclature
     };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
