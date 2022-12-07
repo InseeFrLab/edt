@@ -53,4 +53,5 @@ export interface LoopData {
     loopInitialSequencePage: string;
     loopInitialPage: string;
     loopInitialSubpage: string;
+    loopLastSubpage: string;
 }

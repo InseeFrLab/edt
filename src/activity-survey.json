@@ -234,7 +234,7 @@
                 "WITHSCREEN"
             ],
             "loopDependencies": [],
-            "iterations": { "value": "3", "type": "VTL" },
+            "iterations": { "value": "1", "type": "VTL" },
             "components": [
                 {
                     "componentType": "Sequence",

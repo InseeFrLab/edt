@@ -34,6 +34,11 @@ const ActivityPlannerPage = () => {
     };
 
     useEffect(() => {
+        //The loop have to have a default size in source but it's updated depending on the data array size
+        setLoopSize(context.source, LoopEnum.ACTIVITY, getLoopSize(context.idSurvey, LoopEnum.ACTIVITY));
+    }, []);
+
+    useEffect(() => {
         const currentIsChildDisplay = isChildDisplayed(location.pathname);
         if (currentIsChildDisplay !== isSubchildDisplayed) {
             setIsSubChildDisplayed(currentIsChildDisplay);

@@ -36,19 +36,11 @@ const WithScreenPage = () => {
         });
     };
 
-    const onValidate = () => {
-        saveAndGoToActivityPlanner();
-    };
-
-    const onClose = () => {
-        saveAndGoToActivityPlanner();
-    };
-
     return (
         <LoopSurveyPage
             onPrevious={onprevious}
-            onValidate={onValidate}
-            onClose={onClose}
+            onValidate={saveAndGoToActivityPlanner}
+            onClose={saveAndGoToActivityPlanner}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}

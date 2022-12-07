@@ -223,6 +223,11 @@ const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
             marginBottom: "1rem",
             fontSize: "20px",
         },
+        "& legend": {
+            backgroundColor: "transparent",
+            marginBottom: "1rem",
+            fontSize: "20px",
+        },
         "& .field-container": {
             margin: "1rem 0",
         },
@@ -232,10 +237,13 @@ const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
     },
     loaderWhenLoading: {
         display: "visible",
+        marginTop: "2rem",
     },
     orchestratorWhenLoading: {
         visibility: "hidden",
         height: "1px",
+        width: "1px",
+        overflow: "hidden",
     },
     orchestratorWhenLoaded: {
         visibility: "visible",

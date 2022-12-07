@@ -12,6 +12,7 @@ loopPageInfo.set(LoopEnum.ACTIVITY, {
     loopInitialSequencePage: "3",
     loopInitialPage: "4",
     loopInitialSubpage: "2",
+    loopLastSubpage: "7",
 });
 
 const getLoopInitialPage = (loop: LoopEnum): string => {
@@ -20,6 +21,10 @@ const getLoopInitialPage = (loop: LoopEnum): string => {
 
 const getLoopInitialSubPage = (loop: LoopEnum): string => {
     return loopPageInfo.get(loop)?.loopInitialSubpage || "";
+};
+
+const getLoopLastSubPage = (loop: LoopEnum): string => {
+    return loopPageInfo.get(loop)?.loopLastSubpage || "";
 };
 
 const getLoopInitialSequencePage = (loop: LoopEnum): string => {
@@ -45,8 +50,9 @@ const getCurrentLoopPage = (
     if (!loop || !loop.components) {
         return 0;
     }
-    const initialLoopSubPage = getLoopInitialSubPage(currentLoop);
-    let currentLoopSubpage = +initialLoopSubPage;
+    const initialLoopSubPage = +getLoopInitialSubPage(currentLoop);
+    const lastLoopSubPage = +getLoopLastSubPage(currentLoop);
+    let currentLoopSubpage = initialLoopSubPage;
     for (const component of loop.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
@@ -68,6 +74,10 @@ const getCurrentLoopPage = (
             }
         }
     }
+    if (currentLoopSubpage > lastLoopSubPage) {
+        //means we have fully completed iteration, in this case we want to go back to the first question of the loopPage
+        return initialLoopSubPage;
+    }
     return currentLoopSubpage;
 };
 
@@ -77,9 +87,9 @@ const getLoopLastCompletedStep = (
     iteration: number,
 ): number => {
     const data = getData(idSurvey);
-    const currentLoopPage = getCurrentLoopPage(data, currentLoop, iteration);
+    const currentLastCompletedLoopPage = getCurrentLoopPage(data, currentLoop, iteration) - 1;
     const page = mappingPageOrchestrator.find(
-        page => page.surveySubPage && page.surveySubPage === currentLoopPage.toString(),
+        page => page.surveySubPage && page.surveySubPage === currentLastCompletedLoopPage.toString(),
     );
     return page?.surveyStep ?? 0;
 };
