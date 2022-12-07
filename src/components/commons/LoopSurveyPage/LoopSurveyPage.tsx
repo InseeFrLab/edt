@@ -15,10 +15,10 @@ interface LoopSurveyPageProps {
     displayStepper?: boolean;
     className?: string;
     children: JSX.Element[] | JSX.Element;
-    currentStepIcon: string;
-    currentStepIconAlt: string;
-    currentStepNumber: number;
-    currentStepLabel: string;
+    currentStepIcon?: string;
+    currentStepIconAlt?: string;
+    currentStepNumber?: number;
+    currentStepLabel?: string;
 }
 
 const LoopSurveyPage = (props: LoopSurveyPageProps) => {
@@ -41,22 +41,26 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
 
     return (
         <Box className={className}>
-            {displayStepper && (
-                <LoopSurveyPageHeader onClose={onClose} label={t("common.stepper.add-activity")}>
-                    <AddActivityStepper
-                        numberOfSteps={loopActivityStepperData.length}
-                        lastCompletedStepNumber={getLoopLastCompletedStep(
-                            idSurvey ?? "",
-                            LoopEnum.ACTIVITY,
-                            iteration ? +iteration : 0,
-                        )}
-                        currentStepIcon={currentStepIcon}
-                        currentStepIconAlt={currentStepIconAlt}
-                        currentStepNumber={currentStepNumber}
-                        currentStepLabel={currentStepLabel}
-                    />
-                </LoopSurveyPageHeader>
-            )}
+            {displayStepper &&
+                currentStepIcon &&
+                currentStepIconAlt &&
+                currentStepNumber &&
+                currentStepLabel && (
+                    <LoopSurveyPageHeader onClose={onClose} label={t("common.stepper.add-activity")}>
+                        <AddActivityStepper
+                            numberOfSteps={loopActivityStepperData.length}
+                            lastCompletedStepNumber={getLoopLastCompletedStep(
+                                idSurvey ?? "",
+                                LoopEnum.ACTIVITY,
+                                iteration ? +iteration : 0,
+                            )}
+                            currentStepIcon={currentStepIcon}
+                            currentStepIconAlt={currentStepIconAlt}
+                            currentStepNumber={currentStepNumber}
+                            currentStepLabel={currentStepLabel}
+                        />
+                    </LoopSurveyPageHeader>
+                )}
 
             {children}
 

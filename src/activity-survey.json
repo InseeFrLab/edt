@@ -78,8 +78,20 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "HASSECONDARYACTIVITY",
-            "componentRef": "checkboxboolean_hassecondaryactivity"
+            "name": "WITHSECONDARYACTIVITY",
+            "componentRef": "checkboxboolean_withsecondaryactivity"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "SECONDARYACTIVITY",
+            "componentRef": "checkboxone_secondaryactivity"
         },
         {
             "variableType": "COLLECTED",
@@ -104,6 +116,66 @@
             },
             "name": "WITHSOMEONE",
             "componentRef": "checkboxboolean_withsomeone"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "COUPLE",
+            "componentRef": "checkboxgroup_presentpeople"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "PARENTS",
+            "componentRef": "checkboxgroup_presentpeople"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "CHILD",
+            "componentRef": "checkboxgroup_presentpeople"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "OTHERKNOWN",
+            "componentRef": "checkboxgroup_presentpeople"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "OTHER",
+            "componentRef": "checkboxgroup_presentpeople"
         },
         {
             "variableType": "COLLECTED",
@@ -220,7 +292,7 @@
             "id": "law89hhb",
             "componentType": "Loop",
             "page": "4",
-            "maxPage": "7",
+            "maxPage": "9",
             "depth": 1,
             "paginatedLoop": true,
             "conditionFilter": { "value": "true" },
@@ -228,9 +300,15 @@
                 "STARTTIME",
                 "ENDTIME",
                 "MAINACTIVITY",
-                "HASSECONDARYACTIVITY",
+                "WITHSECONDARYACTIVITY",
+                "SECONDARYACTIVITY",
                 "PLACE",
                 "WITHSOMEONE",
+                "COUPLE",
+                "PARENTS",
+                "CHILD",
+                "OTHERKNOWN",
+                "OTHER",
                 "WITHSCREEN"
             ],
             "loopDependencies": [],
@@ -305,8 +383,8 @@
                 },
                 {
                     "componentType": "CheckboxBoolean",
-                    "bindingDependencies": ["HASSECONDARYACTIVITY"],
-                    "response": { "name": "HASSECONDARYACTIVITY" },
+                    "bindingDependencies": ["WITHSECONDARYACTIVITY"],
+                    "response": { "name": "WITHSECONDARYACTIVITY" },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -315,7 +393,7 @@
                         }
                     },
                     "conditionFilter": { "value": "true" },
-                    "id": "checkboxboolean_hassecondaryactivity",
+                    "id": "checkboxboolean_withsecondaryactivity",
                     "page": "4.4",
                     "label": "\"Faisiez-vous autre chose en même temps ?\"",
                     "mandatory": false
@@ -369,6 +447,103 @@
                     "id": "checkboxboolean_withscreen",
                     "page": "4.7",
                     "label": "\"Avez-vous utilisé un ordinateur, un smartphone, une tablette ou un autre objet connecté à internet ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "CheckboxOne",
+                    "bindingDependencies": ["SECONDARYACTIVITY"],
+                    "response": { "name": "SECONDARYACTIVITY" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "options": [
+                        {
+                            "label": "\"Écouter la radio, des podcasts ou de la musique\"",
+                            "value": "636/637/638"
+                        },
+                        {
+                            "label": "\"Regarder la télévision, des DVD, des vidéos en ligne\"",
+                            "value": "634,635"
+                        },
+                        { "label": "Conversation", "value": "521" },
+                        {
+                            "label": "\"Surf sur Internet, visite de sites pour s'informer (hors journaux)\"",
+                            "value": "673"
+                        },
+                        {
+                            "label": "\"Publier ou surfer sur les médias sociaux (Facebook, Instagram, Twitter, Tumblr, LinkedIn, ...)\"",
+                            "value": "674"
+                        },
+                        { "label": "\"Lecture de journaux, revues\"", "value": "633" },
+                        { "label": "\"Lecture de livres\"", "value": "632" },
+                        { "label": "\"Repas\"", "value": "todetermine" },
+                        { "label": "\"Travail professionnel\"", "value": "211" },
+                        { "label": "\"Se détendre, fumer\"", "value": "641" },
+                        { "label": "\"Conversations avec les enfants, lectures\"", "value": "422" },
+                        { "label": "\"Repas, douche, habillage des enfants\"", "value": "411" },
+                        { "label": "\"Surveiller les devoirs des enfants\"", "value": "421" }
+                    ],
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxone_secondaryactivity",
+                    "page": "4.8",
+                    "label": "\"Que faisiez-vous en même temps ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "CheckboxGroup",
+                    "bindingDependencies": ["COUPLE", "PARENTS", "CHILD", "OTHERKNOWN", "OTHER"],
+                    "responses": [
+                        {
+                            "response": {
+                                "name": "COUPLE"
+                            },
+                            "id": "1",
+                            "label": "\"Votre conjoint\""
+                        },
+                        {
+                            "response": {
+                                "name": "PARENTS"
+                            },
+                            "id": "2",
+                            "label": "\"Votre Mère, votre Père\""
+                        },
+                        {
+                            "response": {
+                                "name": "CHILD"
+                            },
+                            "id": "3",
+                            "label": "\"enfant(s) du ménage\""
+                        },
+                        {
+                            "response": {
+                                "name": "OTHERKNOWN"
+                            },
+                            "id": "4",
+                            "label": "\"Autre(s) personne(s) du ménage\""
+                        },
+                        {
+                            "response": {
+                                "name": "OTHER"
+                            },
+                            "id": "5",
+                            "label": "\"Autre(s) Personne(s) que vous connaissez\""
+                        }
+                    ],
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxgroup_presentpeople",
+                    "page": "4.9",
+                    "label": "\"En présence de qui étiez-vous ?\"",
                     "mandatory": false
                 }
             ]

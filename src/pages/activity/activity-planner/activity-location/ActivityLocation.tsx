@@ -7,7 +7,7 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getNextLoopPage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
-import { saveData } from "service/survey-service";
+import { FieldNameEnum, getValue, saveData } from "service/survey-service";
 
 const ActivityLocationPage = () => {
     const navigate = useNavigate();
@@ -17,16 +17,20 @@ const ActivityLocationPage = () => {
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
+    const loopNavigate = (page: EdtRoutesNameEnum) => {
+        navigate(
+            getLoopParameterizedNavigatePath(
+                page,
+                context.idSurvey,
+                LoopEnum.ACTIVITY,
+                currentIteration,
+            ),
+        );
+    };
+
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getLoopParameterizedNavigatePath(
-                    page,
-                    context.idSurvey,
-                    LoopEnum.ACTIVITY,
-                    currentIteration,
-                ),
-            );
+            loopNavigate(page);
         });
     };
 
@@ -41,7 +45,18 @@ const ActivityLocationPage = () => {
     };
 
     const onPrevious = () => {
-        saveAndLoopNavigate(getPreviousLoopPage(currentPage));
+        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            const hasSecondaryActivity = getValue(
+                context.idSurvey,
+                FieldNameEnum.WITHSECONDARYACTIVITY,
+                currentIteration,
+            );
+            if (hasSecondaryActivity) {
+                loopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION);
+            } else {
+                loopNavigate(getPreviousLoopPage(currentPage));
+            }
+        });
     };
 
     return (

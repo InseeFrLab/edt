@@ -1,32 +1,40 @@
+import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { Info } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getNextLoopPage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
-import { saveData } from "service/survey-service";
+import { FieldNameEnum, getValue, saveData } from "service/survey-service";
 
 const SecondaryActivityPage = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const context = useOutletContext() as OrchestratorContext;
     const currentPage = EdtRoutesNameEnum.SECONDARY_ACTIVITY;
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
+    const loopNavigate = (page: EdtRoutesNameEnum) => {
+        navigate(
+            getLoopParameterizedNavigatePath(
+                page,
+                context.idSurvey,
+                LoopEnum.ACTIVITY,
+                currentIteration,
+            ),
+        );
+    };
+
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getLoopParameterizedNavigatePath(
-                    page,
-                    context.idSurvey,
-                    LoopEnum.ACTIVITY,
-                    currentIteration,
-                ),
-            );
+            loopNavigate(page);
         });
     };
 
@@ -37,7 +45,18 @@ const SecondaryActivityPage = () => {
     };
 
     const onNext = () => {
-        saveAndLoopNavigate(getNextLoopPage(currentPage));
+        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            const hasSecondaryActivity = getValue(
+                context.idSurvey,
+                FieldNameEnum.WITHSECONDARYACTIVITY,
+                currentIteration,
+            );
+            if (hasSecondaryActivity) {
+                loopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION);
+            } else {
+                loopNavigate(getNextLoopPage(currentPage));
+            }
+        });
     };
 
     const onPrevious = () => {
@@ -63,6 +82,14 @@ const SecondaryActivityPage = () => {
                     subPage={(stepData.stepNumber + 1).toString()}
                     iteration={currentIteration}
                 ></OrchestratorForStories>
+            </FlexCenter>
+            <FlexCenter>
+                <Info
+                    normalText={t("page.secondary-activity.info-light")}
+                    boldText={t("page.secondary-activity.info-bold")}
+                    infoIcon={InfoIcon}
+                    infoIconAlt={t("accessibility.asset.info.info-alt")}
+                />
             </FlexCenter>
         </LoopSurveyPage>
     );

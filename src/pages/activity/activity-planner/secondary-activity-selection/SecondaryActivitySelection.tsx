@@ -5,15 +5,12 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
-import { FieldNameEnum, getValue, saveData } from "service/survey-service";
+import { saveData } from "service/survey-service";
 
-const WithScreenPage = () => {
+const SecondaryActivitySelectionPage = () => {
     const navigate = useNavigate();
     const context = useOutletContext() as OrchestratorContext;
-    const currentPage = EdtRoutesNameEnum.WITH_SCREEN;
-    const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
@@ -28,46 +25,35 @@ const WithScreenPage = () => {
         );
     };
 
+    const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
+        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            loopNavigate(page);
+        });
+    };
+
     const saveAndGoToActivityPlanner = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
             navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
         });
     };
 
-    const onprevious = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                const isWithSomeone = getValue(
-                    context.idSurvey,
-                    FieldNameEnum.WITHSOMEONE,
-                    currentIteration,
-                );
-                if (isWithSomeone) {
-                    loopNavigate(EdtRoutesNameEnum.WITH_SOMEONE_SELECTION);
-                } else {
-                    loopNavigate(getPreviousLoopPage(currentPage));
-                }
-            });
-        });
+    const onNext = () => {
+        saveAndLoopNavigate(EdtRoutesNameEnum.ACTIVITY_LOCATION);
+    };
+
+    const onPrevious = () => {
+        saveAndLoopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY);
     };
 
     return (
-        <LoopSurveyPage
-            onPrevious={onprevious}
-            onValidate={saveAndGoToActivityPlanner}
-            onClose={saveAndGoToActivityPlanner}
-            currentStepIcon={stepData.stepIcon}
-            currentStepIconAlt={stepData.stepIconAlt}
-            currentStepNumber={stepData.stepNumber}
-            currentStepLabel={stepData.stepLabel}
-        >
+        <LoopSurveyPage onNext={onNext} onPrevious={onPrevious} onClose={saveAndGoToActivityPlanner}>
             <FlexCenter>
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY)}
-                    subPage={(stepData.stepNumber + 1).toString()}
+                    subPage={"8"}
                     iteration={currentIteration}
                 ></OrchestratorForStories>
             </FlexCenter>
@@ -75,4 +61,4 @@ const WithScreenPage = () => {
     );
 };
 
-export default WithScreenPage;
+export default SecondaryActivitySelectionPage;

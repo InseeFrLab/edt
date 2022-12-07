@@ -3,8 +3,10 @@ import ActivityDurationPage from "pages/activity/activity-planner/activity-durat
 import ActivityLocationPage from "pages/activity/activity-planner/activity-location/ActivityLocation";
 import ActivityPlannerPage from "pages/activity/activity-planner/ActivityPlanner";
 import MainActivityPage from "pages/activity/activity-planner/main-activity/MainActivity";
+import SecondaryActivitySelectionPage from "pages/activity/activity-planner/secondary-activity-selection/SecondaryActivitySelection";
 import SecondaryActivityPage from "pages/activity/activity-planner/secondary-activity/SecondaryActivity";
 import WithScreenPage from "pages/activity/activity-planner/with-screen/WithScreen";
+import WithSomeoneSelectionPage from "pages/activity/activity-planner/with-someone-selection/WithSomeoneSelection";
 import WithSomeonePage from "pages/activity/activity-planner/with-someone/WithSomeone";
 import DayOfSurveyPage from "pages/day-of-survey/DayOfSurvey";
 import ErrorPage from "pages/error/Error";
@@ -44,6 +46,14 @@ const EdtRoutes = (): JSX.Element => {
                         />
                         <Route path={EdtRoutesNameEnum.WITH_SOMEONE} element={<WithSomeonePage />} />
                         <Route path={EdtRoutesNameEnum.WITH_SCREEN} element={<WithScreenPage />} />
+                        <Route
+                            path={EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION}
+                            element={<SecondaryActivitySelectionPage />}
+                        />
+                        <Route
+                            path={EdtRoutesNameEnum.WITH_SOMEONE_SELECTION}
+                            element={<WithSomeoneSelectionPage />}
+                        />
                     </Route>
                 </Route>
                 <Route path={EdtRoutesNameEnum.WORK_TIME} element={<WorkTimePage />}>
