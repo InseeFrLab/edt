@@ -140,11 +140,10 @@ const ActivityPlannerPage = () => {
                         ) : (
                             <>
                                 {activities.map((activity, iteration) => (
-                                    <FlexCenter>
+                                    <FlexCenter key={"activity-" + iteration}>
                                         <ActivityCard
                                             labelledBy={""}
                                             describedBy={""}
-                                            key={"activity-" + iteration}
                                             label={activity.label}
                                             onClick={() => navToActivity(iteration)}
                                         />

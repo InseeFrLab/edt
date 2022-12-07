@@ -18,18 +18,6 @@
                 "FORCED": null,
                 "PREVIOUS": null
             },
-            "name": "LASTNAME",
-            "componentRef": "inputtext_lastName"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": null,
-                "EDITED": null,
-                "INPUTED": null,
-                "FORCED": null,
-                "PREVIOUS": null
-            },
             "name": "FIRSTNAME",
             "componentRef": "inputtext_firstName"
         },
@@ -80,6 +68,54 @@
             },
             "name": "MAINACTIVITY",
             "componentRef": "activityselecter_mainactivity"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "HASSECONDARYACTIVITY",
+            "componentRef": "checkboxboolean_hassecondaryactivity"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "PLACE",
+            "componentRef": "input_place"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "WITHSOMEONE",
+            "componentRef": "checkboxboolean_withsomeone"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "WITHSCREEN",
+            "componentRef": "checkboxboolean_withscreen"
         },
         {
             "variableType": "CALCULATED",
@@ -184,13 +220,21 @@
             "id": "law89hhb",
             "componentType": "Loop",
             "page": "4",
-            "maxPage": "3",
+            "maxPage": "7",
             "depth": 1,
             "paginatedLoop": true,
             "conditionFilter": { "value": "true" },
-            "bindingDependencies": ["STARTTIME", "ENDTIME", "MAINACTIVITY"],
+            "bindingDependencies": [
+                "STARTTIME",
+                "ENDTIME",
+                "MAINACTIVITY",
+                "HASSECONDARYACTIVITY",
+                "PLACE",
+                "WITHSOMEONE",
+                "WITHSCREEN"
+            ],
             "loopDependencies": [],
-            "iterations": { "value": "1", "type": "VTL" },
+            "iterations": { "value": "3", "type": "VTL" },
             "components": [
                 {
                     "componentType": "Sequence",
@@ -257,6 +301,74 @@
                     "id": "activityselecter_mainactivity",
                     "page": "4.3",
                     "label": "\"Que faisiez-vous ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "CheckboxBoolean",
+                    "bindingDependencies": ["HASSECONDARYACTIVITY"],
+                    "response": { "name": "HASSECONDARYACTIVITY" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxboolean_hassecondaryactivity",
+                    "page": "4.4",
+                    "label": "\"Faisiez-vous autre chose en même temps ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "Input",
+                    "bindingDependencies": ["PLACE"],
+                    "response": { "name": "PLACE" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "input_place",
+                    "page": "4.5",
+                    "label": "\"Où étiez-vous ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "CheckboxBoolean",
+                    "bindingDependencies": ["WITHSOMEONE"],
+                    "response": { "name": "WITHSOMEONE" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxboolean_withsomeone",
+                    "page": "4.6",
+                    "label": "\"Etiez-vous en compagnie de quelqu'un ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "CheckboxBoolean",
+                    "bindingDependencies": ["WITHSCREEN"],
+                    "response": { "name": "WITHSCREEN" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxboolean_withscreen",
+                    "page": "4.7",
+                    "label": "\"Avez-vous utilisé un ordinateur, un smartphone, une tablette ou un autre objet connecté à internet ?\"",
                     "mandatory": false
                 }
             ]
