@@ -399,7 +399,7 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "Input",
+                    "componentType": "LocationSelecter",
                     "bindingDependencies": ["PLACE"],
                     "response": { "name": "PLACE" },
                     "hierarchy": {
@@ -413,7 +413,15 @@
                     "id": "input_place",
                     "page": "4.5",
                     "label": "\"Où étiez-vous ?\"",
-                    "mandatory": false
+                    "mandatory": false,
+                    "options": [
+                        { "label": "\"Chez soi\"", "value": "1" },
+                        { "label": "\"Lieu de travail ou d’études\"", "value": "2" },
+                        { "label": "\"Résidence secondaire, location de vacances\"", "value": "3" },
+                        { "label": "\"Restaurant, café, bar\"", "value": "4" },
+                        { "label": "\"Chez une autre personne (ami, voisin, famille…)\"", "value": "5" },
+                        { "label": "\"Autre (commerces, loisirs, dans la rue…)\"", "value": "6" }
+                    ]
                 },
                 {
                     "componentType": "CheckboxBoolean",

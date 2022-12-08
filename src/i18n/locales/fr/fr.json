@@ -126,6 +126,11 @@
             "clickable-list-not-found-comment": "Vous pourrez l'ajouter en cliquant sur le bouton ci-dessous, ou le bouton + ci-dessus",
             "clickable-list-add-activity-button": "Ajouter l'activité",
             "other-button": "Autre ?"
+        },
+        "location-selecter": {
+            "alert-message": "Aucun lieu n’a été renseigné",
+            "alert-ignore": "Ignorer",
+            "alert-complete": "Compléter"
         }
     }
 }
