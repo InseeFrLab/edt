@@ -1,5 +1,5 @@
 export interface Activity {
     label: string;
-    dateDebut?: string;
-    dateFin?: string;
+    startTime?: string;
+    endTime?: string;
 }
