@@ -20,7 +20,7 @@ import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-ser
 const ActivityPlannerPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);

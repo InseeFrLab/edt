@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 const MainActivityPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY;
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
@@ -79,7 +79,9 @@ const MainActivityPage = () => {
             clickableListAddActivityButton: t(
                 "component.activity-selecter.clickable-list-add-activity-button",
             ),
-            clickableListIconNoResultAlt: t("component.activity-selecter.clickable-list-icon-no-result-alt"),
+            clickableListIconNoResultAlt: t(
+                "component.activity-selecter.clickable-list-icon-no-result-alt",
+            ),
             otherButton: t("component.activity-selecter.other-button"),
         },
     };

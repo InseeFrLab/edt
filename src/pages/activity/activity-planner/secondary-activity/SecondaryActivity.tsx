@@ -15,7 +15,7 @@ import { FieldNameEnum, getValue, saveData } from "service/survey-service";
 const SecondaryActivityPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
     const currentPage = EdtRoutesNameEnum.SECONDARY_ACTIVITY;
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;

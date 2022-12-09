@@ -11,7 +11,7 @@ import { FieldNameEnum, getValue, saveData } from "service/survey-service";
 
 const WithScreenPage = () => {
     const navigate = useNavigate();
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
     const currentPage = EdtRoutesNameEnum.WITH_SCREEN;
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;

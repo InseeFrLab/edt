@@ -12,7 +12,7 @@ import { getActivities } from "service/survey-activity-service";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
     const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
