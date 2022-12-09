@@ -8,52 +8,48 @@ import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
 import { saveData } from "service/survey-service";
 
-const SecondaryActivitySelectionPage = () => {
+const MainActivityGoalPage = () => {
     const navigate = useNavigate();
     const context = useOutletContext() as OrchestratorContext;
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
-    const loopNavigate = (page: EdtRoutesNameEnum) => {
-        navigate(
-            getLoopParameterizedNavigatePath(
-                page,
-                context.idSurvey,
-                LoopEnum.ACTIVITY,
-                currentIteration,
-            ),
-        );
-    };
-
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            loopNavigate(page);
+            navigate(
+                getLoopParameterizedNavigatePath(
+                    page,
+                    context.idSurvey,
+                    LoopEnum.ACTIVITY,
+                    currentIteration,
+                ),
+            );
         });
     };
 
-    const saveAndGoToActivityPlanner = () => {
+    const onNext = () => {
+        saveAndLoopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY);
+    };
+
+    const onPrevious = () => {
+        saveAndLoopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY);
+    };
+
+    const onClose = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
             navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
         });
     };
 
-    const onNext = () => {
-        saveAndLoopNavigate(EdtRoutesNameEnum.ACTIVITY_LOCATION);
-    };
-
-    const onPrevious = () => {
-        saveAndLoopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY);
-    };
-
     return (
-        <LoopSurveyPage onNext={onNext} onPrevious={onPrevious} onClose={saveAndGoToActivityPlanner}>
+        <LoopSurveyPage onNext={onNext} onPrevious={onPrevious} onClose={onClose}>
             <FlexCenter>
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY)}
-                    subPage={"9"}
+                    subPage={"8"}
                     iteration={currentIteration}
                 ></OrchestratorForStories>
             </FlexCenter>
@@ -61,4 +57,4 @@ const SecondaryActivitySelectionPage = () => {
     );
 };
 
-export default SecondaryActivitySelectionPage;
+export default MainActivityGoalPage;

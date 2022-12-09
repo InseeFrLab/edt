@@ -2,6 +2,7 @@ import ActivityPage from "pages/activity/Activity";
 import ActivityDurationPage from "pages/activity/activity-planner/activity-duration/ActivityDuration";
 import ActivityLocationPage from "pages/activity/activity-planner/activity-location/ActivityLocation";
 import ActivityPlannerPage from "pages/activity/activity-planner/ActivityPlanner";
+import MainActivityGoalPage from "pages/activity/activity-planner/main-activity-goal/MainActivityGoal";
 import MainActivityPage from "pages/activity/activity-planner/main-activity/MainActivity";
 import SecondaryActivitySelectionPage from "pages/activity/activity-planner/secondary-activity-selection/SecondaryActivitySelection";
 import SecondaryActivityPage from "pages/activity/activity-planner/secondary-activity/SecondaryActivity";
@@ -46,6 +47,10 @@ const EdtRoutes = (): JSX.Element => {
                         />
                         <Route path={EdtRoutesNameEnum.WITH_SOMEONE} element={<WithSomeonePage />} />
                         <Route path={EdtRoutesNameEnum.WITH_SCREEN} element={<WithScreenPage />} />
+                        <Route
+                            path={EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL}
+                            element={<MainActivityGoalPage />}
+                        />
                         <Route
                             path={EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION}
                             element={<SecondaryActivitySelectionPage />}

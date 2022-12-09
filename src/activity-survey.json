@@ -78,6 +78,18 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
+            "name": "GOAL",
+            "componentRef": "goalselecter_goal"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
             "name": "WITHSECONDARYACTIVITY",
             "componentRef": "checkboxboolean_withsecondaryactivity"
         },
@@ -458,6 +470,31 @@
                     "mandatory": false
                 },
                 {
+                    "componentType": "Input",
+                    "bindingDependencies": ["GOAL"],
+                    "response": { "name": "GOAL" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "goalselecter_goal",
+                    "page": "4.8",
+                    "label": "\"Dans quel but avez-vous fait cette activité ?\"",
+                    "mandatory": false,
+                    "options": [
+                        { "label": "\"Chez soi\"", "value": "1" },
+                        { "label": "\"Lieu de travail ou d’études\"", "value": "2" },
+                        { "label": "\"Résidence secondaire, location de vacances\"", "value": "3" },
+                        { "label": "\"Restaurant, café, bar\"", "value": "4" },
+                        { "label": "\"Chez une autre personne (ami, voisin, famille…)\"", "value": "5" },
+                        { "label": "\"Autre (commerces, loisirs, dans la rue…)\"", "value": "6" }
+                    ]
+                },
+                {
                     "componentType": "CheckboxOne",
                     "bindingDependencies": ["SECONDARYACTIVITY"],
                     "response": { "name": "SECONDARYACTIVITY" },
@@ -497,7 +534,7 @@
                     ],
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxone_secondaryactivity",
-                    "page": "4.8",
+                    "page": "4.9",
                     "label": "\"Que faisiez-vous en même temps ?\"",
                     "mandatory": false
                 },
@@ -550,7 +587,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxgroup_presentpeople",
-                    "page": "4.9",
+                    "page": "4.10",
                     "label": "\"En présence de qui étiez-vous ?\"",
                     "mandatory": false
                 }

@@ -17,6 +17,7 @@ const enum FieldNameEnum {
     STARTTIME = "STARTTIME",
     ENDTIME = "ENDTIME",
     MAINACTIVITY = "MAINACTIVITY",
+    GOAL = "GOAL",
     WITHSECONDARYACTIVITY = "WITHSECONDARYACTIVITY",
     SECONDARYACTIVITY = "SECONDARYACTIVITY",
     PLACE = "PLACE",
@@ -88,7 +89,7 @@ const getComponentId = (variableName: FieldNameEnum, source: LunaticModel) => {
 };
 
 const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
-    if (iteration) {
+    if (iteration != null) {
         let value = datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
         return Array.isArray(value) ? value[iteration] : null;
     } else {

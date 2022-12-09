@@ -18,12 +18,12 @@ import catIcon500 from "assets/illustration/activity-categories/6.svg";
 import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
 
-import iconNoResult from "assets/illustration/error/puzzle.svg";
 import activitesAutoCompleteRef from "activitesAutoCompleteRef.json";
 import categoriesAndActivitesNomenclature from "activitiesCategoriesNomenclature.json";
+import iconNoResult from "assets/illustration/error/puzzle.svg";
+import { ActivitySelecterSpecificProps } from "lunatic-edt";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ActivitySelecterSpecificProps } from "lunatic-edt";
 
 const MainActivityPage = () => {
     const navigate = useNavigate();
@@ -94,6 +94,7 @@ const MainActivityPage = () => {
 
     const onNext = (e: React.MouseEvent) => {
         setNextClickEvent(e);
+        saveAndLoopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
     };
 
     const onPrevious = (e: React.MouseEvent) => {

@@ -49,7 +49,7 @@ const WithSomeoneSelectionPage = () => {
                     data={context.data}
                     callbackHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY)}
-                    subPage={"9"}
+                    subPage={"10"}
                     iteration={currentIteration}
                 ></OrchestratorForStories>
             </FlexCenter>

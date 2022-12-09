@@ -12,6 +12,7 @@ const enum EdtRoutesNameEnum {
     ACTIVITY_PLANNER = "activity-planner",
     ACTIVITY_DURATION = "activity-duration/:iteration",
     MAIN_ACTIVITY = "main-activity/:iteration",
+    MAIN_ACTIVITY_GOAL = "main-activity-goal/:iteration",
     SECONDARY_ACTIVITY = "secondary-activity/:iteration",
     SECONDARY_ACTIVITY_SELECTION = "secondary-activity-selection/:iteration",
     ACTIVITY_LOCATION = "activity-location/:iteration",
@@ -89,10 +90,18 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY_PLANNER,
-        page: EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+        page: EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
         surveySource: "activity-survey.json",
         surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY),
         surveySubPage: "8",
+        surveyStep: 2,
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY_PLANNER,
+        page: EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+        surveySource: "activity-survey.json",
+        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY),
+        surveySubPage: "9",
         surveyStep: 3,
     },
     {
@@ -100,7 +109,7 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         page: EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
         surveySource: "activity-survey.json",
         surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY),
-        surveySubPage: "9",
+        surveySubPage: "10",
         surveyStep: 5,
     },
     {
