@@ -122,8 +122,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         pager.previous = undefined;
         pager.attempts = 10;
         if (pager.cible === pager.currentPage()) {
-            console.log(`pager.cible : ${pager.cible} , pager.currentPage : ${pager.currentPage()}`);
-            console.log("loaded true");
             setLoaded(true);
             return;
         }
@@ -138,9 +136,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     return;
                 }
                 if (pager.cible === pager.currentPage()) {
-                    console.log(
-                        `pager.cible : ${pager.cible} , pager.currentPage : ${pager.currentPage()}`,
-                    );
                     setLoaded(true);
                     return;
                 }

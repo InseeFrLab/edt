@@ -493,7 +493,7 @@
                     ]
                 },
                 {
-                    "componentType": "CheckboxOne",
+                    "componentType": "CheckboxOneEdt",
                     "bindingDependencies": ["SECONDARYACTIVITY"],
                     "response": { "name": "SECONDARYACTIVITY" },
                     "hierarchy": {
@@ -537,7 +537,7 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "CheckboxGroup",
+                    "componentType": "CheckboxGroupEdt",
                     "bindingDependencies": ["COUPLE", "PARENTS", "CHILD", "OTHERKNOWN", "OTHER"],
                     "responses": [
                         {
@@ -559,7 +559,7 @@
                                 "name": "CHILD"
                             },
                             "id": "3",
-                            "label": "\"enfant(s) du ménage\""
+                            "label": "\"Enfant(s) du ménage\""
                         },
                         {
                             "response": {
