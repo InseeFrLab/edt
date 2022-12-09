@@ -9,7 +9,7 @@ import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-ser
 const WeeklyPlannerPage = () => {
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
 
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
 
     const saveAndGoHome = (): void => {
@@ -31,7 +31,7 @@ const WeeklyPlannerPage = () => {
         }
     };
 
-    const navBack = () => {
+    const navBack = (): void => {
         if (displayDayOverview) {
             save();
             setDisplayDayOverview(false);
