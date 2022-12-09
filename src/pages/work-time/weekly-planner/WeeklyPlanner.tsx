@@ -22,16 +22,7 @@ const WeeklyPlannerPage = () => {
         saveData(context.idSurvey, callbackHolder.getData());
     };
 
-    const validate = () => {
-        if (displayDayOverview) {
-            save();
-            setDisplayDayOverview(false);
-        } else {
-            saveAndGoHome();
-        }
-    };
-
-    const navBack = (): void => {
+    const validateAndNav = (): void => {
         if (displayDayOverview) {
             save();
             setDisplayDayOverview(false);
@@ -48,8 +39,8 @@ const WeeklyPlannerPage = () => {
 
     return (
         <SurveyPage
-            validate={validate}
-            onNavigateBack={navBack}
+            validate={validateAndNav}
+            onNavigateBack={validateAndNav}
             onEdit={onEdit}
             firstName={getPrintedFirstName(context.idSurvey)}
             simpleHeader={displayDayOverview}

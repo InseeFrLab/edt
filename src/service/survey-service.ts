@@ -77,10 +77,11 @@ const getCurrentPageOfVariable = (
     if (variable) {
         const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
         if (value !== undefined && value !== null) {
-            return (currentPage = Math.max(currentPage, +component.page));
-        } else return 0;
-    } else return 0;
+            return Math.max(currentPage, +component.page);
+        } else return currentPage;
+    } else return currentPage;
 };
+
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
     return source.variables.find(v => v.variableType === "COLLECTED" && v.name === dependency);
 };
