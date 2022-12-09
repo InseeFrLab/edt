@@ -5,8 +5,8 @@ interface ErrorPageProps {
 }
 
 const ErrorPage = (props: ErrorPageProps) => {
-    const { notemptyinterface } = props;
-    const { classes } = useStyles();
+    // const { notemptyinterface } = props;
+    // const { classes } = useStyles();
     //TODO : check new maquettes
     return (
         <>
