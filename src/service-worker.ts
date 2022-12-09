@@ -56,7 +56,9 @@ registerRoute(
 registerRoute(
     // Cache all url.
     ({ url }) => {
-        !url.pathname.endsWith(".js");
+        if (!url.pathname.endsWith(".js")) {
+            return false;
+        }
     },
     // Customize this strategy as needed, e.g., by changing to CacheFirst.
     new NetworkFirst({

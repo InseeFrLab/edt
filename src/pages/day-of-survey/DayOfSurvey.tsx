@@ -18,7 +18,7 @@ import {
 const DayOfSurveyPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
 
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
 
