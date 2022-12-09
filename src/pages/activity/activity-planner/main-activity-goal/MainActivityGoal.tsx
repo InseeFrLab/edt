@@ -20,7 +20,7 @@ import { IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
 const MainActivityGoalPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
@@ -29,10 +29,10 @@ const MainActivityGoalPage = () => {
 
     const specificProps: IconGridCheckBoxOneSpecificProps = {
         optionsIcons: {
-            "1": option1,  
+            "1": option1,
             "2": option2,
             "3": option3,
-            "4": option4
+            "4": option4,
         },
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,

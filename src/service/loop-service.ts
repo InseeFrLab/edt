@@ -1,7 +1,13 @@
-import { LoopData, LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
+import {
+    LoopData,
+    LunaticData,
+    LunaticModel,
+    LunaticModelComponent,
+    LunaticModelVariable,
+} from "interface/lunatic/Lunatic";
 import { mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentPageSource } from "service/orchestrator-service";
-import { getData } from "service/survey-service";
+import { getData, getVariable } from "service/survey-service";
 
 const enum LoopEnum {
     ACTIVITY = "ACTIVITY",
@@ -31,6 +37,23 @@ const getLoopInitialSequencePage = (loop: LoopEnum): string => {
     return loopPageInfo.get(loop)?.loopInitialSequencePage || "";
 };
 
+const getCurrentLoopPageOfVariable = (
+    data: LunaticData | undefined,
+    variable: LunaticModelVariable | undefined,
+    currentLoopSubpage: number,
+    iteration: number,
+    component: LunaticModelComponent,
+) => {
+    if (variable) {
+        const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+        if (Array.isArray(value) && value[iteration] !== undefined && value[iteration] !== null) {
+            //return last fill subpage + 1
+            const subpage = component.page ? +component?.page.split(".")[1] : 0;
+            currentLoopSubpage = Math.max(+currentLoopSubpage, subpage + 1);
+        }
+    }
+};
+
 // Give the first loop subpage that don't have any data fill
 const getCurrentLoopPage = (
     data: LunaticData | undefined,
@@ -56,21 +79,8 @@ const getCurrentLoopPage = (
     for (const component of loop.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
-                const variable = source.variables.find(
-                    v => v.variableType === "COLLECTED" && v.name === dependency,
-                );
-                if (variable) {
-                    const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-                    if (
-                        Array.isArray(value) &&
-                        value[iteration] !== undefined &&
-                        value[iteration] !== null
-                    ) {
-                        //return last fill subpage + 1
-                        const subpage = component.page ? +component?.page.split(".")[1] : 0;
-                        currentLoopSubpage = Math.max(+currentLoopSubpage, subpage + 1);
-                    }
-                }
+                const variable = getVariable(source, dependency);
+                getCurrentLoopPageOfVariable(data, variable, currentLoopSubpage, iteration, component);
             }
         }
     }
@@ -94,6 +104,19 @@ const getLoopLastCompletedStep = (
     return page?.surveyStep ?? 0;
 };
 
+const getLoopSizeOfVariable = (
+    data: LunaticData | undefined,
+    variable: LunaticModelVariable | undefined,
+    currentLoopSize: number,
+): number => {
+    if (variable) {
+        const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+        if (Array.isArray(value) && value[0] !== null) {
+            return Math.max(currentLoopSize, value.length);
+        } else return currentLoopSize;
+    } else return currentLoopSize;
+};
+
 const getLoopSize = (idSurvey: string, currentLoop: LoopEnum): number => {
     const source = getCurrentPageSource();
     const loopPage = getLoopInitialPage(currentLoop);
@@ -109,15 +132,8 @@ const getLoopSize = (idSurvey: string, currentLoop: LoopEnum): number => {
     for (const component of loop.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
-                const variable = source.variables.find(
-                    v => v.variableType === "COLLECTED" && v.name === dependency,
-                );
-                if (variable) {
-                    const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-                    if (Array.isArray(value) && value[0] !== null) {
-                        currentLoopSize = Math.max(currentLoopSize, value.length);
-                    }
-                }
+                const variable = getVariable(source, dependency);
+                currentLoopSize = getLoopSizeOfVariable(data, variable, currentLoopSize);
             }
         }
     }

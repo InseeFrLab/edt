@@ -20,7 +20,7 @@ import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-ser
 const ActivityPlannerPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
@@ -68,13 +68,7 @@ const ActivityPlannerPage = () => {
 
     const onAddRoute = () => {
         //TODO : check the good path for routes when it will be done
-        const loopSize = setLoopSize(
-            context.source,
-            LoopEnum.ACTIVITY,
-            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY) + 1,
-        );
-        contextIteration = loopSize - 1;
-        navToActivity(contextIteration);
+        onAddActivity();
     };
 
     const onOpenAddActivityOrRoute = () => {

@@ -16,7 +16,7 @@ import { saveData } from "service/survey-service";
 
 const WithSomeoneSelectionPage = () => {
     const navigate = useNavigate();
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 

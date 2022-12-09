@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 const ActivityLocationPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
     const currentPage = EdtRoutesNameEnum.ACTIVITY_LOCATION;
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
@@ -33,7 +33,7 @@ const ActivityLocationPage = () => {
 
     const specificProps: IconGridCheckBoxOneSpecificProps = {
         optionsIcons: {
-            "11": option1,  
+            "11": option1,
             "12": option2,
             "14": option3,
             "15": option4,

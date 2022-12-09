@@ -1,5 +1,10 @@
 import { t } from "i18next";
-import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
+import {
+    LunaticData,
+    LunaticModel,
+    LunaticModelComponent,
+    LunaticModelVariable,
+} from "interface/lunatic/Lunatic";
 import { generateDateFromStringInput, getFrenchDayFromDate } from "lunatic-edt";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
@@ -58,6 +63,10 @@ const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => 
     });
 };
 
+const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
+    return source.variables.find(v => v.variableType === "COLLECTED" && v.name === dependency);
+};
+
 //Return the last lunatic model page that has been fill with data
 const getCurrentPage = (data: LunaticData | undefined): number => {
     //TODO : redirect if we got error page and data is undefined
@@ -69,19 +78,28 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
     for (const component of source?.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
-                const variable = source.variables.find(
-                    v => v.variableType === "COLLECTED" && v.name === dependency,
-                );
-                if (variable) {
-                    const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-                    if (value !== undefined && value !== null && !Array.isArray(value)) {
-                        currentPage = Math.max(currentPage, component.page ? +component?.page : 0);
-                    }
-                }
+                const variable = getVariable(source, dependency);
+                currentPage = getCurrentPageOfVariable(data, variable, currentPage, component);
             }
         }
     }
     return currentPage;
+};
+
+const getCurrentPageOfVariable = (
+    data: LunaticData | undefined,
+    variable: LunaticModelVariable | undefined,
+    currentPage: number,
+    component: LunaticModelComponent,
+): number => {
+    if (variable) {
+        const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+        if (value !== undefined && value !== null && !Array.isArray(value)) {
+            return Math.max(currentPage, component.page ? +component.page : 0);
+        } else return currentPage;
+    } else {
+        return currentPage;
+    }
 };
 
 const getComponentId = (variableName: FieldNameEnum, source: LunaticModel) => {
@@ -153,6 +171,7 @@ export {
     getPrintedSurveyDate,
     getValue,
     getComponentId,
+    getVariable,
     activitySurveysIds,
     workingTimeSurveysIds,
     FieldNameEnum,
