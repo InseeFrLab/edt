@@ -1,10 +1,4 @@
-import { makeStylesEdt } from "lunatic-edt";
-
-interface ErrorPageProps {
-    notemptyinterface?: string;
-}
-
-const ErrorPage = (props: ErrorPageProps) => {
+const ErrorPage = () => {
     // const { notemptyinterface } = props;
     // const { classes } = useStyles();
     //TODO : check new maquettes
@@ -14,7 +8,5 @@ const ErrorPage = (props: ErrorPageProps) => {
         </>
     );
 };
-
-const useStyles = makeStylesEdt({ "name": { ErrorPage } })(() => ({}));
 
 export default ErrorPage;

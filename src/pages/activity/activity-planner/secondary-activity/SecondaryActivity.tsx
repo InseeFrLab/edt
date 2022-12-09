@@ -32,12 +32,6 @@ const SecondaryActivityPage = () => {
         );
     };
 
-    const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            loopNavigate(page);
-        });
-    };
-
     const saveAndGoToActivityPlanner = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
             navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
@@ -61,13 +55,9 @@ const SecondaryActivityPage = () => {
 
     const onPrevious = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            const goal = getValue(
-                context.idSurvey,
-                FieldNameEnum.GOAL,
-                currentIteration,
-            );
+            const goal = getValue(context.idSurvey, FieldNameEnum.GOAL, currentIteration);
 
-            if ((goal === "") || goal) {
+            if (goal === "" || goal) {
                 loopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
             } else {
                 loopNavigate(getPreviousLoopPage(currentPage));
