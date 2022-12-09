@@ -43,6 +43,9 @@
             "activity-alt": "Alt pour activity",
             "route-alt": "Alt pour route",
             "empty-activity-alt": "Alt pour empty-activity",
+            "info": {
+                "info-alt": "Alt pour info"
+            },
             "error": {
                 "location-error-alt": "Alt pour position"
             },
@@ -76,6 +79,10 @@
         "activity-planner": {
             "activity-for-day": "Activité de votre journée du",
             "no-activity": "Aucune activité renseignée"
+        },
+        "secondary-activity": {
+            "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",
+            "info-bold": "Si vous en faites plusieurs, notez seulement la plus importante"
         }
     },
     "component": {
@@ -107,6 +114,24 @@
         "survey-page-edit-header": {
             "week-of": "Semainier de ",
             "planning-of": "Emploi du temps de "
+        },
+        "activity-selecter": {
+            "select-in-category": "Sélectionnez une activité dans la catégorie",
+            "add-activity": "Ajoutez une autre activité",
+            "alert-message": "Attention ! Vous n’avez pas été au bout de cette étape. Souhaitez-vous la compléter ?",
+            "alert-ignore": "Ignorer",
+            "alert-complete": "Compléter",
+            "clickable-list-placeholder": "Saisissez une activité",
+            "clickable-list-not-found-label": "Aucun résultat trouvé",
+            "clickable-list-not-found-comment": "Vous pourrez l'ajouter en cliquant sur le bouton ci-dessous, ou le bouton + ci-dessus",
+            "clickable-list-add-activity-button": "Ajouter l'activité",
+            "clickable-list-icon-no-result-alt": "alt pour icon no result",
+            "other-button": "Autre ?"
+        },
+        "location-selecter": {
+            "alert-message": "Aucun lieu n’a été renseigné",
+            "alert-ignore": "Ignorer",
+            "alert-complete": "Compléter"
         }
     }
 }

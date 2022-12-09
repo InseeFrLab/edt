@@ -27,7 +27,7 @@ class LunaticDatabaseImpl extends Dexie implements LunaticDatabase {
 }
 
 class MemoryLunaticDatabaseImpl implements LunaticDatabase {
-    lunaticData = new Map<String, LunaticData>();
+    lunaticData = new Map<string, LunaticData>();
 
     public save(id: string, data: LunaticData): Promise<string> {
         data.id = id;
@@ -41,7 +41,7 @@ class MemoryLunaticDatabaseImpl implements LunaticDatabase {
 }
 
 class PromiseProxyLunaticDatabaseImpl implements LunaticDatabase {
-    lunaticDatabasePromise = new Map<String, LunaticData>();
+    lunaticDatabasePromise = new Map<string, LunaticData>();
     constructor(private promise: Promise<LunaticDatabase>) {}
 
     public save(id: string, data: LunaticData): Promise<string> {

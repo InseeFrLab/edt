@@ -1,7 +1,12 @@
 import { t } from "i18next";
-import { LunaticData } from "interface/lunatic/Lunatic";
+import {
+    LunaticData,
+    LunaticModel,
+    LunaticModelComponent,
+    LunaticModelVariable,
+} from "interface/lunatic/Lunatic";
 import { generateDateFromStringInput, getFrenchDayFromDate } from "lunatic-edt";
-import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutes";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
 
@@ -14,12 +19,20 @@ const enum FieldNameEnum {
     LASTNAME = "LASTNAME",
     FIRSTNAME = "FIRSTNAME",
     SURVEYDATE = "SURVEYDATE",
-    DEBUT = "DEBUT",
-    FIN = "FIN",
-}
-
-const enum LoopPage {
-    ACTIVITY = "4",
+    STARTTIME = "STARTTIME",
+    ENDTIME = "ENDTIME",
+    MAINACTIVITY = "MAINACTIVITY",
+    GOAL = "GOAL",
+    WITHSECONDARYACTIVITY = "WITHSECONDARYACTIVITY",
+    SECONDARYACTIVITY = "SECONDARYACTIVITY",
+    PLACE = "PLACE",
+    WITHSOMEONE = "WITHSOMEONE",
+    COUPLE = "COUPLE",
+    PARENTS = "PARENTS",
+    CHILD = "CHILD",
+    OTHERKNOWN = "OTHERKNOWN",
+    OTHER = "OTHER",
+    WITHSCREEN = "WITHSCREEN",
 }
 
 const initializeDatas = (): Promise<LunaticData[]> => {
@@ -50,6 +63,10 @@ const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => 
     });
 };
 
+const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
+    return source.variables.find(v => v.variableType === "COLLECTED" && v.name === dependency);
+};
+
 //Return the last lunatic model page that has been fill with data
 const getCurrentPage = (data: LunaticData | undefined): number => {
     //TODO : redirect if we got error page and data is undefined
@@ -61,116 +78,41 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
     for (const component of source?.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
-                const variable = source.variables.find(
-                    v => v.variableType === "COLLECTED" && v.name === dependency,
-                );
-                if (variable) {
-                    const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-                    if (value !== undefined && value !== null && !Array.isArray(value)) {
-                        currentPage = Math.max(currentPage, component.page ? +component?.page : 0);
-                    }
-                }
+                const variable = getVariable(source, dependency);
+                currentPage = getCurrentPageOfVariable(data, variable, currentPage, component);
             }
         }
     }
     return currentPage;
 };
 
-const getCurrentLoopPage = (
+const getCurrentPageOfVariable = (
     data: LunaticData | undefined,
-    loopPage: string | undefined,
-    iteration: number | undefined,
-) => {
-    if (!loopPage || iteration === undefined) {
-        return 0;
+    variable: LunaticModelVariable | undefined,
+    currentPage: number,
+    component: LunaticModelComponent,
+): number => {
+    if (variable) {
+        const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+        if (value !== undefined && value !== null && !Array.isArray(value)) {
+            return Math.max(currentPage, component.page ? +component.page : 0);
+        } else return currentPage;
+    } else {
+        return currentPage;
     }
-    const source = getCurrentPageSource();
-    if (!data || !source?.components) {
-        return 0;
-    }
-    const loop = source?.components.find(component => component.page === loopPage);
-    if (!loop || !loop.components) {
-        return 0;
-    }
-    let currentLoopPage = 2; //Page 1 is for subsequence, see in source
-    for (const component of loop.components) {
-        if (component.bindingDependencies) {
-            for (const dependency of component.bindingDependencies) {
-                const variable = source.variables.find(
-                    v => v.variableType === "COLLECTED" && v.name === dependency,
-                );
-                if (variable) {
-                    const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-                    if (
-                        Array.isArray(value) &&
-                        value[iteration] !== undefined &&
-                        value[iteration] !== null
-                    ) {
-                        currentLoopPage = Math.max(
-                            currentLoopPage,
-                            component.page ? +component?.page : 0,
-                        );
-                    }
-                }
-            }
-        }
-    }
-    return currentLoopPage;
 };
 
-const getLoopLastCompletedStep = (idSurvey: string, loopPage: string, iteration: number): number => {
-    const data = getData(idSurvey);
-    const currentLoopPage = getCurrentLoopPage(data, LoopPage.ACTIVITY, iteration);
-    const page = mappingPageOrchestrator.find(
-        page => page.surveySubPage && page.surveySubPage === currentLoopPage.toString(),
-    );
-    return page?.surveyStep ?? 0;
-};
-
-const getLoopSize = (idSurvey: string, loopPage: LoopPage): number => {
-    if (!loopPage) {
-        return 0;
-    }
-    const source = getCurrentPageSource();
-    if (!source?.components) {
-        return 0;
-    }
-    const loop = source?.components.find(component => component.page === loopPage);
-    if (!loop || !loop.components) {
-        return 0;
-    }
-    const data = getData(idSurvey);
-    let currentLoopSize = 0; //Page 1 is for subsequence, see in source
-    for (const component of loop.components) {
-        if (component.bindingDependencies) {
-            for (const dependency of component.bindingDependencies) {
-                const variable = source.variables.find(
-                    v => v.variableType === "COLLECTED" && v.name === dependency,
-                );
-                if (variable) {
-                    const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-                    if (Array.isArray(value)) {
-                        currentLoopSize = Math.max(currentLoopSize, value.length);
-                    }
-                }
-            }
-        }
-    }
-    return currentLoopSize;
+const getComponentId = (variableName: FieldNameEnum, source: LunaticModel) => {
+    return source?.variables.find(variable => variable.name === variableName)?.componentRef;
 };
 
 const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
-    if (iteration) {
-        // TODO : complete if useful
-        //console.log(datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED);
-        //return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED?.[iteration];
+    if (iteration != null) {
+        let value = datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+        return Array.isArray(value) ? value[iteration] : null;
     } else {
         return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
     }
-};
-
-const getValues = (idSurvey: string, variableName: FieldNameEnum) => {
-    return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
 };
 
 const getLastName = (idSurvey: string) => {
@@ -222,18 +164,15 @@ export {
     initializeDatas,
     saveData,
     getCurrentPage,
-    getCurrentLoopPage,
     getLastName,
     getFirstName,
     getPrintedFirstName,
     getSurveyDate,
     getPrintedSurveyDate,
     getValue,
-    getValues,
-    getLoopSize,
-    getLoopLastCompletedStep,
+    getComponentId,
+    getVariable,
     activitySurveysIds,
     workingTimeSurveysIds,
-    LoopPage,
     FieldNameEnum,
 };

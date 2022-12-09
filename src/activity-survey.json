@@ -18,18 +18,6 @@
                 "FORCED": null,
                 "PREVIOUS": null
             },
-            "name": "LASTNAME",
-            "componentRef": "inputtext_lastName"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": null,
-                "EDITED": null,
-                "INPUTED": null,
-                "FORCED": null,
-                "PREVIOUS": null
-            },
             "name": "FIRSTNAME",
             "componentRef": "inputtext_firstName"
         },
@@ -54,8 +42,8 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "DEBUT",
-            "componentRef": "law89hhb"
+            "name": "STARTTIME",
+            "componentRef": "timepicker_startTime"
         },
         {
             "variableType": "COLLECTED",
@@ -66,8 +54,152 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "FIN",
-            "componentRef": "law89hhb"
+            "name": "ENDTIME",
+            "componentRef": "timepicker_endTime"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "MAINACTIVITY",
+            "componentRef": "activityselecter_mainactivity"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "GOAL",
+            "componentRef": "goalselecter_goal"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "WITHSECONDARYACTIVITY",
+            "componentRef": "checkboxboolean_withsecondaryactivity"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "SECONDARYACTIVITY",
+            "componentRef": "checkboxone_secondaryactivity"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "PLACE",
+            "componentRef": "input_place"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "WITHSOMEONE",
+            "componentRef": "checkboxboolean_withsomeone"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "COUPLE",
+            "componentRef": "checkboxgroup_presentpeople"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "PARENTS",
+            "componentRef": "checkboxgroup_presentpeople"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "CHILD",
+            "componentRef": "checkboxgroup_presentpeople"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "OTHERKNOWN",
+            "componentRef": "checkboxgroup_presentpeople"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "OTHER",
+            "componentRef": "checkboxgroup_presentpeople"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "WITHSCREEN",
+            "componentRef": "checkboxboolean_withscreen"
         },
         {
             "variableType": "CALCULATED",
@@ -137,7 +269,22 @@
             "id": "datepicker_surveyDate",
             "page": "2",
             "label": "\"Quelle est la date du jour sélectionnée pour l'enquête ?\"",
-            "mandatory": false
+            "mandatory": false,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" La valeur doit être rempli.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(SURVEYDATE)) and length(SURVEYDATE) >= 1"
+                    },
+                    "id": "kze792d8-inputSurveyDate"
+                }
+            ]
         },
         {
             "id": "j6p0ti5h",
@@ -157,13 +304,27 @@
             "id": "law89hhb",
             "componentType": "Loop",
             "page": "4",
-            "maxPage": "3",
+            "maxPage": "9",
             "depth": 1,
             "paginatedLoop": true,
             "conditionFilter": { "value": "true" },
-            "bindingDependencies": ["DEBUT", "FIN"],
+            "bindingDependencies": [
+                "STARTTIME",
+                "ENDTIME",
+                "MAINACTIVITY",
+                "WITHSECONDARYACTIVITY",
+                "SECONDARYACTIVITY",
+                "PLACE",
+                "WITHSOMEONE",
+                "COUPLE",
+                "PARENTS",
+                "CHILD",
+                "OTHERKNOWN",
+                "OTHER",
+                "WITHSCREEN"
+            ],
             "loopDependencies": [],
-            "iterations": { "value": "3", "type": "VTL" },
+            "iterations": { "value": "1", "type": "VTL" },
             "components": [
                 {
                     "componentType": "Sequence",
@@ -180,9 +341,9 @@
                     "label": "\"I - \" || \"Sequence\""
                 },
                 {
-                    "componentType": "Input",
-                    "bindingDependencies": ["DEBUT"],
-                    "response": { "name": "DEBUT" },
+                    "componentType": "Timepicker",
+                    "bindingDependencies": ["STARTTIME"],
+                    "response": { "name": "STARTTIME" },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -191,16 +352,16 @@
                         }
                     },
                     "conditionFilter": { "value": "true" },
-                    "id": "law89usi",
+                    "id": "timepicker_startTime",
                     "page": "4.2",
-                    "label": "\":arrow_right: 1. \" || \"Question1\"",
+                    "label": "\"Heure de début\"",
                     "mandatory": false,
                     "maxLength": 249
                 },
                 {
-                    "componentType": "Input",
-                    "bindingDependencies": ["FIN"],
-                    "response": { "name": "FIN" },
+                    "componentType": "Timepicker",
+                    "bindingDependencies": ["ENDTIME"],
+                    "response": { "name": "ENDTIME" },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -209,11 +370,230 @@
                         }
                     },
                     "conditionFilter": { "value": "true" },
-                    "id": "law82ezy",
-                    "page": "4.3",
-                    "label": "\":arrow_right: 2. \" || \"Question2\"",
+                    "id": "timepicker_endTime",
+                    "page": "4.2",
+                    "label": "\"Heure de fin\"",
                     "mandatory": false,
                     "maxLength": 249
+                },
+                {
+                    "componentType": "ActivitySelecter",
+                    "bindingDependencies": ["MAINACTIVITY"],
+                    "response": { "name": "MAINACTIVITY" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "activityselecter_mainactivity",
+                    "page": "4.3",
+                    "label": "\"Que faisiez-vous ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "CheckboxBoolean",
+                    "bindingDependencies": ["WITHSECONDARYACTIVITY"],
+                    "response": { "name": "WITHSECONDARYACTIVITY" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxboolean_withsecondaryactivity",
+                    "page": "4.4",
+                    "label": "\"Faisiez-vous autre chose en même temps ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "IconGridCheckBoxOne",
+                    "bindingDependencies": ["PLACE"],
+                    "response": { "name": "PLACE" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "input_place",
+                    "page": "4.5",
+                    "label": "\"Où étiez-vous ?\"",
+                    "mandatory": false,
+                    "options": [
+                        {
+                            "label": "\"Chez soi (yc appartement étudiant si différent du domicile familial)\"",
+                            "value": "11"
+                        },
+                        { "label": "\"Lieu de travail ou d’études\"", "value": "12" },
+                        { "label": "\"Résidence secondaire, location de vacances\"", "value": "14" },
+                        { "label": "\"Restaurant, café, bar\"", "value": "15" },
+                        {
+                            "label": "\"Chez une autre personne (ami, voisin, famille…)\"",
+                            "value": "13"
+                        },
+                        { "label": "\"Autre (commerces, loisirs, dans la rue…)\"", "value": "16" }
+                    ]
+                },
+                {
+                    "componentType": "CheckboxBoolean",
+                    "bindingDependencies": ["WITHSOMEONE"],
+                    "response": { "name": "WITHSOMEONE" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxboolean_withsomeone",
+                    "page": "4.6",
+                    "label": "\"Etiez-vous en compagnie de quelqu'un ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "CheckboxBoolean",
+                    "bindingDependencies": ["WITHSCREEN"],
+                    "response": { "name": "WITHSCREEN" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxboolean_withscreen",
+                    "page": "4.7",
+                    "label": "\"Avez-vous utilisé un ordinateur, un smartphone, une tablette ou un autre objet connecté à internet ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "IconGridCheckBoxOne",
+                    "bindingDependencies": ["GOAL"],
+                    "response": { "name": "GOAL" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "goalselecter_goal",
+                    "page": "4.8",
+                    "label": "\"Dans quel but avez-vous fait cette activité ?\"",
+                    "mandatory": false,
+                    "options": [
+                        { "label": "\"Personnel, pour son ménage\"", "value": "1" },
+                        { "label": "\"Professionnel\"", "value": "2" },
+                        { "label": "\"Aide à un autre ménage\"", "value": "3" },
+                        { "label": "\"Bénévole, pour une association\"", "value": "4" }
+                    ]
+                },
+                {
+                    "componentType": "CheckboxOneEdt",
+                    "bindingDependencies": ["SECONDARYACTIVITY"],
+                    "response": { "name": "SECONDARYACTIVITY" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "options": [
+                        {
+                            "label": "\"Écouter la radio, des podcasts ou de la musique\"",
+                            "value": "636/637/638"
+                        },
+                        {
+                            "label": "\"Regarder la télévision, des DVD, des vidéos en ligne\"",
+                            "value": "634,635"
+                        },
+                        { "label": "Conversation", "value": "521" },
+                        {
+                            "label": "\"Surf sur Internet, visite de sites pour s'informer (hors journaux)\"",
+                            "value": "673"
+                        },
+                        {
+                            "label": "\"Publier ou surfer sur les médias sociaux (Facebook, Instagram, Twitter, Tumblr, LinkedIn, ...)\"",
+                            "value": "674"
+                        },
+                        { "label": "\"Lecture de journaux, revues\"", "value": "633" },
+                        { "label": "\"Lecture de livres\"", "value": "632" },
+                        { "label": "\"Repas\"", "value": "todetermine" },
+                        { "label": "\"Travail professionnel\"", "value": "211" },
+                        { "label": "\"Se détendre, fumer\"", "value": "641" },
+                        { "label": "\"Conversations avec les enfants, lectures\"", "value": "422" },
+                        { "label": "\"Repas, douche, habillage des enfants\"", "value": "411" },
+                        { "label": "\"Surveiller les devoirs des enfants\"", "value": "421" }
+                    ],
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxone_secondaryactivity",
+                    "page": "4.9",
+                    "label": "\"Que faisiez-vous en même temps ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "CheckboxGroupEdt",
+                    "bindingDependencies": ["COUPLE", "PARENTS", "CHILD", "OTHERKNOWN", "OTHER"],
+                    "responses": [
+                        {
+                            "response": {
+                                "name": "COUPLE"
+                            },
+                            "id": "1",
+                            "label": "\"Votre conjoint\""
+                        },
+                        {
+                            "response": {
+                                "name": "PARENTS"
+                            },
+                            "id": "2",
+                            "label": "\"Votre Mère, votre Père\""
+                        },
+                        {
+                            "response": {
+                                "name": "CHILD"
+                            },
+                            "id": "3",
+                            "label": "\"Enfant(s) du ménage\""
+                        },
+                        {
+                            "response": {
+                                "name": "OTHERKNOWN"
+                            },
+                            "id": "4",
+                            "label": "\"Autre(s) personne(s) du ménage\""
+                        },
+                        {
+                            "response": {
+                                "name": "OTHER"
+                            },
+                            "id": "5",
+                            "label": "\"Autre(s) Personne(s) que vous connaissez\""
+                        }
+                    ],
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxgroup_presentpeople",
+                    "page": "4.10",
+                    "label": "\"En présence de qui étiez-vous ?\"",
+                    "mandatory": false
                 }
             ]
         },

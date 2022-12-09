@@ -36,6 +36,9 @@ const useStyles = makeStylesEdt({ "name": { ActivityCard } })(theme => ({
         padding: "1rem",
         display: "flex",
         cursor: "pointer",
+        width: "90%",
+        maxWidth: "310px",
+        marginTop: "1rem",
     },
 }));
 

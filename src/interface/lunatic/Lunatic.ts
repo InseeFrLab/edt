@@ -1,4 +1,4 @@
-import { EdtRoutesNameEnum } from "routes/EdtRoutes";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 export interface Collected {
     COLLECTED: string | boolean | null;
     EDITED: any;
@@ -39,6 +39,7 @@ export interface LunaticModelVariable {
     values?: Collected | MultiCollected;
     variableType: string;
     name: string;
+    componentRef?: string;
 }
 
 export interface OrchestratorContext {
@@ -46,5 +47,11 @@ export interface OrchestratorContext {
     data: LunaticData;
     idSurvey: string;
     surveyRootPage: EdtRoutesNameEnum;
-    iteration?: number;
+}
+
+export interface LoopData {
+    loopInitialSequencePage: string;
+    loopInitialPage: string;
+    loopInitialSubpage: string;
+    loopLastSubpage: string;
 }

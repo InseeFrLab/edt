@@ -7,13 +7,33 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { getCurrentNavigatePath } from "service/navigation-service";
-import { getPrintedFirstName, getPrintedSurveyDate, saveData } from "service/survey-service";
+import {
+    FieldNameEnum,
+    getComponentId,
+    getPrintedFirstName,
+    getPrintedSurveyDate,
+    saveData,
+} from "service/survey-service";
 
 const WhoAreYouPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
     let [disabledButton, setDisabledButton] = React.useState<boolean>(true);
+
+    const keydownChange = () => {
+        //TODO: nav to error page when componentId empty
+        const componentId = getComponentId(FieldNameEnum.FIRSTNAME, context.source) || "";
+        setDisabledButton(
+            callbackHolder.getErrors() == undefined ||
+                callbackHolder.getErrors()[componentId].length > 0,
+        );
+    };
+
+    React.useEffect(() => {
+        document.addEventListener("keyup", keydownChange, true);
+        return () => document.removeEventListener("keyup", keydownChange, true);
+    }, [callbackHolder]);
 
     const validate = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
@@ -28,16 +48,6 @@ const WhoAreYouPage = () => {
             navigate("/");
         });
     };
-
-    React.useEffect(() => {
-        const keydownChange = (e: any) => {
-            setDisabledButton(
-                callbackHolder.getErrors() == undefined ||
-                    callbackHolder.getErrors()["inputtext_firstName"].length > 0,
-            );
-        };
-        document.addEventListener("keyup", keydownChange);
-    }, [callbackHolder]);
 
     return (
         <>

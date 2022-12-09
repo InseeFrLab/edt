@@ -1,5 +1,5 @@
 import * as lunatic from "@inseefr/lunatic";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import * as lunaticEDT from "lunatic-edt";
@@ -15,7 +15,7 @@ lunaticEDT.notLunaticComponents.forEach((component: React.MemoExoticComponent<an
 
 const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
 
-export const callbackHolder: { getData(): LunaticData; getErrors(): any } = {
+export const callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } } = {
     getData: () => {
         return {};
     },
@@ -27,13 +27,14 @@ export const callbackHolder: { getData(): LunaticData; getErrors(): any } = {
 export type OrchestratorProps = {
     source: LunaticModel | undefined;
     data?: object;
-    callbackHolder: { getData(): LunaticData; getErrors(): any };
+    callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } };
     page: string;
     subPage?: string;
     iteration?: number;
     surveyDate?: string;
     isSubChildDisplayed?: boolean;
     setIsSubChildDisplayed?(value: boolean): void;
+    componentSpecificProps?: any;
 };
 
 let i = 0;
@@ -78,10 +79,11 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         surveyDate,
         isSubChildDisplayed,
         setIsSubChildDisplayed,
+        componentSpecificProps,
     } = props;
     const { classes, cx } = useStyles();
 
-    const [loaded, setLoaded] = React.useState(true);
+    const [loaded, setLoaded] = React.useState(false);
 
     const { getComponents, getCurrentErrors, getData, goNextPage, pager } = lunatic.useLunatic(
         source,
@@ -120,6 +122,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         pager.previous = undefined;
         pager.attempts = 10;
         if (pager.cible === pager.currentPage()) {
+            setLoaded(true);
             return;
         }
         const waitThenNext = () => {
@@ -137,6 +140,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     return;
                 }
                 if (pager.page === pager.maxPage) {
+                    console.log("maxpage loaded true");
                     setLoaded(true);
                     return;
                 }
@@ -155,29 +159,45 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         });
     }
 
-    return source && data && (loaded || !subPage) ? (
+    return source && data ? (
         <>
-            <div className={cx("components", classes.styleOverride)}>
-                {components.map(function (component: any) {
-                    const { id, componentType, response, ...other } = component;
-                    const Component = lunatic[componentType];
-                    return (
-                        <div className="lunatic lunatic-component" key={`component-${id}`}>
-                            <Component
-                                id={id}
-                                response={response}
-                                {...other}
-                                {...component}
-                                errors={currentErrors}
-                                custom={edtComponents}
-                                surveyDate={surveyDate}
-                                isSubChildDisplayed={isSubChildDisplayed}
-                                setIsSubChildDisplayed={setIsSubChildDisplayed}
-                            />
-                        </div>
-                    );
-                })}
-            </div>
+            <Box className={classes.orchestratorBox}>
+                <FlexCenter
+                    className={loaded || !subPage ? classes.loaderWhenLoaded : classes.loaderWhenLoading}
+                >
+                    <CircularProgress />
+                </FlexCenter>
+                <div
+                    className={cx(
+                        "components",
+                        classes.styleOverride,
+                        loaded || !subPage
+                            ? classes.orchestratorWhenLoaded
+                            : classes.orchestratorWhenLoading,
+                    )}
+                >
+                    {components.map(function (component: any) {
+                        const { id, componentType, response, ...other } = component;
+                        const Component = lunatic[componentType];
+                        return (
+                            <div className="lunatic lunatic-component" key={`component-${id}`}>
+                                <Component
+                                    id={id}
+                                    response={response}
+                                    {...other}
+                                    {...component}
+                                    errors={currentErrors}
+                                    custom={edtComponents}
+                                    surveyDate={surveyDate}
+                                    isSubChildDisplayed={isSubChildDisplayed}
+                                    setIsSubChildDisplayed={setIsSubChildDisplayed}
+                                    componentSpecificProps={componentSpecificProps}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+            </Box>
         </>
     ) : (
         <FlexCenter>
@@ -198,8 +218,33 @@ const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
             marginBottom: "1rem",
             fontSize: "20px",
         },
+        "& legend": {
+            backgroundColor: "transparent",
+            marginBottom: "1rem",
+            fontSize: "20px",
+        },
         "& .field-container": {
             margin: "1rem 0",
         },
+    },
+    loaderWhenLoaded: {
+        display: "none !important",
+    },
+    loaderWhenLoading: {
+        display: "visible",
+        marginTop: "2rem",
+    },
+    orchestratorWhenLoading: {
+        visibility: "hidden",
+        height: "1px",
+        width: "1px",
+        overflow: "hidden",
+    },
+    orchestratorWhenLoaded: {
+        visibility: "visible",
+    },
+    orchestratorBox: {
+        display: "flex",
+        flexDirection: "column",
     },
 }));

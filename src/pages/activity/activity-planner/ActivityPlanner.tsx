@@ -6,31 +6,45 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityCard from "components/edt/ActivityCard/ActivityCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { makeStylesEdt } from "lunatic-edt";
+import { formateDateToFrenchFormat, generateDateFromStringInput, makeStylesEdt } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
 import { getCurrentNavigatePath } from "service/navigation-service";
-import { getActivities, setLoopSize } from "service/survey-activity-service";
-import {
-    getLoopSize,
-    getPrintedFirstName,
-    getSurveyDate,
-    LoopPage,
-    saveData,
-} from "service/survey-service";
+import { getActivities } from "service/survey-activity-service";
+import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 
 const ActivityPlannerPage = () => {
     const navigate = useNavigate();
-    const context = useOutletContext() as OrchestratorContext;
+    const location = useLocation();
+    const context: OrchestratorContext = useOutletContext();
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
-    const [contextIteration, setContextIteration] = React.useState(0);
+    let contextIteration = 0;
 
     const activities = getActivities(context.idSurvey);
+    const surveyDate = getSurveyDate(context.idSurvey) || "";
+
+    const isChildDisplayed = (path: string): boolean => {
+        return path.split(EdtRoutesNameEnum.ACTIVITY_PLANNER)[1].length > 0 ? true : false;
+    };
+
+    useEffect(() => {
+        //The loop have to have a default size in source but it's updated depending on the data array size
+        setLoopSize(context.source, LoopEnum.ACTIVITY, getLoopSize(context.idSurvey, LoopEnum.ACTIVITY));
+    }, []);
+
+    useEffect(() => {
+        const currentIsChildDisplay = isChildDisplayed(location.pathname);
+        if (currentIsChildDisplay !== isSubchildDisplayed) {
+            setIsSubChildDisplayed(currentIsChildDisplay);
+        }
+    }, [location]);
 
     const saveAndGoHome = (): void => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
@@ -45,20 +59,16 @@ const ActivityPlannerPage = () => {
     const onAddActivity = () => {
         const loopSize = setLoopSize(
             context.source,
-            getLoopSize(context.idSurvey, LoopPage.ACTIVITY) + 1,
+            LoopEnum.ACTIVITY,
+            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY) + 1,
         );
-        setContextIteration(loopSize - 1);
+        contextIteration = loopSize - 1;
         navToActivity(contextIteration);
     };
 
     const onAddRoute = () => {
         //TODO : check the good path for routes when it will be done
-        const loopSize = setLoopSize(
-            context.source,
-            getLoopSize(context.idSurvey, LoopPage.ACTIVITY) + 1,
-        );
-        setContextIteration(loopSize - 1);
-        navToActivity(contextIteration);
+        onAddActivity();
     };
 
     const onOpenAddActivityOrRoute = () => {
@@ -84,10 +94,11 @@ const ActivityPlannerPage = () => {
                 context.idSurvey,
                 context.surveyRootPage,
                 context.source.maxPage,
-                LoopPage.ACTIVITY,
+                LoopEnum.ACTIVITY,
                 iteration,
             ),
         );
+        setIsAddActivityOrRouteOpen(false);
     };
 
     return (
@@ -110,7 +121,7 @@ const ActivityPlannerPage = () => {
                                     {t("page.activity-planner.activity-for-day")}
                                 </Typography>
                                 <Typography className={classes.date}>
-                                    {getSurveyDate(context.idSurvey) + " TODO : print plain text"}
+                                    {formateDateToFrenchFormat(generateDateFromStringInput(surveyDate))}
                                 </Typography>
                             </Box>
                         </FlexCenter>
@@ -127,17 +138,18 @@ const ActivityPlannerPage = () => {
                                 </FlexCenter>
                             </>
                         ) : (
-                            <FlexCenter>
+                            <>
                                 {activities.map((activity, iteration) => (
-                                    <ActivityCard
-                                        labelledBy={""}
-                                        describedBy={""}
-                                        key={"activity-" + iteration}
-                                        label={activity.label}
-                                        onClick={() => navToActivity(iteration)}
-                                    />
+                                    <FlexCenter key={"activity-" + iteration}>
+                                        <ActivityCard
+                                            labelledBy={""}
+                                            describedBy={""}
+                                            label={activity.label}
+                                            onClick={() => navToActivity(iteration)}
+                                        />
+                                    </FlexCenter>
                                 ))}
-                            </FlexCenter>
+                            </>
                         )}
                     </SurveyPage>
                     <AddActivityOrRoute
@@ -156,7 +168,6 @@ const ActivityPlannerPage = () => {
                     data: context.data,
                     idSurvey: context.idSurvey,
                     surveyRootPage: context.surveyRootPage,
-                    iteration: contextIteration,
                 }}
             />
         </>
@@ -172,6 +183,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityPlannerPage } })(theme => ({
     },
     date: {
         fontSize: "18px",
+        fontWeight: "bold",
     },
     grey: {
         color: theme.palette.action.hover,
