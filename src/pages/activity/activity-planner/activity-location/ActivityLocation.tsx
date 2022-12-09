@@ -1,7 +1,7 @@
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { LocationSelecterSpecificProps } from "lunatic-edt";
+import { IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
@@ -31,14 +31,14 @@ const ActivityLocationPage = () => {
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
 
-    const specificProps: LocationSelecterSpecificProps = {
+    const specificProps: IconGridCheckBoxOneSpecificProps = {
         optionsIcons: {
-            "1": option1,
-            "2": option2,
-            "3": option3,
-            "4": option4,
-            "5": option5,
-            "6": option6,
+            "11": option1,  
+            "12": option2,
+            "14": option3,
+            "15": option4,
+            "13": option5,
+            "16": option6,
         },
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,

@@ -56,8 +56,12 @@ const MainActivityPage = () => {
         backClickCallback: () => {
             saveAndLoopNavigate(getPreviousLoopPage(currentPage));
         },
-        nextClickCallback: () => {
-            saveAndLoopNavigate(getNextLoopPage(currentPage));
+        nextClickCallback: (routeToGoal: boolean) => {
+            if (routeToGoal) {
+                saveAndLoopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
+            } else {
+                saveAndLoopNavigate(getNextLoopPage(currentPage));
+            }
         },
         setDisplayStepper: setDisplayStepper,
         categoriesAndActivitesNomenclature: categoriesAndActivitesNomenclature,
@@ -75,6 +79,7 @@ const MainActivityPage = () => {
             clickableListAddActivityButton: t(
                 "component.activity-selecter.clickable-list-add-activity-button",
             ),
+            clickableListIconNoResultAlt: t("component.activity-selecter.clickable-list-icon-no-result-alt"),
             otherButton: t("component.activity-selecter.other-button"),
         },
     };
@@ -94,7 +99,6 @@ const MainActivityPage = () => {
 
     const onNext = (e: React.MouseEvent) => {
         setNextClickEvent(e);
-        saveAndLoopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
     };
 
     const onPrevious = (e: React.MouseEvent) => {
