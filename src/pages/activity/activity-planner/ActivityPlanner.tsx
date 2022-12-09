@@ -6,7 +6,7 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityCard from "components/edt/ActivityCard/ActivityCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { makeStylesEdt } from "lunatic-edt";
+import { formateDateToFrenchFormat, generateDateFromStringInput, makeStylesEdt } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,6 +28,7 @@ const ActivityPlannerPage = () => {
     let contextIteration = 0;
 
     const activities = getActivities(context.idSurvey);
+    const surveyDate = getSurveyDate(context.idSurvey) || "";
 
     const isChildDisplayed = (path: string): boolean => {
         return path.split(EdtRoutesNameEnum.ACTIVITY_PLANNER)[1].length > 0 ? true : false;
@@ -126,7 +127,7 @@ const ActivityPlannerPage = () => {
                                     {t("page.activity-planner.activity-for-day")}
                                 </Typography>
                                 <Typography className={classes.date}>
-                                    {getSurveyDate(context.idSurvey) + " TODO : print plain text"}
+                                    {formateDateToFrenchFormat(generateDateFromStringInput(surveyDate))}
                                 </Typography>
                             </Box>
                         </FlexCenter>
@@ -188,6 +189,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityPlannerPage } })(theme => ({
     },
     date: {
         fontSize: "18px",
+        fontWeight: "bold",
     },
     grey: {
         color: theme.palette.action.hover,
