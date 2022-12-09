@@ -8,11 +8,46 @@ import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
 import { saveData } from "service/survey-service";
 
+import option1 from "assets/illustration/goals/1.svg";
+import option2 from "assets/illustration/goals/2.svg";
+import option3 from "assets/illustration/goals/3.svg";
+import option4 from "assets/illustration/goals/4.svg";
+
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import { IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
+
 const MainActivityGoalPage = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const context = useOutletContext() as OrchestratorContext;
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
+
+    const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
+    const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
+
+    const specificProps: IconGridCheckBoxOneSpecificProps = {
+        optionsIcons: {
+            "1": option1,  
+            "2": option2,
+            "3": option3,
+            "4": option4
+        },
+        backClickEvent: backClickEvent,
+        nextClickEvent: nextClickEvent,
+        backClickCallback: () => {
+            saveAndLoopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY);
+        },
+        nextClickCallback: () => {
+            saveAndLoopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY);
+        },
+        labels: {
+            alertMessage: t("component.location-selecter.alert-message"),
+            alertIgnore: t("component.location-selecter.alert-ignore"),
+            alertComplete: t("component.location-selecter.alert-complete"),
+        },
+    };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
@@ -27,12 +62,12 @@ const MainActivityGoalPage = () => {
         });
     };
 
-    const onNext = () => {
-        saveAndLoopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY);
+    const onNext = (e: React.MouseEvent) => {
+        setNextClickEvent(e);
     };
 
-    const onPrevious = () => {
-        saveAndLoopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY);
+    const onPrevious = (e: React.MouseEvent) => {
+        setBackClickEvent(e);
     };
 
     const onClose = () => {
@@ -51,6 +86,7 @@ const MainActivityGoalPage = () => {
                     page={getLoopInitialPage(LoopEnum.ACTIVITY)}
                     subPage={"8"}
                     iteration={currentIteration}
+                    componentSpecificProps={specificProps}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>

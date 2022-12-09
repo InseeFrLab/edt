@@ -411,7 +411,7 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "LocationSelecter",
+                    "componentType": "IconGridCheckBoxOne",
                     "bindingDependencies": ["PLACE"],
                     "response": { "name": "PLACE" },
                     "hierarchy": {
@@ -427,12 +427,12 @@
                     "label": "\"Où étiez-vous ?\"",
                     "mandatory": false,
                     "options": [
-                        { "label": "\"Chez soi\"", "value": "1" },
-                        { "label": "\"Lieu de travail ou d’études\"", "value": "2" },
-                        { "label": "\"Résidence secondaire, location de vacances\"", "value": "3" },
-                        { "label": "\"Restaurant, café, bar\"", "value": "4" },
-                        { "label": "\"Chez une autre personne (ami, voisin, famille…)\"", "value": "5" },
-                        { "label": "\"Autre (commerces, loisirs, dans la rue…)\"", "value": "6" }
+                        { "label": "\"Chez soi (yc appartement étudiant si différent du domicile familial)\"", "value": "11" },
+                        { "label": "\"Lieu de travail ou d’études\"", "value": "12" },
+                        { "label": "\"Résidence secondaire, location de vacances\"", "value": "14" },
+                        { "label": "\"Restaurant, café, bar\"", "value": "15" },
+                        { "label": "\"Chez une autre personne (ami, voisin, famille…)\"", "value": "13" },
+                        { "label": "\"Autre (commerces, loisirs, dans la rue…)\"", "value": "16" }
                     ]
                 },
                 {
@@ -470,7 +470,7 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "Input",
+                    "componentType": "IconGridCheckBoxOne",
                     "bindingDependencies": ["GOAL"],
                     "response": { "name": "GOAL" },
                     "hierarchy": {
@@ -486,12 +486,10 @@
                     "label": "\"Dans quel but avez-vous fait cette activité ?\"",
                     "mandatory": false,
                     "options": [
-                        { "label": "\"Chez soi\"", "value": "1" },
-                        { "label": "\"Lieu de travail ou d’études\"", "value": "2" },
-                        { "label": "\"Résidence secondaire, location de vacances\"", "value": "3" },
-                        { "label": "\"Restaurant, café, bar\"", "value": "4" },
-                        { "label": "\"Chez une autre personne (ami, voisin, famille…)\"", "value": "5" },
-                        { "label": "\"Autre (commerces, loisirs, dans la rue…)\"", "value": "6" }
+                        { "label": "\"Personnel, pour son ménage\"", "value": "1" },
+                        { "label": "\"Professionnel\"", "value": "2" },
+                        { "label": "\"Aide à un autre ménage\"", "value": "3" },
+                        { "label": "\"Bénévole, pour une association\"", "value": "4" }
                     ]
                 },
                 {
