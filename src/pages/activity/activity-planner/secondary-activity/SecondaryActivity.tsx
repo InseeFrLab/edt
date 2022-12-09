@@ -60,7 +60,19 @@ const SecondaryActivityPage = () => {
     };
 
     const onPrevious = () => {
-        saveAndLoopNavigate(getPreviousLoopPage(currentPage));
+        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            const goal = getValue(
+                context.idSurvey,
+                FieldNameEnum.GOAL,
+                currentIteration,
+            );
+
+            if ((goal === "") || goal) {
+                loopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
+            } else {
+                loopNavigate(getPreviousLoopPage(currentPage));
+            }
+        });
     };
 
     return (
