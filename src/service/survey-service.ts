@@ -171,6 +171,7 @@ export {
     getPrintedSurveyDate,
     getValue,
     getComponentId,
+    getVariable,
     activitySurveysIds,
     workingTimeSurveysIds,
     FieldNameEnum,
