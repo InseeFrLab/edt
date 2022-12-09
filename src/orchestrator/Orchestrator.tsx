@@ -68,6 +68,63 @@ const waitForStablePager = (pager: any, goNextPage: any, callback: () => void): 
     wait();
 };
 
+const waitThenNext = (pager: any, goNextPage: any, setLoaded: any) => {
+    setTimeout(() => {
+        if (pager.attempts == 0) {
+            return;
+        }
+        if (pager.previous === pager.currentPage()) {
+            pager.attempts--;
+            waitThenNext(pager, goNextPage, setLoaded);
+            return;
+        }
+        if (pager.cible === pager.currentPage()) {
+            console.log(`pager.cible : ${pager.cible} , pager.currentPage : ${pager.currentPage()}`);
+            setLoaded(true);
+            return;
+        }
+        if (pager.page === pager.maxPage) {
+            console.log("maxpage loaded true");
+            setLoaded(true);
+            return;
+        }
+        pager.previous = pager.currentPage();
+        pager.attempts = 10;
+        goNextPage();
+        waitThenNext(pager, goNextPage, setLoaded);
+    }, 1);
+};
+
+const myGoToPage = (
+    pager: any,
+    goNextPage: any,
+    page: string,
+    subPage: string | undefined,
+    iteration: number | undefined,
+    setLoaded: any,
+) => {
+    if (!pager.page) {
+        return;
+    }
+    pager.currentPage = () =>
+        pager.page +
+        (pager.subPage === undefined ? "" : `.${pager.subPage + 1}`) +
+        (pager.iteration === undefined ? "" : `#${pager.iteration + 1}`);
+    pager.cible =
+        page +
+        (subPage === undefined ? "" : `.${subPage}`) +
+        (iteration === undefined ? "" : `#${iteration + 1}`);
+    pager.previous = undefined;
+    pager.attempts = 10;
+    if (pager.cible === pager.currentPage()) {
+        console.log(`pager.cible : ${pager.cible} , pager.currentPage : ${pager.currentPage()}`);
+        console.log("loaded true");
+        setLoaded(true);
+        return;
+    }
+    waitThenNext(pager, goNextPage, setLoaded);
+};
+
 export const OrchestratorForStories = (props: OrchestratorProps) => {
     const {
         source,
@@ -101,61 +158,10 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     callbackHolder.getData = getData;
     callbackHolder.getErrors = getCurrentErrors;
 
-    const myGoToPage = (
-        pager: any,
-        goNextPage: any,
-        page: string,
-        subPage: string | undefined,
-        iteration: number | undefined,
-    ) => {
-        if (!pager.page) {
-            return;
-        }
-        pager.currentPage = () =>
-            pager.page +
-            (pager.subPage === undefined ? "" : `.${pager.subPage + 1}`) +
-            (pager.iteration === undefined ? "" : `#${pager.iteration + 1}`);
-        pager.cible =
-            page +
-            (subPage === undefined ? "" : `.${subPage}`) +
-            (iteration === undefined ? "" : `#${iteration + 1}`);
-        pager.previous = undefined;
-        pager.attempts = 10;
-        if (pager.cible === pager.currentPage()) {
-            setLoaded(true);
-            return;
-        }
-        const waitThenNext = () => {
-            setTimeout(() => {
-                if (pager.attempts == 0) {
-                    return;
-                }
-                if (pager.previous === pager.currentPage()) {
-                    pager.attempts--;
-                    waitThenNext();
-                    return;
-                }
-                if (pager.cible === pager.currentPage()) {
-                    setLoaded(true);
-                    return;
-                }
-                if (pager.page === pager.maxPage) {
-                    console.log("maxpage loaded true");
-                    setLoaded(true);
-                    return;
-                }
-                pager.previous = pager.currentPage();
-                pager.attempts = 10;
-                goNextPage();
-                waitThenNext();
-            }, 1);
-        };
-        waitThenNext();
-    };
     if (subPage) {
         //Complicated case with subPage, useLunatic needs to navigate page by page from the boucle sequence to the wished page
         waitForStablePager(pager, goNextPage, () => {
-            myGoToPage(stablePager, stableGoNextPage, page, subPage, iteration);
+            myGoToPage(stablePager, stableGoNextPage, page, subPage, iteration, setLoaded);
         });
     }
 
