@@ -11,7 +11,7 @@ import { getPrintedFirstName, getPrintedSurveyDate, saveData } from "service/sur
 const DayOfSurveyPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
 
     const validate = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {

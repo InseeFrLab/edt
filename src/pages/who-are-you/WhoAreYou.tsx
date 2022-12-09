@@ -12,7 +12,7 @@ import { getPrintedFirstName, getPrintedSurveyDate, saveData } from "service/sur
 const WhoAreYouPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
     let [disabledButton, setDisabledButton] = React.useState<boolean>(true);
 
     const validate = () => {

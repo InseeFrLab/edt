@@ -9,7 +9,7 @@ import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-ser
 const WeeklyPlannerPage = () => {
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
 
-    const context = useOutletContext() as OrchestratorContext;
+    const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
 
     const saveAndGoHome = (): void => {
@@ -22,16 +22,7 @@ const WeeklyPlannerPage = () => {
         saveData(context.idSurvey, callbackHolder.getData());
     };
 
-    const validate = () => {
-        if (displayDayOverview) {
-            save();
-            setDisplayDayOverview(false);
-        } else {
-            saveAndGoHome();
-        }
-    };
-
-    const navBack = () => {
+    const validateAndNav = (): void => {
         if (displayDayOverview) {
             save();
             setDisplayDayOverview(false);
@@ -48,8 +39,8 @@ const WeeklyPlannerPage = () => {
 
     return (
         <SurveyPage
-            validate={validate}
-            onNavigateBack={navBack}
+            validate={validateAndNav}
+            onNavigateBack={validateAndNav}
             onEdit={onEdit}
             firstName={getPrintedFirstName(context.idSurvey)}
             simpleHeader={displayDayOverview}
