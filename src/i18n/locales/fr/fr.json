@@ -132,6 +132,12 @@
             "alert-message": "Aucun lieu n’a été renseigné",
             "alert-ignore": "Ignorer",
             "alert-complete": "Compléter"
+        },
+        "weekly-planner": {
+            "title": "Planning de votre semaine",
+            "work-sumlabel": "Durée totale travaillée : ",
+            "present-button-label": "Continuer",
+            "future-button-label": "Commencer"
         }
     }
 }
