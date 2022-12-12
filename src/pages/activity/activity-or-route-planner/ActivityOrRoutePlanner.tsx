@@ -17,7 +17,7 @@ import { getCurrentNavigatePath } from "service/navigation-service";
 import { getActivities } from "service/survey-activity-service";
 import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 
-const ActivityPlannerPage = () => {
+const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const context: OrchestratorContext = useOutletContext();
@@ -31,7 +31,7 @@ const ActivityPlannerPage = () => {
     const surveyDate = getSurveyDate(context.idSurvey) || "";
 
     const isChildDisplayed = (path: string): boolean => {
-        return path.split(EdtRoutesNameEnum.ACTIVITY_PLANNER)[1].length > 0 ? true : false;
+        return path.split(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)[1].length > 0 ? true : false;
     };
 
     useEffect(() => {
@@ -174,7 +174,7 @@ const ActivityPlannerPage = () => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { ActivityPlannerPage } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(theme => ({
     infoBox: {
         width: "350px",
     },
@@ -190,4 +190,4 @@ const useStyles = makeStylesEdt({ "name": { ActivityPlannerPage } })(theme => ({
     },
 }));
 
-export default ActivityPlannerPage;
+export default ActivityOrRoutePlannerPage;
