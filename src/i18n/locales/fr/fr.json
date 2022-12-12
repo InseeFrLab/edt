@@ -9,7 +9,8 @@
             "complete": "Completer",
             "validate": "Valider",
             "add": "Ajouter",
-            "finish": "Clore"
+            "finish": "Clore",
+            "back-to-home": "Retourner à l'accueil"
         },
         "stepper": {
             "step": "Étape",
@@ -17,6 +18,8 @@
             "add-route": "AJOUT D'UN TRAJET"
         },
         "error": {
+            "error-default-title": "OUPS...",
+            "error-default": "Une erreur s'est produite...",
             "error-location": {
                 "message": "Aucun lieu n'a été renseigné"
             }
@@ -47,6 +50,7 @@
                 "info-alt": "Alt pour info"
             },
             "error": {
+                "default": "Erreur générique",
                 "location-error-alt": "Alt pour position"
             },
             "stepper": {
