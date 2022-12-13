@@ -3,7 +3,7 @@ import empty_activity from "assets/illustration/empty-activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import ActivityCard from "components/edt/ActivityCard/ActivityCard";
+import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { formateDateToFrenchFormat, generateDateFromStringInput, makeStylesEdt } from "lunatic-edt";
@@ -141,11 +141,11 @@ const ActivityOrRoutePlannerPage = () => {
                             <>
                                 {activities.map((activity, iteration) => (
                                     <FlexCenter key={"activity-" + iteration}>
-                                        <ActivityCard
+                                        <ActivityOrRouteCard
                                             labelledBy={""}
                                             describedBy={""}
-                                            label={activity.label}
                                             onClick={() => navToActivity(iteration)}
+                                            activityOrRoute={activity}
                                         />
                                     </FlexCenter>
                                 ))}
