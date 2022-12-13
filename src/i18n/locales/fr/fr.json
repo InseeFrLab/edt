@@ -87,6 +87,12 @@
         "secondary-activity": {
             "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",
             "info-bold": "Si vous en faites plusieurs, notez seulement la plus importante"
+        },
+        "alert-when-quit": {
+            "alert-content": "L'ajout de votre activité n'est pas terminé. Souhaitez vous reprendre ou annuler ?",
+            "alert-cancel": "Annuler",
+            "alert-complete": "Reprendre",
+            "alt-alert-icon": "alt pour icon no result"
         }
     },
     "component": {
@@ -125,6 +131,7 @@
             "alert-message": "Attention ! Vous n’avez pas été au bout de cette étape. Souhaitez-vous la compléter ?",
             "alert-ignore": "Ignorer",
             "alert-complete": "Compléter",
+            "alert-alt_icon": "alt pour icon no result",
             "clickable-list-placeholder": "Saisissez une activité",
             "clickable-list-not-found-label": "Aucun résultat trouvé",
             "clickable-list-not-found-comment": "Vous pourrez l'ajouter en cliquant sur le bouton ci-dessous, ou le bouton + ci-dessus",
@@ -135,7 +142,14 @@
         "location-selecter": {
             "alert-message": "Aucun lieu n’a été renseigné",
             "alert-ignore": "Ignorer",
-            "alert-complete": "Compléter"
+            "alert-complete": "Compléter",
+            "alert-alt_icon": "alt pour icon no result"
+        },
+        "goal-selecter": {
+            "alert-message": "Aucun but n’a été renseigné",
+            "alert-ignore": "Ignorer",
+            "alert-complete": "Compléter",
+            "alert-alt_icon": "alt pour icon no result"
         }
     }
 }

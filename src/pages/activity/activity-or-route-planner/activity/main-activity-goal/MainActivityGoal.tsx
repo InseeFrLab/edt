@@ -12,6 +12,7 @@ import option1 from "assets/illustration/goals/1.svg";
 import option2 from "assets/illustration/goals/2.svg";
 import option3 from "assets/illustration/goals/3.svg";
 import option4 from "assets/illustration/goals/4.svg";
+import errorIcon from "assets/illustration/error/puzzle.svg";
 
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
@@ -43,10 +44,12 @@ const MainActivityGoalPage = () => {
             saveAndLoopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY);
         },
         labels: {
-            alertMessage: t("component.location-selecter.alert-message"),
-            alertIgnore: t("component.location-selecter.alert-ignore"),
-            alertComplete: t("component.location-selecter.alert-complete"),
+            alertMessage: t("component.goal-selecter.alert-message"),
+            alertIgnore: t("component.goal-selecter.alert-ignore"),
+            alertComplete: t("component.goal-selecter.alert-complete"),
+            alertAlticon: t("component.goal-selecter.alert-alt_icon"),
         },
+        errorIcon: errorIcon,
     };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
