@@ -56,7 +56,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
         alignItems: "center",
     },
     hour: {
-        color: theme.variables.neutral,
+        color: theme.palette.primary.main,
     },
     dataBox: {
         marginLeft: "1rem",
