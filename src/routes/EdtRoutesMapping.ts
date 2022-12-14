@@ -9,6 +9,7 @@ const enum EdtRoutesNameEnum {
     DAY_OF_SURVEY = "day-of-survey",
     WORK_TIME = "work-time/:idSurvey",
     WEEKLY_PLANNER = "weekly-planner",
+    KIND_OF_WEEK = "kind-of-week",
     ACTIVITY_OR_ROUTE_PLANNER = "activity-or-route-planner",
     ACTIVITY_DURATION = "activity-duration/:iteration",
     MAIN_ACTIVITY = "main-activity/:iteration",
@@ -129,6 +130,12 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         page: EdtRoutesNameEnum.WEEKLY_PLANNER,
         surveySource: "work-time-survey.json",
         surveyPage: "3",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.WORK_TIME,
+        page: EdtRoutesNameEnum.KIND_OF_WEEK,
+        surveySource: "work-time-survey.json",
+        surveyPage: "4",
     },
 ];
 

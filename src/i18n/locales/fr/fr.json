@@ -46,6 +46,7 @@
             "activity-alt": "Alt pour activity",
             "route-alt": "Alt pour route",
             "empty-activity-alt": "Alt pour empty-activity",
+            "kind-of-week-alt": "Alt pour kind of week",
             "info": {
                 "info-alt": "Alt pour info"
             },
@@ -93,6 +94,9 @@
             "alert-cancel": "Annuler",
             "alert-complete": "Reprendre",
             "alt-alert-icon": "alt pour icon no result"
+        },
+        "kind-of-week": {
+            "simple-header-label": "CARACTÉRISTIQUES DE LA SEMAINE"
         }
     },
     "component": {

@@ -4,8 +4,21 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { NavigateFunction, useNavigate, useOutletContext } from "react-router-dom";
+import { EdtRoutes } from "routes/EdtRoutes";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getCurrentNavigatePath, getFullNavigatePath } from "service/navigation-service";
 import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
+
+const saveAndGoNext = (
+    navigate: NavigateFunction,
+    context: OrchestratorContext,
+    callbackHolder: any,
+): void => {
+    saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+        navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.KIND_OF_WEEK));
+    });
+};
 
 const WeeklyPlannerPage = () => {
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
@@ -29,7 +42,7 @@ const WeeklyPlannerPage = () => {
             save();
             setDisplayDayOverview(false);
         } else {
-            saveAndGoHome();
+            saveAndGoNext(navigate, context, callbackHolder);
         }
     };
 
@@ -42,7 +55,7 @@ const WeeklyPlannerPage = () => {
     return (
         <SurveyPage
             validate={validateAndNav}
-            onNavigateBack={validateAndNav}
+            onNavigateBack={saveAndGoHome}
             onEdit={onEdit}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}

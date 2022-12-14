@@ -33,6 +33,10 @@ const enum FieldNameEnum {
     OTHERKNOWN = "OTHERKNOWN",
     OTHER = "OTHER",
     WITHSCREEN = "WITHSCREEN",
+    WEEKLYPLANNER = "WEEKLYPLANNER",
+    WORKINGWEEK = "WORKINGWEEK",
+    HOLIDAYWEEK = "HOLIDAYWEEK",
+    OTHERWEEK = "OTHERWEEK",
 }
 
 const initializeDatas = (): Promise<LunaticData[]> => {

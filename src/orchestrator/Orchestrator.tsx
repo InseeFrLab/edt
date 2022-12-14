@@ -214,7 +214,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
 
 const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
     styleOverride: {
-        width: "90%",
+        width: "100%",
         maxWidth: "350px",
         "& .sequence-lunatic": {
             display: "none",

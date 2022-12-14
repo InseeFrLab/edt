@@ -39,6 +39,18 @@ const getLoopParameterizedNavigatePath = (
     }
 };
 
+const getFullNavigatePath = (idSurvey: string, page: EdtRoutesNameEnum) => {
+    const targetPage = mappingPageOrchestrator.find(link => link.page === page);
+
+    if (targetPage && targetPage.parentPage) {
+        return getParameterizedNavigatePath(targetPage.parentPage, idSurvey) + getNavigatePath(page);
+    } else if (targetPage) {
+        return getNavigatePath(page);
+    } else {
+        return getNavigatePath(EdtRoutesNameEnum.ERROR);
+    }
+};
+
 // Function to retrieve the last completed step to go back to the right activity subpage
 const getCurrentNavigatePath = (
     idSurvey: string,
@@ -78,7 +90,7 @@ const getCurrentNavigatePath = (
     } else if (page) {
         return getParameterizedNavigatePath(rootPage, idSurvey) + getNavigatePath(page);
     } else {
-        return EdtRoutesNameEnum.ERROR;
+        return getNavigatePath(EdtRoutesNameEnum.ERROR);
     }
 };
 
@@ -87,4 +99,5 @@ export {
     getParameterizedNavigatePath,
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
+    getFullNavigatePath,
 };

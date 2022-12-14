@@ -15,6 +15,7 @@ import HelpPage from "pages/help/Help";
 import HomePage from "pages/home/Home";
 import NotFoundPage from "pages/not-found/NotFound";
 import WhoAreYouPage from "pages/who-are-you/WhoAreYou";
+import KindOfWeekPage from "pages/work-time/kind-of-week/KindOfWeek";
 import WeeklyPlannerPage from "pages/work-time/weekly-planner/WeeklyPlanner";
 import WorkTimePage from "pages/work-time/WorkTime";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -68,6 +69,7 @@ const EdtRoutes = (): JSX.Element => {
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
                     <Route path={EdtRoutesNameEnum.DAY_OF_SURVEY} element={<DayOfSurveyPage />} />
                     <Route path={EdtRoutesNameEnum.WEEKLY_PLANNER} element={<WeeklyPlannerPage />} />
+                    <Route path={EdtRoutesNameEnum.KIND_OF_WEEK} element={<KindOfWeekPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>
