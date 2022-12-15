@@ -17,12 +17,13 @@ import catIcon440 from "assets/illustration/activity-categories/5.svg";
 import catIcon500 from "assets/illustration/activity-categories/6.svg";
 import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
+import errorIcon from "assets/illustration/error/puzzle.svg";
 
 import activitesAutoCompleteRef from "activitesAutoCompleteRef.json";
 import categoriesAndActivitesNomenclature from "activitiesCategoriesNomenclature.json";
 import iconNoResult from "assets/illustration/error/puzzle.svg";
-import { ActivitySelecterSpecificProps } from "lunatic-edt";
-import React from "react";
+import { ActivitySelecterSpecificProps, Alert } from "lunatic-edt";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const MainActivityPage = () => {
@@ -34,9 +35,15 @@ const MainActivityPage = () => {
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
-    const [backClickEvent, setBackClickEvent] = React.useState<React.MouseEvent>();
-    const [nextClickEvent, setNextClickEvent] = React.useState<React.MouseEvent>();
-    const [displayStepper, setDisplayStepper] = React.useState<boolean>(true);
+    const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
+    const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
+    const [displayStepper, setDisplayStepper] = useState<boolean>(true);
+    const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
+    const alertLabels = {
+        content: t("page.alert-when-quit.alert-content"),
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: t("page.alert-when-quit.alert-complete"),
+    };
 
     const specificProps: ActivitySelecterSpecificProps = {
         categoriesIcons: {
@@ -71,6 +78,7 @@ const MainActivityPage = () => {
             alertMessage: t("component.activity-selecter.alert-message"),
             alertIgnore: t("component.activity-selecter.alert-ignore"),
             alertComplete: t("component.activity-selecter.alert-complete"),
+            alertAlticon: t("component.activity-selecter.alert-alt-icon"),
             clickableListPlaceholder: t("component.activity-selecter.clickable-list-placeholder"),
             clickableListNotFoundLabel: t("component.activity-selecter.clickable-list-not-found-label"),
             clickableListNotFoundComment: t(
@@ -84,6 +92,7 @@ const MainActivityPage = () => {
             ),
             otherButton: t("component.activity-selecter.other-button"),
         },
+        errorIcon: errorIcon,
     };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
@@ -107,17 +116,21 @@ const MainActivityPage = () => {
         setBackClickEvent(e);
     };
 
-    const onClose = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
-        });
+    const onClose = (forceQuit: boolean) => {
+        if (forceQuit) {
+            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+                navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
+            });
+        } else {
+            setIsAlertDisplayed(true);
+        }
     };
 
     return (
         <LoopSurveyPage
             onNext={onNext}
             onPrevious={onPrevious}
-            onClose={onClose}
+            onClose={() => onClose(false)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -125,6 +138,14 @@ const MainActivityPage = () => {
             displayStepper={displayStepper}
         >
             <FlexCenter>
+                <Alert
+                    isAlertDisplayed={isAlertDisplayed}
+                    onCompleteCallBack={() => setIsAlertDisplayed(false)}
+                    onCancelCallBack={onClose}
+                    labels={alertLabels}
+                    icon={errorIcon}
+                    errorIconAlt={t("page.activity-duration.alt-alert-icon")}
+                ></Alert>
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}

@@ -49,9 +49,11 @@ const getCurrentLoopPageOfVariable = (
         if (Array.isArray(value) && value[iteration] !== undefined && value[iteration] !== null) {
             //return last fill subpage + 1
             const subpage = component.page ? +component?.page.split(".")[1] : 0;
-            currentLoopSubpage = Math.max(+currentLoopSubpage, subpage + 1);
+            return Math.max(+currentLoopSubpage, subpage + 1);
         }
+        return currentLoopSubpage;
     }
+    return currentLoopSubpage;
 };
 
 // Give the first loop subpage that don't have any data fill

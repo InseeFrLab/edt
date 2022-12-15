@@ -1,20 +1,21 @@
 import ActivityPage from "pages/activity/Activity";
-import ActivityDurationPage from "pages/activity/activity-planner/activity-duration/ActivityDuration";
-import ActivityLocationPage from "pages/activity/activity-planner/activity-location/ActivityLocation";
-import ActivityPlannerPage from "pages/activity/activity-planner/ActivityPlanner";
-import MainActivityGoalPage from "pages/activity/activity-planner/main-activity-goal/MainActivityGoal";
-import MainActivityPage from "pages/activity/activity-planner/main-activity/MainActivity";
-import SecondaryActivitySelectionPage from "pages/activity/activity-planner/secondary-activity-selection/SecondaryActivitySelection";
-import SecondaryActivityPage from "pages/activity/activity-planner/secondary-activity/SecondaryActivity";
-import WithScreenPage from "pages/activity/activity-planner/with-screen/WithScreen";
-import WithSomeoneSelectionPage from "pages/activity/activity-planner/with-someone-selection/WithSomeoneSelection";
-import WithSomeonePage from "pages/activity/activity-planner/with-someone/WithSomeone";
+import ActivityDurationPage from "pages/activity/activity-or-route-planner/activity/activity-duration/ActivityDuration";
+import ActivityLocationPage from "pages/activity/activity-or-route-planner/activity/activity-location/ActivityLocation";
+import MainActivityGoalPage from "pages/activity/activity-or-route-planner/activity/main-activity-goal/MainActivityGoal";
+import MainActivityPage from "pages/activity/activity-or-route-planner/activity/main-activity/MainActivity";
+import SecondaryActivitySelectionPage from "pages/activity/activity-or-route-planner/activity/secondary-activity-selection/SecondaryActivitySelection";
+import SecondaryActivityPage from "pages/activity/activity-or-route-planner/activity/secondary-activity/SecondaryActivity";
+import WithScreenPage from "pages/activity/activity-or-route-planner/activity/with-screen/WithScreen";
+import WithSomeoneSelectionPage from "pages/activity/activity-or-route-planner/activity/with-someone-selection/WithSomeoneSelection";
+import WithSomeonePage from "pages/activity/activity-or-route-planner/activity/with-someone/WithSomeone";
+import ActivityOrRoutePlannerPage from "pages/activity/activity-or-route-planner/ActivityOrRoutePlanner";
 import DayOfSurveyPage from "pages/day-of-survey/DayOfSurvey";
 import ErrorPage from "pages/error/Error";
 import HelpPage from "pages/help/Help";
 import HomePage from "pages/home/Home";
 import NotFoundPage from "pages/not-found/NotFound";
 import WhoAreYouPage from "pages/who-are-you/WhoAreYou";
+import KindOfWeekPage from "pages/work-time/kind-of-week/KindOfWeek";
 import WeeklyPlannerPage from "pages/work-time/weekly-planner/WeeklyPlanner";
 import WorkTimePage from "pages/work-time/WorkTime";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -31,7 +32,10 @@ const EdtRoutes = (): JSX.Element => {
                 <Route path={EdtRoutesNameEnum.ACTIVITY} element={<ActivityPage />}>
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
                     <Route path={EdtRoutesNameEnum.DAY_OF_SURVEY} element={<DayOfSurveyPage />} />
-                    <Route path={EdtRoutesNameEnum.ACTIVITY_PLANNER} element={<ActivityPlannerPage />}>
+                    <Route
+                        path={EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER}
+                        element={<ActivityOrRoutePlannerPage />}
+                    >
                         <Route
                             path={EdtRoutesNameEnum.ACTIVITY_DURATION}
                             element={<ActivityDurationPage />}
@@ -65,6 +69,7 @@ const EdtRoutes = (): JSX.Element => {
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
                     <Route path={EdtRoutesNameEnum.DAY_OF_SURVEY} element={<DayOfSurveyPage />} />
                     <Route path={EdtRoutesNameEnum.WEEKLY_PLANNER} element={<WeeklyPlannerPage />} />
+                    <Route path={EdtRoutesNameEnum.KIND_OF_WEEK} element={<KindOfWeekPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

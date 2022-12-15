@@ -1,4 +1,13 @@
 {
+    "pagination": "question",
+    "lunaticModelVersion": "2.2.10",
+    "modele": "TIME",
+    "enoCoreVersion": "2.3.11",
+    "generatingDate": "29-09-2022 13:56:00",
+    "missing": false,
+    "id": "l8lq5lp6",
+    "label": "Time",
+    "maxPage": "3",
     "variables": [
         {
             "variableType": "COLLECTED",
@@ -35,6 +44,42 @@
             },
             "name": "WEEKLYPLANNER",
             "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "WORKINGWEEK",
+            "componentRef": "checkboxgroup_weektype"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "HOLIDAYWEEK",
+            "componentRef": "checkboxgroup_weektype"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "OTHERWEEK",
+            "componentRef": "checkboxgroup_weektype"
         },
         {
             "variableType": "CALCULATED",
@@ -98,7 +143,7 @@
             "dateFormat": "YYYY-MM-DD",
             "response": { "name": "SURVEYDATE" },
             "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "2" }
+                "sequence": { "id": "sequence_1", "page": "1" }
             },
             "conditionFilter": { "value": "true" },
             "id": "datepicker_surveyDate",
@@ -130,7 +175,7 @@
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
-                    "page": "3"
+                    "page": "1"
                 }
             },
             "conditionFilter": {
@@ -142,16 +187,45 @@
             "title": "Planning de votre semaine",
             "workSumLabel": "Durée totale travaillée : ",
             "presentButtonLabel": "Continuer",
-            "pastButtonLabel": "Commencer"
+            "futureButtonLabel": "Commencer"
+        },
+        {
+            "componentType": "CheckboxGroupEdt",
+            "bindingDependencies": ["WORKINGWEEK", "HOLIDAYWEEK", "OTHERWEEK"],
+            "responses": [
+                {
+                    "response": {
+                        "name": "WORKINGWEEK"
+                    },
+                    "id": "1",
+                    "label": "\"Semaine normale de travail\""
+                },
+                {
+                    "response": {
+                        "name": "HOLIDAYWEEK"
+                    },
+                    "id": "2",
+                    "label": "\"Semaine de congés\""
+                },
+                {
+                    "response": {
+                        "name": "OTHERWEEK"
+                    },
+                    "id": "3",
+                    "label": "\"Autres (ex : travail et congés, etc)\""
+                }
+            ],
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxgroup_weektype",
+            "page": "4",
+            "label": "\"De quel type de semaine s’agissait-il ?\"",
+            "mandatory": false
         }
-    ],
-    "pagination": "question",
-    "lunaticModelVersion": "2.2.10",
-    "modele": "TIME",
-    "enoCoreVersion": "2.3.11",
-    "generatingDate": "29-09-2022 13:56:00",
-    "missing": false,
-    "id": "l8lq5lp6",
-    "label": "Time",
-    "maxPage": "3"
+    ]
 }

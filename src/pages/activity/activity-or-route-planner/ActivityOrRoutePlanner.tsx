@@ -3,7 +3,7 @@ import empty_activity from "assets/illustration/empty-activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import ActivityCard from "components/edt/ActivityCard/ActivityCard";
+import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { formateDateToFrenchFormat, generateDateFromStringInput, makeStylesEdt } from "lunatic-edt";
@@ -17,7 +17,7 @@ import { getCurrentNavigatePath } from "service/navigation-service";
 import { getActivities } from "service/survey-activity-service";
 import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 
-const ActivityPlannerPage = () => {
+const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const context: OrchestratorContext = useOutletContext();
@@ -31,7 +31,7 @@ const ActivityPlannerPage = () => {
     const surveyDate = getSurveyDate(context.idSurvey) || "";
 
     const isChildDisplayed = (path: string): boolean => {
-        return path.split(EdtRoutesNameEnum.ACTIVITY_PLANNER)[1].length > 0 ? true : false;
+        return path.split(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)[1].length > 0 ? true : false;
     };
 
     useEffect(() => {
@@ -141,11 +141,11 @@ const ActivityPlannerPage = () => {
                             <>
                                 {activities.map((activity, iteration) => (
                                     <FlexCenter key={"activity-" + iteration}>
-                                        <ActivityCard
+                                        <ActivityOrRouteCard
                                             labelledBy={""}
                                             describedBy={""}
-                                            label={activity.label}
                                             onClick={() => navToActivity(iteration)}
+                                            activityOrRoute={activity}
                                         />
                                     </FlexCenter>
                                 ))}
@@ -174,7 +174,7 @@ const ActivityPlannerPage = () => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { ActivityPlannerPage } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(theme => ({
     infoBox: {
         width: "350px",
     },
@@ -190,4 +190,4 @@ const useStyles = makeStylesEdt({ "name": { ActivityPlannerPage } })(theme => ({
     },
 }));
 
-export default ActivityPlannerPage;
+export default ActivityOrRoutePlannerPage;

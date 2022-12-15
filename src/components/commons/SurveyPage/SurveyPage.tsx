@@ -24,6 +24,7 @@ interface SurveyPageProps {
     surveyDate?: string;
     onEdit?(): void;
     simpleHeader?: boolean;
+    simpleHeaderLabel?: string;
     disableNav?: boolean;
 }
 
@@ -44,6 +45,7 @@ const SurveyPage = (props: SurveyPageProps) => {
         firstNamePrefix,
         surveyDate,
         simpleHeader = false,
+        simpleHeaderLabel,
         disableNav,
     } = props;
     const { t } = useTranslation();
@@ -66,7 +68,10 @@ const SurveyPage = (props: SurveyPageProps) => {
                 />
             )}
             {simpleHeader && onNavigateBack && (
-                <SurveyPageSimpleHeader onNavigateBack={onNavigateBack} />
+                <SurveyPageSimpleHeader
+                    simpleHeaderLabel={simpleHeaderLabel}
+                    onNavigateBack={onNavigateBack}
+                />
             )}
             {srcIcon && altIcon && <PageIcon srcIcon={srcIcon} altIcon={altIcon} />}
             {children}

@@ -1,25 +1,33 @@
-import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Info } from "lunatic-edt";
+import { Alert } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getNextLoopPage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
+import { getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
 import { FieldNameEnum, getValue, saveData } from "service/survey-service";
+import errorIcon from "assets/illustration/error/puzzle.svg";
 
-const SecondaryActivityPage = () => {
+const WithScreenPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
-    const currentPage = EdtRoutesNameEnum.SECONDARY_ACTIVITY;
+    const currentPage = EdtRoutesNameEnum.WITH_SCREEN;
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
+
+    const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
+    const alertLabels = {
+        content: t("page.alert-when-quit.alert-content"),
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: t("page.alert-when-quit.alert-complete"),
+    };
 
     const loopNavigate = (page: EdtRoutesNameEnum) => {
         navigate(
@@ -38,44 +46,50 @@ const SecondaryActivityPage = () => {
         });
     };
 
-    const onNext = () => {
+    const onprevious = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            const hasSecondaryActivity = getValue(
-                context.idSurvey,
-                FieldNameEnum.WITHSECONDARYACTIVITY,
-                currentIteration,
-            );
-            if (hasSecondaryActivity) {
-                loopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION);
-            } else {
-                loopNavigate(getNextLoopPage(currentPage));
-            }
+            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+                const isWithSomeone = getValue(
+                    context.idSurvey,
+                    FieldNameEnum.WITHSOMEONE,
+                    currentIteration,
+                );
+                if (isWithSomeone) {
+                    loopNavigate(EdtRoutesNameEnum.WITH_SOMEONE_SELECTION);
+                } else {
+                    loopNavigate(getPreviousLoopPage(currentPage));
+                }
+            });
         });
     };
 
-    const onPrevious = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            const goal = getValue(context.idSurvey, FieldNameEnum.GOAL, currentIteration);
-
-            if (goal === "" || goal) {
-                loopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
-            } else {
-                loopNavigate(getPreviousLoopPage(currentPage));
-            }
-        });
+    const onClose = (forceQuit: boolean) => {
+        if (forceQuit) {
+            saveAndGoToActivityPlanner();
+        } else {
+            setIsAlertDisplayed(true);
+        }
     };
 
     return (
         <LoopSurveyPage
-            onNext={onNext}
-            onPrevious={onPrevious}
-            onClose={saveAndGoToActivityPlanner}
+            onPrevious={onprevious}
+            onValidate={saveAndGoToActivityPlanner}
+            onClose={() => onClose(false)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}
         >
             <FlexCenter>
+                <Alert
+                    isAlertDisplayed={isAlertDisplayed}
+                    onCompleteCallBack={() => setIsAlertDisplayed(false)}
+                    onCancelCallBack={onClose}
+                    labels={alertLabels}
+                    icon={errorIcon}
+                    errorIconAlt={t("page.activity-duration.alt-alert-icon")}
+                ></Alert>
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
@@ -85,16 +99,8 @@ const SecondaryActivityPage = () => {
                     iteration={currentIteration}
                 ></OrchestratorForStories>
             </FlexCenter>
-            <FlexCenter>
-                <Info
-                    normalText={t("page.secondary-activity.info-light")}
-                    boldText={t("page.secondary-activity.info-bold")}
-                    infoIcon={InfoIcon}
-                    infoIconAlt={t("accessibility.asset.info.info-alt")}
-                />
-            </FlexCenter>
         </LoopSurveyPage>
     );
 };
 
-export default SecondaryActivityPage;
+export default WithScreenPage;
