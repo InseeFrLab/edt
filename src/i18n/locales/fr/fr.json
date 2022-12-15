@@ -155,6 +155,12 @@
             "alert-complete": "Compléter",
             "alert-alt_icon": "alt pour icon no result"
         },
+        "weekly-planner": {
+            "title": "Planning de votre semaine",
+            "work-sum-label": "Durée totale travaillée : ",
+            "present-button-label": "Continuer",
+            "future-button-label": "Commencer"
+        },
         "modal-edt": {
             "modal-felicitation": {
                 "title": "Félicitations !",
