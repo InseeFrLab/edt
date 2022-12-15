@@ -154,6 +154,15 @@
             "alert-ignore": "Ignorer",
             "alert-complete": "Compléter",
             "alert-alt_icon": "alt pour icon no result"
+        },
+        "modal-edt": {
+            "modal-felicitation": {
+                "title": "Félicitations !",
+                "end-content": "Merci pour votre participation.",
+                "button": "Revenir à l’accueil",
+                "alt-icon": "alt pour icon modal felicitations activity",
+                "survey-content": "Vous avez complété votre semainier."
+            }
         }
     }
 }
