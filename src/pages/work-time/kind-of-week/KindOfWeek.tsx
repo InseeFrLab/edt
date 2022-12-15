@@ -6,8 +6,10 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { getPrintedFirstName, saveData } from "service/survey-service";
+import { SetStateAction, useState } from "react";
 import calendarWeek from "assets/illustration/kind-of-week-categories/calendar-week.svg";
 import kindOfWeek from "assets/illustration/kind-of-week.svg";
+import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
 
 const specificProps: CheckboxGroupSpecificProps = {
     optionsIcons: {
@@ -17,10 +19,24 @@ const specificProps: CheckboxGroupSpecificProps = {
     },
 };
 
+const validateAndNav = (
+    forceQuit: boolean,
+    setIsModalDisplayed: (value: SetStateAction<boolean>) => void,
+    saveAndGoHome: () => void,
+): void => {
+    if (forceQuit) {
+        saveAndGoHome();
+    } else {
+        setIsModalDisplayed(true);
+    }
+};
+
 const KindOfWeekPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
     const { t } = useTranslation();
+
+    const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
 
     const saveAndGoHome = (): void => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
@@ -28,14 +44,10 @@ const KindOfWeekPage = () => {
         });
     };
 
-    const validateAndNav = (): void => {
-        saveAndGoHome();
-    };
-
     return (
         <SurveyPage
-            validate={validateAndNav}
-            onNavigateBack={validateAndNav}
+            validate={() => validateAndNav(false, setIsModalDisplayed, saveAndGoHome)}
+            onNavigateBack={() => validateAndNav(false, setIsModalDisplayed, saveAndGoHome)}
             srcIcon={kindOfWeek}
             altIcon={t("accessibility.asset.kind-of-week-alt")}
             firstName={getPrintedFirstName(context.idSurvey)}
@@ -44,6 +56,11 @@ const KindOfWeekPage = () => {
             simpleHeaderLabel={t("page.kind-of-week.simple-header-label")}
         >
             <FlexCenter>
+                <FelicitationModal
+                    isModalDisplayed={isModalDisplayed}
+                    onCompleteCallBack={() => validateAndNav(true, setIsModalDisplayed, saveAndGoHome)}
+                    content={t("component.modal-edt.modal-felicitation.survey-content")}
+                />
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
