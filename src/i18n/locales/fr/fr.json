@@ -157,7 +157,7 @@
         },
         "weekly-planner": {
             "title": "Planning de votre semaine",
-            "work-sumlabel": "Durée totale travaillée : ",
+            "work-sum-label": "Durée totale travaillée : ",
             "present-button-label": "Continuer",
             "future-button-label": "Commencer"
         },
