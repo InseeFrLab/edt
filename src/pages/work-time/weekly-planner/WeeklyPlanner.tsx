@@ -15,7 +15,7 @@ const WeeklyPlannerPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const specificProps : WeeklyPlannerSpecificProps = {
+    const specificProps: WeeklyPlannerSpecificProps = {
         surveyDate: getSurveyDate(context.idSurvey),
         isSubChildDisplayed: displayDayOverview,
         setIsSubChildDisplayed: setDisplayDayOverview,
@@ -23,8 +23,8 @@ const WeeklyPlannerPage = () => {
             title: t("component.weekly-planner.title"),
             workSumLabel: t("component.weekly-planner.work-sum-label"),
             presentButtonLabel: t("component.weekly-planner.present-button-label"),
-            futureButtonLabel: t("component.weekly-planner.future-button-label")
-        }
+            futureButtonLabel: t("component.weekly-planner.future-button-label"),
+        },
     };
 
     const saveAndGoHome = (): void => {
