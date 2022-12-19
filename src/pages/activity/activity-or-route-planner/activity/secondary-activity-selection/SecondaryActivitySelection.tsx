@@ -6,6 +6,7 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
+import { getSecondaryActivityRef } from "service/referentiel-service";
 import { saveData } from "service/survey-service";
 
 const SecondaryActivitySelectionPage = () => {
@@ -55,6 +56,7 @@ const SecondaryActivitySelectionPage = () => {
                     page={getLoopInitialPage(LoopEnum.ACTIVITY)}
                     subPage={"9"}
                     iteration={currentIteration}
+                    overrideOptions= {getSecondaryActivityRef()}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>
