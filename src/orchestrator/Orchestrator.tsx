@@ -236,7 +236,6 @@ const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
     orchestratorWhenLoading: {
         visibility: "hidden",
         height: "1px",
-        width: "1px",
         overflow: "hidden",
     },
     orchestratorWhenLoaded: {

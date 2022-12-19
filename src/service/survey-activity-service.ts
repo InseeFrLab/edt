@@ -11,7 +11,7 @@ import {
 const getActivities = (idSurvey: string): Array<ActivityOrRoute> => {
     const { t } = useTranslation();
     let activities: ActivityOrRoute[] = [];
-    const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY);
+    const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
     for (let i = 0; i < activityLoopSize; i++) {
         let activity: ActivityOrRoute = { label: t("common.activity.unknown-activity") + (i + 1) };
         activity.startTime = getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;

@@ -5,7 +5,12 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getNextLoopPage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
+import {
+    getLoopPageSubpage,
+    getNextLoopPage,
+    getPreviousLoopPage,
+    getStepData,
+} from "service/loop-stepper-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
 import { saveData } from "service/survey-service";
 
@@ -100,7 +105,7 @@ const MainActivityPage = () => {
                 getLoopParameterizedNavigatePath(
                     page,
                     context.idSurvey,
-                    LoopEnum.ACTIVITY,
+                    LoopEnum.ACTIVITY_OR_ROUTE,
                     currentIteration,
                 ),
             );
@@ -149,8 +154,8 @@ const MainActivityPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page={getLoopInitialPage(LoopEnum.ACTIVITY)}
-                    subPage={(stepData.stepNumber + 1).toString()}
+                    page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
+                    subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                     componentSpecificProps={specificProps}
                 ></OrchestratorForStories>

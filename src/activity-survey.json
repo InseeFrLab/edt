@@ -202,6 +202,90 @@
             "componentRef": "checkboxboolean_withscreen"
         },
         {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "ROUTE",
+            "componentRef": "icongridcheckboxone_route"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "FOOT",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "BICYCLE",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "TWOWHEELSMOTORIZED",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "PRIVATECAR",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "OTHERPRIVATE",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "PUBLIC",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
             "variableType": "CALCULATED",
             "expression": "true",
             "name": "FILTER_RESULT_INPUTTEXT",
@@ -312,6 +396,13 @@
                 "STARTTIME",
                 "ENDTIME",
                 "MAINACTIVITY",
+                "ROUTE",
+                "FOOT",
+                "BICYCLE",
+                "TWOWEELSMOTORIZED",
+                "PRIVATECAR",
+                "OTHERPRIVATE",
+                "PUBLIC",
                 "WITHSECONDARYACTIVITY",
                 "SECONDARYACTIVITY",
                 "PLACE",
@@ -394,6 +485,99 @@
                     "mandatory": false
                 },
                 {
+                    "componentType": "IconGridCheckBoxOne",
+                    "bindingDependencies": ["ROUTE"],
+                    "response": { "name": "ROUTE" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "icongridcheckboxone_route",
+                    "page": "4.4",
+                    "label": "\"Quel était le type de trajet ?\"",
+                    "mandatory": false,
+                    "options": [
+                        { "label": "\"Trajet Domicile - Travail\"", "value": "1" },
+                        { "label": "\"Trajet Domicile - Lieu d'étude\"", "value": "2" },
+                        { "label": "\"Trajets liés aux enfants\"", "value": "3" },
+                        { "label": "\"Trajets liés au bénévolat\"", "value": "4" },
+                        { "label": "\"Trajets pour aider un autre ménage\"", "value": "5" },
+                        { "label": "\"Autres trajets\"", "value": "6" }
+                    ]
+                },
+                {
+                    "componentType": "CheckboxGroupEdt",
+                    "bindingDependencies": [
+                        "FOOT",
+                        "BICYCLE",
+                        "TWOWHEELSMOTORIZED",
+                        "PRIVATECAR",
+                        "OTHERPRIVATE",
+                        "PUBLIC"
+                    ],
+                    "responses": [
+                        {
+                            "response": {
+                                "name": "FOOT"
+                            },
+                            "id": "1",
+                            "label": "\"À pied\""
+                        },
+                        {
+                            "response": {
+                                "name": "BICYCLE"
+                            },
+                            "id": "2",
+                            "label": "\"Vélo (électrique ou non)\""
+                        },
+                        {
+                            "response": {
+                                "name": "TWOWHEELSMOTORIZED"
+                            },
+                            "id": "3",
+                            "label": "\"Deux roues motorisé (scooter, moto...)\""
+                        },
+                        {
+                            "response": {
+                                "name": "PRIVATECAR"
+                            },
+                            "id": "4",
+                            "label": "\"Voiture privée (covoiturage)\""
+                        },
+                        {
+                            "response": {
+                                "name": "OTHERPRIVATE"
+                            },
+                            "id": "5",
+                            "label": "\"Autre moyen privé (monoroue, trottinette ou skate, bateau, électrique ou non…)\""
+                        },
+                        {
+                            "response": {
+                                "name": "PUBLIC"
+                            },
+                            "id": "6",
+                            "label": "\"Transports publics (bus, train, taxi, Uber, avion…)\""
+                        }
+                    ],
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxgroup_meanoftransport",
+                    "page": "4.5",
+                    "label": "\"Quels étaient vos moyens de transport ?\"",
+                    "tipsLabel": "Vous pouvez en selectionner plusieurs",
+                    "mandatory": false
+                },
+                {
                     "componentType": "CheckboxBoolean",
                     "bindingDependencies": ["WITHSECONDARYACTIVITY"],
                     "response": { "name": "WITHSECONDARYACTIVITY" },
@@ -406,7 +590,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxboolean_withsecondaryactivity",
-                    "page": "4.4",
+                    "page": "4.6",
                     "label": "\"Faisiez-vous autre chose en même temps ?\"",
                     "mandatory": false
                 },
@@ -423,7 +607,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "input_place",
-                    "page": "4.5",
+                    "page": "4.7",
                     "label": "\"Où étiez-vous ?\"",
                     "mandatory": false,
                     "options": [
@@ -454,7 +638,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxboolean_withsomeone",
-                    "page": "4.6",
+                    "page": "4.8",
                     "label": "\"Etiez-vous en compagnie de quelqu'un ?\"",
                     "mandatory": false
                 },
@@ -471,7 +655,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxboolean_withscreen",
-                    "page": "4.7",
+                    "page": "4.9",
                     "label": "\"Avez-vous utilisé un ordinateur, un smartphone, une tablette ou un autre objet connecté à internet ?\"",
                     "mandatory": false
                 },
@@ -488,7 +672,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "goalselecter_goal",
-                    "page": "4.8",
+                    "page": "4.10",
                     "label": "\"Dans quel but avez-vous fait cette activité ?\"",
                     "mandatory": false,
                     "options": [
@@ -511,7 +695,37 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxone_secondaryactivity",
-                    "page": "4.9",
+                    "page": "4.11",
+                    "label": "\"Que faisiez-vous en même temps ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "CheckboxOneEdt",
+                    "bindingDependencies": ["SECONDARYACTIVITY"],
+                    "response": { "name": "SECONDARYACTIVITY" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "options": [
+                        {
+                            "label": "\"Écouter la radio, des podcasts ou de la musique\"",
+                            "value": "636/637/638"
+                        },
+                        {
+                            "label": "\"Regarder la télévision, des DVD, des vidéos en ligne\"",
+                            "value": "634,635"
+                        },
+                        { "label": "Conversation", "value": "521" },
+                        { "label": "\"Repas\"", "value": "todetermine" },
+                        { "label": "\"Travail professionnel\"", "value": "211" }
+                    ],
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxone_secondaryactivity",
+                    "page": "4.12",
                     "label": "\"Que faisiez-vous en même temps ?\"",
                     "mandatory": false
                 },
@@ -564,8 +778,9 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxgroup_presentpeople",
-                    "page": "4.10",
+                    "page": "4.13",
                     "label": "\"En présence de qui étiez-vous ?\"",
+                    "tipsLabel": "Vous pouvez en selectionner plusieurs",
                     "mandatory": false
                 }
             ]

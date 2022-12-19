@@ -25,6 +25,7 @@ const ActivityOrRoutePlannerPage = () => {
     const { t } = useTranslation();
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
+    const [isRoute, setIsRoute] = React.useState(false);
     let contextIteration = 0;
 
     const activities = getActivities(context.idSurvey);
@@ -36,7 +37,11 @@ const ActivityOrRoutePlannerPage = () => {
 
     useEffect(() => {
         //The loop have to have a default size in source but it's updated depending on the data array size
-        setLoopSize(context.source, LoopEnum.ACTIVITY, getLoopSize(context.idSurvey, LoopEnum.ACTIVITY));
+        setLoopSize(
+            context.source,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE),
+        );
     }, []);
 
     useEffect(() => {
@@ -59,16 +64,22 @@ const ActivityOrRoutePlannerPage = () => {
     const onAddActivity = () => {
         const loopSize = setLoopSize(
             context.source,
-            LoopEnum.ACTIVITY,
-            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY) + 1,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
         contextIteration = loopSize - 1;
-        navToActivity(contextIteration);
+        navToActivityOrRoute(contextIteration, false);
     };
 
     const onAddRoute = () => {
         //TODO : check the good path for routes when it will be done
-        onAddActivity();
+        const loopSize = setLoopSize(
+            context.source,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
+        );
+        contextIteration = loopSize - 1;
+        navToActivityOrRoute(contextIteration, true);
     };
 
     const onOpenAddActivityOrRoute = () => {
@@ -87,15 +98,18 @@ const ActivityOrRoutePlannerPage = () => {
         //TODO : sprint 5 edition des données
     };
 
-    const navToActivity = (iteration: number): void => {
+    const navToActivityOrRoute = (iteration: number, isItRoute?: boolean): void => {
         setIsSubChildDisplayed(true);
+        setIsRoute(isItRoute ? true : false);
+        console.log(`isRoutePlanner = ${isRoute}`);
         navigate(
             getCurrentNavigatePath(
                 context.idSurvey,
                 context.surveyRootPage,
                 context.source.maxPage,
-                LoopEnum.ACTIVITY,
+                LoopEnum.ACTIVITY_OR_ROUTE,
                 iteration,
+                isRoute,
             ),
         );
         setIsAddActivityOrRouteOpen(false);
@@ -144,7 +158,7 @@ const ActivityOrRoutePlannerPage = () => {
                                         <ActivityOrRouteCard
                                             labelledBy={""}
                                             describedBy={""}
-                                            onClick={() => navToActivity(iteration)}
+                                            onClick={() => navToActivityOrRoute(iteration, false)} //TODO : Handle if it is route
                                             activityOrRoute={activity}
                                         />
                                     </FlexCenter>
@@ -168,6 +182,7 @@ const ActivityOrRoutePlannerPage = () => {
                     data: context.data,
                     idSurvey: context.idSurvey,
                     surveyRootPage: context.surveyRootPage,
+                    isRoute: isRoute,
                 }}
             />
         </>

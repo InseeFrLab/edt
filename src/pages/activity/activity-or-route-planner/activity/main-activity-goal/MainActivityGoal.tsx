@@ -8,20 +8,22 @@ import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
 import { saveData } from "service/survey-service";
 
+import errorIcon from "assets/illustration/error/puzzle.svg";
 import option1 from "assets/illustration/goals/1.svg";
 import option2 from "assets/illustration/goals/2.svg";
 import option3 from "assets/illustration/goals/3.svg";
 import option4 from "assets/illustration/goals/4.svg";
-import errorIcon from "assets/illustration/error/puzzle.svg";
 
-import { useTranslation } from "react-i18next";
-import { useState } from "react";
 import { IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { getLoopPageSubpage } from "service/loop-stepper-service";
 
 const MainActivityGoalPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL;
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
@@ -58,7 +60,7 @@ const MainActivityGoalPage = () => {
                 getLoopParameterizedNavigatePath(
                     page,
                     context.idSurvey,
-                    LoopEnum.ACTIVITY,
+                    LoopEnum.ACTIVITY_OR_ROUTE,
                     currentIteration,
                 ),
             );
@@ -86,8 +88,8 @@ const MainActivityGoalPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page={getLoopInitialPage(LoopEnum.ACTIVITY)}
-                    subPage={"8"}
+                    page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
+                    subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                     componentSpecificProps={specificProps}
                 ></OrchestratorForStories>

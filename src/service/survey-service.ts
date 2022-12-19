@@ -22,9 +22,16 @@ const enum FieldNameEnum {
     STARTTIME = "STARTTIME",
     ENDTIME = "ENDTIME",
     MAINACTIVITY = "MAINACTIVITY",
+    ROUTE = "ROUTE",
     GOAL = "GOAL",
     WITHSECONDARYACTIVITY = "WITHSECONDARYACTIVITY",
     SECONDARYACTIVITY = "SECONDARYACTIVITY",
+    FOOT = "FOOT",
+    BICYCLE = "BICYCLE",
+    TWOWEELSMOTORIZED = "TWOWEELSMOTORIZED",
+    PRIVATECAR = "PRIVATECAR",
+    OTHERPRIVATE = "OTHERPRIVATE",
+    PUBLIC = "PUBLIC",
     PLACE = "PLACE",
     WITHSOMEONE = "WITHSOMEONE",
     COUPLE = "COUPLE",
@@ -38,6 +45,16 @@ const enum FieldNameEnum {
     HOLIDAYWEEK = "HOLIDAYWEEK",
     OTHERWEEK = "OTHERWEEK",
 }
+
+const toIgnoreForRoute = [FieldNameEnum.MAINACTIVITY, FieldNameEnum.PLACE];
+const toIgnoreForActivity = [
+    FieldNameEnum.ROUTE,
+    FieldNameEnum.FOOT,
+    FieldNameEnum.BICYCLE,
+    FieldNameEnum.TWOWEELSMOTORIZED,
+    FieldNameEnum.PRIVATECAR,
+    FieldNameEnum.OTHERPRIVATE,
+];
 
 const initializeDatas = (): Promise<LunaticData[]> => {
     const promises: Promise<LunaticData>[] = [];
@@ -179,4 +196,6 @@ export {
     activitySurveysIds,
     workingTimeSurveysIds,
     FieldNameEnum,
+    toIgnoreForRoute,
+    toIgnoreForActivity,
 };

@@ -47,6 +47,7 @@ export interface OrchestratorContext {
     data: LunaticData;
     idSurvey: string;
     surveyRootPage: EdtRoutesNameEnum;
+    isRoute?: boolean;
 }
 
 export interface LoopData {
