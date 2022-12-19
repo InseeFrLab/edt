@@ -1,8 +1,10 @@
 import * as lunatic from "@inseefr/lunatic";
-import { Button } from "@mui/material";
+import { CircularProgress } from "@mui/material";
+import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import * as lunaticEDT from "lunatic-edt";
+import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
-import { lunaticDatabase } from "service/lunatic-database";
 
 const { ...edtComponents } = lunaticEDT;
 
@@ -11,56 +13,51 @@ lunaticEDT.notLunaticComponents.forEach((component: React.MemoExoticComponent<an
     lunatic[name] = component;
 });
 
-export type Props = {
-    goPrevious: () => void;
-    goNext: () => void;
-    isLast: boolean;
-    isFirst: boolean;
-};
-const Pager = (props: Props) => {
-    const { goPrevious, goNext, isLast, isFirst } = props;
-
-    return (
-        <div className="pagination">
-            <Button onClick={goPrevious} disabled={isFirst}>
-                Previous
-            </Button>
-            <Button onClick={goNext} disabled={isLast}>
-                Next
-            </Button>
-        </div>
-    );
-};
-
 const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
+
+export const callbackHolder: { getData(): LunaticData; getErrors(): any } = {
+    getData: () => {
+        return {};
+    },
+    getErrors: () => {
+        return {};
+    },
+};
+
 export type OrchestratorProps = {
-    source: object;
+    source: LunaticModel | undefined;
     data?: object;
+    callbackHolder: { getData(): LunaticData; getErrors(): any };
+    page: string;
+    surveyDate?: string;
+    isSubChildDisplayed?: boolean;
+    setIsSubChildDisplayed?(value: boolean): void;
 };
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    const { source, data } = props;
     const {
-        goPreviousPage,
-        goNextPage,
-        isLastPage,
-        isFirstPage,
-        getComponents,
-        getCurrentErrors,
-        getData,
-    } = lunatic.useLunatic(source, data, {
+        source,
+        data,
+        callbackHolder,
+        page,
+        surveyDate,
+        isSubChildDisplayed,
+        setIsSubChildDisplayed,
+    } = props;
+
+    const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
         onChange: onLogChange,
+        initialPage: page,
+        activeControls: true,
     });
+    const { classes, cx } = useStyles();
     const components = getComponents();
     const currentErrors = getCurrentErrors();
+    callbackHolder.getData = getData;
+    callbackHolder.getErrors = getCurrentErrors;
 
-    const saveAndNext = () => {
-        lunaticDatabase.save("edt", getData());
-        goNextPage();
-    };
-
-    return (
+    return source && data ? (
         <>
-            <div className="components">
+            <div className={cx("components", classes.styleOverride)}>
                 {components.map(function (component: any) {
                     const { id, componentType, response, ...other } = component;
                     const Component = lunatic[componentType];
@@ -73,17 +70,36 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                 {...component}
                                 errors={currentErrors}
                                 custom={edtComponents}
+                                surveyDate={surveyDate}
+                                isSubChildDisplayed={isSubChildDisplayed}
+                                setIsSubChildDisplayed={setIsSubChildDisplayed}
                             />
                         </div>
                     );
                 })}
             </div>
-            <Pager
-                goPrevious={goPreviousPage}
-                goNext={saveAndNext}
-                isLast={isLastPage}
-                isFirst={isFirstPage}
-            />
         </>
+    ) : (
+        <FlexCenter>
+            <CircularProgress />
+        </FlexCenter>
     );
 };
+
+const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
+    styleOverride: {
+        width: "90%",
+        maxWidth: "350px",
+        "& .sequence-lunatic": {
+            display: "none",
+        },
+        "& label": {
+            backgroundColor: "transparent",
+            marginBottom: "1rem",
+            fontSize: "20px",
+        },
+        "& .field-container": {
+            margin: "1rem 0",
+        },
+    },
+}));

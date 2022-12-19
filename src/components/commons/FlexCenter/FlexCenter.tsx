@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import { makeStylesEdt } from "lunatic-edt";
 
 interface FlexCenterProps {
     children: JSX.Element[] | JSX.Element;
@@ -7,11 +8,15 @@ interface FlexCenterProps {
 
 const FlexCenter = (props: FlexCenterProps) => {
     const { children, className } = props;
-    return (
-        <Box sx={{ display: "flex", justifyContent: "center" }} className={className}>
-            {children}
-        </Box>
-    );
+    const { classes, cx } = useStyles();
+    return <Box className={cx(className, classes.box)}>{children}</Box>;
 };
+
+const useStyles = makeStylesEdt({ "name": { FlexCenter } })(() => ({
+    box: {
+        display: "flex",
+        justifyContent: "center",
+    },
+}));
 
 export default FlexCenter;

@@ -2,8 +2,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Button, Divider } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
-import { makeStyles } from "tss-react/mui";
 
 interface AddActivityOrRouteDefaultProps {
     handleClose(): void;
@@ -23,14 +23,7 @@ const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
     return (
         <>
             <Box className={cx(className, classes.modalDefault)}>
-                <Box
-                    id="modal-title"
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                    }}
-                >
+                <Box id="modal-title" className={classes.titleBox}>
                     <Box className={classes.iconBox}>
                         <img src={iconTitle} alt={t("accessibility.asset.yellow-plus-alt")} />
                     </Box>
@@ -78,7 +71,7 @@ const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
     );
 };
 
-const useStyles = makeStyles({ "name": { AddActivityOrRouteDefault } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { AddActivityOrRouteDefault } })(theme => ({
     navigateBox: {
         cursor: "pointer",
         display: "flex",
@@ -93,6 +86,11 @@ const useStyles = makeStyles({ "name": { AddActivityOrRouteDefault } })(theme =>
     },
     navIconBox: {
         color: theme.palette.primary.light,
+    },
+    titleBox: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
     },
     iconBox: {
         width: "20%",

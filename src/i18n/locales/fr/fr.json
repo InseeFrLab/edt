@@ -6,7 +6,8 @@
             "close": "Fermer",
             "cancel": "Annuler",
             "ignore": "Ignorer",
-            "complete": "Completer"
+            "complete": "Completer",
+            "validate": "Valider"
         },
         "stepper": {
             "step": "Étape"
@@ -15,6 +16,9 @@
             "error-location": {
                 "message": "Aucun lieu n'a été renseigné"
             }
+        },
+        "user": {
+            "person": "PERSONNE"
         }
     },
     "accessibility": {
@@ -27,11 +31,18 @@
         "asset": {
             "reminder-notes-alt": "Alt pour reminder-note",
             "who-are-you-alt": "Alt pour who-are-you",
+            "day-of-survey-alt": "Alt pour day-of-survey",
             "yellow-plus-alt": "Alt pour yellow-plus",
             "activity-alt": "Alt pour activity",
             "route-alt": "Alt pour route",
             "error": {
                 "location-error-alt": "Alt pour position"
+            },
+            "stepper": {
+                "step-location-alt": "Alt pour step-location"
+            },
+            "card": {
+                "person-sun-alt": "Alt pour person-sun"
             }
         }
     },
@@ -40,6 +51,10 @@
             "welcome": "Bienvenue sur la PWA Carnet EDT",
             "navigation": {
                 "link-help-label": "Aide"
+            },
+            "loading": {
+                "message": "Nous mettons à jour vos données.",
+                "thanking": "Merci pour votre patience."
             }
         },
         "not-found": {
@@ -54,8 +69,14 @@
             "route-label": "Trajet",
             "route-description": "À pied, en voiture, en bus..."
         },
-        "orchestrator": {
-            "loading": "Chargement du questionnaire lunatic..."
+        "day-card": {
+            "day": "Journée"
+        },
+        "week-card": {
+            "week": "Semainier"
+        },
+        "survey-page-edit-header": {
+            "week-of": "Semainier de "
         }
     }
 }

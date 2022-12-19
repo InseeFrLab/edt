@@ -1,4 +1,5 @@
 import Dexie from "dexie";
+import { LunaticData } from "interface/lunatic/Lunatic";
 
 export interface LunaticDatabase {
     save(id: string, data: LunaticData): Promise<string>;
@@ -26,7 +27,7 @@ class LunaticDatabaseImpl extends Dexie implements LunaticDatabase {
 }
 
 class MemoryLunaticDatabaseImpl implements LunaticDatabase {
-    lunaticData = new Map<String, LunaticData>();
+    lunaticData = new Map<string, LunaticData>();
 
     public save(id: string, data: LunaticData): Promise<string> {
         data.id = id;
@@ -40,7 +41,7 @@ class MemoryLunaticDatabaseImpl implements LunaticDatabase {
 }
 
 class PromiseProxyLunaticDatabaseImpl implements LunaticDatabase {
-    lunaticDatabasePromise = new Map<String, LunaticData>();
+    lunaticDatabasePromise = new Map<string, LunaticData>();
     constructor(private promise: Promise<LunaticDatabase>) {}
 
     public save(id: string, data: LunaticData): Promise<string> {
@@ -50,21 +51,6 @@ class PromiseProxyLunaticDatabaseImpl implements LunaticDatabase {
     public get(id: string): Promise<LunaticData | undefined> {
         return lunaticDatabasePromise.then(database => database.get(id));
     }
-}
-
-export interface Collected {
-    COLLECTED: string | boolean | null;
-    EDITED: any;
-    FORCED: any;
-    INPUTED: any;
-    PREVIOUS: any;
-}
-
-export interface LunaticData {
-    id?: string;
-    EXTERNAL?: any;
-    CALCULATED?: any;
-    COLLECTED?: Map<string, Collected>;
 }
 
 // this is somewhat complexe as browser sometime cannot work with dexie in private mode

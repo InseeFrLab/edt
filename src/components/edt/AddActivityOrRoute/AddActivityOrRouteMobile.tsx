@@ -2,8 +2,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Button, Divider } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
-import { makeStyles } from "tss-react/mui";
 
 interface AddActivityOrRouteMobileProps {
     handleClose(): void;
@@ -23,14 +23,7 @@ const AddActivityOrRouteMobile = (props: AddActivityOrRouteMobileProps) => {
     return (
         <>
             <Box className={cx(className, classes.modalMobile)}>
-                <Box
-                    id="modal-title"
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                    }}
-                >
+                <Box id="modal-title" className={classes.titleBoxMobile}>
                     <Box className={classes.iconPlusBoxMobile}>
                         <img src={iconTitle} alt={t("accessibility.asset.yellow-plus-alt")} />
                     </Box>
@@ -78,11 +71,16 @@ const AddActivityOrRouteMobile = (props: AddActivityOrRouteMobileProps) => {
     );
 };
 
-const useStyles = makeStyles({ "name": { AddActivityOrRouteMobile } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { AddActivityOrRouteMobile } })(theme => ({
     iconBoxMobile: {
         "img": {
             width: "70px",
         },
+    },
+    titleBoxMobile: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
     },
     iconPlusBoxMobile: {
         "img": {

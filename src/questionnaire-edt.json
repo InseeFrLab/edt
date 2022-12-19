@@ -205,6 +205,24 @@
             "label": "\"I - \" || \"Durée test\""
         },
         {
+            "componentType": "WeeklyPlanner",
+            "bindingDependencies": ["CHECKBOXON"],
+            "response": { "name": "CHECKBOXON" },
+            "hierarchy": {
+                "sequence": { "id": "l8lpwmxj", "page": "1", "label": "\"I - \" || \"Durée test\"" }
+            },
+            "options": [
+                { "label": "\"Item 1\"", "value": "Item1" },
+                { "label": "\"Item2\"", "value": "Item2" },
+                { "label": "\"Item 3\"", "value": "Item3" }
+            ],
+            "conditionFilter": { "value": "true" },
+            "id": "l8lr9pkh",
+            "page": "1",
+            "label": "\"➡ 3. \" || \"Checkbox one\"",
+            "mandatory": false
+        },
+        {
             "componentType": "CheckboxGroup",
             "bindingDependencies": ["CHECKBOXGR1", "CHECKBOXGR2", "CHECKBOXGR3"],
             "hierarchy": {
@@ -229,7 +247,7 @@
             ],
             "conditionFilter": { "value": "true" },
             "id": "l8lr55fc",
-            "page": "2",
+            "page": "6",
             "label": "\"➡ 2. \" || \"Checkbox group\""
         },
         {
@@ -283,20 +301,6 @@
             "page": "4",
             "label": "\"➡ 3. \" || \"Checkbox one\"",
             "mandatory": false
-        },
-        {
-            "componentType": "Input",
-            "bindingDependencies": ["INPUTTEXT"],
-            "response": { "name": "INPUTTEXT" },
-            "hierarchy": {
-                "sequence": { "id": "l8lpwmxj", "page": "1", "label": "\"I - \" || \"Durée test\"" }
-            },
-            "conditionFilter": { "value": "true" },
-            "id": "l8lrc7kt",
-            "page": "5",
-            "label": "\"➡ 4. \" || \"Input text\"",
-            "mandatory": false,
-            "maxLength": 100
         },
         {
             "componentType": "Datepicker",
