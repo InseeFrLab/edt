@@ -222,6 +222,42 @@
                 "FORCED": null,
                 "PREVIOUS": null
             },
+            "name": "WORKINGHALFDAY",
+            "componentRef": "checkboxgroup_daytype"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "NOTWORKINGDAY",
+            "componentRef": "checkboxgroup_daytype"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "OTHERDAY",
+            "componentRef": "checkboxgroup_daytype"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
             "name": "ISCLOSED",
             "componentRef": ""
         },
@@ -623,14 +659,35 @@
         },
         {
             "componentType": "CheckboxGroupEdt",
-            "bindingDependencies": ["WORKINGALLDAY"],
+            "bindingDependencies": ["WORKINGALLDAY", "WORKINGHALFDAY", "NOTWORKINGDAY", "OTHERDAY"],
             "responses": [
                 {
                     "response": {
                         "name": "WORKINGALLDAY"
                     },
-                    "id": "5",
+                    "id": "1",
                     "label": "\"Journée normale de travail\""
+                },
+                {
+                    "response": {
+                        "name": "WORKINGHALFDAY"
+                    },
+                    "id": "2",
+                    "label": "\"Journée semi-travaillée\""
+                },
+                {
+                    "response": {
+                        "name": "NOTWORKINGDAY"
+                    },
+                    "id": "3",
+                    "label": "\"Journée non travaillés (repos, férié, congé,…\""
+                },
+                {
+                    "response": {
+                        "name": "OTHERDAY"
+                    },
+                    "id": "4",
+                    "label": "\"Autre cas (pour les personnes n’exerçant pas d’activité professionnelle\""
                 }
             ],
             "hierarchy": {
