@@ -20,6 +20,7 @@ const enum EdtRoutesNameEnum {
     WITH_SOMEONE = "with-who/:iteration",
     WITH_SOMEONE_SELECTION = "with-who-selection/:iteration",
     WITH_SCREEN = "with-screen/:iteration",
+    TYPE_DAY = "type-day",
 }
 
 const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
@@ -112,6 +113,12 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY),
         surveySubPage: "10",
         surveyStep: 5,
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.TYPE_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "5",
     },
     {
         parentPage: EdtRoutesNameEnum.WORK_TIME,

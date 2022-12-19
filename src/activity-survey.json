@@ -202,6 +202,30 @@
             "componentRef": "checkboxboolean_withscreen"
         },
         {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "WORKINGALLDAY",
+            "componentRef": "checkboxgroup_daytype"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "ISCLOSED",
+            "componentRef": ""
+        },
+        {
             "variableType": "CALCULATED",
             "expression": "true",
             "name": "FILTER_RESULT_INPUTTEXT",
@@ -598,15 +622,39 @@
             ]
         },
         {
+            "componentType": "CheckboxGroupEdt",
+            "bindingDependencies": ["WORKINGALLDAY"],
+            "responses": [
+                {
+                    "response": {
+                        "name": "WORKINGALLDAY"
+                    },
+                    "id": "5",
+                    "label": "\"Journée normale de travail\""
+                }
+            ],
+            "hierarchy": {
+                "sequence": {
+                    "id": "j6p0ti5h",
+                    "page": "5"
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxgroup_daytype",
+            "page": "5",
+            "label": "\"De quel type de journée s’agissait-il ?\"",
+            "mandatory": false
+        },
+        {
             "id": "End",
             "componentType": "Sequence",
-            "page": "5",
+            "page": "6",
             "label": { "value": "\"End\"", "type": "VTL|MD" },
             "conditionFilter": { "value": "true" },
             "hierarchy": {
                 "sequence": {
                     "id": "End",
-                    "page": "4",
+                    "page": "6",
                     "label": { "value": "\"End\"", "type": "VTL|MD" }
                 }
             }

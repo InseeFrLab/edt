@@ -4,6 +4,7 @@ import {
     LunaticModel,
     LunaticModelComponent,
     LunaticModelVariable,
+    Collected,
 } from "interface/lunatic/Lunatic";
 import { generateDateFromStringInput, getFrenchDayFromDate } from "lunatic-edt";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
@@ -37,6 +38,7 @@ const enum FieldNameEnum {
     WORKINGWEEK = "WORKINGWEEK",
     HOLIDAYWEEK = "HOLIDAYWEEK",
     OTHERWEEK = "OTHERWEEK",
+    ISCLOSED = "ISCLOSED",
 }
 
 const initializeDatas = (): Promise<LunaticData[]> => {
@@ -119,6 +121,15 @@ const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: num
     }
 };
 
+const setValue = (idSurvey: string, variableName: FieldNameEnum, value: Collected) => {
+    const dataAct = datas.get(idSurvey);
+    if (dataAct && dataAct.COLLECTED) {
+        dataAct.COLLECTED[variableName] = value;
+        datas.set(idSurvey, dataAct);
+    }
+    return dataAct;
+};
+
 const getLastName = (idSurvey: string) => {
     return getValue(idSurvey, FieldNameEnum.LASTNAME)?.toString();
 };
@@ -176,6 +187,7 @@ export {
     getValue,
     getComponentId,
     getVariable,
+    setValue,
     activitySurveysIds,
     workingTimeSurveysIds,
     FieldNameEnum,

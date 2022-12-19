@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { getCurrentNavigatePath } from "service/navigation-service";
 import { getCurrentPageSource, getCurrentSurveyRootPage } from "service/orchestrator-service";
-import { getData } from "service/survey-service";
+import { FieldNameEnum, getData, getValue } from "service/survey-service";
 
 const ActivityPage = () => {
     const { idSurvey } = useParams();
@@ -18,7 +18,14 @@ const ActivityPage = () => {
         };
 
         if (idSurvey && source) {
-            navigate(getCurrentNavigatePath(idSurvey, surveyRootPage, "3"));
+            const activityIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
+            navigate(
+                getCurrentNavigatePath(
+                    idSurvey,
+                    surveyRootPage,
+                    activityIsClosed ? source.maxPage : "3",
+                ),
+            );
         } else {
             //TODO : redirect to error page ??
         }

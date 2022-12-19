@@ -1,6 +1,6 @@
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentLoopPage, getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getCurrentPage, getData } from "service/survey-service";
+import { FieldNameEnum, getCurrentPage, getData, getValue } from "service/survey-service";
 
 const getNavigatePath = (page: EdtRoutesNameEnum): string => {
     return "/" + page;
@@ -58,6 +58,7 @@ const getCurrentNavigatePath = (
     maxPage: string,
     loop?: LoopEnum,
     iteration?: number,
+    nextPage?: number,
 ): string => {
     const surveyData = getData(idSurvey);
     const subpage = getCurrentLoopPage(surveyData, loop, iteration);
@@ -72,8 +73,10 @@ const getCurrentNavigatePath = (
         page = pageOrchestrator?.page;
         parentPage = pageOrchestrator?.parentPage;
     } else {
-        const lastFilledPage = getCurrentPage(surveyData);
-        const firstEmptyPage = lastFilledPage + 1;
+        const activityIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
+        const currentPage = getCurrentPage(surveyData);
+        const lastFilledPage = activityIsClosed && currentPage == 2 ? 4 : getCurrentPage(surveyData);
+        const firstEmptyPage = nextPage ? nextPage : lastFilledPage + 1;
         page = mappingPageOrchestrator.find(
             link =>
                 link.surveyPage ===

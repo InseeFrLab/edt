@@ -1,4 +1,5 @@
 import ActivityPage from "pages/activity/Activity";
+import TypeDayPage from "pages/activity-complementary-questions/type-day/TypeDay";
 import ActivityDurationPage from "pages/activity/activity-or-route-planner/activity/activity-duration/ActivityDuration";
 import ActivityLocationPage from "pages/activity/activity-or-route-planner/activity/activity-location/ActivityLocation";
 import MainActivityGoalPage from "pages/activity/activity-or-route-planner/activity/main-activity-goal/MainActivityGoal";
@@ -64,6 +65,7 @@ const EdtRoutes = (): JSX.Element => {
                             element={<WithSomeoneSelectionPage />}
                         />
                     </Route>
+                    <Route path={EdtRoutesNameEnum.TYPE_DAY} element={<TypeDayPage />} />
                 </Route>
                 <Route path={EdtRoutesNameEnum.WORK_TIME} element={<WorkTimePage />}>
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />

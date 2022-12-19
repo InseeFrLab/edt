@@ -5,7 +5,7 @@ import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { OrchestratorContext, Collected } from "interface/lunatic/Lunatic";
 import { formateDateToFrenchFormat, generateDateFromStringInput, makeStylesEdt } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useEffect } from "react";
@@ -15,7 +15,13 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
 import { getCurrentNavigatePath } from "service/navigation-service";
 import { getActivities } from "service/survey-activity-service";
-import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
+import {
+    FieldNameEnum,
+    getPrintedFirstName,
+    getSurveyDate,
+    saveData,
+    setValue,
+} from "service/survey-service";
 
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
@@ -53,7 +59,18 @@ const ActivityOrRoutePlannerPage = () => {
     };
 
     const onFinish = () => {
-        saveAndGoHome();
+        let isClosed: Collected = {
+            COLLECTED: true,
+            EDITED: null,
+            FORCED: null,
+            INPUTED: null,
+            PREVIOUS: null,
+        };
+        const data = setValue(context.idSurvey, FieldNameEnum.ISCLOSED, isClosed);
+
+        saveData(context.idSurvey, data ? data : callbackHolder.getData()).then(() => {
+            navigate(getCurrentNavigatePath(context.idSurvey, context.surveyRootPage, "5"));
+        });
     };
 
     const onAddActivity = () => {
