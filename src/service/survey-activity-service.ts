@@ -2,6 +2,11 @@ import { ActivityOrRoute } from "interface/entity/ActivityOrRoute";
 import { useTranslation } from "react-i18next";
 import { getLoopSize, LoopEnum } from "service/loop-service";
 import { FieldNameEnum, getValue } from "service/survey-service";
+import { SelectedActivity } from "lunatic-edt";
+import {
+    findActivityInAutoCompleteReferentiel,
+    findActivityInNomenclatureReferentiel,
+} from "./referentiel-service";
 
 const getActivities = (idSurvey: string): Array<ActivityOrRoute> => {
     const { t } = useTranslation();
@@ -11,6 +16,9 @@ const getActivities = (idSurvey: string): Array<ActivityOrRoute> => {
         let activity: ActivityOrRoute = { label: t("common.activity.unknown-activity") + (i + 1) };
         activity.startTime = getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
         activity.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
+        const mainActivity = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
+        const activitySelection = mainActivity ? JSON.parse(mainActivity.toString()) : undefined;
+        activity.label = getActivityLabel(activitySelection) || "";
         activities.push(activity);
     }
     return activities;
@@ -27,4 +35,19 @@ const getActivityOrRouteDurationLabel = (activity: ActivityOrRoute): string => {
     return formatedHours + formatedMinutes;
 };
 
-export { getActivities, getActivityOrRouteDurationLabel };
+const getActivityLabel = (activity: SelectedActivity | undefined): string | undefined => {
+    if (!activity) {
+        return undefined
+    }
+    if (activity.label) {
+        return activity.label;
+    } else {
+        if (activity.suggesterId) {
+            return findActivityInAutoCompleteReferentiel(activity)?.label;
+        } else {
+            return findActivityInNomenclatureReferentiel(activity)?.label;
+        }
+    }
+};
+
+export { getActivities, getActivityOrRouteDurationLabel, getActivityLabel };

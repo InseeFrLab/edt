@@ -28,7 +28,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
             </Box>
             <Divider orientation="vertical" variant="middle" flexItem />
             <Box className={classes.dataBox}>
-                <Box className={classes.activityLabel}>getActivityLabel(code) || activity.label</Box>
+                <Box className={classes.activityLabel}>{activityOrRoute.label}</Box>
                 <Box></Box>
             </Box>
         </Box>

@@ -19,12 +19,11 @@ import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/puzzle.svg";
 
-import activitesAutoCompleteRef from "activitesAutoCompleteRef.json";
-import categoriesAndActivitesNomenclature from "activitiesCategoriesNomenclature.json";
 import iconNoResult from "assets/illustration/error/puzzle.svg";
 import { ActivitySelecterSpecificProps, Alert } from "lunatic-edt";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 
 const MainActivityPage = () => {
     const navigate = useNavigate();
@@ -57,7 +56,7 @@ const MainActivityPage = () => {
             "600": catIcon600,
         },
         clickableListIconNoResult: iconNoResult,
-        activitesAutoCompleteRef: activitesAutoCompleteRef,
+        activitesAutoCompleteRef: getAutoCompleteRef(),
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
@@ -71,7 +70,7 @@ const MainActivityPage = () => {
             }
         },
         setDisplayStepper: setDisplayStepper,
-        categoriesAndActivitesNomenclature: categoriesAndActivitesNomenclature,
+        categoriesAndActivitesNomenclature: getNomenclatureRef(),
         labels: {
             selectInCategory: t("component.activity-selecter.select-in-category"),
             addActivity: t("component.activity-selecter.add-activity"),
