@@ -8,19 +8,22 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
+import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
-import { FieldNameEnum, getValue, saveData } from "service/survey-service";
+import { getActivities } from "service/survey-activity-service";
+import { saveData } from "service/survey-service";
+
 import errorIcon from "assets/illustration/error/puzzle.svg";
 
-const WithScreenPage = () => {
+const ActivityDurationPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
-    const currentPage = EdtRoutesNameEnum.WITH_SCREEN;
-    const stepData = getStepData(currentPage);
+    const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
+    const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
+    const activitiesAct = getActivities(context.idSurvey);
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const alertLabels = {
@@ -29,43 +32,38 @@ const WithScreenPage = () => {
         complete: t("page.alert-when-quit.alert-complete"),
     };
 
-    const loopNavigate = (page: EdtRoutesNameEnum) => {
-        navigate(
-            getLoopParameterizedNavigatePath(
-                page,
-                context.idSurvey,
-                LoopEnum.ACTIVITY,
-                currentIteration,
-            ),
-        );
+    const specificProps = {
+        activitiesAct: activitiesAct,
     };
 
-    const saveAndGoToActivityPlanner = () => {
+    const onNext = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
-        });
-    };
-
-    const onprevious = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                const isWithSomeone = getValue(
+            console.log(context.isRoute);
+            navigate(
+                getLoopParameterizedNavigatePath(
+                    getNextLoopPage(currentPage, context.isRoute),
                     context.idSurvey,
-                    FieldNameEnum.WITHSOMEONE,
+                    LoopEnum.ACTIVITY_OR_ROUTE,
                     currentIteration,
-                );
-                if (isWithSomeone) {
-                    loopNavigate(EdtRoutesNameEnum.WITH_SOMEONE_SELECTION);
-                } else {
-                    loopNavigate(getPreviousLoopPage(currentPage));
-                }
-            });
+                ),
+            );
         });
     };
 
     const onClose = (forceQuit: boolean) => {
         if (forceQuit) {
-            saveAndGoToActivityPlanner();
+            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+                navigate(
+                    getCurrentNavigatePath(
+                        context.idSurvey,
+                        EdtRoutesNameEnum.ACTIVITY,
+                        "3",
+                        undefined,
+                        undefined,
+                        context.isRoute,
+                    ),
+                );
+            });
         } else {
             setIsAlertDisplayed(true);
         }
@@ -73,8 +71,7 @@ const WithScreenPage = () => {
 
     return (
         <LoopSurveyPage
-            onPrevious={onprevious}
-            onValidate={saveAndGoToActivityPlanner}
+            onNext={onNext}
             onClose={() => onClose(false)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
@@ -94,13 +91,14 @@ const WithScreenPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page={getLoopInitialPage(LoopEnum.ACTIVITY)}
-                    subPage={(stepData.stepNumber + 1).toString()}
+                    page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
+                    subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
+                    componentSpecificProps={specificProps}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>
     );
 };
 
-export default WithScreenPage;
+export default ActivityDurationPage;

@@ -1,0 +1,54 @@
+[
+    {
+        "label": "\"Écouter la radio, des podcasts ou de la musique\"",
+        "value": "636/637/638"
+    },
+    {
+        "label": "\"Regarder la télévision, des DVD, des vidéos en ligne\"",
+        "value": "634,635"
+    },
+    {
+        "label": "Conversation",
+        "value": "521"
+    },
+    {
+        "label": "\"Surf sur Internet, visite de sites pour s'informer (hors journaux)\"",
+        "value": "673"
+    },
+    {
+        "label": "\"Publier ou surfer sur les médias sociaux (Facebook, Instagram, Twitter, Tumblr, LinkedIn, ...)\"",
+        "value": "674"
+    },
+    {
+        "label": "\"Lecture de journaux, revues\"",
+        "value": "633"
+    },
+    {
+        "label": "\"Lecture de livres\"",
+        "value": "632"
+    },
+    {
+        "label": "\"Repas\"",
+        "value": "todetermine"
+    },
+    {
+        "label": "\"Travail professionnel\"",
+        "value": "211"
+    },
+    {
+        "label": "\"Se détendre, fumer\"",
+        "value": "641"
+    },
+    {
+        "label": "\"Conversations avec les enfants, lectures\"",
+        "value": "422"
+    },
+    {
+        "label": "\"Repas, douche, habillage des enfants\"",
+        "value": "411"
+    },
+    {
+        "label": "\"Surveiller les devoirs des enfants\"",
+        "value": "421"
+    }
+]

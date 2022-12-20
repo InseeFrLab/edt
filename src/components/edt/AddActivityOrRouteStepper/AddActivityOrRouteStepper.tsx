@@ -4,7 +4,7 @@ import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-interface AddActivityStepperProps {
+interface AddActivityOrRouteStepperStepperProps {
     numberOfSteps: number;
     lastCompletedStepNumber: number;
     currentStepIcon: string;
@@ -13,7 +13,7 @@ interface AddActivityStepperProps {
     currentStepLabel: string;
 }
 
-const AddActivityStepper = (props: AddActivityStepperProps) => {
+const AddActivityOrRouteStepper = (props: AddActivityOrRouteStepperStepperProps) => {
     const {
         numberOfSteps,
         lastCompletedStepNumber,
@@ -47,7 +47,7 @@ const AddActivityStepper = (props: AddActivityStepperProps) => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { AddActivityStepper } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { AddActivityOrRouteStepper } })(theme => ({
     stepper: {
         padding: "1rem",
     },
@@ -80,4 +80,4 @@ const useStyles = makeStylesEdt({ "name": { AddActivityStepper } })(theme => ({
     },
 }));
 
-export default AddActivityStepper;
+export default AddActivityOrRouteStepper;

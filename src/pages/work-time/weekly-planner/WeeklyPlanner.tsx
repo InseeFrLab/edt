@@ -6,9 +6,8 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { NavigateFunction, useNavigate, useOutletContext } from "react-router-dom";
-import { EdtRoutes } from "routes/EdtRoutes";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getCurrentNavigatePath, getFullNavigatePath } from "service/navigation-service";
+import { getFullNavigatePath } from "service/navigation-service";
 import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 
 const saveAndGoNext = (

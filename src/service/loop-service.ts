@@ -7,14 +7,14 @@ import {
 } from "interface/lunatic/Lunatic";
 import { mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentPageSource } from "service/orchestrator-service";
-import { getData, getVariable } from "service/survey-service";
+import { getData, getVariable, toIgnoreForActivity, toIgnoreForRoute } from "service/survey-service";
 
 const enum LoopEnum {
-    ACTIVITY = "ACTIVITY",
+    ACTIVITY_OR_ROUTE = "ACTIVITY_OR_ROUTE",
 }
 
 const loopPageInfo: Map<LoopEnum, LoopData> = new Map();
-loopPageInfo.set(LoopEnum.ACTIVITY, {
+loopPageInfo.set(LoopEnum.ACTIVITY_OR_ROUTE, {
     loopInitialSequencePage: "3",
     loopInitialPage: "4",
     loopInitialSubpage: "2",
@@ -61,6 +61,7 @@ const getCurrentLoopPage = (
     data: LunaticData | undefined,
     currentLoop: LoopEnum | undefined,
     iteration: number | undefined,
+    isRoute?: boolean,
 ) => {
     if (!currentLoop || iteration === undefined) {
         return 0;
@@ -81,8 +82,19 @@ const getCurrentLoopPage = (
     for (const component of loop.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
-                const variable = getVariable(source, dependency);
-                getCurrentLoopPageOfVariable(data, variable, currentLoopSubpage, iteration, component);
+                if (
+                    (isRoute && !toIgnoreForRoute.find(dep => dependency === dep)) ||
+                    (!isRoute && !toIgnoreForActivity.find(dep => dependency === dep))
+                ) {
+                    const variable = getVariable(source, dependency);
+                    getCurrentLoopPageOfVariable(
+                        data,
+                        variable,
+                        currentLoopSubpage,
+                        iteration,
+                        component,
+                    );
+                }
             }
         }
     }

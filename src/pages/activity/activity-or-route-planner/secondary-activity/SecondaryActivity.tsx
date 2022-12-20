@@ -9,7 +9,12 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getNextLoopPage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
+import {
+    getLoopPageSubpage,
+    getNextLoopPage,
+    getPreviousLoopPage,
+    getStepData,
+} from "service/loop-stepper-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
 import { FieldNameEnum, getValue, saveData } from "service/survey-service";
 
@@ -20,7 +25,7 @@ const SecondaryActivityPage = () => {
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
     const currentPage = EdtRoutesNameEnum.SECONDARY_ACTIVITY;
-    const stepData = getStepData(currentPage);
+    const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
@@ -36,7 +41,7 @@ const SecondaryActivityPage = () => {
             getLoopParameterizedNavigatePath(
                 page,
                 context.idSurvey,
-                LoopEnum.ACTIVITY,
+                LoopEnum.ACTIVITY_OR_ROUTE,
                 currentIteration,
             ),
         );
@@ -56,9 +61,13 @@ const SecondaryActivityPage = () => {
                 currentIteration,
             );
             if (hasSecondaryActivity) {
-                loopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION);
+                if (context.isRoute) {
+                    loopNavigate(EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION);
+                } else {
+                    loopNavigate(EdtRoutesNameEnum.ACTIVITY_SECONDARY_ACTIVITY_SELECTION);
+                }
             } else {
-                loopNavigate(getNextLoopPage(currentPage));
+                loopNavigate(getNextLoopPage(currentPage, context.isRoute));
             }
         });
     };
@@ -70,7 +79,7 @@ const SecondaryActivityPage = () => {
             if (goal === "" || goal) {
                 loopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
             } else {
-                loopNavigate(getPreviousLoopPage(currentPage));
+                loopNavigate(getPreviousLoopPage(currentPage, context.isRoute));
             }
         });
     };
@@ -106,8 +115,8 @@ const SecondaryActivityPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page={getLoopInitialPage(LoopEnum.ACTIVITY)}
-                    subPage={(stepData.stepNumber + 1).toString()}
+                    page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
+                    subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                 ></OrchestratorForStories>
             </FlexCenter>
