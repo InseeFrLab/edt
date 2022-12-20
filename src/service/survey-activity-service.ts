@@ -6,6 +6,7 @@ import { SelectedActivity } from "lunatic-edt";
 import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
+    findSecondaryActivityInRef,
 } from "./referentiel-service";
 
 const getActivities = (idSurvey: string): Array<ActivityOrRoute> => {
@@ -16,9 +17,20 @@ const getActivities = (idSurvey: string): Array<ActivityOrRoute> => {
         let activity: ActivityOrRoute = { label: t("common.activity.unknown-activity") + (i + 1) };
         activity.startTime = getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
         activity.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
-        const mainActivity = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
-        const activitySelection = mainActivity ? JSON.parse(mainActivity.toString()) : undefined;
+
+        const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
+        const activitySelection: SelectedActivity = mainActivityValue
+            ? JSON.parse(mainActivityValue.toString())
+            : undefined;
         activity.label = getActivityLabel(activitySelection) || "";
+
+        const secondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i);
+        if (secondaryActivityValue) {
+            activity.secondaryActivityLabel = findSecondaryActivityInRef(
+                secondaryActivityValue.toString(),
+            )?.label;
+        }
+
         activities.push(activity);
     }
     return activities;
@@ -37,7 +49,7 @@ const getActivityOrRouteDurationLabel = (activity: ActivityOrRoute): string => {
 
 const getActivityLabel = (activity: SelectedActivity | undefined): string | undefined => {
     if (!activity) {
-        return undefined
+        return undefined;
     }
     if (activity.label) {
         return activity.label;

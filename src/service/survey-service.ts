@@ -4,13 +4,17 @@ import {
     LunaticModel,
     LunaticModelComponent,
     LunaticModelVariable,
+    ReferentielData,
+    REFERENTIEL_ID,
 } from "interface/lunatic/Lunatic";
 import { generateDateFromStringInput, getFrenchDayFromDate } from "lunatic-edt";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
+import { fetchReferentiels } from "./referentiel-service";
 
 const datas = new Map<string, LunaticData>();
+let referentielsData: ReferentielData;
 const activitySurveysIds = ["activitySurvey1", "activitySurvey2", "activitySurvey3"];
 const workingTimeSurveysIds = ["workingSurvey1", "workingSurvey2"];
 const surveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
@@ -56,17 +60,26 @@ const toIgnoreForActivity = [
     FieldNameEnum.OTHERPRIVATE,
 ];
 
+const enum ReferentielsEnum {
+    ACTIVITYNOMENCLATURE = "activityNomenclature",
+    ACTIVITYAUTOCOMPLETE = "activityAutocomplete",
+    SECONDARYACTIVITY = "secondaryActivity",
+}
+
 const initializeDatas = (): Promise<LunaticData[]> => {
-    const promises: Promise<LunaticData>[] = [];
-    for (const idSurvey of surveysIds) {
-        promises.push(
-            lunaticDatabase.get(idSurvey).then(data => {
-                datas.set(idSurvey, data || {});
-                return data || {};
-            }),
-        );
-    }
-    return Promise.all(promises);
+    return fetchReferentiels().then(refs => {
+        const promises: Promise<LunaticData>[] = [];
+        for (const idSurvey of surveysIds) {
+            promises.push(
+                lunaticDatabase.get(idSurvey).then(data => {
+                    datas.set(idSurvey, data || {});
+                    return data || {};
+                }),
+            );
+        }
+        promises.push(saveReferentiels(refs));
+        return Promise.all(promises);
+    });
 };
 
 const getDatas = (): Map<string, LunaticData> => {
@@ -82,6 +95,17 @@ const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => 
         datas.set(idSurvey, data);
         return data;
     });
+};
+
+const saveReferentiels = (data: ReferentielData): Promise<ReferentielData> => {
+    return lunaticDatabase.save(REFERENTIEL_ID, data).then(() => {
+        referentielsData = data;
+        return data;
+    });
+};
+
+const getReferentiel = (refName: ReferentielsEnum) => {
+    return referentielsData[refName];
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
@@ -191,11 +215,13 @@ export {
     getSurveyDate,
     getPrintedSurveyDate,
     getValue,
+    getReferentiel,
     getComponentId,
     getVariable,
     activitySurveysIds,
     workingTimeSurveysIds,
     FieldNameEnum,
+    ReferentielsEnum,
     toIgnoreForRoute,
     toIgnoreForActivity,
 };

@@ -32,7 +32,7 @@ export type OrchestratorProps = {
     subPage?: string;
     iteration?: number;
     componentSpecificProps?: any;
-    overrideOptions?: any
+    overrideOptions?: any;
 };
 
 let i = 0;
@@ -132,7 +132,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         subPage,
         iteration,
         componentSpecificProps,
-        overrideOptions
+        overrideOptions,
     } = props;
     const { classes, cx } = useStyles();
 

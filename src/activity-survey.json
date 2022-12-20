@@ -396,6 +396,7 @@
                 "STARTTIME",
                 "ENDTIME",
                 "MAINACTIVITY",
+                "GOAL",
                 "ROUTE",
                 "FOOT",
                 "BICYCLE",

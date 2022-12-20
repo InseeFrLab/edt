@@ -1,6 +1,7 @@
 import { Box, Divider } from "@mui/material";
 import { ActivityOrRoute } from "interface/entity/ActivityOrRoute";
 import { makeStylesEdt } from "lunatic-edt";
+import { useOutletContext } from "react-router-dom";
 import { getActivityOrRouteDurationLabel } from "service/survey-activity-service";
 
 interface ActivityOrRouteCardProps {
@@ -29,7 +30,9 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
             <Divider orientation="vertical" variant="middle" flexItem />
             <Box className={classes.dataBox}>
                 <Box className={classes.activityLabel}>{activityOrRoute.label}</Box>
-                <Box></Box>
+                {activityOrRoute.secondaryActivityLabel && (
+                    <Box>{activityOrRoute.secondaryActivityLabel}</Box>
+                )}
             </Box>
         </Box>
     );

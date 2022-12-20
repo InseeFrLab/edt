@@ -1,4 +1,10 @@
+import {
+    AutoCompleteActiviteOption,
+    CheckboxOneCustomOption,
+    NomenclatureActivityOption,
+} from "lunatic-edt";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { ReferentielsEnum } from "service/survey-service";
 export interface Collected {
     COLLECTED: string | boolean | null;
     EDITED: any;
@@ -20,6 +26,13 @@ export interface LunaticData {
     EXTERNAL?: any;
     CALCULATED?: any;
     COLLECTED?: { [key: string]: Collected | MultiCollected }; // TOFIX : good var type with collected array
+}
+
+export const REFERENTIEL_ID = "referentiels";
+export interface ReferentielData extends LunaticData {
+    [ReferentielsEnum.ACTIVITYNOMENCLATURE]: NomenclatureActivityOption[];
+    [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: AutoCompleteActiviteOption[];
+    [ReferentielsEnum.SECONDARYACTIVITY]: CheckboxOneCustomOption[];
 }
 
 export interface LunaticModel {
