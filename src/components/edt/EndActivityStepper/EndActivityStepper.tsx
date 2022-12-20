@@ -1,4 +1,5 @@
 import { Box, CircularProgress } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -16,21 +17,22 @@ const EndActivityStepper = (props: EndActivityStepperProps) => {
     const { classes } = useStyles();
     let stepIncrement = 100 / numberOfSteps;
     const [progress] = React.useState(stepIncrement * lastCompletedStepNumber);
-    console.log(numberOfSteps);
-    console.log(lastCompletedStepNumber);
 
     return (
         <Box className={classes.stepper}>
-            <Box className={classes.progressBox}></Box>
             <Box className={classes.stepBox}>
-                <Box>
+                <Box className={classes.progressBox}>
                     <CircularProgress
                         className={classes.circularProgressBox}
                         color="primary"
                         variant="determinate"
                         value={progress}
                     ></CircularProgress>
-                    <Box>{currentStepNumber + " / " + numberOfSteps}</Box>
+                    <Box className={classes.labelProgressBox}>
+                        <Typography className={classes.textStepNumber}>
+                            {currentStepNumber + " / " + numberOfSteps}
+                        </Typography>
+                    </Box>
                 </Box>
 
                 <Box className={classes.textBox}>
@@ -45,26 +47,35 @@ const useStyles = makeStylesEdt({ "name": { EndActivityStepper } })(theme => ({
     stepper: {
         padding: "1rem",
     },
-    progressBox: {
-        marginBottom: "1.5rem",
-        "& .MuiLinearProgress-colorPrimary": {
-            borderRadius: "10px",
-            height: "8px",
-        },
-        "& .MuiLinearProgress-barColorPrimary": {
-            borderRadius: "10px",
-        },
-    },
     stepBox: {
         display: "flex",
         alignItems: "center",
     },
     circularProgressBox: {
         borderRadius: "30px",
-        width: "50px",
+        width: "54px !important",
+        height: "54px !important",
         "& .MuiCircularProgress-circle": {
             background: theme.palette.secondary.main,
         },
+    },
+    progressBox: {
+        position: "relative",
+        display: "inline-flex",
+    },
+    labelProgressBox: {
+        top: "7px",
+        left: "7px",
+        bottom: 0,
+        right: 0,
+        position: "absolute",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: theme.palette.primary.light,
+        borderRadius: "30px",
+        width: "40px",
+        height: "40px",
     },
     iconBox: {
         backgroundColor: theme.palette.primary.main,
@@ -76,8 +87,7 @@ const useStyles = makeStylesEdt({ "name": { EndActivityStepper } })(theme => ({
     },
     textStepNumber: {
         fontSize: "12px",
-        color: theme.palette.action.hover,
-        textTransform: "uppercase",
+        color: theme.variables.white,
     },
     textStepLabel: {
         fontSize: "18px",
