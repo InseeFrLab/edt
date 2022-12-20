@@ -97,10 +97,20 @@ const getCurrentNavigatePath = (
     }
 };
 
+const getLastCompletedStep = (idSurvey: string): number => {
+    const data = getData(idSurvey);
+    const currentLastCompletedPage = getCurrentPage(data) - 1;
+    const page = mappingPageOrchestrator.find(
+        page => page.surveySubPage && page.surveySubPage === currentLastCompletedPage.toString(),
+    );
+    return page?.surveyStep ?? 0;
+};
+
 export {
     getNavigatePath,
     getParameterizedNavigatePath,
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
     getFullNavigatePath,
+    getLastCompletedStep,
 };

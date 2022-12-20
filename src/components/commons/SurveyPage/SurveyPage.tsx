@@ -6,7 +6,12 @@ import SurveyPageEditHeader from "components/commons/SurveyPage/SurveyPageEditHe
 import SurveyPageHeader from "components/commons/SurveyPage/SurveyPageHeader/SurveyPageHeader";
 import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
+import EndActivityStepper from "components/edt/EndActivityStepper/EndActivityStepper";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
+import { getLastCompletedStep } from "service/navigation-service";
+import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
+import LoopNavigator from "../LoopSurveyPage/LoopNavigator/LoopNavigator";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;
@@ -26,6 +31,11 @@ interface SurveyPageProps {
     simpleHeader?: boolean;
     simpleHeaderLabel?: string;
     disableNav?: boolean;
+    displayStepper?: boolean;
+    onNext?(event?: React.MouseEvent): void;
+    onPrevious?(event?: React.MouseEvent): void;
+    currentStepNumber?: number;
+    currentStepLabel?: string;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -47,8 +57,14 @@ const SurveyPage = (props: SurveyPageProps) => {
         simpleHeader = false,
         simpleHeaderLabel,
         disableNav,
+        displayStepper = false,
+        onNext,
+        onPrevious,
+        currentStepNumber,
+        currentStepLabel,
     } = props;
     const { t } = useTranslation();
+    const { idSurvey } = useParams();
 
     return (
         <Box className={className}>
@@ -73,9 +89,30 @@ const SurveyPage = (props: SurveyPageProps) => {
                     onNavigateBack={onNavigateBack}
                 />
             )}
+            {displayStepper && currentStepNumber && currentStepLabel && (
+                <EndActivityStepper
+                    numberOfSteps={activityComplementaryQuestionsStepperData.length}
+                    lastCompletedStepNumber={getLastCompletedStep(idSurvey ?? "")}
+                    currentStepNumber={currentStepNumber}
+                    currentStepLabel={currentStepLabel}
+                />
+            )}
+
             {srcIcon && altIcon && <PageIcon srcIcon={srcIcon} altIcon={altIcon} />}
             {children}
-            {validate && (
+
+            {displayStepper && (
+                <LoopNavigator
+                    onNext={onNext}
+                    onPrevious={onPrevious}
+                    onValidate={validate}
+                    nextLabel={t("common.navigation.next")}
+                    previousLabel={t("common.navigation.previous")}
+                    validateLabel={t("common.navigation.validate")}
+                />
+            )}
+
+            {!displayStepper && validate && (
                 <FlexCenter>
                     <ValidateButton
                         onClick={validate}
@@ -84,7 +121,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                     />
                 </FlexCenter>
             )}
-            {onFinish && onAdd && finishLabel && !validate && (
+            {!displayStepper && onFinish && onAdd && finishLabel && !validate && (
                 <FlexCenter>
                     <ActivityButtons
                         onClickFinish={onFinish}
