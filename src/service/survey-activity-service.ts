@@ -98,7 +98,6 @@ const getWithSomeoneLabels = (
             const label = responses?.find(
                 (r: { response: { name: FieldNameEnum } }) => r.response.name === f,
             ).label;
-            console.log("label", label);
             result.push(label);
         }
     });
