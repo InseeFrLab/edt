@@ -4,10 +4,10 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { getPrintedFirstName, saveData } from "service/survey-service";
-import { getStepData } from "service/stepper.service";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getCurrentNavigatePath, getFullNavigatePath } from "service/navigation-service";
+import { getStepData } from "service/stepper.service";
+import { getPrintedFirstName, saveData } from "service/survey-service";
 
 const TravelTimePage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -19,7 +19,16 @@ const TravelTimePage = () => {
 
     const saveAndGoHome = (): void => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "8"));
+            navigate(
+                getCurrentNavigatePath(
+                    context.idSurvey,
+                    EdtRoutesNameEnum.ACTIVITY,
+                    context.source.maxPage,
+                    undefined,
+                    undefined,
+                    10,
+                ),
+            );
         });
     };
 
@@ -29,9 +38,15 @@ const TravelTimePage = () => {
         });
     };
 
+    const onClose = () => {
+        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            navigate("/");
+        });
+    };
+
     return (
         <SurveyPage
-            onNavigateBack={saveAndGoHome}
+            onNavigateBack={onClose}
             onNext={saveAndGoHome}
             onPrevious={onPrevious}
             firstName={getPrintedFirstName(context.idSurvey)}
@@ -47,7 +62,7 @@ const TravelTimePage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page="7"
+                    page="9"
                 ></OrchestratorForStories>
             </FlexCenter>
         </SurveyPage>

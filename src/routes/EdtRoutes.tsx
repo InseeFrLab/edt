@@ -1,5 +1,10 @@
-import ActivityPage from "pages/activity/Activity";
+import ExceptionalDayPage from "pages/activity-complementary-questions/exceptional-day/ExceptionalDay";
+import GreatestActivityDayPage from "pages/activity-complementary-questions/greatest-activity-day/GreatestActivityDay";
+import PhoneTimePage from "pages/activity-complementary-questions/phone-time/PhoneTime";
+import TravelTimePage from "pages/activity-complementary-questions/travel-time/TravelTime";
 import TypeDayPage from "pages/activity-complementary-questions/type-day/TypeDay";
+import WorstActivityDayPage from "pages/activity-complementary-questions/worst-activity-day/WorstActivityDay";
+import ActivityPage from "pages/activity/Activity";
 import ActivityDurationPage from "pages/activity/activity-or-route-planner/activity/activity-duration/ActivityDuration";
 import ActivityLocationPage from "pages/activity/activity-or-route-planner/activity/activity-location/ActivityLocation";
 import MainActivityGoalPage from "pages/activity/activity-or-route-planner/activity/main-activity-goal/MainActivityGoal";
@@ -21,9 +26,6 @@ import WeeklyPlannerPage from "pages/work-time/weekly-planner/WeeklyPlanner";
 import WorkTimePage from "pages/work-time/WorkTime";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { EdtRoutesNameEnum } from "./EdtRoutesMapping";
-import ExceptionalDayPage from "pages/activity-complementary-questions/exceptional-day/ExceptionalDay";
-import TravelTimePage from "pages/activity-complementary-questions/travel-time/TravelTime";
-import PhoneTimePage from "pages/activity-complementary-questions/phone-time/PhoneTime";
 
 const EdtRoutes = (): JSX.Element => {
     return (
@@ -68,6 +70,14 @@ const EdtRoutes = (): JSX.Element => {
                             element={<WithSomeoneSelectionPage />}
                         />
                     </Route>
+                    <Route
+                        path={EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY}
+                        element={<GreatestActivityDayPage />}
+                    />
+                    <Route
+                        path={EdtRoutesNameEnum.WORST_ACTIVITY_DAY}
+                        element={<WorstActivityDayPage />}
+                    />
                     <Route path={EdtRoutesNameEnum.TYPE_DAY} element={<TypeDayPage />} />
                     <Route path={EdtRoutesNameEnum.EXCEPTIONAL_DAY} element={<ExceptionalDayPage />} />
                     <Route path={EdtRoutesNameEnum.TRAVEL_TIME} element={<TravelTimePage />} />

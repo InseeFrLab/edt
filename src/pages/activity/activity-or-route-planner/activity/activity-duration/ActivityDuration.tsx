@@ -34,6 +34,7 @@ const ActivityDurationPage = () => {
 
     const specificProps = {
         activitiesAct: activitiesAct,
+        defaultValue: true,
     };
 
     const onNext = () => {
@@ -52,7 +53,13 @@ const ActivityDurationPage = () => {
     const onClose = (forceQuit: boolean) => {
         if (forceQuit) {
             saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
+                navigate(
+                    getCurrentNavigatePath(
+                        context.idSurvey,
+                        EdtRoutesNameEnum.ACTIVITY,
+                        context.source.maxPage,
+                    ),
+                );
             });
         } else {
             setIsAlertDisplayed(true);

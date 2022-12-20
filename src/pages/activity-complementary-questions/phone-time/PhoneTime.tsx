@@ -1,15 +1,15 @@
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { SetStateAction, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { getPrintedFirstName, saveData } from "service/survey-service";
-import { getStepData } from "service/stepper.service";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getFullNavigatePath } from "service/navigation-service";
-import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
-import { SetStateAction, useState } from "react";
+import { getStepData } from "service/stepper.service";
+import { getPrintedFirstName, saveData } from "service/survey-service";
 
 const validateAndNav = (
     forceQuit: boolean,
@@ -68,7 +68,7 @@ const PhoneTimePage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page="8"
+                    page="10"
                 ></OrchestratorForStories>
             </FlexCenter>
         </SurveyPage>

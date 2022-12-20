@@ -16,8 +16,6 @@ const EndActivityStepper = (props: EndActivityStepperProps) => {
     const { classes } = useStyles();
     let stepIncrement = 100 / numberOfSteps;
     const [progress] = React.useState(stepIncrement * lastCompletedStepNumber);
-    console.log(numberOfSteps);
-    console.log(lastCompletedStepNumber);
 
     return (
         <Box className={classes.stepper}>

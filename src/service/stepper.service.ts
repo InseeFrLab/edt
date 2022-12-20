@@ -11,12 +11,12 @@ export interface StepData {
 
 const activityComplementaryQuestionsStepperData: StepData[] = [
     {
-        page: EdtRoutesNameEnum.TYPE_DAY,
+        page: EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
         stepNumber: 1,
         stepLabel: t("component.end-activity-stepper.step-1-label"),
     },
     {
-        page: EdtRoutesNameEnum.EXCEPTIONAL_DAY,
+        page: EdtRoutesNameEnum.TYPE_DAY,
         stepNumber: 2,
         stepLabel: t("component.end-activity-stepper.step-2-label"),
     },

@@ -1,6 +1,9 @@
+import activitesAutoCompleteRef from "activitesAutoCompleteRef.json";
+import bagIcon from "assets/illustration/type-of-day-categories/bag.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { CheckboxOneSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -9,13 +12,21 @@ import { getCurrentNavigatePath, getFullNavigatePath } from "service/navigation-
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, saveData } from "service/survey-service";
 
-const ExceptionalDayPage = () => {
+const WorstActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const currentPage = EdtRoutesNameEnum.TYPE_DAY;
+    const currentPage = EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY;
     const stepData = getStepData(currentPage);
+    const activities = activitesAutoCompleteRef;
+
+    const specificProps: CheckboxOneSpecificProps = {
+        options: activities.map(activity => {
+            return { label: activity.label, value: activity.label };
+        }),
+        icon: bagIcon,
+    };
 
     const saveAndGoHome = (): void => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
@@ -26,7 +37,7 @@ const ExceptionalDayPage = () => {
                     context.source.maxPage,
                     undefined,
                     undefined,
-                    9,
+                    7,
                 ),
             );
         });
@@ -34,7 +45,7 @@ const ExceptionalDayPage = () => {
 
     const onPrevious = (e: React.MouseEvent) => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.TYPE_DAY));
+            navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY));
         });
     };
 
@@ -62,11 +73,12 @@ const ExceptionalDayPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page="8"
+                    componentSpecificProps={specificProps}
+                    page="6"
                 ></OrchestratorForStories>
             </FlexCenter>
         </SurveyPage>
     );
 };
 
-export default ExceptionalDayPage;
+export default WorstActivityDayPage;
