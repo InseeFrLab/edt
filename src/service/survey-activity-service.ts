@@ -1,8 +1,8 @@
 import { ActivityOrRoute } from "interface/entity/ActivityOrRoute";
+import { SelectedActivity } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 import { getLoopSize, LoopEnum } from "service/loop-service";
 import { FieldNameEnum, getValue } from "service/survey-service";
-import { SelectedActivity } from "lunatic-edt";
 import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
@@ -15,6 +15,7 @@ const getActivities = (idSurvey: string): Array<ActivityOrRoute> => {
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
     for (let i = 0; i < activityLoopSize; i++) {
         let activity: ActivityOrRoute = { label: t("common.activity.unknown-activity") + (i + 1) };
+        activity.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean;
         activity.startTime = getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
         activity.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
 

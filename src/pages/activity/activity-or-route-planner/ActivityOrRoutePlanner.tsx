@@ -101,7 +101,6 @@ const ActivityOrRoutePlannerPage = () => {
     const navToActivityOrRoute = (iteration: number, isItRoute?: boolean): void => {
         setIsSubChildDisplayed(true);
         setIsRoute(isItRoute ? true : false);
-        console.log(`isRoutePlanner = ${isRoute}`);
         navigate(
             getCurrentNavigatePath(
                 context.idSurvey,
@@ -158,7 +157,9 @@ const ActivityOrRoutePlannerPage = () => {
                                         <ActivityOrRouteCard
                                             labelledBy={""}
                                             describedBy={""}
-                                            onClick={() => navToActivityOrRoute(iteration, false)} //TODO : Handle if it is route
+                                            onClick={() =>
+                                                navToActivityOrRoute(iteration, activity.isRoute)
+                                            }
                                             activityOrRoute={activity}
                                         />
                                     </FlexCenter>

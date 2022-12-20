@@ -48,6 +48,7 @@ const enum FieldNameEnum {
     WORKINGWEEK = "WORKINGWEEK",
     HOLIDAYWEEK = "HOLIDAYWEEK",
     OTHERWEEK = "OTHERWEEK",
+    ISROUTE = "ISROUTE",
 }
 
 const toIgnoreForRoute = [FieldNameEnum.MAINACTIVITY, FieldNameEnum.PLACE];
@@ -160,6 +161,34 @@ const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: num
     }
 };
 
+const setValue = (
+    idSurvey: string,
+    variableName: FieldNameEnum,
+    value: string | boolean | null,
+    iteration?: number,
+) => {
+    const dataAct = datas.get(idSurvey);
+    if (dataAct && dataAct.COLLECTED && dataAct.COLLECTED[variableName]) {
+        if (iteration != null && value != null) {
+            const dataAsArray = dataAct.COLLECTED[variableName].COLLECTED;
+            if (dataAsArray && Array.isArray(dataAsArray)) {
+                dataAsArray[iteration] = value;
+            }
+        } else {
+            const variable = {
+                COLLECTED: value,
+                EDITED: null,
+                FORCED: null,
+                INPUTED: null,
+                PREVIOUS: null,
+            };
+            dataAct.COLLECTED[variableName] = variable;
+        }
+    }
+    datas.set(idSurvey, dataAct || {});
+    return dataAct;
+};
+
 const getLastName = (idSurvey: string) => {
     return getValue(idSurvey, FieldNameEnum.LASTNAME)?.toString();
 };
@@ -216,6 +245,7 @@ export {
     getPrintedSurveyDate,
     getValue,
     getReferentiel,
+    setValue,
     getComponentId,
     getVariable,
     activitySurveysIds,

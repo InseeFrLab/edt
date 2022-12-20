@@ -286,6 +286,18 @@
             "componentRef": "checkboxgroup_meanoftransport"
         },
         {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "ISROUTE",
+            "componentRef": ""
+        },
+        {
             "variableType": "CALCULATED",
             "expression": "true",
             "name": "FILTER_RESULT_INPUTTEXT",
@@ -413,7 +425,8 @@
                 "CHILD",
                 "OTHERKNOWN",
                 "OTHER",
-                "WITHSCREEN"
+                "WITHSCREEN",
+                "ISROUTE"
             ],
             "loopDependencies": [],
             "iterations": { "value": "1", "type": "VTL" },
