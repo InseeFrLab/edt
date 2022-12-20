@@ -21,6 +21,9 @@ import WeeklyPlannerPage from "pages/work-time/weekly-planner/WeeklyPlanner";
 import WorkTimePage from "pages/work-time/WorkTime";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { EdtRoutesNameEnum } from "./EdtRoutesMapping";
+import ExceptionalDayPage from "pages/activity-complementary-questions/exceptional-day/ExceptionalDay";
+import TravelTimePage from "pages/activity-complementary-questions/travel-time/TravelTime";
+import PhoneTimePage from "pages/activity-complementary-questions/phone-time/PhoneTime";
 
 const EdtRoutes = (): JSX.Element => {
     return (
@@ -66,6 +69,9 @@ const EdtRoutes = (): JSX.Element => {
                         />
                     </Route>
                     <Route path={EdtRoutesNameEnum.TYPE_DAY} element={<TypeDayPage />} />
+                    <Route path={EdtRoutesNameEnum.EXCEPTIONAL_DAY} element={<ExceptionalDayPage />} />
+                    <Route path={EdtRoutesNameEnum.TRAVEL_TIME} element={<TravelTimePage />} />
+                    <Route path={EdtRoutesNameEnum.PHONE_TIME} element={<PhoneTimePage />} />
                 </Route>
                 <Route path={EdtRoutesNameEnum.WORK_TIME} element={<WorkTimePage />}>
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />

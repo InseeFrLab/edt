@@ -115,6 +115,12 @@
             "step-5-label": "Présence",
             "step-6-label": "Écran"
         },
+        "end-activity-stepper": {
+            "step-1-label": "Type de journée",
+            "step-2-label": "Type de journée",
+            "step-3-label": "Temps de trajet",
+            "step-4-label": "Temps sur le téléphone"
+        },
         "day-card": {
             "day": "Journée"
         },
@@ -167,7 +173,8 @@
                 "end-content": "Merci pour votre participation.",
                 "button": "Revenir à l’accueil",
                 "alt-icon": "alt pour icon modal felicitations activity",
-                "survey-content": "Vous avez complété votre semainier."
+                "survey-content": "Vous avez complété votre semainier.",
+                "activity-content": "Vous avez complété votre 1ère journée."
             }
         }
     }

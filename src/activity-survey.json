@@ -7,7 +7,7 @@
     "missing": false,
     "id": "l8lq5lp6",
     "label": "Time",
-    "maxPage": "5",
+    "maxPage": "8",
     "variables": [
         {
             "variableType": "COLLECTED",
@@ -260,6 +260,42 @@
             },
             "name": "ISCLOSED",
             "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "EXCEPTIONALDAY",
+            "componentRef": "checkboxboolean_exceptionalDay"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "TRAVELTIME",
+            "componentRef": "timepicker_travelTime"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "PHONETIME",
+            "componentRef": "timepicker_phoneTime"
         },
         {
             "variableType": "CALCULATED",
@@ -703,15 +739,68 @@
             "mandatory": false
         },
         {
+            "componentType": "CheckboxBoolean",
+            "bindingDependencies": ["EXCEPTIONALDAY"],
+            "response": { "name": "EXCEPTIONALDAY" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "law86mv7",
+                    "page": "6",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxboolean_exceptionalDay",
+            "page": "6",
+            "label": "\"Cette journée a-t-elle présenté un caractère exceptionnel ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "Timepicker",
+            "bindingDependencies": ["TRAVELTIME"],
+            "response": { "name": "TRAVELTIME" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "law86mv7",
+                    "page": "7",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "timepicker_travelTime",
+            "page": "7",
+            "label": "\" Au total, combien de temps avez-vous passé en trajets ? \"",
+            "mandatory": false,
+            "maxLength": 249
+        },
+        {
+            "componentType": "Timepicker",
+            "bindingDependencies": ["PHONETIME"],
+            "response": { "name": "PHONETIME" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "law86mv7",
+                    "page": "8",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "timepicker_phoneTime",
+            "page": "8",
+            "label": "\" Au total, combien de temps avez-vous passé à consulter votre téléphone (y compris les petits moments de quelques minutes) ? \"",
+            "mandatory": false,
+            "maxLength": 249
+        },
+        {
             "id": "End",
             "componentType": "Sequence",
-            "page": "6",
+            "page": "9",
             "label": { "value": "\"End\"", "type": "VTL|MD" },
             "conditionFilter": { "value": "true" },
             "hierarchy": {
                 "sequence": {
                     "id": "End",
-                    "page": "6",
+                    "page": "9",
                     "label": { "value": "\"End\"", "type": "VTL|MD" }
                 }
             }

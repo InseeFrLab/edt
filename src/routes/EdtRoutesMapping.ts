@@ -21,6 +21,9 @@ const enum EdtRoutesNameEnum {
     WITH_SOMEONE_SELECTION = "with-who-selection/:iteration",
     WITH_SCREEN = "with-screen/:iteration",
     TYPE_DAY = "type-day",
+    EXCEPTIONAL_DAY = "exceptional-day",
+    TRAVEL_TIME = "travel-time",
+    PHONE_TIME = "phone-time",
 }
 
 const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
@@ -119,6 +122,28 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         page: EdtRoutesNameEnum.TYPE_DAY,
         surveySource: "activity-survey.json",
         surveyPage: "5",
+        surveySubPage: "1",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.EXCEPTIONAL_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "6",
+        surveySubPage: "2",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.TRAVEL_TIME,
+        surveySource: "activity-survey.json",
+        surveyPage: "7",
+        surveySubPage: "3",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.PHONE_TIME,
+        surveySource: "activity-survey.json",
+        surveyPage: "8",
+        surveySubPage: "4",
     },
     {
         parentPage: EdtRoutesNameEnum.WORK_TIME,
