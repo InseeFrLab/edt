@@ -65,6 +65,7 @@ const enum ReferentielsEnum {
     ACTIVITYNOMENCLATURE = "activityNomenclature",
     ACTIVITYAUTOCOMPLETE = "activityAutocomplete",
     SECONDARYACTIVITY = "secondaryActivity",
+    LOCATION = "location",
 }
 
 const initializeDatas = (): Promise<LunaticData[]> => {

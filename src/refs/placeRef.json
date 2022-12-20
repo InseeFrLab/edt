@@ -1,0 +1,14 @@
+[
+    {
+        "label": "Chez soi (yc appartement étudiant si différent du domicile familial)",
+        "value": "11"
+    },
+    { "label": "Lieu de travail ou d’études", "value": "12" },
+    { "label": "Résidence secondaire, location de vacances", "value": "14" },
+    { "label": "Restaurant, café, bar", "value": "15" },
+    {
+        "label": "Chez une autre personne (ami, voisin, famille…)",
+        "value": "13"
+    },
+    { "label": "Autre (commerces, loisirs, dans la rue…)", "value": "16" }
+]

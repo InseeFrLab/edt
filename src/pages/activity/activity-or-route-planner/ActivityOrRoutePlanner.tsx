@@ -28,7 +28,7 @@ const ActivityOrRoutePlannerPage = () => {
     const [isRoute, setIsRoute] = React.useState(false);
     let contextIteration = 0;
 
-    const activities = getActivities(context.idSurvey);
+    const activities = getActivities(context.idSurvey, context.source);
     const surveyDate = getSurveyDate(context.idSurvey) || "";
 
     const isChildDisplayed = (path: string): boolean => {

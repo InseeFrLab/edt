@@ -5,4 +5,5 @@ export interface ActivityOrRoute {
     endTime?: string;
     secondaryActivityLabel?: string;
     place?: string;
+    withSomeone?: string;
 }

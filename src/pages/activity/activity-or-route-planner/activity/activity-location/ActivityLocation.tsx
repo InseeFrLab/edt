@@ -25,6 +25,7 @@ import option3 from "assets/illustration/locations/3.svg";
 import option4 from "assets/illustration/locations/4.svg";
 import option5 from "assets/illustration/locations/5.svg";
 import option6 from "assets/illustration/locations/6.svg";
+import { getPlaceRef } from "service/referentiel-service";
 
 const ActivityLocationPage = () => {
     const navigate = useNavigate();
@@ -147,6 +148,7 @@ const ActivityLocationPage = () => {
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
+                    overrideOptions={getPlaceRef()}
                     componentSpecificProps={specificProps}
                 ></OrchestratorForStories>
             </FlexCenter>

@@ -6,10 +6,12 @@ import { FieldNameEnum, getValue } from "service/survey-service";
 import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
+    findPlaceInRef,
     findSecondaryActivityInRef,
 } from "./referentiel-service";
+import { LunaticModel } from "interface/lunatic/Lunatic";
 
-const getActivities = (idSurvey: string): Array<ActivityOrRoute> => {
+const getActivities = (idSurvey: string, source?: LunaticModel): Array<ActivityOrRoute> => {
     const { t } = useTranslation();
     let activities: ActivityOrRoute[] = [];
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
@@ -19,17 +21,28 @@ const getActivities = (idSurvey: string): Array<ActivityOrRoute> => {
         activity.startTime = getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
         activity.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
 
+        // Main activity
         const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
         const activitySelection: SelectedActivity = mainActivityValue
             ? JSON.parse(mainActivityValue.toString())
             : undefined;
         activity.label = getActivityLabel(activitySelection) || "";
-
+        // Secondary activity
         const secondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i);
         if (secondaryActivityValue) {
             activity.secondaryActivityLabel = findSecondaryActivityInRef(
                 secondaryActivityValue.toString(),
             )?.label;
+        }
+        // Location
+        const placeValue = getValue(idSurvey, FieldNameEnum.PLACE, i);
+        if (placeValue) {
+            activity.place = findPlaceInRef(placeValue.toString())?.label;
+        }
+        // With someone
+        const withSomeoneLabel = getWithSomeoneLabels(idSurvey, i, source);
+        if (withSomeoneLabel) {
+            activity.withSomeone = withSomeoneLabel;
         }
 
         activities.push(activity);
@@ -61,6 +74,36 @@ const getActivityLabel = (activity: SelectedActivity | undefined): string | unde
             return findActivityInNomenclatureReferentiel(activity)?.label;
         }
     }
+};
+
+const getWithSomeoneLabels = (
+    idSurvey: string,
+    i: number,
+    source: LunaticModel | undefined,
+): string | undefined => {
+    const result: any[] = [];
+    const fieldNames = [
+        FieldNameEnum.COUPLE,
+        FieldNameEnum.CHILD,
+        FieldNameEnum.PARENTS,
+        FieldNameEnum.OTHERKNOWN,
+        FieldNameEnum.OTHER,
+    ];
+    // TODO should not be parsed for each activity
+    const responses = source?.components
+        .find(c => c.bindingDependencies?.includes(FieldNameEnum.COUPLE))
+        ?.components?.find(co => co.bindingDependencies?.includes(FieldNameEnum.COUPLE))?.responses;
+    fieldNames.forEach(f => {
+        if (getValue(idSurvey, f, i)) {
+            const label = responses?.find(
+                (r: { response: { name: FieldNameEnum } }) => r.response.name === f,
+            ).label;
+            console.log("label", label);
+            result.push(label);
+        }
+    });
+
+    return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
 };
 
 export { getActivities, getActivityOrRouteDurationLabel, getActivityLabel };

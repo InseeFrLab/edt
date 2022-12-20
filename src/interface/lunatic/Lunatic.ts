@@ -33,6 +33,7 @@ export interface ReferentielData extends LunaticData {
     [ReferentielsEnum.ACTIVITYNOMENCLATURE]: NomenclatureActivityOption[];
     [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: AutoCompleteActiviteOption[];
     [ReferentielsEnum.SECONDARYACTIVITY]: CheckboxOneCustomOption[];
+    [ReferentielsEnum.LOCATION]: CheckboxOneCustomOption[];
 }
 
 export interface LunaticModel {
@@ -46,6 +47,7 @@ export interface LunaticModelComponent {
     page?: string;
     iterations?: { value: string };
     components?: LunaticModelComponent[];
+    responses?: any;
 }
 
 export interface LunaticModelVariable {

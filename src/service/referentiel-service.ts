@@ -6,20 +6,23 @@ import {
     NomenclatureActivityOption,
     CheckboxOneCustomOption,
 } from "lunatic-edt";
-import activitesAutoCompleteRef from "activitesAutoCompleteRef.json";
-import categoriesAndActivitesNomenclature from "activitiesCategoriesNomenclature.json";
-import secondaryCategoriesRef from "secondaryActivityRef.json";
-import { ReferentielData, REFERENTIEL_ID } from "interface/lunatic/Lunatic";
-import { getReferentiel, getValue, ReferentielsEnum } from "./survey-service";
+import activitesAutoCompleteRef from "refs/activitesAutoCompleteRef.json";
+import categoriesAndActivitesNomenclature from "refs/activitiesCategoriesNomenclature.json";
+import secondaryCategoriesRef from "refs/secondaryActivityRef.json";
+import placeRef from "refs/placeRef.json";
+import { ReferentielData } from "interface/lunatic/Lunatic";
+import { getReferentiel, ReferentielsEnum } from "./survey-service";
 
 export const fetchReferentiels = (): Promise<ReferentielData> => {
     // To be replaced by API calls
     return new Promise(resolve => {
-        resolve({
-            activityNomenclature: categoriesAndActivitesNomenclature,
-            activityAutocomplete: activitesAutoCompleteRef,
-            secondaryActivity: secondaryCategoriesRef,
-        });
+        const refs: ReferentielData = {
+            [ReferentielsEnum.ACTIVITYNOMENCLATURE]: categoriesAndActivitesNomenclature,
+            [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: activitesAutoCompleteRef,
+            [ReferentielsEnum.SECONDARYACTIVITY]: secondaryCategoriesRef,
+            [ReferentielsEnum.LOCATION]: placeRef,
+        };
+        resolve(refs);
     });
 };
 
@@ -33,6 +36,10 @@ export const getNomenclatureRef = (): NomenclatureActivityOption[] => {
 
 export const getSecondaryActivityRef = (): CheckboxOneCustomOption[] => {
     return getReferentiel(ReferentielsEnum.SECONDARYACTIVITY) as CheckboxOneCustomOption[];
+};
+
+export const getPlaceRef = (): CheckboxOneCustomOption[] => {
+    return getReferentiel(ReferentielsEnum.LOCATION) as CheckboxOneCustomOption[];
 };
 
 export const findActivityInAutoCompleteReferentiel = (
@@ -49,4 +56,8 @@ export const findActivityInNomenclatureReferentiel = (
 
 export const findSecondaryActivityInRef = (id: string): CheckboxOneCustomOption | undefined => {
     return getSecondaryActivityRef().find(a => a.value === id);
+};
+
+export const findPlaceInRef = (id: string): CheckboxOneCustomOption | undefined => {
+    return getPlaceRef().find(a => a.value === id);
 };
