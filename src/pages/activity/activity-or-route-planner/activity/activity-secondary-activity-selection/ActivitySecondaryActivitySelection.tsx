@@ -58,7 +58,7 @@ const ActivitySecondaryActivitySelectionPage = () => {
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
-                    overrideOptions= {getSecondaryActivityRef()}
+                    overrideOptions={getSecondaryActivityRef()}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>

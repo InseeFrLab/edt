@@ -286,6 +286,18 @@
             "componentRef": "checkboxgroup_meanoftransport"
         },
         {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "ISROUTE",
+            "componentRef": ""
+        },
+        {
             "variableType": "CALCULATED",
             "expression": "true",
             "name": "FILTER_RESULT_INPUTTEXT",
@@ -396,6 +408,7 @@
                 "STARTTIME",
                 "ENDTIME",
                 "MAINACTIVITY",
+                "GOAL",
                 "ROUTE",
                 "FOOT",
                 "BICYCLE",
@@ -412,7 +425,8 @@
                 "CHILD",
                 "OTHERKNOWN",
                 "OTHER",
-                "WITHSCREEN"
+                "WITHSCREEN",
+                "ISROUTE"
             ],
             "loopDependencies": [],
             "iterations": { "value": "1", "type": "VTL" },
@@ -609,21 +623,7 @@
                     "id": "input_place",
                     "page": "4.7",
                     "label": "\"Où étiez-vous ?\"",
-                    "mandatory": false,
-                    "options": [
-                        {
-                            "label": "\"Chez soi (yc appartement étudiant si différent du domicile familial)\"",
-                            "value": "11"
-                        },
-                        { "label": "\"Lieu de travail ou d’études\"", "value": "12" },
-                        { "label": "\"Résidence secondaire, location de vacances\"", "value": "14" },
-                        { "label": "\"Restaurant, café, bar\"", "value": "15" },
-                        {
-                            "label": "\"Chez une autre personne (ami, voisin, famille…)\"",
-                            "value": "13"
-                        },
-                        { "label": "\"Autre (commerces, loisirs, dans la rue…)\"", "value": "16" }
-                    ]
+                    "mandatory": false
                 },
                 {
                     "componentType": "CheckboxBoolean",

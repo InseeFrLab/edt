@@ -29,7 +29,11 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
             <Divider orientation="vertical" variant="middle" flexItem />
             <Box className={classes.dataBox}>
                 <Box className={classes.activityLabel}>{activityOrRoute.label}</Box>
-                <Box></Box>
+                {activityOrRoute.secondaryActivityLabel && (
+                    <Box>{activityOrRoute.secondaryActivityLabel}</Box>
+                )}
+                {activityOrRoute.place && <Box>{activityOrRoute.place}</Box>}
+                {activityOrRoute.withSomeone && <Box>{activityOrRoute.withSomeone}</Box>}
             </Box>
         </Box>
     );

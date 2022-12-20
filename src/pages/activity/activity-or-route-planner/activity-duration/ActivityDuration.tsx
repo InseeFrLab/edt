@@ -11,7 +11,7 @@ import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
 import { getActivities } from "service/survey-activity-service";
-import { saveData } from "service/survey-service";
+import { FieldNameEnum, saveData, setValue } from "service/survey-service";
 
 import errorIcon from "assets/illustration/error/puzzle.svg";
 
@@ -38,31 +38,46 @@ const ActivityDurationPage = () => {
 
     const onNext = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            console.log(context.isRoute);
-            navigate(
-                getLoopParameterizedNavigatePath(
-                    getNextLoopPage(currentPage, context.isRoute),
-                    context.idSurvey,
-                    LoopEnum.ACTIVITY_OR_ROUTE,
-                    currentIteration,
-                ),
+            const data = setValue(
+                context.idSurvey,
+                FieldNameEnum.ISROUTE,
+                context.isRoute || false,
+                currentIteration,
             );
+            saveData(context.idSurvey, data || {}).then(() => {
+                navigate(
+                    getLoopParameterizedNavigatePath(
+                        getNextLoopPage(currentPage, context.isRoute),
+                        context.idSurvey,
+                        LoopEnum.ACTIVITY_OR_ROUTE,
+                        currentIteration,
+                    ),
+                );
+            });
         });
     };
 
     const onClose = (forceQuit: boolean) => {
         if (forceQuit) {
             saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                navigate(
-                    getCurrentNavigatePath(
-                        context.idSurvey,
-                        EdtRoutesNameEnum.ACTIVITY,
-                        "3",
-                        undefined,
-                        undefined,
-                        context.isRoute,
-                    ),
+                const data = setValue(
+                    context.idSurvey,
+                    FieldNameEnum.ISROUTE,
+                    context.isRoute || false,
+                    currentIteration,
                 );
+                saveData(context.idSurvey, data || {}).then(() => {
+                    navigate(
+                        getCurrentNavigatePath(
+                            context.idSurvey,
+                            EdtRoutesNameEnum.ACTIVITY,
+                            "3",
+                            undefined,
+                            undefined,
+                            context.isRoute,
+                        ),
+                    );
+                });
             });
         } else {
             setIsAlertDisplayed(true);

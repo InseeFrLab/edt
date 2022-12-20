@@ -4,13 +4,17 @@ import {
     LunaticModel,
     LunaticModelComponent,
     LunaticModelVariable,
+    ReferentielData,
+    REFERENTIEL_ID,
 } from "interface/lunatic/Lunatic";
 import { generateDateFromStringInput, getFrenchDayFromDate } from "lunatic-edt";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
+import { fetchReferentiels } from "./referentiel-service";
 
 const datas = new Map<string, LunaticData>();
+let referentielsData: ReferentielData;
 const activitySurveysIds = ["activitySurvey1", "activitySurvey2", "activitySurvey3"];
 const workingTimeSurveysIds = ["workingSurvey1", "workingSurvey2"];
 const surveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
@@ -44,6 +48,7 @@ const enum FieldNameEnum {
     WORKINGWEEK = "WORKINGWEEK",
     HOLIDAYWEEK = "HOLIDAYWEEK",
     OTHERWEEK = "OTHERWEEK",
+    ISROUTE = "ISROUTE",
 }
 
 const toIgnoreForRoute = [FieldNameEnum.MAINACTIVITY, FieldNameEnum.PLACE];
@@ -56,17 +61,27 @@ const toIgnoreForActivity = [
     FieldNameEnum.OTHERPRIVATE,
 ];
 
+const enum ReferentielsEnum {
+    ACTIVITYNOMENCLATURE = "activityNomenclature",
+    ACTIVITYAUTOCOMPLETE = "activityAutocomplete",
+    SECONDARYACTIVITY = "secondaryActivity",
+    LOCATION = "location",
+}
+
 const initializeDatas = (): Promise<LunaticData[]> => {
-    const promises: Promise<LunaticData>[] = [];
-    for (const idSurvey of surveysIds) {
-        promises.push(
-            lunaticDatabase.get(idSurvey).then(data => {
-                datas.set(idSurvey, data || {});
-                return data || {};
-            }),
-        );
-    }
-    return Promise.all(promises);
+    return fetchReferentiels().then(refs => {
+        const promises: Promise<LunaticData>[] = [];
+        for (const idSurvey of surveysIds) {
+            promises.push(
+                lunaticDatabase.get(idSurvey).then(data => {
+                    datas.set(idSurvey, data || {});
+                    return data || {};
+                }),
+            );
+        }
+        promises.push(saveReferentiels(refs));
+        return Promise.all(promises);
+    });
 };
 
 const getDatas = (): Map<string, LunaticData> => {
@@ -82,6 +97,17 @@ const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => 
         datas.set(idSurvey, data);
         return data;
     });
+};
+
+const saveReferentiels = (data: ReferentielData): Promise<ReferentielData> => {
+    return lunaticDatabase.save(REFERENTIEL_ID, data).then(() => {
+        referentielsData = data;
+        return data;
+    });
+};
+
+const getReferentiel = (refName: ReferentielsEnum) => {
+    return referentielsData[refName];
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
@@ -134,6 +160,34 @@ const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: num
     } else {
         return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
     }
+};
+
+const setValue = (
+    idSurvey: string,
+    variableName: FieldNameEnum,
+    value: string | boolean | null,
+    iteration?: number,
+) => {
+    const dataAct = datas.get(idSurvey);
+    if (dataAct && dataAct.COLLECTED && dataAct.COLLECTED[variableName]) {
+        if (iteration != null && value != null) {
+            const dataAsArray = dataAct.COLLECTED[variableName].COLLECTED;
+            if (dataAsArray && Array.isArray(dataAsArray)) {
+                dataAsArray[iteration] = value;
+            }
+        } else {
+            const variable = {
+                COLLECTED: value,
+                EDITED: null,
+                FORCED: null,
+                INPUTED: null,
+                PREVIOUS: null,
+            };
+            dataAct.COLLECTED[variableName] = variable;
+        }
+    }
+    datas.set(idSurvey, dataAct || {});
+    return dataAct;
 };
 
 const getLastName = (idSurvey: string) => {
@@ -191,11 +245,14 @@ export {
     getSurveyDate,
     getPrintedSurveyDate,
     getValue,
+    getReferentiel,
+    setValue,
     getComponentId,
     getVariable,
     activitySurveysIds,
     workingTimeSurveysIds,
     FieldNameEnum,
+    ReferentielsEnum,
     toIgnoreForRoute,
     toIgnoreForActivity,
 };
