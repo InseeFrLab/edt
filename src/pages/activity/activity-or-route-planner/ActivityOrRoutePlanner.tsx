@@ -1,14 +1,20 @@
 import { Box, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
+import errorIcon from "assets/illustration/error/puzzle.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
-import { OrchestratorContext, Collected } from "interface/lunatic/Lunatic";
-import { formateDateToFrenchFormat, generateDateFromStringInput, makeStylesEdt } from "lunatic-edt";
+import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import {
+    Alert,
+    formateDateToFrenchFormat,
+    generateDateFromStringInput,
+    makeStylesEdt,
+} from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
@@ -36,6 +42,13 @@ const ActivityOrRoutePlannerPage = () => {
 
     const activities = getActivitiesOrRoute(context.idSurvey, context.source);
     const surveyDate = getSurveyDate(context.idSurvey) || "";
+    const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
+
+    const alertLabels = {
+        content: t("page.alert-when-quit.alert-content-close"),
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: t("page.alert-when-quit.alert-closed"),
+    };
 
     const isChildDisplayed = (path: string): boolean => {
         return path.split(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)[1].length > 0 ? true : false;
@@ -63,12 +76,15 @@ const ActivityOrRoutePlannerPage = () => {
         });
     };
 
-    const onFinish = () => {
-        const data = setValue(context.idSurvey, FieldNameEnum.ISCLOSED, true);
-
-        saveData(context.idSurvey, data ? data : callbackHolder.getData()).then(() => {
-            navigate(getCurrentNavigatePath(context.idSurvey, context.surveyRootPage, "5"));
-        });
+    const onFinish = (closed: boolean) => {
+        if (closed) {
+            const data = setValue(context.idSurvey, FieldNameEnum.ISCLOSED, true);
+            saveData(context.idSurvey, data ? data : callbackHolder.getData()).then(() => {
+                navigate(getCurrentNavigatePath(context.idSurvey, context.surveyRootPage, "5"));
+            });
+        } else {
+            setIsAlertDisplayed(true);
+        }
     };
 
     const onAddActivity = () => {
@@ -133,12 +149,20 @@ const ActivityOrRoutePlannerPage = () => {
                         onEdit={onEdit}
                         firstName={getPrintedFirstName(context.idSurvey)}
                         firstNamePrefix={t("component.survey-page-edit-header.planning-of")}
-                        onFinish={onFinish}
+                        onFinish={() => onFinish(false)}
                         onAdd={onOpenAddActivityOrRoute}
                         finishLabel={t("common.navigation.finish")}
                         addLabel={activities.length === 0 ? t("common.navigation.add") : undefined}
                     >
                         <FlexCenter>
+                            <Alert
+                                isAlertDisplayed={isAlertDisplayed}
+                                onCompleteCallBack={() => onFinish(true)}
+                                onCancelCallBack={() => setIsAlertDisplayed(false)}
+                                labels={alertLabels}
+                                icon={errorIcon}
+                                errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                            ></Alert>
                             <Box className={classes.infoBox}>
                                 <Typography className={classes.label}>
                                     {t("page.activity-planner.activity-for-day")}

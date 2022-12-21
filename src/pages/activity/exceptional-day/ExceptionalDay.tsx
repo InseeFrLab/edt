@@ -38,7 +38,7 @@ const ExceptionalDayPage = () => {
         });
     };
 
-    const onPrevious = (e: React.MouseEvent) => {
+    const onPrevious = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
             navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.KIND_OF_DAY));
         });

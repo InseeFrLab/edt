@@ -2,7 +2,7 @@ import bagIcon from "assets/illustration/type-of-day-categories/bag.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { CheckboxOneSpecificProps } from "lunatic-edt";
+import { CheckboxGroupSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -14,23 +14,23 @@ import {
     getOrchestratorPage,
 } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
-import { getActivitesSelectedLabel } from "service/survey-activity-service";
 import { getPrintedFirstName, saveData } from "service/survey-service";
 
-const WorstActivityDayPage = () => {
+const KindOfDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const currentPage = EdtRoutesNameEnum.WORST_ACTIVITY_DAY;
+    const currentPage = EdtRoutesNameEnum.KIND_OF_DAY;
     const stepData = getStepData(currentPage);
-    const activites = getActivitesSelectedLabel(context.idSurvey);
 
-    const specificProps: CheckboxOneSpecificProps = {
-        options: activites.map(activity => {
-            return { label: activity, value: activity };
-        }),
-        icon: bagIcon,
+    const specificProps: CheckboxGroupSpecificProps = {
+        optionsIcons: {
+            "1": bagIcon,
+            "2": bagIcon,
+            "3": bagIcon,
+            "4": bagIcon,
+        },
     };
 
     const saveAndGoHome = (): void => {
@@ -49,9 +49,9 @@ const WorstActivityDayPage = () => {
         });
     };
 
-    const onPrevious = (e: React.MouseEvent) => {
+    const onPrevious = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY));
+            navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.WORST_ACTIVITY_DAY));
         });
     };
 
@@ -87,4 +87,4 @@ const WorstActivityDayPage = () => {
     );
 };
 
-export default WorstActivityDayPage;
+export default KindOfDayPage;

@@ -2,7 +2,6 @@ import { Box, CircularProgress } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 interface EndActivityStepperProps {
     numberOfSteps: number;
@@ -13,7 +12,6 @@ interface EndActivityStepperProps {
 
 const EndActivityStepper = (props: EndActivityStepperProps) => {
     const { numberOfSteps, lastCompletedStepNumber, currentStepNumber, currentStepLabel } = props;
-    const { t } = useTranslation();
     const { classes } = useStyles();
     let stepIncrement = 100 / numberOfSteps;
     const [progress] = React.useState(stepIncrement * lastCompletedStepNumber);

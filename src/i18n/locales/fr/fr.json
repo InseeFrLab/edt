@@ -93,8 +93,10 @@
         },
         "alert-when-quit": {
             "alert-content": "L'ajout de votre activité n'est pas terminé. Souhaitez vous reprendre ou annuler ?",
+            "alert-content-close": "L'ajout de votre activité n'est pas terminé. Souhaitez vous reprendre ou annuler ?",
             "alert-cancel": "Annuler",
             "alert-complete": "Reprendre",
+            "alert-closed": "Clôture",
             "alt-alert-icon": "alt pour icon no result"
         },
         "kind-of-week": {

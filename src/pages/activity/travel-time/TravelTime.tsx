@@ -38,7 +38,7 @@ const TravelTimePage = () => {
         });
     };
 
-    const onPrevious = (e: React.MouseEvent) => {
+    const onPrevious = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
             navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.EXCEPTIONAL_DAY));
         });
