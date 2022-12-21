@@ -12,8 +12,8 @@ import {
     getFullNavigatePath,
     getOrchestratorPage,
 } from "service/navigation-service";
-import { getAutoCompleteRef } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
+import { getActivitesSelectedLabel } from "service/survey-activity-service";
 import { getPrintedFirstName, saveData } from "service/survey-service";
 
 const WorstActivityDayPage = () => {
@@ -23,10 +23,11 @@ const WorstActivityDayPage = () => {
 
     const currentPage = EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY;
     const stepData = getStepData(currentPage);
-    const activities = getAutoCompleteRef();
+    const activites = getActivitesSelectedLabel(context.idSurvey);
+
     const specificProps: CheckboxOneSpecificProps = {
-        options: activities.map(activity => {
-            return { label: activity.label, value: activity.label };
+        options: activites.map(activity => {
+            return { label: activity, value: activity };
         }),
         icon: bagIcon,
     };

@@ -1,17 +1,17 @@
 import { ActivityOrRoute } from "interface/entity/ActivityOrRoute";
+import { LunaticModel } from "interface/lunatic/Lunatic";
 import { SelectedActivity } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
-import { getLoopSize, LoopEnum } from "service/loop-service";
 import { FieldNameEnum, getValue } from "service/survey-service";
+import { getLoopSize, LoopEnum } from "./loop-service";
 import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
     findPlaceInRef,
     findSecondaryActivityInRef,
 } from "./referentiel-service";
-import { LunaticModel } from "interface/lunatic/Lunatic";
 
-const getActivities = (idSurvey: string, source?: LunaticModel): Array<ActivityOrRoute> => {
+const getActivitiesOrRoute = (idSurvey: string, source?: LunaticModel): Array<ActivityOrRoute> => {
     const { t } = useTranslation();
     let activities: ActivityOrRoute[] = [];
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
@@ -48,6 +48,16 @@ const getActivities = (idSurvey: string, source?: LunaticModel): Array<ActivityO
         activities.push(activity);
     }
     return activities;
+};
+
+const getActivitesSelectedLabel = (idSurvey: string): string[] => {
+    let activitesSelected: string[] = [];
+    getActivitiesOrRoute(idSurvey).forEach(activity => {
+        if (activity?.label != null) activitesSelected.push(activity.label);
+        if (activity?.secondaryActivityLabel != null)
+            activitesSelected.push(activity.secondaryActivityLabel);
+    });
+    return activitesSelected;
 };
 
 const getActivityOrRouteDurationLabel = (activity: ActivityOrRoute): string => {
@@ -105,4 +115,9 @@ const getWithSomeoneLabels = (
     return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
 };
 
-export { getActivities, getActivityOrRouteDurationLabel, getActivityLabel };
+export {
+    getActivitiesOrRoute,
+    getActivitesSelectedLabel,
+    getActivityOrRouteDurationLabel,
+    getActivityLabel,
+};

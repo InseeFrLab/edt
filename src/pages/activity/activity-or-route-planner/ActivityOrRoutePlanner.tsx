@@ -14,7 +14,7 @@ import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
 import { getCurrentNavigatePath } from "service/navigation-service";
-import { getActivities } from "service/survey-activity-service";
+import { getActivitiesOrRoute } from "service/survey-activity-service";
 import {
     FieldNameEnum,
     getPrintedFirstName,
@@ -34,7 +34,7 @@ const ActivityOrRoutePlannerPage = () => {
     const [isRoute, setIsRoute] = React.useState(false);
     let contextIteration = 0;
 
-    const activities = getActivities(context.idSurvey, context.source);
+    const activities = getActivitiesOrRoute(context.idSurvey, context.source);
     const surveyDate = getSurveyDate(context.idSurvey) || "";
 
     const isChildDisplayed = (path: string): boolean => {
