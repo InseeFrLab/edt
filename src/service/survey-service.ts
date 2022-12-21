@@ -4,6 +4,7 @@ import {
     LunaticModel,
     LunaticModelComponent,
     LunaticModelVariable,
+    Collected,
     ReferentielData,
     REFERENTIEL_ID,
 } from "interface/lunatic/Lunatic";
@@ -48,6 +49,7 @@ const enum FieldNameEnum {
     WORKINGWEEK = "WORKINGWEEK",
     HOLIDAYWEEK = "HOLIDAYWEEK",
     OTHERWEEK = "OTHERWEEK",
+    ISCLOSED = "ISCLOSED",
     ISROUTE = "ISROUTE",
 }
 
@@ -176,7 +178,7 @@ const setValue = (
                 dataAsArray[iteration] = value;
             }
         } else {
-            const variable = {
+            const variable: Collected = {
                 COLLECTED: value,
                 EDITED: null,
                 FORCED: null,
@@ -245,8 +247,8 @@ export {
     getSurveyDate,
     getPrintedSurveyDate,
     getValue,
-    getReferentiel,
     setValue,
+    getReferentiel,
     getComponentId,
     getVariable,
     activitySurveysIds,

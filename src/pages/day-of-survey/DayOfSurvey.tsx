@@ -6,7 +6,8 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { getCurrentNavigatePath } from "service/navigation-service";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getCurrentNavigatePath, getOrchestratorPage } from "service/navigation-service";
 import {
     FieldNameEnum,
     getComponentId,
@@ -19,6 +20,7 @@ const DayOfSurveyPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
+    const currentPage = EdtRoutesNameEnum.DAY_OF_SURVEY;
 
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
 
@@ -68,7 +70,7 @@ const DayOfSurveyPage = () => {
                         source={context.source}
                         data={context.data}
                         callbackHolder={callbackHolder}
-                        page="2"
+                        page={getOrchestratorPage(currentPage)}
                     ></OrchestratorForStories>
                 </FlexCenter>
             </SurveyPage>

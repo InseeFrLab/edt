@@ -21,7 +21,11 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
+import {
+    getCurrentNavigatePath,
+    getLoopParameterizedNavigatePath,
+    getOrchestratorPage,
+} from "service/navigation-service";
 import { saveData } from "service/survey-service";
 
 const RoutePage = () => {
@@ -41,7 +45,13 @@ const RoutePage = () => {
 
     const saveAndGoToActivityPlanner = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
+            navigate(
+                getCurrentNavigatePath(
+                    context.idSurvey,
+                    EdtRoutesNameEnum.ACTIVITY,
+                    getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                ),
+            );
         });
     };
 

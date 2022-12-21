@@ -7,7 +7,7 @@
     "missing": false,
     "id": "l8lq5lp6",
     "label": "Time",
-    "maxPage": "5",
+    "maxPage": "10",
     "variables": [
         {
             "variableType": "COLLECTED",
@@ -298,6 +298,126 @@
             "componentRef": ""
         },
         {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "GREATESTACTIVITYDAY",
+            "componentRef": "checkboxone_greatestActivityDay"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "WORSTACTIVITYDAY",
+            "componentRef": "checkboxone_worstActivityDay"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "WORKINGALLDAY",
+            "componentRef": "checkboxgroup_kindofday"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "WORKINGHALFDAY",
+            "componentRef": "checkboxgroup_kindofday"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "NOTWORKINGDAY",
+            "componentRef": "checkboxgroup_kindofday"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "OTHERDAY",
+            "componentRef": "checkboxgroup_kindofday"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "ISCLOSED",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "EXCEPTIONALDAY",
+            "componentRef": "checkboxboolean_exceptionalDay"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "TRAVELTIME",
+            "componentRef": "timepicker_travelTime"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "PHONETIME",
+            "componentRef": "timepicker_phoneTime"
+        },
+        {
             "variableType": "CALCULATED",
             "expression": "true",
             "name": "FILTER_RESULT_INPUTTEXT",
@@ -459,7 +579,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "timepicker_startTime",
                     "page": "4.2",
-                    "label": "\"Heure de début\"",
+                    "tipsLabel": "Heure de début",
                     "mandatory": false,
                     "maxLength": 249
                 },
@@ -477,7 +597,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "timepicker_endTime",
                     "page": "4.2",
-                    "label": "\"Heure de fin\"",
+                    "tipsLabel": "Heure de fin",
                     "mandatory": false,
                     "maxLength": 249
                 },
@@ -786,15 +906,149 @@
             ]
         },
         {
+            "componentType": "CheckboxOneEdt",
+            "bindingDependencies": ["GREATESTACTIVITYDAY"],
+            "response": { "name": "GREATESTACTIVITYDAY" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "law86mv7",
+                    "page": "5",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxone_greatestActivityDay",
+            "page": "5",
+            "label": "\"Quelle a été votre activité la plus agréable durant cette journée ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "CheckboxOneEdt",
+            "bindingDependencies": ["WORSTACTIVITYDAY"],
+            "response": { "name": "WORSTACTIVITYDAY" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "law86mv7",
+                    "page": "6",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxone_worstActivityDay",
+            "page": "6",
+            "label": "\"Quelle a été votre activité la plus désagréable durant cette journée ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "CheckboxGroupEdt",
+            "bindingDependencies": ["WORKINGALLDAY", "WORKINGHALFDAY", "NOTWORKINGDAY", "OTHERDAY"],
+            "responses": [
+                {
+                    "response": {
+                        "name": "WORKINGALLDAY"
+                    },
+                    "id": "1",
+                    "label": "\"Journée normale de travail\""
+                },
+                {
+                    "response": {
+                        "name": "WORKINGHALFDAY"
+                    },
+                    "id": "2",
+                    "label": "\"Journée semi-travaillée\""
+                },
+                {
+                    "response": {
+                        "name": "NOTWORKINGDAY"
+                    },
+                    "id": "3",
+                    "label": "\"Journée non travaillés (repos, férié, congé,…\""
+                },
+                {
+                    "response": {
+                        "name": "OTHERDAY"
+                    },
+                    "id": "4",
+                    "label": "\"Autre cas (pour les personnes n’exerçant pas d’activité professionnelle\""
+                }
+            ],
+            "hierarchy": {
+                "sequence": {
+                    "id": "j6p0ti5h",
+                    "page": "7"
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxgroup_kindofday",
+            "page": "7",
+            "label": "\"De quel type de journée s’agissait-il ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "CheckboxBoolean",
+            "bindingDependencies": ["EXCEPTIONALDAY"],
+            "response": { "name": "EXCEPTIONALDAY" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "law86mv7",
+                    "page": "8",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxboolean_exceptionalDay",
+            "page": "8",
+            "label": "\"Cette journée a-t-elle présenté un caractère exceptionnel ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "Timepicker",
+            "bindingDependencies": ["TRAVELTIME"],
+            "response": { "name": "TRAVELTIME" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "law86mv7",
+                    "page": "9",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "timepicker_travelTime",
+            "page": "9",
+            "label": "\" Au total, combien de temps avez-vous passé en trajets ? \"",
+            "tipsLabel": "Heures et minutes",
+            "mandatory": false,
+            "maxLength": 249
+        },
+        {
+            "componentType": "Timepicker",
+            "bindingDependencies": ["PHONETIME"],
+            "response": { "name": "PHONETIME" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "law86mv7",
+                    "page": "10",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "timepicker_phoneTime",
+            "page": "10",
+            "label": "\" Au total, combien de temps avez-vous passé à consulter votre téléphone (y compris les petits moments de quelques minutes) ? \"",
+            "tipsLabel": "Heures et minutes",
+            "mandatory": false,
+            "maxLength": 249
+        },
+        {
             "id": "End",
             "componentType": "Sequence",
-            "page": "5",
+            "page": "11",
             "label": { "value": "\"End\"", "type": "VTL|MD" },
             "conditionFilter": { "value": "true" },
             "hierarchy": {
                 "sequence": {
                     "id": "End",
-                    "page": "4",
+                    "page": "11",
                     "label": { "value": "\"End\"", "type": "VTL|MD" }
                 }
             }

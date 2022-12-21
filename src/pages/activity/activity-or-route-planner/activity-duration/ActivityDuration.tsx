@@ -9,8 +9,12 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
-import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
-import { getActivities } from "service/survey-activity-service";
+import {
+    getCurrentNavigatePath,
+    getLoopParameterizedNavigatePath,
+    getOrchestratorPage,
+} from "service/navigation-service";
+import { getActivitiesOrRoutes } from "service/survey-activity-service";
 import { FieldNameEnum, saveData, setValue } from "service/survey-service";
 
 import errorIcon from "assets/illustration/error/puzzle.svg";
@@ -23,7 +27,7 @@ const ActivityDurationPage = () => {
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
-    const activitiesAct = getActivities(context.idSurvey);
+    const activitiesAct = getActivitiesOrRoutes(context.idSurvey);
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const alertLabels = {
@@ -34,6 +38,7 @@ const ActivityDurationPage = () => {
 
     const specificProps = {
         activitiesAct: activitiesAct,
+        defaultValue: true,
     };
 
     const onNext = () => {
@@ -71,7 +76,7 @@ const ActivityDurationPage = () => {
                         getCurrentNavigatePath(
                             context.idSurvey,
                             EdtRoutesNameEnum.ACTIVITY,
-                            "3",
+                            getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
                             undefined,
                             undefined,
                             context.isRoute,

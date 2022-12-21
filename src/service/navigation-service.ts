@@ -1,6 +1,6 @@
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentLoopPage, getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getCurrentPage, getData } from "service/survey-service";
+import { FieldNameEnum, getCurrentPage, getData, getValue } from "service/survey-service";
 
 const getNavigatePath = (page: EdtRoutesNameEnum): string => {
     return "/" + page;
@@ -59,6 +59,7 @@ const getCurrentNavigatePath = (
     loop?: LoopEnum,
     iteration?: number,
     isRoute?: boolean,
+    nextPage?: number,
 ): string => {
     const surveyData = getData(idSurvey);
     const subpage = getCurrentLoopPage(surveyData, loop, iteration, isRoute);
@@ -73,8 +74,10 @@ const getCurrentNavigatePath = (
         page = pageOrchestrator?.page;
         parentPage = pageOrchestrator?.parentPage;
     } else {
-        const lastFilledPage = getCurrentPage(surveyData);
-        const firstEmptyPage = lastFilledPage + 1;
+        const activityIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
+        const currentPage = getCurrentPage(surveyData);
+        const lastFilledPage = activityIsClosed && currentPage == 2 ? 4 : getCurrentPage(surveyData);
+        const firstEmptyPage = nextPage ? nextPage : lastFilledPage + 1;
         page = mappingPageOrchestrator.find(
             link =>
                 link.surveyPage ===
@@ -95,10 +98,31 @@ const getCurrentNavigatePath = (
     }
 };
 
+const getLastCompletedStep = (idSurvey: string): number => {
+    const data = getData(idSurvey);
+    const currentLastCompletedPage = getCurrentPage(data) - 1;
+    const page = mappingPageOrchestrator.find(
+        page => page.surveySubPage && page.surveySubPage === currentLastCompletedPage.toString(),
+    );
+    return page?.surveyStep ?? 0;
+};
+
+const getOrchestratorPage = (page: EdtRoutesNameEnum) => {
+    return mappingPageOrchestrator.find(pageData => pageData.page === page)?.surveyPage || "";
+};
+
+const getNextPage = (currentPage: EdtRoutesNameEnum) => {
+    const currentPageNum = getOrchestratorPage(currentPage);
+    return Number(currentPageNum) + 1;
+};
+
 export {
     getNavigatePath,
     getParameterizedNavigatePath,
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
     getFullNavigatePath,
+    getLastCompletedStep,
+    getOrchestratorPage,
+    getNextPage,
 };

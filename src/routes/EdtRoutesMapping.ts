@@ -23,6 +23,12 @@ const enum EdtRoutesNameEnum {
     WITH_SOMEONE = "with-who/:iteration",
     WITH_SOMEONE_SELECTION = "with-who-selection/:iteration",
     WITH_SCREEN = "with-screen/:iteration",
+    GREATEST_ACTIVITY_DAY = "greatest-activity-day",
+    WORST_ACTIVITY_DAY = "worst-activity-day",
+    KIND_OF_DAY = "kind-of-day",
+    EXCEPTIONAL_DAY = "exceptional-day",
+    TRAVEL_TIME = "travel-time",
+    PHONE_TIME = "phone-time",
 }
 
 const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
@@ -139,6 +145,48 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
         surveySubPage: "13",
         surveyStep: 5,
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "5",
+        surveySubPage: "1",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.WORST_ACTIVITY_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "6",
+        surveySubPage: "1",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.KIND_OF_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "7",
+        surveySubPage: "2",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.EXCEPTIONAL_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "8",
+        surveySubPage: "2",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.TRAVEL_TIME,
+        surveySource: "activity-survey.json",
+        surveyPage: "9",
+        surveySubPage: "3",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.PHONE_TIME,
+        surveySource: "activity-survey.json",
+        surveyPage: "10",
+        surveySubPage: "4",
     },
     {
         parentPage: EdtRoutesNameEnum.WORK_TIME,

@@ -5,6 +5,8 @@ import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import * as lunaticEDT from "lunatic-edt";
 import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getOrchestratorPage } from "service/navigation-service";
 
 const { ...edtComponents } = lunaticEDT;
 
@@ -143,7 +145,9 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         data,
         {
             onChange: onLogChange,
-            initialPage: subPage ? "3" : page, //Page 3 if we have subpage because we start from the sequence before the loop
+            initialPage: subPage
+                ? getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)
+                : page, //Page 3 if we have subpage because we start from the sequence before the loop
             activeControls: true,
         },
     );

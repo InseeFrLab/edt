@@ -1,25 +1,15 @@
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { CheckboxGroupSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { SetStateAction, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { getPrintedFirstName, saveData } from "service/survey-service";
-import { SetStateAction, useState } from "react";
-import calendarWeek from "assets/illustration/kind-of-week-categories/calendar-week.svg";
-import kindOfWeek from "assets/illustration/kind-of-week.svg";
-import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getOrchestratorPage } from "service/navigation-service";
-
-const specificProps: CheckboxGroupSpecificProps = {
-    optionsIcons: {
-        "1": calendarWeek,
-        "2": calendarWeek,
-        "3": calendarWeek,
-    },
-};
+import { getFullNavigatePath, getOrchestratorPage } from "service/navigation-service";
+import { getStepData } from "service/stepper.service";
+import { getPrintedFirstName, saveData } from "service/survey-service";
 
 const validateAndNav = (
     forceQuit: boolean,
@@ -33,12 +23,13 @@ const validateAndNav = (
     }
 };
 
-const KindOfWeekPage = () => {
+const PhoneTimePage = () => {
     const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const currentPage = EdtRoutesNameEnum.KIND_OF_WEEK;
 
+    const currentPage = EdtRoutesNameEnum.PHONE_TIME;
+    const stepData = getStepData(currentPage);
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
 
     const saveAndGoHome = (): void => {
@@ -47,33 +38,41 @@ const KindOfWeekPage = () => {
         });
     };
 
+    const onPrevious = () => {
+        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.TRAVEL_TIME));
+        });
+    };
+
     return (
         <SurveyPage
             validate={() => validateAndNav(false, setIsModalDisplayed, saveAndGoHome)}
             onNavigateBack={() => validateAndNav(false, setIsModalDisplayed, saveAndGoHome)}
-            srcIcon={kindOfWeek}
-            altIcon={t("accessibility.asset.kind-of-week-alt")}
+            onPrevious={onPrevious}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={true}
             simpleHeaderLabel={t("page.complementary-questions.simple-header-label")}
+            displayStepper={true}
+            currentStepNumber={stepData.stepNumber}
+            currentStepLabel={stepData.stepLabel}
+            backgroundWhiteHeader={true}
         >
             <FlexCenter>
                 <FelicitationModal
                     isModalDisplayed={isModalDisplayed}
                     onCompleteCallBack={() => validateAndNav(true, setIsModalDisplayed, saveAndGoHome)}
-                    content={t("component.modal-edt.modal-felicitation.survey-content")}
+                    content={t("component.modal-edt.modal-felicitation.activity-content")}
                 />
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
                     page={getOrchestratorPage(currentPage)}
-                    componentSpecificProps={specificProps}
                 ></OrchestratorForStories>
             </FlexCenter>
         </SurveyPage>
     );
 };
 
-export default KindOfWeekPage;
+export default PhoneTimePage;
