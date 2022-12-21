@@ -93,13 +93,16 @@
         },
         "alert-when-quit": {
             "alert-content": "L'ajout de votre activité n'est pas terminé. Souhaitez vous reprendre ou annuler ?",
-            "alert-content-close": "L'ajout de votre activité n'est pas terminé. Souhaitez vous reprendre ou annuler ?",
+            "alert-content-close": "Souhaitez vous clôturer l'activitie?",
             "alert-cancel": "Annuler",
             "alert-complete": "Reprendre",
             "alert-closed": "Clôture",
             "alt-alert-icon": "alt pour icon no result"
         },
         "kind-of-week": {
+            "simple-header-label": "CARACTÉRISTIQUES DE LA SEMAINE"
+        },
+        "complementary-questions": {
             "simple-header-label": "CARACTÉRISTIQUES DE LA SEMAINE"
         }
     },

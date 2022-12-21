@@ -69,7 +69,7 @@ const KindOfDayPage = () => {
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={true}
-            simpleHeaderLabel={t("page.kind-of-week.simple-header-label")}
+            simpleHeaderLabel={t("page.complementary-questions.simple-header-label")}
             displayStepper={true}
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}

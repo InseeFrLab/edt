@@ -44,6 +44,8 @@ const EndActivityStepper = (props: EndActivityStepperProps) => {
 const useStyles = makeStylesEdt({ "name": { EndActivityStepper } })(theme => ({
     stepper: {
         padding: "1rem",
+        backgroundColor: theme.variables.white,
+        marginBottom: "1rem",
     },
     stepBox: {
         display: "flex",
