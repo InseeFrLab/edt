@@ -4,22 +4,28 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { Alert, IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getNextLoopPage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
+import {
+    getLoopPageSubpage,
+    getNextLoopPage,
+    getPreviousLoopPage,
+    getStepData,
+} from "service/loop-stepper-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
 import { FieldNameEnum, getValue, saveData } from "service/survey-service";
-import { useTranslation } from "react-i18next";
 
+import locationErrorIcon from "assets/illustration/error/location-error.svg";
+import errorIcon from "assets/illustration/error/puzzle.svg";
 import option1 from "assets/illustration/locations/1.svg";
 import option2 from "assets/illustration/locations/2.svg";
 import option3 from "assets/illustration/locations/3.svg";
 import option4 from "assets/illustration/locations/4.svg";
 import option5 from "assets/illustration/locations/5.svg";
 import option6 from "assets/illustration/locations/6.svg";
-import errorIcon from "assets/illustration/error/puzzle.svg";
-import locationErrorIcon from "assets/illustration/error/location-error.svg";
+import { getPlaceRef } from "service/referentiel-service";
 
 const ActivityLocationPage = () => {
     const navigate = useNavigate();
@@ -59,7 +65,7 @@ const ActivityLocationPage = () => {
                     currentIteration,
                 );
                 if (hasSecondaryActivity) {
-                    loopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION);
+                    loopNavigate(EdtRoutesNameEnum.ACTIVITY_SECONDARY_ACTIVITY_SELECTION);
                 } else {
                     loopNavigate(getPreviousLoopPage(currentPage));
                 }
@@ -82,7 +88,7 @@ const ActivityLocationPage = () => {
             getLoopParameterizedNavigatePath(
                 page,
                 context.idSurvey,
-                LoopEnum.ACTIVITY,
+                LoopEnum.ACTIVITY_OR_ROUTE,
                 currentIteration,
             ),
         );
@@ -139,9 +145,10 @@ const ActivityLocationPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page={getLoopInitialPage(LoopEnum.ACTIVITY)}
-                    subPage={(stepData.stepNumber + 1).toString()}
+                    page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
+                    subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
+                    overrideOptions={getPlaceRef()}
                     componentSpecificProps={specificProps}
                 ></OrchestratorForStories>
             </FlexCenter>

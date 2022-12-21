@@ -57,6 +57,8 @@
             "stepper": {
                 "step-activity-duration-alt": "Alt pour step-activity-duration",
                 "step-main-activity-alt": "Alt pour step-main-activity",
+                "step-route-alt": "Alt pour step-route",
+                "step-mean-of-transport-alt": "Alt pour step-mean-of-transport",
                 "step-secondary-activity-alt": "Alt pour step-secondary-activity",
                 "step-activity-location-alt": "Alt pour step-location",
                 "step-with-someone-alt": "Alt pour step-with-someone",
@@ -110,7 +112,9 @@
         "add-activity-stepper": {
             "step-1-label": "Durée",
             "step-2-label": "Activité principale",
+            "step-2-bis-label": "Trajet",
             "step-3-label": "Activité secondaire",
+            "step-3-bis-label": "Moyen de transport",
             "step-4-label": "Lieu",
             "step-5-label": "Présence",
             "step-6-label": "Écran"

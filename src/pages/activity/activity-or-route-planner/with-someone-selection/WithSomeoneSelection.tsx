@@ -11,12 +11,14 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
+import { getLoopPageSubpage } from "service/loop-stepper-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
 import { saveData } from "service/survey-service";
 
 const WithSomeoneSelectionPage = () => {
     const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
+    const currentPage = EdtRoutesNameEnum.WITH_SOMEONE_SELECTION;
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
@@ -36,7 +38,7 @@ const WithSomeoneSelectionPage = () => {
                 getLoopParameterizedNavigatePath(
                     page,
                     context.idSurvey,
-                    LoopEnum.ACTIVITY,
+                    LoopEnum.ACTIVITY_OR_ROUTE,
                     currentIteration,
                 ),
             );
@@ -64,8 +66,8 @@ const WithSomeoneSelectionPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page={getLoopInitialPage(LoopEnum.ACTIVITY)}
-                    subPage={"10"}
+                    page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
+                    subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                     componentSpecificProps={specificProps}
                 ></OrchestratorForStories>

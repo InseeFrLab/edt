@@ -58,10 +58,11 @@ const getCurrentNavigatePath = (
     maxPage: string,
     loop?: LoopEnum,
     iteration?: number,
+    isRoute?: boolean,
     nextPage?: number,
 ): string => {
     const surveyData = getData(idSurvey);
-    const subpage = getCurrentLoopPage(surveyData, loop, iteration);
+    const subpage = getCurrentLoopPage(surveyData, loop, iteration, isRoute);
 
     let page: EdtRoutesNameEnum | undefined;
     let parentPage: EdtRoutesNameEnum | undefined;

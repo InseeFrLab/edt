@@ -5,16 +5,19 @@ import TravelTimePage from "pages/activity-complementary-questions/travel-time/T
 import TypeDayPage from "pages/activity-complementary-questions/type-day/TypeDay";
 import WorstActivityDayPage from "pages/activity-complementary-questions/worst-activity-day/WorstActivityDay";
 import ActivityPage from "pages/activity/Activity";
-import ActivityDurationPage from "pages/activity/activity-or-route-planner/activity/activity-duration/ActivityDuration";
+import ActivityDurationPage from "pages/activity/activity-or-route-planner/activity-duration/ActivityDuration";
 import ActivityLocationPage from "pages/activity/activity-or-route-planner/activity/activity-location/ActivityLocation";
+import ActivitySecondaryActivitySelectionPage from "pages/activity/activity-or-route-planner/activity/activity-secondary-activity-selection/ActivitySecondaryActivitySelection";
 import MainActivityGoalPage from "pages/activity/activity-or-route-planner/activity/main-activity-goal/MainActivityGoal";
 import MainActivityPage from "pages/activity/activity-or-route-planner/activity/main-activity/MainActivity";
-import SecondaryActivitySelectionPage from "pages/activity/activity-or-route-planner/activity/secondary-activity-selection/SecondaryActivitySelection";
-import SecondaryActivityPage from "pages/activity/activity-or-route-planner/activity/secondary-activity/SecondaryActivity";
-import WithScreenPage from "pages/activity/activity-or-route-planner/activity/with-screen/WithScreen";
-import WithSomeoneSelectionPage from "pages/activity/activity-or-route-planner/activity/with-someone-selection/WithSomeoneSelection";
-import WithSomeonePage from "pages/activity/activity-or-route-planner/activity/with-someone/WithSomeone";
 import ActivityOrRoutePlannerPage from "pages/activity/activity-or-route-planner/ActivityOrRoutePlanner";
+import MeanOfTransportPage from "pages/activity/activity-or-route-planner/route/mean-of-transport/MeanOfTransport";
+import RouteSecondaryActivitySelectionPage from "pages/activity/activity-or-route-planner/route/route-secondary-activity-selection/RouteSecondaryActivitySelection";
+import RoutePage from "pages/activity/activity-or-route-planner/route/route/Route";
+import SecondaryActivityPage from "pages/activity/activity-or-route-planner/secondary-activity/SecondaryActivity";
+import WithScreenPage from "pages/activity/activity-or-route-planner/with-screen/WithScreen";
+import WithSomeoneSelectionPage from "pages/activity/activity-or-route-planner/with-someone-selection/WithSomeoneSelection";
+import WithSomeonePage from "pages/activity/activity-or-route-planner/with-someone/WithSomeone";
 import DayOfSurveyPage from "pages/day-of-survey/DayOfSurvey";
 import ErrorPage from "pages/error/Error";
 import HelpPage from "pages/help/Help";
@@ -47,6 +50,11 @@ const EdtRoutes = (): JSX.Element => {
                             element={<ActivityDurationPage />}
                         />
                         <Route path={EdtRoutesNameEnum.MAIN_ACTIVITY} element={<MainActivityPage />} />
+                        <Route path={EdtRoutesNameEnum.ROUTE} element={<RoutePage />} />
+                        <Route
+                            path={EdtRoutesNameEnum.MEAN_OF_TRANSPORT}
+                            element={<MeanOfTransportPage />}
+                        />
                         <Route
                             path={EdtRoutesNameEnum.SECONDARY_ACTIVITY}
                             element={<SecondaryActivityPage />}
@@ -62,8 +70,12 @@ const EdtRoutes = (): JSX.Element => {
                             element={<MainActivityGoalPage />}
                         />
                         <Route
-                            path={EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION}
-                            element={<SecondaryActivitySelectionPage />}
+                            path={EdtRoutesNameEnum.ACTIVITY_SECONDARY_ACTIVITY_SELECTION}
+                            element={<ActivitySecondaryActivitySelectionPage />}
+                        />
+                        <Route
+                            path={EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION}
+                            element={<RouteSecondaryActivitySelectionPage />}
                         />
                         <Route
                             path={EdtRoutesNameEnum.WITH_SOMEONE_SELECTION}

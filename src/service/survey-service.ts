@@ -5,13 +5,17 @@ import {
     LunaticModelComponent,
     LunaticModelVariable,
     Collected,
+    ReferentielData,
+    REFERENTIEL_ID,
 } from "interface/lunatic/Lunatic";
 import { generateDateFromStringInput, getFrenchDayFromDate } from "lunatic-edt";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
+import { fetchReferentiels } from "./referentiel-service";
 
 const datas = new Map<string, LunaticData>();
+let referentielsData: ReferentielData;
 const activitySurveysIds = ["activitySurvey1", "activitySurvey2", "activitySurvey3"];
 const workingTimeSurveysIds = ["workingSurvey1", "workingSurvey2"];
 const surveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
@@ -23,9 +27,16 @@ const enum FieldNameEnum {
     STARTTIME = "STARTTIME",
     ENDTIME = "ENDTIME",
     MAINACTIVITY = "MAINACTIVITY",
+    ROUTE = "ROUTE",
     GOAL = "GOAL",
     WITHSECONDARYACTIVITY = "WITHSECONDARYACTIVITY",
     SECONDARYACTIVITY = "SECONDARYACTIVITY",
+    FOOT = "FOOT",
+    BICYCLE = "BICYCLE",
+    TWOWEELSMOTORIZED = "TWOWEELSMOTORIZED",
+    PRIVATECAR = "PRIVATECAR",
+    OTHERPRIVATE = "OTHERPRIVATE",
+    PUBLIC = "PUBLIC",
     PLACE = "PLACE",
     WITHSOMEONE = "WITHSOMEONE",
     COUPLE = "COUPLE",
@@ -39,19 +50,40 @@ const enum FieldNameEnum {
     HOLIDAYWEEK = "HOLIDAYWEEK",
     OTHERWEEK = "OTHERWEEK",
     ISCLOSED = "ISCLOSED",
+    ISROUTE = "ISROUTE",
+}
+
+const toIgnoreForRoute = [FieldNameEnum.MAINACTIVITY, FieldNameEnum.PLACE];
+const toIgnoreForActivity = [
+    FieldNameEnum.ROUTE,
+    FieldNameEnum.FOOT,
+    FieldNameEnum.BICYCLE,
+    FieldNameEnum.TWOWEELSMOTORIZED,
+    FieldNameEnum.PRIVATECAR,
+    FieldNameEnum.OTHERPRIVATE,
+];
+
+const enum ReferentielsEnum {
+    ACTIVITYNOMENCLATURE = "activityNomenclature",
+    ACTIVITYAUTOCOMPLETE = "activityAutocomplete",
+    SECONDARYACTIVITY = "secondaryActivity",
+    LOCATION = "location",
 }
 
 const initializeDatas = (): Promise<LunaticData[]> => {
-    const promises: Promise<LunaticData>[] = [];
-    for (const idSurvey of surveysIds) {
-        promises.push(
-            lunaticDatabase.get(idSurvey).then(data => {
-                datas.set(idSurvey, data || {});
-                return data || {};
-            }),
-        );
-    }
-    return Promise.all(promises);
+    return fetchReferentiels().then(refs => {
+        const promises: Promise<LunaticData>[] = [];
+        for (const idSurvey of surveysIds) {
+            promises.push(
+                lunaticDatabase.get(idSurvey).then(data => {
+                    datas.set(idSurvey, data || {});
+                    return data || {};
+                }),
+            );
+        }
+        promises.push(saveReferentiels(refs));
+        return Promise.all(promises);
+    });
 };
 
 const getDatas = (): Map<string, LunaticData> => {
@@ -67,6 +99,17 @@ const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => 
         datas.set(idSurvey, data);
         return data;
     });
+};
+
+const saveReferentiels = (data: ReferentielData): Promise<ReferentielData> => {
+    return lunaticDatabase.save(REFERENTIEL_ID, data).then(() => {
+        referentielsData = data;
+        return data;
+    });
+};
+
+const getReferentiel = (refName: ReferentielsEnum) => {
+    return referentielsData[refName];
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
@@ -121,12 +164,31 @@ const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: num
     }
 };
 
-const setValue = (idSurvey: string, variableName: FieldNameEnum, value: Collected) => {
+const setValue = (
+    idSurvey: string,
+    variableName: FieldNameEnum,
+    value: string | boolean | null,
+    iteration?: number,
+) => {
     const dataAct = datas.get(idSurvey);
-    if (dataAct && dataAct.COLLECTED) {
-        dataAct.COLLECTED[variableName] = value;
-        datas.set(idSurvey, dataAct);
+    if (dataAct && dataAct.COLLECTED && dataAct.COLLECTED[variableName]) {
+        if (iteration != null && value != null) {
+            const dataAsArray = dataAct.COLLECTED[variableName].COLLECTED;
+            if (dataAsArray && Array.isArray(dataAsArray)) {
+                dataAsArray[iteration] = value;
+            }
+        } else {
+            const variable: Collected = {
+                COLLECTED: value,
+                EDITED: null,
+                FORCED: null,
+                INPUTED: null,
+                PREVIOUS: null,
+            };
+            dataAct.COLLECTED[variableName] = variable;
+        }
     }
+    datas.set(idSurvey, dataAct || {});
     return dataAct;
 };
 
@@ -185,10 +247,14 @@ export {
     getSurveyDate,
     getPrintedSurveyDate,
     getValue,
+    setValue,
+    getReferentiel,
     getComponentId,
     getVariable,
-    setValue,
     activitySurveysIds,
     workingTimeSurveysIds,
     FieldNameEnum,
+    ReferentielsEnum,
+    toIgnoreForRoute,
+    toIgnoreForActivity,
 };

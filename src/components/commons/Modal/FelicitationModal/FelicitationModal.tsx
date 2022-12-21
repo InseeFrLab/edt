@@ -1,7 +1,6 @@
-import { useTranslation } from "react-i18next";
-import { ModalEdt } from "lunatic-edt";
-import { makeStyles } from "tss-react/mui";
 import felicitations from "assets/illustration/felicitations.svg";
+import { ModalEdt } from "lunatic-edt";
+import { useTranslation } from "react-i18next";
 
 interface FelicitationModalProps {
     content: string;
@@ -30,7 +29,5 @@ const FelicitationModal = (props: FelicitationModalProps) => {
         ></ModalEdt>
     );
 };
-
-const useStyles = makeStyles({ "name": { FelicitationModal } })(() => ({}));
 
 export default FelicitationModal;

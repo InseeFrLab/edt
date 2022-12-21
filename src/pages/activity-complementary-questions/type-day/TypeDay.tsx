@@ -37,6 +37,7 @@ const TypeDayPage = () => {
                     context.source.maxPage,
                     undefined,
                     undefined,
+                    false,
                     8,
                 ),
             );

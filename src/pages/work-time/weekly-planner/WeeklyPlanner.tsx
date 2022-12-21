@@ -6,9 +6,8 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { NavigateFunction, useNavigate, useOutletContext } from "react-router-dom";
-import { EdtRoutes } from "routes/EdtRoutes";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getCurrentNavigatePath, getFullNavigatePath } from "service/navigation-service";
+import { getFullNavigatePath } from "service/navigation-service";
 import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 
 const saveAndGoNext = (
@@ -28,7 +27,7 @@ const WeeklyPlannerPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const specificProps : WeeklyPlannerSpecificProps = {
+    const specificProps: WeeklyPlannerSpecificProps = {
         surveyDate: getSurveyDate(context.idSurvey),
         isSubChildDisplayed: displayDayOverview,
         setIsSubChildDisplayed: setDisplayDayOverview,
@@ -36,8 +35,8 @@ const WeeklyPlannerPage = () => {
             title: t("component.weekly-planner.title"),
             workSumLabel: t("component.weekly-planner.work-sum-label"),
             presentButtonLabel: t("component.weekly-planner.present-button-label"),
-            futureButtonLabel: t("component.weekly-planner.future-button-label")
-        }
+            futureButtonLabel: t("component.weekly-planner.future-button-label"),
+        },
     };
 
     const saveAndGoHome = (): void => {

@@ -31,10 +31,8 @@ export type OrchestratorProps = {
     page: string;
     subPage?: string;
     iteration?: number;
-    surveyDate?: string;
-    isSubChildDisplayed?: boolean;
-    setIsSubChildDisplayed?(value: boolean): void;
     componentSpecificProps?: any;
+    overrideOptions?: any;
 };
 
 let i = 0;
@@ -133,10 +131,8 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         page,
         subPage,
         iteration,
-        surveyDate,
-        isSubChildDisplayed,
-        setIsSubChildDisplayed,
         componentSpecificProps,
+        overrideOptions,
     } = props;
     const { classes, cx } = useStyles();
 
@@ -183,20 +179,17 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     )}
                 >
                     {components.map(function (component: any) {
-                        const { id, componentType, response, ...other } = component;
+                        const { id, componentType, response, options, ...other } = component;
                         const Component = lunatic[componentType];
                         return (
                             <div className="lunatic lunatic-component" key={`component-${id}`}>
                                 <Component
                                     id={id}
                                     response={response}
+                                    options={options ? options : overrideOptions}
                                     {...other}
-                                    {...component}
                                     errors={currentErrors}
                                     custom={edtComponents}
-                                    surveyDate={surveyDate}
-                                    isSubChildDisplayed={isSubChildDisplayed}
-                                    setIsSubChildDisplayed={setIsSubChildDisplayed}
                                     componentSpecificProps={componentSpecificProps}
                                 />
                             </div>
@@ -243,7 +236,6 @@ const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
     orchestratorWhenLoading: {
         visibility: "hidden",
         height: "1px",
-        width: "1px",
         overflow: "hidden",
     },
     orchestratorWhenLoaded: {

@@ -1,4 +1,3 @@
-import activitesAutoCompleteRef from "activitesAutoCompleteRef.json";
 import bagIcon from "assets/illustration/type-of-day-categories/bag.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
@@ -9,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getCurrentNavigatePath, getFullNavigatePath } from "service/navigation-service";
+import { getAutoCompleteRef } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, saveData } from "service/survey-service";
 
@@ -19,7 +19,7 @@ const GreatestActivityDayPage = () => {
 
     const currentPage = EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY;
     const stepData = getStepData(currentPage);
-    const activities = activitesAutoCompleteRef;
+    const activities = getAutoCompleteRef();
 
     const specificProps: CheckboxOneSpecificProps = {
         options: activities.map(activity => {
@@ -37,6 +37,7 @@ const GreatestActivityDayPage = () => {
                     context.source.maxPage,
                     undefined,
                     undefined,
+                    false,
                     6,
                 ),
             );

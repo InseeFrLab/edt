@@ -6,20 +6,25 @@ import { useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getNextLoopPage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
+import {
+    getLoopPageSubpage,
+    getNextLoopPage,
+    getPreviousLoopPage,
+    getStepData,
+} from "service/loop-stepper-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
 import { FieldNameEnum, getValue, saveData } from "service/survey-service";
 
 import errorIcon from "assets/illustration/error/puzzle.svg";
-import { useTranslation } from "react-i18next";
 import { Alert } from "lunatic-edt";
+import { useTranslation } from "react-i18next";
 
 const WithSomeonePage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
     const currentPage = EdtRoutesNameEnum.WITH_SOMEONE;
-    const stepData = getStepData(currentPage);
+    const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
@@ -35,7 +40,7 @@ const WithSomeonePage = () => {
             getLoopParameterizedNavigatePath(
                 page,
                 context.idSurvey,
-                LoopEnum.ACTIVITY,
+                LoopEnum.ACTIVITY_OR_ROUTE,
                 currentIteration,
             ),
         );
@@ -57,13 +62,26 @@ const WithSomeonePage = () => {
             if (isWithSomeone) {
                 loopNavigate(EdtRoutesNameEnum.WITH_SOMEONE_SELECTION);
             } else {
-                loopNavigate(getNextLoopPage(currentPage));
+                loopNavigate(getNextLoopPage(currentPage, context.isRoute));
             }
         });
     };
 
     const onPrevious = () => {
-        saveAndLoopNavigate(getPreviousLoopPage(currentPage));
+        if (context.isRoute) {
+            const hasSecondaryActivity = getValue(
+                context.idSurvey,
+                FieldNameEnum.WITHSECONDARYACTIVITY,
+                currentIteration,
+            );
+            if (hasSecondaryActivity) {
+                saveAndLoopNavigate(EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION);
+            } else {
+                saveAndLoopNavigate(getPreviousLoopPage(currentPage, context.isRoute));
+            }
+        } else {
+            saveAndLoopNavigate(getPreviousLoopPage(currentPage, context.isRoute));
+        }
     };
 
     const onClose = (forceQuit: boolean) => {
@@ -99,8 +117,8 @@ const WithSomeonePage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page={getLoopInitialPage(LoopEnum.ACTIVITY)}
-                    subPage={(stepData.stepNumber + 1).toString()}
+                    page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
+                    subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                 ></OrchestratorForStories>
             </FlexCenter>

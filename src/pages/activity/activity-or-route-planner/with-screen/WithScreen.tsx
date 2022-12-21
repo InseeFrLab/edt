@@ -1,29 +1,26 @@
+import errorIcon from "assets/illustration/error/puzzle.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { Alert } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getNextLoopPage, getStepData } from "service/loop-stepper-service";
+import { getLoopPageSubpage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
 import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
-import { saveData } from "service/survey-service";
-import { getActivities } from "service/survey-activity-service";
-import { useTranslation } from "react-i18next";
-import { useState } from "react";
-import { Alert } from "lunatic-edt";
+import { FieldNameEnum, getValue, saveData } from "service/survey-service";
 
-import errorIcon from "assets/illustration/error/puzzle.svg";
-
-const ActivityDurationPage = () => {
+const WithScreenPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
-    const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
-    const stepData = getStepData(currentPage);
+    const currentPage = EdtRoutesNameEnum.WITH_SCREEN;
+    const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
-    const activitiesAct = getActivities(context.idSurvey);
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const alertLabels = {
@@ -32,35 +29,43 @@ const ActivityDurationPage = () => {
         complete: t("page.alert-when-quit.alert-complete"),
     };
 
-    const specificProps = {
-        activitiesAct: activitiesAct,
-        defaultValue: true,
+    const loopNavigate = (page: EdtRoutesNameEnum) => {
+        navigate(
+            getLoopParameterizedNavigatePath(
+                page,
+                context.idSurvey,
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+            ),
+        );
     };
 
-    const onNext = () => {
+    const saveAndGoToActivityPlanner = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getLoopParameterizedNavigatePath(
-                    getNextLoopPage(currentPage),
+            navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
+        });
+    };
+
+    const onprevious = () => {
+        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+                const isWithSomeone = getValue(
                     context.idSurvey,
-                    LoopEnum.ACTIVITY,
+                    FieldNameEnum.WITHSOMEONE,
                     currentIteration,
-                ),
-            );
+                );
+                if (isWithSomeone) {
+                    loopNavigate(EdtRoutesNameEnum.WITH_SOMEONE_SELECTION);
+                } else {
+                    loopNavigate(getPreviousLoopPage(currentPage));
+                }
+            });
         });
     };
 
     const onClose = (forceQuit: boolean) => {
         if (forceQuit) {
-            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                navigate(
-                    getCurrentNavigatePath(
-                        context.idSurvey,
-                        EdtRoutesNameEnum.ACTIVITY,
-                        context.source.maxPage,
-                    ),
-                );
-            });
+            saveAndGoToActivityPlanner();
         } else {
             setIsAlertDisplayed(true);
         }
@@ -68,7 +73,8 @@ const ActivityDurationPage = () => {
 
     return (
         <LoopSurveyPage
-            onNext={onNext}
+            onPrevious={onprevious}
+            onValidate={saveAndGoToActivityPlanner}
             onClose={() => onClose(false)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
@@ -88,14 +94,13 @@ const ActivityDurationPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page={getLoopInitialPage(LoopEnum.ACTIVITY)}
-                    subPage={(stepData.stepNumber + 1).toString()}
+                    page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
+                    subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
-                    componentSpecificProps={specificProps}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>
     );
 };
 
-export default ActivityDurationPage;
+export default WithScreenPage;

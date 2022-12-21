@@ -26,6 +26,7 @@ const ExceptionalDayPage = () => {
                     context.source.maxPage,
                     undefined,
                     undefined,
+                    false,
                     9,
                 ),
             );
