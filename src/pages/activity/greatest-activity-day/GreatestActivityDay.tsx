@@ -1,4 +1,3 @@
-import bagIcon from "assets/illustration/type-of-day-categories/bag.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
@@ -30,7 +29,7 @@ const GreatestActivityDayPage = () => {
         options: activites.map(activity => {
             return { label: activity, value: activity };
         }),
-        icon: bagIcon,
+        defaultIcon: true,
     };
 
     const saveAndGoHome = (): void => {
