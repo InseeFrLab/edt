@@ -331,7 +331,7 @@
                 "PREVIOUS": null
             },
             "name": "WORKINGALLDAY",
-            "componentRef": "checkboxgroup_daytype"
+            "componentRef": "checkboxgroup_kindofday"
         },
         {
             "variableType": "COLLECTED",
@@ -343,7 +343,7 @@
                 "PREVIOUS": null
             },
             "name": "WORKINGHALFDAY",
-            "componentRef": "checkboxgroup_daytype"
+            "componentRef": "checkboxgroup_kindofday"
         },
         {
             "variableType": "COLLECTED",
@@ -355,7 +355,7 @@
                 "PREVIOUS": null
             },
             "name": "NOTWORKINGDAY",
-            "componentRef": "checkboxgroup_daytype"
+            "componentRef": "checkboxgroup_kindofday"
         },
         {
             "variableType": "COLLECTED",
@@ -367,7 +367,7 @@
                 "PREVIOUS": null
             },
             "name": "OTHERDAY",
-            "componentRef": "checkboxgroup_daytype"
+            "componentRef": "checkboxgroup_kindofday"
         },
         {
             "variableType": "COLLECTED",
@@ -979,7 +979,7 @@
                 }
             },
             "conditionFilter": { "value": "true" },
-            "id": "checkboxgroup_daytype",
+            "id": "checkboxgroup_kindofday",
             "page": "7",
             "label": "\"De quel type de journée s’agissait-il ?\"",
             "mandatory": false
@@ -1016,7 +1016,7 @@
             "id": "timepicker_travelTime",
             "page": "9",
             "label": "\" Au total, combien de temps avez-vous passé en trajets ? \"",
-            "tipsLabels": "Heures et minutes",
+            "tipsLabel": "Heures et minutes",
             "mandatory": false,
             "maxLength": 249
         },
@@ -1035,7 +1035,7 @@
             "id": "timepicker_phoneTime",
             "page": "10",
             "label": "\" Au total, combien de temps avez-vous passé à consulter votre téléphone (y compris les petits moments de quelques minutes) ? \"",
-            "tipsLabels": "Heures et minutes",
+            "tipsLabel": "Heures et minutes",
             "mandatory": false,
             "maxLength": 249
         },

@@ -9,7 +9,11 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
-import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
+import {
+    getCurrentNavigatePath,
+    getLoopParameterizedNavigatePath,
+    getOrchestratorPage,
+} from "service/navigation-service";
 import { getActivities } from "service/survey-activity-service";
 import { FieldNameEnum, saveData, setValue } from "service/survey-service";
 
@@ -72,7 +76,7 @@ const ActivityDurationPage = () => {
                         getCurrentNavigatePath(
                             context.idSurvey,
                             EdtRoutesNameEnum.ACTIVITY,
-                            "3",
+                            getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
                             undefined,
                             undefined,
                             context.isRoute,

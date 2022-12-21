@@ -5,7 +5,11 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getCurrentNavigatePath, getFullNavigatePath } from "service/navigation-service";
+import {
+    getCurrentNavigatePath,
+    getFullNavigatePath,
+    getOrchestratorPage,
+} from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, saveData } from "service/survey-service";
 
@@ -14,7 +18,7 @@ const ExceptionalDayPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const currentPage = EdtRoutesNameEnum.TYPE_DAY;
+    const currentPage = EdtRoutesNameEnum.KIND_OF_DAY;
     const stepData = getStepData(currentPage);
 
     const saveAndGoHome = (): void => {
@@ -35,7 +39,7 @@ const ExceptionalDayPage = () => {
 
     const onPrevious = (e: React.MouseEvent) => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.TYPE_DAY));
+            navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.KIND_OF_DAY));
         });
     };
 
@@ -63,7 +67,7 @@ const ExceptionalDayPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page="8"
+                    page={getOrchestratorPage(currentPage)}
                 ></OrchestratorForStories>
             </FlexCenter>
         </SurveyPage>

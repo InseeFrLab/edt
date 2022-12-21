@@ -7,16 +7,20 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getCurrentNavigatePath, getFullNavigatePath } from "service/navigation-service";
+import {
+    getCurrentNavigatePath,
+    getFullNavigatePath,
+    getOrchestratorPage,
+} from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, saveData } from "service/survey-service";
 
-const TypeDayPage = () => {
+const KindOfDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const currentPage = EdtRoutesNameEnum.TYPE_DAY;
+    const currentPage = EdtRoutesNameEnum.KIND_OF_DAY;
     const stepData = getStepData(currentPage);
 
     const specificProps: CheckboxGroupSpecificProps = {
@@ -75,11 +79,11 @@ const TypeDayPage = () => {
                     data={context.data}
                     callbackHolder={callbackHolder}
                     componentSpecificProps={specificProps}
-                    page="7"
+                    page={getOrchestratorPage(currentPage)}
                 ></OrchestratorForStories>
             </FlexCenter>
         </SurveyPage>
     );
 };
 
-export default TypeDayPage;
+export default KindOfDayPage;

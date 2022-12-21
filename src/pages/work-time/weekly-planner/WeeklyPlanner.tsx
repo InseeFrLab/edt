@@ -7,7 +7,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { NavigateFunction, useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getFullNavigatePath } from "service/navigation-service";
+import { getFullNavigatePath, getOrchestratorPage } from "service/navigation-service";
 import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 
 const saveAndGoNext = (
@@ -26,6 +26,8 @@ const WeeklyPlannerPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
     const { t } = useTranslation();
+
+    const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
 
     const specificProps: WeeklyPlannerSpecificProps = {
         surveyDate: getSurveyDate(context.idSurvey),
@@ -76,7 +78,7 @@ const WeeklyPlannerPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page="3"
+                    page={getOrchestratorPage(currentPage)}
                     componentSpecificProps={specificProps}
                 ></OrchestratorForStories>
             </FlexCenter>

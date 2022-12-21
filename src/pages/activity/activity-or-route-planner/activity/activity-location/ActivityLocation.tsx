@@ -14,7 +14,11 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
+import {
+    getCurrentNavigatePath,
+    getLoopParameterizedNavigatePath,
+    getOrchestratorPage,
+} from "service/navigation-service";
 import { FieldNameEnum, getValue, saveData } from "service/survey-service";
 
 import locationErrorIcon from "assets/illustration/error/location-error.svg";
@@ -110,7 +114,13 @@ const ActivityLocationPage = () => {
 
     const saveAndGoToActivityPlanner = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
+            navigate(
+                getCurrentNavigatePath(
+                    context.idSurvey,
+                    EdtRoutesNameEnum.ACTIVITY,
+                    getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                ),
+            );
         });
     };
 

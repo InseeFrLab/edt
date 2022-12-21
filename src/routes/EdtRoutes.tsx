@@ -1,8 +1,8 @@
 import ExceptionalDayPage from "pages/activity-complementary-questions/exceptional-day/ExceptionalDay";
 import GreatestActivityDayPage from "pages/activity-complementary-questions/greatest-activity-day/GreatestActivityDay";
+import KindOfDayPage from "pages/activity-complementary-questions/kind-of-day/KindOfDay";
 import PhoneTimePage from "pages/activity-complementary-questions/phone-time/PhoneTime";
 import TravelTimePage from "pages/activity-complementary-questions/travel-time/TravelTime";
-import TypeDayPage from "pages/activity-complementary-questions/type-day/TypeDay";
 import WorstActivityDayPage from "pages/activity-complementary-questions/worst-activity-day/WorstActivityDay";
 import ActivityPage from "pages/activity/Activity";
 import ActivityDurationPage from "pages/activity/activity-or-route-planner/activity-duration/ActivityDuration";
@@ -90,7 +90,7 @@ const EdtRoutes = (): JSX.Element => {
                         path={EdtRoutesNameEnum.WORST_ACTIVITY_DAY}
                         element={<WorstActivityDayPage />}
                     />
-                    <Route path={EdtRoutesNameEnum.TYPE_DAY} element={<TypeDayPage />} />
+                    <Route path={EdtRoutesNameEnum.KIND_OF_DAY} element={<KindOfDayPage />} />
                     <Route path={EdtRoutesNameEnum.EXCEPTIONAL_DAY} element={<ExceptionalDayPage />} />
                     <Route path={EdtRoutesNameEnum.TRAVEL_TIME} element={<TravelTimePage />} />
                     <Route path={EdtRoutesNameEnum.PHONE_TIME} element={<PhoneTimePage />} />

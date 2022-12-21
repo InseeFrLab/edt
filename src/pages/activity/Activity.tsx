@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { getCurrentNavigatePath } from "service/navigation-service";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getCurrentNavigatePath, getOrchestratorPage } from "service/navigation-service";
 import { getCurrentPageSource, getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { FieldNameEnum, getData, getValue } from "service/survey-service";
 
@@ -23,7 +24,9 @@ const ActivityPage = () => {
                 getCurrentNavigatePath(
                     idSurvey,
                     surveyRootPage,
-                    activityIsClosed ? source.maxPage : "3",
+                    activityIsClosed
+                        ? source.maxPage
+                        : getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
                 ),
             );
         } else {

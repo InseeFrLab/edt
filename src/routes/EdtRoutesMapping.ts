@@ -25,7 +25,7 @@ const enum EdtRoutesNameEnum {
     WITH_SCREEN = "with-screen/:iteration",
     GREATEST_ACTIVITY_DAY = "greatest-activity-day",
     WORST_ACTIVITY_DAY = "worst-activity-day",
-    TYPE_DAY = "type-day",
+    KIND_OF_DAY = "kind-of-day",
     EXCEPTIONAL_DAY = "exceptional-day",
     TRAVEL_TIME = "travel-time",
     PHONE_TIME = "phone-time",
@@ -162,7 +162,7 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY,
-        page: EdtRoutesNameEnum.TYPE_DAY,
+        page: EdtRoutesNameEnum.KIND_OF_DAY,
         surveySource: "activity-survey.json",
         surveyPage: "7",
         surveySubPage: "2",

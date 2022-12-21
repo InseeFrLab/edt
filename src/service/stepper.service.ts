@@ -16,7 +16,7 @@ const activityComplementaryQuestionsStepperData: StepData[] = [
         stepLabel: t("component.end-activity-stepper.step-1-label"),
     },
     {
-        page: EdtRoutesNameEnum.TYPE_DAY,
+        page: EdtRoutesNameEnum.KIND_OF_DAY,
         stepNumber: 2,
         stepLabel: t("component.end-activity-stepper.step-2-label"),
     },

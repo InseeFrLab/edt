@@ -7,7 +7,7 @@ import { SetStateAction, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getFullNavigatePath } from "service/navigation-service";
+import { getFullNavigatePath, getOrchestratorPage } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, saveData } from "service/survey-service";
 
@@ -68,7 +68,7 @@ const PhoneTimePage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page="10"
+                    page={getOrchestratorPage(currentPage)}
                 ></OrchestratorForStories>
             </FlexCenter>
         </SurveyPage>

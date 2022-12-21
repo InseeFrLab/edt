@@ -107,6 +107,10 @@ const getLastCompletedStep = (idSurvey: string): number => {
     return page?.surveyStep ?? 0;
 };
 
+const getOrchestratorPage = (page: EdtRoutesNameEnum) => {
+    return mappingPageOrchestrator.find(pageData => pageData.page === page)?.surveyPage || "";
+};
+
 export {
     getNavigatePath,
     getParameterizedNavigatePath,
@@ -114,4 +118,5 @@ export {
     getLoopParameterizedNavigatePath,
     getFullNavigatePath,
     getLastCompletedStep,
+    getOrchestratorPage,
 };

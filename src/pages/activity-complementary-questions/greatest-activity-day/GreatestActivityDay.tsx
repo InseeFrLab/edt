@@ -7,7 +7,11 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getCurrentNavigatePath, getFullNavigatePath } from "service/navigation-service";
+import {
+    getCurrentNavigatePath,
+    getFullNavigatePath,
+    getOrchestratorPage,
+} from "service/navigation-service";
 import { getAutoCompleteRef } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, saveData } from "service/survey-service";
@@ -75,7 +79,7 @@ const GreatestActivityDayPage = () => {
                     data={context.data}
                     callbackHolder={callbackHolder}
                     componentSpecificProps={specificProps}
-                    page="5"
+                    page={getOrchestratorPage(currentPage)}
                 ></OrchestratorForStories>
             </FlexCenter>
         </SurveyPage>

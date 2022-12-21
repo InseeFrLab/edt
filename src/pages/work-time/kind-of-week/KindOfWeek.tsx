@@ -10,6 +10,8 @@ import { SetStateAction, useState } from "react";
 import calendarWeek from "assets/illustration/kind-of-week-categories/calendar-week.svg";
 import kindOfWeek from "assets/illustration/kind-of-week.svg";
 import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getOrchestratorPage } from "service/navigation-service";
 
 const specificProps: CheckboxGroupSpecificProps = {
     optionsIcons: {
@@ -35,6 +37,7 @@ const KindOfWeekPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const currentPage = EdtRoutesNameEnum.KIND_OF_WEEK;
 
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
 
@@ -65,7 +68,7 @@ const KindOfWeekPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page="4"
+                    page={getOrchestratorPage(currentPage)}
                     componentSpecificProps={specificProps}
                 ></OrchestratorForStories>
             </FlexCenter>

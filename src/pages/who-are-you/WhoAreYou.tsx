@@ -6,7 +6,8 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { getCurrentNavigatePath } from "service/navigation-service";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getCurrentNavigatePath, getOrchestratorPage } from "service/navigation-service";
 import {
     FieldNameEnum,
     getComponentId,
@@ -19,6 +20,8 @@ const WhoAreYouPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
+    const currentPage = EdtRoutesNameEnum.WHO_ARE_YOU;
+
     let [disabledButton, setDisabledButton] = React.useState<boolean>(true);
 
     const keydownChange = () => {
@@ -65,7 +68,7 @@ const WhoAreYouPage = () => {
                         source={context.source}
                         data={context.data}
                         callbackHolder={callbackHolder}
-                        page="1"
+                        page={getOrchestratorPage(currentPage)}
                     ></OrchestratorForStories>
                 </FlexCenter>
             </SurveyPage>
