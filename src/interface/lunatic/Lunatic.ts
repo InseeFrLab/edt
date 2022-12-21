@@ -32,7 +32,9 @@ export const REFERENTIEL_ID = "referentiels";
 export interface ReferentielData extends LunaticData {
     [ReferentielsEnum.ACTIVITYNOMENCLATURE]: NomenclatureActivityOption[];
     [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: AutoCompleteActiviteOption[];
-    [ReferentielsEnum.SECONDARYACTIVITY]: CheckboxOneCustomOption[];
+    [ReferentielsEnum.ROUTE]: CheckboxOneCustomOption[];
+    [ReferentielsEnum.ACTIVITYSECONDARYACTIVITY]: CheckboxOneCustomOption[];
+    [ReferentielsEnum.ROUTESECONDARYACTIVITY]: CheckboxOneCustomOption[];
     [ReferentielsEnum.LOCATION]: CheckboxOneCustomOption[];
 }
 

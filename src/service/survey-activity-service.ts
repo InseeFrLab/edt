@@ -8,6 +8,7 @@ import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
     findPlaceInRef,
+    findRouteInRef,
     findSecondaryActivityInRef,
 } from "./referentiel-service";
 
@@ -16,17 +17,35 @@ const getActivitiesOrRoutes = (idSurvey: string, source?: LunaticModel): Array<A
     let activities: ActivityOrRoute[] = [];
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
     for (let i = 0; i < activityLoopSize; i++) {
-        let activity: ActivityOrRoute = { label: t("common.activity.unknown-activity") + (i + 1) };
+        let activity: ActivityOrRoute = {
+            activityLabel: t("common.activity.unknown-activity") + (i + 1),
+        };
         activity.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean;
         activity.startTime = getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
         activity.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
 
-        // Main activity
-        const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
-        const activitySelection: SelectedActivity = mainActivityValue
-            ? JSON.parse(mainActivityValue.toString())
-            : undefined;
-        activity.label = getActivityLabel(activitySelection) || "";
+        if (activity.isRoute) {
+            // Route
+            const routeValue = getValue(idSurvey, FieldNameEnum.ROUTE, i) as string;
+            activity.routeLabel = getRouteLabel(routeValue);
+
+            //Mean of transport
+            const meanOfTransportValue = "";
+        } else {
+            // Main activity
+            const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
+            const activitySelection: SelectedActivity = mainActivityValue
+                ? JSON.parse(mainActivityValue.toString())
+                : undefined;
+            activity.activityLabel = getActivityLabel(activitySelection) || "";
+
+            // Location
+            const placeValue = getValue(idSurvey, FieldNameEnum.PLACE, i);
+            if (placeValue) {
+                activity.place = findPlaceInRef(placeValue.toString())?.label;
+            }
+        }
+
         // Secondary activity
         const secondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i);
         if (secondaryActivityValue) {
@@ -34,13 +53,8 @@ const getActivitiesOrRoutes = (idSurvey: string, source?: LunaticModel): Array<A
                 secondaryActivityValue.toString(),
             )?.label;
         }
-        // Location
-        const placeValue = getValue(idSurvey, FieldNameEnum.PLACE, i);
-        if (placeValue) {
-            activity.place = findPlaceInRef(placeValue.toString())?.label;
-        }
         // With someone
-        const withSomeoneLabel = getWithSomeoneLabels(idSurvey, i, source);
+        const withSomeoneLabel = getWithSomeoneLabel(idSurvey, i, source);
         if (withSomeoneLabel) {
             activity.withSomeone = withSomeoneLabel;
         }
@@ -87,7 +101,14 @@ const getActivityLabel = (activity: SelectedActivity | undefined): string | unde
     }
 };
 
-const getWithSomeoneLabels = (
+const getRouteLabel = (routeId: string | undefined): string | undefined => {
+    if (!routeId) {
+        return undefined;
+    }
+    return findRouteInRef(routeId)?.label;
+};
+
+const getWithSomeoneLabel = (
     idSurvey: string,
     i: number,
     source: LunaticModel | undefined,

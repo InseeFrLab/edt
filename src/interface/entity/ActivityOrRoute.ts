@@ -1,5 +1,6 @@
 export interface ActivityOrRoute {
-    label: string;
+    activityLabel?: string;
+    routeLabel?: string;
     isRoute?: boolean;
     startTime?: string;
     endTime?: string;

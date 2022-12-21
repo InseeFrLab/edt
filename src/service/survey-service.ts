@@ -66,7 +66,9 @@ const toIgnoreForActivity = [
 const enum ReferentielsEnum {
     ACTIVITYNOMENCLATURE = "activityNomenclature",
     ACTIVITYAUTOCOMPLETE = "activityAutocomplete",
-    SECONDARYACTIVITY = "secondaryActivity",
+    ROUTE = "route",
+    ACTIVITYSECONDARYACTIVITY = "activitySecondaryActivity",
+    ROUTESECONDARYACTIVITY = "routeSecondaryActivity",
     LOCATION = "location",
 }
 

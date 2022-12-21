@@ -11,7 +11,7 @@ import {
     getLoopParameterizedNavigatePath,
     getOrchestratorPage,
 } from "service/navigation-service";
-import { getSecondaryActivityRef } from "service/referentiel-service";
+import { getActivitySecondaryActivityRef } from "service/referentiel-service";
 import { saveData } from "service/survey-service";
 
 const ActivitySecondaryActivitySelectionPage = () => {
@@ -68,7 +68,7 @@ const ActivitySecondaryActivitySelectionPage = () => {
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
-                    overrideOptions={getSecondaryActivityRef()}
+                    overrideOptions={getActivitySecondaryActivityRef()}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>

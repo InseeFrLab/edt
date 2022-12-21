@@ -26,6 +26,7 @@ import {
     getLoopParameterizedNavigatePath,
     getOrchestratorPage,
 } from "service/navigation-service";
+import { getRouteRef } from "service/referentiel-service";
 import { saveData } from "service/survey-service";
 
 const RoutePage = () => {
@@ -118,6 +119,7 @@ const RoutePage = () => {
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                     componentSpecificProps={specificProps}
+                    overrideOptions={getRouteRef()}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>
