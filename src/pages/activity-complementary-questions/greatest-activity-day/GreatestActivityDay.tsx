@@ -10,6 +10,7 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getCurrentNavigatePath,
     getFullNavigatePath,
+    getNextPage,
     getOrchestratorPage,
 } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
@@ -41,8 +42,8 @@ const GreatestActivityDayPage = () => {
                     context.source.maxPage,
                     undefined,
                     undefined,
-                    false,
-                    6,
+                    undefined,
+                    getNextPage(currentPage),
                 ),
             );
         });

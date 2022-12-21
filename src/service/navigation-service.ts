@@ -111,6 +111,11 @@ const getOrchestratorPage = (page: EdtRoutesNameEnum) => {
     return mappingPageOrchestrator.find(pageData => pageData.page === page)?.surveyPage || "";
 };
 
+const getNextPage = (currentPage: EdtRoutesNameEnum) => {
+    const currentPageNum = getOrchestratorPage(currentPage);
+    return Number(currentPageNum) + 1;
+};
+
 export {
     getNavigatePath,
     getParameterizedNavigatePath,
@@ -119,4 +124,5 @@ export {
     getFullNavigatePath,
     getLastCompletedStep,
     getOrchestratorPage,
+    getNextPage,
 };

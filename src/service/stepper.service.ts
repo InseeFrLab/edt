@@ -16,7 +16,17 @@ const activityComplementaryQuestionsStepperData: StepData[] = [
         stepLabel: t("component.end-activity-stepper.step-1-label"),
     },
     {
+        page: EdtRoutesNameEnum.WORST_ACTIVITY_DAY,
+        stepNumber: 1,
+        stepLabel: t("component.end-activity-stepper.step-1-label"),
+    },
+    {
         page: EdtRoutesNameEnum.KIND_OF_DAY,
+        stepNumber: 2,
+        stepLabel: t("component.end-activity-stepper.step-2-label"),
+    },
+    {
+        page: EdtRoutesNameEnum.EXCEPTIONAL_DAY,
         stepNumber: 2,
         stepLabel: t("component.end-activity-stepper.step-2-label"),
     },
@@ -39,18 +49,4 @@ const getStepData = (page: EdtRoutesNameEnum): StepData => {
     );
 };
 
-const getNextPage = (currentPage: EdtRoutesNameEnum) => {
-    let index = activityComplementaryQuestionsStepperData.findIndex(
-        stepData => stepData.page === currentPage,
-    );
-    return activityComplementaryQuestionsStepperData[index + 1].page;
-};
-
-const getPreviousPage = (currentPage: EdtRoutesNameEnum) => {
-    let index = activityComplementaryQuestionsStepperData.findIndex(
-        stepData => stepData.page === currentPage,
-    );
-    return activityComplementaryQuestionsStepperData[index - 1].page;
-};
-
-export { activityComplementaryQuestionsStepperData, getStepData, getPreviousPage, getNextPage };
+export { activityComplementaryQuestionsStepperData, getStepData };

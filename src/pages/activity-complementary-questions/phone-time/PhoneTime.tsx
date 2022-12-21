@@ -31,7 +31,6 @@ const PhoneTimePage = () => {
     const currentPage = EdtRoutesNameEnum.PHONE_TIME;
     const stepData = getStepData(currentPage);
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
-    console.log(stepData);
 
     const saveAndGoHome = (): void => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {

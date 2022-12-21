@@ -8,6 +8,7 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getCurrentNavigatePath,
     getFullNavigatePath,
+    getNextPage,
     getOrchestratorPage,
 } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
@@ -18,7 +19,7 @@ const ExceptionalDayPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const currentPage = EdtRoutesNameEnum.KIND_OF_DAY;
+    const currentPage = EdtRoutesNameEnum.EXCEPTIONAL_DAY;
     const stepData = getStepData(currentPage);
 
     const saveAndGoHome = (): void => {
@@ -30,8 +31,8 @@ const ExceptionalDayPage = () => {
                     context.source.maxPage,
                     undefined,
                     undefined,
-                    false,
-                    9,
+                    undefined,
+                    getNextPage(currentPage),
                 ),
             );
         });

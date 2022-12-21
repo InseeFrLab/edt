@@ -10,6 +10,7 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getCurrentNavigatePath,
     getFullNavigatePath,
+    getNextPage,
     getOrchestratorPage,
 } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
@@ -21,7 +22,7 @@ const WorstActivityDayPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const currentPage = EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY;
+    const currentPage = EdtRoutesNameEnum.WORST_ACTIVITY_DAY;
     const stepData = getStepData(currentPage);
     const activites = getActivitesSelectedLabel(context.idSurvey);
 
@@ -41,8 +42,8 @@ const WorstActivityDayPage = () => {
                     context.source.maxPage,
                     undefined,
                     undefined,
-                    false,
-                    7,
+                    undefined,
+                    getNextPage(currentPage),
                 ),
             );
         });

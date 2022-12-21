@@ -53,8 +53,9 @@ const getActivitiesOrRoute = (idSurvey: string, source?: LunaticModel): Array<Ac
 const getActivitesSelectedLabel = (idSurvey: string): string[] => {
     let activitesSelected: string[] = [];
     getActivitiesOrRoute(idSurvey).forEach(activity => {
-        if (activity?.label != null) activitesSelected.push(activity.label);
-        if (activity?.secondaryActivityLabel != null)
+        if (activity?.label != null && activity?.label.length > 0)
+            activitesSelected.push(activity.label);
+        if (activity?.secondaryActivityLabel != null && activity?.secondaryActivityLabel.length > 0)
             activitesSelected.push(activity.secondaryActivityLabel);
     });
     return activitesSelected;
