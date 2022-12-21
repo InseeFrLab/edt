@@ -56,6 +56,7 @@ const PhoneTimePage = () => {
             displayStepper={true}
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}
+            backgroundWhiteHeader={true}
         >
             <FlexCenter>
                 <FelicitationModal

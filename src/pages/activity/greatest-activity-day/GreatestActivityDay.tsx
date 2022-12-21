@@ -72,6 +72,7 @@ const GreatestActivityDayPage = () => {
             displayStepper={true}
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}
+            backgroundWhiteHeader={true}
         >
             <FlexCenter>
                 <OrchestratorForStories

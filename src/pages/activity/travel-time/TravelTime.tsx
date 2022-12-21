@@ -62,6 +62,7 @@ const TravelTimePage = () => {
             displayStepper={true}
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}
+            backgroundWhiteHeader={true}
         >
             <FlexCenter>
                 <OrchestratorForStories

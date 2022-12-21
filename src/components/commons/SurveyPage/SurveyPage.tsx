@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import LoopNavigator from "components/commons/LoopSurveyPage/LoopNavigator/LoopNavigator";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import ActivityButtons from "components/commons/SurveyPage/ActivityButtons/ActivityButtons";
 import SurveyPageEditHeader from "components/commons/SurveyPage/SurveyPageEditHeader/SurveyPageEditHeader";
@@ -11,7 +12,6 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { getLastCompletedStep } from "service/navigation-service";
 import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
-import LoopNavigator from "../LoopSurveyPage/LoopNavigator/LoopNavigator";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;
@@ -36,6 +36,7 @@ interface SurveyPageProps {
     onPrevious?(event?: React.MouseEvent): void;
     currentStepNumber?: number;
     currentStepLabel?: string;
+    backgroundWhiteHeader?: boolean;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -62,6 +63,7 @@ const SurveyPage = (props: SurveyPageProps) => {
         onPrevious,
         currentStepNumber,
         currentStepLabel,
+        backgroundWhiteHeader,
     } = props;
     const { t } = useTranslation();
     const { idSurvey } = useParams();
@@ -87,6 +89,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                 <SurveyPageSimpleHeader
                     simpleHeaderLabel={simpleHeaderLabel}
                     onNavigateBack={onNavigateBack}
+                    backgroundWhite={backgroundWhiteHeader}
                 />
             )}
             {displayStepper && currentStepNumber && currentStepLabel && (
