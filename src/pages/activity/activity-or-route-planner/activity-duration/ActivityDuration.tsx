@@ -14,7 +14,7 @@ import {
     getLoopParameterizedNavigatePath,
     getOrchestratorPage,
 } from "service/navigation-service";
-import { getActivitiesOrRoute } from "service/survey-activity-service";
+import { getActivitiesOrRoutes } from "service/survey-activity-service";
 import { FieldNameEnum, saveData, setValue } from "service/survey-service";
 
 import errorIcon from "assets/illustration/error/puzzle.svg";
@@ -27,7 +27,7 @@ const ActivityDurationPage = () => {
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
-    const activitiesAct = getActivitiesOrRoute(context.idSurvey);
+    const activitiesAct = getActivitiesOrRoutes(context.idSurvey);
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const alertLabels = {

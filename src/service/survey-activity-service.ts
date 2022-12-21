@@ -11,7 +11,7 @@ import {
     findSecondaryActivityInRef,
 } from "./referentiel-service";
 
-const getActivitiesOrRoute = (idSurvey: string, source?: LunaticModel): Array<ActivityOrRoute> => {
+const getActivitiesOrRoutes = (idSurvey: string, source?: LunaticModel): Array<ActivityOrRoute> => {
     const { t } = useTranslation();
     let activities: ActivityOrRoute[] = [];
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
@@ -52,7 +52,7 @@ const getActivitiesOrRoute = (idSurvey: string, source?: LunaticModel): Array<Ac
 
 const getActivitesSelectedLabel = (idSurvey: string): string[] => {
     let activitesSelected: string[] = [];
-    getActivitiesOrRoute(idSurvey).forEach(activity => {
+    getActivitiesOrRoutes(idSurvey).forEach(activity => {
         if (activity?.label != null && activity?.label.length > 0)
             activitesSelected.push(activity.label);
         if (activity?.secondaryActivityLabel != null && activity?.secondaryActivityLabel.length > 0)
@@ -117,7 +117,7 @@ const getWithSomeoneLabels = (
 };
 
 export {
-    getActivitiesOrRoute,
+    getActivitiesOrRoutes,
     getActivitesSelectedLabel,
     getActivityOrRouteDurationLabel,
     getActivityLabel,
