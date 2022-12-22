@@ -11,13 +11,16 @@ import {
     getLoopParameterizedNavigatePath,
     getOrchestratorPage,
 } from "service/navigation-service";
-import { getRouteSecondaryActivityRef } from "service/referentiel-service";
+import {
+    getActivitySecondaryActivityRef,
+    getRouteSecondaryActivityRef,
+} from "service/referentiel-service";
 import { saveData } from "service/survey-service";
 
-const RouteSecondaryActivitySelectionPage = () => {
+const SecondaryActivitySelectionPage = () => {
     const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
-    const currentPage = EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION;
+    const currentPage = EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION;
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
@@ -51,7 +54,11 @@ const RouteSecondaryActivitySelectionPage = () => {
     };
 
     const onNext = () => {
-        saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SOMEONE);
+        if (context.isRoute) {
+            saveAndLoopNavigate(EdtRoutesNameEnum.ACTIVITY_LOCATION);
+        } else {
+            saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SOMEONE);
+        }
     };
 
     const onPrevious = () => {
@@ -68,11 +75,15 @@ const RouteSecondaryActivitySelectionPage = () => {
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
-                    overrideOptions={getRouteSecondaryActivityRef()}
+                    overrideOptions={
+                        context.isRoute
+                            ? getRouteSecondaryActivityRef()
+                            : getActivitySecondaryActivityRef()
+                    }
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>
     );
 };
 
-export default RouteSecondaryActivitySelectionPage;
+export default SecondaryActivitySelectionPage;

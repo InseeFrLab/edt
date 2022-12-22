@@ -71,11 +71,7 @@ const SecondaryActivityPage = () => {
                 currentIteration,
             );
             if (hasSecondaryActivity) {
-                if (context.isRoute) {
-                    loopNavigate(EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION);
-                } else {
-                    loopNavigate(EdtRoutesNameEnum.ACTIVITY_SECONDARY_ACTIVITY_SELECTION);
-                }
+                loopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION);
             } else {
                 loopNavigate(getNextLoopPage(currentPage, context.isRoute));
             }

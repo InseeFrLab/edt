@@ -812,23 +812,6 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "CheckboxOneEdt",
-                    "bindingDependencies": ["SECONDARYACTIVITY"],
-                    "response": { "name": "SECONDARYACTIVITY" },
-                    "hierarchy": {
-                        "sequence": {
-                            "id": "law86mv7",
-                            "page": "4.1",
-                            "label": "\"I - \" || \"Sequence\""
-                        }
-                    },
-                    "conditionFilter": { "value": "true" },
-                    "id": "checkboxone_secondaryactivity",
-                    "page": "4.12",
-                    "label": "\"Que faisiez-vous en même temps ?\"",
-                    "mandatory": false
-                },
-                {
                     "componentType": "CheckboxGroupEdt",
                     "bindingDependencies": ["COUPLE", "PARENTS", "CHILD", "OTHERKNOWN", "OTHER"],
                     "responses": [
@@ -877,7 +860,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxgroup_presentpeople",
-                    "page": "4.13",
+                    "page": "4.12",
                     "label": "\"En présence de qui étiez-vous ?\"",
                     "tipsLabel": "Vous pouvez en selectionner plusieurs",
                     "mandatory": false

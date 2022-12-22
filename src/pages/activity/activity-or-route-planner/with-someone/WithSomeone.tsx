@@ -79,7 +79,7 @@ const WithSomeonePage = () => {
                 currentIteration,
             );
             if (hasSecondaryActivity) {
-                saveAndLoopNavigate(EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION);
+                saveAndLoopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION);
             } else {
                 saveAndLoopNavigate(getPreviousLoopPage(currentPage, context.isRoute));
             }
