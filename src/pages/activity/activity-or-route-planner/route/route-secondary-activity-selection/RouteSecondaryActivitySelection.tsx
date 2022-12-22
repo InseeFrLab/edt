@@ -21,14 +21,7 @@ const RouteSecondaryActivitySelectionPage = () => {
     const currentIteration = paramIteration ? +paramIteration : 0;
 
     const loopNavigate = (page: EdtRoutesNameEnum) => {
-        navigate(
-            getLoopParameterizedNavigatePath(
-                page,
-                context.idSurvey,
-                LoopEnum.ACTIVITY_OR_ROUTE,
-                currentIteration,
-            ),
-        );
+        navigate(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {

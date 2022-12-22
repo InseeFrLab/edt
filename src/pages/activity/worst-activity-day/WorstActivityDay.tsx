@@ -11,6 +11,7 @@ import {
     saveAndNav,
     saveAndNavFullPath,
     saveAndNextStep,
+    setEnviro,
 } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
 import { getActivitesSelectedLabel } from "service/survey-activity-service";
@@ -18,8 +19,8 @@ import { getPrintedFirstName } from "service/survey-service";
 
 const WorstActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
-    const navigate = useNavigate();
     const { t } = useTranslation();
+    setEnviro(context, useNavigate(), callbackHolder);
 
     const currentPage = EdtRoutesNameEnum.WORST_ACTIVITY_DAY;
     const stepData = getStepData(currentPage);
@@ -32,27 +33,11 @@ const WorstActivityDayPage = () => {
         defaultIcon: true,
     };
 
-    const onPrevious = () => {
-        saveAndNavFullPath(navigate, context, callbackHolder, EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY);
-    };
-
-    const onClose = () => {
-        saveAndNav(navigate, context, callbackHolder);
-    };
-
     return (
         <SurveyPage
-            onNavigateBack={onClose}
-            onNext={() =>
-                saveAndNextStep(
-                    navigate,
-                    context,
-                    callbackHolder,
-                    EdtRoutesNameEnum.ACTIVITY,
-                    currentPage,
-                )
-            }
-            onPrevious={onPrevious}
+            onNavigateBack={() => saveAndNav()}
+            onNext={() => saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage)}
+            onPrevious={() => saveAndNavFullPath(EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY)}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={true}

@@ -16,12 +16,14 @@ import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
     getOrchestratorPage,
+    saveAndNav,
+    setEnviro,
 } from "service/navigation-service";
-import { saveData } from "service/survey-service";
 
 const WithSomeoneSelectionPage = () => {
-    const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.WITH_SOMEONE_SELECTION;
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
@@ -37,16 +39,7 @@ const WithSomeoneSelectionPage = () => {
     };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getLoopParameterizedNavigatePath(
-                    page,
-                    context.idSurvey,
-                    LoopEnum.ACTIVITY_OR_ROUTE,
-                    currentIteration,
-                ),
-            );
-        });
+        saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     };
 
     const onNext = () => {
@@ -58,15 +51,13 @@ const WithSomeoneSelectionPage = () => {
     };
 
     const onClose = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getCurrentNavigatePath(
-                    context.idSurvey,
-                    EdtRoutesNameEnum.ACTIVITY,
-                    getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                ),
-            );
-        });
+        saveAndNav(
+            getCurrentNavigatePath(
+                context.idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            ),
+        );
     };
 
     return (

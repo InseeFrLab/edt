@@ -13,6 +13,7 @@ import {
     getCurrentNavigatePath,
     getOrchestratorPage,
     saveAndLoopNavigate,
+    setEnviro,
     validateWithAlertAndNav,
 } from "service/navigation-service";
 import { FieldNameEnum, getValue } from "service/survey-service";
@@ -28,9 +29,10 @@ import option6 from "assets/illustration/locations/6.svg";
 import { getPlaceRef } from "service/referentiel-service";
 
 const ActivityLocationPage = () => {
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.ACTIVITY_LOCATION;
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
@@ -66,20 +68,10 @@ const ActivityLocationPage = () => {
             const page = hasSecondaryActivity
                 ? EdtRoutesNameEnum.ACTIVITY_SECONDARY_ACTIVITY_SELECTION
                 : currentPage;
-            saveAndLoopNavigate(
-                navigate,
-                context,
-                callbackHolder,
-                page,
-                LoopEnum.ACTIVITY_OR_ROUTE,
-                currentIteration,
-            );
+            saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
         },
         nextClickCallback: () => {
             saveAndLoopNavigate(
-                navigate,
-                context,
-                callbackHolder,
                 getNextLoopPage(currentPage),
                 LoopEnum.ACTIVITY_OR_ROUTE,
                 currentIteration,
@@ -96,9 +88,6 @@ const ActivityLocationPage = () => {
 
     const onClose = (forceQuit: boolean) => {
         validateWithAlertAndNav(
-            navigate,
-            context,
-            callbackHolder,
             forceQuit,
             setIsAlertDisplayed,
             getCurrentNavigatePath(

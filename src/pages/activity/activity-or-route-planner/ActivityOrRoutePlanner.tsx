@@ -11,7 +11,7 @@ import {
     Alert,
     formateDateToFrenchFormat,
     generateDateFromStringInput,
-    makeStylesEdt
+    makeStylesEdt,
 } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useEffect, useState } from "react";
@@ -19,14 +19,14 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
-import { getCurrentNavigatePath, saveAndNav } from "service/navigation-service";
+import { getCurrentNavigatePath, saveAndNav, setEnviro } from "service/navigation-service";
 import { getActivitiesOrRoutes } from "service/survey-activity-service";
 import {
     FieldNameEnum,
     getPrintedFirstName,
     getSurveyDate,
     saveData,
-    setValue
+    setValue,
 } from "service/survey-service";
 
 const ActivityOrRoutePlannerPage = () => {
@@ -38,6 +38,8 @@ const ActivityOrRoutePlannerPage = () => {
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
     const [isRoute, setIsRoute] = React.useState(false);
+    setEnviro(context, useNavigate(), callbackHolder);
+
     let contextIteration = 0;
 
     const activities = getActivitiesOrRoutes(context.idSurvey, context.source);
@@ -69,10 +71,6 @@ const ActivityOrRoutePlannerPage = () => {
             setIsSubChildDisplayed(currentIsChildDisplay);
         }
     }, [location]);
-
-    const saveAndGoHome = (): void => {
-        saveAndNav(navigate, context, callbackHolder);
-    };
 
     const onFinish = (closed: boolean) => {
         if (closed) {
@@ -114,10 +112,6 @@ const ActivityOrRoutePlannerPage = () => {
         setIsAddActivityOrRouteOpen(false);
     };
 
-    const navBack = () => {
-        saveAndGoHome();
-    };
-
     const onEdit = () => {
         //TODO : sprint 5 edition des données
     };
@@ -143,7 +137,7 @@ const ActivityOrRoutePlannerPage = () => {
             {!isSubchildDisplayed && (
                 <>
                     <SurveyPage
-                        onNavigateBack={navBack}
+                        onNavigateBack={() => saveAndNav()}
                         onEdit={onEdit}
                         firstName={getPrintedFirstName(context.idSurvey)}
                         firstNamePrefix={t("component.survey-page-edit-header.planning-of")}

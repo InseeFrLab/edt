@@ -1,10 +1,10 @@
 import { t } from "i18next";
 import {
+    Collected,
     LunaticData,
     LunaticModel,
     LunaticModelComponent,
     LunaticModelVariable,
-    Collected,
     ReferentielData,
     REFERENTIEL_ID,
 } from "interface/lunatic/Lunatic";

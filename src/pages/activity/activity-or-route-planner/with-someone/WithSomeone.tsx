@@ -14,19 +14,22 @@ import {
 } from "service/loop-stepper-service";
 import {
     getCurrentNavigatePath,
-    getLoopParameterizedNavigatePath,
     getOrchestratorPage,
+    saveAndLoopNavigate,
+    setEnviro,
+    validateWithAlertAndNav,
 } from "service/navigation-service";
-import { FieldNameEnum, getValue, saveData } from "service/survey-service";
+import { FieldNameEnum, getValue } from "service/survey-service";
 
 import errorIcon from "assets/illustration/error/puzzle.svg";
 import { Alert } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 
 const WithSomeonePage = () => {
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.WITH_SOMEONE;
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
@@ -39,36 +42,12 @@ const WithSomeonePage = () => {
         complete: t("page.alert-when-quit.alert-complete"),
     };
 
-    const loopNavigate = (page: EdtRoutesNameEnum) => {
-        navigate(
-            getLoopParameterizedNavigatePath(
-                page,
-                context.idSurvey,
-                LoopEnum.ACTIVITY_OR_ROUTE,
-                currentIteration,
-            ),
-        );
-    };
-
-    const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            loopNavigate(page);
-        });
-    };
-
     const onNext = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            const isWithSomeone = getValue(
-                context.idSurvey,
-                FieldNameEnum.WITHSOMEONE,
-                currentIteration,
-            );
-            if (isWithSomeone) {
-                loopNavigate(EdtRoutesNameEnum.WITH_SOMEONE_SELECTION);
-            } else {
-                loopNavigate(getNextLoopPage(currentPage, context.isRoute));
-            }
-        });
+        const isWithSomeone = getValue(context.idSurvey, FieldNameEnum.WITHSOMEONE, currentIteration);
+        const page = isWithSomeone
+            ? EdtRoutesNameEnum.WITH_SOMEONE_SELECTION
+            : getNextLoopPage(currentPage, context.isRoute);
+        saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
     };
 
     const onPrevious = () => {
@@ -78,30 +57,29 @@ const WithSomeonePage = () => {
                 FieldNameEnum.WITHSECONDARYACTIVITY,
                 currentIteration,
             );
-            if (hasSecondaryActivity) {
-                saveAndLoopNavigate(EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION);
-            } else {
-                saveAndLoopNavigate(getPreviousLoopPage(currentPage, context.isRoute));
-            }
+            const page = hasSecondaryActivity
+                ? EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION
+                : getPreviousLoopPage(currentPage, context.isRoute);
+            saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
         } else {
-            saveAndLoopNavigate(getPreviousLoopPage(currentPage, context.isRoute));
+            saveAndLoopNavigate(
+                getPreviousLoopPage(currentPage, context.isRoute),
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+            );
         }
     };
 
     const onClose = (forceQuit: boolean) => {
-        if (forceQuit) {
-            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                navigate(
-                    getCurrentNavigatePath(
-                        context.idSurvey,
-                        EdtRoutesNameEnum.ACTIVITY,
-                        getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                    ),
-                );
-            });
-        } else {
-            setIsAlertDisplayed(true);
-        }
+        validateWithAlertAndNav(
+            forceQuit,
+            setIsAlertDisplayed,
+            getCurrentNavigatePath(
+                context.idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            ),
+        );
     };
 
     return (

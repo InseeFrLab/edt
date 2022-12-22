@@ -6,15 +6,21 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getFullNavigatePath, getOrchestratorPage, saveAndNextStep } from "service/navigation-service";
+import {
+    getOrchestratorPage,
+    saveAndNav,
+    saveAndNavFullPath,
+    saveAndNextStep,
+    setEnviro,
+} from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
 import { getActivitesSelectedLabel } from "service/survey-activity-service";
-import { getPrintedFirstName, saveData } from "service/survey-service";
+import { getPrintedFirstName } from "service/survey-service";
 
 const GreatestActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
-    const navigate = useNavigate();
     const { t } = useTranslation();
+    setEnviro(context, useNavigate(), callbackHolder);
 
     const currentPage = EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY;
     const stepData = getStepData(currentPage);
@@ -27,31 +33,11 @@ const GreatestActivityDayPage = () => {
         defaultIcon: true,
     };
 
-    const onPrevious = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER));
-        });
-    };
-
-    const onClose = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate("/");
-        });
-    };
-
     return (
         <SurveyPage
-            onNavigateBack={onClose}
-            onNext={() =>
-                saveAndNextStep(
-                    navigate,
-                    context,
-                    callbackHolder,
-                    EdtRoutesNameEnum.ACTIVITY,
-                    currentPage,
-                )
-            }
-            onPrevious={onPrevious}
+            onNavigateBack={() => saveAndNav()}
+            onNext={() => saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage)}
+            onPrevious={() => saveAndNavFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={true}

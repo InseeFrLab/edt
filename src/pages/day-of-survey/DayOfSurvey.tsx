@@ -7,7 +7,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getCurrentNavigatePath, getOrchestratorPage, saveAndNav } from "service/navigation-service";
+import { getOrchestratorPage, saveAndNav, saveAndNextStep, setEnviro } from "service/navigation-service";
 import {
     FieldNameEnum,
     getComponentId,
@@ -17,8 +17,9 @@ import {
 
 const DayOfSurveyPage = () => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.DAY_OF_SURVEY;
 
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
@@ -39,26 +40,13 @@ const DayOfSurveyPage = () => {
         return () => document.removeEventListener("keyup", keydownChange, true);
     }, [callbackHolder]);
 
-    const validate = () => {
-        saveAndNav(
-            navigate,
-            context,
-            callbackHolder,
-            getCurrentNavigatePath(context.idSurvey, context.surveyRootPage, context.source.maxPage),
-        );
-    };
-
-    const navBack = () => {
-        saveAndNav(navigate, context, callbackHolder);
-    };
-
     return (
         <>
             <SurveyPage
-                validate={validate}
+                validate={() => saveAndNextStep(context.surveyRootPage, currentPage)}
                 srcIcon={day_of_survey}
                 altIcon={t("accessibility.asset.day-of-survey-alt")}
-                onNavigateBack={navBack}
+                onNavigateBack={() => saveAndNav()}
                 firstName={getPrintedFirstName(context.idSurvey)}
                 surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
                 disableNav={disabledButton}

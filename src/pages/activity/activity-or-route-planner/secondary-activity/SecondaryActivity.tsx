@@ -17,17 +17,20 @@ import {
 } from "service/loop-stepper-service";
 import {
     getCurrentNavigatePath,
-    getLoopParameterizedNavigatePath,
     getOrchestratorPage,
+    saveAndLoopNavigate,
+    setEnviro,
+    validateWithAlertAndNav,
 } from "service/navigation-service";
-import { FieldNameEnum, getValue, saveData } from "service/survey-service";
+import { FieldNameEnum, getValue } from "service/survey-service";
 
 import errorIcon from "assets/illustration/error/puzzle.svg";
 
 const SecondaryActivityPage = () => {
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.SECONDARY_ACTIVITY;
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
@@ -40,68 +43,46 @@ const SecondaryActivityPage = () => {
         complete: t("page.alert-when-quit.alert-complete"),
     };
 
-    const loopNavigate = (page: EdtRoutesNameEnum) => {
-        navigate(
-            getLoopParameterizedNavigatePath(
-                page,
-                context.idSurvey,
-                LoopEnum.ACTIVITY_OR_ROUTE,
-                currentIteration,
-            ),
-        );
-    };
-
-    const saveAndGoToActivityPlanner = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getCurrentNavigatePath(
-                    context.idSurvey,
-                    EdtRoutesNameEnum.ACTIVITY,
-                    getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                ),
-            );
-        });
-    };
-
     const onNext = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            const hasSecondaryActivity = getValue(
-                context.idSurvey,
-                FieldNameEnum.WITHSECONDARYACTIVITY,
-                currentIteration,
-            );
-            if (hasSecondaryActivity) {
-                if (context.isRoute) {
-                    loopNavigate(EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION);
-                } else {
-                    loopNavigate(EdtRoutesNameEnum.ACTIVITY_SECONDARY_ACTIVITY_SELECTION);
-                }
+        const hasSecondaryActivity = getValue(
+            context.idSurvey,
+            FieldNameEnum.WITHSECONDARYACTIVITY,
+            currentIteration,
+        );
+        let page = null;
+
+        if (hasSecondaryActivity) {
+            if (context.isRoute) {
+                page = EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION;
             } else {
-                loopNavigate(getNextLoopPage(currentPage, context.isRoute));
+                page = EdtRoutesNameEnum.ACTIVITY_SECONDARY_ACTIVITY_SELECTION;
             }
-        });
+        } else {
+            page = getNextLoopPage(currentPage, context.isRoute);
+        }
+        saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
     };
 
     const onPrevious = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            const goal = getValue(context.idSurvey, FieldNameEnum.GOAL, currentIteration);
-
-            if (goal === "" || goal) {
-                loopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
-            } else {
-                loopNavigate(getPreviousLoopPage(currentPage, context.isRoute));
-            }
-        });
+        const goal = getValue(context.idSurvey, FieldNameEnum.GOAL, currentIteration);
+        const page =
+            goal === "" || goal
+                ? EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL
+                : getPreviousLoopPage(currentPage, context.isRoute);
+        saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
     };
 
     const onClose = (forceQuit: boolean) => {
-        if (forceQuit) {
-            saveAndGoToActivityPlanner();
-        } else {
-            setIsAlertDisplayed(true);
-        }
+        validateWithAlertAndNav(
+            forceQuit,
+            setIsAlertDisplayed,
+            getCurrentNavigatePath(
+                context.idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            ),
+        );
     };
-
     return (
         <LoopSurveyPage
             onNext={onNext}

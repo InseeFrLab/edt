@@ -5,6 +5,16 @@ import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapp
 import { getCurrentLoopPage, getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { FieldNameEnum, getCurrentPage, getData, getValue, saveData } from "service/survey-service";
 
+let _context: any = null;
+let _navigate: any = null;
+let _callbackHolder: any = null;
+
+const setEnviro = (context: OrchestratorContext, navigate: NavigateFunction, callbackHolder: any) => {
+    _context = context;
+    _navigate = navigate;
+    _callbackHolder = callbackHolder;
+};
+
 const getNavigatePath = (page: EdtRoutesNameEnum): string => {
     return "/" + page;
 };
@@ -15,7 +25,6 @@ const getParameterizedNavigatePath = (page: EdtRoutesNameEnum, param: string): s
 
 const getLoopParameterizedNavigatePath = (
     page: EdtRoutesNameEnum,
-    idSurvey: string,
     loop: LoopEnum,
     iteration: number,
 ): string => {
@@ -30,7 +39,7 @@ const getLoopParameterizedNavigatePath = (
         );
         if (parentPageOrchestrator) {
             return (
-                getParameterizedNavigatePath(parentPageOrchestrator.parentPage, idSurvey) +
+                getParameterizedNavigatePath(parentPageOrchestrator.parentPage, _context.idSurvey) +
                 getNavigatePath(parentPageOrchestrator.page) +
                 getParameterizedNavigatePath(page, iteration.toString())
             );
@@ -42,11 +51,14 @@ const getLoopParameterizedNavigatePath = (
     }
 };
 
-const getFullNavigatePath = (idSurvey: string, page: EdtRoutesNameEnum) => {
+const getFullNavigatePath = (page: EdtRoutesNameEnum) => {
     const targetPage = mappingPageOrchestrator.find(link => link.page === page);
 
     if (targetPage && targetPage.parentPage) {
-        return getParameterizedNavigatePath(targetPage.parentPage, idSurvey) + getNavigatePath(page);
+        return (
+            getParameterizedNavigatePath(targetPage.parentPage, _context.idSurvey) +
+            getNavigatePath(page)
+        );
     } else if (targetPage) {
         return getNavigatePath(page);
     } else {
@@ -101,8 +113,8 @@ const getCurrentNavigatePath = (
     }
 };
 
-const getLastCompletedStep = (idSurvey: string): number => {
-    const data = getData(idSurvey);
+const getLastCompletedStep = (): number => {
+    const data = getData(_context.idSurvey ?? "");
     const currentLastCompletedPage = getCurrentPage(data) - 1;
     const page = mappingPageOrchestrator.find(
         page => page.surveySubPage && page.surveySubPage === currentLastCompletedPage.toString(),
@@ -119,44 +131,25 @@ const getNextPage = (currentPage: EdtRoutesNameEnum) => {
     return Number(currentPageNum) + 1;
 };
 
-const saveAndNav = (
-    navigate: NavigateFunction,
-    context: OrchestratorContext,
-    callbackHolder: any,
-    route?: string,
-): void => {
-    saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-        navigate(route ?? "/");
+const saveAndNav = (route?: string): void => {
+    saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
+        _navigate(route ? route : "/");
     });
 };
 
-const saveAndNavFullPath = (
-    navigate: NavigateFunction,
-    context: OrchestratorContext,
-    callbackHolder: any,
-    route: EdtRoutesNameEnum,
-) => {
-    saveAndNav(navigate, context, callbackHolder, getFullNavigatePath(context.idSurvey, route));
+const saveAndNavFullPath = (route: EdtRoutesNameEnum) => {
+    saveAndNav(getFullNavigatePath(route));
 };
 
 /*
 Save and navigate to next step of stepper without lop
 */
-const saveAndNextStep = (
-    navigate: NavigateFunction,
-    context: OrchestratorContext,
-    callbackHolder: any,
-    rootPage: EdtRoutesNameEnum,
-    currentPage: EdtRoutesNameEnum,
-) => {
+const saveAndNextStep = (rootPage: EdtRoutesNameEnum, currentPage: EdtRoutesNameEnum) => {
     saveAndNav(
-        navigate,
-        context,
-        callbackHolder,
         getCurrentNavigatePath(
-            context.idSurvey,
+            _context.idSurvey,
             rootPage,
-            context.source.maxPage,
+            _context.source.maxPage,
             undefined,
             undefined,
             undefined,
@@ -165,26 +158,14 @@ const saveAndNextStep = (
     );
 };
 
-const saveAndLoopNavigate = (
-    navigate: NavigateFunction,
-    context: OrchestratorContext,
-    callbackHolder: any,
-    page: EdtRoutesNameEnum,
-    loop: LoopEnum,
-    iteration: number,
-) => {
-    saveAndNav(
-        navigate,
-        context,
-        callbackHolder,
-        getLoopParameterizedNavigatePath(page, context.idSurvey, loop, iteration),
-    );
+const saveAndLoopNavigate = (page: EdtRoutesNameEnum, loop: LoopEnum, iteration: number) => {
+    saveAndNav(getLoopParameterizedNavigatePath(page, loop, iteration));
 };
 
+const loopNavigate = (page: EdtRoutesNameEnum, loop: LoopEnum, iteration: number) => {
+    _navigate(getLoopParameterizedNavigatePath(page, loop, iteration));
+};
 const validateWithAlertAndNav = (
-    navigate: NavigateFunction,
-    context: OrchestratorContext,
-    callbackHolder: any,
     displayAlert: boolean,
     setDisplayAlert: (value: SetStateAction<boolean>) => void,
     route?: string,
@@ -192,7 +173,7 @@ const validateWithAlertAndNav = (
     if (!displayAlert) {
         setDisplayAlert(true);
     } else {
-        saveAndNav(navigate, context, callbackHolder, route);
+        saveAndNav(route);
     }
 };
 
@@ -209,5 +190,7 @@ export {
     saveAndNavFullPath,
     saveAndNextStep,
     saveAndLoopNavigate,
+    loopNavigate,
     validateWithAlertAndNav,
+    setEnviro,
 };

@@ -7,7 +7,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getCurrentNavigatePath, getOrchestratorPage, saveAndNav } from "service/navigation-service";
+import { getOrchestratorPage, saveAndNav, saveAndNextStep, setEnviro } from "service/navigation-service";
 import {
     FieldNameEnum,
     getComponentId,
@@ -17,9 +17,9 @@ import {
 
 const WhoAreYouPage = () => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
     const currentPage = EdtRoutesNameEnum.WHO_ARE_YOU;
+    setEnviro(context, useNavigate(), callbackHolder);
 
     let [disabledButton, setDisabledButton] = React.useState<boolean>(true);
 
@@ -37,26 +37,13 @@ const WhoAreYouPage = () => {
         return () => document.removeEventListener("keyup", keydownChange, true);
     }, [callbackHolder]);
 
-    const validate = () => {
-        saveAndNav(
-            navigate,
-            context,
-            callbackHolder,
-            getCurrentNavigatePath(context.idSurvey, context.surveyRootPage, context.source.maxPage),
-        );
-    };
-
-    const navBack = () => {
-        saveAndNav(navigate, context, callbackHolder);
-    };
-
     return (
         <>
             <SurveyPage
-                validate={validate}
+                validate={() => saveAndNextStep(context.surveyRootPage, currentPage)}
                 srcIcon={who_are_you}
                 altIcon={t("accessibility.asset.who-are-you-alt")}
-                onNavigateBack={navBack}
+                onNavigateBack={() => saveAndNav()}
                 firstName={getPrintedFirstName(context.idSurvey)}
                 surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
                 disableNav={disabledButton}

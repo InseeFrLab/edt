@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getOrchestratorPage, validateWithAlertAndNav } from "service/navigation-service";
+import { getOrchestratorPage, setEnviro, validateWithAlertAndNav } from "service/navigation-service";
 import { getPrintedFirstName } from "service/survey-service";
 
 const specificProps: CheckboxGroupSpecificProps = {
@@ -23,20 +23,17 @@ const specificProps: CheckboxGroupSpecificProps = {
 
 const KindOfWeekPage = () => {
     const context: OrchestratorContext = useOutletContext();
-    const navigate = useNavigate();
     const { t } = useTranslation();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.KIND_OF_WEEK;
 
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
 
     return (
         <SurveyPage
-            validate={() =>
-                validateWithAlertAndNav(navigate, context, callbackHolder, false, setIsModalDisplayed)
-            }
-            onNavigateBack={() =>
-                validateWithAlertAndNav(navigate, context, callbackHolder, false, setIsModalDisplayed)
-            }
+            validate={() => validateWithAlertAndNav(false, setIsModalDisplayed)}
+            onNavigateBack={() => validateWithAlertAndNav(false, setIsModalDisplayed)}
             srcIcon={kindOfWeek}
             altIcon={t("accessibility.asset.kind-of-week-alt")}
             firstName={getPrintedFirstName(context.idSurvey)}
@@ -47,15 +44,7 @@ const KindOfWeekPage = () => {
             <FlexCenter>
                 <FelicitationModal
                     isModalDisplayed={isModalDisplayed}
-                    onCompleteCallBack={() =>
-                        validateWithAlertAndNav(
-                            navigate,
-                            context,
-                            callbackHolder,
-                            true,
-                            setIsModalDisplayed,
-                        )
-                    }
+                    onCompleteCallBack={() => validateWithAlertAndNav(true, setIsModalDisplayed)}
                     content={t("component.modal-edt.modal-felicitation.survey-content")}
                 />
                 <OrchestratorForStories
