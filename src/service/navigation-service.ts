@@ -1,6 +1,9 @@
+import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { SetStateAction } from "react";
+import { NavigateFunction } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentLoopPage, getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { FieldNameEnum, getCurrentPage, getData, getValue } from "service/survey-service";
+import { FieldNameEnum, getCurrentPage, getData, getValue, saveData } from "service/survey-service";
 
 const getNavigatePath = (page: EdtRoutesNameEnum): string => {
     return "/" + page;
@@ -116,6 +119,32 @@ const getNextPage = (currentPage: EdtRoutesNameEnum) => {
     return Number(currentPageNum) + 1;
 };
 
+const saveAndNav = (
+    navigate: NavigateFunction,
+    context: OrchestratorContext,
+    callbackHolder: any,
+    route?: string,
+): void => {
+    saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+        navigate(route ?? "/");
+    });
+};
+
+const validateWithAlertAndNav = (
+    navigate: NavigateFunction,
+    context: OrchestratorContext,
+    callbackHolder: any,
+    displayAlert: boolean,
+    setDisplayAlert: (value: SetStateAction<boolean>) => void,
+    route?: string,
+): void => {
+    if (!displayAlert) {
+        setDisplayAlert(true);
+    } else {
+        saveAndNav(navigate, context, callbackHolder, route);
+    }
+};
+
 export {
     getNavigatePath,
     getParameterizedNavigatePath,
@@ -125,4 +154,6 @@ export {
     getLastCompletedStep,
     getOrchestratorPage,
     getNextPage,
+    saveAndNav,
+    validateWithAlertAndNav,
 };
