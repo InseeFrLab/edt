@@ -7,13 +7,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getCurrentNavigatePath, getOrchestratorPage } from "service/navigation-service";
+import { getCurrentNavigatePath, getOrchestratorPage, saveAndNav } from "service/navigation-service";
 import {
     FieldNameEnum,
     getComponentId,
     getPrintedFirstName,
     getPrintedSurveyDate,
-    saveData,
 } from "service/survey-service";
 
 const DayOfSurveyPage = () => {
@@ -41,17 +40,16 @@ const DayOfSurveyPage = () => {
     }, [callbackHolder]);
 
     const validate = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getCurrentNavigatePath(context.idSurvey, context.surveyRootPage, context.source.maxPage),
-            );
-        });
+        saveAndNav(
+            navigate,
+            context,
+            callbackHolder,
+            getCurrentNavigatePath(context.idSurvey, context.surveyRootPage, context.source.maxPage),
+        );
     };
 
     const navBack = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate("/");
-        });
+        saveAndNav(navigate, context, callbackHolder);
     };
 
     return (

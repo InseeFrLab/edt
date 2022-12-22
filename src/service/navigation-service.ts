@@ -130,6 +130,41 @@ const saveAndNav = (
     });
 };
 
+const saveAndNavFullPath = (
+    navigate: NavigateFunction,
+    context: OrchestratorContext,
+    callbackHolder: any,
+    route: EdtRoutesNameEnum,
+) => {
+    saveAndNav(navigate, context, callbackHolder, getFullNavigatePath(context.idSurvey, route));
+};
+
+/*
+Save and navigate to next step of stepper without lop
+*/
+const saveAndNextStep = (
+    navigate: NavigateFunction,
+    context: OrchestratorContext,
+    callbackHolder: any,
+    rootPage: EdtRoutesNameEnum,
+    currentPage: EdtRoutesNameEnum,
+) => {
+    saveAndNav(
+        navigate,
+        context,
+        callbackHolder,
+        getCurrentNavigatePath(
+            context.idSurvey,
+            rootPage,
+            context.source.maxPage,
+            undefined,
+            undefined,
+            undefined,
+            getNextPage(currentPage),
+        ),
+    );
+};
+
 const validateWithAlertAndNav = (
     navigate: NavigateFunction,
     context: OrchestratorContext,
@@ -155,5 +190,7 @@ export {
     getOrchestratorPage,
     getNextPage,
     saveAndNav,
+    saveAndNavFullPath,
+    saveAndNextStep,
     validateWithAlertAndNav,
 };

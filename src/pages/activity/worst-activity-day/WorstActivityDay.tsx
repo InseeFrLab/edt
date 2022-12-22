@@ -7,14 +7,14 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
-    getCurrentNavigatePath,
-    getFullNavigatePath,
-    getNextPage,
     getOrchestratorPage,
+    saveAndNav,
+    saveAndNavFullPath,
+    saveAndNextStep,
 } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
 import { getActivitesSelectedLabel } from "service/survey-activity-service";
-import { getPrintedFirstName, saveData } from "service/survey-service";
+import { getPrintedFirstName } from "service/survey-service";
 
 const WorstActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -32,38 +32,26 @@ const WorstActivityDayPage = () => {
         defaultIcon: true,
     };
 
-    const saveAndGoHome = (): void => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getCurrentNavigatePath(
-                    context.idSurvey,
-                    EdtRoutesNameEnum.ACTIVITY,
-                    context.source.maxPage,
-                    undefined,
-                    undefined,
-                    undefined,
-                    getNextPage(currentPage),
-                ),
-            );
-        });
-    };
-
     const onPrevious = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY));
-        });
+        saveAndNavFullPath(navigate, context, callbackHolder, EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY);
     };
 
     const onClose = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate("/");
-        });
+        saveAndNav(navigate, context, callbackHolder);
     };
 
     return (
         <SurveyPage
             onNavigateBack={onClose}
-            onNext={saveAndGoHome}
+            onNext={() =>
+                saveAndNextStep(
+                    navigate,
+                    context,
+                    callbackHolder,
+                    EdtRoutesNameEnum.ACTIVITY,
+                    currentPage,
+                )
+            }
             onPrevious={onPrevious}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}

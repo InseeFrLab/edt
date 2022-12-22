@@ -7,12 +7,7 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import {
-    getCurrentNavigatePath,
-    getFullNavigatePath,
-    getNextPage,
-    getOrchestratorPage,
-} from "service/navigation-service";
+import { getFullNavigatePath, getOrchestratorPage, saveAndNextStep } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, saveData } from "service/survey-service";
 
@@ -33,22 +28,6 @@ const KindOfDayPage = () => {
         },
     };
 
-    const saveAndGoHome = (): void => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getCurrentNavigatePath(
-                    context.idSurvey,
-                    EdtRoutesNameEnum.ACTIVITY,
-                    context.source.maxPage,
-                    undefined,
-                    undefined,
-                    undefined,
-                    getNextPage(currentPage),
-                ),
-            );
-        });
-    };
-
     const onPrevious = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
             navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.WORST_ACTIVITY_DAY));
@@ -64,7 +43,15 @@ const KindOfDayPage = () => {
     return (
         <SurveyPage
             onNavigateBack={onClose}
-            onNext={saveAndGoHome}
+            onNext={() =>
+                saveAndNextStep(
+                    navigate,
+                    context,
+                    callbackHolder,
+                    EdtRoutesNameEnum.ACTIVITY,
+                    currentPage,
+                )
+            }
             onPrevious={onPrevious}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
