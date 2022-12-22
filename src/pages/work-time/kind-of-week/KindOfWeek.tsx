@@ -1,17 +1,17 @@
+import calendarWeek from "assets/illustration/kind-of-week-categories/calendar-week.svg";
+import kindOfWeek from "assets/illustration/kind-of-week.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { CheckboxGroupSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { getPrintedFirstName, saveData } from "service/survey-service";
-import { SetStateAction, useState } from "react";
-import calendarWeek from "assets/illustration/kind-of-week-categories/calendar-week.svg";
-import kindOfWeek from "assets/illustration/kind-of-week.svg";
-import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getOrchestratorPage } from "service/navigation-service";
+import { getOrchestratorPage, validateWithAlertAndNav } from "service/navigation-service";
+import { getPrintedFirstName } from "service/survey-service";
 
 const specificProps: CheckboxGroupSpecificProps = {
     optionsIcons: {
@@ -19,18 +19,6 @@ const specificProps: CheckboxGroupSpecificProps = {
         "2": calendarWeek,
         "3": calendarWeek,
     },
-};
-
-const validateAndNav = (
-    forceQuit: boolean,
-    setIsModalDisplayed: (value: SetStateAction<boolean>) => void,
-    saveAndGoHome: () => void,
-): void => {
-    if (forceQuit) {
-        saveAndGoHome();
-    } else {
-        setIsModalDisplayed(true);
-    }
 };
 
 const KindOfWeekPage = () => {
@@ -41,16 +29,14 @@ const KindOfWeekPage = () => {
 
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
 
-    const saveAndGoHome = (): void => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate("/");
-        });
-    };
-
     return (
         <SurveyPage
-            validate={() => validateAndNav(false, setIsModalDisplayed, saveAndGoHome)}
-            onNavigateBack={() => validateAndNav(false, setIsModalDisplayed, saveAndGoHome)}
+            validate={() =>
+                validateWithAlertAndNav(navigate, context, callbackHolder, false, setIsModalDisplayed)
+            }
+            onNavigateBack={() =>
+                validateWithAlertAndNav(navigate, context, callbackHolder, false, setIsModalDisplayed)
+            }
             srcIcon={kindOfWeek}
             altIcon={t("accessibility.asset.kind-of-week-alt")}
             firstName={getPrintedFirstName(context.idSurvey)}
@@ -61,7 +47,15 @@ const KindOfWeekPage = () => {
             <FlexCenter>
                 <FelicitationModal
                     isModalDisplayed={isModalDisplayed}
-                    onCompleteCallBack={() => validateAndNav(true, setIsModalDisplayed, saveAndGoHome)}
+                    onCompleteCallBack={() =>
+                        validateWithAlertAndNav(
+                            navigate,
+                            context,
+                            callbackHolder,
+                            true,
+                            setIsModalDisplayed,
+                        )
+                    }
                     content={t("component.modal-edt.modal-felicitation.survey-content")}
                 />
                 <OrchestratorForStories

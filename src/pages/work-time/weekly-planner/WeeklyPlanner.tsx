@@ -5,20 +5,10 @@ import { WeeklyPlannerSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { NavigateFunction, useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getFullNavigatePath, getOrchestratorPage } from "service/navigation-service";
+import { getFullNavigatePath, getOrchestratorPage, saveAndNav } from "service/navigation-service";
 import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
-
-const saveAndGoNext = (
-    navigate: NavigateFunction,
-    context: OrchestratorContext,
-    callbackHolder: any,
-): void => {
-    saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-        navigate(getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.KIND_OF_WEEK));
-    });
-};
 
 const WeeklyPlannerPage = () => {
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
@@ -41,12 +31,6 @@ const WeeklyPlannerPage = () => {
         },
     };
 
-    const saveAndGoHome = (): void => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate("/");
-        });
-    };
-
     const save = (): void => {
         saveData(context.idSurvey, callbackHolder.getData());
     };
@@ -56,7 +40,12 @@ const WeeklyPlannerPage = () => {
             save();
             setDisplayDayOverview(false);
         } else {
-            saveAndGoNext(navigate, context, callbackHolder);
+            saveAndNav(
+                navigate,
+                context,
+                callbackHolder,
+                getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.KIND_OF_WEEK),
+            );
         }
     };
 
@@ -67,7 +56,7 @@ const WeeklyPlannerPage = () => {
     return (
         <SurveyPage
             validate={validateAndNav}
-            onNavigateBack={saveAndGoHome}
+            onNavigateBack={() => saveAndNav(navigate, context, callbackHolder)}
             onEdit={onEdit}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
