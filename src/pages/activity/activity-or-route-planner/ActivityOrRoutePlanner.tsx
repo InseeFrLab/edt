@@ -11,7 +11,7 @@ import {
     Alert,
     formateDateToFrenchFormat,
     generateDateFromStringInput,
-    makeStylesEdt,
+    makeStylesEdt
 } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useEffect, useState } from "react";
@@ -19,14 +19,14 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
-import { getCurrentNavigatePath } from "service/navigation-service";
+import { getCurrentNavigatePath, saveAndNav } from "service/navigation-service";
 import { getActivitiesOrRoutes } from "service/survey-activity-service";
 import {
     FieldNameEnum,
     getPrintedFirstName,
     getSurveyDate,
     saveData,
-    setValue,
+    setValue
 } from "service/survey-service";
 
 const ActivityOrRoutePlannerPage = () => {
@@ -71,9 +71,7 @@ const ActivityOrRoutePlannerPage = () => {
     }, [location]);
 
     const saveAndGoHome = (): void => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate("/");
-        });
+        saveAndNav(navigate, context, callbackHolder);
     };
 
     const onFinish = (closed: boolean) => {

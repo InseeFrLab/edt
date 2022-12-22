@@ -8,11 +8,11 @@ import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage } from "service/loop-stepper-service";
 import {
     getCurrentNavigatePath,
-    getLoopParameterizedNavigatePath,
     getOrchestratorPage,
+    saveAndLoopNavigate,
+    saveAndNav,
 } from "service/navigation-service";
 import { getSecondaryActivityRef } from "service/referentiel-service";
-import { saveData } from "service/survey-service";
 
 const ActivitySecondaryActivitySelectionPage = () => {
     const navigate = useNavigate();
@@ -21,45 +21,43 @@ const ActivitySecondaryActivitySelectionPage = () => {
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
-    const loopNavigate = (page: EdtRoutesNameEnum) => {
-        navigate(
-            getLoopParameterizedNavigatePath(
-                page,
+    const onClose = () => {
+        saveAndNav(
+            navigate,
+            context,
+            callbackHolder,
+            getCurrentNavigatePath(
                 context.idSurvey,
-                LoopEnum.ACTIVITY_OR_ROUTE,
-                currentIteration,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
             ),
         );
     };
 
-    const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            loopNavigate(page);
-        });
-    };
-
-    const saveAndGoToActivityPlanner = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getCurrentNavigatePath(
-                    context.idSurvey,
-                    EdtRoutesNameEnum.ACTIVITY,
-                    getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                ),
-            );
-        });
-    };
-
     const onNext = () => {
-        saveAndLoopNavigate(EdtRoutesNameEnum.ACTIVITY_LOCATION);
+        saveAndLoopNavigate(
+            navigate,
+            context,
+            callbackHolder,
+            EdtRoutesNameEnum.ACTIVITY_LOCATION,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            currentIteration,
+        );
     };
 
     const onPrevious = () => {
-        saveAndLoopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY);
+        saveAndLoopNavigate(
+            navigate,
+            context,
+            callbackHolder,
+            EdtRoutesNameEnum.SECONDARY_ACTIVITY,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            currentIteration,
+        );
     };
 
     return (
-        <LoopSurveyPage onNext={onNext} onPrevious={onPrevious} onClose={saveAndGoToActivityPlanner}>
+        <LoopSurveyPage onNext={onNext} onPrevious={onPrevious} onClose={onClose}>
             <FlexCenter>
                 <OrchestratorForStories
                     source={context.source}

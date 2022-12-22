@@ -165,6 +165,22 @@ const saveAndNextStep = (
     );
 };
 
+const saveAndLoopNavigate = (
+    navigate: NavigateFunction,
+    context: OrchestratorContext,
+    callbackHolder: any,
+    page: EdtRoutesNameEnum,
+    loop: LoopEnum,
+    iteration: number,
+) => {
+    saveAndNav(
+        navigate,
+        context,
+        callbackHolder,
+        getLoopParameterizedNavigatePath(page, context.idSurvey, loop, iteration),
+    );
+};
+
 const validateWithAlertAndNav = (
     navigate: NavigateFunction,
     context: OrchestratorContext,
@@ -192,5 +208,6 @@ export {
     saveAndNav,
     saveAndNavFullPath,
     saveAndNextStep,
+    saveAndLoopNavigate,
     validateWithAlertAndNav,
 };
