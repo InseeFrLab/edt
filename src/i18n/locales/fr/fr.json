@@ -85,7 +85,10 @@
         },
         "activity-planner": {
             "activity-for-day": "Activité de votre journée du",
-            "no-activity": "Aucune activité renseignée"
+            "no-activity": "Aucune activité renseignée",
+            "no-place": "Aucun lieu renseigné",
+            "no-with-someone": "Aucune présence renseignée",
+            "no-screen": "Aucun écran renseigné"
         },
         "secondary-activity": {
             "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",

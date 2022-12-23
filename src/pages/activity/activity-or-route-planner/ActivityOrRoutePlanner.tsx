@@ -4,7 +4,7 @@ import errorIcon from "assets/illustration/error/puzzle.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
+import ActivityOrRouteCard, { InsideAlertTypes } from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import {
@@ -28,6 +28,7 @@ import {
     saveData,
     setValue,
 } from "service/survey-service";
+import insideErrorIcon from "assets/illustration/error/people.svg";
 
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
@@ -48,6 +49,12 @@ const ActivityOrRoutePlannerPage = () => {
         content: t("page.alert-when-quit.alert-content-close"),
         cancel: t("page.alert-when-quit.alert-cancel"),
         complete: t("page.alert-when-quit.alert-closed"),
+    };
+
+    const insideAlertLabels = {
+        [InsideAlertTypes.PLACE]: t("page.activity-planner.no-place"),
+        [InsideAlertTypes.WITHSOMEONE]: t("page.activity-planner.no-with-someone"),
+        [InsideAlertTypes.SCREEN]: t("page.activity-planner.no-screen"),
     };
 
     const isChildDisplayed = (path: string): boolean => {
@@ -195,6 +202,8 @@ const ActivityOrRoutePlannerPage = () => {
                                                 navToActivityOrRoute(iteration, activity.isRoute)
                                             }
                                             activityOrRoute={activity}
+                                            insideAlertIcon={insideErrorIcon}
+                                            insideAlertLabels={insideAlertLabels}
                                         />
                                     </FlexCenter>
                                 ))}

@@ -59,6 +59,9 @@ const getActivitiesOrRoutes = (idSurvey: string, source?: LunaticModel): Array<A
             activity.withSomeone = withSomeoneLabel;
         }
 
+        // Screen
+        activity.withScreen = getValue(idSurvey, FieldNameEnum.WITHSCREEN, i) as boolean;
+
         activities.push(activity);
     }
     return activities;

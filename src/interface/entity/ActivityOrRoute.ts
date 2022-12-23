@@ -7,4 +7,5 @@ export interface ActivityOrRoute {
     secondaryActivityLabel?: string;
     place?: string;
     withSomeone?: string;
+    withScreen?: boolean;
 }
