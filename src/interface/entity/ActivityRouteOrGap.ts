@@ -1,4 +1,4 @@
-export interface ActivityOrRoute {
+export interface ActivityRouteOrGap {
     activityLabel?: string;
     routeLabel?: string;
     isRoute?: boolean;
@@ -8,4 +8,5 @@ export interface ActivityOrRoute {
     place?: string;
     withSomeone?: string;
     withScreen?: boolean;
+    isGap?: boolean;
 }

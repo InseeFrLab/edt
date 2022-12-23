@@ -88,7 +88,9 @@
             "no-activity": "Aucune activité renseignée",
             "no-place": "Aucun lieu renseigné",
             "no-with-someone": "Aucune présence renseignée",
-            "no-screen": "Aucun écran renseigné"
+            "no-screen": "Aucun écran renseigné",
+            "gap-main": "Aucune activité renseignée",
+            "gap-secondary": "Ajouter une activité ou un trajet"
         },
         "secondary-activity": {
             "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",

@@ -1,4 +1,4 @@
-import { ActivityOrRoute } from "interface/entity/ActivityOrRoute";
+import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { SelectedActivity } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
@@ -12,12 +12,19 @@ import {
     findSecondaryActivityInRef,
 } from "./referentiel-service";
 
-const getActivitiesOrRoutes = (idSurvey: string, source?: LunaticModel): Array<ActivityOrRoute> => {
+const getActivitiesOrRoutes = (
+    idSurvey: string,
+    source?: LunaticModel,
+): {
+    activitiesRoutesOrGaps: ActivityRouteOrGap[];
+    overlaps: { prev: string | undefined; current: string | undefined }[];
+} => {
     const { t } = useTranslation();
-    let activities: ActivityOrRoute[] = [];
+    const overlaps = [];
+    let activities: ActivityRouteOrGap[] = [];
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
     for (let i = 0; i < activityLoopSize; i++) {
-        let activity: ActivityOrRoute = {
+        let activity: ActivityRouteOrGap = {
             activityLabel: t("common.activity.unknown-activity") + (i + 1),
         };
         activity.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean;
@@ -64,12 +71,62 @@ const getActivitiesOrRoutes = (idSurvey: string, source?: LunaticModel): Array<A
 
         activities.push(activity);
     }
-    return activities;
+
+    const sortedActivities = activities.sort(
+        (a, b) => hourToNormalizedTimeStamp(a.startTime) - hourToNormalizedTimeStamp(b.startTime),
+    );
+
+    // Fill the gaps and overlaps
+    let previousActivity: ActivityRouteOrGap | undefined;
+    const copy = [...sortedActivities];
+    for (const act of copy) {
+        // Gaps
+        if (
+            previousActivity &&
+            hourToNormalizedTimeStamp(act.startTime) >
+                hourToNormalizedTimeStamp(previousActivity.endTime)
+        ) {
+            const index = sortedActivities.indexOf(act);
+            sortedActivities.splice(index, 0, {
+                startTime: previousActivity.endTime,
+                endTime: act.startTime,
+                isGap: true,
+            });
+        }
+        // Overlaps to be completed...
+        if (
+            previousActivity &&
+            hourToNormalizedTimeStamp(act.startTime) -
+                hourToNormalizedTimeStamp(previousActivity.endTime) <
+                0
+        ) {
+            overlaps.push({
+                prev: previousActivity.startTime,
+                current: act.startTime,
+            });
+        }
+        previousActivity = act;
+    }
+
+    return {
+        activitiesRoutesOrGaps: sortedActivities,
+        overlaps: overlaps,
+    };
+};
+
+/**
+ * Convert hour as string (hh:mm) to normalized timestamp
+ * to allow hours comparison
+ * @param hour
+ * @returns
+ */
+const hourToNormalizedTimeStamp = (hour: string | undefined): number => {
+    return new Date(`01/01/1970 ${hour}`).getTime();
 };
 
 const getActivitesSelectedLabel = (idSurvey: string): string[] => {
     let activitesSelected: string[] = [];
-    getActivitiesOrRoutes(idSurvey).forEach(activity => {
+    getActivitiesOrRoutes(idSurvey).activitiesRoutesOrGaps.forEach(activity => {
         if (activity?.activityLabel != null && activity?.activityLabel.length > 0)
             activitesSelected.push(activity.activityLabel);
         if (activity?.secondaryActivityLabel != null && activity?.secondaryActivityLabel.length > 0)
@@ -78,7 +135,7 @@ const getActivitesSelectedLabel = (idSurvey: string): string[] => {
     return activitesSelected;
 };
 
-const getActivityOrRouteDurationLabel = (activity: ActivityOrRoute): string => {
+const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string => {
     if (!activity.startTime || !activity.endTime) return "?";
     const startDate = new Date("2000-01-01 " + activity.startTime + ":00");
     const endDate = new Date("2000-01-01 " + activity.endTime + ":00");
