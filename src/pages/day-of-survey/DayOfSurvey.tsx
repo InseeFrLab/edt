@@ -7,19 +7,19 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getCurrentNavigatePath, getOrchestratorPage } from "service/navigation-service";
+import { getOrchestratorPage, saveAndNav, saveAndNextStep, setEnviro } from "service/navigation-service";
 import {
     FieldNameEnum,
     getComponentId,
     getPrintedFirstName,
     getPrintedSurveyDate,
-    saveData,
 } from "service/survey-service";
 
 const DayOfSurveyPage = () => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.DAY_OF_SURVEY;
 
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
@@ -40,27 +40,13 @@ const DayOfSurveyPage = () => {
         return () => document.removeEventListener("keyup", keydownChange, true);
     }, [callbackHolder]);
 
-    const validate = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getCurrentNavigatePath(context.idSurvey, context.surveyRootPage, context.source.maxPage),
-            );
-        });
-    };
-
-    const navBack = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate("/");
-        });
-    };
-
     return (
         <>
             <SurveyPage
-                validate={validate}
+                validate={() => saveAndNextStep(context.surveyRootPage, currentPage)}
                 srcIcon={day_of_survey}
                 altIcon={t("accessibility.asset.day-of-survey-alt")}
-                onNavigateBack={navBack}
+                onNavigateBack={() => saveAndNav()}
                 firstName={getPrintedFirstName(context.idSurvey)}
                 surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
                 disableNav={disabledButton}

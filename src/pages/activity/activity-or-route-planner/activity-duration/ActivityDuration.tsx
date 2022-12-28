@@ -13,6 +13,7 @@ import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
     getOrchestratorPage,
+    setEnviro,
 } from "service/navigation-service";
 import { getActivitiesOrRoutes } from "service/survey-activity-service";
 import { FieldNameEnum, saveData, setValue } from "service/survey-service";
@@ -23,6 +24,8 @@ const ActivityDurationPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
@@ -53,7 +56,6 @@ const ActivityDurationPage = () => {
                 navigate(
                     getLoopParameterizedNavigatePath(
                         getNextLoopPage(currentPage, context.isRoute),
-                        context.idSurvey,
                         LoopEnum.ACTIVITY_OR_ROUTE,
                         currentIteration,
                     ),

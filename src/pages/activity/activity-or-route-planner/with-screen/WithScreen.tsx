@@ -12,15 +12,19 @@ import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
 import {
     getCurrentNavigatePath,
-    getLoopParameterizedNavigatePath,
     getOrchestratorPage,
+    saveAndLoopNavigate,
+    saveAndNav,
+    setEnviro,
+    validateWithAlertAndNav,
 } from "service/navigation-service";
-import { FieldNameEnum, getValue, saveData } from "service/survey-service";
+import { FieldNameEnum, getValue } from "service/survey-service";
 
 const WithScreenPage = () => {
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.WITH_SCREEN;
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
@@ -33,52 +37,35 @@ const WithScreenPage = () => {
         complete: t("page.alert-when-quit.alert-complete"),
     };
 
-    const loopNavigate = (page: EdtRoutesNameEnum) => {
-        navigate(
-            getLoopParameterizedNavigatePath(
-                page,
+    const saveAndGoToActivityPlanner = () => {
+        saveAndNav(
+            getCurrentNavigatePath(
                 context.idSurvey,
-                LoopEnum.ACTIVITY_OR_ROUTE,
-                currentIteration,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
             ),
         );
     };
 
-    const saveAndGoToActivityPlanner = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getCurrentNavigatePath(
-                    context.idSurvey,
-                    EdtRoutesNameEnum.ACTIVITY,
-                    getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                ),
-            );
-        });
-    };
-
     const onprevious = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                const isWithSomeone = getValue(
-                    context.idSurvey,
-                    FieldNameEnum.WITHSOMEONE,
-                    currentIteration,
-                );
-                if (isWithSomeone) {
-                    loopNavigate(EdtRoutesNameEnum.WITH_SOMEONE_SELECTION);
-                } else {
-                    loopNavigate(getPreviousLoopPage(currentPage));
-                }
-            });
-        });
+        const isWithSomeone = getValue(context.idSurvey, FieldNameEnum.WITHSOMEONE, currentIteration);
+        const page = isWithSomeone
+            ? EdtRoutesNameEnum.WITH_SOMEONE_SELECTION
+            : getPreviousLoopPage(currentPage);
+
+        saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
     };
 
     const onClose = (forceQuit: boolean) => {
-        if (forceQuit) {
-            saveAndGoToActivityPlanner();
-        } else {
-            setIsAlertDisplayed(true);
-        }
+        validateWithAlertAndNav(
+            forceQuit,
+            setIsAlertDisplayed,
+            getCurrentNavigatePath(
+                context.idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            ),
+        );
     };
 
     return (

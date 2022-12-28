@@ -16,10 +16,12 @@ import {
 } from "service/loop-stepper-service";
 import {
     getCurrentNavigatePath,
-    getLoopParameterizedNavigatePath,
     getOrchestratorPage,
+    saveAndLoopNavigate,
+    setEnviro,
+    validateWithAlertAndNav,
 } from "service/navigation-service";
-import { FieldNameEnum, getValue, saveData } from "service/survey-service";
+import { FieldNameEnum, getValue } from "service/survey-service";
 
 import locationErrorIcon from "assets/illustration/error/location-error.svg";
 import errorIcon from "assets/illustration/error/puzzle.svg";
@@ -32,9 +34,10 @@ import option6 from "assets/illustration/locations/6.svg";
 import { getPlaceRef } from "service/referentiel-service";
 
 const ActivityLocationPage = () => {
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.ACTIVITY_LOCATION;
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
@@ -62,21 +65,22 @@ const ActivityLocationPage = () => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
-            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                const hasSecondaryActivity = getValue(
-                    context.idSurvey,
-                    FieldNameEnum.WITHSECONDARYACTIVITY,
-                    currentIteration,
-                );
-                if (hasSecondaryActivity) {
-                    loopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION);
-                } else {
-                    loopNavigate(getPreviousLoopPage(currentPage));
-                }
-            });
+            const hasSecondaryActivity = getValue(
+                context.idSurvey,
+                FieldNameEnum.WITHSECONDARYACTIVITY,
+                currentIteration,
+            );
+            const page = hasSecondaryActivity
+                ? EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION
+                : getPreviousLoopPage(currentPage);
+            saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
         },
         nextClickCallback: () => {
-            saveAndLoopNavigate(getNextLoopPage(currentPage));
+            saveAndLoopNavigate(
+                getNextLoopPage(currentPage),
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+            );
         },
         labels: {
             alertMessage: t("component.location-selecter.alert-message"),
@@ -87,41 +91,16 @@ const ActivityLocationPage = () => {
         errorIcon: locationErrorIcon,
     };
 
-    const loopNavigate = (page: EdtRoutesNameEnum) => {
-        navigate(
-            getLoopParameterizedNavigatePath(
-                page,
+    const onClose = (forceQuit: boolean) => {
+        validateWithAlertAndNav(
+            forceQuit,
+            setIsAlertDisplayed,
+            getCurrentNavigatePath(
                 context.idSurvey,
-                LoopEnum.ACTIVITY_OR_ROUTE,
-                currentIteration,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
             ),
         );
-    };
-
-    const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            loopNavigate(page);
-        });
-    };
-
-    const onClose = (forceQuit: boolean) => {
-        if (forceQuit) {
-            saveAndGoToActivityPlanner();
-        } else {
-            setIsAlertDisplayed(true);
-        }
-    };
-
-    const saveAndGoToActivityPlanner = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getCurrentNavigatePath(
-                    context.idSurvey,
-                    EdtRoutesNameEnum.ACTIVITY,
-                    getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                ),
-            );
-        });
     };
 
     const onNext = (e: React.MouseEvent) => {

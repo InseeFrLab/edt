@@ -15,8 +15,10 @@ import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
     getOrchestratorPage,
+    saveAndNav,
+    setEnviro,
+    validateWithAlertAndNav,
 } from "service/navigation-service";
-import { saveData } from "service/survey-service";
 
 import catIcon100 from "assets/illustration/activity-categories/1.svg";
 import catIcon200 from "assets/illustration/activity-categories/2.svg";
@@ -35,9 +37,10 @@ import { useTranslation } from "react-i18next";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 
 const MainActivityPage = () => {
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY;
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
@@ -104,16 +107,7 @@ const MainActivityPage = () => {
     };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getLoopParameterizedNavigatePath(
-                    page,
-                    context.idSurvey,
-                    LoopEnum.ACTIVITY_OR_ROUTE,
-                    currentIteration,
-                ),
-            );
-        });
+        saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     };
 
     const onNext = (e: React.MouseEvent) => {
@@ -125,19 +119,15 @@ const MainActivityPage = () => {
     };
 
     const onClose = (forceQuit: boolean) => {
-        if (forceQuit) {
-            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                navigate(
-                    getCurrentNavigatePath(
-                        context.idSurvey,
-                        EdtRoutesNameEnum.ACTIVITY,
-                        getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                    ),
-                );
-            });
-        } else {
-            setIsAlertDisplayed(true);
-        }
+        validateWithAlertAndNav(
+            forceQuit,
+            setIsAlertDisplayed,
+            getCurrentNavigatePath(
+                context.idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            ),
+        );
     };
 
     return (
