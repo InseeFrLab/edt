@@ -86,8 +86,8 @@ const getActivitiesOrRoutes = (
             hourToNormalizedTimeStamp(act.startTime) >
                 hourToNormalizedTimeStamp(previousActivity.endTime)
         ) {
-            const index = sortedActivities.indexOf(act);
-            sortedActivities.splice(index, 0, {
+            const index = copy.indexOf(act);
+            copy.splice(index, 0, {
                 startTime: previousActivity.endTime,
                 endTime: act.startTime,
                 isGap: true,
