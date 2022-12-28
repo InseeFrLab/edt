@@ -633,15 +633,7 @@
                     "id": "icongridcheckboxone_route",
                     "page": "4.4",
                     "label": "\"Quel était le type de trajet ?\"",
-                    "mandatory": false,
-                    "options": [
-                        { "label": "\"Trajet Domicile - Travail\"", "value": "1" },
-                        { "label": "\"Trajet Domicile - Lieu d'étude\"", "value": "2" },
-                        { "label": "\"Trajets liés aux enfants\"", "value": "3" },
-                        { "label": "\"Trajets liés au bénévolat\"", "value": "4" },
-                        { "label": "\"Trajets pour aider un autre ménage\"", "value": "5" },
-                        { "label": "\"Autres trajets\"", "value": "6" }
-                    ]
+                    "mandatory": false
                 },
                 {
                     "componentType": "CheckboxGroupEdt",
@@ -820,36 +812,6 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "CheckboxOneEdt",
-                    "bindingDependencies": ["SECONDARYACTIVITY"],
-                    "response": { "name": "SECONDARYACTIVITY" },
-                    "hierarchy": {
-                        "sequence": {
-                            "id": "law86mv7",
-                            "page": "4.1",
-                            "label": "\"I - \" || \"Sequence\""
-                        }
-                    },
-                    "options": [
-                        {
-                            "label": "\"Écouter la radio, des podcasts ou de la musique\"",
-                            "value": "636/637/638"
-                        },
-                        {
-                            "label": "\"Regarder la télévision, des DVD, des vidéos en ligne\"",
-                            "value": "634,635"
-                        },
-                        { "label": "Conversation", "value": "521" },
-                        { "label": "\"Repas\"", "value": "todetermine" },
-                        { "label": "\"Travail professionnel\"", "value": "211" }
-                    ],
-                    "conditionFilter": { "value": "true" },
-                    "id": "checkboxone_secondaryactivity",
-                    "page": "4.12",
-                    "label": "\"Que faisiez-vous en même temps ?\"",
-                    "mandatory": false
-                },
-                {
                     "componentType": "CheckboxGroupEdt",
                     "bindingDependencies": ["COUPLE", "PARENTS", "CHILD", "OTHERKNOWN", "OTHER"],
                     "responses": [
@@ -898,7 +860,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxgroup_presentpeople",
-                    "page": "4.13",
+                    "page": "4.12",
                     "label": "\"En présence de qui étiez-vous ?\"",
                     "tipsLabel": "Vous pouvez en selectionner plusieurs",
                     "mandatory": false

@@ -8,7 +8,12 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
+import {
+    getLoopPageSubpage,
+    getNextLoopPage,
+    getPreviousLoopPage,
+    getStepData,
+} from "service/loop-stepper-service";
 import {
     getCurrentNavigatePath,
     getOrchestratorPage,
@@ -66,8 +71,8 @@ const ActivityLocationPage = () => {
                 currentIteration,
             );
             const page = hasSecondaryActivity
-                ? EdtRoutesNameEnum.ACTIVITY_SECONDARY_ACTIVITY_SELECTION
-                : currentPage;
+                ? EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION
+                : getPreviousLoopPage(currentPage);
             saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
         },
         nextClickCallback: () => {

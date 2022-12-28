@@ -1,4 +1,4 @@
-import { ActivityOrRoute } from "interface/entity/ActivityOrRoute";
+import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { SelectedActivity } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
@@ -8,25 +8,51 @@ import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
     findPlaceInRef,
+    findRouteInRef,
     findSecondaryActivityInRef,
 } from "./referentiel-service";
 
-const getActivitiesOrRoutes = (idSurvey: string, source?: LunaticModel): Array<ActivityOrRoute> => {
+const getActivitiesOrRoutes = (
+    idSurvey: string,
+    source?: LunaticModel,
+): {
+    activitiesRoutesOrGaps: ActivityRouteOrGap[];
+    overlaps: { prev: string | undefined; current: string | undefined }[];
+} => {
     const { t } = useTranslation();
-    let activities: ActivityOrRoute[] = [];
+    const overlaps = [];
+    let activities: ActivityRouteOrGap[] = [];
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
     for (let i = 0; i < activityLoopSize; i++) {
-        let activity: ActivityOrRoute = { label: t("common.activity.unknown-activity") + (i + 1) };
+        let activity: ActivityRouteOrGap = {
+            activityLabel: t("common.activity.unknown-activity") + (i + 1),
+        };
         activity.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean;
         activity.startTime = getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
         activity.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
 
-        // Main activity
-        const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
-        const activitySelection: SelectedActivity = mainActivityValue
-            ? JSON.parse(mainActivityValue.toString())
-            : undefined;
-        activity.label = getActivityLabel(activitySelection) || "";
+        if (activity.isRoute) {
+            // Route
+            const routeValue = getValue(idSurvey, FieldNameEnum.ROUTE, i) as string;
+            activity.routeLabel = getRouteLabel(routeValue);
+
+            //Mean of transport
+            const meanOfTransportValue = "";
+        } else {
+            // Main activity
+            const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
+            const activitySelection: SelectedActivity = mainActivityValue
+                ? JSON.parse(mainActivityValue.toString())
+                : undefined;
+            activity.activityLabel = getActivityLabel(activitySelection) || "";
+
+            // Location
+            const placeValue = getValue(idSurvey, FieldNameEnum.PLACE, i);
+            if (placeValue) {
+                activity.place = findPlaceInRef(placeValue.toString())?.label;
+            }
+        }
+
         // Secondary activity
         const secondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i);
         if (secondaryActivityValue) {
@@ -34,34 +60,82 @@ const getActivitiesOrRoutes = (idSurvey: string, source?: LunaticModel): Array<A
                 secondaryActivityValue.toString(),
             )?.label;
         }
-        // Location
-        const placeValue = getValue(idSurvey, FieldNameEnum.PLACE, i);
-        if (placeValue) {
-            activity.place = findPlaceInRef(placeValue.toString())?.label;
-        }
         // With someone
-        const withSomeoneLabel = getWithSomeoneLabels(idSurvey, i, source);
+        const withSomeoneLabel = getWithSomeoneLabel(idSurvey, i, source);
         if (withSomeoneLabel) {
             activity.withSomeone = withSomeoneLabel;
         }
 
+        // Screen
+        activity.withScreen = getValue(idSurvey, FieldNameEnum.WITHSCREEN, i) as boolean;
+
         activities.push(activity);
     }
-    return activities;
+
+    const sortedActivities = activities.sort(
+        (a, b) => hourToNormalizedTimeStamp(a.startTime) - hourToNormalizedTimeStamp(b.startTime),
+    );
+
+    // Fill the gaps and overlaps
+    let previousActivity: ActivityRouteOrGap | undefined;
+    const copy = [...sortedActivities];
+    for (const act of copy) {
+        // Gaps
+        if (
+            previousActivity &&
+            hourToNormalizedTimeStamp(act.startTime) >
+                hourToNormalizedTimeStamp(previousActivity.endTime)
+        ) {
+            const index = sortedActivities.indexOf(act);
+            sortedActivities.splice(index, 0, {
+                startTime: previousActivity.endTime,
+                endTime: act.startTime,
+                isGap: true,
+            });
+        }
+        // Overlaps to be completed...
+        if (
+            previousActivity &&
+            hourToNormalizedTimeStamp(act.startTime) -
+                hourToNormalizedTimeStamp(previousActivity.endTime) <
+                0
+        ) {
+            overlaps.push({
+                prev: previousActivity.startTime,
+                current: act.startTime,
+            });
+        }
+        previousActivity = act;
+    }
+
+    return {
+        activitiesRoutesOrGaps: sortedActivities,
+        overlaps: overlaps,
+    };
+};
+
+/**
+ * Convert hour as string (hh:mm) to normalized timestamp
+ * to allow hours comparison
+ * @param hour
+ * @returns
+ */
+const hourToNormalizedTimeStamp = (hour: string | undefined): number => {
+    return new Date(`01/01/1970 ${hour}`).getTime();
 };
 
 const getActivitesSelectedLabel = (idSurvey: string): string[] => {
     let activitesSelected: string[] = [];
-    getActivitiesOrRoutes(idSurvey).forEach(activity => {
-        if (activity?.label != null && activity?.label.length > 0)
-            activitesSelected.push(activity.label);
+    getActivitiesOrRoutes(idSurvey).activitiesRoutesOrGaps.forEach(activity => {
+        if (activity?.activityLabel != null && activity?.activityLabel.length > 0)
+            activitesSelected.push(activity.activityLabel);
         if (activity?.secondaryActivityLabel != null && activity?.secondaryActivityLabel.length > 0)
             activitesSelected.push(activity.secondaryActivityLabel);
     });
     return activitesSelected;
 };
 
-const getActivityOrRouteDurationLabel = (activity: ActivityOrRoute): string => {
+const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string => {
     if (!activity.startTime || !activity.endTime) return "?";
     const startDate = new Date("2000-01-01 " + activity.startTime + ":00");
     const endDate = new Date("2000-01-01 " + activity.endTime + ":00");
@@ -87,7 +161,14 @@ const getActivityLabel = (activity: SelectedActivity | undefined): string | unde
     }
 };
 
-const getWithSomeoneLabels = (
+const getRouteLabel = (routeId: string | undefined): string | undefined => {
+    if (!routeId) {
+        return undefined;
+    }
+    return findRouteInRef(routeId)?.label;
+};
+
+const getWithSomeoneLabel = (
     idSurvey: string,
     i: number,
     source: LunaticModel | undefined,

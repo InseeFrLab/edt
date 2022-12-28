@@ -4,7 +4,7 @@ import errorIcon from "assets/illustration/error/puzzle.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
+import ActivityOrRouteCard, { InsideAlertTypes } from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import {
@@ -28,6 +28,8 @@ import {
     saveData,
     setValue,
 } from "service/survey-service";
+import insideErrorIcon from "assets/illustration/error/people.svg";
+import gapIcon from "assets/illustration/error/puzzle.svg";
 
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
@@ -42,7 +44,7 @@ const ActivityOrRoutePlannerPage = () => {
 
     let contextIteration = 0;
 
-    const activities = getActivitiesOrRoutes(context.idSurvey, context.source);
+    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(context.idSurvey, context.source);
     const surveyDate = getSurveyDate(context.idSurvey) || "";
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
@@ -50,6 +52,12 @@ const ActivityOrRoutePlannerPage = () => {
         content: t("page.alert-when-quit.alert-content-close"),
         cancel: t("page.alert-when-quit.alert-cancel"),
         complete: t("page.alert-when-quit.alert-closed"),
+    };
+
+    const insideAlertLabels = {
+        [InsideAlertTypes.PLACE]: t("page.activity-planner.no-place"),
+        [InsideAlertTypes.WITHSOMEONE]: t("page.activity-planner.no-with-someone"),
+        [InsideAlertTypes.SCREEN]: t("page.activity-planner.no-screen"),
     };
 
     const isChildDisplayed = (path: string): boolean => {
@@ -144,7 +152,9 @@ const ActivityOrRoutePlannerPage = () => {
                         onFinish={() => onFinish(false)}
                         onAdd={onOpenAddActivityOrRoute}
                         finishLabel={t("common.navigation.finish")}
-                        addLabel={activities.length === 0 ? t("common.navigation.add") : undefined}
+                        addLabel={
+                            activitiesRoutesOrGaps.length === 0 ? t("common.navigation.add") : undefined
+                        }
                     >
                         <FlexCenter>
                             <Alert
@@ -164,7 +174,7 @@ const ActivityOrRoutePlannerPage = () => {
                                 </Typography>
                             </Box>
                         </FlexCenter>
-                        {activities.length === 0 ? (
+                        {activitiesRoutesOrGaps.length === 0 ? (
                             <>
                                 <PageIcon
                                     srcIcon={empty_activity}
@@ -178,7 +188,16 @@ const ActivityOrRoutePlannerPage = () => {
                             </>
                         ) : (
                             <>
-                                {activities.map((activity, iteration) => (
+                                {overlaps.length !== 0 && (
+                                    <Typography className={classes.overlaps}>
+                                        Les activités de:{" "}
+                                        {overlaps
+                                            .map(o => o?.prev?.concat(" et ", o?.current || ""))
+                                            .join(", ")}{" "}
+                                        heures se chevauchent
+                                    </Typography>
+                                )}
+                                {activitiesRoutesOrGaps.map((activity, iteration) => (
                                     <FlexCenter key={"activity-" + iteration}>
                                         <ActivityOrRouteCard
                                             labelledBy={""}
@@ -187,12 +206,20 @@ const ActivityOrRoutePlannerPage = () => {
                                                 navToActivityOrRoute(iteration, activity.isRoute)
                                             }
                                             activityOrRoute={activity}
+                                            insideAlertIcon={insideErrorIcon}
+                                            insideAlertLabels={insideAlertLabels}
+                                            gapIcon={gapIcon}
+                                            gapLabels={{
+                                                main: t("page.activity-planner.gap-main"),
+                                                secondary: t("page.activity-planner.gap-secondary"),
+                                            }}
                                         />
                                     </FlexCenter>
                                 ))}
                             </>
                         )}
                     </SurveyPage>
+
                     <AddActivityOrRoute
                         labelledBy={""}
                         describedBy={""}
@@ -217,6 +244,10 @@ const ActivityOrRoutePlannerPage = () => {
 };
 
 const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(theme => ({
+    overlaps: {
+        color: "red",
+        height: "30px",
+    },
     infoBox: {
         width: "350px",
     },

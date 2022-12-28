@@ -1,16 +1,18 @@
+import { ReferentielData } from "interface/lunatic/Lunatic";
 import {
-    SelectedActivity,
-    findItemInCategoriesNomenclature,
-    findItemInAutoCompleteRef,
     AutoCompleteActiviteOption,
-    NomenclatureActivityOption,
     CheckboxOneCustomOption,
+    findItemInAutoCompleteRef,
+    findItemInCategoriesNomenclature,
+    NomenclatureActivityOption,
+    SelectedActivity,
 } from "lunatic-edt";
 import activitesAutoCompleteRef from "refs/activitesAutoCompleteRef.json";
 import categoriesAndActivitesNomenclature from "refs/activitiesCategoriesNomenclature.json";
-import secondaryCategoriesRef from "refs/secondaryActivityRef.json";
 import placeRef from "refs/placeRef.json";
-import { ReferentielData } from "interface/lunatic/Lunatic";
+import routeRef from "refs/routeRef.json";
+import routeSecondaryCategoriesRef from "refs/routeSecondaryActivityRef.json";
+import secondaryCategoriesRef from "refs/secondaryActivityRef.json";
 import { getReferentiel, ReferentielsEnum } from "./survey-service";
 
 export const fetchReferentiels = (): Promise<ReferentielData> => {
@@ -19,8 +21,10 @@ export const fetchReferentiels = (): Promise<ReferentielData> => {
         const refs: ReferentielData = {
             [ReferentielsEnum.ACTIVITYNOMENCLATURE]: categoriesAndActivitesNomenclature,
             [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: activitesAutoCompleteRef,
-            [ReferentielsEnum.SECONDARYACTIVITY]: secondaryCategoriesRef,
+            [ReferentielsEnum.ACTIVITYSECONDARYACTIVITY]: secondaryCategoriesRef,
+            [ReferentielsEnum.ROUTESECONDARYACTIVITY]: routeSecondaryCategoriesRef,
             [ReferentielsEnum.LOCATION]: placeRef,
+            [ReferentielsEnum.ROUTE]: routeRef,
         };
         resolve(refs);
     });
@@ -34,12 +38,20 @@ export const getNomenclatureRef = (): NomenclatureActivityOption[] => {
     return getReferentiel(ReferentielsEnum.ACTIVITYNOMENCLATURE) as NomenclatureActivityOption[];
 };
 
-export const getSecondaryActivityRef = (): CheckboxOneCustomOption[] => {
-    return getReferentiel(ReferentielsEnum.SECONDARYACTIVITY) as CheckboxOneCustomOption[];
+export const getActivitySecondaryActivityRef = (): CheckboxOneCustomOption[] => {
+    return getReferentiel(ReferentielsEnum.ACTIVITYSECONDARYACTIVITY) as CheckboxOneCustomOption[];
+};
+
+export const getRouteSecondaryActivityRef = (): CheckboxOneCustomOption[] => {
+    return getReferentiel(ReferentielsEnum.ROUTESECONDARYACTIVITY) as CheckboxOneCustomOption[];
 };
 
 export const getPlaceRef = (): CheckboxOneCustomOption[] => {
     return getReferentiel(ReferentielsEnum.LOCATION) as CheckboxOneCustomOption[];
+};
+
+export const getRouteRef = (): CheckboxOneCustomOption[] => {
+    return getReferentiel(ReferentielsEnum.ROUTE) as CheckboxOneCustomOption[];
 };
 
 export const findActivityInAutoCompleteReferentiel = (
@@ -55,9 +67,13 @@ export const findActivityInNomenclatureReferentiel = (
 };
 
 export const findSecondaryActivityInRef = (id: string): CheckboxOneCustomOption | undefined => {
-    return getSecondaryActivityRef().find(a => a.value === id);
+    return getActivitySecondaryActivityRef().find(a => a.value === id);
 };
 
 export const findPlaceInRef = (id: string): CheckboxOneCustomOption | undefined => {
     return getPlaceRef().find(a => a.value === id);
+};
+
+export const findRouteInRef = (id: string): CheckboxOneCustomOption | undefined => {
+    return getRouteRef().find(a => a.value === id);
 };

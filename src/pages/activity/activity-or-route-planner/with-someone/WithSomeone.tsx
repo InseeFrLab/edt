@@ -58,7 +58,7 @@ const WithSomeonePage = () => {
                 currentIteration,
             );
             const page = hasSecondaryActivity
-                ? EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION
+                ? EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION
                 : getPreviousLoopPage(currentPage, context.isRoute);
             saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
         } else {

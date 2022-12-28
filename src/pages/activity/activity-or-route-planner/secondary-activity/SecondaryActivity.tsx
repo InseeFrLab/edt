@@ -52,11 +52,7 @@ const SecondaryActivityPage = () => {
         let page = null;
 
         if (hasSecondaryActivity) {
-            if (context.isRoute) {
-                page = EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION;
-            } else {
-                page = EdtRoutesNameEnum.ACTIVITY_SECONDARY_ACTIVITY_SELECTION;
-            }
+            page = EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION;
         } else {
             page = getNextLoopPage(currentPage, context.isRoute);
         }
