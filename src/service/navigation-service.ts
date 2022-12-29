@@ -1,4 +1,5 @@
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import { SetStateAction } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
@@ -131,6 +132,12 @@ const getNextPage = (currentPage: EdtRoutesNameEnum) => {
     return Number(currentPageNum) + 1;
 };
 
+const getPage = (pageNumber: number): OrchestratorEdtNavigation | undefined => {
+    return mappingPageOrchestrator.find(
+        page => page.surveyPage && Number(page.surveyPage) == pageNumber,
+    );
+};
+
 const saveAndNav = (route?: string): void => {
     saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
         _navigate(route ? route : "/");
@@ -193,4 +200,5 @@ export {
     loopNavigate,
     validateWithAlertAndNav,
     setEnviro,
+    getPage,
 };

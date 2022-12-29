@@ -38,7 +38,7 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
 
     const { t } = useTranslation();
     const { idSurvey, iteration } = useParams();
-
+    //TODO: send isRoute as a parameter
     return (
         <Box className={className}>
             {displayStepper &&
@@ -53,6 +53,7 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
                                 idSurvey ?? "",
                                 LoopEnum.ACTIVITY_OR_ROUTE,
                                 iteration ? +iteration : 0,
+                                false,
                             )}
                             currentStepIcon={currentStepIcon}
                             currentStepIconAlt={currentStepIconAlt}

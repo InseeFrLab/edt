@@ -33,7 +33,7 @@ const enum FieldNameEnum {
     SECONDARYACTIVITY = "SECONDARYACTIVITY",
     FOOT = "FOOT",
     BICYCLE = "BICYCLE",
-    TWOWEELSMOTORIZED = "TWOWEELSMOTORIZED",
+    TWOWHEELSMOTORIZED = "TWOWHEELSMOTORIZED",
     PRIVATECAR = "PRIVATECAR",
     OTHERPRIVATE = "OTHERPRIVATE",
     PUBLIC = "PUBLIC",
@@ -53,14 +53,29 @@ const enum FieldNameEnum {
     ISROUTE = "ISROUTE",
 }
 
-const toIgnoreForRoute = [FieldNameEnum.MAINACTIVITY, FieldNameEnum.PLACE];
+const toIgnoreForRoute = [
+    FieldNameEnum.MAINACTIVITY,
+    FieldNameEnum.GOAL,
+    FieldNameEnum.WITHSECONDARYACTIVITY,
+    FieldNameEnum.SECONDARYACTIVITY,
+    FieldNameEnum.PLACE,
+    FieldNameEnum.WITHSOMEONE,
+    FieldNameEnum.COUPLE,
+    FieldNameEnum.PARENTS,
+    FieldNameEnum.CHILD,
+    FieldNameEnum.OTHERKNOWN,
+    FieldNameEnum.OTHER,
+    FieldNameEnum.WITHSCREEN,
+];
+
 const toIgnoreForActivity = [
     FieldNameEnum.ROUTE,
     FieldNameEnum.FOOT,
     FieldNameEnum.BICYCLE,
-    FieldNameEnum.TWOWEELSMOTORIZED,
+    FieldNameEnum.TWOWHEELSMOTORIZED,
     FieldNameEnum.PRIVATECAR,
     FieldNameEnum.OTHERPRIVATE,
+    FieldNameEnum.PUBLIC,
 ];
 
 const enum ReferentielsEnum {

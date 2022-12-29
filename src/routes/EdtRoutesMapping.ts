@@ -142,42 +142,36 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         page: EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
         surveySource: "activity-survey.json",
         surveyPage: "5",
-        surveySubPage: "1",
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY,
         page: EdtRoutesNameEnum.WORST_ACTIVITY_DAY,
         surveySource: "activity-survey.json",
         surveyPage: "6",
-        surveySubPage: "1",
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY,
         page: EdtRoutesNameEnum.KIND_OF_DAY,
         surveySource: "activity-survey.json",
         surveyPage: "7",
-        surveySubPage: "2",
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY,
         page: EdtRoutesNameEnum.EXCEPTIONAL_DAY,
         surveySource: "activity-survey.json",
         surveyPage: "8",
-        surveySubPage: "2",
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY,
         page: EdtRoutesNameEnum.TRAVEL_TIME,
         surveySource: "activity-survey.json",
         surveyPage: "9",
-        surveySubPage: "3",
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY,
         page: EdtRoutesNameEnum.PHONE_TIME,
         surveySource: "activity-survey.json",
         surveyPage: "10",
-        surveySubPage: "4",
     },
     {
         parentPage: EdtRoutesNameEnum.WORK_TIME,
@@ -205,4 +199,17 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
     },
 ];
 
-export { mappingPageOrchestrator, EdtRoutesNameEnum };
+const routesToIgnoreForActivity = [EdtRoutesNameEnum.ROUTE, EdtRoutesNameEnum.MEAN_OF_TRANSPORT];
+
+const routesToIgnoreForRoute = [
+    EdtRoutesNameEnum.MAIN_ACTIVITY,
+    EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
+    EdtRoutesNameEnum.SECONDARY_ACTIVITY,
+    EdtRoutesNameEnum.ACTIVITY_LOCATION,
+    EdtRoutesNameEnum.WITH_SOMEONE,
+    EdtRoutesNameEnum.WITH_SCREEN,
+    EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+    EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
+];
+
+export { mappingPageOrchestrator, EdtRoutesNameEnum, routesToIgnoreForActivity, routesToIgnoreForRoute };
