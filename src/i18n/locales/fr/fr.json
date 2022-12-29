@@ -96,6 +96,11 @@
             "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",
             "info-bold": "Si vous en faites plusieurs, notez seulement la plus importante"
         },
+        "secondary-activity-selection": {
+            "add-activity-label": "Ajoutez une autre activité",
+            "input-placeholder": "Activité secondaire",
+            "other-button": "Autre ?"
+        },
         "alert-when-quit": {
             "alert-content": "L'ajout de votre activité n'est pas terminé. Souhaitez vous reprendre ou annuler ?",
             "alert-content-close": "Souhaitez vous clôturer l'activitie?",
