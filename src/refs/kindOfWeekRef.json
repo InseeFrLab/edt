@@ -1,0 +1,14 @@
+[
+    {
+        "label": "Semaine normale de travail",
+        "value": "1"
+    },
+    {
+        "label": "Semaine de congés",
+        "value": "2"
+    },
+    {
+        "label": "Autres (ex : travail et congés, etc)",
+        "value": "3"
+    }
+]

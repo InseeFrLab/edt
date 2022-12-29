@@ -4,21 +4,18 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { CheckboxGroupSpecificProps } from "lunatic-edt";
+import { CheckboxGroupSpecificProps, CheckboxOneSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getOrchestratorPage, setEnviro, validateWithAlertAndNav } from "service/navigation-service";
+import { getKindOfWeekRef } from "service/referentiel-service";
 import { getPrintedFirstName } from "service/survey-service";
 
-const specificProps: CheckboxGroupSpecificProps = {
-    optionsIcons: {
-        "1": calendarWeek,
-        "2": calendarWeek,
-        "3": calendarWeek,
-    },
+const specificProps: CheckboxOneSpecificProps = {
+    icon: calendarWeek,
 };
 
 const KindOfWeekPage = () => {
@@ -53,6 +50,7 @@ const KindOfWeekPage = () => {
                     callbackHolder={callbackHolder}
                     page={getOrchestratorPage(currentPage)}
                     componentSpecificProps={specificProps}
+                    overrideOptions={getKindOfWeekRef()}
                 ></OrchestratorForStories>
             </FlexCenter>
         </SurveyPage>
