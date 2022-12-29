@@ -10,6 +10,9 @@
             "validate": "Valider",
             "add": "Ajouter",
             "finish": "Clore",
+            "edit": "Modifier",
+            "delete": "Supprimer",
+            "help": "Aide",
             "back-to-home": "Retourner à l'accueil"
         },
         "stepper": {
@@ -90,7 +93,10 @@
             "no-with-someone": "Aucune présence renseignée",
             "no-screen": "Aucun écran renseigné",
             "gap-main": "Aucune activité renseignée",
-            "gap-secondary": "Ajouter une activité ou un trajet"
+            "gap-secondary": "Ajouter une activité ou un trajet",
+            "start-alert": "Les heures des activités de : ",
+            "and": " et ",
+            "end-alert": " se chevauchent."
         },
         "secondary-activity": {
             "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",
@@ -114,6 +120,10 @@
         },
         "complementary-questions": {
             "simple-header-label": "CARACTÉRISTIQUES DE LA SEMAINE"
+        },
+        "edit-activity-information": {
+            "header": "MODIFIER L'ACTIVITÉ",
+            "what-to-edit": "Que souhaitez-vous modifier ?"
         }
     },
     "component": {

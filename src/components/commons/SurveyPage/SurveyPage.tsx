@@ -9,7 +9,6 @@ import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimp
 import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
 import EndActivityStepper from "components/edt/EndActivityStepper/EndActivityStepper";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
 import { getLastCompletedStep } from "service/navigation-service";
 import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
 
@@ -28,6 +27,7 @@ interface SurveyPageProps {
     firstNamePrefix?: string;
     surveyDate?: string;
     onEdit?(): void;
+    onHelp?(): void;
     simpleHeader?: boolean;
     simpleHeaderLabel?: string;
     disableNav?: boolean;
@@ -52,6 +52,7 @@ const SurveyPage = (props: SurveyPageProps) => {
         addLabel,
         onNavigateBack,
         onEdit,
+        onHelp,
         firstName,
         firstNamePrefix,
         surveyDate,
@@ -66,7 +67,6 @@ const SurveyPage = (props: SurveyPageProps) => {
         backgroundWhiteHeader,
     } = props;
     const { t } = useTranslation();
-    const { idSurvey } = useParams();
 
     return (
         <Box className={className}>
@@ -77,12 +77,13 @@ const SurveyPage = (props: SurveyPageProps) => {
                     onNavigateBack={onNavigateBack}
                 />
             )}
-            {!simpleHeader && firstName && firstNamePrefix && onEdit && onNavigateBack && (
+            {!simpleHeader && firstName && firstNamePrefix && onEdit && onHelp && onNavigateBack && (
                 <SurveyPageEditHeader
                     firstName={firstName}
                     firstNamePrefix={firstNamePrefix}
                     onNavigateBack={onNavigateBack}
                     onEdit={onEdit}
+                    onHelp={onHelp}
                 />
             )}
             {simpleHeader && onNavigateBack && (

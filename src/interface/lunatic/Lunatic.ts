@@ -1,3 +1,4 @@
+import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import {
     AutoCompleteActiviteOption,
     CheckboxOneCustomOption,
@@ -65,6 +66,7 @@ export interface OrchestratorContext {
     idSurvey: string;
     surveyRootPage: EdtRoutesNameEnum;
     isRoute?: boolean;
+    activityOrRoute?: ActivityRouteOrGap;
 }
 
 export interface LoopData {

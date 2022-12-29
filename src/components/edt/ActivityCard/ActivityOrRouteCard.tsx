@@ -1,6 +1,11 @@
-import { Box, Divider, Typography } from "@mui/material";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { Box, Divider, Popover, Typography } from "@mui/material";
+import insideErrorIconSvg from "assets/illustration/error/people.svg";
+import { default as gapIconSvg } from "assets/illustration/error/puzzle.svg";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { makeStylesEdt } from "lunatic-edt";
+import React, { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { getActivityOrRouteDurationLabel } from "service/survey-activity-service";
 
 export const enum InsideAlertTypes {
@@ -12,33 +17,50 @@ export const enum InsideAlertTypes {
 interface ActivityOrRouteCardProps {
     labelledBy: string;
     describedBy: string;
-    onClick(): void;
+    onClick?(): void;
     activityOrRoute: ActivityRouteOrGap;
-    insideAlertIcon: string;
-    insideAlertLabels: {
-        [InsideAlertTypes.PLACE]: string;
-        [InsideAlertTypes.WITHSOMEONE]: string;
-        [InsideAlertTypes.SCREEN]: string;
-    };
-    gapIcon: string;
-    gapLabels: {
-        main: string;
-        secondary: string;
-    };
+    onEdit?(): void;
+    onDelete?(): void;
 }
 
 const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
-    const {
-        labelledBy,
-        describedBy,
-        onClick,
-        activityOrRoute,
-        insideAlertIcon,
-        insideAlertLabels,
-        gapIcon,
-        gapLabels,
-    } = props;
+    const { labelledBy, describedBy, onClick, activityOrRoute, onEdit, onDelete } = props;
+    const { t } = useTranslation();
     const { classes, cx } = useStyles();
+    const insideAlertIcon = insideErrorIconSvg;
+    const insideAlertLabels = {
+        [InsideAlertTypes.PLACE]: t("page.activity-planner.no-place"),
+        [InsideAlertTypes.WITHSOMEONE]: t("page.activity-planner.no-with-someone"),
+        [InsideAlertTypes.SCREEN]: t("page.activity-planner.no-screen"),
+    };
+    const gapIcon = gapIconSvg;
+    const gapLabels = {
+        main: t("page.activity-planner.gap-main"),
+        secondary: t("page.activity-planner.gap-secondary"),
+    };
+
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+    const openPopOver = Boolean(anchorEl);
+    const id = openPopOver ? "edit-or-delete-popover" : undefined;
+
+    const handleClose = (e: any) => {
+        setAnchorEl(null);
+        e.stopPropagation();
+    };
+
+    const onEditIn = useCallback((e: any) => {
+        if (onEdit) {
+            onEdit();
+        }
+        e.stopPropagation();
+    }, []);
+
+    const onDeleteIn = useCallback((e: any) => {
+        if (onDelete) {
+            onDelete();
+        }
+        e.stopPropagation();
+    }, []);
 
     const renderInsideAlert = (type: InsideAlertTypes) => {
         return (
@@ -48,6 +70,11 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
             </Box>
         );
     };
+
+    const onEditCard = useCallback((e: any) => {
+        e.stopPropagation();
+        setAnchorEl(e.currentTarget);
+    }, []);
 
     const renderActivityOrRoute = () => {
         return (
@@ -86,6 +113,33 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                     )}
                     {!activityOrRoute.withScreen && renderInsideAlert(InsideAlertTypes.SCREEN)}
                 </Box>
+                {onEdit && onDelete && (
+                    <Box>
+                        <MoreHorizIcon
+                            className={classes.actionIcon}
+                            onClick={onEditCard}
+                            aria-label="editCardToggle"
+                        ></MoreHorizIcon>
+                        <Popover
+                            id={id}
+                            open={openPopOver}
+                            anchorEl={anchorEl}
+                            onClose={handleClose}
+                            anchorOrigin={{
+                                vertical: "bottom",
+                                horizontal: "left",
+                            }}
+                            className={classes.popOver}
+                        >
+                            <Typography onClick={onEditIn} className={classes.clickableText}>
+                                {t("common.navigation.edit")}
+                            </Typography>
+                            <Typography onClick={onDeleteIn} className={classes.clickableText}>
+                                {t("common.navigation.delete")}
+                            </Typography>
+                        </Popover>
+                    </Box>
+                )}
             </Box>
         );
     };
@@ -160,10 +214,27 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
     gapBox: {
         flexDirection: "column",
         alignItems: "center",
-        border: "1px dashed #B6462C",
+        border: "1px dashed",
+        borderColor: theme.variables.alertActivity,
     },
     gapText: {
         color: theme.variables.alertActivity,
+    },
+    actionIcon: {
+        cursor: "pointer",
+        color: theme.palette.primary.light,
+    },
+    popOver: {
+        "& .MuiPopover-paper": {
+            backgroundColor: theme.variables.white,
+            padding: "0.5rem",
+        },
+    },
+    clickableText: {
+        cursor: "pointer",
+        "&:hover": {
+            color: theme.palette.primary.light,
+        },
     },
 }));
 

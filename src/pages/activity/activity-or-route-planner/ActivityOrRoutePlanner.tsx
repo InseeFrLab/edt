@@ -1,11 +1,13 @@
-import { Box, Typography } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, IconButton, Snackbar, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
-import errorIcon from "assets/illustration/error/puzzle.svg";
+import { default as errorIcon } from "assets/illustration/error/puzzle.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import ActivityOrRouteCard, { InsideAlertTypes } from "components/edt/ActivityCard/ActivityOrRouteCard";
+import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
+import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import {
     Alert,
@@ -14,12 +16,19 @@ import {
     makeStylesEdt,
 } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
-import { getCurrentNavigatePath, saveAndNav, setEnviro } from "service/navigation-service";
+import {
+    getCurrentNavigatePath,
+    navFullPath,
+    navToEditActivity,
+    navToHelp,
+    navToHome,
+    setEnviro,
+} from "service/navigation-service";
 import { getActivitiesOrRoutes } from "service/survey-activity-service";
 import {
     FieldNameEnum,
@@ -28,8 +37,6 @@ import {
     saveData,
     setValue,
 } from "service/survey-service";
-import insideErrorIcon from "assets/illustration/error/people.svg";
-import gapIcon from "assets/illustration/error/puzzle.svg";
 
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
@@ -40,11 +47,16 @@ const ActivityOrRoutePlannerPage = () => {
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
     const [isRoute, setIsRoute] = React.useState(false);
+    const [activityOrRoute, setActivityOrRoute] = React.useState<ActivityRouteOrGap | undefined>(
+        undefined,
+    );
+    const [openSnackbar, setOpenSnackbar] = React.useState(false);
     setEnviro(context, useNavigate(), callbackHolder);
 
     let contextIteration = 0;
 
     const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(context.idSurvey, context.source);
+    const [snackbarText, setSnackbarText] = React.useState<string | undefined>(undefined);
     const surveyDate = getSurveyDate(context.idSurvey) || "";
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
@@ -52,12 +64,6 @@ const ActivityOrRoutePlannerPage = () => {
         content: t("page.alert-when-quit.alert-content-close"),
         cancel: t("page.alert-when-quit.alert-cancel"),
         complete: t("page.alert-when-quit.alert-closed"),
-    };
-
-    const insideAlertLabels = {
-        [InsideAlertTypes.PLACE]: t("page.activity-planner.no-place"),
-        [InsideAlertTypes.WITHSOMEONE]: t("page.activity-planner.no-with-someone"),
-        [InsideAlertTypes.SCREEN]: t("page.activity-planner.no-screen"),
     };
 
     const isChildDisplayed = (path: string): boolean => {
@@ -71,6 +77,16 @@ const ActivityOrRoutePlannerPage = () => {
             LoopEnum.ACTIVITY_OR_ROUTE,
             getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE),
         );
+        if (overlaps.length > 0) {
+            setSnackbarText(
+                t("page.activity-planner.start-alert") +
+                    overlaps
+                        .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
+                        .join(", ") +
+                    t("page.activity-planner.end-alert"),
+            );
+            setOpenSnackbar(true);
+        }
     }, []);
 
     useEffect(() => {
@@ -102,7 +118,6 @@ const ActivityOrRoutePlannerPage = () => {
     };
 
     const onAddRoute = () => {
-        //TODO : check the good path for routes when it will be done
         const loopSize = setLoopSize(
             context.source,
             LoopEnum.ACTIVITY_OR_ROUTE,
@@ -121,7 +136,11 @@ const ActivityOrRoutePlannerPage = () => {
     };
 
     const onEdit = () => {
-        //TODO : sprint 5 edition des données
+        navFullPath(EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION);
+    };
+
+    const onHelp = () => {
+        navToHelp();
     };
 
     const navToActivityOrRoute = (iteration: number, isItRoute?: boolean): void => {
@@ -140,13 +159,39 @@ const ActivityOrRoutePlannerPage = () => {
         setIsAddActivityOrRouteOpen(false);
     };
 
+    const onEditActivityOrRoute = useCallback((iteration: number, activity: ActivityRouteOrGap) => {
+        setActivityOrRoute(activity);
+        navToEditActivity(iteration);
+    }, []);
+
+    const onDeleteActivityOrRoute = useCallback((iteration: number) => {
+        //TODO : delete activity route
+        console.log("delete");
+    }, []);
+
+    const handleCloseSnackBar = useCallback((event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setOpenSnackbar(false);
+    }, []);
+
+    const snackbarAction = (
+        <React.Fragment>
+            <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
+
     return (
         <>
             {!isSubchildDisplayed && (
                 <>
                     <SurveyPage
-                        onNavigateBack={() => saveAndNav()}
+                        onNavigateBack={() => navToHome()}
                         onEdit={onEdit}
+                        onHelp={onHelp}
                         firstName={getPrintedFirstName(context.idSurvey)}
                         firstNamePrefix={t("component.survey-page-edit-header.planning-of")}
                         onFinish={() => onFinish(false)}
@@ -188,15 +233,6 @@ const ActivityOrRoutePlannerPage = () => {
                             </>
                         ) : (
                             <>
-                                {overlaps.length !== 0 && (
-                                    <Typography className={classes.overlaps}>
-                                        Les activités de:{" "}
-                                        {overlaps
-                                            .map(o => o?.prev?.concat(" et ", o?.current || ""))
-                                            .join(", ")}{" "}
-                                        heures se chevauchent
-                                    </Typography>
-                                )}
                                 {activitiesRoutesOrGaps.map((activity, iteration) => (
                                     <FlexCenter key={"activity-" + iteration}>
                                         <ActivityOrRouteCard
@@ -206,13 +242,8 @@ const ActivityOrRoutePlannerPage = () => {
                                                 navToActivityOrRoute(iteration, activity.isRoute)
                                             }
                                             activityOrRoute={activity}
-                                            insideAlertIcon={insideErrorIcon}
-                                            insideAlertLabels={insideAlertLabels}
-                                            gapIcon={gapIcon}
-                                            gapLabels={{
-                                                main: t("page.activity-planner.gap-main"),
-                                                secondary: t("page.activity-planner.gap-secondary"),
-                                            }}
+                                            onEdit={() => onEditActivityOrRoute(iteration, activity)}
+                                            onDelete={() => onDeleteActivityOrRoute(iteration)}
                                         />
                                     </FlexCenter>
                                 ))}
@@ -228,6 +259,21 @@ const ActivityOrRoutePlannerPage = () => {
                         handleClose={onCloseAddActivityOrRoute}
                         open={isAddActivityOrRouteOpen}
                     />
+
+                    {snackbarText && (
+                        <Snackbar
+                            className={classes.snackbar}
+                            open={openSnackbar}
+                            autoHideDuration={10000}
+                            onClose={handleCloseSnackBar}
+                            message={snackbarText}
+                            action={snackbarAction}
+                            anchorOrigin={{
+                                vertical: "bottom",
+                                horizontal: "center",
+                            }}
+                        />
+                    )}
                 </>
             )}
             <Outlet
@@ -237,6 +283,7 @@ const ActivityOrRoutePlannerPage = () => {
                     idSurvey: context.idSurvey,
                     surveyRootPage: context.surveyRootPage,
                     isRoute: isRoute,
+                    activityOrRoute: activityOrRoute,
                 }}
             />
         </>
@@ -244,9 +291,12 @@ const ActivityOrRoutePlannerPage = () => {
 };
 
 const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(theme => ({
-    overlaps: {
-        color: "red",
-        height: "30px",
+    snackbar: {
+        height: "30%",
+        "& .MuiSnackbarContent-root": {
+            backgroundColor: theme.palette.error.light,
+            color: theme.variables.alertActivity,
+        },
     },
     infoBox: {
         width: "350px",

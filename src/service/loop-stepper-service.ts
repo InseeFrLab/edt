@@ -146,6 +146,7 @@ const getLoopPageSubpage = (page: EdtRoutesNameEnum) => {
 
 export {
     loopActivityStepperData,
+    loopActivityRouteStepperData,
     getStepData,
     getPreviousLoopPage,
     getNextLoopPage,

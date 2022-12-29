@@ -1002,6 +1002,67 @@
             "maxLength": 249
         },
         {
+            "componentType": "Input",
+            "bindingDependencies": ["FIRSTNAME"],
+            "response": { "name": "FIRSTNAME" },
+            "hierarchy": {
+                "sequence": { "id": "sequence_1", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "inputtext_firstName2",
+            "page": "11",
+            "label": "\"Vos informations : \"",
+            "placeholder": "Prénom",
+            "mandatory": true,
+            "maxLength": 100,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" La valeur doit être rempli.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(FIRSTNAME)) and length(FIRSTNAME) >= 1"
+                    },
+                    "id": "kze792d8-formatBorneInfSup"
+                }
+            ]
+        },
+        {
+            "componentType": "Datepicker",
+            "bindingDependencies": ["SURVEYDATE"],
+            "min": "1900-01-01",
+            "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
+            "dateFormat": "YYYY-MM-DD",
+            "response": { "name": "SURVEYDATE" },
+            "hierarchy": {
+                "sequence": { "id": "sequence_1", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "datepicker_surveyDate2",
+            "page": "11",
+            "label": "\"La journée de  l'enquête :\"",
+            "mandatory": false,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" La valeur doit être rempli.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(SURVEYDATE)) and length(SURVEYDATE) >= 1"
+                    },
+                    "id": "kze792d8-inputSurveyDate"
+                }
+            ]
+        },
+        {
             "id": "End",
             "componentType": "Sequence",
             "page": "11",
