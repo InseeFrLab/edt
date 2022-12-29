@@ -48,12 +48,13 @@ const WithScreenPage = () => {
     };
 
     const onprevious = () => {
-        const isWithSomeone = getValue(context.idSurvey, FieldNameEnum.WITHSOMEONE, currentIteration);
-        const page = isWithSomeone
-            ? EdtRoutesNameEnum.WITH_SOMEONE_SELECTION
-            : getPreviousLoopPage(currentPage);
-
-        saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
+        saveAndLoopNavigate(
+            EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            currentIteration,
+            FieldNameEnum.WITHSOMEONE,
+            getPreviousLoopPage(currentPage),
+        );
     };
 
     const onClose = (forceQuit: boolean) => {

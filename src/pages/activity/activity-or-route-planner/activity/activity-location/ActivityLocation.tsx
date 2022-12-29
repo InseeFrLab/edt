@@ -65,15 +65,13 @@ const ActivityLocationPage = () => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
-            const hasSecondaryActivity = getValue(
-                context.idSurvey,
-                FieldNameEnum.WITHSECONDARYACTIVITY,
+            saveAndLoopNavigate(
+                EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+                LoopEnum.ACTIVITY_OR_ROUTE,
                 currentIteration,
+                FieldNameEnum.WITHSECONDARYACTIVITY,
+                getPreviousLoopPage(currentPage),
             );
-            const page = hasSecondaryActivity
-                ? EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION
-                : getPreviousLoopPage(currentPage);
-            saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
         },
         nextClickCallback: () => {
             saveAndLoopNavigate(

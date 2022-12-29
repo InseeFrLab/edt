@@ -44,28 +44,23 @@ const SecondaryActivityPage = () => {
     };
 
     const onNext = () => {
-        const hasSecondaryActivity = getValue(
-            context.idSurvey,
-            FieldNameEnum.WITHSECONDARYACTIVITY,
+        saveAndLoopNavigate(
+            EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+            LoopEnum.ACTIVITY_OR_ROUTE,
             currentIteration,
+            FieldNameEnum.WITHSECONDARYACTIVITY,
+            getNextLoopPage(currentPage, context.isRoute),
         );
-        let page = null;
-
-        if (hasSecondaryActivity) {
-            page = EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION;
-        } else {
-            page = getNextLoopPage(currentPage, context.isRoute);
-        }
-        saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
     };
 
     const onPrevious = () => {
-        const goal = getValue(context.idSurvey, FieldNameEnum.GOAL, currentIteration);
-        const page =
-            goal === "" || goal
-                ? EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL
-                : getPreviousLoopPage(currentPage, context.isRoute);
-        saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
+        saveAndLoopNavigate(
+            EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            currentIteration,
+            FieldNameEnum.GOAL,
+            getPreviousLoopPage(currentPage, context.isRoute),
+        );
     };
 
     const onClose = (forceQuit: boolean) => {

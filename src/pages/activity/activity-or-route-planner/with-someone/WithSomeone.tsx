@@ -43,24 +43,24 @@ const WithSomeonePage = () => {
     };
 
     const onNext = () => {
-        const isWithSomeone = getValue(context.idSurvey, FieldNameEnum.WITHSOMEONE, currentIteration);
-        const page = isWithSomeone
-            ? EdtRoutesNameEnum.WITH_SOMEONE_SELECTION
-            : getNextLoopPage(currentPage, context.isRoute);
-        saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
+        saveAndLoopNavigate(
+            EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            currentIteration,
+            FieldNameEnum.WITHSOMEONE,
+            getNextLoopPage(currentPage, context.isRoute),
+        );
     };
 
     const onPrevious = () => {
         if (context.isRoute) {
-            const hasSecondaryActivity = getValue(
-                context.idSurvey,
-                FieldNameEnum.WITHSECONDARYACTIVITY,
+            saveAndLoopNavigate(
+                EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+                LoopEnum.ACTIVITY_OR_ROUTE,
                 currentIteration,
+                FieldNameEnum.WITHSECONDARYACTIVITY,
+                getPreviousLoopPage(currentPage, context.isRoute),
             );
-            const page = hasSecondaryActivity
-                ? EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION
-                : getPreviousLoopPage(currentPage, context.isRoute);
-            saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration);
         } else {
             saveAndLoopNavigate(
                 getPreviousLoopPage(currentPage, context.isRoute),

@@ -1,5 +1,6 @@
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
+import { type } from "os";
 import { SetStateAction } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
@@ -89,6 +90,7 @@ const getCurrentNavigatePath = (
         );
         page = pageOrchestrator?.page;
         parentPage = pageOrchestrator?.parentPage;
+        console.log(page);
     } else {
         const activityIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
         const currentPage = getCurrentPage(surveyData);
@@ -138,9 +140,17 @@ const getPage = (pageNumber: number): OrchestratorEdtNavigation | undefined => {
     );
 };
 
-const saveAndNav = (route?: string): void => {
+const saveAndNav = (
+    route?: string,
+    value?: FieldNameEnum,
+    routeNotSelection?: string,
+    currentIteration?: number,
+): void => {
     saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
-        _navigate(route ? route : "/");
+        if (value) {
+            const conditional = getValue(_context.idSurvey, value, currentIteration);
+            _navigate(conditional ? route : routeNotSelection);
+        } else _navigate(route ? route : "/");
     });
 };
 
@@ -165,13 +175,28 @@ const saveAndNextStep = (rootPage: EdtRoutesNameEnum, currentPage: EdtRoutesName
     );
 };
 
-const saveAndLoopNavigate = (page: EdtRoutesNameEnum, loop: LoopEnum, iteration: number) => {
-    saveAndNav(getLoopParameterizedNavigatePath(page, loop, iteration));
+const saveAndLoopNavigate = (
+    page: EdtRoutesNameEnum,
+    loop: LoopEnum,
+    iteration: number,
+    value?: FieldNameEnum,
+    routeNotSelection?: EdtRoutesNameEnum,
+) => {
+    const pathRoute = getLoopParameterizedNavigatePath(page, loop, iteration);
+    if ((value || (typeof value == "string" && value != "")) && routeNotSelection) {
+        const pathRouteNotSelection = getLoopParameterizedNavigatePath(
+            routeNotSelection,
+            loop,
+            iteration,
+        );
+        saveAndNav(pathRoute, value, pathRouteNotSelection, iteration);
+    } else saveAndNav(pathRoute);
 };
 
 const loopNavigate = (page: EdtRoutesNameEnum, loop: LoopEnum, iteration: number) => {
     _navigate(getLoopParameterizedNavigatePath(page, loop, iteration));
 };
+
 const validateWithAlertAndNav = (
     displayAlert: boolean,
     setDisplayAlert: (value: SetStateAction<boolean>) => void,
