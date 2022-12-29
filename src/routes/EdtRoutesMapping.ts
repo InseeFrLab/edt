@@ -1,36 +1,8 @@
+import { EdtRoutesNameEnum } from "interface/route/EdtRoutesNameEnum";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 
-const enum EdtRoutesNameEnum {
-    HELP = "help",
-    ERROR = "error",
-    ACTIVITY = "activity/:idSurvey",
-    WHO_ARE_YOU = "who-are-you",
-    DAY_OF_SURVEY = "day-of-survey",
-    WORK_TIME = "work-time/:idSurvey",
-    WEEKLY_PLANNER = "weekly-planner",
-    KIND_OF_WEEK = "kind-of-week",
-    ACTIVITY_OR_ROUTE_PLANNER = "activity-or-route-planner",
-    ACTIVITY_DURATION = "activity-duration/:iteration",
-    MAIN_ACTIVITY = "main-activity/:iteration",
-    MAIN_ACTIVITY_GOAL = "main-activity-goal/:iteration",
-    ROUTE = "route/:iteration",
-    SECONDARY_ACTIVITY = "secondary-activity/:iteration",
-    SECONDARY_ACTIVITY_SELECTION = "secondary-activity-selection/:iteration",
-    MEAN_OF_TRANSPORT = "mean-of-transport/:iteration",
-    ACTIVITY_LOCATION = "activity-location/:iteration",
-    WITH_SOMEONE = "with-who/:iteration",
-    WITH_SOMEONE_SELECTION = "with-who-selection/:iteration",
-    WITH_SCREEN = "with-screen/:iteration",
-    GREATEST_ACTIVITY_DAY = "greatest-activity-day",
-    WORST_ACTIVITY_DAY = "worst-activity-day",
-    KIND_OF_DAY = "kind-of-day",
-    EXCEPTIONAL_DAY = "exceptional-day",
-    TRAVEL_TIME = "travel-time",
-    PHONE_TIME = "phone-time",
-}
-
-const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
+let mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY,
         page: EdtRoutesNameEnum.WHO_ARE_YOU,

@@ -79,7 +79,7 @@ const getCurrentNavigatePath = (
     nextPage?: number,
 ): string => {
     const surveyData = getData(idSurvey);
-    const subpage = getCurrentLoopPage(surveyData, loop, iteration, isRoute);
+    const subpage = getCurrentLoopPage(surveyData, loop, iteration, isRoute).step;
 
     let page: EdtRoutesNameEnum | undefined;
     let parentPage: EdtRoutesNameEnum | undefined;
@@ -90,7 +90,6 @@ const getCurrentNavigatePath = (
         );
         page = pageOrchestrator?.page;
         parentPage = pageOrchestrator?.parentPage;
-        console.log(page);
     } else {
         const activityIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
         const currentPage = getCurrentPage(surveyData);
@@ -138,6 +137,17 @@ const getPage = (pageNumber: number): OrchestratorEdtNavigation | undefined => {
     return mappingPageOrchestrator.find(
         page => page.surveyPage && Number(page.surveyPage) == pageNumber,
     );
+};
+
+const getLoopPage = (pageNumber: number): OrchestratorEdtNavigation | undefined => {
+    return mappingPageOrchestrator.find(
+        page => page.surveySubPage && Number(page.surveySubPage) == pageNumber,
+    );
+};
+
+const getSurveySubPage = (page?: EdtRoutesNameEnum): string | undefined => {
+    return mappingPageOrchestrator.find(pageOrch => pageOrch.page && pageOrch.page === page)
+        ?.surveySubPage;
 };
 
 const saveAndNav = (
@@ -226,4 +236,6 @@ export {
     validateWithAlertAndNav,
     setEnviro,
     getPage,
+    getLoopPage,
+    getSurveySubPage,
 };
