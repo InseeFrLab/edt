@@ -164,7 +164,8 @@ const ActivityOrRoutePlannerPage = () => {
         navToEditActivity(iteration);
     }, []);
 
-    const onDeleteActivityOrRoute = useCallback((iteration: number) => {
+    const onDeleteActivityOrRoute = useCallback(() => {
+        //PARAM : iteration: number
         //TODO : delete activity route
         console.log("delete");
     }, []);
@@ -243,7 +244,7 @@ const ActivityOrRoutePlannerPage = () => {
                                             }
                                             activityOrRoute={activity}
                                             onEdit={() => onEditActivityOrRoute(iteration, activity)}
-                                            onDelete={() => onDeleteActivityOrRoute(iteration)}
+                                            onDelete={() => onDeleteActivityOrRoute()}
                                         />
                                     </FlexCenter>
                                 ))}
