@@ -10,6 +10,9 @@
             "validate": "Valider",
             "add": "Ajouter",
             "finish": "Clore",
+            "edit": "Modifier",
+            "delete": "Supprimer",
+            "help": "Aide",
             "back-to-home": "Retourner à l'accueil"
         },
         "stepper": {
@@ -85,20 +88,49 @@
         },
         "activity-planner": {
             "activity-for-day": "Activité de votre journée du",
-            "no-activity": "Aucune activité renseignée"
+            "no-activity": "Activité non renseignée",
+            "no-route": "Trajet non renseigné",
+            "no-mean-of-transport": "Aucun moyen de transport renseigné",
+            "no-secondary-activity": "Activité secondaire non renseignée",
+            "without-secondary-activity": "Sans activité secondaire",
+            "no-place": "Aucun lieu renseigné",
+            "no-with-someone": "Aucune présence renseignée",
+            "alone": "Seul",
+            "no-screen": "Aucun écran renseigné",
+            "with-screen": "Écran utilisé",
+            "without-screen": "Sans écran",
+            "gap-main": "Aucune activité renseignée",
+            "gap-secondary": "Ajouter une activité ou un trajet",
+            "start-alert": "Les heures des activités de : ",
+            "and": " et ",
+            "end-alert": " se chevauchent."
         },
         "secondary-activity": {
             "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",
             "info-bold": "Si vous en faites plusieurs, notez seulement la plus importante"
         },
+        "secondary-activity-selection": {
+            "add-activity-label": "Ajoutez une autre activité",
+            "input-placeholder": "Activité secondaire",
+            "other-button": "Autre ?"
+        },
         "alert-when-quit": {
             "alert-content": "L'ajout de votre activité n'est pas terminé. Souhaitez vous reprendre ou annuler ?",
+            "alert-content-close": "Souhaitez vous clôturer l'activitie?",
             "alert-cancel": "Annuler",
             "alert-complete": "Reprendre",
+            "alert-closed": "Clôture",
             "alt-alert-icon": "alt pour icon no result"
         },
         "kind-of-week": {
             "simple-header-label": "CARACTÉRISTIQUES DE LA SEMAINE"
+        },
+        "complementary-questions": {
+            "simple-header-label": "CARACTÉRISTIQUES DE LA SEMAINE"
+        },
+        "edit-activity-information": {
+            "header": "MODIFIER L'ACTIVITÉ",
+            "what-to-edit": "Que souhaitez-vous modifier ?"
         }
     },
     "component": {
@@ -118,6 +150,12 @@
             "step-4-label": "Lieu",
             "step-5-label": "Présence",
             "step-6-label": "Écran"
+        },
+        "end-activity-stepper": {
+            "step-1-label": "Préférence",
+            "step-2-label": "Type de journée",
+            "step-3-label": "Temps de trajet",
+            "step-4-label": "Temps sur le téléphone"
         },
         "day-card": {
             "day": "Journée"
@@ -171,7 +209,8 @@
                 "end-content": "Merci pour votre participation.",
                 "button": "Revenir à l’accueil",
                 "alt-icon": "alt pour icon modal felicitations activity",
-                "survey-content": "Vous avez complété votre semainier."
+                "survey-content": "Vous avez complété votre semainier.",
+                "activity-content": "Vous avez complété votre 1ère journée."
             }
         }
     }

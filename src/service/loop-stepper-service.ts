@@ -15,6 +15,7 @@ export interface StepData {
     stepLabel: string;
     stepIcon: string;
     stepIconAlt: string;
+    isConditional?: boolean;
 }
 
 const loopActivityStepperData: StepData[] = [
@@ -40,6 +41,14 @@ const loopActivityStepperData: StepData[] = [
         stepIconAlt: t("accessibility.asset.stepper.step-secondary-activity-alt"),
     },
     {
+        page: EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+        stepNumber: 3,
+        stepLabel: t("component.add-activity-stepper.step-3-label"),
+        stepIcon: step3Icon,
+        stepIconAlt: t("accessibility.asset.stepper.step-secondary-activity-alt"),
+        isConditional: true,
+    },
+    {
         page: EdtRoutesNameEnum.ACTIVITY_LOCATION,
         stepNumber: 4,
         stepLabel: t("component.add-activity-stepper.step-4-label"),
@@ -52,6 +61,14 @@ const loopActivityStepperData: StepData[] = [
         stepLabel: t("component.add-activity-stepper.step-5-label"),
         stepIcon: step5Icon,
         stepIconAlt: t("accessibility.asset.stepper.step-with-someone-alt"),
+    },
+    {
+        page: EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
+        stepNumber: 5,
+        stepLabel: t("component.add-activity-stepper.step-5-label"),
+        stepIcon: step5Icon,
+        stepIconAlt: t("accessibility.asset.stepper.step-with-someone-alt"),
+        isConditional: true,
     },
     {
         page: EdtRoutesNameEnum.WITH_SCREEN,
@@ -92,11 +109,27 @@ const loopActivityRouteStepperData: StepData[] = [
         stepIconAlt: t("accessibility.asset.stepper.step-secondary-activity-alt"),
     },
     {
+        page: EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+        stepNumber: 4,
+        stepLabel: t("component.add-activity-stepper.step-3-label"),
+        stepIcon: step3Icon,
+        stepIconAlt: t("accessibility.asset.stepper.step-secondary-activity-alt"),
+        isConditional: true,
+    },
+    {
         page: EdtRoutesNameEnum.WITH_SOMEONE,
         stepNumber: 5,
         stepLabel: t("component.add-activity-stepper.step-5-label"),
         stepIcon: step5Icon,
         stepIconAlt: t("accessibility.asset.stepper.step-with-someone-alt"),
+    },
+    {
+        page: EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
+        stepNumber: 5,
+        stepLabel: t("component.add-activity-stepper.step-5-label"),
+        stepIcon: step5Icon,
+        stepIconAlt: t("accessibility.asset.stepper.step-with-someone-alt"),
+        isConditional: true,
     },
     {
         page: EdtRoutesNameEnum.WITH_SCREEN,
@@ -122,32 +155,50 @@ const getStepData = (page: EdtRoutesNameEnum, isRoute?: boolean): StepData => {
 };
 
 const getNextLoopPage = (currentPage: EdtRoutesNameEnum, isRoute?: boolean) => {
-    if (isRoute) {
-        let index = loopActivityRouteStepperData.findIndex(stepData => stepData.page === currentPage);
-        return loopActivityRouteStepperData[index + 1].page;
-    } else {
-        let index = loopActivityStepperData.findIndex(stepData => stepData.page === currentPage);
-        return loopActivityStepperData[index + 1].page;
-    }
+    const stepper = getStepper(isRoute);
+    let index = stepper.find(stepData => stepData.page === currentPage)?.stepNumber ?? 0;
+    let nextPage =
+        stepper.find(stepData => stepData.stepNumber === index + 1 && !stepData.isConditional) ??
+        stepper[1];
+    return nextPage.page;
 };
+
 const getPreviousLoopPage = (currentPage: EdtRoutesNameEnum, isRoute?: boolean) => {
-    if (isRoute) {
-        let index = loopActivityRouteStepperData.findIndex(stepData => stepData.page === currentPage);
-        return loopActivityRouteStepperData[index - 1].page;
-    } else {
-        let index = loopActivityStepperData.findIndex(stepData => stepData.page === currentPage);
-        return loopActivityStepperData[index - 1].page;
-    }
+    const stepper = getStepper(isRoute);
+    let index = stepper.find(stepData => stepData.page === currentPage)?.stepNumber ?? 0;
+    let previousPage =
+        stepper.find(stepData => stepData.stepNumber === index - 1 && !stepData.isConditional) ??
+        stepper[1];
+    return index > 0 ? previousPage.page : stepper[1].page;
 };
 
 const getLoopPageSubpage = (page: EdtRoutesNameEnum) => {
     return mappingPageOrchestrator.find(pageData => pageData.page === page)?.surveySubPage || "";
 };
 
+const getStepPage = (currentPage?: EdtRoutesNameEnum, isRoute?: boolean) => {
+    const stepper = getStepper(isRoute);
+    const step = stepper.find(stepData => stepData.page === currentPage);
+    return step;
+};
+
+const getLastStep = (isRoute?: boolean) => {
+    const stepper = getStepper(isRoute);
+    return stepper[stepper.length - 1];
+};
+
+const getStepper = (isRoute?: boolean) => {
+    return isRoute ? loopActivityRouteStepperData : loopActivityStepperData;
+};
+
 export {
     loopActivityStepperData,
+    loopActivityRouteStepperData,
     getStepData,
     getPreviousLoopPage,
     getNextLoopPage,
     getLoopPageSubpage,
+    getStepPage,
+    getLastStep,
+    getStepper,
 };

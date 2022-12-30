@@ -1,31 +1,8 @@
+import { EdtRoutesNameEnum } from "interface/route/EdtRoutesNameEnum";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 
-const enum EdtRoutesNameEnum {
-    HELP = "help",
-    ERROR = "error",
-    ACTIVITY = "activity/:idSurvey",
-    WHO_ARE_YOU = "who-are-you",
-    DAY_OF_SURVEY = "day-of-survey",
-    WORK_TIME = "work-time/:idSurvey",
-    WEEKLY_PLANNER = "weekly-planner",
-    KIND_OF_WEEK = "kind-of-week",
-    ACTIVITY_OR_ROUTE_PLANNER = "activity-or-route-planner",
-    ACTIVITY_DURATION = "activity-duration/:iteration",
-    MAIN_ACTIVITY = "main-activity/:iteration",
-    MAIN_ACTIVITY_GOAL = "main-activity-goal/:iteration",
-    ROUTE = "route/:iteration",
-    SECONDARY_ACTIVITY = "secondary-activity/:iteration",
-    ACTIVITY_SECONDARY_ACTIVITY_SELECTION = "activity-secondary-activity-selection/:iteration",
-    ROUTE_SECONDARY_ACTIVITY_SELECTION = "route-secondary-activity-selection/:iteration",
-    MEAN_OF_TRANSPORT = "mean-of-transport/:iteration",
-    ACTIVITY_LOCATION = "activity-location/:iteration",
-    WITH_SOMEONE = "with-who/:iteration",
-    WITH_SOMEONE_SELECTION = "with-who-selection/:iteration",
-    WITH_SCREEN = "with-screen/:iteration",
-}
-
-const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
+let mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY,
         page: EdtRoutesNameEnum.WHO_ARE_YOU,
@@ -118,7 +95,7 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
-        page: EdtRoutesNameEnum.ACTIVITY_SECONDARY_ACTIVITY_SELECTION,
+        page: EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
         surveySource: "activity-survey.json",
         surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
         surveySubPage: "11",
@@ -126,19 +103,53 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
-        page: EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION,
-        surveySource: "activity-survey.json",
-        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
-        surveySubPage: "12",
-        surveyStep: 3,
-    },
-    {
-        parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
         page: EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
         surveySource: "activity-survey.json",
         surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
-        surveySubPage: "13",
+        surveySubPage: "12",
         surveyStep: 5,
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "5",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.WORST_ACTIVITY_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "6",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.KIND_OF_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "7",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.EXCEPTIONAL_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "8",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.TRAVEL_TIME,
+        surveySource: "activity-survey.json",
+        surveyPage: "9",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.PHONE_TIME,
+        surveySource: "activity-survey.json",
+        surveyPage: "10",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
+        surveySource: "activity-survey.json",
+        surveyPage: "11",
     },
     {
         parentPage: EdtRoutesNameEnum.WORK_TIME,
@@ -166,4 +177,17 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
     },
 ];
 
-export { mappingPageOrchestrator, EdtRoutesNameEnum };
+const routesToIgnoreForActivity = [EdtRoutesNameEnum.ROUTE, EdtRoutesNameEnum.MEAN_OF_TRANSPORT];
+
+const routesToIgnoreForRoute = [
+    EdtRoutesNameEnum.MAIN_ACTIVITY,
+    EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
+    EdtRoutesNameEnum.SECONDARY_ACTIVITY,
+    EdtRoutesNameEnum.ACTIVITY_LOCATION,
+    EdtRoutesNameEnum.WITH_SOMEONE,
+    EdtRoutesNameEnum.WITH_SCREEN,
+    EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+    EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
+];
+
+export { mappingPageOrchestrator, EdtRoutesNameEnum, routesToIgnoreForActivity, routesToIgnoreForRoute };

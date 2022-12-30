@@ -1,4 +1,4 @@
-import errorIcon from "assets/illustration/error/puzzle.svg";
+import errorIcon from "assets/illustration/error/activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
@@ -10,13 +10,21 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
-import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
-import { FieldNameEnum, getValue, saveData } from "service/survey-service";
+import {
+    getCurrentNavigatePath,
+    getOrchestratorPage,
+    saveAndLoopNavigate,
+    saveAndNav,
+    setEnviro,
+    validateWithAlertAndNav,
+} from "service/navigation-service";
+import { FieldNameEnum } from "service/survey-service";
 
 const WithScreenPage = () => {
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.WITH_SCREEN;
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
@@ -29,46 +37,37 @@ const WithScreenPage = () => {
         complete: t("page.alert-when-quit.alert-complete"),
     };
 
-    const loopNavigate = (page: EdtRoutesNameEnum) => {
-        navigate(
-            getLoopParameterizedNavigatePath(
-                page,
+    const saveAndGoToActivityPlanner = () => {
+        saveAndNav(
+            getCurrentNavigatePath(
                 context.idSurvey,
-                LoopEnum.ACTIVITY_OR_ROUTE,
-                currentIteration,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
             ),
         );
     };
 
-    const saveAndGoToActivityPlanner = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
-        });
-    };
-
     const onprevious = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                const isWithSomeone = getValue(
-                    context.idSurvey,
-                    FieldNameEnum.WITHSOMEONE,
-                    currentIteration,
-                );
-                if (isWithSomeone) {
-                    loopNavigate(EdtRoutesNameEnum.WITH_SOMEONE_SELECTION);
-                } else {
-                    loopNavigate(getPreviousLoopPage(currentPage));
-                }
-            });
-        });
+        saveAndLoopNavigate(
+            EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            currentIteration,
+            FieldNameEnum.WITHSOMEONE,
+            getPreviousLoopPage(currentPage),
+        );
     };
 
     const onClose = (forceQuit: boolean) => {
-        if (forceQuit) {
-            saveAndGoToActivityPlanner();
-        } else {
-            setIsAlertDisplayed(true);
-        }
+        validateWithAlertAndNav(
+            forceQuit,
+            setIsAlertDisplayed,
+            currentIteration,
+            getCurrentNavigatePath(
+                context.idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            ),
+        );
     };
 
     return (

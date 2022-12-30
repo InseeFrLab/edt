@@ -18,12 +18,19 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
-import { saveData } from "service/survey-service";
+import {
+    getCurrentNavigatePath,
+    getOrchestratorPage,
+    loopNavigate,
+    saveAndLoopNavigate,
+    saveAndNav,
+    setEnviro,
+} from "service/navigation-service";
 
 const MeanOfTransportPage = () => {
-    const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.MEAN_OF_TRANSPORT;
     const stepData = getStepData(currentPage, true);
     const paramIteration = useParams().iteration;
@@ -40,35 +47,30 @@ const MeanOfTransportPage = () => {
         },
     };
 
-    const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            loopNavigate(page);
-        });
-    };
-
-    const loopNavigate = (page: EdtRoutesNameEnum) => {
-        navigate(
-            getLoopParameterizedNavigatePath(
-                page,
+    const saveAndGoToActivityPlanner = () => {
+        saveAndNav(
+            getCurrentNavigatePath(
                 context.idSurvey,
-                LoopEnum.ACTIVITY_OR_ROUTE,
-                currentIteration,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
             ),
         );
     };
 
-    const saveAndGoToActivityPlanner = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
-        });
-    };
-
     const onPrevious = () => {
-        saveAndLoopNavigate(getPreviousLoopPage(currentPage, true));
+        loopNavigate(
+            getPreviousLoopPage(currentPage, true),
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            currentIteration,
+        );
     };
 
     const onNext = () => {
-        saveAndLoopNavigate(getNextLoopPage(currentPage, true));
+        saveAndLoopNavigate(
+            getNextLoopPage(currentPage, true),
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            currentIteration,
+        );
     };
 
     return (

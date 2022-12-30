@@ -1,3 +1,4 @@
+import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import {
     AutoCompleteActiviteOption,
     CheckboxOneCustomOption,
@@ -32,8 +33,11 @@ export const REFERENTIEL_ID = "referentiels";
 export interface ReferentielData extends LunaticData {
     [ReferentielsEnum.ACTIVITYNOMENCLATURE]: NomenclatureActivityOption[];
     [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: AutoCompleteActiviteOption[];
-    [ReferentielsEnum.SECONDARYACTIVITY]: CheckboxOneCustomOption[];
+    [ReferentielsEnum.ROUTE]: CheckboxOneCustomOption[];
+    [ReferentielsEnum.ACTIVITYSECONDARYACTIVITY]: CheckboxOneCustomOption[];
+    [ReferentielsEnum.ROUTESECONDARYACTIVITY]: CheckboxOneCustomOption[];
     [ReferentielsEnum.LOCATION]: CheckboxOneCustomOption[];
+    [ReferentielsEnum.KINDOFWEEK]: CheckboxOneCustomOption[];
 }
 
 export interface LunaticModel {
@@ -63,6 +67,7 @@ export interface OrchestratorContext {
     idSurvey: string;
     surveyRootPage: EdtRoutesNameEnum;
     isRoute?: boolean;
+    activityOrRoute?: ActivityRouteOrGap;
 }
 
 export interface LoopData {

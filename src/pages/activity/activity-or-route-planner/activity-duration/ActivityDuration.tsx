@@ -9,21 +9,27 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
-import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
-import { getActivities } from "service/survey-activity-service";
-import { FieldNameEnum, saveData, setValue } from "service/survey-service";
+import {
+    getLoopParameterizedNavigatePath,
+    navToActivitRouteHome,
+    setEnviro,
+} from "service/navigation-service";
+import { getActivitiesOrRoutes } from "service/survey-activity-service";
+import { FieldNameEnum, getValue, saveData, setValue } from "service/survey-service";
 
-import errorIcon from "assets/illustration/error/puzzle.svg";
+import errorIcon from "assets/illustration/error/activity.svg";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
-    const activitiesAct = getActivities(context.idSurvey);
+    const activitiesAct = getActivitiesOrRoutes(context.idSurvey);
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const alertLabels = {
@@ -34,6 +40,7 @@ const ActivityDurationPage = () => {
 
     const specificProps = {
         activitiesAct: activitiesAct,
+        defaultValue: true,
     };
 
     const onNext = () => {
@@ -48,7 +55,6 @@ const ActivityDurationPage = () => {
                 navigate(
                     getLoopParameterizedNavigatePath(
                         getNextLoopPage(currentPage, context.isRoute),
-                        context.idSurvey,
                         LoopEnum.ACTIVITY_OR_ROUTE,
                         currentIteration,
                     ),
@@ -58,29 +64,25 @@ const ActivityDurationPage = () => {
     };
 
     const onClose = (forceQuit: boolean) => {
-        if (forceQuit) {
-            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                const data = setValue(
-                    context.idSurvey,
-                    FieldNameEnum.ISROUTE,
-                    context.isRoute || false,
-                    currentIteration,
-                );
-                saveData(context.idSurvey, data || {}).then(() => {
-                    navigate(
-                        getCurrentNavigatePath(
-                            context.idSurvey,
-                            EdtRoutesNameEnum.ACTIVITY,
-                            "3",
-                            undefined,
-                            undefined,
-                            context.isRoute,
-                        ),
+        const isCompleted = getValue(context.idSurvey, FieldNameEnum.ISCOMPLETED, currentIteration);
+        if (!isCompleted) {
+            if (forceQuit) {
+                saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+                    const data = setValue(
+                        context.idSurvey,
+                        FieldNameEnum.ISROUTE,
+                        context.isRoute || false,
+                        currentIteration,
                     );
+                    saveData(context.idSurvey, data || {}).then(() => {
+                        navToActivitRouteHome();
+                    });
                 });
-            });
+            } else {
+                setIsAlertDisplayed(true);
+            }
         } else {
-            setIsAlertDisplayed(true);
+            navToActivitRouteHome();
         }
     };
 

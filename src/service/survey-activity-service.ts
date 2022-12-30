@@ -1,56 +1,181 @@
-import { ActivityOrRoute } from "interface/entity/ActivityOrRoute";
+import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
+import { LunaticModel } from "interface/lunatic/Lunatic";
 import { SelectedActivity } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
-import { getLoopSize, LoopEnum } from "service/loop-service";
 import { FieldNameEnum, getValue } from "service/survey-service";
+import { getLoopSize, LoopEnum } from "./loop-service";
 import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
     findPlaceInRef,
+    findRouteInRef,
     findSecondaryActivityInRef,
 } from "./referentiel-service";
-import { LunaticModel } from "interface/lunatic/Lunatic";
 
-const getActivities = (idSurvey: string, source?: LunaticModel): Array<ActivityOrRoute> => {
+const getActivitiesOrRoutes = (
+    idSurvey: string,
+    source?: LunaticModel,
+): {
+    activitiesRoutesOrGaps: ActivityRouteOrGap[];
+    overlaps: { prev: string | undefined; current: string | undefined }[];
+} => {
     const { t } = useTranslation();
-    let activities: ActivityOrRoute[] = [];
+    const overlaps = [];
+    let activitiesRoutes: ActivityRouteOrGap[] = [];
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
     for (let i = 0; i < activityLoopSize; i++) {
-        let activity: ActivityOrRoute = { label: t("common.activity.unknown-activity") + (i + 1) };
-        activity.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean;
-        activity.startTime = getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
-        activity.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
+        let activityOrRoute: ActivityRouteOrGap = {};
+        activityOrRoute.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean | undefined;
+        if (activityOrRoute.isRoute) {
+            activityOrRoute.route = { routeLabel: t("common.activity.unknown-activity") + (i + 1) };
+        } else {
+            activityOrRoute.activity = {
+                activityLabel: t("common.activity.unknown-activity") + (i + 1),
+            };
+        }
+        activityOrRoute.startTime =
+            getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
+        activityOrRoute.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
 
-        // Main activity
-        const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
-        const activitySelection: SelectedActivity = mainActivityValue
-            ? JSON.parse(mainActivityValue.toString())
-            : undefined;
-        activity.label = getActivityLabel(activitySelection) || "";
+        if (activityOrRoute.isRoute) {
+            // Route
+            const routeCode = getValue(idSurvey, FieldNameEnum.ROUTE, i) as string | undefined;
+            if (routeCode) {
+                activityOrRoute.route = {
+                    routeCode: routeCode,
+                    routeLabel: getRouteLabel(routeCode),
+                };
+            }
+
+            //Mean of transport
+            activityOrRoute.meanOfTransportLabels = getMeanOfTransportLabel(idSurvey, i, source);
+        } else {
+            // Main activity
+            const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
+            if (mainActivityValue) {
+                const activitySelection: SelectedActivity = mainActivityValue
+                    ? JSON.parse(mainActivityValue.toString())
+                    : undefined;
+                activityOrRoute.activity = {
+                    activityCode: activitySelection.suggesterId ?? activitySelection.id,
+                    activityLabel: getActivityLabel(activitySelection) || "",
+                };
+            }
+
+            // Location
+            const placeValue = getValue(idSurvey, FieldNameEnum.PLACE, i) as string;
+            if (placeValue) {
+                activityOrRoute.place = {
+                    placeCode: placeValue,
+                    placeLabel: findPlaceInRef(placeValue.toString())?.label,
+                };
+            }
+        }
+
+        // With Secondary activity
+        activityOrRoute.withSecondaryActivity = getValue(
+            idSurvey,
+            FieldNameEnum.WITHSECONDARYACTIVITY,
+            i,
+        ) as boolean | undefined;
+
         // Secondary activity
-        const secondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i);
-        if (secondaryActivityValue) {
-            activity.secondaryActivityLabel = findSecondaryActivityInRef(
-                secondaryActivityValue.toString(),
-            )?.label;
-        }
-        // Location
-        const placeValue = getValue(idSurvey, FieldNameEnum.PLACE, i);
-        if (placeValue) {
-            activity.place = findPlaceInRef(placeValue.toString())?.label;
-        }
-        // With someone
-        const withSomeoneLabel = getWithSomeoneLabels(idSurvey, i, source);
-        if (withSomeoneLabel) {
-            activity.withSomeone = withSomeoneLabel;
+        if (activityOrRoute.withSecondaryActivity) {
+            const secondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i) as
+                | string
+                | undefined;
+            if (secondaryActivityValue) {
+                activityOrRoute.secondaryActivity = {
+                    activityCode: secondaryActivityValue,
+                    activityLabel: findSecondaryActivityInRef(secondaryActivityValue)?.label,
+                };
+            }
         }
 
-        activities.push(activity);
+        // With someone
+        activityOrRoute.withSomeone = getValue(idSurvey, FieldNameEnum.WITHSOMEONE, i) as
+            | boolean
+            | undefined;
+        if (activityOrRoute.withSomeone) {
+            const withSomeoneLabel = getWithSomeoneLabel(idSurvey, i, source);
+            activityOrRoute.withSomeoneLabels = withSomeoneLabel;
+        }
+
+        // Screen
+        activityOrRoute.withScreen = getValue(idSurvey, FieldNameEnum.WITHSCREEN, i) as
+            | boolean
+            | undefined;
+
+        activitiesRoutes.push(activityOrRoute);
     }
-    return activities;
+
+    const sortedActivities = activitiesRoutes.sort(
+        (a, b) => hourToNormalizedTimeStamp(a.startTime) - hourToNormalizedTimeStamp(b.startTime),
+    );
+
+    // Fill the gaps and overlaps
+    let previousActivity: ActivityRouteOrGap | undefined;
+    const copy = [...sortedActivities];
+    for (const act of copy) {
+        // Gaps
+        if (
+            previousActivity &&
+            hourToNormalizedTimeStamp(act.startTime) >
+                hourToNormalizedTimeStamp(previousActivity.endTime)
+        ) {
+            const index = copy.indexOf(act);
+            copy.splice(index, 0, {
+                startTime: previousActivity.endTime,
+                endTime: act.startTime,
+                isGap: true,
+            });
+        }
+        // Overlaps to be completed...
+        if (
+            previousActivity &&
+            hourToNormalizedTimeStamp(act.startTime) -
+                hourToNormalizedTimeStamp(previousActivity.endTime) <
+                0
+        ) {
+            overlaps.push({
+                prev: previousActivity.startTime,
+                current: act.startTime,
+            });
+        }
+        previousActivity = act;
+    }
+
+    return {
+        activitiesRoutesOrGaps: sortedActivities,
+        overlaps: overlaps,
+    };
 };
 
-const getActivityOrRouteDurationLabel = (activity: ActivityOrRoute): string => {
+/**
+ * Convert hour as string (hh:mm) to normalized timestamp
+ * to allow hours comparison
+ * @param hour
+ * @returns
+ */
+const hourToNormalizedTimeStamp = (hour: string | undefined): number => {
+    return new Date(`01/01/1970 ${hour}`).getTime();
+};
+
+const getActivitesSelectedLabel = (idSurvey: string): string[] => {
+    let activitesSelected: string[] = [];
+    getActivitiesOrRoutes(idSurvey).activitiesRoutesOrGaps.forEach(activity => {
+        if (activity?.activity?.activityLabel != null && activity?.activity?.activityLabel.length > 0)
+            activitesSelected.push(activity.activity?.activityLabel);
+        if (
+            activity?.secondaryActivity?.activityLabel != null &&
+            activity?.secondaryActivity?.activityLabel.length > 0
+        )
+            activitesSelected.push(activity.secondaryActivity.activityLabel);
+    });
+    return activitesSelected;
+};
+
+const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string => {
     if (!activity.startTime || !activity.endTime) return "?";
     const startDate = new Date("2000-01-01 " + activity.startTime + ":00");
     const endDate = new Date("2000-01-01 " + activity.endTime + ":00");
@@ -76,7 +201,14 @@ const getActivityLabel = (activity: SelectedActivity | undefined): string | unde
     }
 };
 
-const getWithSomeoneLabels = (
+const getRouteLabel = (routeId: string | undefined): string | undefined => {
+    if (!routeId) {
+        return undefined;
+    }
+    return findRouteInRef(routeId)?.label;
+};
+
+const getWithSomeoneLabel = (
     idSurvey: string,
     i: number,
     source: LunaticModel | undefined,
@@ -105,4 +237,39 @@ const getWithSomeoneLabels = (
     return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
 };
 
-export { getActivities, getActivityOrRouteDurationLabel, getActivityLabel };
+const getMeanOfTransportLabel = (
+    idSurvey: string,
+    i: number,
+    source: LunaticModel | undefined,
+): string | undefined => {
+    const result: any[] = [];
+    const fieldNames = [
+        FieldNameEnum.FOOT,
+        FieldNameEnum.BICYCLE,
+        FieldNameEnum.TWOWHEELSMOTORIZED,
+        FieldNameEnum.PRIVATECAR,
+        FieldNameEnum.OTHERPRIVATE,
+        FieldNameEnum.PUBLIC,
+    ];
+    // TODO should not be parsed for each mean of transport
+    const responses = source?.components
+        .find(c => c.bindingDependencies?.includes(FieldNameEnum.FOOT))
+        ?.components?.find(co => co.bindingDependencies?.includes(FieldNameEnum.FOOT))?.responses;
+    fieldNames.forEach(f => {
+        if (getValue(idSurvey, f, i)) {
+            const label = responses?.find(
+                (r: { response: { name: FieldNameEnum } }) => r.response.name === f,
+            ).label;
+            result.push(label);
+        }
+    });
+
+    return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
+};
+
+export {
+    getActivitiesOrRoutes,
+    getActivitesSelectedLabel,
+    getActivityOrRouteDurationLabel,
+    getActivityLabel,
+};

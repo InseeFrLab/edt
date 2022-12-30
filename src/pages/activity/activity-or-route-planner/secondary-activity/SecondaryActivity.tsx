@@ -15,15 +15,22 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
-import { FieldNameEnum, getValue, saveData } from "service/survey-service";
+import {
+    getCurrentNavigatePath,
+    getOrchestratorPage,
+    saveAndLoopNavigate,
+    setEnviro,
+    validateWithAlertAndNav,
+} from "service/navigation-service";
+import { FieldNameEnum } from "service/survey-service";
 
-import errorIcon from "assets/illustration/error/puzzle.svg";
+import errorIcon from "assets/illustration/error/activity.svg";
 
 const SecondaryActivityPage = () => {
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.SECONDARY_ACTIVITY;
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
@@ -36,62 +43,38 @@ const SecondaryActivityPage = () => {
         complete: t("page.alert-when-quit.alert-complete"),
     };
 
-    const loopNavigate = (page: EdtRoutesNameEnum) => {
-        navigate(
-            getLoopParameterizedNavigatePath(
-                page,
-                context.idSurvey,
-                LoopEnum.ACTIVITY_OR_ROUTE,
-                currentIteration,
-            ),
+    const onNext = () => {
+        saveAndLoopNavigate(
+            EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            currentIteration,
+            FieldNameEnum.WITHSECONDARYACTIVITY,
+            getNextLoopPage(currentPage, context.isRoute),
         );
     };
 
-    const saveAndGoToActivityPlanner = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
-        });
-    };
-
-    const onNext = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            const hasSecondaryActivity = getValue(
-                context.idSurvey,
-                FieldNameEnum.WITHSECONDARYACTIVITY,
-                currentIteration,
-            );
-            if (hasSecondaryActivity) {
-                if (context.isRoute) {
-                    loopNavigate(EdtRoutesNameEnum.ROUTE_SECONDARY_ACTIVITY_SELECTION);
-                } else {
-                    loopNavigate(EdtRoutesNameEnum.ACTIVITY_SECONDARY_ACTIVITY_SELECTION);
-                }
-            } else {
-                loopNavigate(getNextLoopPage(currentPage, context.isRoute));
-            }
-        });
-    };
-
     const onPrevious = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            const goal = getValue(context.idSurvey, FieldNameEnum.GOAL, currentIteration);
-
-            if (goal === "" || goal) {
-                loopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
-            } else {
-                loopNavigate(getPreviousLoopPage(currentPage, context.isRoute));
-            }
-        });
+        saveAndLoopNavigate(
+            EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            currentIteration,
+            FieldNameEnum.GOAL,
+            getPreviousLoopPage(currentPage, context.isRoute),
+        );
     };
 
     const onClose = (forceQuit: boolean) => {
-        if (forceQuit) {
-            saveAndGoToActivityPlanner();
-        } else {
-            setIsAlertDisplayed(true);
-        }
+        validateWithAlertAndNav(
+            forceQuit,
+            setIsAlertDisplayed,
+            currentIteration,
+            getCurrentNavigatePath(
+                context.idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            ),
+        );
     };
-
     return (
         <LoopSurveyPage
             onNext={onNext}

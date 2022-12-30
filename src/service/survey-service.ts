@@ -1,5 +1,6 @@
 import { t } from "i18next";
 import {
+    Collected,
     LunaticData,
     LunaticModel,
     LunaticModelComponent,
@@ -32,7 +33,7 @@ const enum FieldNameEnum {
     SECONDARYACTIVITY = "SECONDARYACTIVITY",
     FOOT = "FOOT",
     BICYCLE = "BICYCLE",
-    TWOWEELSMOTORIZED = "TWOWEELSMOTORIZED",
+    TWOWHEELSMOTORIZED = "TWOWHEELSMOTORIZED",
     PRIVATECAR = "PRIVATECAR",
     OTHERPRIVATE = "OTHERPRIVATE",
     PUBLIC = "PUBLIC",
@@ -48,24 +49,45 @@ const enum FieldNameEnum {
     WORKINGWEEK = "WORKINGWEEK",
     HOLIDAYWEEK = "HOLIDAYWEEK",
     OTHERWEEK = "OTHERWEEK",
+    ISCLOSED = "ISCLOSED",
     ISROUTE = "ISROUTE",
+    ISCOMPLETED = "ISCOMPLETED",
 }
 
-const toIgnoreForRoute = [FieldNameEnum.MAINACTIVITY, FieldNameEnum.PLACE];
+const toIgnore = [
+    FieldNameEnum.LASTNAME,
+    FieldNameEnum.FIRSTNAME,
+    FieldNameEnum.SURVEYDATE,
+    FieldNameEnum.STARTTIME,
+    FieldNameEnum.ENDTIME,
+    FieldNameEnum.WEEKLYPLANNER,
+    FieldNameEnum.WORKINGWEEK,
+    FieldNameEnum.HOLIDAYWEEK,
+    FieldNameEnum.OTHERWEEK,
+    FieldNameEnum.ISCLOSED,
+    FieldNameEnum.ISROUTE,
+];
+
+const toIgnoreForRoute = [FieldNameEnum.PLACE, FieldNameEnum.MAINACTIVITY, FieldNameEnum.GOAL];
+
 const toIgnoreForActivity = [
     FieldNameEnum.ROUTE,
     FieldNameEnum.FOOT,
     FieldNameEnum.BICYCLE,
-    FieldNameEnum.TWOWEELSMOTORIZED,
+    FieldNameEnum.TWOWHEELSMOTORIZED,
     FieldNameEnum.PRIVATECAR,
     FieldNameEnum.OTHERPRIVATE,
+    FieldNameEnum.PUBLIC,
 ];
 
 const enum ReferentielsEnum {
     ACTIVITYNOMENCLATURE = "activityNomenclature",
     ACTIVITYAUTOCOMPLETE = "activityAutocomplete",
-    SECONDARYACTIVITY = "secondaryActivity",
+    ROUTE = "route",
+    ACTIVITYSECONDARYACTIVITY = "activitySecondaryActivity",
+    ROUTESECONDARYACTIVITY = "routeSecondaryActivity",
     LOCATION = "location",
+    KINDOFWEEK = "kindOfWeek",
 }
 
 const initializeDatas = (): Promise<LunaticData[]> => {
@@ -176,7 +198,7 @@ const setValue = (
                 dataAsArray[iteration] = value;
             }
         } else {
-            const variable = {
+            const variable: Collected = {
                 COLLECTED: value,
                 EDITED: null,
                 FORCED: null,
@@ -245,8 +267,8 @@ export {
     getSurveyDate,
     getPrintedSurveyDate,
     getValue,
-    getReferentiel,
     setValue,
+    getReferentiel,
     getComponentId,
     getVariable,
     activitySurveysIds,
@@ -255,4 +277,5 @@ export {
     ReferentielsEnum,
     toIgnoreForRoute,
     toIgnoreForActivity,
+    toIgnore,
 };

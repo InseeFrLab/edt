@@ -39,6 +39,13 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
     const { t } = useTranslation();
     const { idSurvey, iteration } = useParams();
 
+    const lastCompletedStep = getLoopLastCompletedStep(
+        idSurvey ?? "",
+        LoopEnum.ACTIVITY_OR_ROUTE,
+        iteration ? +iteration : 0,
+    );
+
+    //TODO: send isRoute as a parameter
     return (
         <Box className={className}>
             {displayStepper &&
@@ -48,12 +55,10 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
                 currentStepLabel && (
                     <LoopSurveyPageHeader onClose={onClose} label={t("common.stepper.add-activity")}>
                         <AddActivityOrRouteStepper
-                            numberOfSteps={loopActivityStepperData.length}
-                            lastCompletedStepNumber={getLoopLastCompletedStep(
-                                idSurvey ?? "",
-                                LoopEnum.ACTIVITY_OR_ROUTE,
-                                iteration ? +iteration : 0,
-                            )}
+                            numberOfSteps={
+                                loopActivityStepperData[loopActivityStepperData.length - 1].stepNumber
+                            }
+                            lastCompletedStepNumber={lastCompletedStep}
                             currentStepIcon={currentStepIcon}
                             currentStepIconAlt={currentStepIconAlt}
                             currentStepNumber={currentStepNumber}

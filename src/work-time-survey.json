@@ -54,32 +54,8 @@
                 "FORCED": null,
                 "PREVIOUS": null
             },
-            "name": "WORKINGWEEK",
-            "componentRef": "checkboxgroup_weektype"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": null,
-                "EDITED": null,
-                "INPUTED": null,
-                "FORCED": null,
-                "PREVIOUS": null
-            },
-            "name": "HOLIDAYWEEK",
-            "componentRef": "checkboxgroup_weektype"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": null,
-                "EDITED": null,
-                "INPUTED": null,
-                "FORCED": null,
-                "PREVIOUS": null
-            },
-            "name": "OTHERWEEK",
-            "componentRef": "checkboxgroup_weektype"
+            "name": "WEEKTYPE",
+            "componentRef": "checkboxone_weektype"
         },
         {
             "variableType": "CALCULATED",
@@ -190,31 +166,9 @@
             "futureButtonLabel": "Commencer"
         },
         {
-            "componentType": "CheckboxGroupEdt",
-            "bindingDependencies": ["WORKINGWEEK", "HOLIDAYWEEK", "OTHERWEEK"],
-            "responses": [
-                {
-                    "response": {
-                        "name": "WORKINGWEEK"
-                    },
-                    "id": "1",
-                    "label": "\"Semaine normale de travail\""
-                },
-                {
-                    "response": {
-                        "name": "HOLIDAYWEEK"
-                    },
-                    "id": "2",
-                    "label": "\"Semaine de congés\""
-                },
-                {
-                    "response": {
-                        "name": "OTHERWEEK"
-                    },
-                    "id": "3",
-                    "label": "\"Autres (ex : travail et congés, etc)\""
-                }
-            ],
+            "componentType": "CheckboxOneEdt",
+            "bindingDependencies": ["WEEKTYPE"],
+            "response": { "name": "WEEKTYPE" },
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
@@ -222,7 +176,7 @@
                 }
             },
             "conditionFilter": { "value": "true" },
-            "id": "checkboxgroup_weektype",
+            "id": "checkboxone_weektype",
             "page": "4",
             "label": "\"De quel type de semaine s’agissait-il ?\"",
             "mandatory": false

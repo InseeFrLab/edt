@@ -7,7 +7,7 @@
     "missing": false,
     "id": "l8lq5lp6",
     "label": "Time",
-    "maxPage": "5",
+    "maxPage": "10",
     "variables": [
         {
             "variableType": "COLLECTED",
@@ -298,6 +298,138 @@
             "componentRef": ""
         },
         {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "GREATESTACTIVITYDAY",
+            "componentRef": "checkboxone_greatestActivityDay"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "WORSTACTIVITYDAY",
+            "componentRef": "checkboxone_worstActivityDay"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "WORKINGALLDAY",
+            "componentRef": "checkboxgroup_kindofday"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "WORKINGHALFDAY",
+            "componentRef": "checkboxgroup_kindofday"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "NOTWORKINGDAY",
+            "componentRef": "checkboxgroup_kindofday"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "OTHERDAY",
+            "componentRef": "checkboxgroup_kindofday"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "ISCLOSED",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "EXCEPTIONALDAY",
+            "componentRef": "checkboxboolean_exceptionalDay"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "TRAVELTIME",
+            "componentRef": "timepicker_travelTime"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "PHONETIME",
+            "componentRef": "timepicker_phoneTime"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "ISCOMPLETED",
+            "componentRef": ""
+        },
+        {
             "variableType": "CALCULATED",
             "expression": "true",
             "name": "FILTER_RESULT_INPUTTEXT",
@@ -340,7 +472,7 @@
                     "criticality": "ERROR",
                     "errorMessage": {
                         "type": "VTL|MD",
-                        "value": "\" La valeur doit être rempli.\""
+                        "value": "\" Le prénom doit être saisi.\""
                     },
                     "typeOfControl": "FORMAT",
                     "control": {
@@ -371,7 +503,7 @@
                     "criticality": "ERROR",
                     "errorMessage": {
                         "type": "VTL|MD",
-                        "value": "\" La valeur doit être rempli.\""
+                        "value": "\" La date doit être saisie.\""
                     },
                     "typeOfControl": "FORMAT",
                     "control": {
@@ -412,7 +544,7 @@
                 "ROUTE",
                 "FOOT",
                 "BICYCLE",
-                "TWOWEELSMOTORIZED",
+                "TWOWHEELSMOTORIZED",
                 "PRIVATECAR",
                 "OTHERPRIVATE",
                 "PUBLIC",
@@ -426,10 +558,11 @@
                 "OTHERKNOWN",
                 "OTHER",
                 "WITHSCREEN",
-                "ISROUTE"
+                "ISROUTE",
+                "ISCOMPLETED"
             ],
             "loopDependencies": [],
-            "iterations": { "value": "1", "type": "VTL" },
+            "iterations": { "value": "20", "type": "VTL" },
             "components": [
                 {
                     "componentType": "Sequence",
@@ -459,7 +592,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "timepicker_startTime",
                     "page": "4.2",
-                    "label": "\"Heure de début\"",
+                    "tipsLabel": "Heure de début",
                     "mandatory": false,
                     "maxLength": 249
                 },
@@ -477,7 +610,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "timepicker_endTime",
                     "page": "4.2",
-                    "label": "\"Heure de fin\"",
+                    "tipsLabel": "Heure de fin",
                     "mandatory": false,
                     "maxLength": 249
                 },
@@ -513,15 +646,7 @@
                     "id": "icongridcheckboxone_route",
                     "page": "4.4",
                     "label": "\"Quel était le type de trajet ?\"",
-                    "mandatory": false,
-                    "options": [
-                        { "label": "\"Trajet Domicile - Travail\"", "value": "1" },
-                        { "label": "\"Trajet Domicile - Lieu d'étude\"", "value": "2" },
-                        { "label": "\"Trajets liés aux enfants\"", "value": "3" },
-                        { "label": "\"Trajets liés au bénévolat\"", "value": "4" },
-                        { "label": "\"Trajets pour aider un autre ménage\"", "value": "5" },
-                        { "label": "\"Autres trajets\"", "value": "6" }
-                    ]
+                    "mandatory": false
                 },
                 {
                     "componentType": "CheckboxGroupEdt",
@@ -700,36 +825,6 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "CheckboxOneEdt",
-                    "bindingDependencies": ["SECONDARYACTIVITY"],
-                    "response": { "name": "SECONDARYACTIVITY" },
-                    "hierarchy": {
-                        "sequence": {
-                            "id": "law86mv7",
-                            "page": "4.1",
-                            "label": "\"I - \" || \"Sequence\""
-                        }
-                    },
-                    "options": [
-                        {
-                            "label": "\"Écouter la radio, des podcasts ou de la musique\"",
-                            "value": "636/637/638"
-                        },
-                        {
-                            "label": "\"Regarder la télévision, des DVD, des vidéos en ligne\"",
-                            "value": "634,635"
-                        },
-                        { "label": "Conversation", "value": "521" },
-                        { "label": "\"Repas\"", "value": "todetermine" },
-                        { "label": "\"Travail professionnel\"", "value": "211" }
-                    ],
-                    "conditionFilter": { "value": "true" },
-                    "id": "checkboxone_secondaryactivity",
-                    "page": "4.12",
-                    "label": "\"Que faisiez-vous en même temps ?\"",
-                    "mandatory": false
-                },
-                {
                     "componentType": "CheckboxGroupEdt",
                     "bindingDependencies": ["COUPLE", "PARENTS", "CHILD", "OTHERKNOWN", "OTHER"],
                     "responses": [
@@ -778,7 +873,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxgroup_presentpeople",
-                    "page": "4.13",
+                    "page": "4.12",
                     "label": "\"En présence de qui étiez-vous ?\"",
                     "tipsLabel": "Vous pouvez en selectionner plusieurs",
                     "mandatory": false
@@ -786,15 +881,210 @@
             ]
         },
         {
+            "componentType": "CheckboxOneEdt",
+            "bindingDependencies": ["GREATESTACTIVITYDAY"],
+            "response": { "name": "GREATESTACTIVITYDAY" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "law86mv7",
+                    "page": "5",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxone_greatestActivityDay",
+            "page": "5",
+            "label": "\"Quelle a été votre activité la plus agréable durant cette journée ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "CheckboxOneEdt",
+            "bindingDependencies": ["WORSTACTIVITYDAY"],
+            "response": { "name": "WORSTACTIVITYDAY" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "law86mv7",
+                    "page": "6",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxone_worstActivityDay",
+            "page": "6",
+            "label": "\"Quelle a été votre activité la plus désagréable durant cette journée ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "CheckboxGroupEdt",
+            "bindingDependencies": ["WORKINGALLDAY", "WORKINGHALFDAY", "NOTWORKINGDAY", "OTHERDAY"],
+            "responses": [
+                {
+                    "response": {
+                        "name": "WORKINGALLDAY"
+                    },
+                    "id": "1",
+                    "label": "\"Journée normale de travail\""
+                },
+                {
+                    "response": {
+                        "name": "WORKINGHALFDAY"
+                    },
+                    "id": "2",
+                    "label": "\"Journée semi-travaillée\""
+                },
+                {
+                    "response": {
+                        "name": "NOTWORKINGDAY"
+                    },
+                    "id": "3",
+                    "label": "\"Journée non travaillés (repos, férié, congé,…\""
+                },
+                {
+                    "response": {
+                        "name": "OTHERDAY"
+                    },
+                    "id": "4",
+                    "label": "\"Autre cas (pour les personnes n’exerçant pas d’activité professionnelle\""
+                }
+            ],
+            "hierarchy": {
+                "sequence": {
+                    "id": "j6p0ti5h",
+                    "page": "7"
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxgroup_kindofday",
+            "page": "7",
+            "label": "\"De quel type de journée s’agissait-il ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "CheckboxBoolean",
+            "bindingDependencies": ["EXCEPTIONALDAY"],
+            "response": { "name": "EXCEPTIONALDAY" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "law86mv7",
+                    "page": "8",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxboolean_exceptionalDay",
+            "page": "8",
+            "label": "\"Cette journée a-t-elle présenté un caractère exceptionnel ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "Timepicker",
+            "bindingDependencies": ["TRAVELTIME"],
+            "response": { "name": "TRAVELTIME" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "law86mv7",
+                    "page": "9",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "timepicker_travelTime",
+            "page": "9",
+            "label": "\" Au total, combien de temps avez-vous passé en trajets ? \"",
+            "tipsLabel": "Heures et minutes",
+            "mandatory": false,
+            "maxLength": 249
+        },
+        {
+            "componentType": "Timepicker",
+            "bindingDependencies": ["PHONETIME"],
+            "response": { "name": "PHONETIME" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "law86mv7",
+                    "page": "10",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "timepicker_phoneTime",
+            "page": "10",
+            "label": "\" Au total, combien de temps avez-vous passé à consulter votre téléphone (y compris les petits moments de quelques minutes) ? \"",
+            "tipsLabel": "Heures et minutes",
+            "mandatory": false,
+            "maxLength": 249
+        },
+        {
+            "componentType": "Input",
+            "bindingDependencies": ["FIRSTNAME"],
+            "response": { "name": "FIRSTNAME" },
+            "hierarchy": {
+                "sequence": { "id": "sequence_1", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "inputtext_firstName2",
+            "page": "11",
+            "label": "\"Vos informations : \"",
+            "placeholder": "Prénom",
+            "mandatory": true,
+            "maxLength": 100,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" Le prénom doit être saisi.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(FIRSTNAME)) and length(FIRSTNAME) >= 1"
+                    },
+                    "id": "kze792d8-formatBorneInfSup"
+                }
+            ]
+        },
+        {
+            "componentType": "Datepicker",
+            "bindingDependencies": ["SURVEYDATE"],
+            "min": "1900-01-01",
+            "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
+            "dateFormat": "YYYY-MM-DD",
+            "response": { "name": "SURVEYDATE" },
+            "hierarchy": {
+                "sequence": { "id": "sequence_1", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "datepicker_surveyDate2",
+            "page": "11",
+            "label": "\"La journée de  l'enquête :\"",
+            "mandatory": false,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" La date doit être saisie.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(SURVEYDATE)) and length(SURVEYDATE) >= 1"
+                    },
+                    "id": "kze792d8-inputSurveyDate"
+                }
+            ]
+        },
+        {
             "id": "End",
             "componentType": "Sequence",
-            "page": "5",
+            "page": "11",
             "label": { "value": "\"End\"", "type": "VTL|MD" },
             "conditionFilter": { "value": "true" },
             "hierarchy": {
                 "sequence": {
                     "id": "End",
-                    "page": "4",
+                    "page": "11",
                     "label": { "value": "\"End\"", "type": "VTL|MD" }
                 }
             }
