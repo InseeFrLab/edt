@@ -40,13 +40,15 @@ const getActivitiesOrRoutes = (
         if (activityOrRoute.isRoute) {
             // Route
             const routeCode = getValue(idSurvey, FieldNameEnum.ROUTE, i) as string | undefined;
-            activityOrRoute.route = {
-                routeCode: routeCode,
-                routeLabel: getRouteLabel(routeCode),
-            };
+            if (routeCode) {
+                activityOrRoute.route = {
+                    routeCode: routeCode,
+                    routeLabel: getRouteLabel(routeCode),
+                };
+            }
 
             //Mean of transport
-            activityOrRoute.withSomeoneLabels = getMeanOfTransportLabel(idSurvey, i, source);
+            activityOrRoute.meanOfTransportLabels = getMeanOfTransportLabel(idSurvey, i, source);
         } else {
             // Main activity
             const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
