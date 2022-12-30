@@ -1,12 +1,28 @@
 export interface ActivityRouteOrGap {
-    activityLabel?: string;
-    routeLabel?: string;
     isRoute?: boolean;
     startTime?: string;
     endTime?: string;
-    secondaryActivityLabel?: string;
-    place?: string;
-    withSomeone?: string;
+    activity?: Activity;
+    route?: Route;
+    meanOfTransportLabels?: string;
+    withSecondaryActivity?: boolean;
+    secondaryActivity?: Activity;
+    place?: Place;
+    withSomeone?: boolean;
+    withSomeoneLabels?: string;
     withScreen?: boolean;
     isGap?: boolean;
+}
+
+export interface Activity {
+    activityLabel?: string;
+    activityCode?: string;
+}
+export interface Route {
+    routeLabel?: string;
+    routeCode?: string;
+}
+export interface Place {
+    placeLabel?: string;
+    placeCode?: string;
 }

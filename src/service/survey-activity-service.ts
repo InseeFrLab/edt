@@ -25,50 +25,69 @@ const getActivitiesOrRoutes = (
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
     for (let i = 0; i < activityLoopSize; i++) {
         let activityOrRoute: ActivityRouteOrGap = {
-            activityLabel: t("common.activity.unknown-activity") + (i + 1),
+            activity: { activityLabel: t("common.activity.unknown-activity") + (i + 1) },
         };
-        activityOrRoute.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean;
+        activityOrRoute.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean | undefined;
         activityOrRoute.startTime =
             getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
         activityOrRoute.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
 
         if (activityOrRoute.isRoute) {
             // Route
-            const routeValue = getValue(idSurvey, FieldNameEnum.ROUTE, i) as string;
-            activityOrRoute.routeLabel = getRouteLabel(routeValue);
+            const routeCode = getValue(idSurvey, FieldNameEnum.ROUTE, i) as string | undefined;
+            activityOrRoute.route = {
+                routeCode: routeCode,
+                routeLabel: getRouteLabel(routeCode),
+            };
 
             //Mean of transport
             const meanOfTransportValue = "";
         } else {
             // Main activity
             const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
-            const activitySelection: SelectedActivity = mainActivityValue
-                ? JSON.parse(mainActivityValue.toString())
-                : undefined;
-            activityOrRoute.activityLabel = getActivityLabel(activitySelection) || "";
+            if (mainActivityValue) {
+                const activitySelection: SelectedActivity = mainActivityValue
+                    ? JSON.parse(mainActivityValue.toString())
+                    : undefined;
+                activityOrRoute.activity = {
+                    activityCode: activitySelection.suggesterId ?? activitySelection.id,
+                    activityLabel: getActivityLabel(activitySelection) || "",
+                };
+            }
 
             // Location
-            const placeValue = getValue(idSurvey, FieldNameEnum.PLACE, i);
+            const placeValue = getValue(idSurvey, FieldNameEnum.PLACE, i) as string;
             if (placeValue) {
-                activityOrRoute.place = findPlaceInRef(placeValue.toString())?.label;
+                activityOrRoute.place = {
+                    placeCode: placeValue,
+                    placeLabel: findPlaceInRef(placeValue.toString())?.label,
+                };
             }
         }
 
         // Secondary activity
-        const secondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i);
+        const secondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i) as
+            | string
+            | undefined;
         if (secondaryActivityValue) {
-            activityOrRoute.secondaryActivityLabel = findSecondaryActivityInRef(
-                secondaryActivityValue.toString(),
-            )?.label;
+            activityOrRoute.secondaryActivity = {
+                activityCode: secondaryActivityValue,
+                activityLabel: findSecondaryActivityInRef(secondaryActivityValue)?.label,
+            };
         }
         // With someone
-        const withSomeoneLabel = getWithSomeoneLabel(idSurvey, i, source);
-        if (withSomeoneLabel) {
-            activityOrRoute.withSomeone = withSomeoneLabel;
+        activityOrRoute.withSomeone = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i) as
+            | boolean
+            | undefined;
+        if (activityOrRoute.withSomeone) {
+            const withSomeoneLabel = getWithSomeoneLabel(idSurvey, i, source);
+            activityOrRoute.withSomeoneLabels = withSomeoneLabel;
         }
 
         // Screen
-        activityOrRoute.withScreen = getValue(idSurvey, FieldNameEnum.WITHSCREEN, i) as boolean;
+        activityOrRoute.withScreen = getValue(idSurvey, FieldNameEnum.WITHSCREEN, i) as
+            | boolean
+            | undefined;
 
         activitiesRoutes.push(activityOrRoute);
     }
@@ -128,10 +147,13 @@ const hourToNormalizedTimeStamp = (hour: string | undefined): number => {
 const getActivitesSelectedLabel = (idSurvey: string): string[] => {
     let activitesSelected: string[] = [];
     getActivitiesOrRoutes(idSurvey).activitiesRoutesOrGaps.forEach(activity => {
-        if (activity?.activityLabel != null && activity?.activityLabel.length > 0)
-            activitesSelected.push(activity.activityLabel);
-        if (activity?.secondaryActivityLabel != null && activity?.secondaryActivityLabel.length > 0)
-            activitesSelected.push(activity.secondaryActivityLabel);
+        if (activity?.activity?.activityLabel != null && activity?.activity?.activityLabel.length > 0)
+            activitesSelected.push(activity.activity?.activityLabel);
+        if (
+            activity?.secondaryActivity?.activityLabel != null &&
+            activity?.secondaryActivity?.activityLabel.length > 0
+        )
+            activitesSelected.push(activity.secondaryActivity.activityLabel);
     });
     return activitesSelected;
 };

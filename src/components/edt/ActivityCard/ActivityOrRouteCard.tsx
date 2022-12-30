@@ -1,7 +1,9 @@
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Box, Divider, Popover, Typography } from "@mui/material";
-import insideErrorIconSvg from "assets/illustration/error/people.svg";
-import { default as gapIconSvg } from "assets/illustration/error/puzzle.svg";
+import locationErrorIconSvg from "assets/illustration/error/location-error.svg";
+import peopleErrorIconSvg from "assets/illustration/error/people.svg";
+import activityErrorIconSvg, { default as gapIconSvg } from "assets/illustration/error/puzzle.svg";
+import screenErrorIconSvg from "assets/illustration/error/screen.svg";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { makeStylesEdt } from "lunatic-edt";
 import React, { useCallback } from "react";
@@ -10,6 +12,8 @@ import { getActivityOrRouteDurationLabel } from "service/survey-activity-service
 
 export const enum InsideAlertTypes {
     PLACE = "place",
+    MEANOFTRANSPORT = "meanOfTransport",
+    SECONDARYACTIVITY = "secondaryActivity",
     WITHSOMEONE = "withSomeone",
     SCREEN = "screen",
 }
@@ -27,11 +31,27 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const { labelledBy, describedBy, onClick, activityOrRoute, onEdit, onDelete } = props;
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
-    const insideAlertIcon = insideErrorIconSvg;
     const insideAlertLabels = {
-        [InsideAlertTypes.PLACE]: t("page.activity-planner.no-place"),
-        [InsideAlertTypes.WITHSOMEONE]: t("page.activity-planner.no-with-someone"),
-        [InsideAlertTypes.SCREEN]: t("page.activity-planner.no-screen"),
+        [InsideAlertTypes.PLACE]: {
+            icon: locationErrorIconSvg,
+            label: t("page.activity-planner.no-place"),
+        },
+        [InsideAlertTypes.MEANOFTRANSPORT]: {
+            icon: "",
+            label: t("page.activity-planner.no-mean-of-transport"),
+        },
+        [InsideAlertTypes.SECONDARYACTIVITY]: {
+            icon: activityErrorIconSvg,
+            label: t("page.activity-planner.no-secondary-activity"),
+        },
+        [InsideAlertTypes.WITHSOMEONE]: {
+            icon: peopleErrorIconSvg,
+            label: t("page.activity-planner.no-with-someone"),
+        },
+        [InsideAlertTypes.SCREEN]: {
+            icon: screenErrorIconSvg,
+            label: t("page.activity-planner.no-screen"),
+        },
     };
     const gapIcon = gapIconSvg;
     const gapLabels = {
@@ -65,8 +85,11 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const renderInsideAlert = (type: InsideAlertTypes) => {
         return (
             <Box className={classes.insideAlertBox}>
-                <img className={classes.insideAlertIcon} src={insideAlertIcon}></img>
-                <Typography className={classes.insideAlertText}> {insideAlertLabels[type]} </Typography>
+                <img className={classes.insideAlertIcon} src={insideAlertLabels[type].icon}></img>
+                <Typography className={classes.insideAlertText}>
+                    {" "}
+                    {insideAlertLabels[type].label}{" "}
+                </Typography>
             </Box>
         );
     };
@@ -93,25 +116,42 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                 <Box className={classes.dataBox}>
                     <Box className={classes.mainActivityLabel}>
                         {activityOrRoute.isRoute
-                            ? activityOrRoute.routeLabel
-                            : activityOrRoute.activityLabel}
+                            ? activityOrRoute.route?.routeLabel
+                            : activityOrRoute.activity?.activityLabel}
                     </Box>
-                    {activityOrRoute.secondaryActivityLabel && (
+                    {activityOrRoute.isRoute &&
+                        (activityOrRoute.meanOfTransportLabels ? (
+                            <Box className={classes.otherInfoLabel}>
+                                {activityOrRoute.meanOfTransportLabels}
+                            </Box>
+                        ) : (
+                            renderInsideAlert(InsideAlertTypes.MEANOFTRANSPORT)
+                        ))}
+                    {activityOrRoute.secondaryActivity?.activityLabel && (
                         <Box className={classes.otherInfoLabel}>
-                            {activityOrRoute.secondaryActivityLabel}
+                            {activityOrRoute.secondaryActivity.activityLabel}
                         </Box>
                     )}
-                    {activityOrRoute.place ? (
-                        <Box className={classes.otherInfoLabel}>{activityOrRoute.place}</Box>
-                    ) : (
-                        renderInsideAlert(InsideAlertTypes.PLACE)
-                    )}
-                    {activityOrRoute.withSomeone ? (
-                        <Box className={classes.otherInfoLabel}>{activityOrRoute.withSomeone}</Box>
-                    ) : (
+                    {!activityOrRoute.isRoute &&
+                        (activityOrRoute.place ? (
+                            <Box className={classes.otherInfoLabel}>
+                                {activityOrRoute.place.placeLabel}
+                            </Box>
+                        ) : (
+                            renderInsideAlert(InsideAlertTypes.PLACE)
+                        ))}
+                    {activityOrRoute.withSomeone == null ? (
                         renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
+                    ) : (
+                        <Box className={classes.otherInfoLabel}>{activityOrRoute.withSomeoneLabels}</Box>
                     )}
-                    {!activityOrRoute.withScreen && renderInsideAlert(InsideAlertTypes.SCREEN)}
+                    {activityOrRoute.withScreen == null ? (
+                        renderInsideAlert(InsideAlertTypes.SCREEN)
+                    ) : (
+                        <Box className={classes.otherInfoLabel}>
+                            {t("page.activity-planner.with-screen")}
+                        </Box>
+                    )}
                 </Box>
                 {onEdit && onDelete && (
                     <Box>
@@ -194,6 +234,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
     mainActivityLabel: {
         fontWeight: "bold",
         fontSize: "14px",
+        marginBottom: "0.25rem",
     },
     otherInfoLabel: {
         fontSize: "14px",
@@ -204,8 +245,8 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
     },
     insideAlertIcon: {
         marginRight: "0.5rem",
-        width: "3rem",
-        height: "1.5rem",
+        width: "25px",
+        maxHeight: "25px",
     },
     insideAlertText: {
         fontSize: "10px",
