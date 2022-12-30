@@ -460,7 +460,7 @@
                     "criticality": "ERROR",
                     "errorMessage": {
                         "type": "VTL|MD",
-                        "value": "\" La valeur doit être rempli.\""
+                        "value": "\" Le prénom doit être saisi.\""
                     },
                     "typeOfControl": "FORMAT",
                     "control": {
@@ -491,7 +491,7 @@
                     "criticality": "ERROR",
                     "errorMessage": {
                         "type": "VTL|MD",
-                        "value": "\" La valeur doit être rempli.\""
+                        "value": "\" La date doit être saisie.\""
                     },
                     "typeOfControl": "FORMAT",
                     "control": {
@@ -549,7 +549,7 @@
                 "ISROUTE"
             ],
             "loopDependencies": [],
-            "iterations": { "value": "1", "type": "VTL" },
+            "iterations": { "value": "20", "type": "VTL" },
             "components": [
                 {
                     "componentType": "Sequence",
@@ -1020,7 +1020,7 @@
                     "criticality": "ERROR",
                     "errorMessage": {
                         "type": "VTL|MD",
-                        "value": "\" La valeur doit être rempli.\""
+                        "value": "\" Le prénom doit être saisi.\""
                     },
                     "typeOfControl": "FORMAT",
                     "control": {
@@ -1051,7 +1051,7 @@
                     "criticality": "ERROR",
                     "errorMessage": {
                         "type": "VTL|MD",
-                        "value": "\" La valeur doit être rempli.\""
+                        "value": "\" La date doit être saisie.\""
                     },
                     "typeOfControl": "FORMAT",
                     "control": {

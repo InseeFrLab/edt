@@ -21,20 +21,21 @@ const getActivitiesOrRoutes = (
 } => {
     const { t } = useTranslation();
     const overlaps = [];
-    let activities: ActivityRouteOrGap[] = [];
+    let activitiesRoutes: ActivityRouteOrGap[] = [];
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
     for (let i = 0; i < activityLoopSize; i++) {
-        let activity: ActivityRouteOrGap = {
+        let activityOrRoute: ActivityRouteOrGap = {
             activityLabel: t("common.activity.unknown-activity") + (i + 1),
         };
-        activity.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean;
-        activity.startTime = getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
-        activity.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
+        activityOrRoute.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean;
+        activityOrRoute.startTime =
+            getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
+        activityOrRoute.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
 
-        if (activity.isRoute) {
+        if (activityOrRoute.isRoute) {
             // Route
             const routeValue = getValue(idSurvey, FieldNameEnum.ROUTE, i) as string;
-            activity.routeLabel = getRouteLabel(routeValue);
+            activityOrRoute.routeLabel = getRouteLabel(routeValue);
 
             //Mean of transport
             const meanOfTransportValue = "";
@@ -44,35 +45,35 @@ const getActivitiesOrRoutes = (
             const activitySelection: SelectedActivity = mainActivityValue
                 ? JSON.parse(mainActivityValue.toString())
                 : undefined;
-            activity.activityLabel = getActivityLabel(activitySelection) || "";
+            activityOrRoute.activityLabel = getActivityLabel(activitySelection) || "";
 
             // Location
             const placeValue = getValue(idSurvey, FieldNameEnum.PLACE, i);
             if (placeValue) {
-                activity.place = findPlaceInRef(placeValue.toString())?.label;
+                activityOrRoute.place = findPlaceInRef(placeValue.toString())?.label;
             }
         }
 
         // Secondary activity
         const secondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i);
         if (secondaryActivityValue) {
-            activity.secondaryActivityLabel = findSecondaryActivityInRef(
+            activityOrRoute.secondaryActivityLabel = findSecondaryActivityInRef(
                 secondaryActivityValue.toString(),
             )?.label;
         }
         // With someone
         const withSomeoneLabel = getWithSomeoneLabel(idSurvey, i, source);
         if (withSomeoneLabel) {
-            activity.withSomeone = withSomeoneLabel;
+            activityOrRoute.withSomeone = withSomeoneLabel;
         }
 
         // Screen
-        activity.withScreen = getValue(idSurvey, FieldNameEnum.WITHSCREEN, i) as boolean;
+        activityOrRoute.withScreen = getValue(idSurvey, FieldNameEnum.WITHSCREEN, i) as boolean;
 
-        activities.push(activity);
+        activitiesRoutes.push(activityOrRoute);
     }
 
-    const sortedActivities = activities.sort(
+    const sortedActivities = activitiesRoutes.sort(
         (a, b) => hourToNormalizedTimeStamp(a.startTime) - hourToNormalizedTimeStamp(b.startTime),
     );
 

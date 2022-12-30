@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import AddActivityOrRouteStepper from "components/edt/AddActivityOrRouteStepper/AddActivityOrRouteStepper";
-import { lstat } from "fs";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { getLoopLastCompletedStep, LoopEnum } from "service/loop-service";
@@ -46,7 +45,6 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
         iteration ? +iteration : 0,
         false,
     );
-    console.log(lastCompletedStep);
 
     //TODO: send isRoute as a parameter
     return (

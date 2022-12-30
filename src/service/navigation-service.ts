@@ -158,7 +158,11 @@ const saveAndNav = (
     saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
         if (value) {
             const conditional = getValue(_context.idSurvey, value, currentIteration);
-            _navigate(conditional ? route : routeNotSelection);
+            if (conditional || (typeof conditional == "string" && conditional != "")) {
+                _navigate(route);
+            } else {
+                _navigate(routeNotSelection);
+            }
         } else _navigate(route ? route : "/");
     });
 };
@@ -204,7 +208,7 @@ const saveAndLoopNavigate = (
     routeNotSelection?: EdtRoutesNameEnum,
 ) => {
     const pathRoute = getLoopParameterizedNavigatePath(page, loop, iteration);
-    if ((value || (typeof value == "string" && value != "")) && routeNotSelection) {
+    if (value && routeNotSelection) {
         const pathRouteNotSelection = getLoopParameterizedNavigatePath(
             routeNotSelection,
             loop,

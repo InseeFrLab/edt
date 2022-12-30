@@ -79,12 +79,10 @@ const waitThenNext = (pager: any, goNextPage: any, setLoaded: any) => {
             return;
         }
         if (pager.cible === pager.currentPage()) {
-            console.log(`pager.cible : ${pager.cible} , pager.currentPage : ${pager.currentPage()}`);
             setLoaded(true);
             return;
         }
         if (pager.page === pager.maxPage) {
-            console.log("maxpage loaded true");
             setLoaded(true);
             return;
         }
@@ -117,8 +115,6 @@ const myGoToPage = (
     pager.previous = undefined;
     pager.attempts = 10;
     if (pager.cible === pager.currentPage()) {
-        console.log(`pager.cible : ${pager.cible} , pager.currentPage : ${pager.currentPage()}`);
-        console.log("loaded true");
         setLoaded(true);
         return;
     }
