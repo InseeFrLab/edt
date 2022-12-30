@@ -68,7 +68,7 @@ const toIgnore = [
     FieldNameEnum.ISROUTE,
 ];
 
-const toIgnoreForRoute = [FieldNameEnum.PLACE, FieldNameEnum.GOAL];
+const toIgnoreForRoute = [FieldNameEnum.PLACE, FieldNameEnum.MAINACTIVITY, FieldNameEnum.GOAL];
 
 const toIgnoreForActivity = [
     FieldNameEnum.ROUTE,
