@@ -1,8 +1,10 @@
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Box, Divider, Popover, Typography } from "@mui/material";
-import locationErrorIconSvg from "assets/illustration/error/location-error.svg";
+import activityErrorIconSvg, { default as gapIconSvg } from "assets/illustration/error/activity.svg";
+import locationErrorIconSvg from "assets/illustration/error/location.svg";
+import meanOfTransportErrorIconSvg from "assets/illustration/error/mean-of-transport.svg";
 import peopleErrorIconSvg from "assets/illustration/error/people.svg";
-import activityErrorIconSvg, { default as gapIconSvg } from "assets/illustration/error/puzzle.svg";
+import routeErrorIconSvg from "assets/illustration/error/route.svg";
 import screenErrorIconSvg from "assets/illustration/error/screen.svg";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { makeStylesEdt } from "lunatic-edt";
@@ -12,6 +14,8 @@ import { getActivityOrRouteDurationLabel } from "service/survey-activity-service
 
 export const enum InsideAlertTypes {
     PLACE = "place",
+    ACTIVITY = "activity",
+    ROUTE = "route",
     MEANOFTRANSPORT = "meanOfTransport",
     SECONDARYACTIVITY = "secondaryActivity",
     WITHSOMEONE = "withSomeone",
@@ -32,12 +36,20 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
     const insideAlertLabels = {
+        [InsideAlertTypes.ACTIVITY]: {
+            icon: activityErrorIconSvg,
+            label: t("page.activity-planner.no-activity"),
+        },
+        [InsideAlertTypes.ROUTE]: {
+            icon: routeErrorIconSvg,
+            label: t("page.activity-planner.no-route"),
+        },
         [InsideAlertTypes.PLACE]: {
             icon: locationErrorIconSvg,
             label: t("page.activity-planner.no-place"),
         },
         [InsideAlertTypes.MEANOFTRANSPORT]: {
-            icon: "",
+            icon: meanOfTransportErrorIconSvg,
             label: t("page.activity-planner.no-mean-of-transport"),
         },
         [InsideAlertTypes.SECONDARYACTIVITY]: {

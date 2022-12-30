@@ -13,7 +13,7 @@ import {
     setEnviro,
 } from "service/navigation-service";
 
-import errorIcon from "assets/illustration/error/puzzle.svg";
+import errorIcon from "assets/illustration/error/activity.svg";
 import option1 from "assets/illustration/goals/1.svg";
 import option2 from "assets/illustration/goals/2.svg";
 import option3 from "assets/illustration/goals/3.svg";

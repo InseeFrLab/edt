@@ -1,4 +1,4 @@
-import location_error from "assets/illustration/error/location-error.svg";
+import location_error from "assets/illustration/error/location.svg";
 import Error from "components/commons/Error/Error";
 import { useTranslation } from "react-i18next";
 

@@ -1,4 +1,4 @@
-import errorIcon from "assets/illustration/error/puzzle.svg";
+import errorIcon from "assets/illustration/error/activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
@@ -18,7 +18,7 @@ import {
     setEnviro,
     validateWithAlertAndNav,
 } from "service/navigation-service";
-import { FieldNameEnum, getValue } from "service/survey-service";
+import { FieldNameEnum } from "service/survey-service";
 
 const WithScreenPage = () => {
     const { t } = useTranslation();

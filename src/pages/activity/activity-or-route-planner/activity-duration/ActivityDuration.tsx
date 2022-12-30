@@ -18,7 +18,7 @@ import {
 import { getActivitiesOrRoutes } from "service/survey-activity-service";
 import { FieldNameEnum, saveData, setValue } from "service/survey-service";
 
-import errorIcon from "assets/illustration/error/puzzle.svg";
+import errorIcon from "assets/illustration/error/activity.svg";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();

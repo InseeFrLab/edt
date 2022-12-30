@@ -1,4 +1,4 @@
-import errorIcon from "assets/illustration/error/puzzle.svg";
+import errorIcon from "assets/illustration/error/activity.svg";
 import option1 from "assets/illustration/route-categories/1.svg";
 import option2 from "assets/illustration/route-categories/2.svg";
 import option3 from "assets/illustration/route-categories/3.svg";

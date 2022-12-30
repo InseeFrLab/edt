@@ -22,9 +22,9 @@ import {
     setEnviro,
     validateWithAlertAndNav,
 } from "service/navigation-service";
-import { FieldNameEnum, getValue } from "service/survey-service";
+import { FieldNameEnum } from "service/survey-service";
 
-import errorIcon from "assets/illustration/error/puzzle.svg";
+import errorIcon from "assets/illustration/error/activity.svg";
 
 const SecondaryActivityPage = () => {
     const { t } = useTranslation();

@@ -21,10 +21,10 @@ import {
     setEnviro,
     validateWithAlertAndNav,
 } from "service/navigation-service";
-import { FieldNameEnum, getValue } from "service/survey-service";
+import { FieldNameEnum } from "service/survey-service";
 
-import locationErrorIcon from "assets/illustration/error/location-error.svg";
-import errorIcon from "assets/illustration/error/puzzle.svg";
+import errorIcon from "assets/illustration/error/activity.svg";
+import locationErrorIcon from "assets/illustration/error/location.svg";
 import option1 from "assets/illustration/locations/1.svg";
 import option2 from "assets/illustration/locations/2.svg";
 import option3 from "assets/illustration/locations/3.svg";

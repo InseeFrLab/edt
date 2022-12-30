@@ -19,9 +19,9 @@ import {
     setEnviro,
     validateWithAlertAndNav,
 } from "service/navigation-service";
-import { FieldNameEnum, getValue } from "service/survey-service";
+import { FieldNameEnum } from "service/survey-service";
 
-import errorIcon from "assets/illustration/error/puzzle.svg";
+import errorIcon from "assets/illustration/error/activity.svg";
 import { Alert } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 

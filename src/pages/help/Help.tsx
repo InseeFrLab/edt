@@ -1,6 +1,6 @@
+import iconNoResult from "assets/illustration/error/activity.svg";
 import { ClickableList } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
-import iconNoResult from "../../assets/illustration/error/puzzle.svg";
 import activites from "refs/activitesAutoCompleteRef.json";
 
 const HelpPage = () => {

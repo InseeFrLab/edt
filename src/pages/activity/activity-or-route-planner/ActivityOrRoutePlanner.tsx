@@ -1,7 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, IconButton, Snackbar, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
-import { default as errorIcon } from "assets/illustration/error/puzzle.svg";
+import { default as errorIcon } from "assets/illustration/error/activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
