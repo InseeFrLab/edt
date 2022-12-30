@@ -13,10 +13,12 @@ import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
     getOrchestratorPage,
+    navToActivitRouteHome,
+    navToHome,
     setEnviro,
 } from "service/navigation-service";
 import { getActivitiesOrRoutes } from "service/survey-activity-service";
-import { FieldNameEnum, saveData, setValue } from "service/survey-service";
+import { FieldNameEnum, getValue, saveData, setValue } from "service/survey-service";
 
 import errorIcon from "assets/illustration/error/puzzle.svg";
 
@@ -65,29 +67,25 @@ const ActivityDurationPage = () => {
     };
 
     const onClose = (forceQuit: boolean) => {
-        if (forceQuit) {
-            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                const data = setValue(
-                    context.idSurvey,
-                    FieldNameEnum.ISROUTE,
-                    context.isRoute || false,
-                    currentIteration,
-                );
-                saveData(context.idSurvey, data || {}).then(() => {
-                    navigate(
-                        getCurrentNavigatePath(
-                            context.idSurvey,
-                            EdtRoutesNameEnum.ACTIVITY,
-                            getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                            undefined,
-                            undefined,
-                            context.isRoute,
-                        ),
+        const isCompleted = getValue(context.idSurvey, FieldNameEnum.ISCOMPLETED, currentIteration);
+        if (!isCompleted) {
+            if (forceQuit) {
+                saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+                    const data = setValue(
+                        context.idSurvey,
+                        FieldNameEnum.ISROUTE,
+                        context.isRoute || false,
+                        currentIteration,
                     );
+                    saveData(context.idSurvey, data || {}).then(() => {
+                        navToActivitRouteHome();
+                    });
                 });
-            });
+            } else {
+                setIsAlertDisplayed(true);
+            }
         } else {
-            setIsAlertDisplayed(true);
+            navToActivitRouteHome();
         }
     };
 

@@ -43,7 +43,6 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
         idSurvey ?? "",
         LoopEnum.ACTIVITY_OR_ROUTE,
         iteration ? +iteration : 0,
-        false,
     );
 
     //TODO: send isRoute as a parameter

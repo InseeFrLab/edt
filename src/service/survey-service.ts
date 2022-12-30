@@ -51,6 +51,7 @@ const enum FieldNameEnum {
     OTHERWEEK = "OTHERWEEK",
     ISCLOSED = "ISCLOSED",
     ISROUTE = "ISROUTE",
+    ISCOMPLETED = "ISCOMPLETED",
 }
 
 const toIgnore = [
@@ -67,20 +68,7 @@ const toIgnore = [
     FieldNameEnum.ISROUTE,
 ];
 
-const toIgnoreForRoute = [
-    FieldNameEnum.MAINACTIVITY,
-    FieldNameEnum.GOAL,
-    FieldNameEnum.WITHSECONDARYACTIVITY,
-    FieldNameEnum.SECONDARYACTIVITY,
-    FieldNameEnum.PLACE,
-    FieldNameEnum.WITHSOMEONE,
-    FieldNameEnum.COUPLE,
-    FieldNameEnum.PARENTS,
-    FieldNameEnum.CHILD,
-    FieldNameEnum.OTHERKNOWN,
-    FieldNameEnum.OTHER,
-    FieldNameEnum.WITHSCREEN,
-];
+const toIgnoreForRoute = [FieldNameEnum.PLACE, FieldNameEnum.GOAL];
 
 const toIgnoreForActivity = [
     FieldNameEnum.ROUTE,

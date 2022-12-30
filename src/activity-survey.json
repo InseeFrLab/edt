@@ -418,6 +418,18 @@
             "componentRef": "timepicker_phoneTime"
         },
         {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "ISCOMPLETED",
+            "componentRef": ""
+        },
+        {
             "variableType": "CALCULATED",
             "expression": "true",
             "name": "FILTER_RESULT_INPUTTEXT",
@@ -546,7 +558,8 @@
                 "OTHERKNOWN",
                 "OTHER",
                 "WITHSCREEN",
-                "ISROUTE"
+                "ISROUTE",
+                "ISCOMPLETED"
             ],
             "loopDependencies": [],
             "iterations": { "value": "20", "type": "VTL" },

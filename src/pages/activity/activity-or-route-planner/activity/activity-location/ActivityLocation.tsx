@@ -93,6 +93,7 @@ const ActivityLocationPage = () => {
         validateWithAlertAndNav(
             forceQuit,
             setIsAlertDisplayed,
+            currentIteration,
             getCurrentNavigatePath(
                 context.idSurvey,
                 EdtRoutesNameEnum.ACTIVITY,
