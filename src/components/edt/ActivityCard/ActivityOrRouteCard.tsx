@@ -145,9 +145,19 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                         ) : (
                             renderInsideAlert(InsideAlertTypes.MEANOFTRANSPORT)
                         ))}
-                    {activityOrRoute.secondaryActivity?.activityLabel && (
+                    {activityOrRoute.withSecondaryActivity == null ? (
+                        renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
+                    ) : activityOrRoute.withSecondaryActivity ? (
+                        activityOrRoute.secondaryActivity?.activityLabel ? (
+                            <Box className={classes.otherInfoLabel}>
+                                {activityOrRoute.secondaryActivity.activityLabel}
+                            </Box>
+                        ) : (
+                            renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
+                        )
+                    ) : (
                         <Box className={classes.otherInfoLabel}>
-                            {activityOrRoute.secondaryActivity.activityLabel}
+                            {t("page.activity-planner.without-secondary-activity")}
                         </Box>
                     )}
                     {!activityOrRoute.isRoute &&
@@ -161,13 +171,19 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                     {activityOrRoute.withSomeone == null ? (
                         renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
                     ) : (
-                        <Box className={classes.otherInfoLabel}>{activityOrRoute.withSomeoneLabels}</Box>
+                        <Box className={classes.otherInfoLabel}>
+                            {activityOrRoute.withSomeone
+                                ? activityOrRoute.withSomeoneLabels
+                                : t("page.activity-planner.alone")}
+                        </Box>
                     )}
                     {activityOrRoute.withScreen == null ? (
                         renderInsideAlert(InsideAlertTypes.SCREEN)
                     ) : (
                         <Box className={classes.otherInfoLabel}>
-                            {t("page.activity-planner.with-screen")}
+                            {activityOrRoute.withScreen
+                                ? t("page.activity-planner.with-screen")
+                                : t("page.activity-planner.without-screen")}
                         </Box>
                     )}
                 </Box>

@@ -24,10 +24,15 @@ const getActivitiesOrRoutes = (
     let activitiesRoutes: ActivityRouteOrGap[] = [];
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
     for (let i = 0; i < activityLoopSize; i++) {
-        let activityOrRoute: ActivityRouteOrGap = {
-            activity: { activityLabel: t("common.activity.unknown-activity") + (i + 1) },
-        };
+        let activityOrRoute: ActivityRouteOrGap = {};
         activityOrRoute.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean | undefined;
+        if (activityOrRoute.isRoute) {
+            activityOrRoute.route = { routeLabel: t("common.activity.unknown-activity") + (i + 1) };
+        } else {
+            activityOrRoute.activity = {
+                activityLabel: t("common.activity.unknown-activity") + (i + 1),
+            };
+        }
         activityOrRoute.startTime =
             getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
         activityOrRoute.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
@@ -41,7 +46,7 @@ const getActivitiesOrRoutes = (
             };
 
             //Mean of transport
-            const meanOfTransportValue = "";
+            activityOrRoute.withSomeoneLabels = getMeanOfTransportLabel(idSurvey, i, source);
         } else {
             // Main activity
             const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
@@ -65,18 +70,28 @@ const getActivitiesOrRoutes = (
             }
         }
 
+        // With Secondary activity
+        activityOrRoute.withSecondaryActivity = getValue(
+            idSurvey,
+            FieldNameEnum.WITHSECONDARYACTIVITY,
+            i,
+        ) as boolean | undefined;
+
         // Secondary activity
-        const secondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i) as
-            | string
-            | undefined;
-        if (secondaryActivityValue) {
-            activityOrRoute.secondaryActivity = {
-                activityCode: secondaryActivityValue,
-                activityLabel: findSecondaryActivityInRef(secondaryActivityValue)?.label,
-            };
+        if (activityOrRoute.withSecondaryActivity) {
+            const secondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i) as
+                | string
+                | undefined;
+            if (secondaryActivityValue) {
+                activityOrRoute.secondaryActivity = {
+                    activityCode: secondaryActivityValue,
+                    activityLabel: findSecondaryActivityInRef(secondaryActivityValue)?.label,
+                };
+            }
         }
+
         // With someone
-        activityOrRoute.withSomeone = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i) as
+        activityOrRoute.withSomeone = getValue(idSurvey, FieldNameEnum.WITHSOMEONE, i) as
             | boolean
             | undefined;
         if (activityOrRoute.withSomeone) {
@@ -208,6 +223,36 @@ const getWithSomeoneLabel = (
     const responses = source?.components
         .find(c => c.bindingDependencies?.includes(FieldNameEnum.COUPLE))
         ?.components?.find(co => co.bindingDependencies?.includes(FieldNameEnum.COUPLE))?.responses;
+    fieldNames.forEach(f => {
+        if (getValue(idSurvey, f, i)) {
+            const label = responses?.find(
+                (r: { response: { name: FieldNameEnum } }) => r.response.name === f,
+            ).label;
+            result.push(label);
+        }
+    });
+
+    return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
+};
+
+const getMeanOfTransportLabel = (
+    idSurvey: string,
+    i: number,
+    source: LunaticModel | undefined,
+): string | undefined => {
+    const result: any[] = [];
+    const fieldNames = [
+        FieldNameEnum.FOOT,
+        FieldNameEnum.BICYCLE,
+        FieldNameEnum.TWOWHEELSMOTORIZED,
+        FieldNameEnum.PRIVATECAR,
+        FieldNameEnum.OTHERPRIVATE,
+        FieldNameEnum.PUBLIC,
+    ];
+    // TODO should not be parsed for each mean of transport
+    const responses = source?.components
+        .find(c => c.bindingDependencies?.includes(FieldNameEnum.FOOT))
+        ?.components?.find(co => co.bindingDependencies?.includes(FieldNameEnum.FOOT))?.responses;
     fieldNames.forEach(f => {
         if (getValue(idSurvey, f, i)) {
             const label = responses?.find(
