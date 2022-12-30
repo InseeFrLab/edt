@@ -15,8 +15,6 @@ lunaticEDT.notLunaticComponents.forEach((component: React.MemoExoticComponent<an
     lunatic[name] = component;
 });
 
-const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
-
 export const callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } } = {
     getData: () => {
         return {};
@@ -140,7 +138,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         source,
         data,
         {
-            onChange: onLogChange,
             initialPage: subPage
                 ? getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)
                 : page, //Page 3 if we have subpage because we start from the sequence before the loop

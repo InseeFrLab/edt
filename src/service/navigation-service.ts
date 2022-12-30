@@ -78,7 +78,13 @@ const getCurrentNavigatePath = (
     nextPage?: number,
 ): string => {
     const surveyData = getData(idSurvey);
-    const subpage = getCurrentLoopPage(surveyData, loop, iteration, isRoute).step;
+    const subpage = getCurrentLoopPage(
+        idSurvey,
+        surveyData,
+        loop ?? LoopEnum.ACTIVITY_OR_ROUTE,
+        iteration,
+        isRoute,
+    ).step;
 
     let page: EdtRoutesNameEnum | undefined;
     let parentPage: EdtRoutesNameEnum | undefined;
@@ -155,16 +161,30 @@ const saveAndNav = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
-    saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
-        if (value) {
-            const conditional = getValue(_context.idSurvey, value, currentIteration);
-            if (conditional || (typeof conditional == "string" && conditional != "")) {
-                _navigate(route);
-            } else {
-                _navigate(routeNotSelection);
-            }
-        } else _navigate(route ? route : "/");
-    });
+    const isCompleted = getValue(_context.idSurvey, FieldNameEnum.ISCOMPLETED, currentIteration);
+    if (!isCompleted) {
+        saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
+            navToRouteOrRouteNotSelection(route, value, routeNotSelection, currentIteration);
+        });
+    } else {
+        navToRouteOrRouteNotSelection(route, value, routeNotSelection, currentIteration);
+    }
+};
+
+const navToRouteOrRouteNotSelection = (
+    route?: string,
+    value?: FieldNameEnum,
+    routeNotSelection?: string,
+    currentIteration?: number,
+) => {
+    if (value) {
+        const conditional = getValue(_context.idSurvey, value, currentIteration);
+        if (conditional || (typeof conditional == "string" && conditional != "")) {
+            _navigate(route);
+        } else {
+            _navigate(routeNotSelection);
+        }
+    } else _navigate(route ? route : "/");
 };
 
 const navToHome = (): void => {
@@ -173,6 +193,16 @@ const navToHome = (): void => {
 
 const navToHelp = (): void => {
     _navigate(getNavigatePath(EdtRoutesNameEnum.HELP));
+};
+
+const navToActivitRouteHome = () => {
+    _navigate(
+        getCurrentNavigatePath(
+            _context.idSurvey,
+            EdtRoutesNameEnum.ACTIVITY,
+            getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+        ),
+    );
 };
 
 const navFullPath = (route: EdtRoutesNameEnum): void => {
@@ -233,9 +263,11 @@ const navToEditActivity = (iteration: number) => {
 const validateWithAlertAndNav = (
     displayAlert: boolean,
     setDisplayAlert: (value: SetStateAction<boolean>) => void,
+    iteration?: number,
     route?: string,
 ): void => {
-    if (!displayAlert) {
+    const isCompleted = getValue(_context.idSurvey, FieldNameEnum.ISCOMPLETED, iteration);
+    if (!displayAlert && !isCompleted) {
         setDisplayAlert(true);
     } else {
         saveAndNav(route);
@@ -253,6 +285,7 @@ export {
     getNextPage,
     navToHome,
     navToHelp,
+    navToActivitRouteHome,
     navToEditActivity,
     navFullPath,
     saveAndNav,

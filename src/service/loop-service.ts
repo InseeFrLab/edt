@@ -8,9 +8,12 @@ import {
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getCurrentPageSource } from "service/orchestrator-service";
 import {
+    FieldNameEnum,
     getData,
+    getValue,
     getVariable,
-    toIgnore,
+    saveData,
+    setValue,
     toIgnoreForActivity,
     toIgnoreForRoute,
 } from "service/survey-service";
@@ -88,8 +91,9 @@ const skipPage = (
 
 // Give the first loop subpage that don't have any data fill
 const getCurrentLoopPage = (
+    idSurvey: string,
     data: LunaticData | undefined,
-    currentLoop: LoopEnum | undefined,
+    currentLoop: LoopEnum,
     iteration: number | undefined,
     isRoute?: boolean,
 ): {
@@ -115,10 +119,6 @@ const getCurrentLoopPage = (
     for (const component of loop.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
-                if (toIgnore.find(dep => dependency == dep)) {
-                    continue;
-                }
-
                 if (isRoute && toIgnoreForRoute.find(dep => dependency == dep)) {
                     continue;
                 }
@@ -137,6 +137,7 @@ const getCurrentLoopPage = (
             }
         }
     }
+    setLoopCompleted(idSurvey, iteration, currentLoopSubpage > lastLoopSubPage);
     if (currentLoopSubpage > lastLoopSubPage) {
         //means we have fully completed iteration, in this case we want to go back to the first question of the loopPage
         return { step: initialLoopSubPage, completed: true };
@@ -144,19 +145,29 @@ const getCurrentLoopPage = (
     return { step: currentLoopSubpage, completed: false };
 };
 
+const setLoopCompleted = (idSurvey: string, iteration: number | undefined, isCompleted: boolean) => {
+    const completed = setValue(idSurvey, FieldNameEnum.ISCOMPLETED, isCompleted, iteration);
+    if (completed) {
+        saveData(idSurvey, completed);
+    }
+};
+
 const getLoopLastCompletedStep = (
     idSurvey: string,
     currentLoop: LoopEnum,
     iteration: number,
-    isRoute?: boolean,
 ): number => {
     const data = getData(idSurvey);
-    const currentLoopPage = getCurrentLoopPage(data, currentLoop, iteration, isRoute);
+    const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, iteration) as boolean;
+    const currentLoopPage = getCurrentLoopPage(idSurvey, data, currentLoop, iteration, isRoute);
     const lastStep = getLastStep(isRoute).stepNumber;
 
     if (currentLoopPage.completed) return lastStep;
-    const currentStep = getStepPage(getLoopPage(currentLoopPage.step)?.page)?.stepNumber ?? 0;
-    const currentLastCompletedLoopPage = currentStep < lastStep ? currentStep : lastStep;
+
+    const currentPage = getLoopPage(currentLoopPage.step)?.page;
+    const currentStep = getStepPage(currentPage, isRoute)?.stepNumber ?? lastStep + 1;
+    const currentLastCompletedLoopPage = currentStep <= lastStep ? currentStep - 1 : lastStep;
+
     return currentLastCompletedLoopPage;
 };
 
