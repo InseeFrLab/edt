@@ -11,6 +11,7 @@ import activitesAutoCompleteRef from "refs/activitesAutoCompleteRef.json";
 import categoriesAndActivitesNomenclature from "refs/activitiesCategoriesNomenclature.json";
 import placeRef from "refs/placeRef.json";
 import routeRef from "refs/routeRef.json";
+import kindOfWeekRef from "refs/kindOfWeekRef.json";
 import routeSecondaryCategoriesRef from "refs/routeSecondaryActivityRef.json";
 import secondaryCategoriesRef from "refs/secondaryActivityRef.json";
 import { getReferentiel, ReferentielsEnum } from "./survey-service";
@@ -25,6 +26,7 @@ export const fetchReferentiels = (): Promise<ReferentielData> => {
             [ReferentielsEnum.ROUTESECONDARYACTIVITY]: routeSecondaryCategoriesRef,
             [ReferentielsEnum.LOCATION]: placeRef,
             [ReferentielsEnum.ROUTE]: routeRef,
+            [ReferentielsEnum.KINDOFWEEK]: kindOfWeekRef,
         };
         resolve(refs);
     });
@@ -52,6 +54,10 @@ export const getPlaceRef = (): CheckboxOneCustomOption[] => {
 
 export const getRouteRef = (): CheckboxOneCustomOption[] => {
     return getReferentiel(ReferentielsEnum.ROUTE) as CheckboxOneCustomOption[];
+};
+
+export const getKindOfWeekRef = (): CheckboxOneCustomOption[] => {
+    return getReferentiel(ReferentielsEnum.KINDOFWEEK) as CheckboxOneCustomOption[];
 };
 
 export const findActivityInAutoCompleteReferentiel = (

@@ -1,6 +1,5 @@
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
-import { type } from "os";
 import { SetStateAction } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
@@ -164,12 +163,24 @@ const saveAndNav = (
     });
 };
 
+const navToHome = (): void => {
+    _navigate("/");
+};
+
+const navToHelp = (): void => {
+    _navigate(getNavigatePath(EdtRoutesNameEnum.HELP));
+};
+
+const navFullPath = (route: EdtRoutesNameEnum): void => {
+    _navigate(getFullNavigatePath(route));
+};
+
 const saveAndNavFullPath = (route: EdtRoutesNameEnum) => {
     saveAndNav(getFullNavigatePath(route));
 };
 
 /*
-Save and navigate to next step of stepper without lop
+Save and navigate to next step of stepper without loop
 */
 const saveAndNextStep = (rootPage: EdtRoutesNameEnum, currentPage: EdtRoutesNameEnum) => {
     saveAndNav(
@@ -207,6 +218,14 @@ const loopNavigate = (page: EdtRoutesNameEnum, loop: LoopEnum, iteration: number
     _navigate(getLoopParameterizedNavigatePath(page, loop, iteration));
 };
 
+const navToEditActivity = (iteration: number) => {
+    const path =
+        getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, _context.idSurvey) +
+        getNavigatePath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER) +
+        getParameterizedNavigatePath(EdtRoutesNameEnum.EDIT_ACTIVITY_INFORMATION, iteration.toString());
+    _navigate(path);
+};
+
 const validateWithAlertAndNav = (
     displayAlert: boolean,
     setDisplayAlert: (value: SetStateAction<boolean>) => void,
@@ -228,6 +247,10 @@ export {
     getLastCompletedStep,
     getOrchestratorPage,
     getNextPage,
+    navToHome,
+    navToHelp,
+    navToEditActivity,
+    navFullPath,
     saveAndNav,
     saveAndNavFullPath,
     saveAndNextStep,

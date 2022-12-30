@@ -9,10 +9,10 @@ interface SurveyPageSimpleHeaderProps {
 }
 
 const SurveyPageSimpleHeader = (props: SurveyPageSimpleHeaderProps) => {
-    const { simpleHeaderLabel, onNavigateBack } = props;
+    const { simpleHeaderLabel, onNavigateBack, backgroundWhite } = props;
     const { classes, cx } = useStyles();
     return (
-        <Box className={cx(classes.headerBox, classes.headerWhiteBox)}>
+        <Box className={cx(classes.headerBox, backgroundWhite ? classes.headerWhiteBox : "")}>
             <Box>{simpleHeaderLabel}</Box>
             <Box>
                 <CloseIcon className={classes.actionIcon} onClick={onNavigateBack} />

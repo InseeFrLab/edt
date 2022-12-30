@@ -11,6 +11,7 @@ import SecondaryActivityPage from "pages/activity/activity-or-route-planner/seco
 import WithScreenPage from "pages/activity/activity-or-route-planner/with-screen/WithScreen";
 import WithSomeoneSelectionPage from "pages/activity/activity-or-route-planner/with-someone-selection/WithSomeoneSelection";
 import WithSomeonePage from "pages/activity/activity-or-route-planner/with-someone/WithSomeone";
+import EditActivityInformationPage from "pages/activity/edit-activity-information/EditActivityInformation";
 import ExceptionalDayPage from "pages/activity/exceptional-day/ExceptionalDay";
 import GreatestActivityDayPage from "pages/activity/greatest-activity-day/GreatestActivityDay";
 import KindOfDayPage from "pages/activity/kind-of-day/KindOfDay";
@@ -18,6 +19,7 @@ import PhoneTimePage from "pages/activity/phone-time/PhoneTime";
 import TravelTimePage from "pages/activity/travel-time/TravelTime";
 import WorstActivityDayPage from "pages/activity/worst-activity-day/WorstActivityDay";
 import DayOfSurveyPage from "pages/day-of-survey/DayOfSurvey";
+import EditGlobalInformationPage from "pages/edit-global-information/EditGlobalInformation";
 import ErrorPage from "pages/error/Error";
 import HelpPage from "pages/help/Help";
 import HomePage from "pages/home/Home";
@@ -76,6 +78,10 @@ const EdtRoutes = (): JSX.Element => {
                             path={EdtRoutesNameEnum.WITH_SOMEONE_SELECTION}
                             element={<WithSomeoneSelectionPage />}
                         />
+                        <Route
+                            path={EdtRoutesNameEnum.EDIT_ACTIVITY_INFORMATION}
+                            element={<EditActivityInformationPage />}
+                        />
                     </Route>
                     <Route
                         path={EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY}
@@ -89,6 +95,10 @@ const EdtRoutes = (): JSX.Element => {
                     <Route path={EdtRoutesNameEnum.EXCEPTIONAL_DAY} element={<ExceptionalDayPage />} />
                     <Route path={EdtRoutesNameEnum.TRAVEL_TIME} element={<TravelTimePage />} />
                     <Route path={EdtRoutesNameEnum.PHONE_TIME} element={<PhoneTimePage />} />
+                    <Route
+                        path={EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION}
+                        element={<EditGlobalInformationPage />}
+                    />
                 </Route>
                 <Route path={EdtRoutesNameEnum.WORK_TIME} element={<WorkTimePage />}>
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />

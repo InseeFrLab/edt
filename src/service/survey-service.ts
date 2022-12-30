@@ -99,6 +99,7 @@ const enum ReferentielsEnum {
     ACTIVITYSECONDARYACTIVITY = "activitySecondaryActivity",
     ROUTESECONDARYACTIVITY = "routeSecondaryActivity",
     LOCATION = "location",
+    KINDOFWEEK = "kindOfWeek",
 }
 
 const initializeDatas = (): Promise<LunaticData[]> => {
