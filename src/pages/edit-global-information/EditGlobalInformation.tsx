@@ -18,7 +18,6 @@ import {
 const EditGlobalInformationPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { t } = useTranslation();
-    const currentPage = EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION;
 
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
 

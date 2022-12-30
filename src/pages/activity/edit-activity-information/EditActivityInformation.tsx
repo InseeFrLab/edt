@@ -7,21 +7,25 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { makeStylesEdt } from "lunatic-edt";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { LoopEnum } from "service/loop-service";
 import { loopActivityRouteStepperData, loopActivityStepperData } from "service/loop-stepper-service";
-import { navFullPath } from "service/navigation-service";
+import { getLoopParameterizedNavigatePath, navFullPath } from "service/navigation-service";
 
 const EditActivityInformationPage = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
     const { classes } = useStyles();
+    const paramIteration = useParams().iteration;
+    const currentIteration = paramIteration ? +paramIteration : 0;
     const stepsData = context.activityOrRoute?.isRoute
         ? loopActivityRouteStepperData
         : loopActivityStepperData;
 
-    const navToStep = useCallback(() => {
-        console.log("navToStep");
+    const navToStep = useCallback((page: EdtRoutesNameEnum) => {
+        navigate(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     }, []);
 
     return (
@@ -47,7 +51,7 @@ const EditActivityInformationPage = () => {
                 {stepsData.map(stepData => (
                     <StepNavCard
                         key={"nav-to-step-" + stepData.stepNumber}
-                        onClick={() => navToStep()}
+                        onClick={() => navToStep(stepData.page)}
                         labelledBy={""}
                         describedBy={""}
                         stepData={stepData}

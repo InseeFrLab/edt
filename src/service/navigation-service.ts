@@ -161,14 +161,9 @@ const saveAndNav = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
-    const isCompleted = getValue(_context.idSurvey, FieldNameEnum.ISCOMPLETED, currentIteration);
-    if (!isCompleted) {
-        saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
-            navToRouteOrRouteNotSelection(route, value, routeNotSelection, currentIteration);
-        });
-    } else {
+    saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
         navToRouteOrRouteNotSelection(route, value, routeNotSelection, currentIteration);
-    }
+    });
 };
 
 const navToRouteOrRouteNotSelection = (

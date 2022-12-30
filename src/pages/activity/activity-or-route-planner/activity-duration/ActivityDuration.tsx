@@ -10,11 +10,8 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
 import {
-    getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
-    getOrchestratorPage,
     navToActivitRouteHome,
-    navToHome,
     setEnviro,
 } from "service/navigation-service";
 import { getActivitiesOrRoutes } from "service/survey-activity-service";
