@@ -11,6 +11,8 @@ import {
     findRouteInRef,
     findSecondaryActivityInRef,
 } from "./referentiel-service";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 const getActivitiesOrRoutes = (
     idSurvey: string,
@@ -177,13 +179,18 @@ const getActivitesSelectedLabel = (idSurvey: string): string[] => {
 
 const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string => {
     if (!activity.startTime || !activity.endTime) return "?";
-    const startDate = new Date("2000-01-01 " + activity.startTime + ":00");
-    const endDate = new Date("2000-01-01 " + activity.endTime + ":00");
-    const hoursDiff = endDate.getHours() - startDate.getHours();
-    const minutesDiff = endDate.getMinutes() - startDate.getMinutes();
-    const formatedHours = hoursDiff > 0 ? hoursDiff + "h" : "";
-    const formatedMinutes = (minutesDiff === 0 ? "00" : minutesDiff) + (hoursDiff === 0 ? "min" : "");
-    return formatedHours + formatedMinutes;
+
+    dayjs.extend(customParseFormat);
+    const startTime = dayjs(activity.startTime, "HH:mm");
+    const endTime = dayjs(activity.endTime, "HH:mm");
+
+    let diffHours = Math.abs(startTime.diff(endTime, "hour"));
+    let diffMinutes = Math.abs(startTime.diff(endTime, "minute"));
+
+    const formatedHours = diffHours > 0 ? diffHours + "h " : "";
+    const formatedMin = diffMinutes + "min";
+
+    return formatedHours + formatedMin;
 };
 
 const getActivityLabel = (activity: SelectedActivity | undefined): string | undefined => {
