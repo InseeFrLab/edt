@@ -132,6 +132,12 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                             : activityOrRoute.activity?.activityLabel}
                     </Box>
                     {activityOrRoute.isRoute &&
+                        !activityOrRoute.route?.routeCode &&
+                        renderInsideAlert(InsideAlertTypes.ROUTE)}
+                    {!activityOrRoute.isRoute &&
+                        !activityOrRoute.activity?.activityCode &&
+                        renderInsideAlert(InsideAlertTypes.ACTIVITY)}
+                    {activityOrRoute.isRoute &&
                         (activityOrRoute.meanOfTransportLabels ? (
                             <Box className={classes.otherInfoLabel}>
                                 {activityOrRoute.meanOfTransportLabels}
