@@ -5,15 +5,17 @@ import {
     LunaticModelComponent,
     LunaticModelVariable,
 } from "interface/lunatic/Lunatic";
-import {
-    EdtRoutesNameEnum,
-    mappingPageOrchestrator,
-    routesToIgnoreForActivity,
-    routesToIgnoreForRoute,
-} from "routes/EdtRoutesMapping";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getCurrentPageSource } from "service/orchestrator-service";
-import { getData, getVariable, toIgnoreForActivity, toIgnoreForRoute } from "service/survey-service";
-import { getPage } from "./navigation-service";
+import {
+    getData,
+    getVariable,
+    toIgnore,
+    toIgnoreForActivity,
+    toIgnoreForRoute,
+} from "service/survey-service";
+import { getLastStep, getStepPage, getStepper } from "./loop-stepper-service";
+import { getLoopPage, getSurveySubPage } from "./navigation-service";
 
 const enum LoopEnum {
     ACTIVITY_OR_ROUTE = "ACTIVITY_OR_ROUTE",
@@ -56,8 +58,8 @@ const getCurrentLoopPageOfVariable = (
         if (Array.isArray(value) && value[iteration] !== undefined && value[iteration] !== null) {
             //return last fill subpage + 1
             const subpage = component.page ? +component?.page.split(".")[1] : 0;
-            const pageSubpage = getPage(subpage);
-            const currentLoop = skipPage(currentLoopSubpage, pageSubpage?.page, isRoute);
+            const pageSubpage = getLoopPage(subpage);
+            let currentLoop = skipPage(currentLoopSubpage, pageSubpage?.page, isRoute);
             return currentLoop;
         }
         return currentLoopSubpage;
@@ -70,14 +72,18 @@ const skipPage = (
     currentPage?: EdtRoutesNameEnum,
     isRoute?: boolean,
 ): number => {
-    let routeSkip: EdtRoutesNameEnum | undefined;
-    if (isRoute) {
-        routeSkip = routesToIgnoreForRoute.find(route => route === currentPage);
-    } else {
-        routeSkip = routesToIgnoreForActivity.find(route => route === currentPage);
-    }
-    if (routeSkip) return currentLoopSubpage + 1;
-    else return currentLoopSubpage;
+    const lastStep = getLastStep(isRoute)?.stepNumber;
+    const stepper = getStepper(isRoute);
+
+    let index = getStepPage(currentPage, isRoute)?.stepNumber;
+    index = index && index >= lastStep ? lastStep : index;
+
+    const nextPage = stepper.find(stepData => stepData.stepNumber == (index ?? 0) + 1)?.page;
+    const surveySubPage = Number(getSurveySubPage(nextPage) ?? currentLoopSubpage);
+
+    if (nextPage) {
+        return surveySubPage > currentLoopSubpage ? surveySubPage : currentLoopSubpage;
+    } else return Number(getLoopLastSubPage(LoopEnum.ACTIVITY_OR_ROUTE)) + 1;
 };
 
 // Give the first loop subpage that don't have any data fill
@@ -86,19 +92,22 @@ const getCurrentLoopPage = (
     currentLoop: LoopEnum | undefined,
     iteration: number | undefined,
     isRoute?: boolean,
-) => {
+): {
+    step: number;
+    completed: boolean;
+} => {
     if (!currentLoop || iteration === undefined) {
-        return 0;
+        return { step: 0, completed: false };
     }
     const source = getCurrentPageSource();
     if (!data || !source?.components) {
-        return 0;
+        return { step: 0, completed: false };
     }
     const loop = source?.components.find(
         component => component.page === getLoopInitialPage(currentLoop),
     );
     if (!loop || !loop.components) {
-        return 0;
+        return { step: 0, completed: false };
     }
     const initialLoopSubPage = +getLoopInitialSubPage(currentLoop);
     const lastLoopSubPage = +getLoopLastSubPage(currentLoop);
@@ -106,6 +115,10 @@ const getCurrentLoopPage = (
     for (const component of loop.components) {
         if (component.bindingDependencies) {
             for (const dependency of component.bindingDependencies) {
+                if (toIgnore.find(dep => dependency == dep)) {
+                    continue;
+                }
+
                 if (isRoute && toIgnoreForRoute.find(dep => dependency == dep)) {
                     continue;
                 }
@@ -126,9 +139,9 @@ const getCurrentLoopPage = (
     }
     if (currentLoopSubpage > lastLoopSubPage) {
         //means we have fully completed iteration, in this case we want to go back to the first question of the loopPage
-        return initialLoopSubPage;
+        return { step: initialLoopSubPage, completed: true };
     }
-    return currentLoopSubpage;
+    return { step: currentLoopSubpage, completed: false };
 };
 
 const getLoopLastCompletedStep = (
@@ -138,11 +151,13 @@ const getLoopLastCompletedStep = (
     isRoute?: boolean,
 ): number => {
     const data = getData(idSurvey);
-    const currentLastCompletedLoopPage = getCurrentLoopPage(data, currentLoop, iteration, isRoute);
-    const page = mappingPageOrchestrator.find(
-        page => page.surveySubPage && page.surveySubPage === currentLastCompletedLoopPage.toString(),
-    );
-    return page?.surveyStep ?? 0;
+    const currentLoopPage = getCurrentLoopPage(data, currentLoop, iteration, isRoute);
+    const lastStep = getLastStep(isRoute).stepNumber;
+
+    if (currentLoopPage.completed) return lastStep;
+    const currentStep = getStepPage(getLoopPage(currentLoopPage.step)?.page)?.stepNumber ?? 0;
+    const currentLastCompletedLoopPage = currentStep < lastStep ? currentStep : lastStep;
+    return currentLastCompletedLoopPage;
 };
 
 const getLoopSizeOfVariable = (

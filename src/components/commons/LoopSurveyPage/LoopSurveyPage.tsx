@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import AddActivityOrRouteStepper from "components/edt/AddActivityOrRouteStepper/AddActivityOrRouteStepper";
+import { lstat } from "fs";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { getLoopLastCompletedStep, LoopEnum } from "service/loop-service";
@@ -38,6 +39,15 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
 
     const { t } = useTranslation();
     const { idSurvey, iteration } = useParams();
+
+    const lastCompletedStep = getLoopLastCompletedStep(
+        idSurvey ?? "",
+        LoopEnum.ACTIVITY_OR_ROUTE,
+        iteration ? +iteration : 0,
+        false,
+    );
+    console.log(lastCompletedStep);
+
     //TODO: send isRoute as a parameter
     return (
         <Box className={className}>
@@ -48,13 +58,10 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
                 currentStepLabel && (
                     <LoopSurveyPageHeader onClose={onClose} label={t("common.stepper.add-activity")}>
                         <AddActivityOrRouteStepper
-                            numberOfSteps={loopActivityStepperData.length}
-                            lastCompletedStepNumber={getLoopLastCompletedStep(
-                                idSurvey ?? "",
-                                LoopEnum.ACTIVITY_OR_ROUTE,
-                                iteration ? +iteration : 0,
-                                false,
-                            )}
+                            numberOfSteps={
+                                loopActivityStepperData[loopActivityStepperData.length - 1].stepNumber
+                            }
+                            lastCompletedStepNumber={lastCompletedStep}
                             currentStepIcon={currentStepIcon}
                             currentStepIconAlt={currentStepIconAlt}
                             currentStepNumber={currentStepNumber}

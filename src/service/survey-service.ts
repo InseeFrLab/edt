@@ -53,6 +53,20 @@ const enum FieldNameEnum {
     ISROUTE = "ISROUTE",
 }
 
+const toIgnore = [
+    FieldNameEnum.LASTNAME,
+    FieldNameEnum.FIRSTNAME,
+    FieldNameEnum.SURVEYDATE,
+    FieldNameEnum.STARTTIME,
+    FieldNameEnum.ENDTIME,
+    FieldNameEnum.WEEKLYPLANNER,
+    FieldNameEnum.WORKINGWEEK,
+    FieldNameEnum.HOLIDAYWEEK,
+    FieldNameEnum.OTHERWEEK,
+    FieldNameEnum.ISCLOSED,
+    FieldNameEnum.ISROUTE,
+];
+
 const toIgnoreForRoute = [
     FieldNameEnum.MAINACTIVITY,
     FieldNameEnum.GOAL,
@@ -275,4 +289,5 @@ export {
     ReferentielsEnum,
     toIgnoreForRoute,
     toIgnoreForActivity,
+    toIgnore,
 };
