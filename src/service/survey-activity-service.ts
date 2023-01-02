@@ -196,6 +196,47 @@ const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string =
     return formatedHours + formatedMin;
 };
 
+const getTotalTimeOfActivities = (idSurvey: string): number => {
+    const startTimeArray = getValue(idSurvey, FieldNameEnum.STARTTIME) as string[];
+
+    //activity survey
+    if (startTimeArray != null) {
+        const lastTimeArray = getValue(idSurvey, FieldNameEnum.ENDTIME) as string[];
+
+        let totalHourActivities = 0;
+        console.log(startTimeArray);
+        console.log(lastTimeArray);
+        console.log(startTimeArray.length);
+
+        for (let i = 0; i < startTimeArray.length; i++) {
+            const diffTime = getDiffTime(startTimeArray[i], lastTimeArray[i]);
+            totalHourActivities += diffTime;
+        }
+        console.log(totalHourActivities);
+        return totalHourActivities;
+    }
+    //work time survey
+    //TODO: score of work time survey
+    else return 0;
+};
+
+const getScore = (idSurvey: string): string => {
+    const totalHourActivities = getTotalTimeOfActivities(idSurvey);
+    const percentage = (totalHourActivities / 24) * 100;
+    return percentage.toFixed(2);
+};
+
+const getDiffTime = (startTime: string, endTime: string) => {
+    if (startTime == null || endTime == null) return 0;
+    dayjs.extend(customParseFormat);
+
+    const startTimeDay = dayjs(startTime, "HH:mm");
+    const endTimeDay = dayjs(endTime, "HH:mm");
+
+    const diffInHours = Math.abs(startTimeDay.diff(endTimeDay, "hour", true));
+    return diffInHours;
+};
+
 const getActivityLabel = (activity: SelectedActivity | undefined): string | undefined => {
     if (!activity) {
         return undefined;
@@ -282,4 +323,6 @@ export {
     getActivitesSelectedLabel,
     getActivityOrRouteDurationLabel,
     getActivityLabel,
+    getTotalTimeOfActivities,
+    getScore,
 };
