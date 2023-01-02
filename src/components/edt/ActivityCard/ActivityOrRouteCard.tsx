@@ -225,9 +225,10 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                 className={cx(classes.mainCardBox, classes.gapBox)}
                 onClick={() => {
                     if (onClickGap) {
-                        onClickGap(activityOrRoute.startTime, activityOrRoute.endTime)}
-                    }   
-                }>
+                        onClickGap(activityOrRoute.startTime, activityOrRoute.endTime);
+                    }
+                }}
+            >
                 <img className={classes.insideAlertIcon} src={gapIcon}></img>
                 <Typography className={cx(classes.mainActivityLabel, classes.gapText)}>
                     {" "}

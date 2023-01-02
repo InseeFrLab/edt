@@ -84,10 +84,10 @@ const ActivityOrRoutePlannerPage = () => {
         if (overlaps.length > 0) {
             setSnackbarText(
                 t("page.activity-planner.start-alert") +
-                overlaps
-                    .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
-                    .join(", ") +
-                t("page.activity-planner.end-alert"),
+                    overlaps
+                        .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
+                        .join(", ") +
+                    t("page.activity-planner.end-alert"),
             );
             setOpenSnackbar(true);
         }
@@ -121,7 +121,11 @@ const ActivityOrRoutePlannerPage = () => {
         navToActivityOrRoute(contextIteration, isRoute);
     };
 
-    const onAddActivityOrRouteFromGap = (isRoute: boolean, startTime: string | undefined, endTime: string | undefined) => {
+    const onAddActivityOrRouteFromGap = (
+        isRoute: boolean,
+        startTime: string | undefined,
+        endTime: string | undefined,
+    ) => {
         const loopSize = setLoopSize(
             context.source,
             LoopEnum.ACTIVITY_OR_ROUTE,
@@ -149,7 +153,6 @@ const ActivityOrRoutePlannerPage = () => {
             });
         });
     };
-
 
     const onOpenAddActivityOrRoute = (startTime?: string, endTime?: string) => {
         setIsAddActivityOrRouteOpen(true);
@@ -264,17 +267,22 @@ const ActivityOrRoutePlannerPage = () => {
                             </>
                         ) : (
                             <>
-                                {activitiesRoutesOrGaps.map((activity) => (
+                                {activitiesRoutesOrGaps.map(activity => (
                                     <FlexCenter key={uuidv4()}>
                                         <ActivityOrRouteCard
                                             labelledBy={""}
                                             describedBy={""}
                                             onClick={() =>
-                                                navToActivityOrRoute(activity.iteration || 0, activity.isRoute)
+                                                navToActivityOrRoute(
+                                                    activity.iteration || 0,
+                                                    activity.isRoute,
+                                                )
                                             }
                                             onClickGap={onOpenAddActivityOrRoute}
                                             activityOrRoute={activity}
-                                            onEdit={() => onEditActivityOrRoute(activity.iteration || 0, activity)}
+                                            onEdit={() =>
+                                                onEditActivityOrRoute(activity.iteration || 0, activity)
+                                            }
                                             onDelete={() => onDeleteActivityOrRoute()}
                                         />
                                     </FlexCenter>
@@ -286,8 +294,16 @@ const ActivityOrRoutePlannerPage = () => {
                     <AddActivityOrRoute
                         labelledBy={""}
                         describedBy={""}
-                        onClickActivity={addActivityOrRouteFromGap ? () => onAddActivityOrRouteFromGap(false, gapStartTime, gapEndTime) : () => onAddActivityOrRoute(false)}
-                        onClickRoute={addActivityOrRouteFromGap ? () => onAddActivityOrRouteFromGap(true, gapStartTime, gapEndTime) : () => onAddActivityOrRoute(true)}
+                        onClickActivity={
+                            addActivityOrRouteFromGap
+                                ? () => onAddActivityOrRouteFromGap(false, gapStartTime, gapEndTime)
+                                : () => onAddActivityOrRoute(false)
+                        }
+                        onClickRoute={
+                            addActivityOrRouteFromGap
+                                ? () => onAddActivityOrRouteFromGap(true, gapStartTime, gapEndTime)
+                                : () => onAddActivityOrRoute(true)
+                        }
                         handleClose={onCloseAddActivityOrRoute}
                         open={isAddActivityOrRouteOpen}
                     />

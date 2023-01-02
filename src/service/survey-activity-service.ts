@@ -27,7 +27,7 @@ const getActivitiesOrRoutes = (
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
     for (let i = 0; i < activityLoopSize; i++) {
         let activityOrRoute: ActivityRouteOrGap = {};
-        activityOrRoute.iteration= i;
+        activityOrRoute.iteration = i;
         activityOrRoute.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean | undefined;
         if (activityOrRoute.isRoute) {
             activityOrRoute.route = { routeLabel: t("common.activity.unknown-activity") + (i + 1) };

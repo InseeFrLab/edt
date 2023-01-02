@@ -12,7 +12,7 @@ export interface ActivityRouteOrGap {
     withSomeoneLabels?: string;
     withScreen?: boolean;
     isGap?: boolean;
-    iteration?:number;
+    iteration?: number;
 }
 
 export interface Activity {
