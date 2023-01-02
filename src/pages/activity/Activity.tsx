@@ -53,8 +53,7 @@ const ActivityPage = () => {
             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, tabData.idSurvey));
             reload();
         } else {
-            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.WEEKLY_PLANNER, tabData.idSurvey));
-            reload();
+            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, tabData.idSurvey));
         }
     }, []);
 
