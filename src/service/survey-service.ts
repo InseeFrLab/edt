@@ -175,6 +175,15 @@ const getComponentId = (variableName: FieldNameEnum, source: LunaticModel) => {
     return source?.variables.find(variable => variable.name === variableName)?.componentRef;
 };
 
+const getComponentsOfVariable = (
+    variableName: FieldNameEnum,
+    source: LunaticModel,
+): LunaticModelComponent[] => {
+    return source?.components.filter(
+        component => component.response && component.response["name"] == variableName,
+    );
+};
+
 const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
     if (iteration != null) {
         let value = datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
@@ -270,6 +279,7 @@ export {
     setValue,
     getReferentiel,
     getComponentId,
+    getComponentsOfVariable,
     getVariable,
     activitySurveysIds,
     workingTimeSurveysIds,

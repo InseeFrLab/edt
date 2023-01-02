@@ -52,6 +52,8 @@ export interface LunaticModelComponent {
     iterations?: { value: string };
     components?: LunaticModelComponent[];
     responses?: any;
+    response?: any;
+    id?: string;
 }
 
 export interface LunaticModelVariable {
