@@ -48,6 +48,7 @@ const HomePage = () => {
                         }
                         firstName={getPrintedFirstName(idSurvey)}
                         surveyDate={getPrintedSurveyDate(idSurvey)}
+                        idSurvey={idSurvey}
                     />
                 ))}
 
