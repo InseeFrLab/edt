@@ -31,7 +31,8 @@
             "person": "PERSONNE"
         },
         "activity": {
-            "unknown-activity": "Activité "
+            "unknown-activity": "Activité ",
+            "unknown-route": "Trajet "
         }
     },
     "accessibility": {

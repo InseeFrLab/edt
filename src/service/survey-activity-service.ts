@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { SelectedActivity } from "lunatic-edt";
@@ -11,8 +13,6 @@ import {
     findRouteInRef,
     findSecondaryActivityInRef,
 } from "./referentiel-service";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 
 const getActivitiesOrRoutes = (
     idSurvey: string,
@@ -30,7 +30,7 @@ const getActivitiesOrRoutes = (
         activityOrRoute.iteration = i;
         activityOrRoute.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean | undefined;
         if (activityOrRoute.isRoute) {
-            activityOrRoute.route = { routeLabel: t("common.activity.unknown-activity") + (i + 1) };
+            activityOrRoute.route = { routeLabel: t("common.activity.unknown-route") + (i + 1) };
         } else {
             activityOrRoute.activity = {
                 activityLabel: t("common.activity.unknown-activity") + (i + 1),
