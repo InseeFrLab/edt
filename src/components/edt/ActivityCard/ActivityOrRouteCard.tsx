@@ -26,13 +26,14 @@ interface ActivityOrRouteCardProps {
     labelledBy: string;
     describedBy: string;
     onClick?(): void;
+    onClickGap?(startTime: string | undefined, endTime: string | undefined): void;
     activityOrRoute: ActivityRouteOrGap;
     onEdit?(): void;
     onDelete?(): void;
 }
 
 const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
-    const { labelledBy, describedBy, onClick, activityOrRoute, onEdit, onDelete } = props;
+    const { labelledBy, describedBy, onClick, onClickGap, activityOrRoute, onEdit, onDelete } = props;
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
     const insideAlertLabels = {
@@ -220,7 +221,13 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
 
     const renderGap = () => {
         return (
-            <Box className={cx(classes.mainCardBox, classes.gapBox)}>
+            <Box
+                className={cx(classes.mainCardBox, classes.gapBox)}
+                onClick={() => {
+                    if (onClickGap) {
+                        onClickGap(activityOrRoute.startTime, activityOrRoute.endTime)}
+                    }   
+                }>
                 <img className={classes.insideAlertIcon} src={gapIcon}></img>
                 <Typography className={cx(classes.mainActivityLabel, classes.gapText)}>
                     {" "}
