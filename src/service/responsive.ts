@@ -9,4 +9,8 @@ const isMobile = (): boolean => {
     return useMediaQuery({ query: "(max-width: " + mobileMaxWidth + "px)" });
 };
 
-export { isMobile, mobileMaxWidth, tabletMinWidth, tabletMaxWidth, destktopMinWidth };
+const isTablet = (): boolean => {
+    return useMediaQuery({ query: "(max-width: " + tabletMaxWidth + "px)" });
+};
+
+export { isMobile, isTablet, mobileMaxWidth, tabletMinWidth, tabletMaxWidth, destktopMinWidth };

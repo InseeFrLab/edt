@@ -40,6 +40,10 @@
             "add-activity-or-route": {
                 "labelled-by": "Ajouter une activité ou un trajet",
                 "described-by": "navigue vers l'ajout d'une activité ou d'un trajet"
+            },
+            "survey-selecter": {
+                "id": "Barre d'onglets pour PC et tablette",
+                "aria-label": "Barre d'onglets pour choisir un questionnaire"
             }
         },
         "asset": {
