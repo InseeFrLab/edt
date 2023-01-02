@@ -308,7 +308,7 @@ const ActivityOrRoutePlannerPage = () => {
                         open={isAddActivityOrRouteOpen}
                     />
 
-                    {snackbarText && (
+                    {snackbarText && openSnackbar && (
                         <Snackbar
                             className={classes.snackbar}
                             open={openSnackbar}
