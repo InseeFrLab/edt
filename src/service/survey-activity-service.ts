@@ -165,14 +165,17 @@ const hourToNormalizedTimeStamp = (hour: string | undefined): number => {
 
 const getActivitesSelectedLabel = (idSurvey: string): string[] => {
     let activitesSelected: string[] = [];
-    getActivitiesOrRoutes(idSurvey).activitiesRoutesOrGaps.forEach(activity => {
-        if (activity?.activity?.activityLabel != null && activity?.activity?.activityLabel.length > 0)
-            activitesSelected.push(activity.activity?.activityLabel);
+    getActivitiesOrRoutes(idSurvey).activitiesRoutesOrGaps.forEach(activityRouteOrGap => {
         if (
-            activity?.secondaryActivity?.activityLabel != null &&
-            activity?.secondaryActivity?.activityLabel.length > 0
+            activityRouteOrGap?.activity?.activityLabel != null &&
+            activityRouteOrGap?.activity?.activityLabel.length > 0
         )
-            activitesSelected.push(activity.secondaryActivity.activityLabel);
+            activitesSelected.push(activityRouteOrGap.activity?.activityLabel);
+        if (
+            activityRouteOrGap?.secondaryActivity?.activityLabel != null &&
+            activityRouteOrGap?.secondaryActivity?.activityLabel.length > 0
+        )
+            activitesSelected.push(activityRouteOrGap.secondaryActivity.activityLabel);
     });
     return activitesSelected;
 };

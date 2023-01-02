@@ -50,6 +50,9 @@
             "route-alt": "Alt pour route",
             "empty-activity-alt": "Alt pour empty-activity",
             "kind-of-week-alt": "Alt pour kind of week",
+            "exceptional-day-alt": "Alt pour exceptional day",
+            "greatest-activity-day-alt": "Alt pour greatest activity day",
+            "worst-activity-day-alt": "Alt pour worst activity day",
             "info": {
                 "info-alt": "Alt pour info"
             },
