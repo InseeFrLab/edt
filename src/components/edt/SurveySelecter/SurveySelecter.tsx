@@ -6,7 +6,6 @@ import { TabData } from "interface/component/Component";
 import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { isTablet } from "service/responsive";
 
 interface SurveySelecterProps {
     id: string;
@@ -14,16 +13,29 @@ interface SurveySelecterProps {
     ariaLabel: string;
     selectedTab: number;
     onChangeSelected(tabData: TabData): void;
+    maxTabsPerRow: number;
+    isDefaultOpen?: boolean;
 }
 
 const SurveySelecter = (props: SurveySelecterProps) => {
-    const { id, tabsData, ariaLabel, onChangeSelected } = props;
+    const {
+        id,
+        tabsData,
+        ariaLabel,
+        onChangeSelected,
+        selectedTab,
+        isDefaultOpen = false,
+        maxTabsPerRow,
+    } = props;
     const { classes } = useStyles();
     const { t } = useTranslation();
-    const [valueRowOne, setValueRowOne] = React.useState<number | false>(false);
-    const [valueRowTwo, setValueRowTwo] = React.useState<number | false>(false);
-    const [isOpen, setIsOpen] = React.useState(false);
-    const maxTabsPerRow = isTablet() ? 3 : 4;
+    const [valueRowOne, setValueRowOne] = React.useState<number | false>(
+        selectedTab < maxTabsPerRow ? selectedTab : false,
+    );
+    const [valueRowTwo, setValueRowTwo] = React.useState<number | false>(
+        selectedTab >= maxTabsPerRow ? selectedTab - maxTabsPerRow : false,
+    );
+    const [isOpen, setIsOpen] = React.useState(isDefaultOpen);
 
     const handleChangeRowOne = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValueRowOne(newValue);

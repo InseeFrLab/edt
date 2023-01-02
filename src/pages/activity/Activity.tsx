@@ -11,6 +11,7 @@ import {
     getParameterizedNavigatePath,
 } from "service/navigation-service";
 import { getCurrentPageSource, getCurrentSurveyRootPage } from "service/orchestrator-service";
+import { isTablet } from "service/responsive";
 import { FieldNameEnum, getData, getTabsData, getValue } from "service/survey-service";
 
 const ActivityPage = () => {
@@ -21,6 +22,9 @@ const ActivityPage = () => {
     const navigate = useNavigate();
     const surveyRootPage = getCurrentSurveyRootPage();
     const { t } = useTranslation();
+    const tabsData = getTabsData();
+    const selectedTab = getTabsData().findIndex(tab => tab.idSurvey === idSurvey);
+    const maxTabsPerRow = isTablet() ? 3 : 4;
 
     const reload = () => {
         // TODO : check with state full reload
@@ -62,10 +66,12 @@ const ActivityPage = () => {
             <Default>
                 <SurveySelecter
                     id={t("accessibility.component.survey-selecter.id")}
-                    tabsData={getTabsData()}
+                    tabsData={tabsData}
                     ariaLabel={t("accessibility.component.survey-selecter.aria-label")}
-                    selectedTab={0}
+                    selectedTab={selectedTab}
                     onChangeSelected={handleTabSelecterChange}
+                    isDefaultOpen={selectedTab >= maxTabsPerRow}
+                    maxTabsPerRow={maxTabsPerRow}
                 />
             </Default>
             <Outlet
