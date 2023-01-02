@@ -14,6 +14,7 @@ import {
 } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName } from "service/survey-service";
+import exceptionalDay from "assets/illustration/exceptional-day.svg";
 
 const ExceptionalDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -32,6 +33,8 @@ const ExceptionalDayPage = () => {
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={true}
             simpleHeaderLabel={t("page.complementary-questions.simple-header-label")}
+            srcIcon={exceptionalDay}
+            altIcon={t("accessibility.asset.exceptional-day-alt")}
             displayStepper={true}
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}
