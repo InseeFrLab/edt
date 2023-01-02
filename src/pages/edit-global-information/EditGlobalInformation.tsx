@@ -5,12 +5,12 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getOrchestratorPage, saveAndNavFullPath } from "service/navigation-service";
+import { getOrchestratorPage, saveAndNavFullPath, setEnviro } from "service/navigation-service";
 import {
     FieldNameEnum,
-    getComponentId,
+    getComponentsOfVariable,
     getPrintedFirstName,
     getPrintedSurveyDate,
 } from "service/survey-service";
@@ -18,24 +18,26 @@ import {
 const EditGlobalInformationPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { t } = useTranslation();
+    setEnviro(context, useNavigate(), callbackHolder);
 
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
 
     const keydownChange = () => {
-        //TODO: fix control for double input
-        const componentDateId = getComponentId(FieldNameEnum.SURVEYDATE, context.source) || "";
+        const componentNameId =
+            getComponentsOfVariable(FieldNameEnum.FIRSTNAME, context.source)[1].id || "";
+        const disableButtonForName =
+            callbackHolder.getErrors() == undefined ||
+            callbackHolder.getErrors()[componentNameId].length > 0;
+
+        const componentDateId =
+            getComponentsOfVariable(FieldNameEnum.SURVEYDATE, context.source)[1].id || "";
         const dataSurveyDate = callbackHolder.getData().COLLECTED?.SURVEYDATE.COLLECTED;
         const errorData =
             dataSurveyDate != null &&
             (typeof dataSurveyDate == "string" ? dataSurveyDate.includes("Invalid") : false);
 
-        setDisabledButton(callbackHolder.getErrors()[componentDateId]?.length > 0 || errorData);
-
-        const componentNameId = getComponentId(FieldNameEnum.FIRSTNAME, context.source) || "";
-        setDisabledButton(
-            callbackHolder.getErrors() == undefined ||
-                callbackHolder.getErrors()[componentNameId]?.length > 0,
-        );
+        const disableButtonForDate = callbackHolder.getErrors()[componentDateId].length > 0 || errorData;
+        setDisabledButton(disableButtonForName || disableButtonForDate);
     };
 
     React.useEffect(() => {
