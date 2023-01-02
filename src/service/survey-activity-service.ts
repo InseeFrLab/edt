@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { SelectedActivity } from "lunatic-edt";
@@ -11,8 +13,6 @@ import {
     findRouteInRef,
     findSecondaryActivityInRef,
 } from "./referentiel-service";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 
 const getActivitiesOrRoutes = (
     idSurvey: string,
@@ -27,9 +27,10 @@ const getActivitiesOrRoutes = (
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
     for (let i = 0; i < activityLoopSize; i++) {
         let activityOrRoute: ActivityRouteOrGap = {};
+        activityOrRoute.iteration = i;
         activityOrRoute.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean | undefined;
         if (activityOrRoute.isRoute) {
-            activityOrRoute.route = { routeLabel: t("common.activity.unknown-activity") + (i + 1) };
+            activityOrRoute.route = { routeLabel: t("common.activity.unknown-route") + (i + 1) };
         } else {
             activityOrRoute.activity = {
                 activityLabel: t("common.activity.unknown-activity") + (i + 1),
@@ -125,8 +126,8 @@ const getActivitiesOrRoutes = (
             hourToNormalizedTimeStamp(act.startTime) >
                 hourToNormalizedTimeStamp(previousActivity.endTime)
         ) {
-            const index = copy.indexOf(act);
-            copy.splice(index, 0, {
+            const index = sortedActivities.indexOf(act);
+            sortedActivities.splice(index, 0, {
                 startTime: previousActivity.endTime,
                 endTime: act.startTime,
                 isGap: true,
@@ -165,14 +166,17 @@ const hourToNormalizedTimeStamp = (hour: string | undefined): number => {
 
 const getActivitesSelectedLabel = (idSurvey: string): string[] => {
     let activitesSelected: string[] = [];
-    getActivitiesOrRoutes(idSurvey).activitiesRoutesOrGaps.forEach(activity => {
-        if (activity?.activity?.activityLabel != null && activity?.activity?.activityLabel.length > 0)
-            activitesSelected.push(activity.activity?.activityLabel);
+    getActivitiesOrRoutes(idSurvey).activitiesRoutesOrGaps.forEach(activityRouteOrGap => {
         if (
-            activity?.secondaryActivity?.activityLabel != null &&
-            activity?.secondaryActivity?.activityLabel.length > 0
+            activityRouteOrGap?.activity?.activityLabel != null &&
+            activityRouteOrGap?.activity?.activityLabel.length > 0
         )
-            activitesSelected.push(activity.secondaryActivity.activityLabel);
+            activitesSelected.push(activityRouteOrGap.activity?.activityLabel);
+        if (
+            activityRouteOrGap?.secondaryActivity?.activityLabel != null &&
+            activityRouteOrGap?.secondaryActivity?.activityLabel.length > 0
+        )
+            activitesSelected.push(activityRouteOrGap.secondaryActivity.activityLabel);
     });
     return activitesSelected;
 };
@@ -188,9 +192,58 @@ const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string =
     let diffMinutes = Math.abs(startTime.diff(endTime, "minute"));
 
     const formatedHours = diffHours > 0 ? diffHours + "h " : "";
-    const formatedMin = diffMinutes + "min";
+    diffMinutes = diffMinutes - diffHours * 60;
 
-    return formatedHours + formatedMin;
+    if (diffMinutes >= 0 && diffHours > 0) {
+        if (diffMinutes > 0) {
+            return formatedHours + diffMinutes + "min";
+        } else {
+            return formatedHours;
+        }
+    } else if (diffHours == 0) {
+        return diffMinutes + "min";
+    } else return "";
+};
+
+const getTotalTimeOfActivities = (idSurvey: string): number => {
+    const startTimeArray = getValue(idSurvey, FieldNameEnum.STARTTIME) as string[];
+
+    //activity survey
+    if (startTimeArray != null) {
+        const lastTimeArray = getValue(idSurvey, FieldNameEnum.ENDTIME) as string[];
+
+        let totalHourActivities = 0;
+        console.log(startTimeArray);
+        console.log(lastTimeArray);
+        console.log(startTimeArray.length);
+
+        for (let i = 0; i < startTimeArray.length; i++) {
+            const diffTime = getDiffTime(startTimeArray[i], lastTimeArray[i]);
+            totalHourActivities += diffTime;
+        }
+        console.log(totalHourActivities);
+        return totalHourActivities;
+    }
+    //work time survey
+    //TODO: score of work time survey
+    else return 0;
+};
+
+const getScore = (idSurvey: string): string => {
+    const totalHourActivities = getTotalTimeOfActivities(idSurvey);
+    const percentage = (totalHourActivities / 24) * 100;
+    return percentage.toFixed(2);
+};
+
+const getDiffTime = (startTime: string, endTime: string) => {
+    if (startTime == null || endTime == null) return 0;
+    dayjs.extend(customParseFormat);
+
+    const startTimeDay = dayjs(startTime, "HH:mm");
+    const endTimeDay = dayjs(endTime, "HH:mm");
+
+    const diffInHours = Math.abs(startTimeDay.diff(endTimeDay, "hour", true));
+    return diffInHours;
 };
 
 const getActivityLabel = (activity: SelectedActivity | undefined): string | undefined => {
@@ -279,4 +332,6 @@ export {
     getActivitesSelectedLabel,
     getActivityOrRouteDurationLabel,
     getActivityLabel,
+    getTotalTimeOfActivities,
+    getScore,
 };

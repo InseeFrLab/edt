@@ -1,7 +1,7 @@
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Alert } from "lunatic-edt";
+import { Alert, TimepickerSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,7 @@ const ActivityDurationPage = () => {
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
-    const activitiesAct = getActivitiesOrRoutes(context.idSurvey);
+    const activitiesAct = getActivitiesOrRoutes(context.idSurvey).activitiesRoutesOrGaps;
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const alertLabels = {
@@ -38,7 +38,7 @@ const ActivityDurationPage = () => {
         complete: t("page.alert-when-quit.alert-complete"),
     };
 
-    const specificProps = {
+    const specificProps: TimepickerSpecificProps = {
         activitiesAct: activitiesAct,
         defaultValue: true,
     };

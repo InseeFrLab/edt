@@ -39,10 +39,14 @@ const SecondaryActivitySelectionPage = () => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
-            onPrevious();
+            saveAndLoopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY);
         },
         nextClickCallback: () => {
-            onNext();
+            if (context.isRoute) {
+                saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SOMEONE);
+            } else {
+                saveAndLoopNavigate(EdtRoutesNameEnum.ACTIVITY_LOCATION);
+            }
         },
     };
 
@@ -60,17 +64,13 @@ const SecondaryActivitySelectionPage = () => {
         );
     }, []);
 
-    const onNext = useCallback(() => {
-        if (context.isRoute) {
-            saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SOMEONE);
-        } else {
-            saveAndLoopNavigate(EdtRoutesNameEnum.ACTIVITY_LOCATION);
-        }
-    }, []);
+    const onNext = (e: React.MouseEvent) => {
+        setNextClickEvent(e);
+    };
 
-    const onPrevious = useCallback(() => {
-        saveAndLoopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY);
-    }, []);
+    const onPrevious = (e: React.MouseEvent) => {
+        setBackClickEvent(e);
+    };
 
     return (
         <LoopSurveyPage onNext={onNext} onPrevious={onPrevious} onClose={onClose}>

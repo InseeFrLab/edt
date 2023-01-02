@@ -31,7 +31,8 @@
             "person": "PERSONNE"
         },
         "activity": {
-            "unknown-activity": "Activité "
+            "unknown-activity": "Activité ",
+            "unknown-route": "Trajet "
         }
     },
     "accessibility": {
@@ -39,6 +40,10 @@
             "add-activity-or-route": {
                 "labelled-by": "Ajouter une activité ou un trajet",
                 "described-by": "navigue vers l'ajout d'une activité ou d'un trajet"
+            },
+            "survey-selecter": {
+                "id": "Barre d'onglets pour PC et tablette",
+                "aria-label": "Barre d'onglets pour choisir un questionnaire"
             }
         },
         "asset": {
@@ -50,6 +55,9 @@
             "route-alt": "Alt pour route",
             "empty-activity-alt": "Alt pour empty-activity",
             "kind-of-week-alt": "Alt pour kind of week",
+            "exceptional-day-alt": "Alt pour exceptional day",
+            "greatest-activity-day-alt": "Alt pour greatest activity day",
+            "worst-activity-day-alt": "Alt pour worst activity day",
             "info": {
                 "info-alt": "Alt pour info"
             },

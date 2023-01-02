@@ -1,5 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, IconButton, Snackbar, Typography } from "@mui/material";
+import { v4 as uuidv4 } from "uuid";
 import empty_activity from "assets/illustration/empty-activity.svg";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -47,6 +48,9 @@ const ActivityOrRoutePlannerPage = () => {
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
     const [isRoute, setIsRoute] = React.useState(false);
+    const [addActivityOrRouteFromGap, setAddActivityOrRouteFromGap] = React.useState(false);
+    const [gapStartTime, setGapStartTime] = React.useState<string>();
+    const [gapEndTime, setGapEndTime] = React.useState<string>();
     const [activityOrRoute, setActivityOrRoute] = React.useState<ActivityRouteOrGap | undefined>(
         undefined,
     );
@@ -107,32 +111,61 @@ const ActivityOrRoutePlannerPage = () => {
         }
     };
 
-    const onAddActivity = () => {
+    const onAddActivityOrRoute = (isRoute: boolean) => {
         const loopSize = setLoopSize(
             context.source,
             LoopEnum.ACTIVITY_OR_ROUTE,
             getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
         contextIteration = loopSize - 1;
-        navToActivityOrRoute(contextIteration, false);
+        navToActivityOrRoute(contextIteration, isRoute);
     };
 
-    const onAddRoute = () => {
+    const onAddActivityOrRouteFromGap = (
+        isRoute: boolean,
+        startTime: string | undefined,
+        endTime: string | undefined,
+    ) => {
         const loopSize = setLoopSize(
             context.source,
             LoopEnum.ACTIVITY_OR_ROUTE,
             getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
         contextIteration = loopSize - 1;
-        navToActivityOrRoute(contextIteration, true);
+
+        const dataStart = setValue(
+            context.idSurvey,
+            FieldNameEnum.STARTTIME,
+            startTime || null,
+            contextIteration,
+        );
+        const dataEnd = setValue(
+            context.idSurvey,
+            FieldNameEnum.ENDTIME,
+            endTime || null,
+            contextIteration,
+        );
+
+        saveData(context.idSurvey, dataStart || {}).then(() => {
+            saveData(context.idSurvey, dataEnd || {}).then(() => {
+                navToActivityOrRoute(contextIteration, isRoute);
+                setAddActivityOrRouteFromGap(false);
+            });
+        });
     };
 
-    const onOpenAddActivityOrRoute = () => {
+    const onOpenAddActivityOrRoute = (startTime?: string, endTime?: string) => {
         setIsAddActivityOrRouteOpen(true);
+        if (startTime && endTime) {
+            setAddActivityOrRouteFromGap(true);
+            setGapStartTime(startTime);
+            setGapEndTime(endTime);
+        }
     };
 
     const onCloseAddActivityOrRoute = () => {
         setIsAddActivityOrRouteOpen(false);
+        setAddActivityOrRouteFromGap(false);
     };
 
     const onEdit = () => {
@@ -234,16 +267,22 @@ const ActivityOrRoutePlannerPage = () => {
                             </>
                         ) : (
                             <>
-                                {activitiesRoutesOrGaps.map((activity, iteration) => (
-                                    <FlexCenter key={"activity-" + iteration}>
+                                {activitiesRoutesOrGaps.map(activity => (
+                                    <FlexCenter key={uuidv4()}>
                                         <ActivityOrRouteCard
                                             labelledBy={""}
                                             describedBy={""}
                                             onClick={() =>
-                                                navToActivityOrRoute(iteration, activity.isRoute)
+                                                navToActivityOrRoute(
+                                                    activity.iteration || 0,
+                                                    activity.isRoute,
+                                                )
                                             }
+                                            onClickGap={onOpenAddActivityOrRoute}
                                             activityOrRoute={activity}
-                                            onEdit={() => onEditActivityOrRoute(iteration, activity)}
+                                            onEdit={() =>
+                                                onEditActivityOrRoute(activity.iteration || 0, activity)
+                                            }
                                             onDelete={() => onDeleteActivityOrRoute()}
                                         />
                                     </FlexCenter>
@@ -255,13 +294,21 @@ const ActivityOrRoutePlannerPage = () => {
                     <AddActivityOrRoute
                         labelledBy={""}
                         describedBy={""}
-                        onClickActivity={onAddActivity}
-                        onClickRoute={onAddRoute}
+                        onClickActivity={
+                            addActivityOrRouteFromGap
+                                ? () => onAddActivityOrRouteFromGap(false, gapStartTime, gapEndTime)
+                                : () => onAddActivityOrRoute(false)
+                        }
+                        onClickRoute={
+                            addActivityOrRouteFromGap
+                                ? () => onAddActivityOrRouteFromGap(true, gapStartTime, gapEndTime)
+                                : () => onAddActivityOrRoute(true)
+                        }
                         handleClose={onCloseAddActivityOrRoute}
                         open={isAddActivityOrRouteOpen}
                     />
 
-                    {snackbarText && (
+                    {snackbarText && openSnackbar && (
                         <Snackbar
                             className={classes.snackbar}
                             open={openSnackbar}

@@ -16,6 +16,7 @@ import {
 import { getStepData } from "service/stepper.service";
 import { getActivitesSelectedLabel } from "service/survey-activity-service";
 import { getPrintedFirstName } from "service/survey-service";
+import worstActivityDay from "assets/illustration/worst-activity-day.svg";
 
 const WorstActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -42,6 +43,8 @@ const WorstActivityDayPage = () => {
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={true}
             simpleHeaderLabel={t("page.complementary-questions.simple-header-label")}
+            srcIcon={worstActivityDay}
+            altIcon={t("accessibility.asset.worst-activity-day-alt")}
             displayStepper={true}
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}

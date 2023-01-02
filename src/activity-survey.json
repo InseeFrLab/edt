@@ -7,7 +7,7 @@
     "missing": false,
     "id": "l8lq5lp6",
     "label": "Time",
-    "maxPage": "10",
+    "maxPage": "12",
     "variables": [
         {
             "variableType": "COLLECTED",
@@ -886,8 +886,8 @@
             "response": { "name": "GREATESTACTIVITYDAY" },
             "hierarchy": {
                 "sequence": {
-                    "id": "law86mv7",
-                    "page": "5",
+                    "id": "sequence_1",
+                    "page": "1",
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
@@ -903,8 +903,8 @@
             "response": { "name": "WORSTACTIVITYDAY" },
             "hierarchy": {
                 "sequence": {
-                    "id": "law86mv7",
-                    "page": "6",
+                    "id": "sequence_1",
+                    "page": "1",
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
@@ -949,8 +949,8 @@
             ],
             "hierarchy": {
                 "sequence": {
-                    "id": "j6p0ti5h",
-                    "page": "7"
+                    "id": "sequence_1",
+                    "page": "1"
                 }
             },
             "conditionFilter": { "value": "true" },
@@ -965,8 +965,8 @@
             "response": { "name": "EXCEPTIONALDAY" },
             "hierarchy": {
                 "sequence": {
-                    "id": "law86mv7",
-                    "page": "8",
+                    "id": "sequence_1",
+                    "page": "1",
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
@@ -982,8 +982,8 @@
             "response": { "name": "TRAVELTIME" },
             "hierarchy": {
                 "sequence": {
-                    "id": "law86mv7",
-                    "page": "9",
+                    "id": "sequence_1",
+                    "page": "1",
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
@@ -1001,8 +1001,8 @@
             "response": { "name": "PHONETIME" },
             "hierarchy": {
                 "sequence": {
-                    "id": "law86mv7",
-                    "page": "10",
+                    "id": "sequence_1",
+                    "page": "1",
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
@@ -1040,7 +1040,7 @@
                         "type": "VTL",
                         "value": "not(isnull(FIRSTNAME)) and length(FIRSTNAME) >= 1"
                     },
-                    "id": "kze792d8-formatBorneInfSup"
+                    "id": "kze792d8-formatBornInfSup2"
                 }
             ]
         },
@@ -1071,20 +1071,20 @@
                         "type": "VTL",
                         "value": "not(isnull(SURVEYDATE)) and length(SURVEYDATE) >= 1"
                     },
-                    "id": "kze792d8-inputSurveyDate"
+                    "id": "kze792d8-inputSurveyDate2"
                 }
             ]
         },
         {
             "id": "End",
             "componentType": "Sequence",
-            "page": "11",
+            "page": "12",
             "label": { "value": "\"End\"", "type": "VTL|MD" },
             "conditionFilter": { "value": "true" },
             "hierarchy": {
                 "sequence": {
                     "id": "End",
-                    "page": "11",
+                    "page": "1",
                     "label": { "value": "\"End\"", "type": "VTL|MD" }
                 }
             }

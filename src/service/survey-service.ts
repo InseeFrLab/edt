@@ -1,4 +1,5 @@
 import { t } from "i18next";
+import { TabData } from "interface/component/Component";
 import {
     Collected,
     LunaticData,
@@ -175,6 +176,15 @@ const getComponentId = (variableName: FieldNameEnum, source: LunaticModel) => {
     return source?.variables.find(variable => variable.name === variableName)?.componentRef;
 };
 
+const getComponentsOfVariable = (
+    variableName: FieldNameEnum,
+    source: LunaticModel,
+): LunaticModelComponent[] => {
+    return source?.components.filter(
+        component => component.response && component.response["name"] == variableName,
+    );
+};
+
 const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
     if (iteration != null) {
         let value = datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
@@ -229,6 +239,33 @@ const getPrintedFirstName = (idSurvey: string): string => {
     return getFirstName(idSurvey) || t("common.user.person") + " " + getPersonNumber(idSurvey);
 };
 
+const getTabsData = (): TabData[] => {
+    let tabsData: TabData[] = [];
+
+    //TODO : Complete score with value
+    activitySurveysIds.forEach(idSurvey => {
+        let tabData: TabData = {
+            idSurvey: idSurvey,
+            surveyDateLabel: getPrintedSurveyDate(idSurvey),
+            firstNameLabel: getPrintedFirstName(idSurvey),
+            score: "0%",
+            isActivitySurvey: true,
+        };
+        tabsData.push(tabData);
+    });
+    workingTimeSurveysIds.forEach(idSurvey => {
+        let tabData: TabData = {
+            idSurvey: idSurvey,
+            surveyDateLabel: getPrintedSurveyDate(idSurvey),
+            firstNameLabel: getPrintedFirstName(idSurvey),
+            score: "0%",
+            isActivitySurvey: false,
+        };
+        tabsData.push(tabData);
+    });
+    return tabsData;
+};
+
 // return survey date in french format (day x - dd/mm) if exist or default value
 const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesNameEnum): string => {
     const savedSurveyDate = getSurveyDate(idSurvey);
@@ -270,7 +307,9 @@ export {
     setValue,
     getReferentiel,
     getComponentId,
+    getComponentsOfVariable,
     getVariable,
+    getTabsData,
     activitySurveysIds,
     workingTimeSurveysIds,
     FieldNameEnum,
