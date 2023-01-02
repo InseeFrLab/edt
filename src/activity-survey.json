@@ -886,8 +886,8 @@
             "response": { "name": "GREATESTACTIVITYDAY" },
             "hierarchy": {
                 "sequence": {
-                    "id": "law86mv7",
-                    "page": "5",
+                    "id": "sequence_1",
+                    "page": "1",
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
@@ -903,8 +903,8 @@
             "response": { "name": "WORSTACTIVITYDAY" },
             "hierarchy": {
                 "sequence": {
-                    "id": "law86mv7",
-                    "page": "6",
+                    "id": "sequence_1",
+                    "page": "1",
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
@@ -949,8 +949,8 @@
             ],
             "hierarchy": {
                 "sequence": {
-                    "id": "j6p0ti5h",
-                    "page": "7"
+                    "id": "sequence_1",
+                    "page": "1"
                 }
             },
             "conditionFilter": { "value": "true" },
@@ -965,8 +965,8 @@
             "response": { "name": "EXCEPTIONALDAY" },
             "hierarchy": {
                 "sequence": {
-                    "id": "law86mv7",
-                    "page": "8",
+                    "id": "sequence_1",
+                    "page": "1",
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
@@ -982,8 +982,8 @@
             "response": { "name": "TRAVELTIME" },
             "hierarchy": {
                 "sequence": {
-                    "id": "law86mv7",
-                    "page": "9",
+                    "id": "sequence_1",
+                    "page": "1",
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
@@ -1001,8 +1001,8 @@
             "response": { "name": "PHONETIME" },
             "hierarchy": {
                 "sequence": {
-                    "id": "law86mv7",
-                    "page": "10",
+                    "id": "sequence_1",
+                    "page": "1",
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
@@ -1019,7 +1019,7 @@
             "bindingDependencies": ["FIRSTNAME"],
             "response": { "name": "FIRSTNAME" },
             "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "11" }
+                "sequence": { "id": "sequence_1", "page": "1" }
             },
             "conditionFilter": { "value": "true" },
             "id": "inputtext_firstName2",
@@ -1052,7 +1052,7 @@
             "dateFormat": "YYYY-MM-DD",
             "response": { "name": "SURVEYDATE" },
             "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "11" }
+                "sequence": { "id": "sequence_1", "page": "1" }
             },
             "conditionFilter": { "value": "true" },
             "id": "datepicker_surveyDate2",
@@ -1084,7 +1084,7 @@
             "hierarchy": {
                 "sequence": {
                     "id": "End",
-                    "page": "12",
+                    "page": "1",
                     "label": { "value": "\"End\"", "type": "VTL|MD" }
                 }
             }

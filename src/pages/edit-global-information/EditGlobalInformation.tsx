@@ -23,20 +23,21 @@ const EditGlobalInformationPage = () => {
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
 
     const keydownChange = () => {
-        const componentNameId =
-            getComponentsOfVariable(FieldNameEnum.FIRSTNAME, context.source)[1].id || "";
-        const disableButtonForName =
-            callbackHolder.getErrors() == undefined ||
-            callbackHolder.getErrors()[componentNameId].length > 0;
+        const componentNameId = getComponentsOfVariable(FieldNameEnum.FIRSTNAME, context.source)[1].id;
+        const disableButtonForName = componentNameId
+            ? callbackHolder.getErrors() == undefined ||
+              callbackHolder.getErrors()[componentNameId].length > 0
+            : false;
 
-        const componentDateId =
-            getComponentsOfVariable(FieldNameEnum.SURVEYDATE, context.source)[1].id || "";
+        const componentDateId = getComponentsOfVariable(FieldNameEnum.SURVEYDATE, context.source)[1].id;
         const dataSurveyDate = callbackHolder.getData().COLLECTED?.SURVEYDATE.COLLECTED;
         const errorData =
             dataSurveyDate != null &&
             (typeof dataSurveyDate == "string" ? dataSurveyDate.includes("Invalid") : false);
 
-        const disableButtonForDate = callbackHolder.getErrors()[componentDateId].length > 0 || errorData;
+        const disableButtonForDate = componentDateId
+            ? callbackHolder.getErrors()[componentDateId].length > 0 || errorData
+            : false;
         setDisabledButton(disableButtonForName || disableButtonForDate);
     };
 
