@@ -330,44 +330,8 @@
                 "FORCED": null,
                 "PREVIOUS": null
             },
-            "name": "WORKINGALLDAY",
-            "componentRef": "checkboxgroup_kindofday"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": null,
-                "EDITED": null,
-                "INPUTED": null,
-                "FORCED": null,
-                "PREVIOUS": null
-            },
-            "name": "WORKINGHALFDAY",
-            "componentRef": "checkboxgroup_kindofday"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": null,
-                "EDITED": null,
-                "INPUTED": null,
-                "FORCED": null,
-                "PREVIOUS": null
-            },
-            "name": "NOTWORKINGDAY",
-            "componentRef": "checkboxgroup_kindofday"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": null,
-                "EDITED": null,
-                "INPUTED": null,
-                "FORCED": null,
-                "PREVIOUS": null
-            },
-            "name": "OTHERDAY",
-            "componentRef": "checkboxgroup_kindofday"
+            "name": "KINDOFDAY",
+            "componentRef": "checkboxone_kindofday"
         },
         {
             "variableType": "COLLECTED",
@@ -915,38 +879,9 @@
             "mandatory": false
         },
         {
-            "componentType": "CheckboxGroupEdt",
-            "bindingDependencies": ["WORKINGALLDAY", "WORKINGHALFDAY", "NOTWORKINGDAY", "OTHERDAY"],
-            "responses": [
-                {
-                    "response": {
-                        "name": "WORKINGALLDAY"
-                    },
-                    "id": "1",
-                    "label": "\"Journée normale de travail\""
-                },
-                {
-                    "response": {
-                        "name": "WORKINGHALFDAY"
-                    },
-                    "id": "2",
-                    "label": "\"Journée semi-travaillée\""
-                },
-                {
-                    "response": {
-                        "name": "NOTWORKINGDAY"
-                    },
-                    "id": "3",
-                    "label": "\"Journée non travaillés (repos, férié, congé,…\""
-                },
-                {
-                    "response": {
-                        "name": "OTHERDAY"
-                    },
-                    "id": "4",
-                    "label": "\"Autre cas (pour les personnes n’exerçant pas d’activité professionnelle\""
-                }
-            ],
+            "componentType": "CheckboxOneEdt",
+            "bindingDependencies": ["KINDOFDAY"],
+            "response": { "name": "KINDOFDAY" },
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
@@ -954,7 +889,7 @@
                 }
             },
             "conditionFilter": { "value": "true" },
-            "id": "checkboxgroup_kindofday",
+            "id": "checkboxone_kindofday",
             "page": "7",
             "label": "\"De quel type de journée s’agissait-il ?\"",
             "mandatory": false

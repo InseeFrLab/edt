@@ -84,7 +84,7 @@ const ActivityLocationPage = () => {
             alertMessage: t("component.location-selecter.alert-message"),
             alertIgnore: t("component.location-selecter.alert-ignore"),
             alertComplete: t("component.location-selecter.alert-complete"),
-            alertAlticon: t("component.location-selecter.alert-alt_icon"),
+            alertAlticon: t("component.location-selecter.alert-alt-icon"),
         },
         errorIcon: locationErrorIcon,
     };

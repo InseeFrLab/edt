@@ -2,7 +2,7 @@ import bagIcon from "assets/illustration/type-of-day-categories/bag.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { CheckboxGroupSpecificProps } from "lunatic-edt";
+import { CheckboxOneSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -14,6 +14,7 @@ import {
     saveAndNextStep,
     setEnviro,
 } from "service/navigation-service";
+import { getKindOfDayRef } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName } from "service/survey-service";
 
@@ -25,13 +26,8 @@ const KindOfDayPage = () => {
     const currentPage = EdtRoutesNameEnum.KIND_OF_DAY;
     const stepData = getStepData(currentPage);
 
-    const specificProps: CheckboxGroupSpecificProps = {
-        optionsIcons: {
-            "1": bagIcon,
-            "2": bagIcon,
-            "3": bagIcon,
-            "4": bagIcon,
-        },
+    const specificProps: CheckboxOneSpecificProps = {
+        icon: bagIcon,
     };
 
     return (
@@ -55,6 +51,7 @@ const KindOfDayPage = () => {
                     callbackHolder={callbackHolder}
                     componentSpecificProps={specificProps}
                     page={getOrchestratorPage(currentPage)}
+                    overrideOptions={getKindOfDayRef()}
                 ></OrchestratorForStories>
             </FlexCenter>
         </SurveyPage>
