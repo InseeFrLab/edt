@@ -19,7 +19,6 @@ import { getPrintedFirstName } from "service/survey-service";
 const validateAndNav = (
     forceQuit: boolean,
     setIsModalDisplayed: (value: SetStateAction<boolean>) => void,
-    saveAndNav: () => void,
 ): void => {
     if (forceQuit) {
         saveAndNav();
@@ -37,14 +36,10 @@ const PhoneTimePage = () => {
     const stepData = getStepData(currentPage);
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
 
-    const saveAndGoHome = (): void => {
-        saveAndNav();
-    };
-
     return (
         <SurveyPage
-            validate={() => validateAndNav(false, setIsModalDisplayed, saveAndGoHome)}
-            onNavigateBack={() => validateAndNav(false, setIsModalDisplayed, saveAndGoHome)}
+            validate={() => validateAndNav(false, setIsModalDisplayed)}
+            onNavigateBack={() => validateAndNav(false, setIsModalDisplayed)}
             onPrevious={() => saveAndNavFullPath(EdtRoutesNameEnum.TRAVEL_TIME)}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
@@ -58,7 +53,7 @@ const PhoneTimePage = () => {
             <FlexCenter>
                 <FelicitationModal
                     isModalDisplayed={isModalDisplayed}
-                    onCompleteCallBack={() => validateAndNav(true, setIsModalDisplayed, saveAndGoHome)}
+                    onCompleteCallBack={() => validateAndNav(true, setIsModalDisplayed)}
                     content={t("component.modal-edt.modal-felicitation.activity-content")}
                 />
                 <OrchestratorForStories

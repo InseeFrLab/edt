@@ -24,6 +24,7 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
+    getLoopParameterizedNavigatePath,
     navFullPath,
     navToEditActivity,
     navToHelp,
@@ -118,7 +119,10 @@ const ActivityOrRoutePlannerPage = () => {
             getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
         contextIteration = loopSize - 1;
-        navToActivityOrRoute(contextIteration, isRoute);
+        const routeData = setValue(context.idSurvey, FieldNameEnum.ISROUTE, isRoute, contextIteration);
+        saveData(context.idSurvey, routeData || {}).then(() => {
+            navToActivityOrRoute(contextIteration, isRoute);
+        });
     };
 
     const onAddActivityOrRouteFromGap = (
@@ -133,24 +137,21 @@ const ActivityOrRoutePlannerPage = () => {
         );
         contextIteration = loopSize - 1;
 
-        const dataStart = setValue(
-            context.idSurvey,
-            FieldNameEnum.STARTTIME,
-            startTime || null,
-            contextIteration,
-        );
-        const dataEnd = setValue(
-            context.idSurvey,
-            FieldNameEnum.ENDTIME,
-            endTime || null,
-            contextIteration,
-        );
+        setValue(context.idSurvey, FieldNameEnum.STARTTIME, startTime || null, contextIteration);
+        setValue(context.idSurvey, FieldNameEnum.ENDTIME, endTime || null, contextIteration);
+        const updatedData = setValue(context.idSurvey, FieldNameEnum.ISROUTE, isRoute, contextIteration);
 
-        saveData(context.idSurvey, dataStart || {}).then(() => {
-            saveData(context.idSurvey, dataEnd || {}).then(() => {
-                navToActivityOrRoute(contextIteration, isRoute);
-                setAddActivityOrRouteFromGap(false);
-            });
+        saveData(context.idSurvey, updatedData || {}).then(() => {
+            onCloseAddActivityOrRoute();
+            setIsRoute(isRoute);
+            navigate(
+                getLoopParameterizedNavigatePath(
+                    EdtRoutesNameEnum.ACTIVITY_DURATION,
+                    LoopEnum.ACTIVITY_OR_ROUTE,
+                    contextIteration,
+                ),
+            );
+            setAddActivityOrRouteFromGap(false);
         });
     };
 

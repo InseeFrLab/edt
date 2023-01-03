@@ -15,7 +15,7 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getActivitiesOrRoutes } from "service/survey-activity-service";
-import { FieldNameEnum, getValue, saveData, setValue } from "service/survey-service";
+import { FieldNameEnum, getValue, saveData } from "service/survey-service";
 
 import errorIcon from "assets/illustration/error/activity.svg";
 
@@ -45,21 +45,13 @@ const ActivityDurationPage = () => {
 
     const onNext = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            const data = setValue(
-                context.idSurvey,
-                FieldNameEnum.ISROUTE,
-                context.isRoute || false,
-                currentIteration,
+            navigate(
+                getLoopParameterizedNavigatePath(
+                    getNextLoopPage(currentPage, context.isRoute),
+                    LoopEnum.ACTIVITY_OR_ROUTE,
+                    currentIteration,
+                ),
             );
-            saveData(context.idSurvey, data || {}).then(() => {
-                navigate(
-                    getLoopParameterizedNavigatePath(
-                        getNextLoopPage(currentPage, context.isRoute),
-                        LoopEnum.ACTIVITY_OR_ROUTE,
-                        currentIteration,
-                    ),
-                );
-            });
         });
     };
 
@@ -68,15 +60,7 @@ const ActivityDurationPage = () => {
         if (!isCompleted) {
             if (forceQuit) {
                 saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                    const data = setValue(
-                        context.idSurvey,
-                        FieldNameEnum.ISROUTE,
-                        context.isRoute || false,
-                        currentIteration,
-                    );
-                    saveData(context.idSurvey, data || {}).then(() => {
-                        navToActivitRouteHome();
-                    });
+                    navToActivitRouteHome();
                 });
             } else {
                 setIsAlertDisplayed(true);
