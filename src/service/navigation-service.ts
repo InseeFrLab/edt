@@ -74,10 +74,10 @@ const getCurrentNavigatePath = (
     maxPage: string,
     loop?: LoopEnum,
     iteration?: number,
-    isRoute?: boolean,
     nextPage?: number,
 ): string => {
     const surveyData = getData(idSurvey);
+    const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, iteration) as boolean;
     const subpage = getCurrentLoopPage(
         idSurvey,
         surveyData,
@@ -217,7 +217,6 @@ const saveAndNextStep = (rootPage: EdtRoutesNameEnum, currentPage: EdtRoutesName
             _context.idSurvey,
             rootPage,
             _context.source.maxPage,
-            undefined,
             undefined,
             undefined,
             getNextPage(currentPage),

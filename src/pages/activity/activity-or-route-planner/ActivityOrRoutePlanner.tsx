@@ -186,7 +186,6 @@ const ActivityOrRoutePlannerPage = () => {
                 context.source.maxPage,
                 LoopEnum.ACTIVITY_OR_ROUTE,
                 iteration,
-                isRoute,
             ),
         );
         setIsAddActivityOrRouteOpen(false);
