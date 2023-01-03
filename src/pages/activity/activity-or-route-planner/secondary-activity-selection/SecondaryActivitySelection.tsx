@@ -19,6 +19,7 @@ import {
     getActivitySecondaryActivityRef,
     getRouteSecondaryActivityRef,
 } from "service/referentiel-service";
+import errorIcon from "assets/illustration/error/activity.svg";
 
 const SecondaryActivitySelectionPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -36,6 +37,13 @@ const SecondaryActivitySelectionPage = () => {
             subchildLabel: t("page.secondary-activity-selection.add-activity-label"),
             inputPlaceholder: t("page.secondary-activity-selection.input-placeholder"),
         },
+        labelsAlert: {
+            alertMessage: t("component.goal-selecter.alert-message"),
+            alertIgnore: t("component.goal-selecter.alert-ignore"),
+            alertComplete: t("component.goal-selecter.alert-complete"),
+            alertAlticon: t("component.goal-selecter.alert-alt_icon"),
+        },
+        errorIcon: errorIcon,
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
