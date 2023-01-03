@@ -41,7 +41,7 @@ const SecondaryActivitySelectionPage = () => {
             alertMessage: t("component.secondary-activity-selecter.alert-message"),
             alertIgnore: t("component.secondary-activity-selecter.alert-ignore"),
             alertComplete: t("component.secondary-activity-selecter.alert-complete"),
-            alertAlticon: t("component.secondary-activity-selecter.alert-alt_icon"),
+            alertAlticon: t("component.secondary-activity-selecter.alert-alt-icon"),
         },
         errorIcon: errorIcon,
         backClickEvent: backClickEvent,

@@ -55,7 +55,7 @@ const MainActivityGoalPage = () => {
             alertMessage: t("component.goal-selecter.alert-message"),
             alertIgnore: t("component.goal-selecter.alert-ignore"),
             alertComplete: t("component.goal-selecter.alert-complete"),
-            alertAlticon: t("component.goal-selecter.alert-alt_icon"),
+            alertAlticon: t("component.goal-selecter.alert-alt-icon"),
         },
         errorIcon: errorIcon,
     };
