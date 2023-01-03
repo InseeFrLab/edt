@@ -205,6 +205,12 @@
             "alert-complete": "Compléter",
             "alert-alt_icon": "alt pour icon no result"
         },
+        "secondary-activity-selecter": {
+            "alert-message": "Aucun secondarie activitie n’a été renseigné",
+            "alert-ignore": "Ignorer",
+            "alert-complete": "Compléter",
+            "alert-alt_icon": "alt pour icon no result"
+        },
         "weekly-planner": {
             "title": "Planning de votre semaine",
             "work-sum-label": "Durée totale travaillée : ",
