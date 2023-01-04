@@ -221,7 +221,7 @@ const getTotalTimeOfActivities = (idSurvey: string): number => {
 const getScore = (idSurvey: string): string => {
     const totalHourActivities = getTotalTimeOfActivities(idSurvey);
     const percentage = (totalHourActivities / 24) * 100;
-    return percentage.toFixed(2);
+    return percentage.toFixed(0);
 };
 
 const getDiffTime = (startTime: string, endTime: string) => {

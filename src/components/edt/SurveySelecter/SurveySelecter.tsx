@@ -77,7 +77,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                                     label={
                                         <Box>
                                             <Typography className={classes.alignText}>
-                                                {tabData.surveyDateLabel}
+                                                {tabData.surveyDateLabel + " - " + tabData.score + "%"}
                                             </Typography>
                                             <Typography className={classes.alignText}>
                                                 {tabData.firstNameLabel}
@@ -106,7 +106,16 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                                     key={"tab-" + index}
                                     className={classes.tab}
                                     icon={getTabIcon(tabData.isActivitySurvey)}
-                                    label={tabData.surveyDateLabel}
+                                    label={
+                                        <Box>
+                                            <Typography className={classes.alignText}>
+                                                {tabData.surveyDateLabel + " - " + tabData.score + "%"}
+                                            </Typography>
+                                            <Typography className={classes.alignText}>
+                                                {tabData.firstNameLabel}
+                                            </Typography>
+                                        </Box>
+                                    }
                                 />
                             ))}
                     </Tabs>

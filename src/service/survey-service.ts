@@ -14,6 +14,7 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
 import { fetchReferentiels } from "./referentiel-service";
+import { getScore } from "./survey-activity-service";
 
 const datas = new Map<string, LunaticData>();
 let referentielsData: ReferentielData;
@@ -247,9 +248,9 @@ const getTabsData = (): TabData[] => {
     activitySurveysIds.forEach(idSurvey => {
         let tabData: TabData = {
             idSurvey: idSurvey,
-            surveyDateLabel: getPrintedSurveyDate(idSurvey),
+            surveyDateLabel: getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.ACTIVITY),
             firstNameLabel: getPrintedFirstName(idSurvey),
-            score: "0%",
+            score: getScore(idSurvey),
             isActivitySurvey: true,
         };
         tabsData.push(tabData);
@@ -257,9 +258,9 @@ const getTabsData = (): TabData[] => {
     workingTimeSurveysIds.forEach(idSurvey => {
         let tabData: TabData = {
             idSurvey: idSurvey,
-            surveyDateLabel: getPrintedSurveyDate(idSurvey),
+            surveyDateLabel: getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME),
             firstNameLabel: getPrintedFirstName(idSurvey),
-            score: "0%",
+            score: getScore(idSurvey),
             isActivitySurvey: false,
         };
         tabsData.push(tabData);
