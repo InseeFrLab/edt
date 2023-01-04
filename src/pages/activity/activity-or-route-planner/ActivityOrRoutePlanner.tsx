@@ -172,7 +172,7 @@ const ActivityOrRoutePlannerPage = () => {
     };
 
     const onEdit = () => {
-        navFullPath(EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION);
+        navFullPath(EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.ACTIVITY);
     };
 
     const onHelp = () => {

@@ -10,6 +10,7 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getFullNavigatePath,
     getOrchestratorPage,
+    navFullPath,
     navToHelp,
     saveAndNav,
     setEnviro,
@@ -51,7 +52,7 @@ const WeeklyPlannerPage = () => {
     };
 
     const onEdit = () => {
-        //TODO : sprint 5 edition des données
+        navFullPath(EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.WORK_TIME);
     };
 
     return (

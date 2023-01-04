@@ -52,9 +52,10 @@ const getLoopParameterizedNavigatePath = (
     }
 };
 
-const getFullNavigatePath = (page: EdtRoutesNameEnum) => {
-    const targetPage = mappingPageOrchestrator.find(link => link.page === page);
-
+const getFullNavigatePath = (page: EdtRoutesNameEnum, parentPage?: EdtRoutesNameEnum) => {
+    const targetPage = mappingPageOrchestrator.find(
+        link => link.page === page && (parentPage ? link.parentPage === parentPage : true),
+    );
     if (targetPage && targetPage.parentPage) {
         return (
             getParameterizedNavigatePath(targetPage.parentPage, _context.idSurvey) +
@@ -129,8 +130,13 @@ const getLastCompletedStep = (): number => {
     return page?.surveyStep ?? 0;
 };
 
-const getOrchestratorPage = (page: EdtRoutesNameEnum) => {
-    return mappingPageOrchestrator.find(pageData => pageData.page === page)?.surveyPage || "";
+const getOrchestratorPage = (page: EdtRoutesNameEnum, parentPage?: EdtRoutesNameEnum) => {
+    return (
+        mappingPageOrchestrator.find(
+            pageData =>
+                pageData.page === page && (parentPage ? pageData.parentPage === parentPage : true),
+        )?.surveyPage || ""
+    );
 };
 
 const getNextPage = (currentPage: EdtRoutesNameEnum) => {
@@ -200,8 +206,8 @@ const navToActivitRouteHome = () => {
     );
 };
 
-const navFullPath = (route: EdtRoutesNameEnum): void => {
-    _navigate(getFullNavigatePath(route));
+const navFullPath = (route: EdtRoutesNameEnum, parentPage?: EdtRoutesNameEnum): void => {
+    _navigate(getFullNavigatePath(route, parentPage));
 };
 
 const saveAndNavFullPath = (route: EdtRoutesNameEnum) => {

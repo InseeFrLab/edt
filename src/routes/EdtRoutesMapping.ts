@@ -175,6 +175,12 @@ let mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         surveySource: "work-time-survey.json",
         surveyPage: "4",
     },
+    {
+        parentPage: EdtRoutesNameEnum.WORK_TIME,
+        page: EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
+        surveySource: "work-time-survey.json",
+        surveyPage: "5",
+    },
 ];
 
 const routesToIgnoreForActivity = [EdtRoutesNameEnum.ROUTE, EdtRoutesNameEnum.MEAN_OF_TRANSPORT];

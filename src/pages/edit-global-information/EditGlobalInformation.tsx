@@ -61,7 +61,10 @@ const EditGlobalInformationPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page={getOrchestratorPage(EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION)}
+                    page={getOrchestratorPage(
+                        EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
+                        context.surveyRootPage,
+                    )}
                 ></OrchestratorForStories>
             </FlexCenter>
         </SurveyPage>

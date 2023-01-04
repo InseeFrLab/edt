@@ -7,5 +7,4 @@ export interface OrchestratorEdtNavigation {
     surveyPage: string;
     surveySubPage?: string;
     surveyStep?: number;
-    isSurveySelecterOpen?: boolean;
 }

@@ -5,10 +5,14 @@ import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getCurrentNavigatePath, getParameterizedNavigatePath } from "service/navigation-service";
+import {
+    getCurrentNavigatePath,
+    getParameterizedNavigatePath,
+    navToHome,
+} from "service/navigation-service";
 import { getCurrentPageSource, getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isTablet } from "service/responsive";
-import { getData, getTabsData } from "service/survey-service";
+import { getData, getTabsData, workingTimeSurveysIds } from "service/survey-service";
 
 const WorkTimePage = () => {
     const { idSurvey } = useParams();
@@ -16,10 +20,13 @@ const WorkTimePage = () => {
     const data = getData(idSurvey || "");
     const source = getCurrentPageSource();
     const navigate = useNavigate();
+    if (idSurvey && !workingTimeSurveysIds.find(id => id === idSurvey)) {
+        navToHome();
+    }
     const surveyRootPage = getCurrentSurveyRootPage();
     const { t } = useTranslation();
     const tabsData = getTabsData();
-    const selectedTab = getTabsData().findIndex(tab => tab.idSurvey === idSurvey);
+    const selectedTab = tabsData.findIndex(tab => tab.idSurvey === idSurvey);
     const maxTabsPerRow = isTablet() ? 3 : 4;
 
     const reload = () => {
