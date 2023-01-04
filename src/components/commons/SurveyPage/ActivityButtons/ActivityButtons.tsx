@@ -8,11 +8,13 @@ interface ActivityButtonsProps {
     onClickAdd(): void;
     finishLabel?: string;
     addLabel?: string;
+    isSubchildDisplayedAndDesktop?: boolean;
 }
 
 const ActivityButtons = (props: ActivityButtonsProps) => {
-    const { onClickFinish, onClickAdd, finishLabel, addLabel } = props;
-    const { classes } = useStyles();
+    const { onClickFinish, onClickAdd, finishLabel, addLabel, isSubchildDisplayedAndDesktop } = props;
+    const widthPercent = isSubchildDisplayedAndDesktop ? "30%" : "100%";
+    const { classes } = useStyles({ "width": widthPercent });
     return (
         <>
             <Box className={classes.gap}></Box>
@@ -37,27 +39,29 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { ActivityButtons } })(theme => ({
-    ButtonsBox: {
-        width: "100%",
-        position: "fixed",
-        bottom: "0",
-        backgroundColor: theme.variables.white,
-    },
-    gap: {
-        height: "4.25rem",
-        width: "100%",
-    },
-    aloneAddButton: {
-        width: "80%",
-        maxWidth: "18rem",
-        margin: "1rem 0",
-    },
-    buttons: {
-        width: "40%",
-        maxWidth: "9rem",
-        margin: "1rem 1rem",
-    },
-}));
+const useStyles = makeStylesEdt<{ width: string }>({ "name": { ActivityButtons } })(
+    (theme, { width }) => ({
+        ButtonsBox: {
+            width,
+            position: "fixed",
+            bottom: "0",
+            backgroundColor: theme.variables.white,
+            padding: "0.75rem",
+        },
+        gap: {
+            height: "3.75rem",
+            width,
+        },
+        aloneAddButton: {
+            width: "80%",
+            maxWidth: "18rem",
+        },
+        buttons: {
+            width: "40%",
+            maxWidth: "9rem",
+            margin: "0 1rem",
+        },
+    }),
+);
 
 export default ActivityButtons;

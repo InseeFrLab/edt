@@ -13,4 +13,16 @@ const isTablet = (): boolean => {
     return useMediaQuery({ query: "(max-width: " + tabletMaxWidth + "px)" });
 };
 
-export { isMobile, isTablet, mobileMaxWidth, tabletMinWidth, tabletMaxWidth, destktopMinWidth };
+const isDesktop = (): boolean => {
+    return useMediaQuery({ query: "(min-width: " + destktopMinWidth + "px)" });
+};
+
+export {
+    isMobile,
+    isTablet,
+    isDesktop,
+    mobileMaxWidth,
+    tabletMinWidth,
+    tabletMaxWidth,
+    destktopMinWidth,
+};

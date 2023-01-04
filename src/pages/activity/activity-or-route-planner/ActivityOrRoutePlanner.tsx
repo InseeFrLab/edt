@@ -1,6 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Box, IconButton, Snackbar, Typography } from "@mui/material";
-import { v4 as uuidv4 } from "uuid";
+import { Box, Divider, IconButton, Snackbar, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -31,6 +30,7 @@ import {
     navToHome,
     setEnviro,
 } from "service/navigation-service";
+import { isDesktop } from "service/responsive";
 import { getActivitiesOrRoutes } from "service/survey-activity-service";
 import {
     FieldNameEnum,
@@ -39,6 +39,7 @@ import {
     saveData,
     setValue,
 } from "service/survey-service";
+import { v4 as uuidv4 } from "uuid";
 
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
@@ -57,6 +58,7 @@ const ActivityOrRoutePlannerPage = () => {
     );
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
     setEnviro(context, useNavigate(), callbackHolder);
+    const isItDesktop = isDesktop();
 
     let contextIteration = 0;
 
@@ -220,120 +222,149 @@ const ActivityOrRoutePlannerPage = () => {
 
     return (
         <>
-            {!isSubchildDisplayed && (
-                <>
-                    <SurveyPage
-                        onNavigateBack={() => navToHome()}
-                        onEdit={onEdit}
-                        onHelp={onHelp}
-                        firstName={getPrintedFirstName(context.idSurvey)}
-                        firstNamePrefix={t("component.survey-page-edit-header.planning-of")}
-                        onFinish={() => onFinish(false)}
-                        onAdd={onOpenAddActivityOrRoute}
-                        finishLabel={t("common.navigation.finish")}
-                        addLabel={
-                            activitiesRoutesOrGaps.length === 0 ? t("common.navigation.add") : undefined
-                        }
-                    >
-                        <FlexCenter>
-                            <Alert
-                                isAlertDisplayed={isAlertDisplayed}
-                                onCompleteCallBack={() => onFinish(true)}
-                                onCancelCallBack={() => setIsAlertDisplayed(false)}
-                                labels={alertLabels}
-                                icon={errorIcon}
-                                errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
-                            ></Alert>
-                            <Box className={classes.infoBox}>
-                                <Typography className={classes.label}>
-                                    {t("page.activity-planner.activity-for-day")}
-                                </Typography>
-                                <Typography className={classes.date}>
-                                    {formateDateToFrenchFormat(generateDateFromStringInput(surveyDate))}
-                                </Typography>
-                            </Box>
-                        </FlexCenter>
-                        {activitiesRoutesOrGaps.length === 0 ? (
-                            <>
-                                <PageIcon
-                                    srcIcon={empty_activity}
-                                    altIcon={t("accessibility.asset.empty-activity-alt")}
-                                />
-                                <FlexCenter>
-                                    <Typography className={cx(classes.label, classes.grey)}>
-                                        {t("page.activity-planner.no-activity")}
-                                    </Typography>
-                                </FlexCenter>
-                            </>
-                        ) : (
-                            <>
-                                {activitiesRoutesOrGaps.map(activity => (
-                                    <FlexCenter key={uuidv4()}>
-                                        <ActivityOrRouteCard
-                                            labelledBy={""}
-                                            describedBy={""}
-                                            onClick={() =>
-                                                navToActivityOrRoute(
-                                                    activity.iteration || 0,
-                                                    activity.isRoute,
-                                                )
-                                            }
-                                            onClickGap={onOpenAddActivityOrRoute}
-                                            activityOrRoute={activity}
-                                            onEdit={() =>
-                                                onEditActivityOrRoute(activity.iteration || 0, activity)
-                                            }
-                                            onDelete={() => onDeleteActivityOrRoute()}
-                                        />
+            <Box className={isItDesktop && isSubchildDisplayed ? classes.desktop : ""}>
+                {(isItDesktop || !isSubchildDisplayed) && (
+                    <>
+                        <SurveyPage
+                            className={
+                                isItDesktop && isSubchildDisplayed ? classes.activitiesListDesktop : ""
+                            }
+                            onNavigateBack={() => navToHome()}
+                            onEdit={onEdit}
+                            onHelp={onHelp}
+                            firstName={getPrintedFirstName(context.idSurvey)}
+                            firstNamePrefix={t("component.survey-page-edit-header.planning-of")}
+                            onFinish={() => onFinish(false)}
+                            onAdd={onOpenAddActivityOrRoute}
+                            finishLabel={t("common.navigation.finish")}
+                            addLabel={
+                                activitiesRoutesOrGaps.length === 0
+                                    ? t("common.navigation.add")
+                                    : undefined
+                            }
+                            isSubchildDisplayedAndDesktop={isItDesktop && isSubchildDisplayed}
+                        >
+                            <Box
+                                className={
+                                    isItDesktop && isSubchildDisplayed ? classes.outerContentBox : ""
+                                }
+                            >
+                                <Box
+                                    className={
+                                        isItDesktop && isSubchildDisplayed ? classes.innerContentBox : ""
+                                    }
+                                >
+                                    <FlexCenter>
+                                        <Alert
+                                            isAlertDisplayed={isAlertDisplayed}
+                                            onCompleteCallBack={() => onFinish(true)}
+                                            onCancelCallBack={() => setIsAlertDisplayed(false)}
+                                            labels={alertLabels}
+                                            icon={errorIcon}
+                                            errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                                        ></Alert>
+                                        <Box className={classes.infoBox}>
+                                            <Typography className={classes.label}>
+                                                {t("page.activity-planner.activity-for-day")}
+                                            </Typography>
+                                            <Typography className={classes.date}>
+                                                {formateDateToFrenchFormat(
+                                                    generateDateFromStringInput(surveyDate),
+                                                )}
+                                            </Typography>
+                                        </Box>
                                     </FlexCenter>
-                                ))}
-                            </>
-                        )}
-                    </SurveyPage>
 
-                    <AddActivityOrRoute
-                        labelledBy={""}
-                        describedBy={""}
-                        onClickActivity={
-                            addActivityOrRouteFromGap
-                                ? () => onAddActivityOrRouteFromGap(false, gapStartTime, gapEndTime)
-                                : () => onAddActivityOrRoute(false)
-                        }
-                        onClickRoute={
-                            addActivityOrRouteFromGap
-                                ? () => onAddActivityOrRouteFromGap(true, gapStartTime, gapEndTime)
-                                : () => onAddActivityOrRoute(true)
-                        }
-                        handleClose={onCloseAddActivityOrRoute}
-                        open={isAddActivityOrRouteOpen}
-                    />
+                                    {activitiesRoutesOrGaps.length === 0 ? (
+                                        <>
+                                            <PageIcon
+                                                srcIcon={empty_activity}
+                                                altIcon={t("accessibility.asset.empty-activity-alt")}
+                                            />
+                                            <FlexCenter>
+                                                <Typography className={cx(classes.label, classes.grey)}>
+                                                    {t("page.activity-planner.no-activity")}
+                                                </Typography>
+                                            </FlexCenter>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {activitiesRoutesOrGaps.map(activity => (
+                                                <FlexCenter key={uuidv4()}>
+                                                    <ActivityOrRouteCard
+                                                        labelledBy={""}
+                                                        describedBy={""}
+                                                        onClick={() =>
+                                                            navToActivityOrRoute(
+                                                                activity.iteration || 0,
+                                                                activity.isRoute,
+                                                            )
+                                                        }
+                                                        onClickGap={onOpenAddActivityOrRoute}
+                                                        activityOrRoute={activity}
+                                                        onEdit={() =>
+                                                            onEditActivityOrRoute(
+                                                                activity.iteration || 0,
+                                                                activity,
+                                                            )
+                                                        }
+                                                        onDelete={() => onDeleteActivityOrRoute()}
+                                                    />
+                                                </FlexCenter>
+                                            ))}
+                                        </>
+                                    )}
+                                </Box>
+                            </Box>
+                        </SurveyPage>
 
-                    {snackbarText && openSnackbar && (
-                        <Snackbar
-                            className={classes.snackbar}
-                            open={openSnackbar}
-                            autoHideDuration={10000}
-                            onClose={handleCloseSnackBar}
-                            message={snackbarText}
-                            action={snackbarAction}
-                            anchorOrigin={{
-                                vertical: "bottom",
-                                horizontal: "center",
-                            }}
+                        <AddActivityOrRoute
+                            labelledBy={""}
+                            describedBy={""}
+                            onClickActivity={
+                                addActivityOrRouteFromGap
+                                    ? () => onAddActivityOrRouteFromGap(false, gapStartTime, gapEndTime)
+                                    : () => onAddActivityOrRoute(false)
+                            }
+                            onClickRoute={
+                                addActivityOrRouteFromGap
+                                    ? () => onAddActivityOrRouteFromGap(true, gapStartTime, gapEndTime)
+                                    : () => onAddActivityOrRoute(true)
+                            }
+                            handleClose={onCloseAddActivityOrRoute}
+                            open={isAddActivityOrRouteOpen}
                         />
-                    )}
-                </>
-            )}
-            <Outlet
-                context={{
-                    source: context.source,
-                    data: context.data,
-                    idSurvey: context.idSurvey,
-                    surveyRootPage: context.surveyRootPage,
-                    isRoute: isRoute,
-                    activityOrRoute: activityOrRoute,
-                }}
-            />
+
+                        {snackbarText && openSnackbar && (
+                            <Snackbar
+                                className={classes.snackbar}
+                                open={openSnackbar}
+                                autoHideDuration={10000}
+                                onClose={handleCloseSnackBar}
+                                message={snackbarText}
+                                action={snackbarAction}
+                                anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "center",
+                                }}
+                            />
+                        )}
+                    </>
+                )}
+                <Box className={isItDesktop && isSubchildDisplayed ? classes.outletBoxDesktop : ""}>
+                    {isItDesktop && isSubchildDisplayed && <Divider orientation="vertical" light />}
+                    <Outlet
+                        context={{
+                            source: context.source,
+                            data: context.data,
+                            idSurvey: context.idSurvey,
+                            surveyRootPage: context.surveyRootPage,
+                            isRoute: isRoute,
+                            activityOrRoute: activityOrRoute,
+                        }}
+                    />
+                </Box>
+            </Box>
         </>
     );
 };
@@ -358,6 +389,25 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
     },
     grey: {
         color: theme.palette.action.hover,
+    },
+    desktop: {
+        display: "flex",
+    },
+    activitiesListDesktop: {
+        width: "30%",
+    },
+    outletBoxDesktop: {
+        width: "70%",
+        display: "flex",
+    },
+    innerContentBox: {
+        border: "1px solid transparent",
+        borderRadius: "20px",
+        backgroundColor: theme.palette.background.default,
+    },
+    outerContentBox: {
+        padding: "0.5rem",
+        backgroundColor: theme.variables.white,
     },
 }));
 

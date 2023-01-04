@@ -1,6 +1,6 @@
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import { AppBar, Box, Tab, Tabs, Typography } from "@mui/material";
+import { AppBar, Box, Divider, Tab, Tabs, Typography } from "@mui/material";
 import PersonSunIcon from "assets/illustration/card/person-sun.svg";
 import { TabData } from "interface/component/Component";
 import { makeStylesEdt } from "lunatic-edt";
@@ -120,6 +120,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                             ))}
                     </Tabs>
                 )}
+                <Divider light />
             </AppBar>
         </Box>
     );
