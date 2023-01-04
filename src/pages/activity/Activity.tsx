@@ -7,6 +7,7 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getCurrentNavigatePath,
+    getNavigatePath,
     getOrchestratorPage,
     getParameterizedNavigatePath,
 } from "service/navigation-service";
@@ -48,7 +49,7 @@ const ActivityPage = () => {
                 ),
             );
         } else {
-            //TODO : redirect to error page ??
+            navigate(getNavigatePath(EdtRoutesNameEnum.ERROR));
         }
     }, []);
 
