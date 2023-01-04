@@ -90,6 +90,10 @@ const useStyles = makeStylesEdt({ "name": { SurveyPageEditHeader } })(theme => (
         cursor: "pointer",
     },
     popOver: {
+        "& .MuiBackdrop-root": {
+            overflow: "hidden",
+        },
+        overflow: "hidden",
         "& .MuiPopover-paper": {
             backgroundColor: theme.variables.white,
             padding: "0.5rem",
