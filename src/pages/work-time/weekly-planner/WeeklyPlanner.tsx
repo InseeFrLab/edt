@@ -56,7 +56,7 @@ const WeeklyPlannerPage = () => {
     return (
         <SurveyPage
             validate={validateAndNav}
-            onNavigateBack={() => saveAndNav()}
+            onNavigateBack={validateAndNav}
             onEdit={onEdit}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
