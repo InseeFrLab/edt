@@ -48,15 +48,17 @@ const EditActivityInformationPage = () => {
                 </Typography>
             </Box>
             <Box className={classes.flexColumn}>
-                {stepsData.map(stepData => (
-                    <StepNavCard
-                        key={"nav-to-step-" + stepData.stepNumber}
-                        onClick={() => navToStep(stepData.page)}
-                        labelledBy={""}
-                        describedBy={""}
-                        stepData={stepData}
-                    />
-                ))}
+                {stepsData
+                    .filter(stepData => !stepData.isConditional)
+                    .map(stepData => (
+                        <StepNavCard
+                            key={"nav-to-step-" + stepData.stepNumber}
+                            onClick={() => navToStep(stepData.page)}
+                            labelledBy={""}
+                            describedBy={""}
+                            stepData={stepData}
+                        />
+                    ))}
             </Box>
         </SurveyPage>
     );
