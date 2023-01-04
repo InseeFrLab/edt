@@ -4,7 +4,7 @@ import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { SelectedActivity } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
-import { FieldNameEnum, getValue } from "service/survey-service";
+import { FieldNameEnum, getData, getValue, saveData } from "service/survey-service";
 import { getLoopSize, LoopEnum } from "./loop-service";
 import {
     findActivityInAutoCompleteReferentiel,
@@ -316,6 +316,25 @@ const getMeanOfTransportLabel = (
     return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
 };
 
+const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: number) => {
+    const data = getData(idSurvey);
+    const dataCollected = data.COLLECTED != null ? data.COLLECTED : null;
+    if (dataCollected) {
+        source.variables.forEach(variable => {
+            let value = dataCollected?.[variable.name]?.COLLECTED;
+            if (Array.isArray(value)) {
+                if (value.length >= iteration + 1) {
+                    value.splice(iteration, 1);
+                }
+                if (value.length == 0) {
+                    value = [null];
+                }
+            }
+        });
+        saveData(idSurvey, data);
+    }
+};
+
 export {
     getActivitiesOrRoutes,
     getActivitesSelectedLabel,
@@ -323,4 +342,5 @@ export {
     getActivityLabel,
     getTotalTimeOfActivities,
     getScore,
+    deleteActivity,
 };
