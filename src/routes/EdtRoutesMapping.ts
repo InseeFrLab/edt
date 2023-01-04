@@ -149,7 +149,7 @@ let mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         parentPage: EdtRoutesNameEnum.ACTIVITY,
         page: EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
         surveySource: "activity-survey.json",
-        surveyPage: "11",
+        surveyPage: "3",
     },
     {
         parentPage: EdtRoutesNameEnum.WORK_TIME,

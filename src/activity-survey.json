@@ -7,7 +7,7 @@
     "missing": false,
     "id": "l8lq5lp6",
     "label": "Time",
-    "maxPage": "12",
+    "maxPage": "11",
     "variables": [
         {
             "variableType": "COLLECTED",
@@ -479,18 +479,65 @@
             ]
         },
         {
-            "id": "j6p0ti5h",
-            "componentType": "Sequence",
-            "page": "3",
-            "label": "\"Debut\"",
-            "conditionFilter": { "value": "true", "type": "VTL" },
+            "componentType": "Input",
+            "bindingDependencies": ["FIRSTNAME"],
+            "response": { "name": "FIRSTNAME" },
             "hierarchy": {
-                "sequence": {
-                    "id": "j6p0ti5h",
-                    "page": "3",
-                    "label": { "value": "\"Debut\"", "type": "VTL|MD" }
+                "sequence": { "id": "sequence_1", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "inputtext_firstName2",
+            "page": "3",
+            "label": "\"Vos informations : \"",
+            "placeholder": "Prénom",
+            "mandatory": true,
+            "maxLength": 100,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" Le prénom doit être saisi.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(FIRSTNAME)) and length(FIRSTNAME) >= 1"
+                    },
+                    "id": "kze792d8-formatBornInfSup2"
                 }
-            }
+            ]
+        },
+        {
+            "componentType": "Datepicker",
+            "bindingDependencies": ["SURVEYDATE"],
+            "min": "1900-01-01",
+            "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
+            "dateFormat": "YYYY-MM-DD",
+            "response": { "name": "SURVEYDATE" },
+            "hierarchy": {
+                "sequence": { "id": "sequence_1", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "datepicker_surveyDate2",
+            "page": "3",
+            "label": "\"La journée de  l'enquête :\"",
+            "mandatory": false,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" La date doit être saisie.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(SURVEYDATE)) and length(SURVEYDATE) >= 1"
+                    },
+                    "id": "kze792d8-inputSurveyDate2"
+                }
+            ]
         },
         {
             "id": "law89hhb",
@@ -950,70 +997,9 @@
             "maxLength": 249
         },
         {
-            "componentType": "Input",
-            "bindingDependencies": ["FIRSTNAME"],
-            "response": { "name": "FIRSTNAME" },
-            "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "1" }
-            },
-            "conditionFilter": { "value": "true" },
-            "id": "inputtext_firstName2",
-            "page": "11",
-            "label": "\"Vos informations : \"",
-            "placeholder": "Prénom",
-            "mandatory": true,
-            "maxLength": 100,
-            "controls": [
-                {
-                    "criticality": "ERROR",
-                    "errorMessage": {
-                        "type": "VTL|MD",
-                        "value": "\" Le prénom doit être saisi.\""
-                    },
-                    "typeOfControl": "FORMAT",
-                    "control": {
-                        "type": "VTL",
-                        "value": "not(isnull(FIRSTNAME)) and length(FIRSTNAME) >= 1"
-                    },
-                    "id": "kze792d8-formatBornInfSup2"
-                }
-            ]
-        },
-        {
-            "componentType": "Datepicker",
-            "bindingDependencies": ["SURVEYDATE"],
-            "min": "1900-01-01",
-            "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
-            "dateFormat": "YYYY-MM-DD",
-            "response": { "name": "SURVEYDATE" },
-            "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "1" }
-            },
-            "conditionFilter": { "value": "true" },
-            "id": "datepicker_surveyDate2",
-            "page": "11",
-            "label": "\"La journée de  l'enquête :\"",
-            "mandatory": false,
-            "controls": [
-                {
-                    "criticality": "ERROR",
-                    "errorMessage": {
-                        "type": "VTL|MD",
-                        "value": "\" La date doit être saisie.\""
-                    },
-                    "typeOfControl": "FORMAT",
-                    "control": {
-                        "type": "VTL",
-                        "value": "not(isnull(SURVEYDATE)) and length(SURVEYDATE) >= 1"
-                    },
-                    "id": "kze792d8-inputSurveyDate2"
-                }
-            ]
-        },
-        {
             "id": "End",
             "componentType": "Sequence",
-            "page": "12",
+            "page": "11",
             "label": { "value": "\"End\"", "type": "VTL|MD" },
             "conditionFilter": { "value": "true" },
             "hierarchy": {

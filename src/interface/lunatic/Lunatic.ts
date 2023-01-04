@@ -55,6 +55,7 @@ export interface LunaticModelComponent {
     responses?: any;
     response?: any;
     id?: string;
+    componentType?: string;
 }
 
 export interface LunaticModelVariable {
