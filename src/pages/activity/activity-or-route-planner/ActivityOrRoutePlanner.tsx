@@ -289,6 +289,9 @@ const ActivityOrRoutePlannerPage = () => {
                                                     {t("page.activity-planner.no-activity")}
                                                 </Typography>
                                             </FlexCenter>
+                                            {isItDesktop && isSubchildDisplayed && (
+                                                <Box className={classes.spacer}></Box>
+                                            )}
                                         </>
                                     ) : (
                                         <>
@@ -411,6 +414,9 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
     outerContentBox: {
         padding: "0.5rem",
         backgroundColor: theme.variables.white,
+    },
+    spacer: {
+        height: "37vh",
     },
 }));
 
