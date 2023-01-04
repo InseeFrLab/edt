@@ -58,7 +58,7 @@ const WeeklyPlannerPage = () => {
     return (
         <SurveyPage
             validate={validateAndNav}
-            onNavigateBack={() => saveAndNav()}
+            onNavigateBack={validateAndNav}
             onEdit={onEdit}
             onHelp={navToHelp}
             firstName={getPrintedFirstName(context.idSurvey)}

@@ -48,7 +48,7 @@ const ActivityLocationPage = () => {
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
     const alertLabels = {
-        content: t("page.alert-when-quit.alert-content"),
+        content: t("page.alert-when-quit.activity.alert-content"),
         cancel: t("page.alert-when-quit.alert-cancel"),
         complete: t("page.alert-when-quit.alert-complete"),
     };

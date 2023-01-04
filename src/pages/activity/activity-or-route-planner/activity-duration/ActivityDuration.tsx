@@ -30,10 +30,13 @@ const ActivityDurationPage = () => {
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
     const activitiesAct = getActivitiesOrRoutes(context.idSurvey).activitiesRoutesOrGaps;
+    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const alertLabels = {
-        content: t("page.alert-when-quit.alert-content"),
+        content: !isRoute
+            ? t("page.alert-when-quit.activity.alert-content")
+            : t("page.alert-when-quit.route.alert-content"),
         cancel: t("page.alert-when-quit.alert-cancel"),
         complete: t("page.alert-when-quit.alert-complete"),
     };

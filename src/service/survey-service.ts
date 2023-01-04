@@ -51,24 +51,16 @@ const enum FieldNameEnum {
     WORKINGWEEK = "WORKINGWEEK",
     HOLIDAYWEEK = "HOLIDAYWEEK",
     OTHERWEEK = "OTHERWEEK",
+    GREATESTACTIVITYDAY = "GREATESTACTIVITYDAY",
+    WORSTACTIVITYDAY = "WORSTACTIVITYDAY",
+    KINDOFDAY = "KINDOFDAY",
+    EXCEPTIONALDAY = "EXCEPTIONALDAY",
+    TRAVELTIME = "TRAVELTIME",
+    PHONETIME = "PHONETIME",
     ISCLOSED = "ISCLOSED",
     ISROUTE = "ISROUTE",
     ISCOMPLETED = "ISCOMPLETED",
 }
-
-const toIgnore = [
-    FieldNameEnum.LASTNAME,
-    FieldNameEnum.FIRSTNAME,
-    FieldNameEnum.SURVEYDATE,
-    FieldNameEnum.STARTTIME,
-    FieldNameEnum.ENDTIME,
-    FieldNameEnum.WEEKLYPLANNER,
-    FieldNameEnum.WORKINGWEEK,
-    FieldNameEnum.HOLIDAYWEEK,
-    FieldNameEnum.OTHERWEEK,
-    FieldNameEnum.ISCLOSED,
-    FieldNameEnum.ISROUTE,
-];
 
 const toIgnoreForRoute = [FieldNameEnum.PLACE, FieldNameEnum.MAINACTIVITY, FieldNameEnum.GOAL];
 
@@ -146,32 +138,40 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
     if (!data || !source?.components) {
         return 0;
     }
+    const components = source?.components;
     let currentPage = 0;
-    for (const component of source?.components) {
-        if (component.bindingDependencies) {
-            for (const dependency of component.bindingDependencies) {
-                const variable = getVariable(source, dependency);
-                currentPage = getCurrentPageOfVariable(data, variable, currentPage, component);
-            }
-        }
+    let notFilled = false;
+    let i = 0;
+
+    while (!notFilled && i < components.length) {
+        const component = components[i];
+        if (component.componentType != "Loop")
+            notFilled = haveVariableNotFilled(component, source, data);
+        if (notFilled) currentPage = Number(component.page ?? 0);
+        i++;
     }
     return currentPage;
 };
 
-const getCurrentPageOfVariable = (
+const haveVariableNotFilled = (
+    component: LunaticModelComponent | undefined,
+    source: LunaticModel,
     data: LunaticData | undefined,
-    variable: LunaticModelVariable | undefined,
-    currentPage: number,
-    component: LunaticModelComponent,
-): number => {
-    if (variable) {
-        const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-        if (value !== undefined && value !== null && !Array.isArray(value)) {
-            return Math.max(currentPage, component.page ? +component.page : 0);
-        } else return currentPage;
-    } else {
-        return currentPage;
-    }
+) => {
+    const variables = component?.bindingDependencies;
+    if (variables == null || variables.length == 0) return false;
+    let filled = false;
+
+    variables.forEach(v => {
+        const variable = getVariable(source, v);
+        if (variable) {
+            const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+            if (value != null && !Array.isArray(value)) {
+                filled = false;
+            } else filled = true;
+        }
+    });
+    return filled;
 };
 
 const getComponentId = (variableName: FieldNameEnum, source: LunaticModel) => {
@@ -318,5 +318,4 @@ export {
     ReferentielsEnum,
     toIgnoreForRoute,
     toIgnoreForActivity,
-    toIgnore,
 };
