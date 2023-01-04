@@ -5,6 +5,7 @@ import { NavigateFunction } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentLoopPage, getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { FieldNameEnum, getCurrentPage, getData, getValue, saveData } from "service/survey-service";
+import { getLastPageStep } from "./stepper.service";
 
 let _context: any = null;
 let _navigate: any = null;
@@ -122,11 +123,8 @@ const getCurrentNavigatePath = (
 
 const getLastCompletedStep = (): number => {
     const data = getData(_context.idSurvey ?? "");
-    const currentLastCompletedPage = getCurrentPage(data) - 1;
-    const page = mappingPageOrchestrator.find(
-        page => page.surveySubPage && page.surveySubPage === currentLastCompletedPage.toString(),
-    );
-    return page?.surveyStep ?? 0;
+    const lastStepCompleted = getLastPageStep(data);
+    return lastStepCompleted.stepNumber - 1;
 };
 
 const getOrchestratorPage = (page: EdtRoutesNameEnum) => {

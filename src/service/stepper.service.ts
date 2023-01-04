@@ -1,5 +1,8 @@
 import { t } from "i18next";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { LunaticData, LunaticModel, LunaticModelComponent } from "interface/lunatic/Lunatic";
+import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
+import { getCurrentPageSource } from "./orchestrator-service";
+import { getVariable } from "./survey-service";
 
 export interface StepData {
     page: EdtRoutesNameEnum;
@@ -49,4 +52,64 @@ const getStepData = (page: EdtRoutesNameEnum): StepData => {
     );
 };
 
-export { activityComplementaryQuestionsStepperData, getStepData };
+const getLastStep = () => {
+    return activityComplementaryQuestionsStepperData[
+        activityComplementaryQuestionsStepperData.length - 1
+    ];
+};
+
+const getPageOfStep = (page: EdtRoutesNameEnum) => {
+    return mappingPageOrchestrator.find(pageData => pageData.page === page)?.surveyPage || "";
+};
+
+const getComponentStep = (step: StepData, source: LunaticModel): LunaticModelComponent | undefined => {
+    const page = getPageOfStep(step.page);
+    const component = source?.components.find(component => component.page && component.page === page);
+    return component;
+};
+
+const haveVariableNotFilled = (
+    component: LunaticModelComponent | undefined,
+    source: LunaticModel,
+    data: LunaticData | undefined,
+) => {
+    const variables = component?.bindingDependencies;
+    if (variables == null || variables.length == 0) return false;
+    let filled = false;
+
+    variables.forEach(v => {
+        const variable = getVariable(source, v);
+        if (variable) {
+            const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+            if (value != null && !Array.isArray(value)) {
+                filled = false;
+            } else filled = true;
+        }
+    });
+    return filled;
+};
+
+const getLastPageStep = (data: LunaticData | undefined): StepData => {
+    const stepper = activityComplementaryQuestionsStepperData;
+    const source = getCurrentPageSource();
+    let lastStepNotFilled = stepper[stepper.length - 1];
+    let notFilled = false;
+
+    let i = 0;
+    while (!notFilled && i < stepper.length) {
+        const stepData = stepper[i];
+        const component = getComponentStep(stepData, source);
+        notFilled = haveVariableNotFilled(component, source, data);
+        if (notFilled) lastStepNotFilled = stepData;
+        i++;
+    }
+    return lastStepNotFilled;
+};
+
+export {
+    activityComplementaryQuestionsStepperData,
+    getStepData,
+    getLastStep,
+    getLastPageStep,
+    getPageOfStep,
+};

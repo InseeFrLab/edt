@@ -51,24 +51,16 @@ const enum FieldNameEnum {
     WORKINGWEEK = "WORKINGWEEK",
     HOLIDAYWEEK = "HOLIDAYWEEK",
     OTHERWEEK = "OTHERWEEK",
+    GREATESTACTIVITYDAY = "GREATESTACTIVITYDAY",
+    WORSTACTIVITYDAY = "WORSTACTIVITYDAY",
+    KINDOFDAY = "KINDOFDAY",
+    EXCEPTIONALDAY = "EXCEPTIONALDAY",
+    TRAVELTIME = "TRAVELTIME",
+    PHONETIME = "PHONETIME",
     ISCLOSED = "ISCLOSED",
     ISROUTE = "ISROUTE",
     ISCOMPLETED = "ISCOMPLETED",
 }
-
-const toIgnore = [
-    FieldNameEnum.LASTNAME,
-    FieldNameEnum.FIRSTNAME,
-    FieldNameEnum.SURVEYDATE,
-    FieldNameEnum.STARTTIME,
-    FieldNameEnum.ENDTIME,
-    FieldNameEnum.WEEKLYPLANNER,
-    FieldNameEnum.WORKINGWEEK,
-    FieldNameEnum.HOLIDAYWEEK,
-    FieldNameEnum.OTHERWEEK,
-    FieldNameEnum.ISCLOSED,
-    FieldNameEnum.ISROUTE,
-];
 
 const toIgnoreForRoute = [FieldNameEnum.PLACE, FieldNameEnum.MAINACTIVITY, FieldNameEnum.GOAL];
 
@@ -166,7 +158,7 @@ const getCurrentPageOfVariable = (
 ): number => {
     if (variable) {
         const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-        if (value !== undefined && value !== null && !Array.isArray(value)) {
+        if (value != null && !Array.isArray(value)) {
             return Math.max(currentPage, component.page ? +component.page : 0);
         } else return currentPage;
     } else {
@@ -318,5 +310,4 @@ export {
     ReferentielsEnum,
     toIgnoreForRoute,
     toIgnoreForActivity,
-    toIgnore,
 };
