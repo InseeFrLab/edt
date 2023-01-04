@@ -7,6 +7,7 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getCurrentNavigatePath,
+    getNavigatePath,
     getParameterizedNavigatePath,
     navToHome,
 } from "service/navigation-service";
@@ -15,9 +16,8 @@ import { isTablet } from "service/responsive";
 import { getData, getTabsData, workingTimeSurveysIds } from "service/survey-service";
 
 const WorkTimePage = () => {
-    const { idSurvey } = useParams();
-    //handle error empty idSurvey and remove ?? "" and || ""
-    const data = getData(idSurvey || "");
+    let { idSurvey } = useParams();
+    let data = getData(idSurvey || "");
     const source = getCurrentPageSource();
     const navigate = useNavigate();
     if (idSurvey && !workingTimeSurveysIds.find(id => id === idSurvey)) {
@@ -29,11 +29,6 @@ const WorkTimePage = () => {
     const selectedTab = tabsData.findIndex(tab => tab.idSurvey === idSurvey);
     const maxTabsPerRow = isTablet() ? 3 : 4;
 
-    const reload = () => {
-        // TODO : check with state full reload
-        window.location.reload();
-    };
-
     useEffect(() => {
         window.onpopstate = () => {
             navigate("/");
@@ -42,7 +37,7 @@ const WorkTimePage = () => {
         if (idSurvey && source) {
             navigate(getCurrentNavigatePath(idSurvey, surveyRootPage, source.maxPage));
         } else {
-            //TODO : redirect to error page ??
+            navigate(getNavigatePath(EdtRoutesNameEnum.ERROR));
         }
     }, []);
 
@@ -50,8 +45,9 @@ const WorkTimePage = () => {
         if (tabData.isActivitySurvey) {
             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, tabData.idSurvey));
         } else {
-            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, tabData.idSurvey));
-            reload();
+            idSurvey = tabData.idSurvey;
+            data = getData(idSurvey);
+            navigate(getCurrentNavigatePath(idSurvey, surveyRootPage, source.maxPage));
         }
     }, []);
 

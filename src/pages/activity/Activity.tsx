@@ -23,9 +23,8 @@ import {
 } from "service/survey-service";
 
 const ActivityPage = () => {
-    const { idSurvey } = useParams();
-    //handle error empty idSurvey and remove ?? "" and || ""
-    const data = getData(idSurvey || "");
+    let { idSurvey } = useParams();
+    let data = getData(idSurvey || "");
     const source = getCurrentPageSource();
     const navigate = useNavigate();
     if (idSurvey && !activitySurveysIds.find(id => id === idSurvey)) {
@@ -36,11 +35,6 @@ const ActivityPage = () => {
     const tabsData = getTabsData();
     const selectedTab = tabsData.findIndex(tab => tab.idSurvey === idSurvey);
     const maxTabsPerRow = isTablet() ? 3 : 4;
-
-    const reload = () => {
-        // TODO : check with state full reload
-        window.location.reload();
-    };
 
     useEffect(() => {
         window.onpopstate = () => {
@@ -65,8 +59,18 @@ const ActivityPage = () => {
 
     const handleTabSelecterChange = useCallback((tabData: TabData) => {
         if (tabData.isActivitySurvey) {
-            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, tabData.idSurvey));
-            reload();
+            const activityIsClosed = getValue(idSurvey || "", FieldNameEnum.ISCLOSED);
+            idSurvey = tabData.idSurvey;
+            data = getData(idSurvey);
+            navigate(
+                getCurrentNavigatePath(
+                    tabData.idSurvey,
+                    surveyRootPage,
+                    activityIsClosed
+                        ? source.maxPage
+                        : getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                ),
+            );
         } else {
             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, tabData.idSurvey));
         }

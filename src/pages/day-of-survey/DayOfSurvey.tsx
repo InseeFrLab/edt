@@ -7,7 +7,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getOrchestratorPage, saveAndNav, saveAndNextStep, setEnviro } from "service/navigation-service";
+import {
+    getOrchestratorPage,
+    navToHome,
+    saveAndNav,
+    saveAndNextStep,
+    setEnviro,
+} from "service/navigation-service";
 import {
     FieldNameEnum,
     getComponentId,
@@ -47,6 +53,7 @@ const DayOfSurveyPage = () => {
                 srcIcon={day_of_survey}
                 altIcon={t("accessibility.asset.day-of-survey-alt")}
                 onNavigateBack={() => saveAndNav()}
+                onPrevious={() => navToHome()}
                 firstName={getPrintedFirstName(context.idSurvey)}
                 surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
                 disableNav={disabledButton}
