@@ -59,8 +59,8 @@ const ActivityPage = () => {
 
     const handleTabSelecterChange = useCallback((tabData: TabData) => {
         if (tabData.isActivitySurvey) {
-            const activityIsClosed = getValue(idSurvey || "", FieldNameEnum.ISCLOSED);
             idSurvey = tabData.idSurvey;
+            const activityIsClosed = getValue(idSurvey || "", FieldNameEnum.ISCLOSED);
             data = getData(idSurvey);
             navigate(
                 getCurrentNavigatePath(
