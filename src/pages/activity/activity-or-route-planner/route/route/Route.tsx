@@ -8,7 +8,7 @@ import option6 from "assets/illustration/route-categories/6.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
+import { Alert, IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,6 +25,7 @@ import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
     getOrchestratorPage,
+    validateWithAlertAndNav,
 } from "service/navigation-service";
 import { getRouteRef } from "service/referentiel-service";
 import { saveData } from "service/survey-service";
@@ -66,6 +67,14 @@ const RoutePage = () => {
 
     const [backClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent] = useState<React.MouseEvent>();
+    const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
+
+    const alertLabels = {
+        content: t("page.alert-when-quit.route.alert-content"),
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: t("page.alert-when-quit.alert-complete"),
+    };
+
     //TODO : check error popup with Marion
     const specificProps: IconGridCheckBoxOneSpecificProps = {
         optionsIcons: {
@@ -93,17 +102,38 @@ const RoutePage = () => {
         navigate(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     };
 
+    const onClose = (forceQuit: boolean) => {
+        validateWithAlertAndNav(
+            forceQuit,
+            setIsAlertDisplayed,
+            currentIteration,
+            getCurrentNavigatePath(
+                context.idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            ),
+        );
+    };
+
     return (
         <LoopSurveyPage
             onPrevious={onPrevious}
             onNext={onNext}
-            onClose={saveAndGoToActivityPlanner}
+            onClose={() => onClose(false)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}
         >
             <FlexCenter>
+                <Alert
+                    isAlertDisplayed={isAlertDisplayed}
+                    onCompleteCallBack={() => setIsAlertDisplayed(false)}
+                    onCancelCallBack={onClose}
+                    labels={alertLabels}
+                    icon={errorIcon}
+                    errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                ></Alert>
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
