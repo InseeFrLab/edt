@@ -10,6 +10,9 @@
             "validate": "Valider",
             "add": "Ajouter",
             "finish": "Clore",
+            "edit": "Modifier",
+            "delete": "Supprimer",
+            "help": "Aide",
             "back-to-home": "Retourner à l'accueil"
         },
         "stepper": {
@@ -28,7 +31,8 @@
             "person": "PERSONNE"
         },
         "activity": {
-            "unknown-activity": "Activité "
+            "unknown-activity": "Activité ",
+            "unknown-route": "Trajet "
         }
     },
     "accessibility": {
@@ -36,6 +40,10 @@
             "add-activity-or-route": {
                 "labelled-by": "Ajouter une activité ou un trajet",
                 "described-by": "navigue vers l'ajout d'une activité ou d'un trajet"
+            },
+            "survey-selecter": {
+                "id": "Barre d'onglets pour PC et tablette",
+                "aria-label": "Barre d'onglets pour choisir un questionnaire"
             }
         },
         "asset": {
@@ -47,6 +55,9 @@
             "route-alt": "Alt pour route",
             "empty-activity-alt": "Alt pour empty-activity",
             "kind-of-week-alt": "Alt pour kind of week",
+            "exceptional-day-alt": "Alt pour exceptional day",
+            "greatest-activity-day-alt": "Alt pour greatest activity day",
+            "worst-activity-day-alt": "Alt pour worst activity day",
             "info": {
                 "info-alt": "Alt pour info"
             },
@@ -57,6 +68,8 @@
             "stepper": {
                 "step-activity-duration-alt": "Alt pour step-activity-duration",
                 "step-main-activity-alt": "Alt pour step-main-activity",
+                "step-route-alt": "Alt pour step-route",
+                "step-mean-of-transport-alt": "Alt pour step-mean-of-transport",
                 "step-secondary-activity-alt": "Alt pour step-secondary-activity",
                 "step-activity-location-alt": "Alt pour step-location",
                 "step-with-someone-alt": "Alt pour step-with-someone",
@@ -83,20 +96,49 @@
         },
         "activity-planner": {
             "activity-for-day": "Activité de votre journée du",
-            "no-activity": "Aucune activité renseignée"
+            "no-activity": "Activité non renseignée",
+            "no-route": "Trajet non renseigné",
+            "no-mean-of-transport": "Aucun moyen de transport renseigné",
+            "no-secondary-activity": "Activité secondaire non renseignée",
+            "without-secondary-activity": "Sans activité secondaire",
+            "no-place": "Aucun lieu renseigné",
+            "no-with-someone": "Aucune présence renseignée",
+            "alone": "Seul",
+            "no-screen": "Aucun écran renseigné",
+            "with-screen": "Écran utilisé",
+            "without-screen": "Sans écran",
+            "gap-main": "Aucune activité renseignée",
+            "gap-secondary": "Ajouter une activité ou un trajet",
+            "start-alert": "Les heures des activités de : ",
+            "and": " et ",
+            "end-alert": " se chevauchent."
         },
         "secondary-activity": {
             "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",
             "info-bold": "Si vous en faites plusieurs, notez seulement la plus importante"
         },
+        "secondary-activity-selection": {
+            "add-activity-label": "Ajoutez une autre activité",
+            "input-placeholder": "Activité secondaire",
+            "other-button": "Autre ?"
+        },
         "alert-when-quit": {
             "alert-content": "L'ajout de votre activité n'est pas terminé. Souhaitez vous reprendre ou annuler ?",
+            "alert-content-close": "Souhaitez vous clôturer l'activitie?",
             "alert-cancel": "Annuler",
             "alert-complete": "Reprendre",
+            "alert-closed": "Clôture",
             "alt-alert-icon": "alt pour icon no result"
         },
         "kind-of-week": {
             "simple-header-label": "CARACTÉRISTIQUES DE LA SEMAINE"
+        },
+        "complementary-questions": {
+            "simple-header-label": "CARACTÉRISTIQUES DE LA SEMAINE"
+        },
+        "edit-activity-information": {
+            "header": "MODIFIER L'ACTIVITÉ",
+            "what-to-edit": "Que souhaitez-vous modifier ?"
         }
     },
     "component": {
@@ -110,10 +152,18 @@
         "add-activity-stepper": {
             "step-1-label": "Durée",
             "step-2-label": "Activité principale",
+            "step-2-bis-label": "Trajet",
             "step-3-label": "Activité secondaire",
+            "step-3-bis-label": "Moyen de transport",
             "step-4-label": "Lieu",
             "step-5-label": "Présence",
             "step-6-label": "Écran"
+        },
+        "end-activity-stepper": {
+            "step-1-label": "Préférence",
+            "step-2-label": "Type de journée",
+            "step-3-label": "Temps de trajet",
+            "step-4-label": "Temps sur le téléphone"
         },
         "day-card": {
             "day": "Journée"
@@ -135,7 +185,7 @@
             "alert-message": "Attention ! Vous n’avez pas été au bout de cette étape. Souhaitez-vous la compléter ?",
             "alert-ignore": "Ignorer",
             "alert-complete": "Compléter",
-            "alert-alt_icon": "alt pour icon no result",
+            "alert-alt-icon": "alt pour icon no result",
             "clickable-list-placeholder": "Saisissez une activité",
             "clickable-list-not-found-label": "Aucun résultat trouvé",
             "clickable-list-not-found-comment": "Vous pourrez l'ajouter en cliquant sur le bouton ci-dessous, ou le bouton + ci-dessus",
@@ -147,13 +197,19 @@
             "alert-message": "Aucun lieu n’a été renseigné",
             "alert-ignore": "Ignorer",
             "alert-complete": "Compléter",
-            "alert-alt_icon": "alt pour icon no result"
+            "alert-alt-icon": "alt pour icon no result"
         },
         "goal-selecter": {
             "alert-message": "Aucun but n’a été renseigné",
             "alert-ignore": "Ignorer",
             "alert-complete": "Compléter",
-            "alert-alt_icon": "alt pour icon no result"
+            "alert-alt-icon": "alt pour icon no result"
+        },
+        "secondary-activity-selecter": {
+            "alert-message": "Aucun secondarie activitie n’a été renseigné",
+            "alert-ignore": "Ignorer",
+            "alert-complete": "Compléter",
+            "alert-alt-icon": "alt pour icon no result"
         },
         "weekly-planner": {
             "title": "Planning de votre semaine",
@@ -167,7 +223,8 @@
                 "end-content": "Merci pour votre participation.",
                 "button": "Revenir à l’accueil",
                 "alt-icon": "alt pour icon modal felicitations activity",
-                "survey-content": "Vous avez complété votre semainier."
+                "survey-content": "Vous avez complété votre semainier.",
+                "activity-content": "Vous avez complété votre 1ère journée."
             }
         }
     }

@@ -4,6 +4,7 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
 import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
+import { getScore } from "service/survey-activity-service";
 
 interface DayCardProps {
     labelledBy: string;
@@ -11,12 +12,14 @@ interface DayCardProps {
     onClick(): void;
     firstName: string;
     surveyDate: string;
+    idSurvey: string;
 }
 
 const DayCard = (props: DayCardProps) => {
-    const { labelledBy, describedBy, onClick, firstName, surveyDate } = props;
+    const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey } = props;
     const { classes } = useStyles();
     const { t } = useTranslation();
+    const progressActivity = getScore(idSurvey);
 
     return (
         <FlexCenter>
@@ -36,7 +39,7 @@ const DayCard = (props: DayCardProps) => {
                     </Box>
                 </Box>
                 <Box>
-                    <PourcentProgress labelledBy={""} describedBy={""} progress={"0"} />
+                    <PourcentProgress labelledBy={""} describedBy={""} progress={progressActivity} />
                 </Box>
             </Box>
         </FlexCenter>

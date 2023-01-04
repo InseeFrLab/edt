@@ -1,8 +1,14 @@
-import { useEffect } from "react";
+import { Default } from "components/commons/Responsive/Responsive";
+import SurveySelecter from "components/edt/SurveySelecter/SurveySelecter";
+import { TabData } from "interface/component/Component";
+import { useCallback, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { getCurrentNavigatePath } from "service/navigation-service";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getCurrentNavigatePath, getParameterizedNavigatePath } from "service/navigation-service";
 import { getCurrentPageSource, getCurrentSurveyRootPage } from "service/orchestrator-service";
-import { getData } from "service/survey-service";
+import { isTablet } from "service/responsive";
+import { getData, getTabsData } from "service/survey-service";
 
 const WorkTimePage = () => {
     const { idSurvey } = useParams();
@@ -11,6 +17,15 @@ const WorkTimePage = () => {
     const source = getCurrentPageSource();
     const navigate = useNavigate();
     const surveyRootPage = getCurrentSurveyRootPage();
+    const { t } = useTranslation();
+    const tabsData = getTabsData();
+    const selectedTab = getTabsData().findIndex(tab => tab.idSurvey === idSurvey);
+    const maxTabsPerRow = isTablet() ? 3 : 4;
+
+    const reload = () => {
+        // TODO : check with state full reload
+        window.location.reload();
+    };
 
     useEffect(() => {
         window.onpopstate = () => {
@@ -24,8 +39,28 @@ const WorkTimePage = () => {
         }
     }, []);
 
+    const handleTabSelecterChange = useCallback((tabData: TabData) => {
+        if (tabData.isActivitySurvey) {
+            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, tabData.idSurvey));
+        } else {
+            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, tabData.idSurvey));
+            reload();
+        }
+    }, []);
+
     return (
         <>
+            <Default>
+                <SurveySelecter
+                    id={t("accessibility.component.survey-selecter.id")}
+                    tabsData={tabsData}
+                    ariaLabel={t("accessibility.component.survey-selecter.aria-label")}
+                    selectedTab={selectedTab}
+                    onChangeSelected={handleTabSelecterChange}
+                    isDefaultOpen={selectedTab >= maxTabsPerRow}
+                    maxTabsPerRow={maxTabsPerRow}
+                />
+            </Default>
             <Outlet
                 context={{
                     source: source,

@@ -5,13 +5,14 @@ import { makeStylesEdt } from "lunatic-edt";
 interface SurveyPageSimpleHeaderProps {
     onNavigateBack(): void;
     simpleHeaderLabel?: string;
+    backgroundWhite?: boolean;
 }
 
 const SurveyPageSimpleHeader = (props: SurveyPageSimpleHeaderProps) => {
-    const { simpleHeaderLabel, onNavigateBack } = props;
-    const { classes } = useStyles();
+    const { simpleHeaderLabel, onNavigateBack, backgroundWhite } = props;
+    const { classes, cx } = useStyles();
     return (
-        <Box className={classes.headerBox}>
+        <Box className={cx(classes.headerBox, backgroundWhite ? classes.headerWhiteBox : "")}>
             <Box>{simpleHeaderLabel}</Box>
             <Box>
                 <CloseIcon className={classes.actionIcon} onClick={onNavigateBack} />
@@ -20,15 +21,18 @@ const SurveyPageSimpleHeader = (props: SurveyPageSimpleHeaderProps) => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { SurveyPageSimpleHeader } })(() => ({
+const useStyles = makeStylesEdt({ "name": { SurveyPageSimpleHeader } })(theme => ({
     headerBox: {
         display: "flex",
         flexGrow: "1",
         justifyContent: "space-between",
         alignItems: "center",
-        margin: "1rem",
+        padding: "1rem",
         position: "relative",
         zIndex: "10",
+    },
+    headerWhiteBox: {
+        backgroundColor: theme.variables.white,
     },
     actionIcon: {
         cursor: "pointer",

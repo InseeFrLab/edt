@@ -1,0 +1,8 @@
+[
+    { "label": "Trajet Domicile - Travail", "value": "1" },
+    { "label": "Trajet Domicile - Lieu d'étude", "value": "2" },
+    { "label": "Trajets liés aux enfants", "value": "3" },
+    { "label": "Trajets liés au bénévolat", "value": "4" },
+    { "label": "Trajets pour aider un autre ménage", "value": "5" },
+    { "label": "Autres trajets", "value": "6" }
+]

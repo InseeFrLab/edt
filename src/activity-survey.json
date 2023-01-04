@@ -7,7 +7,7 @@
     "missing": false,
     "id": "l8lq5lp6",
     "label": "Time",
-    "maxPage": "5",
+    "maxPage": "12",
     "variables": [
         {
             "variableType": "COLLECTED",
@@ -202,6 +202,198 @@
             "componentRef": "checkboxboolean_withscreen"
         },
         {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "ROUTE",
+            "componentRef": "icongridcheckboxone_route"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "FOOT",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "BICYCLE",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "TWOWHEELSMOTORIZED",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "PRIVATECAR",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "OTHERPRIVATE",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "PUBLIC",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "ISROUTE",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "GREATESTACTIVITYDAY",
+            "componentRef": "checkboxone_greatestActivityDay"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "WORSTACTIVITYDAY",
+            "componentRef": "checkboxone_worstActivityDay"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "KINDOFDAY",
+            "componentRef": "checkboxone_kindofday"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "ISCLOSED",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "EXCEPTIONALDAY",
+            "componentRef": "checkboxboolean_exceptionalDay"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "TRAVELTIME",
+            "componentRef": "timepicker_travelTime"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "PHONETIME",
+            "componentRef": "timepicker_phoneTime"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "ISCOMPLETED",
+            "componentRef": ""
+        },
+        {
             "variableType": "CALCULATED",
             "expression": "true",
             "name": "FILTER_RESULT_INPUTTEXT",
@@ -244,7 +436,7 @@
                     "criticality": "ERROR",
                     "errorMessage": {
                         "type": "VTL|MD",
-                        "value": "\" La valeur doit être rempli.\""
+                        "value": "\" Le prénom doit être saisi.\""
                     },
                     "typeOfControl": "FORMAT",
                     "control": {
@@ -275,7 +467,7 @@
                     "criticality": "ERROR",
                     "errorMessage": {
                         "type": "VTL|MD",
-                        "value": "\" La valeur doit être rempli.\""
+                        "value": "\" La date doit être saisie.\""
                     },
                     "typeOfControl": "FORMAT",
                     "control": {
@@ -312,6 +504,14 @@
                 "STARTTIME",
                 "ENDTIME",
                 "MAINACTIVITY",
+                "GOAL",
+                "ROUTE",
+                "FOOT",
+                "BICYCLE",
+                "TWOWHEELSMOTORIZED",
+                "PRIVATECAR",
+                "OTHERPRIVATE",
+                "PUBLIC",
                 "WITHSECONDARYACTIVITY",
                 "SECONDARYACTIVITY",
                 "PLACE",
@@ -321,10 +521,12 @@
                 "CHILD",
                 "OTHERKNOWN",
                 "OTHER",
-                "WITHSCREEN"
+                "WITHSCREEN",
+                "ISROUTE",
+                "ISCOMPLETED"
             ],
             "loopDependencies": [],
-            "iterations": { "value": "1", "type": "VTL" },
+            "iterations": { "value": "20", "type": "VTL" },
             "components": [
                 {
                     "componentType": "Sequence",
@@ -354,7 +556,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "timepicker_startTime",
                     "page": "4.2",
-                    "label": "\"Heure de début\"",
+                    "tipsLabel": "Heure de début",
                     "mandatory": false,
                     "maxLength": 249
                 },
@@ -372,7 +574,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "timepicker_endTime",
                     "page": "4.2",
-                    "label": "\"Heure de fin\"",
+                    "tipsLabel": "Heure de fin",
                     "mandatory": false,
                     "maxLength": 249
                 },
@@ -394,6 +596,91 @@
                     "mandatory": false
                 },
                 {
+                    "componentType": "IconGridCheckBoxOne",
+                    "bindingDependencies": ["ROUTE"],
+                    "response": { "name": "ROUTE" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "icongridcheckboxone_route",
+                    "page": "4.4",
+                    "label": "\"Quel était le type de trajet ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "CheckboxGroupEdt",
+                    "bindingDependencies": [
+                        "FOOT",
+                        "BICYCLE",
+                        "TWOWHEELSMOTORIZED",
+                        "PRIVATECAR",
+                        "OTHERPRIVATE",
+                        "PUBLIC"
+                    ],
+                    "responses": [
+                        {
+                            "response": {
+                                "name": "FOOT"
+                            },
+                            "id": "1",
+                            "label": "\"À pied\""
+                        },
+                        {
+                            "response": {
+                                "name": "BICYCLE"
+                            },
+                            "id": "2",
+                            "label": "\"Vélo (électrique ou non)\""
+                        },
+                        {
+                            "response": {
+                                "name": "TWOWHEELSMOTORIZED"
+                            },
+                            "id": "3",
+                            "label": "\"Deux roues motorisé (scooter, moto...)\""
+                        },
+                        {
+                            "response": {
+                                "name": "PRIVATECAR"
+                            },
+                            "id": "4",
+                            "label": "\"Voiture privée (covoiturage)\""
+                        },
+                        {
+                            "response": {
+                                "name": "OTHERPRIVATE"
+                            },
+                            "id": "5",
+                            "label": "\"Autre moyen privé (monoroue, trottinette ou skate, bateau, électrique ou non…)\""
+                        },
+                        {
+                            "response": {
+                                "name": "PUBLIC"
+                            },
+                            "id": "6",
+                            "label": "\"Transports publics (bus, train, taxi, Uber, avion…)\""
+                        }
+                    ],
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxgroup_meanoftransport",
+                    "page": "4.5",
+                    "label": "\"Quels étaient vos moyens de transport ?\"",
+                    "tipsLabel": "Vous pouvez en selectionner plusieurs",
+                    "mandatory": false
+                },
+                {
                     "componentType": "CheckboxBoolean",
                     "bindingDependencies": ["WITHSECONDARYACTIVITY"],
                     "response": { "name": "WITHSECONDARYACTIVITY" },
@@ -406,7 +693,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxboolean_withsecondaryactivity",
-                    "page": "4.4",
+                    "page": "4.6",
                     "label": "\"Faisiez-vous autre chose en même temps ?\"",
                     "mandatory": false
                 },
@@ -423,23 +710,9 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "input_place",
-                    "page": "4.5",
+                    "page": "4.7",
                     "label": "\"Où étiez-vous ?\"",
-                    "mandatory": false,
-                    "options": [
-                        {
-                            "label": "\"Chez soi (yc appartement étudiant si différent du domicile familial)\"",
-                            "value": "11"
-                        },
-                        { "label": "\"Lieu de travail ou d’études\"", "value": "12" },
-                        { "label": "\"Résidence secondaire, location de vacances\"", "value": "14" },
-                        { "label": "\"Restaurant, café, bar\"", "value": "15" },
-                        {
-                            "label": "\"Chez une autre personne (ami, voisin, famille…)\"",
-                            "value": "13"
-                        },
-                        { "label": "\"Autre (commerces, loisirs, dans la rue…)\"", "value": "16" }
-                    ]
+                    "mandatory": false
                 },
                 {
                     "componentType": "CheckboxBoolean",
@@ -454,7 +727,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxboolean_withsomeone",
-                    "page": "4.6",
+                    "page": "4.8",
                     "label": "\"Etiez-vous en compagnie de quelqu'un ?\"",
                     "mandatory": false
                 },
@@ -471,7 +744,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxboolean_withscreen",
-                    "page": "4.7",
+                    "page": "4.9",
                     "label": "\"Avez-vous utilisé un ordinateur, un smartphone, une tablette ou un autre objet connecté à internet ?\"",
                     "mandatory": false
                 },
@@ -488,7 +761,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "goalselecter_goal",
-                    "page": "4.8",
+                    "page": "4.10",
                     "label": "\"Dans quel but avez-vous fait cette activité ?\"",
                     "mandatory": false,
                     "options": [
@@ -509,36 +782,9 @@
                             "label": "\"I - \" || \"Sequence\""
                         }
                     },
-                    "options": [
-                        {
-                            "label": "\"Écouter la radio, des podcasts ou de la musique\"",
-                            "value": "636/637/638"
-                        },
-                        {
-                            "label": "\"Regarder la télévision, des DVD, des vidéos en ligne\"",
-                            "value": "634,635"
-                        },
-                        { "label": "Conversation", "value": "521" },
-                        {
-                            "label": "\"Surf sur Internet, visite de sites pour s'informer (hors journaux)\"",
-                            "value": "673"
-                        },
-                        {
-                            "label": "\"Publier ou surfer sur les médias sociaux (Facebook, Instagram, Twitter, Tumblr, LinkedIn, ...)\"",
-                            "value": "674"
-                        },
-                        { "label": "\"Lecture de journaux, revues\"", "value": "633" },
-                        { "label": "\"Lecture de livres\"", "value": "632" },
-                        { "label": "\"Repas\"", "value": "todetermine" },
-                        { "label": "\"Travail professionnel\"", "value": "211" },
-                        { "label": "\"Se détendre, fumer\"", "value": "641" },
-                        { "label": "\"Conversations avec les enfants, lectures\"", "value": "422" },
-                        { "label": "\"Repas, douche, habillage des enfants\"", "value": "411" },
-                        { "label": "\"Surveiller les devoirs des enfants\"", "value": "421" }
-                    ],
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxone_secondaryactivity",
-                    "page": "4.9",
+                    "page": "4.11",
                     "label": "\"Que faisiez-vous en même temps ?\"",
                     "mandatory": false
                 },
@@ -591,22 +837,189 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxgroup_presentpeople",
-                    "page": "4.10",
+                    "page": "4.12",
                     "label": "\"En présence de qui étiez-vous ?\"",
+                    "tipsLabel": "Vous pouvez en selectionner plusieurs",
                     "mandatory": false
+                }
+            ]
+        },
+        {
+            "componentType": "CheckboxOneEdt",
+            "bindingDependencies": ["GREATESTACTIVITYDAY"],
+            "response": { "name": "GREATESTACTIVITYDAY" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxone_greatestActivityDay",
+            "page": "5",
+            "label": "\"Quelle a été votre activité la plus agréable durant cette journée ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "CheckboxOneEdt",
+            "bindingDependencies": ["WORSTACTIVITYDAY"],
+            "response": { "name": "WORSTACTIVITYDAY" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxone_worstActivityDay",
+            "page": "6",
+            "label": "\"Quelle a été votre activité la plus désagréable durant cette journée ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "CheckboxOneEdt",
+            "bindingDependencies": ["KINDOFDAY"],
+            "response": { "name": "KINDOFDAY" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxone_kindofday",
+            "page": "7",
+            "label": "\"De quel type de journée s’agissait-il ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "CheckboxBoolean",
+            "bindingDependencies": ["EXCEPTIONALDAY"],
+            "response": { "name": "EXCEPTIONALDAY" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxboolean_exceptionalDay",
+            "page": "8",
+            "label": "\"Cette journée a-t-elle présenté un caractère exceptionnel ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "Timepicker",
+            "bindingDependencies": ["TRAVELTIME"],
+            "response": { "name": "TRAVELTIME" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "timepicker_travelTime",
+            "page": "9",
+            "label": "\" Au total, combien de temps avez-vous passé en trajets ? \"",
+            "tipsLabel": "Heures et minutes",
+            "mandatory": false,
+            "maxLength": 249
+        },
+        {
+            "componentType": "Timepicker",
+            "bindingDependencies": ["PHONETIME"],
+            "response": { "name": "PHONETIME" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1",
+                    "label": "\"I - \" || \"Sequence\""
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "timepicker_phoneTime",
+            "page": "10",
+            "label": "\" Au total, combien de temps avez-vous passé à consulter votre téléphone (y compris les petits moments de quelques minutes) ? \"",
+            "tipsLabel": "Heures et minutes",
+            "mandatory": false,
+            "maxLength": 249
+        },
+        {
+            "componentType": "Input",
+            "bindingDependencies": ["FIRSTNAME"],
+            "response": { "name": "FIRSTNAME" },
+            "hierarchy": {
+                "sequence": { "id": "sequence_1", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "inputtext_firstName2",
+            "page": "11",
+            "label": "\"Vos informations : \"",
+            "placeholder": "Prénom",
+            "mandatory": true,
+            "maxLength": 100,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" Le prénom doit être saisi.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(FIRSTNAME)) and length(FIRSTNAME) >= 1"
+                    },
+                    "id": "kze792d8-formatBornInfSup2"
+                }
+            ]
+        },
+        {
+            "componentType": "Datepicker",
+            "bindingDependencies": ["SURVEYDATE"],
+            "min": "1900-01-01",
+            "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
+            "dateFormat": "YYYY-MM-DD",
+            "response": { "name": "SURVEYDATE" },
+            "hierarchy": {
+                "sequence": { "id": "sequence_1", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "datepicker_surveyDate2",
+            "page": "11",
+            "label": "\"La journée de  l'enquête :\"",
+            "mandatory": false,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" La date doit être saisie.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(SURVEYDATE)) and length(SURVEYDATE) >= 1"
+                    },
+                    "id": "kze792d8-inputSurveyDate2"
                 }
             ]
         },
         {
             "id": "End",
             "componentType": "Sequence",
-            "page": "5",
+            "page": "12",
             "label": { "value": "\"End\"", "type": "VTL|MD" },
             "conditionFilter": { "value": "true" },
             "hierarchy": {
                 "sequence": {
                     "id": "End",
-                    "page": "4",
+                    "page": "1",
                     "label": { "value": "\"End\"", "type": "VTL|MD" }
                 }
             }

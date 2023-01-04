@@ -1,28 +1,8 @@
+import { EdtRoutesNameEnum } from "interface/route/EdtRoutesNameEnum";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 
-const enum EdtRoutesNameEnum {
-    HELP = "help",
-    ERROR = "error",
-    ACTIVITY = "activity/:idSurvey",
-    WHO_ARE_YOU = "who-are-you",
-    DAY_OF_SURVEY = "day-of-survey",
-    WORK_TIME = "work-time/:idSurvey",
-    WEEKLY_PLANNER = "weekly-planner",
-    KIND_OF_WEEK = "kind-of-week",
-    ACTIVITY_OR_ROUTE_PLANNER = "activity-or-route-planner",
-    ACTIVITY_DURATION = "activity-duration/:iteration",
-    MAIN_ACTIVITY = "main-activity/:iteration",
-    MAIN_ACTIVITY_GOAL = "main-activity-goal/:iteration",
-    SECONDARY_ACTIVITY = "secondary-activity/:iteration",
-    SECONDARY_ACTIVITY_SELECTION = "secondary-activity-selection/:iteration",
-    ACTIVITY_LOCATION = "activity-location/:iteration",
-    WITH_SOMEONE = "with-who/:iteration",
-    WITH_SOMEONE_SELECTION = "with-who-selection/:iteration",
-    WITH_SCREEN = "with-screen/:iteration",
-}
-
-const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
+let mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY,
         page: EdtRoutesNameEnum.WHO_ARE_YOU,
@@ -45,7 +25,7 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
         page: EdtRoutesNameEnum.ACTIVITY_DURATION,
         surveySource: "activity-survey.json",
-        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY),
+        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
         surveySubPage: "2",
         surveyStep: 1,
     },
@@ -53,65 +33,123 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
         page: EdtRoutesNameEnum.MAIN_ACTIVITY,
         surveySource: "activity-survey.json",
-        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY),
+        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
         surveySubPage: "3",
         surveyStep: 2,
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
+        page: EdtRoutesNameEnum.ROUTE,
+        surveySource: "activity-survey.json",
+        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
+        surveySubPage: "4",
+        surveyStep: 2,
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
+        page: EdtRoutesNameEnum.MEAN_OF_TRANSPORT,
+        surveySource: "activity-survey.json",
+        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
+        surveySubPage: "5",
+        surveyStep: 3,
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
         page: EdtRoutesNameEnum.SECONDARY_ACTIVITY,
         surveySource: "activity-survey.json",
-        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY),
-        surveySubPage: "4",
+        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
+        surveySubPage: "6",
         surveyStep: 3,
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
         page: EdtRoutesNameEnum.ACTIVITY_LOCATION,
         surveySource: "activity-survey.json",
-        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY),
-        surveySubPage: "5",
+        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
+        surveySubPage: "7",
         surveyStep: 4,
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
         page: EdtRoutesNameEnum.WITH_SOMEONE,
         surveySource: "activity-survey.json",
-        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY),
-        surveySubPage: "6",
+        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
+        surveySubPage: "8",
         surveyStep: 5,
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
         page: EdtRoutesNameEnum.WITH_SCREEN,
         surveySource: "activity-survey.json",
-        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY),
-        surveySubPage: "7",
+        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
+        surveySubPage: "9",
         surveyStep: 6,
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
         page: EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
         surveySource: "activity-survey.json",
-        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY),
-        surveySubPage: "8",
+        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
+        surveySubPage: "10",
         surveyStep: 2,
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
         page: EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
         surveySource: "activity-survey.json",
-        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY),
-        surveySubPage: "9",
+        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
+        surveySubPage: "11",
         surveyStep: 3,
     },
     {
         parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
         page: EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
         surveySource: "activity-survey.json",
-        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY),
-        surveySubPage: "10",
+        surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
+        surveySubPage: "12",
         surveyStep: 5,
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "5",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.WORST_ACTIVITY_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "6",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.KIND_OF_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "7",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.EXCEPTIONAL_DAY,
+        surveySource: "activity-survey.json",
+        surveyPage: "8",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.TRAVEL_TIME,
+        surveySource: "activity-survey.json",
+        surveyPage: "9",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.PHONE_TIME,
+        surveySource: "activity-survey.json",
+        surveyPage: "10",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.ACTIVITY,
+        page: EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
+        surveySource: "activity-survey.json",
+        surveyPage: "11",
     },
     {
         parentPage: EdtRoutesNameEnum.WORK_TIME,
@@ -139,4 +177,17 @@ const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
     },
 ];
 
-export { mappingPageOrchestrator, EdtRoutesNameEnum };
+const routesToIgnoreForActivity = [EdtRoutesNameEnum.ROUTE, EdtRoutesNameEnum.MEAN_OF_TRANSPORT];
+
+const routesToIgnoreForRoute = [
+    EdtRoutesNameEnum.MAIN_ACTIVITY,
+    EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
+    EdtRoutesNameEnum.SECONDARY_ACTIVITY,
+    EdtRoutesNameEnum.ACTIVITY_LOCATION,
+    EdtRoutesNameEnum.WITH_SOMEONE,
+    EdtRoutesNameEnum.WITH_SCREEN,
+    EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+    EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
+];
+
+export { mappingPageOrchestrator, EdtRoutesNameEnum, routesToIgnoreForActivity, routesToIgnoreForRoute };

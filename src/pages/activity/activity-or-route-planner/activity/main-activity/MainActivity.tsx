@@ -5,9 +5,20 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getNextLoopPage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
-import { getCurrentNavigatePath, getLoopParameterizedNavigatePath } from "service/navigation-service";
-import { saveData } from "service/survey-service";
+import {
+    getLoopPageSubpage,
+    getNextLoopPage,
+    getPreviousLoopPage,
+    getStepData,
+} from "service/loop-stepper-service";
+import {
+    getCurrentNavigatePath,
+    getLoopParameterizedNavigatePath,
+    getOrchestratorPage,
+    saveAndNav,
+    setEnviro,
+    validateWithAlertAndNav,
+} from "service/navigation-service";
 
 import catIcon100 from "assets/illustration/activity-categories/1.svg";
 import catIcon200 from "assets/illustration/activity-categories/2.svg";
@@ -17,19 +28,17 @@ import catIcon440 from "assets/illustration/activity-categories/5.svg";
 import catIcon500 from "assets/illustration/activity-categories/6.svg";
 import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
-import errorIcon from "assets/illustration/error/puzzle.svg";
-
-import activitesAutoCompleteRef from "activitesAutoCompleteRef.json";
-import categoriesAndActivitesNomenclature from "activitiesCategoriesNomenclature.json";
-import iconNoResult from "assets/illustration/error/puzzle.svg";
+import errorIcon from "assets/illustration/error/activity.svg";
 import { ActivitySelecterSpecificProps, Alert } from "lunatic-edt";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 
 const MainActivityPage = () => {
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY;
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
@@ -56,8 +65,8 @@ const MainActivityPage = () => {
             "650": catIcon650,
             "600": catIcon600,
         },
-        clickableListIconNoResult: iconNoResult,
-        activitesAutoCompleteRef: activitesAutoCompleteRef,
+        clickableListIconNoResult: errorIcon,
+        activitesAutoCompleteRef: getAutoCompleteRef(),
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
@@ -71,7 +80,7 @@ const MainActivityPage = () => {
             }
         },
         setDisplayStepper: setDisplayStepper,
-        categoriesAndActivitesNomenclature: categoriesAndActivitesNomenclature,
+        categoriesAndActivitesNomenclature: getNomenclatureRef(),
         labels: {
             selectInCategory: t("component.activity-selecter.select-in-category"),
             addActivity: t("component.activity-selecter.add-activity"),
@@ -96,16 +105,7 @@ const MainActivityPage = () => {
     };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getLoopParameterizedNavigatePath(
-                    page,
-                    context.idSurvey,
-                    LoopEnum.ACTIVITY,
-                    currentIteration,
-                ),
-            );
-        });
+        saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     };
 
     const onNext = (e: React.MouseEvent) => {
@@ -117,13 +117,16 @@ const MainActivityPage = () => {
     };
 
     const onClose = (forceQuit: boolean) => {
-        if (forceQuit) {
-            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                navigate(getCurrentNavigatePath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY, "3"));
-            });
-        } else {
-            setIsAlertDisplayed(true);
-        }
+        validateWithAlertAndNav(
+            forceQuit,
+            setIsAlertDisplayed,
+            currentIteration,
+            getCurrentNavigatePath(
+                context.idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            ),
+        );
     };
 
     return (
@@ -150,8 +153,8 @@ const MainActivityPage = () => {
                     source={context.source}
                     data={context.data}
                     callbackHolder={callbackHolder}
-                    page={getLoopInitialPage(LoopEnum.ACTIVITY)}
-                    subPage={(stepData.stepNumber + 1).toString()}
+                    page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
+                    subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                     componentSpecificProps={specificProps}
                 ></OrchestratorForStories>

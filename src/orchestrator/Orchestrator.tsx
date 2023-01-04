@@ -5,6 +5,8 @@ import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import * as lunaticEDT from "lunatic-edt";
 import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getOrchestratorPage } from "service/navigation-service";
 
 const { ...edtComponents } = lunaticEDT;
 
@@ -12,8 +14,6 @@ const { ...edtComponents } = lunaticEDT;
 lunaticEDT.notLunaticComponents.forEach((component: React.MemoExoticComponent<any>, name: string) => {
     lunatic[name] = component;
 });
-
-const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
 
 export const callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } } = {
     getData: () => {
@@ -31,10 +31,8 @@ export type OrchestratorProps = {
     page: string;
     subPage?: string;
     iteration?: number;
-    surveyDate?: string;
-    isSubChildDisplayed?: boolean;
-    setIsSubChildDisplayed?(value: boolean): void;
     componentSpecificProps?: any;
+    overrideOptions?: any;
 };
 
 let i = 0;
@@ -79,12 +77,10 @@ const waitThenNext = (pager: any, goNextPage: any, setLoaded: any) => {
             return;
         }
         if (pager.cible === pager.currentPage()) {
-            console.log(`pager.cible : ${pager.cible} , pager.currentPage : ${pager.currentPage()}`);
             setLoaded(true);
             return;
         }
         if (pager.page === pager.maxPage) {
-            console.log("maxpage loaded true");
             setLoaded(true);
             return;
         }
@@ -117,8 +113,6 @@ const myGoToPage = (
     pager.previous = undefined;
     pager.attempts = 10;
     if (pager.cible === pager.currentPage()) {
-        console.log(`pager.cible : ${pager.cible} , pager.currentPage : ${pager.currentPage()}`);
-        console.log("loaded true");
         setLoaded(true);
         return;
     }
@@ -133,10 +127,8 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         page,
         subPage,
         iteration,
-        surveyDate,
-        isSubChildDisplayed,
-        setIsSubChildDisplayed,
         componentSpecificProps,
+        overrideOptions,
     } = props;
     const { classes, cx } = useStyles();
 
@@ -146,8 +138,9 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         source,
         data,
         {
-            onChange: onLogChange,
-            initialPage: subPage ? "3" : page, //Page 3 if we have subpage because we start from the sequence before the loop
+            initialPage: subPage
+                ? getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)
+                : page, //Page 3 if we have subpage because we start from the sequence before the loop
             activeControls: true,
         },
     );
@@ -183,20 +176,17 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     )}
                 >
                     {components.map(function (component: any) {
-                        const { id, componentType, response, ...other } = component;
+                        const { id, componentType, response, options, ...other } = component;
                         const Component = lunatic[componentType];
                         return (
                             <div className="lunatic lunatic-component" key={`component-${id}`}>
                                 <Component
                                     id={id}
                                     response={response}
+                                    options={options ? options : overrideOptions}
                                     {...other}
-                                    {...component}
                                     errors={currentErrors}
                                     custom={edtComponents}
-                                    surveyDate={surveyDate}
-                                    isSubChildDisplayed={isSubChildDisplayed}
-                                    setIsSubChildDisplayed={setIsSubChildDisplayed}
                                     componentSpecificProps={componentSpecificProps}
                                 />
                             </div>
@@ -243,7 +233,6 @@ const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
     orchestratorWhenLoading: {
         visibility: "hidden",
         height: "1px",
-        width: "1px",
         overflow: "hidden",
     },
     orchestratorWhenLoaded: {
