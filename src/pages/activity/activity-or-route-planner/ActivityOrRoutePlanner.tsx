@@ -232,6 +232,7 @@ const ActivityOrRoutePlannerPage = () => {
                                 isItDesktop && isSubchildDisplayed ? classes.activitiesListDesktop : ""
                             }
                             onNavigateBack={() => navToHome()}
+                            onPrevious={() => navToHome()}
                             onEdit={onEdit}
                             onHelp={onHelp}
                             firstName={getPrintedFirstName(context.idSurvey)}

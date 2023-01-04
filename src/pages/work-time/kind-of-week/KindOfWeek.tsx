@@ -10,7 +10,12 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getOrchestratorPage, setEnviro, validateWithAlertAndNav } from "service/navigation-service";
+import {
+    getOrchestratorPage,
+    navFullPath,
+    setEnviro,
+    validateWithAlertAndNav,
+} from "service/navigation-service";
 import { getKindOfWeekRef } from "service/referentiel-service";
 import { getPrintedFirstName } from "service/survey-service";
 
@@ -31,6 +36,7 @@ const KindOfWeekPage = () => {
         <SurveyPage
             validate={() => validateWithAlertAndNav(false, setIsModalDisplayed)}
             onNavigateBack={() => validateWithAlertAndNav(false, setIsModalDisplayed)}
+            onPrevious={() => navFullPath(EdtRoutesNameEnum.WEEKLY_PLANNER)}
             srcIcon={kindOfWeek}
             altIcon={t("accessibility.asset.kind-of-week-alt")}
             firstName={getPrintedFirstName(context.idSurvey)}

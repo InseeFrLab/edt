@@ -7,7 +7,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getOrchestratorPage, saveAndNavFullPath, setEnviro } from "service/navigation-service";
+import {
+    getOrchestratorPage,
+    navFullPath,
+    saveAndNavFullPath,
+    setEnviro,
+} from "service/navigation-service";
 import {
     FieldNameEnum,
     getComponentsOfVariable,
@@ -52,6 +57,7 @@ const EditGlobalInformationPage = () => {
             srcIcon={who_are_you}
             altIcon={t("accessibility.asset.who-are-you-alt")}
             onNavigateBack={() => saveAndNavFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)}
+            onPrevious={() => navFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)}
             firstName={getPrintedFirstName(context.idSurvey)}
             surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
             disableNav={disabledButton}
