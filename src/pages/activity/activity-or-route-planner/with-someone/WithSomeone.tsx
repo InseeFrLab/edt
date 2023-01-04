@@ -19,7 +19,7 @@ import {
     setEnviro,
     validateWithAlertAndNav,
 } from "service/navigation-service";
-import { FieldNameEnum } from "service/survey-service";
+import { FieldNameEnum, getValue } from "service/survey-service";
 
 import errorIcon from "assets/illustration/error/activity.svg";
 import { Alert } from "lunatic-edt";
@@ -34,10 +34,13 @@ const WithSomeonePage = () => {
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
+    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const alertLabels = {
-        content: t("page.alert-when-quit.alert-content"),
+        content: !isRoute
+            ? t("page.alert-when-quit.activity.alert-content")
+            : t("page.alert-when-quit.route.alert-content"),
         cancel: t("page.alert-when-quit.alert-cancel"),
         complete: t("page.alert-when-quit.alert-complete"),
     };

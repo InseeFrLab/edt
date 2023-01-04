@@ -81,10 +81,10 @@ const RoutePage = () => {
         backClickCallback: onPrevious,
         nextClickCallback: onNext,
         labels: {
-            alertMessage: t("component.location-selecter.alert-message"),
-            alertIgnore: t("component.location-selecter.alert-ignore"),
-            alertComplete: t("component.location-selecter.alert-complete"),
-            alertAlticon: t("component.location-selecter.alert-alt-icon"),
+            alertMessage: t("component.route-selecter.alert-message"),
+            alertIgnore: t("component.route-selecter.alert-ignore"),
+            alertComplete: t("component.route-selecter.alert-complete"),
+            alertAlticon: t("component.route-selecter.alert-alt-icon"),
         },
         errorIcon: errorIcon,
     };
