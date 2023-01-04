@@ -10,6 +10,7 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getFullNavigatePath,
     getOrchestratorPage,
+    navToHelp,
     saveAndNav,
     setEnviro,
 } from "service/navigation-service";
@@ -58,6 +59,7 @@ const WeeklyPlannerPage = () => {
             validate={validateAndNav}
             onNavigateBack={() => saveAndNav()}
             onEdit={onEdit}
+            onHelp={navToHelp}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={displayDayOverview}
