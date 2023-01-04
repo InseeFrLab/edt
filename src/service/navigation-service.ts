@@ -46,11 +46,9 @@ const getLoopParameterizedNavigatePath = (
                 getParameterizedNavigatePath(page, iteration.toString())
             );
         } else {
-            console.log("erreur 1");
             return getNavigatePath(EdtRoutesNameEnum.ERROR);
         }
     } else {
-        console.log("erreur 2");
         return getNavigatePath(EdtRoutesNameEnum.ERROR);
     }
 };
@@ -67,7 +65,6 @@ const getFullNavigatePath = (page: EdtRoutesNameEnum, parentPage?: EdtRoutesName
     } else if (targetPage) {
         return getNavigatePath(page);
     } else {
-        console.log("erreur 3");
         return getNavigatePath(EdtRoutesNameEnum.ERROR);
     }
 };
@@ -103,9 +100,6 @@ const getCurrentNavigatePath = (
     } else {
         const currentPage = getCurrentPage(surveyData);
         const firstEmptyPage = nextPage ? nextPage : currentPage;
-        console.log(rootPage);
-        console.log(currentPage);
-        console.log(maxPage);
         page = mappingPageOrchestrator.find(
             link =>
                 link.surveyPage ===
@@ -113,7 +107,6 @@ const getCurrentNavigatePath = (
                 link.parentPage === rootPage,
         )?.page;
     }
-    console.log(page);
     if (page && subpage && iteration !== undefined) {
         return (
             getParameterizedNavigatePath(rootPage, idSurvey) +
@@ -123,7 +116,6 @@ const getCurrentNavigatePath = (
     } else if (page) {
         return getParameterizedNavigatePath(rootPage, idSurvey) + getNavigatePath(page);
     } else {
-        console.log("erreur 4");
         return getNavigatePath(EdtRoutesNameEnum.ERROR);
     }
 };

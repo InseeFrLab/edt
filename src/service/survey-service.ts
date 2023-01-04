@@ -151,12 +151,9 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
         i++;
     }
     if (currentPage == 0) {
-        console.log("zero");
         const firstName = data.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED;
-        console.log(firstName);
         if (firstName) currentPage = Number(components[components.length - 2].page);
     }
-    console.log(currentPage);
     return currentPage;
 };
 
