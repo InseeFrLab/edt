@@ -123,8 +123,14 @@
             "other-button": "Autre ?"
         },
         "alert-when-quit": {
-            "alert-content": "L'ajout de votre activité n'est pas terminé. Souhaitez vous reprendre ou annuler ?",
-            "alert-content-close": "Souhaitez vous clôturer l'activitie?",
+            "activity": {
+                "alert-content": "L'ajout de votre activité n'est pas terminé. Souhaitez vous reprendre ou annuler ?",
+                "alert-content-close": "Souhaitez vous clôturer l'activitie?"
+            },
+            "route": {
+                "alert-content": "L'ajout de votre trajet n'est pas terminé. Souhaitez vous reprendre ou annuler ?",
+                "alert-content-close": "Souhaitez vous clôturer le trajet?"
+            },
             "alert-cancel": "Annuler",
             "alert-complete": "Reprendre",
             "alert-closed": "Clôture",
@@ -207,6 +213,12 @@
         },
         "secondary-activity-selecter": {
             "alert-message": "Aucun secondarie activitie n’a été renseigné",
+            "alert-ignore": "Ignorer",
+            "alert-complete": "Compléter",
+            "alert-alt-icon": "alt pour icon no result"
+        },
+        "route-selecter": {
+            "alert-message": "Aucun route n’a été renseigné",
             "alert-ignore": "Ignorer",
             "alert-complete": "Compléter",
             "alert-alt-icon": "alt pour icon no result"

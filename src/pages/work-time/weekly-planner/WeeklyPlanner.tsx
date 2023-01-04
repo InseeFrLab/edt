@@ -10,6 +10,8 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getFullNavigatePath,
     getOrchestratorPage,
+    navFullPath,
+    navToHelp,
     saveAndNav,
     setEnviro,
 } from "service/navigation-service";
@@ -50,14 +52,15 @@ const WeeklyPlannerPage = () => {
     };
 
     const onEdit = () => {
-        //TODO : sprint 5 edition des données
+        navFullPath(EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.WORK_TIME);
     };
 
     return (
         <SurveyPage
             validate={validateAndNav}
-            onNavigateBack={() => saveAndNav()}
+            onNavigateBack={validateAndNav}
             onEdit={onEdit}
+            onHelp={navToHelp}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={displayDayOverview}

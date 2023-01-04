@@ -37,6 +37,7 @@ interface SurveyPageProps {
     currentStepNumber?: number;
     currentStepLabel?: string;
     backgroundWhiteHeader?: boolean;
+    isSubchildDisplayedAndDesktop?: boolean;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -65,6 +66,7 @@ const SurveyPage = (props: SurveyPageProps) => {
         currentStepNumber,
         currentStepLabel,
         backgroundWhiteHeader,
+        isSubchildDisplayedAndDesktop,
     } = props;
     const { t } = useTranslation();
 
@@ -136,6 +138,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                         onClickAdd={onAdd}
                         finishLabel={finishLabel}
                         addLabel={addLabel}
+                        isSubchildDisplayedAndDesktop={isSubchildDisplayedAndDesktop}
                     />
                 </FlexCenter>
             )}

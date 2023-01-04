@@ -47,7 +47,7 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
 
     //TODO: send isRoute as a parameter
     return (
-        <Box className={className}>
+        <Box className={className} sx={{ flexGrow: 1 }}>
             {displayStepper &&
                 currentStepIcon &&
                 currentStepIconAlt &&

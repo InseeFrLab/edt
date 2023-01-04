@@ -105,6 +105,10 @@ const EdtRoutes = (): JSX.Element => {
                     <Route path={EdtRoutesNameEnum.DAY_OF_SURVEY} element={<DayOfSurveyPage />} />
                     <Route path={EdtRoutesNameEnum.WEEKLY_PLANNER} element={<WeeklyPlannerPage />} />
                     <Route path={EdtRoutesNameEnum.KIND_OF_WEEK} element={<KindOfWeekPage />} />
+                    <Route
+                        path={EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION}
+                        element={<EditGlobalInformationPage />}
+                    />
                 </Route>
             </Routes>
         </BrowserRouter>

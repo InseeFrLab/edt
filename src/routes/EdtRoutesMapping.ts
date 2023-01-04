@@ -149,7 +149,7 @@ let mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         parentPage: EdtRoutesNameEnum.ACTIVITY,
         page: EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
         surveySource: "activity-survey.json",
-        surveyPage: "11",
+        surveyPage: "3",
     },
     {
         parentPage: EdtRoutesNameEnum.WORK_TIME,
@@ -174,6 +174,12 @@ let mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
         page: EdtRoutesNameEnum.KIND_OF_WEEK,
         surveySource: "work-time-survey.json",
         surveyPage: "4",
+    },
+    {
+        parentPage: EdtRoutesNameEnum.WORK_TIME,
+        page: EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
+        surveySource: "work-time-survey.json",
+        surveyPage: "5",
     },
 ];
 
