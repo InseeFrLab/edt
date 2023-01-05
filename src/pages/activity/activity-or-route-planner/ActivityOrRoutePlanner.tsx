@@ -8,7 +8,7 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import {
     Alert,
     formateDateToFrenchFormat,
@@ -25,13 +25,14 @@ import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
     navFullPath,
+    navToActivitRouteHome,
     navToEditActivity,
     navToHelp,
     navToHome,
     setEnviro,
 } from "service/navigation-service";
 import { isDesktop } from "service/responsive";
-import { getActivitiesOrRoutes } from "service/survey-activity-service";
+import { deleteActivity, getActivitiesOrRoutes } from "service/survey-activity-service";
 import {
     FieldNameEnum,
     getPrintedFirstName,
@@ -201,11 +202,14 @@ const ActivityOrRoutePlannerPage = () => {
         navToEditActivity(iteration);
     }, []);
 
-    const onDeleteActivityOrRoute = useCallback(() => {
-        //PARAM : iteration: number
-        //TODO : delete activity route
-        console.log("delete");
-    }, []);
+    const onDeleteActivityOrRoute = useCallback(
+        (idSurvey: string, source: LunaticModel, iteration: number) => {
+            deleteActivity(idSurvey, source, iteration);
+            activitiesRoutesOrGaps.splice(iteration);
+            navToActivitRouteHome();
+        },
+        [],
+    );
 
     const handleCloseSnackBar = useCallback((event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {
@@ -314,7 +318,13 @@ const ActivityOrRoutePlannerPage = () => {
                                                                 activity,
                                                             )
                                                         }
-                                                        onDelete={() => onDeleteActivityOrRoute()}
+                                                        onDelete={() =>
+                                                            onDeleteActivityOrRoute(
+                                                                context.idSurvey,
+                                                                context.source,
+                                                                activity.iteration ?? 0,
+                                                            )
+                                                        }
                                                     />
                                                 </FlexCenter>
                                             ))}
