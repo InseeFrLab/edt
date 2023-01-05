@@ -26,7 +26,6 @@ import {
     getOrchestratorPage,
     loopNavigate,
     saveAndLoopNavigate,
-    saveAndNav,
     setEnviro,
     validateWithAlertAndNav,
 } from "service/navigation-service";
@@ -58,16 +57,6 @@ const MeanOfTransportPage = () => {
             "5": option5,
             "6": option6,
         },
-    };
-
-    const saveAndGoToActivityPlanner = () => {
-        saveAndNav(
-            getCurrentNavigatePath(
-                context.idSurvey,
-                EdtRoutesNameEnum.ACTIVITY,
-                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            ),
-        );
     };
 
     const onPrevious = () => {

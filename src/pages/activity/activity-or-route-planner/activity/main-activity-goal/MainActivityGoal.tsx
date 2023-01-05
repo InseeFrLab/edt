@@ -11,6 +11,7 @@ import {
     getOrchestratorPage,
     saveAndNav,
     setEnviro,
+    validateWithAlertAndNav,
 } from "service/navigation-service";
 
 import errorIcon from "assets/illustration/error/activity.svg";
@@ -19,10 +20,10 @@ import option2 from "assets/illustration/goals/2.svg";
 import option3 from "assets/illustration/goals/3.svg";
 import option4 from "assets/illustration/goals/4.svg";
 
-import { IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
+import { Alert, IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getLoopPageSubpage } from "service/loop-stepper-service";
+import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 
 const MainActivityGoalPage = () => {
     const { t } = useTranslation();
@@ -30,11 +31,13 @@ const MainActivityGoalPage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
 
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL;
+    const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
+    const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
     const specificProps: IconGridCheckBoxOneSpecificProps = {
         optionsIcons: {
@@ -60,6 +63,12 @@ const MainActivityGoalPage = () => {
         errorIcon: errorIcon,
     };
 
+    const alertLabels = {
+        content: t("page.alert-when-quit.activity.alert-content"),
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: t("page.alert-when-quit.alert-complete"),
+    };
+
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
         saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     };
@@ -72,8 +81,11 @@ const MainActivityGoalPage = () => {
         setBackClickEvent(e);
     };
 
-    const onClose = () => {
-        saveAndNav(
+    const onClose = (forceQuit: boolean) => {
+        validateWithAlertAndNav(
+            forceQuit,
+            setIsAlertDisplayed,
+            currentIteration,
             getCurrentNavigatePath(
                 context.idSurvey,
                 EdtRoutesNameEnum.ACTIVITY,
@@ -83,8 +95,22 @@ const MainActivityGoalPage = () => {
     };
 
     return (
-        <LoopSurveyPage onNext={onNext} onPrevious={onPrevious} onClose={onClose}>
+        <LoopSurveyPage
+            onNext={onNext}
+            onPrevious={onPrevious}
+            onClose={() => onClose(false)}
+            displayStepper={false}
+            currentStepLabel={stepData.stepLabel}
+        >
             <FlexCenter>
+                <Alert
+                    isAlertDisplayed={isAlertDisplayed}
+                    onCompleteCallBack={() => setIsAlertDisplayed(false)}
+                    onCancelCallBack={onClose}
+                    labels={alertLabels}
+                    icon={errorIcon}
+                    errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                ></Alert>
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}

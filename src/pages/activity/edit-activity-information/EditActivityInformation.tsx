@@ -11,7 +11,7 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { LoopEnum } from "service/loop-service";
 import { loopActivityRouteStepperData, loopActivityStepperData } from "service/loop-stepper-service";
-import { getLoopParameterizedNavigatePath, navFullPath, navToHome } from "service/navigation-service";
+import { getLoopParameterizedNavigatePath, navFullPath } from "service/navigation-service";
 
 const EditActivityInformationPage = () => {
     const { t } = useTranslation();
