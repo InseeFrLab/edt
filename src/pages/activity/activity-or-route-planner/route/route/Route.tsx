@@ -45,18 +45,6 @@ const RoutePage = () => {
         });
     };
 
-    const saveAndGoToActivityPlanner = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getCurrentNavigatePath(
-                    context.idSurvey,
-                    EdtRoutesNameEnum.ACTIVITY,
-                    getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                ),
-            );
-        });
-    };
-
     const onPrevious = () => {
         saveAndLoopNavigate(getPreviousLoopPage(currentPage, true));
     };
