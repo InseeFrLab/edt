@@ -29,10 +29,11 @@ import catIcon500 from "assets/illustration/activity-categories/6.svg";
 import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
-import { ActivitySelecterSpecificProps, Alert } from "lunatic-edt";
+import { ActivitySelecterSpecificProps, Alert, AutoCompleteActiviteOption } from "lunatic-edt";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
+import { addToAutocompleteActivityReferentiel } from "service/survey-service";
 
 const MainActivityPage = () => {
     const { t } = useTranslation();
@@ -102,6 +103,9 @@ const MainActivityPage = () => {
             otherButton: t("component.activity-selecter.other-button"),
         },
         errorIcon: errorIcon,
+        addToReferentielCallBack: (newItem: AutoCompleteActiviteOption) => {
+            addToAutocompleteActivityReferentiel(newItem);
+        },
     };
 
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {

@@ -22,7 +22,8 @@ import {
     getActivitySecondaryActivityRef,
     getRouteSecondaryActivityRef,
 } from "service/referentiel-service";
-import { FieldNameEnum, getValue } from "service/survey-service";
+import { FieldNameEnum, getValue, addToSecondaryActivityReferentiel, ReferentielsEnum } from "service/survey-service";
+import { CheckboxOneCustomOption, CheckboxOneSpecificProps } from "lunatic-edt";
 
 const SecondaryActivitySelectionPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -38,7 +39,7 @@ const SecondaryActivitySelectionPage = () => {
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
-    const specificProps = {
+    const specificProps: CheckboxOneSpecificProps = {
         labels: {
             otherButtonLabel: t("page.secondary-activity-selection.other-button"),
             subchildLabel: t("page.secondary-activity-selection.add-activity-label"),
@@ -62,6 +63,14 @@ const SecondaryActivitySelectionPage = () => {
             } else {
                 saveAndLoopNavigate(EdtRoutesNameEnum.ACTIVITY_LOCATION);
             }
+        },
+        addToReferentielCallBack: (newItem: CheckboxOneCustomOption) => {
+            addToSecondaryActivityReferentiel(
+                context.isRoute
+                    ? ReferentielsEnum.ROUTESECONDARYACTIVITY
+                    : ReferentielsEnum.ACTIVITYSECONDARYACTIVITY,
+                newItem,
+            );
         },
     };
 
