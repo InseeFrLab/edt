@@ -1,35 +1,42 @@
+import errorIcon from "assets/illustration/error/activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { Alert } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getLoopPageSubpage } from "service/loop-stepper-service";
+import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
     getOrchestratorPage,
     saveAndNav,
     setEnviro,
+    validateWithAlertAndNav,
 } from "service/navigation-service";
 import {
     getActivitySecondaryActivityRef,
     getRouteSecondaryActivityRef,
 } from "service/referentiel-service";
-import errorIcon from "assets/illustration/error/activity.svg";
+import { FieldNameEnum, getValue } from "service/survey-service";
 
 const SecondaryActivitySelectionPage = () => {
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
     const { t } = useTranslation();
     const currentPage = EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION;
+    const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
+    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
+
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
+    const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
     const specificProps = {
         labels: {
@@ -58,19 +65,30 @@ const SecondaryActivitySelectionPage = () => {
         },
     };
 
+    const alertLabels = {
+        content: !isRoute
+            ? t("page.alert-when-quit.activity.alert-content")
+            : t("page.alert-when-quit.route.alert-content"),
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: t("page.alert-when-quit.alert-complete"),
+    };
+
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
         saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     };
 
-    const onClose = useCallback(() => {
-        saveAndNav(
+    const onClose = (forceQuit: boolean) => {
+        validateWithAlertAndNav(
+            forceQuit,
+            setIsAlertDisplayed,
+            currentIteration,
             getCurrentNavigatePath(
                 context.idSurvey,
                 EdtRoutesNameEnum.ACTIVITY,
                 getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
             ),
         );
-    }, []);
+    };
 
     const onNext = (e: React.MouseEvent) => {
         setNextClickEvent(e);
@@ -81,8 +99,22 @@ const SecondaryActivitySelectionPage = () => {
     };
 
     return (
-        <LoopSurveyPage onNext={onNext} onPrevious={onPrevious} onClose={onClose}>
+        <LoopSurveyPage
+            onNext={onNext}
+            onPrevious={onPrevious}
+            onClose={() => onClose(false)}
+            displayStepper={false}
+            currentStepLabel={stepData.stepLabel}
+        >
             <FlexCenter>
+                <Alert
+                    isAlertDisplayed={isAlertDisplayed}
+                    onCompleteCallBack={() => setIsAlertDisplayed(false)}
+                    onCancelCallBack={onClose}
+                    labels={alertLabels}
+                    icon={errorIcon}
+                    errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                ></Alert>
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
