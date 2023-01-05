@@ -6,6 +6,7 @@ import { getLoopLastCompletedStep, LoopEnum } from "service/loop-service";
 import { loopActivityStepperData } from "service/loop-stepper-service";
 import LoopNavigator from "./LoopNavigator/LoopNavigator";
 import LoopSurveyPageHeader from "./LoopSurveyPageHeader/LoopSurveyPageHeader";
+import LoopSurveyPageSimpleHeader from "./LoopSurveyPageSimpleHeader/LoopSurveyPageSimpleHeader";
 
 interface LoopSurveyPageProps {
     onNext?(event?: React.MouseEvent): void;
@@ -66,7 +67,12 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
                         />
                     </LoopSurveyPageHeader>
                 )}
-
+            {!displayStepper && onClose && (
+                <LoopSurveyPageSimpleHeader
+                    simpleHeaderLabel={currentStepLabel}
+                    onNavigateBack={onClose}
+                />
+            )}
             {children}
 
             <LoopNavigator

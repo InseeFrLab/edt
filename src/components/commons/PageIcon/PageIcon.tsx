@@ -18,7 +18,7 @@ const PageIcon = (props: PageIconProps) => {
 
 const useStyles = makeStyles({ "name": { PageIcon } })(() => ({
     spacing: {
-        margin: "2rem 0",
+        margin: "3rem 1rem 1rem 1rem",
     },
 }));
 
