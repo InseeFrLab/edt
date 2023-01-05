@@ -385,6 +385,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
     },
     infoBox: {
         width: "350px",
+        padding: "1rem 0.25rem 0.5rem 1rem",
     },
     label: {
         fontSize: "14px",
