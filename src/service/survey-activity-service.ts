@@ -14,6 +14,43 @@ import {
     findSecondaryActivityInRef,
 } from "./referentiel-service";
 
+const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
+    const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
+    if (mainActivityValue) {
+        const activitySelection: SelectedActivity = mainActivityValue
+            ? JSON.parse(mainActivityValue.toString())
+            : undefined;
+        activityOrRoute.activity = {
+            activityCode: activitySelection.suggesterId ?? activitySelection.id,
+            activityLabel: getActivityLabel(activitySelection) || "",
+        };
+    }
+};
+
+const checkForPlace = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
+    const placeValue = getValue(idSurvey, FieldNameEnum.PLACE, i) as string;
+    if (placeValue) {
+        activityOrRoute.place = {
+            placeCode: placeValue,
+            placeLabel: findPlaceInRef(placeValue.toString())?.label,
+        };
+    }
+};
+
+const checkForSecondaryActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
+    if (activityOrRoute.withSecondaryActivity) {
+        const secondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i) as
+            | string
+            | undefined;
+        if (secondaryActivityValue) {
+            activityOrRoute.secondaryActivity = {
+                activityCode: secondaryActivityValue,
+                activityLabel: findSecondaryActivityInRef(secondaryActivityValue)?.label,
+            };
+        }
+    }
+};
+
 const getActivitiesOrRoutes = (
     idSurvey: string,
     source?: LunaticModel,
@@ -29,19 +66,15 @@ const getActivitiesOrRoutes = (
         let activityOrRoute: ActivityRouteOrGap = {};
         activityOrRoute.iteration = i;
         activityOrRoute.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean | undefined;
-        if (activityOrRoute.isRoute) {
-            activityOrRoute.route = { routeLabel: t("common.activity.unknown-route") + (i + 1) };
-        } else {
-            activityOrRoute.activity = {
-                activityLabel: t("common.activity.unknown-activity") + (i + 1),
-            };
-        }
+
         activityOrRoute.startTime =
             getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
         activityOrRoute.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
 
         if (activityOrRoute.isRoute) {
-            // Route
+            // Label
+            activityOrRoute.route = { routeLabel: t("common.activity.unknown-route") + (i + 1) };
+
             const routeCode = getValue(idSurvey, FieldNameEnum.ROUTE, i) as string | undefined;
             if (routeCode) {
                 activityOrRoute.route = {
@@ -53,26 +86,15 @@ const getActivitiesOrRoutes = (
             //Mean of transport
             activityOrRoute.meanOfTransportLabels = getMeanOfTransportLabel(idSurvey, i, source);
         } else {
+            // Label
+            activityOrRoute.activity = {
+                activityLabel: t("common.activity.unknown-activity") + (i + 1),
+            };
             // Main activity
-            const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
-            if (mainActivityValue) {
-                const activitySelection: SelectedActivity = mainActivityValue
-                    ? JSON.parse(mainActivityValue.toString())
-                    : undefined;
-                activityOrRoute.activity = {
-                    activityCode: activitySelection.suggesterId ?? activitySelection.id,
-                    activityLabel: getActivityLabel(activitySelection) || "",
-                };
-            }
+            checkForMainActivity(idSurvey, i, activityOrRoute);
 
             // Location
-            const placeValue = getValue(idSurvey, FieldNameEnum.PLACE, i) as string;
-            if (placeValue) {
-                activityOrRoute.place = {
-                    placeCode: placeValue,
-                    placeLabel: findPlaceInRef(placeValue.toString())?.label,
-                };
-            }
+            checkForPlace(idSurvey, i, activityOrRoute);
         }
 
         // With Secondary activity
@@ -83,17 +105,7 @@ const getActivitiesOrRoutes = (
         ) as boolean | undefined;
 
         // Secondary activity
-        if (activityOrRoute.withSecondaryActivity) {
-            const secondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY, i) as
-                | string
-                | undefined;
-            if (secondaryActivityValue) {
-                activityOrRoute.secondaryActivity = {
-                    activityCode: secondaryActivityValue,
-                    activityLabel: findSecondaryActivityInRef(secondaryActivityValue)?.label,
-                };
-            }
-        }
+        checkForSecondaryActivity(idSurvey, i, activityOrRoute);
 
         // With someone
         activityOrRoute.withSomeone = getValue(idSurvey, FieldNameEnum.WITHSOMEONE, i) as
