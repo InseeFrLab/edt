@@ -1,6 +1,6 @@
 const path = require("path");
 
-module.exports = function override(config, env) {
+module.exports = function override(config) {
     config.resolve.alias["react"] = path.resolve('./node_modules/react');
     config.resolve.alias["react-dom"] = path.resolve('./node_modules/react-dom');
     config.resolve.alias["@emotion/react"] = path.resolve('./node_modules/@emotion/react');

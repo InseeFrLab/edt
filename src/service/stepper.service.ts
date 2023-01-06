@@ -64,7 +64,7 @@ const getPageOfStep = (page: EdtRoutesNameEnum) => {
 
 const getComponentStep = (step: StepData, source: LunaticModel): LunaticModelComponent | undefined => {
     const page = getPageOfStep(step.page);
-    const component = source?.components.find(component => component.page && component.page === page);
+    const component = source?.components.find(comp => comp.page && comp.page === page);
     return component;
 };
 

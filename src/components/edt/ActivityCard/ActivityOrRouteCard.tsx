@@ -112,6 +112,74 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         setAnchorEl(e.currentTarget);
     }, []);
 
+    const renderSecondaryActivity = () => {
+        const hasLabel = activityOrRoute.secondaryActivity?.activityLabel ? (
+            <Box className={classes.otherInfoLabel}>
+                {activityOrRoute.secondaryActivity.activityLabel}
+            </Box>
+        ) : (
+            renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
+        );
+
+        const isWithSecondaryActivity = activityOrRoute.withSecondaryActivity ? (
+            hasLabel
+        ) : (
+            <Box className={classes.otherInfoLabel}>
+                {t("page.activity-planner.without-secondary-activity")}
+            </Box>
+        );
+
+        return activityOrRoute.withSecondaryActivity == null
+            ? renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
+            : isWithSecondaryActivity;
+    };
+
+    const renderMeanOfTransport = () => {
+        return (
+            activityOrRoute.isRoute &&
+            (activityOrRoute.meanOfTransportLabels ? (
+                <Box className={classes.otherInfoLabel}>{activityOrRoute.meanOfTransportLabels}</Box>
+            ) : (
+                renderInsideAlert(InsideAlertTypes.MEANOFTRANSPORT)
+            ))
+        );
+    };
+
+    const renderPlace = () => {
+        return (
+            !activityOrRoute.isRoute &&
+            (activityOrRoute.place ? (
+                <Box className={classes.otherInfoLabel}>{activityOrRoute.place.placeLabel}</Box>
+            ) : (
+                renderInsideAlert(InsideAlertTypes.PLACE)
+            ))
+        );
+    };
+
+    const renderWithScreen = () => {
+        const withScreenLabel = activityOrRoute.withScreen
+            ? t("page.activity-planner.with-screen")
+            : t("page.activity-planner.without-screen");
+
+        return activityOrRoute.withScreen == null ? (
+            renderInsideAlert(InsideAlertTypes.SCREEN)
+        ) : (
+            <Box className={classes.otherInfoLabel}>{withScreenLabel}</Box>
+        );
+    };
+
+    const renderWithSomeone = () => {
+        const withSomeoneLabel = activityOrRoute.withSomeone
+            ? activityOrRoute.withSomeoneLabels
+            : t("page.activity-planner.alone");
+
+        return activityOrRoute.withSomeone == null ? (
+            renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
+        ) : (
+            <Box className={classes.otherInfoLabel}>{withSomeoneLabel}</Box>
+        );
+    };
+
     const renderActivityOrRoute = () => {
         return (
             <Box
@@ -138,55 +206,11 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                     {!activityOrRoute.isRoute &&
                         !activityOrRoute.activity?.activityCode &&
                         renderInsideAlert(InsideAlertTypes.ACTIVITY)}
-                    {activityOrRoute.isRoute &&
-                        (activityOrRoute.meanOfTransportLabels ? (
-                            <Box className={classes.otherInfoLabel}>
-                                {activityOrRoute.meanOfTransportLabels}
-                            </Box>
-                        ) : (
-                            renderInsideAlert(InsideAlertTypes.MEANOFTRANSPORT)
-                        ))}
-                    {activityOrRoute.withSecondaryActivity == null ? (
-                        renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
-                    ) : activityOrRoute.withSecondaryActivity ? (
-                        activityOrRoute.secondaryActivity?.activityLabel ? (
-                            <Box className={classes.otherInfoLabel}>
-                                {activityOrRoute.secondaryActivity.activityLabel}
-                            </Box>
-                        ) : (
-                            renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
-                        )
-                    ) : (
-                        <Box className={classes.otherInfoLabel}>
-                            {t("page.activity-planner.without-secondary-activity")}
-                        </Box>
-                    )}
-                    {!activityOrRoute.isRoute &&
-                        (activityOrRoute.place ? (
-                            <Box className={classes.otherInfoLabel}>
-                                {activityOrRoute.place.placeLabel}
-                            </Box>
-                        ) : (
-                            renderInsideAlert(InsideAlertTypes.PLACE)
-                        ))}
-                    {activityOrRoute.withSomeone == null ? (
-                        renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
-                    ) : (
-                        <Box className={classes.otherInfoLabel}>
-                            {activityOrRoute.withSomeone
-                                ? activityOrRoute.withSomeoneLabels
-                                : t("page.activity-planner.alone")}
-                        </Box>
-                    )}
-                    {activityOrRoute.withScreen == null ? (
-                        renderInsideAlert(InsideAlertTypes.SCREEN)
-                    ) : (
-                        <Box className={classes.otherInfoLabel}>
-                            {activityOrRoute.withScreen
-                                ? t("page.activity-planner.with-screen")
-                                : t("page.activity-planner.without-screen")}
-                        </Box>
-                    )}
+                    {renderMeanOfTransport()}
+                    {renderSecondaryActivity()}
+                    {renderPlace()}
+                    {renderWithSomeone()}
+                    {renderWithScreen()}
                 </Box>
                 {onEdit && onDelete && (
                     <Box>

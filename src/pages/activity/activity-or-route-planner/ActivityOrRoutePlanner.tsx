@@ -117,21 +117,26 @@ const ActivityOrRoutePlannerPage = () => {
         }
     };
 
-    const onAddActivityOrRoute = (isRoute: boolean) => {
+    const onAddActivityOrRoute = (isRouteBool: boolean) => {
         const loopSize = setLoopSize(
             context.source,
             LoopEnum.ACTIVITY_OR_ROUTE,
             getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
         contextIteration = loopSize - 1;
-        const routeData = setValue(context.idSurvey, FieldNameEnum.ISROUTE, isRoute, contextIteration);
+        const routeData = setValue(
+            context.idSurvey,
+            FieldNameEnum.ISROUTE,
+            isRouteBool,
+            contextIteration,
+        );
         saveData(context.idSurvey, routeData || {}).then(() => {
-            navToActivityOrRoute(contextIteration, isRoute);
+            navToActivityOrRoute(contextIteration, isRouteBool);
         });
     };
 
     const onAddActivityOrRouteFromGap = (
-        isRoute: boolean,
+        isRouteBool: boolean,
         startTime: string | undefined,
         endTime: string | undefined,
     ) => {
@@ -144,11 +149,16 @@ const ActivityOrRoutePlannerPage = () => {
 
         setValue(context.idSurvey, FieldNameEnum.STARTTIME, startTime || null, contextIteration);
         setValue(context.idSurvey, FieldNameEnum.ENDTIME, endTime || null, contextIteration);
-        const updatedData = setValue(context.idSurvey, FieldNameEnum.ISROUTE, isRoute, contextIteration);
+        const updatedData = setValue(
+            context.idSurvey,
+            FieldNameEnum.ISROUTE,
+            isRouteBool,
+            contextIteration,
+        );
 
         saveData(context.idSurvey, updatedData || {}).then(() => {
             onCloseAddActivityOrRoute();
-            setIsRoute(isRoute);
+            setIsRoute(isRouteBool);
             navigate(
                 getLoopParameterizedNavigatePath(
                     EdtRoutesNameEnum.ACTIVITY_DURATION,
@@ -211,7 +221,7 @@ const ActivityOrRoutePlannerPage = () => {
         [],
     );
 
-    const handleCloseSnackBar = useCallback((event: React.SyntheticEvent | Event, reason?: string) => {
+    const handleCloseSnackBar = useCallback((_event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {
             return;
         }

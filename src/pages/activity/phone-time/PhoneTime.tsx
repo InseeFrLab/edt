@@ -59,7 +59,7 @@ const PhoneTimePage = () => {
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
-                    callbackHolder={callbackHolder}
+                    cbHolder={callbackHolder}
                     page={getOrchestratorPage(currentPage)}
                 ></OrchestratorForStories>
             </FlexCenter>

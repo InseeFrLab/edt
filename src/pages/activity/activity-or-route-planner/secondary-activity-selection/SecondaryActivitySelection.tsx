@@ -22,7 +22,12 @@ import {
     getActivitySecondaryActivityRef,
     getRouteSecondaryActivityRef,
 } from "service/referentiel-service";
-import { FieldNameEnum, getValue, addToSecondaryActivityReferentiel, ReferentielsEnum } from "service/survey-service";
+import {
+    FieldNameEnum,
+    getValue,
+    addToSecondaryActivityReferentiel,
+    ReferentielsEnum,
+} from "service/survey-service";
 import { CheckboxOneCustomOption, CheckboxOneSpecificProps } from "lunatic-edt";
 
 const SecondaryActivitySelectionPage = () => {
@@ -127,7 +132,7 @@ const SecondaryActivitySelectionPage = () => {
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
-                    callbackHolder={callbackHolder}
+                    cbHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}

@@ -112,13 +112,13 @@ const getActivitiesOrRoutes = (
         activitiesRoutes.push(activityOrRoute);
     }
 
-    const sortedActivities = activitiesRoutes.sort(
+    activitiesRoutes.sort(
         (a, b) => hourToNormalizedTimeStamp(a.startTime) - hourToNormalizedTimeStamp(b.startTime),
     );
 
     // Fill the gaps and overlaps
     let previousActivity: ActivityRouteOrGap | undefined;
-    const copy = [...sortedActivities];
+    const copy = [...activitiesRoutes];
     for (const act of copy) {
         // Gaps
         if (
@@ -126,8 +126,8 @@ const getActivitiesOrRoutes = (
             hourToNormalizedTimeStamp(act.startTime) >
                 hourToNormalizedTimeStamp(previousActivity.endTime)
         ) {
-            const index = sortedActivities.indexOf(act);
-            sortedActivities.splice(index, 0, {
+            const index = activitiesRoutes.indexOf(act);
+            activitiesRoutes.splice(index, 0, {
                 startTime: previousActivity.endTime,
                 endTime: act.startTime,
                 isGap: true,
@@ -149,7 +149,7 @@ const getActivitiesOrRoutes = (
     }
 
     return {
-        activitiesRoutesOrGaps: sortedActivities,
+        activitiesRoutesOrGaps: activitiesRoutes,
         overlaps: overlaps,
     };
 };
@@ -257,23 +257,16 @@ const getRouteLabel = (routeId: string | undefined): string | undefined => {
     return findRouteInRef(routeId)?.label;
 };
 
-const getWithSomeoneLabel = (
+const filterFieldNames = (
+    fieldNames: FieldNameEnum[],
     idSurvey: string,
     i: number,
     source: LunaticModel | undefined,
-): string | undefined => {
+) => {
     const result: any[] = [];
-    const fieldNames = [
-        FieldNameEnum.COUPLE,
-        FieldNameEnum.CHILD,
-        FieldNameEnum.PARENTS,
-        FieldNameEnum.OTHERKNOWN,
-        FieldNameEnum.OTHER,
-    ];
-    // TODO should not be parsed for each activity
     const responses = source?.components
-        .find(c => c.bindingDependencies?.includes(FieldNameEnum.COUPLE))
-        ?.components?.find(co => co.bindingDependencies?.includes(FieldNameEnum.COUPLE))?.responses;
+        .find(c => c.bindingDependencies?.includes(fieldNames[0]))
+        ?.components?.find(co => co.bindingDependencies?.includes(fieldNames[0]))?.responses;
     fieldNames.forEach(f => {
         if (getValue(idSurvey, f, i)) {
             const label = responses?.find(
@@ -283,6 +276,22 @@ const getWithSomeoneLabel = (
         }
     });
 
+    return result;
+};
+
+const getWithSomeoneLabel = (
+    idSurvey: string,
+    i: number,
+    source: LunaticModel | undefined,
+): string | undefined => {
+    const fieldNames = [
+        FieldNameEnum.COUPLE,
+        FieldNameEnum.CHILD,
+        FieldNameEnum.PARENTS,
+        FieldNameEnum.OTHERKNOWN,
+        FieldNameEnum.OTHER,
+    ];
+    const result = filterFieldNames(fieldNames, idSurvey, i, source);
     return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
 };
 
@@ -291,7 +300,6 @@ const getMeanOfTransportLabel = (
     i: number,
     source: LunaticModel | undefined,
 ): string | undefined => {
-    const result: any[] = [];
     const fieldNames = [
         FieldNameEnum.FOOT,
         FieldNameEnum.BICYCLE,
@@ -300,19 +308,7 @@ const getMeanOfTransportLabel = (
         FieldNameEnum.OTHERPRIVATE,
         FieldNameEnum.PUBLIC,
     ];
-    // TODO should not be parsed for each mean of transport
-    const responses = source?.components
-        .find(c => c.bindingDependencies?.includes(FieldNameEnum.FOOT))
-        ?.components?.find(co => co.bindingDependencies?.includes(FieldNameEnum.FOOT))?.responses;
-    fieldNames.forEach(f => {
-        if (getValue(idSurvey, f, i)) {
-            const label = responses?.find(
-                (r: { response: { name: FieldNameEnum } }) => r.response.name === f,
-            ).label;
-            result.push(label);
-        }
-    });
-
+    const result = filterFieldNames(fieldNames, idSurvey, i, source);
     return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
 };
 

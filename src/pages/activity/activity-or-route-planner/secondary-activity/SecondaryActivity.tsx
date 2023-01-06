@@ -100,7 +100,7 @@ const SecondaryActivityPage = () => {
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
-                    callbackHolder={callbackHolder}
+                    cbHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
