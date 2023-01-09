@@ -5,7 +5,7 @@
     "dependencies": {
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",
-        "@inseefr/lunatic": "^2.0.2-v2",
+        "@inseefr/lunatic": "2.0.2-v2",
         "@mui/icons-material": "^5.10.6",
         "@mui/material": "^5.10.7",
         "dexie": "^3.2.2",
@@ -56,6 +56,7 @@
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-storybook": "^0.6.4",
         "eslint-plugin-tss-unused-classes": "^0.0.4",
+        "fake-indexeddb": "^4.0.1",
         "husky": "^8.0.1",
         "lint-staged": "^13.0.3",
         "prettier": "^2.7.1",
@@ -109,5 +110,16 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "jest": {
+        "moduleNameMapper": {
+            "^react-markdown$": "<rootDir>/node_modules/react-markdown/react-markdown.min.js",
+            "^lunatic.edt$": "<rootDir>/node_modules/lunatic-edt",
+            "^react$": "<rootDir>/node_modules/react",
+            "^react-dom$": "<rootDir>/node_modules/react-dom",
+            "^@emotion/react$": "<rootDir>/node_modules/@emotion/react",
+            "^@mui/material$": "<rootDir>/node_modules/@mui/material",
+            "^@inseefr/lunatic$": "<rootDir>/node_modules/@inseefr/lunatic"
+        }
     }
 }

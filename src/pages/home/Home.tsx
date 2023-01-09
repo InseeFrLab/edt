@@ -8,7 +8,7 @@ import WeekCard from "components/edt/WeekCard/WeekCard";
 import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { EdtRoutesNameEnum } from "routes/EdtRoutes";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getNavigatePath, getParameterizedNavigatePath } from "service/navigation-service";
 import {
     activitySurveysIds,

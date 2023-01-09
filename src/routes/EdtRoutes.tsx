@@ -1,6 +1,16 @@
-import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import ActivityPage from "pages/activity/Activity";
+import ActivityDurationPage from "pages/activity/activity-planner/activity-duration/ActivityDuration";
+import ActivityLocationPage from "pages/activity/activity-planner/activity-location/ActivityLocation";
+import ActivityPlannerPage from "pages/activity/activity-planner/ActivityPlanner";
+import MainActivityGoalPage from "pages/activity/activity-planner/main-activity-goal/MainActivityGoal";
+import MainActivityPage from "pages/activity/activity-planner/main-activity/MainActivity";
+import SecondaryActivitySelectionPage from "pages/activity/activity-planner/secondary-activity-selection/SecondaryActivitySelection";
+import SecondaryActivityPage from "pages/activity/activity-planner/secondary-activity/SecondaryActivity";
+import WithScreenPage from "pages/activity/activity-planner/with-screen/WithScreen";
+import WithSomeoneSelectionPage from "pages/activity/activity-planner/with-someone-selection/WithSomeoneSelection";
+import WithSomeonePage from "pages/activity/activity-planner/with-someone/WithSomeone";
 import DayOfSurveyPage from "pages/day-of-survey/DayOfSurvey";
+import ErrorPage from "pages/error/Error";
 import HelpPage from "pages/help/Help";
 import HomePage from "pages/home/Home";
 import NotFoundPage from "pages/not-found/NotFound";
@@ -8,48 +18,7 @@ import WhoAreYouPage from "pages/who-are-you/WhoAreYou";
 import WeeklyPlannerPage from "pages/work-time/weekly-planner/WeeklyPlanner";
 import WorkTimePage from "pages/work-time/WorkTime";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
-const enum EdtRoutesNameEnum {
-    HELP = "help",
-    ACTIVITY = "activity/:idSurvey",
-    WHO_ARE_YOU = "who-are-you",
-    DAY_OF_SURVEY = "day-of-survey",
-    WORK_TIME = "work-time/:idSurvey",
-    WEEKLY_PLANNER = "weekly-planner",
-}
-
-const mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
-    {
-        parentPage: EdtRoutesNameEnum.ACTIVITY,
-        page: EdtRoutesNameEnum.WHO_ARE_YOU,
-        surveySource: "activity-survey.json",
-        surveyPage: "1",
-    },
-    {
-        parentPage: EdtRoutesNameEnum.ACTIVITY,
-        page: EdtRoutesNameEnum.DAY_OF_SURVEY,
-        surveySource: "activity-survey.json",
-        surveyPage: "2",
-    },
-    {
-        parentPage: EdtRoutesNameEnum.WORK_TIME,
-        page: EdtRoutesNameEnum.WHO_ARE_YOU,
-        surveySource: "work-time-survey.json",
-        surveyPage: "1",
-    },
-    {
-        parentPage: EdtRoutesNameEnum.WORK_TIME,
-        page: EdtRoutesNameEnum.DAY_OF_SURVEY,
-        surveySource: "work-time-survey.json",
-        surveyPage: "2",
-    },
-    {
-        parentPage: EdtRoutesNameEnum.WORK_TIME,
-        page: EdtRoutesNameEnum.WEEKLY_PLANNER,
-        surveySource: "work-time-survey.json",
-        surveyPage: "3",
-    },
-];
+import { EdtRoutesNameEnum } from "./EdtRoutesMapping";
 
 const EdtRoutes = (): JSX.Element => {
     return (
@@ -58,19 +27,48 @@ const EdtRoutes = (): JSX.Element => {
                 <Route path="*" element={<NotFoundPage />} />
                 <Route path="/" element={<HomePage />} />
                 <Route path={EdtRoutesNameEnum.HELP} element={<HelpPage />} />
+                <Route path={EdtRoutesNameEnum.ERROR} element={<ErrorPage />} />
                 <Route path={EdtRoutesNameEnum.ACTIVITY} element={<ActivityPage />}>
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
                     <Route path={EdtRoutesNameEnum.DAY_OF_SURVEY} element={<DayOfSurveyPage />} />
+                    <Route path={EdtRoutesNameEnum.ACTIVITY_PLANNER} element={<ActivityPlannerPage />}>
+                        <Route
+                            path={EdtRoutesNameEnum.ACTIVITY_DURATION}
+                            element={<ActivityDurationPage />}
+                        />
+                        <Route path={EdtRoutesNameEnum.MAIN_ACTIVITY} element={<MainActivityPage />} />
+                        <Route
+                            path={EdtRoutesNameEnum.SECONDARY_ACTIVITY}
+                            element={<SecondaryActivityPage />}
+                        />
+                        <Route
+                            path={EdtRoutesNameEnum.ACTIVITY_LOCATION}
+                            element={<ActivityLocationPage />}
+                        />
+                        <Route path={EdtRoutesNameEnum.WITH_SOMEONE} element={<WithSomeonePage />} />
+                        <Route path={EdtRoutesNameEnum.WITH_SCREEN} element={<WithScreenPage />} />
+                        <Route
+                            path={EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL}
+                            element={<MainActivityGoalPage />}
+                        />
+                        <Route
+                            path={EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION}
+                            element={<SecondaryActivitySelectionPage />}
+                        />
+                        <Route
+                            path={EdtRoutesNameEnum.WITH_SOMEONE_SELECTION}
+                            element={<WithSomeoneSelectionPage />}
+                        />
+                    </Route>
                 </Route>
                 <Route path={EdtRoutesNameEnum.WORK_TIME} element={<WorkTimePage />}>
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
                     <Route path={EdtRoutesNameEnum.DAY_OF_SURVEY} element={<DayOfSurveyPage />} />
                     <Route path={EdtRoutesNameEnum.WEEKLY_PLANNER} element={<WeeklyPlannerPage />} />
                 </Route>
-                {/* DEV : dev purpose only*/}
             </Routes>
         </BrowserRouter>
     );
 };
 
-export { EdtRoutes, EdtRoutesNameEnum, mappingPageOrchestrator };
+export { EdtRoutes };

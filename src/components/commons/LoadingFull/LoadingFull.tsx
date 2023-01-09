@@ -11,9 +11,11 @@ const LoadingFull = (props: LoadingFullProps) => {
         <>
             <FlexCenter>
                 <CircularProgress />
-                <h2>{message}</h2>
-                {thanking ? <h3>{thanking}</h3> : <></>}
             </FlexCenter>
+            <FlexCenter>
+                <h2>{message}</h2>
+            </FlexCenter>
+            <FlexCenter>{thanking ? <h3>{thanking}</h3> : <></>}</FlexCenter>
         </>
     );
 };

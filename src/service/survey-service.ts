@@ -6,7 +6,7 @@ import {
     LunaticModelVariable,
 } from "interface/lunatic/Lunatic";
 import { generateDateFromStringInput, getFrenchDayFromDate } from "lunatic-edt";
-import { EdtRoutesNameEnum } from "routes/EdtRoutes";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
 
@@ -19,6 +19,20 @@ const enum FieldNameEnum {
     LASTNAME = "LASTNAME",
     FIRSTNAME = "FIRSTNAME",
     SURVEYDATE = "SURVEYDATE",
+    STARTTIME = "STARTTIME",
+    ENDTIME = "ENDTIME",
+    MAINACTIVITY = "MAINACTIVITY",
+    GOAL = "GOAL",
+    WITHSECONDARYACTIVITY = "WITHSECONDARYACTIVITY",
+    SECONDARYACTIVITY = "SECONDARYACTIVITY",
+    PLACE = "PLACE",
+    WITHSOMEONE = "WITHSOMEONE",
+    COUPLE = "COUPLE",
+    PARENTS = "PARENTS",
+    CHILD = "CHILD",
+    OTHERKNOWN = "OTHERKNOWN",
+    OTHER = "OTHER",
+    WITHSCREEN = "WITHSCREEN",
 }
 
 const initializeDatas = (): Promise<LunaticData[]> => {
@@ -49,6 +63,10 @@ const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => 
     });
 };
 
+const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
+    return source.variables.find(v => v.variableType === "COLLECTED" && v.name === dependency);
+};
+
 //Return the last lunatic model page that has been fill with data
 const getCurrentPage = (data: LunaticData | undefined): number => {
     //TODO : redirect if we got error page and data is undefined
@@ -76,18 +94,25 @@ const getCurrentPageOfVariable = (
 ): number => {
     if (variable) {
         const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-        if (value !== undefined && value !== null) {
-            return Math.max(currentPage, +component.page);
+        if (value !== undefined && value !== null && !Array.isArray(value)) {
+            return Math.max(currentPage, component.page ? +component.page : 0);
         } else return currentPage;
-    } else return currentPage;
+    } else {
+        return currentPage;
+    }
 };
 
-const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
-    return source.variables.find(v => v.variableType === "COLLECTED" && v.name === dependency);
+const getComponentId = (variableName: FieldNameEnum, source: LunaticModel) => {
+    return source?.variables.find(variable => variable.name === variableName)?.componentRef;
 };
 
-const getValue = (idSurvey: string, variableName: FieldNameEnum) => {
-    return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
+    if (iteration != null) {
+        let value = datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+        return Array.isArray(value) ? value[iteration] : null;
+    } else {
+        return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+    }
 };
 
 const getLastName = (idSurvey: string) => {
@@ -144,6 +169,10 @@ export {
     getPrintedFirstName,
     getSurveyDate,
     getPrintedSurveyDate,
+    getValue,
+    getComponentId,
+    getVariable,
     activitySurveysIds,
     workingTimeSurveysIds,
+    FieldNameEnum,
 };

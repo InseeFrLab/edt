@@ -7,7 +7,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { getCurrentNavigatePath } from "service/navigation-service";
-import { getPrintedFirstName, getPrintedSurveyDate, saveData } from "service/survey-service";
+import {
+    FieldNameEnum,
+    getComponentId,
+    getPrintedFirstName,
+    getPrintedSurveyDate,
+    saveData,
+} from "service/survey-service";
 
 const WhoAreYouPage = () => {
     const { t } = useTranslation();
@@ -15,14 +21,24 @@ const WhoAreYouPage = () => {
     const context: OrchestratorContext = useOutletContext();
     let [disabledButton, setDisabledButton] = React.useState<boolean>(true);
 
+    const keydownChange = () => {
+        //TODO: nav to error page when componentId empty
+        const componentId = getComponentId(FieldNameEnum.FIRSTNAME, context.source) || "";
+        setDisabledButton(
+            callbackHolder.getErrors() == undefined ||
+                callbackHolder.getErrors()[componentId].length > 0,
+        );
+    };
+
+    React.useEffect(() => {
+        document.addEventListener("keyup", keydownChange, true);
+        return () => document.removeEventListener("keyup", keydownChange, true);
+    }, [callbackHolder]);
+
     const validate = () => {
         saveData(context.idSurvey, callbackHolder.getData()).then(() => {
             navigate(
-                getCurrentNavigatePath(
-                    context.idSurvey,
-                    context.surveyParentPage,
-                    context.source.maxPage,
-                ),
+                getCurrentNavigatePath(context.idSurvey, context.surveyRootPage, context.source.maxPage),
             );
         });
     };
@@ -33,16 +49,6 @@ const WhoAreYouPage = () => {
         });
     };
 
-    React.useEffect(() => {
-        const keydownChange = () => {
-            setDisabledButton(
-                callbackHolder.getErrors() == undefined ||
-                    callbackHolder.getErrors()["inputtext_firstName"].length > 0,
-            );
-        };
-        document.addEventListener("keyup", keydownChange);
-    }, [callbackHolder]);
-
     return (
         <>
             <SurveyPage
@@ -51,7 +57,7 @@ const WhoAreYouPage = () => {
                 altIcon={t("accessibility.asset.who-are-you-alt")}
                 onNavigateBack={navBack}
                 firstName={getPrintedFirstName(context.idSurvey)}
-                surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyParentPage)}
+                surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
                 disableNav={disabledButton}
             >
                 <FlexCenter>
