@@ -49,7 +49,7 @@ const useStyles = makeStylesEdt<{ width: string }>({ "name": { ActivityButtons }
             padding: "0.75rem",
         },
         gap: {
-            height: "3.75rem",
+            height: "4.75rem",
             width,
         },
         aloneAddButton: {
@@ -60,6 +60,7 @@ const useStyles = makeStylesEdt<{ width: string }>({ "name": { ActivityButtons }
             width: "40%",
             maxWidth: "9rem",
             margin: "0 1rem",
+            lineHeight: "1.25rem",
         },
     }),
 );
