@@ -64,6 +64,7 @@ const MainActivityGoalPage = () => {
     };
 
     const alertLabels = {
+        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
         content: t("page.alert-when-quit.activity.alert-content"),
         cancel: t("page.alert-when-quit.alert-cancel"),
         complete: t("page.alert-when-quit.alert-complete"),

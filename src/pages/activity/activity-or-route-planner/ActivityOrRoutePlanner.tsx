@@ -71,9 +71,8 @@ const ActivityOrRoutePlannerPage = () => {
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
     const alertLabels = {
-        content: !isRoute
-            ? t("page.alert-when-quit.activity.alert-content-close")
-            : t("page.alert-when-quit.route.alert-content-close"),
+        boldContent: t("page.alert-when-quit.activity-planner.alert-content-close-bold"),
+        content: t("page.alert-when-quit.activity-planner.alert-content-close"),
         cancel: t("page.alert-when-quit.alert-cancel"),
         complete: t("page.alert-when-quit.alert-closed"),
     };

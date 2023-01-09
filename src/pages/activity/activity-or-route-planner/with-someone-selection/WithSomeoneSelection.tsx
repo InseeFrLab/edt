@@ -49,6 +49,7 @@ const WithSomeoneSelectionPage = () => {
     };
 
     const alertLabels = {
+        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
         content: !isRoute
             ? t("page.alert-when-quit.activity.alert-content")
             : t("page.alert-when-quit.route.alert-content"),
