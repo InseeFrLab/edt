@@ -14,6 +14,7 @@ import {
     formateDateToFrenchFormat,
     generateDateFromStringInput,
     makeStylesEdt,
+    ProgressBar,
 } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect, useState } from "react";
@@ -32,7 +33,7 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { isDesktop } from "service/responsive";
-import { deleteActivity, getActivitiesOrRoutes } from "service/survey-activity-service";
+import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
 import {
     FieldNameEnum,
     getPrintedFirstName,
@@ -271,6 +272,12 @@ const ActivityOrRoutePlannerPage = () => {
                                         isItDesktop && isSubchildDisplayed ? classes.innerContentBox : ""
                                     }
                                 >
+                                    <Box className={classes.progressBar}>
+                                        <ProgressBar
+                                            value={Number(getScore(context.idSurvey))}
+                                            showlabel={true}
+                                        ></ProgressBar>
+                                    </Box>
                                     <FlexCenter>
                                         <Alert
                                             isAlertDisplayed={isAlertDisplayed}
@@ -438,6 +445,18 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
     },
     spacer: {
         height: "37vh",
+    },
+    progressBar: {
+        paddingLeft: "1rem",
+        paddingRight: "1rem",
+        paddingTop: "1rem",
+        paddingBottom: "0.5rem",
+        display: "flex",
+        alignItems: "center",
+        width: "100%",
+        height: "3rem",
+        marginBottom: "1rem",
+        backgroundColor: theme.variables.white,
     },
 }));
 
