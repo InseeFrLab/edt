@@ -25,6 +25,7 @@ import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
+    getOrchestratorPage,
     navFullPath,
     navToActivitRouteHome,
     navToEditActivity,
@@ -111,7 +112,16 @@ const ActivityOrRoutePlannerPage = () => {
         if (closed) {
             const data = setValue(context.idSurvey, FieldNameEnum.ISCLOSED, true);
             saveData(context.idSurvey, data ? data : callbackHolder.getData()).then(() => {
-                navigate(getCurrentNavigatePath(context.idSurvey, context.surveyRootPage, "5"));
+                navigate(
+                    getCurrentNavigatePath(
+                        context.idSurvey,
+                        context.surveyRootPage,
+                        getOrchestratorPage(
+                            EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
+                            EdtRoutesNameEnum.ACTIVITY,
+                        ),
+                    ),
+                );
             });
         } else {
             setIsAlertDisplayed(true);
