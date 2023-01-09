@@ -63,7 +63,7 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
                     </Popover>
                 </Box>
             </Box>
-            <Divider light className={classes.dividerBox} />
+            <Divider light />
         </>
     );
 };
@@ -104,9 +104,6 @@ const useStyles = makeStylesEdt({ "name": { SurveyPageEditHeader } })(theme => (
         "&:hover": {
             color: theme.palette.primary.light,
         },
-    },
-    dividerBox: {
-        marginBottom: "1rem",
     },
 }));
 
