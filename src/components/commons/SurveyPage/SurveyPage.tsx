@@ -174,7 +174,6 @@ const useStyles = makeStylesEdt({ "name": { NavButton: SurveyPage } })(theme => 
         overflowX: "hidden",
         overflowY: "auto",
         display: "flex",
-        justifyContent: "center",
         flexDirection: "column",
     },
     progressBar: {
