@@ -27,7 +27,7 @@ export const callbackHolder: { getData(): LunaticData; getErrors(): { [key: stri
 export type OrchestratorProps = {
     source: LunaticModel | undefined;
     data?: object;
-    callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } };
+    cbHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } };
     page: string;
     subPage?: string;
     iteration?: number;
@@ -120,16 +120,8 @@ const myGoToPage = (
 };
 
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    const {
-        source,
-        data,
-        callbackHolder,
-        page,
-        subPage,
-        iteration,
-        componentSpecificProps,
-        overrideOptions,
-    } = props;
+    const { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
+        props;
     const { classes, cx } = useStyles();
 
     const [loaded, setLoaded] = React.useState(false);
@@ -148,8 +140,8 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     const components = getComponents();
     const currentErrors = getCurrentErrors();
 
-    callbackHolder.getData = getData;
-    callbackHolder.getErrors = getCurrentErrors;
+    cbHolder.getData = getData;
+    cbHolder.getErrors = getCurrentErrors;
 
     if (subPage) {
         //Complicated case with subPage, useLunatic needs to navigate page by page from the boucle sequence to the wished page
@@ -158,21 +150,24 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         });
     }
 
+    const getCircularProgressClass = () => {
+        return loaded || !subPage ? classes.loaderWhenLoaded : classes.loaderWhenLoading;
+    };
+    const getComponentsContainerComplementaryClass = () => {
+        return loaded || !subPage ? classes.orchestratorWhenLoaded : classes.orchestratorWhenLoading;
+    };
+
     return source && data ? (
         <>
             <Box className={classes.orchestratorBox}>
-                <FlexCenter
-                    className={loaded || !subPage ? classes.loaderWhenLoaded : classes.loaderWhenLoading}
-                >
+                <FlexCenter className={getCircularProgressClass()}>
                     <CircularProgress />
                 </FlexCenter>
                 <div
                     className={cx(
                         "components",
                         classes.styleOverride,
-                        loaded || !subPage
-                            ? classes.orchestratorWhenLoaded
-                            : classes.orchestratorWhenLoading,
+                        getComponentsContainerComplementaryClass(),
                     )}
                 >
                     {components.map(function (component: any) {

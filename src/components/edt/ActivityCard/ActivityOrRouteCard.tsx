@@ -9,7 +9,7 @@ import screenErrorIconSvg from "assets/illustration/error/screen.svg";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { makeStylesEdt } from "lunatic-edt";
 import React, { useCallback } from "react";
-import { useTranslation } from "react-i18next";
+import { TFunction, useTranslation } from "react-i18next";
 import { getActivityOrRouteDurationLabel } from "service/survey-activity-service";
 
 export const enum InsideAlertTypes {
@@ -82,16 +82,12 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     };
 
     const onEditIn = useCallback((e: any) => {
-        if (onEdit) {
-            onEdit();
-        }
+        onEdit && onEdit();
         e.stopPropagation();
     }, []);
 
     const onDeleteIn = useCallback((e: any) => {
-        if (onDelete) {
-            onDelete();
-        }
+        onDelete && onDelete();
         e.stopPropagation();
     }, []);
 
@@ -111,6 +107,40 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         e.stopPropagation();
         setAnchorEl(e.currentTarget);
     }, []);
+
+    const renderMeanOfTransport = () => {
+        return (
+            activityOrRoute.isRoute &&
+            (activityOrRoute.meanOfTransportLabels ? (
+                <Box className={classes.otherInfoLabel}>{activityOrRoute.meanOfTransportLabels}</Box>
+            ) : (
+                renderInsideAlert(InsideAlertTypes.MEANOFTRANSPORT)
+            ))
+        );
+    };
+
+    const renderPlace = () => {
+        return (
+            !activityOrRoute.isRoute &&
+            (activityOrRoute.place ? (
+                <Box className={classes.otherInfoLabel}>{activityOrRoute.place.placeLabel}</Box>
+            ) : (
+                renderInsideAlert(InsideAlertTypes.PLACE)
+            ))
+        );
+    };
+
+    const renderWithSomeone = () => {
+        const withSomeoneLabel = activityOrRoute.withSomeone
+            ? activityOrRoute.withSomeoneLabels
+            : t("page.activity-planner.alone");
+
+        return activityOrRoute.withSomeone == null ? (
+            renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
+        ) : (
+            <Box className={classes.otherInfoLabel}>{withSomeoneLabel}</Box>
+        );
+    };
 
     const renderActivityOrRoute = () => {
         return (
@@ -138,55 +168,11 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                     {!activityOrRoute.isRoute &&
                         !activityOrRoute.activity?.activityCode &&
                         renderInsideAlert(InsideAlertTypes.ACTIVITY)}
-                    {activityOrRoute.isRoute &&
-                        (activityOrRoute.meanOfTransportLabels ? (
-                            <Box className={classes.otherInfoLabel}>
-                                {activityOrRoute.meanOfTransportLabels}
-                            </Box>
-                        ) : (
-                            renderInsideAlert(InsideAlertTypes.MEANOFTRANSPORT)
-                        ))}
-                    {activityOrRoute.withSecondaryActivity == null ? (
-                        renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
-                    ) : activityOrRoute.withSecondaryActivity ? (
-                        activityOrRoute.secondaryActivity?.activityLabel ? (
-                            <Box className={classes.otherInfoLabel}>
-                                {activityOrRoute.secondaryActivity.activityLabel}
-                            </Box>
-                        ) : (
-                            renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
-                        )
-                    ) : (
-                        <Box className={classes.otherInfoLabel}>
-                            {t("page.activity-planner.without-secondary-activity")}
-                        </Box>
-                    )}
-                    {!activityOrRoute.isRoute &&
-                        (activityOrRoute.place ? (
-                            <Box className={classes.otherInfoLabel}>
-                                {activityOrRoute.place.placeLabel}
-                            </Box>
-                        ) : (
-                            renderInsideAlert(InsideAlertTypes.PLACE)
-                        ))}
-                    {activityOrRoute.withSomeone == null ? (
-                        renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
-                    ) : (
-                        <Box className={classes.otherInfoLabel}>
-                            {activityOrRoute.withSomeone
-                                ? activityOrRoute.withSomeoneLabels
-                                : t("page.activity-planner.alone")}
-                        </Box>
-                    )}
-                    {activityOrRoute.withScreen == null ? (
-                        renderInsideAlert(InsideAlertTypes.SCREEN)
-                    ) : (
-                        <Box className={classes.otherInfoLabel}>
-                            {activityOrRoute.withScreen
-                                ? t("page.activity-planner.with-screen")
-                                : t("page.activity-planner.without-screen")}
-                        </Box>
-                    )}
+                    {renderMeanOfTransport()}
+                    {renderSecondaryActivity(activityOrRoute, classes, renderInsideAlert, t)}
+                    {renderPlace()}
+                    {renderWithSomeone()}
+                    {renderWithScreen(activityOrRoute, classes, renderInsideAlert, t)}
                 </Box>
                 {onEdit && onDelete && (
                     <Box>
@@ -224,9 +210,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
             <Box
                 className={cx(classes.mainCardBox, classes.gapBox)}
                 onClick={() => {
-                    if (onClickGap) {
-                        onClickGap(activityOrRoute.startTime, activityOrRoute.endTime);
-                    }
+                    onClickGap && onClickGap(activityOrRoute.startTime, activityOrRoute.endTime);
                 }}
             >
                 <img className={classes.insideAlertIcon} src={gapIcon}></img>
@@ -243,6 +227,48 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     };
 
     return activityOrRoute.isGap ? renderGap() : renderActivityOrRoute();
+};
+
+const renderSecondaryActivity = (
+    activityOrRoute: ActivityRouteOrGap,
+    classes: any,
+    renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
+    t: TFunction<"translation", undefined>,
+) => {
+    const hasLabel = activityOrRoute.secondaryActivity?.activityLabel ? (
+        <Box className={classes.otherInfoLabel}>{activityOrRoute.secondaryActivity.activityLabel}</Box>
+    ) : (
+        renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
+    );
+
+    const isWithSecondaryActivity = activityOrRoute.withSecondaryActivity ? (
+        hasLabel
+    ) : (
+        <Box className={classes.otherInfoLabel}>
+            {t("page.activity-planner.without-secondary-activity")}
+        </Box>
+    );
+
+    return activityOrRoute.withSecondaryActivity == null
+        ? renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
+        : isWithSecondaryActivity;
+};
+
+const renderWithScreen = (
+    activityOrRoute: ActivityRouteOrGap,
+    classes: any,
+    renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
+    t: TFunction<"translation", undefined>,
+) => {
+    const withScreenLabel = activityOrRoute.withScreen
+        ? t("page.activity-planner.with-screen")
+        : t("page.activity-planner.without-screen");
+
+    return activityOrRoute.withScreen == null ? (
+        renderInsideAlert(InsideAlertTypes.SCREEN)
+    ) : (
+        <Box className={classes.otherInfoLabel}>{withScreenLabel}</Box>
+    );
 };
 
 const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({

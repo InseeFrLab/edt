@@ -9,7 +9,12 @@ import {
     ReferentielData,
     REFERENTIEL_ID,
 } from "interface/lunatic/Lunatic";
-import { generateDateFromStringInput, getFrenchDayFromDate } from "lunatic-edt";
+import {
+    AutoCompleteActiviteOption,
+    CheckboxOneCustomOption,
+    generateDateFromStringInput,
+    getFrenchDayFromDate,
+} from "lunatic-edt";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
@@ -86,8 +91,17 @@ const enum ReferentielsEnum {
 }
 
 const initializeDatas = (): Promise<LunaticData[]> => {
-    return fetchReferentiels().then(refs => {
+    // fetch referentiels only first time when they are not in indexedDB
+    return lunaticDatabase.get(REFERENTIEL_ID).then((refData: any) => {
         const promises: Promise<LunaticData>[] = [];
+        if (!refData) {
+            fetchReferentiels().then(refs => {
+                promises.push(saveReferentiels(refs));
+            });
+        } else {
+            referentielsData = refData;
+        }
+
         for (const idSurvey of surveysIds) {
             promises.push(
                 lunaticDatabase.get(idSurvey).then(data => {
@@ -96,7 +110,6 @@ const initializeDatas = (): Promise<LunaticData[]> => {
                 }),
             );
         }
-        promises.push(saveReferentiels(refs));
         return Promise.all(promises);
     });
 };
@@ -120,6 +133,23 @@ const saveReferentiels = (data: ReferentielData): Promise<ReferentielData> => {
     return lunaticDatabase.save(REFERENTIEL_ID, data).then(() => {
         referentielsData = data;
         return data;
+    });
+};
+
+const addToSecondaryActivityReferentiel = (
+    referentiel: ReferentielsEnum.ACTIVITYSECONDARYACTIVITY | ReferentielsEnum.ROUTESECONDARYACTIVITY,
+    newItem: CheckboxOneCustomOption,
+) => {
+    lunaticDatabase.get(REFERENTIEL_ID).then((currentData: any) => {
+        currentData[referentiel].push(newItem);
+        saveReferentiels(currentData);
+    });
+};
+
+const addToAutocompleteActivityReferentiel = (newItem: AutoCompleteActiviteOption) => {
+    lunaticDatabase.get(REFERENTIEL_ID).then((currentData: any) => {
+        currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE].push(newItem);
+        saveReferentiels(currentData);
     });
 };
 
@@ -322,4 +352,6 @@ export {
     ReferentielsEnum,
     toIgnoreForRoute,
     toIgnoreForActivity,
+    addToSecondaryActivityReferentiel,
+    addToAutocompleteActivityReferentiel,
 };

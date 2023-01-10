@@ -38,6 +38,7 @@ const WithSomeonePage = () => {
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const alertLabels = {
+        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
         content: !isRoute
             ? t("page.alert-when-quit.activity.alert-content")
             : t("page.alert-when-quit.route.alert-content"),
@@ -108,7 +109,7 @@ const WithSomeonePage = () => {
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
-                    callbackHolder={callbackHolder}
+                    cbHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}

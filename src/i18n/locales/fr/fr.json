@@ -9,7 +9,7 @@
             "complete": "Completer",
             "validate": "Valider",
             "add": "Ajouter",
-            "finish": "Clore",
+            "finish": "Clore ma journée",
             "edit": "Modifier",
             "delete": "Supprimer",
             "help": "Aide",
@@ -123,17 +123,20 @@
             "other-button": "Autre ?"
         },
         "alert-when-quit": {
+            "activity-planner": {
+                "alert-content-close-bold": "Souhaitez-vous clôturer votre journée?",
+                "alert-content-close": "Clôturez-la une fois que toutes les activités de votre journée sont renseignées"
+            },
             "activity": {
-                "alert-content": "L'ajout de votre activité n'est pas terminé. Souhaitez vous reprendre ou annuler ?",
-                "alert-content-close": "Souhaitez vous clôturer l'activitie?"
+                "alert-content-bold": "Souhaitez vous reprendre ou annuler ?",
+                "alert-content": "L'ajout de votre activité n'est pas terminé"
             },
             "route": {
-                "alert-content": "L'ajout de votre trajet n'est pas terminé. Souhaitez vous reprendre ou annuler ?",
-                "alert-content-close": "Souhaitez vous clôturer le trajet?"
+                "alert-content": "L'ajout de votre trajet n'est pas terminé"
             },
             "alert-cancel": "Annuler",
             "alert-complete": "Reprendre",
-            "alert-closed": "Clôture",
+            "alert-closed": "Clôturer",
             "alt-alert-icon": "alt pour icon no result"
         },
         "kind-of-week": {

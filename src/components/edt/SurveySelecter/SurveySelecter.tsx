@@ -37,13 +37,13 @@ const SurveySelecter = (props: SurveySelecterProps) => {
     );
     const [isOpen, setIsOpen] = React.useState(isDefaultOpen);
 
-    const handleChangeRowOne = (event: React.ChangeEvent<{}>, newValue: number) => {
+    const handleChangeRowOne = (_event: React.ChangeEvent<{}>, newValue: number) => {
         setValueRowOne(newValue);
         onChangeSelected(tabsData[newValue]);
         setValueRowTwo(false);
     };
 
-    const handleChangeRowTwo = (event: React.ChangeEvent<{}>, newValue: number) => {
+    const handleChangeRowTwo = (_event: React.ChangeEvent<{}>, newValue: number) => {
         setValueRowTwo(newValue);
         onChangeSelected(tabsData[newValue + maxTabsPerRow]);
         setValueRowOne(false);
@@ -57,8 +57,26 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         }
     };
 
+    const getTab = (tabData: TabData, index: number) => {
+        return (
+            <Tab
+                key={"tab-" + index}
+                className={classes.tab}
+                icon={getTabIcon(tabData.isActivitySurvey)}
+                label={
+                    <Box>
+                        <Typography className={classes.alignText}>
+                            {tabData.surveyDateLabel + " - " + tabData.score + "%"}
+                        </Typography>
+                        <Typography className={classes.alignText}>{tabData.firstNameLabel}</Typography>
+                    </Box>
+                }
+            />
+        );
+    };
+
     return (
-        <Box className={classes.surveySelecterBox} id={id}>
+        <Box id={id}>
             <AppBar className={classes.surveySelecterAppBar} position="static">
                 <Box className={classes.firstRow}>
                     <Tabs
@@ -69,23 +87,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                     >
                         {tabsData
                             .filter((_, index) => index < maxTabsPerRow)
-                            .map((tabData, index) => (
-                                <Tab
-                                    key={"tab-" + index}
-                                    className={classes.tab}
-                                    icon={getTabIcon(tabData.isActivitySurvey)}
-                                    label={
-                                        <Box>
-                                            <Typography className={classes.alignText}>
-                                                {tabData.surveyDateLabel + " - " + tabData.score + "%"}
-                                            </Typography>
-                                            <Typography className={classes.alignText}>
-                                                {tabData.firstNameLabel}
-                                            </Typography>
-                                        </Box>
-                                    }
-                                />
-                            ))}
+                            .map((tabData, index) => getTab(tabData, index))}
                     </Tabs>
                     <Box className={classes.actionBox} onClick={() => setIsOpen(!isOpen)}>
                         {isOpen ? <ExpandLess /> : <ExpandMore />}
@@ -101,23 +103,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                     >
                         {tabsData
                             .filter((_, index) => index >= maxTabsPerRow)
-                            .map((tabData, index) => (
-                                <Tab
-                                    key={"tab-" + index}
-                                    className={classes.tab}
-                                    icon={getTabIcon(tabData.isActivitySurvey)}
-                                    label={
-                                        <Box>
-                                            <Typography className={classes.alignText}>
-                                                {tabData.surveyDateLabel + " - " + tabData.score + "%"}
-                                            </Typography>
-                                            <Typography className={classes.alignText}>
-                                                {tabData.firstNameLabel}
-                                            </Typography>
-                                        </Box>
-                                    }
-                                />
-                            ))}
+                            .map((tabData, index) => getTab(tabData, index))}
                     </Tabs>
                 )}
                 <Divider light />
@@ -127,9 +113,6 @@ const SurveySelecter = (props: SurveySelecterProps) => {
 };
 
 const useStyles = makeStylesEdt({ "name": { SurveySelecter } })(theme => ({
-    surveySelecterBox: {
-        flexGrow: 1,
-    },
     surveySelecterAppBar: {
         backgroundColor: theme.variables.white,
         color: theme.palette.primary.light,

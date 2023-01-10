@@ -70,7 +70,7 @@ const WeeklyPlannerPage = () => {
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
-                    callbackHolder={callbackHolder}
+                    cbHolder={callbackHolder}
                     page={getOrchestratorPage(currentPage)}
                     componentSpecificProps={specificProps}
                 ></OrchestratorForStories>

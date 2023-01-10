@@ -26,7 +26,6 @@ const SurveyPageHeader = (props: SurveyPageHeaderProps) => {
 const useStyles = makeStylesEdt({ "name": { SurveyPageHeader } })(() => ({
     headerBox: {
         display: "flex",
-        flexGrow: "1",
         justifyContent: "space-between",
         alignItems: "center",
         margin: "1rem",

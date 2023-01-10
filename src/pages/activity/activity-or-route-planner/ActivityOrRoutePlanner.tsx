@@ -24,6 +24,7 @@ import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
+    getOrchestratorPage,
     navFullPath,
     navToActivitRouteHome,
     navToEditActivity,
@@ -69,9 +70,8 @@ const ActivityOrRoutePlannerPage = () => {
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
     const alertLabels = {
-        content: !isRoute
-            ? t("page.alert-when-quit.activity.alert-content-close")
-            : t("page.alert-when-quit.route.alert-content-close"),
+        boldContent: t("page.alert-when-quit.activity-planner.alert-content-close-bold"),
+        content: t("page.alert-when-quit.activity-planner.alert-content-close"),
         cancel: t("page.alert-when-quit.alert-cancel"),
         complete: t("page.alert-when-quit.alert-closed"),
     };
@@ -110,28 +110,42 @@ const ActivityOrRoutePlannerPage = () => {
         if (closed) {
             const data = setValue(context.idSurvey, FieldNameEnum.ISCLOSED, true);
             saveData(context.idSurvey, data ? data : callbackHolder.getData()).then(() => {
-                navigate(getCurrentNavigatePath(context.idSurvey, context.surveyRootPage, "5"));
+                navigate(
+                    getCurrentNavigatePath(
+                        context.idSurvey,
+                        context.surveyRootPage,
+                        getOrchestratorPage(
+                            EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
+                            EdtRoutesNameEnum.ACTIVITY,
+                        ),
+                    ),
+                );
             });
         } else {
             setIsAlertDisplayed(true);
         }
     };
 
-    const onAddActivityOrRoute = (isRoute: boolean) => {
+    const onAddActivityOrRoute = (isRouteBool: boolean) => {
         const loopSize = setLoopSize(
             context.source,
             LoopEnum.ACTIVITY_OR_ROUTE,
             getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
         contextIteration = loopSize - 1;
-        const routeData = setValue(context.idSurvey, FieldNameEnum.ISROUTE, isRoute, contextIteration);
+        const routeData = setValue(
+            context.idSurvey,
+            FieldNameEnum.ISROUTE,
+            isRouteBool,
+            contextIteration,
+        );
         saveData(context.idSurvey, routeData || {}).then(() => {
-            navToActivityOrRoute(contextIteration, isRoute);
+            navToActivityOrRoute(contextIteration, isRouteBool);
         });
     };
 
     const onAddActivityOrRouteFromGap = (
-        isRoute: boolean,
+        isRouteBool: boolean,
         startTime: string | undefined,
         endTime: string | undefined,
     ) => {
@@ -144,11 +158,16 @@ const ActivityOrRoutePlannerPage = () => {
 
         setValue(context.idSurvey, FieldNameEnum.STARTTIME, startTime || null, contextIteration);
         setValue(context.idSurvey, FieldNameEnum.ENDTIME, endTime || null, contextIteration);
-        const updatedData = setValue(context.idSurvey, FieldNameEnum.ISROUTE, isRoute, contextIteration);
+        const updatedData = setValue(
+            context.idSurvey,
+            FieldNameEnum.ISROUTE,
+            isRouteBool,
+            contextIteration,
+        );
 
         saveData(context.idSurvey, updatedData || {}).then(() => {
             onCloseAddActivityOrRoute();
-            setIsRoute(isRoute);
+            setIsRoute(isRouteBool);
             navigate(
                 getLoopParameterizedNavigatePath(
                     EdtRoutesNameEnum.ACTIVITY_DURATION,
@@ -211,7 +230,7 @@ const ActivityOrRoutePlannerPage = () => {
         [],
     );
 
-    const handleCloseSnackBar = useCallback((event: React.SyntheticEvent | Event, reason?: string) => {
+    const handleCloseSnackBar = useCallback((_event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {
             return;
         }
@@ -228,13 +247,10 @@ const ActivityOrRoutePlannerPage = () => {
 
     return (
         <>
-            <Box className={isItDesktop && isSubchildDisplayed ? classes.desktop : ""}>
+            <Box className={classes.surveyPageBox}>
                 {(isItDesktop || !isSubchildDisplayed) && (
-                    <>
+                    <Box className={classes.innerSurveyPageBox}>
                         <SurveyPage
-                            className={
-                                isItDesktop && isSubchildDisplayed ? classes.activitiesListDesktop : ""
-                            }
                             onNavigateBack={() => navToHome()}
                             onPrevious={() => navToHome()}
                             onEdit={onEdit}
@@ -250,86 +266,93 @@ const ActivityOrRoutePlannerPage = () => {
                                     : undefined
                             }
                             isSubchildDisplayedAndDesktop={isItDesktop && isSubchildDisplayed}
+                            activityProgressBar={true}
+                            idSurvey={context.idSurvey}
                         >
                             <Box
                                 className={
-                                    isItDesktop && isSubchildDisplayed ? classes.outerContentBox : ""
+                                    isItDesktop && isSubchildDisplayed
+                                        ? classes.outerContentBox
+                                        : classes.fullHeight
                                 }
                             >
                                 <Box
                                     className={
-                                        isItDesktop && isSubchildDisplayed ? classes.innerContentBox : ""
+                                        isItDesktop && isSubchildDisplayed
+                                            ? classes.innerContentBox
+                                            : classes.fullHeight
                                     }
                                 >
-                                    <FlexCenter>
-                                        <Alert
-                                            isAlertDisplayed={isAlertDisplayed}
-                                            onCompleteCallBack={() => onFinish(true)}
-                                            onCancelCallBack={() => setIsAlertDisplayed(false)}
-                                            labels={alertLabels}
-                                            icon={errorIcon}
-                                            errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
-                                        ></Alert>
-                                        <Box className={classes.infoBox}>
-                                            <Typography className={classes.label}>
-                                                {t("page.activity-planner.activity-for-day")}
-                                            </Typography>
-                                            <Typography className={classes.date}>
-                                                {formateDateToFrenchFormat(
-                                                    generateDateFromStringInput(surveyDate),
-                                                )}
-                                            </Typography>
-                                        </Box>
-                                    </FlexCenter>
-
-                                    {activitiesRoutesOrGaps.length === 0 ? (
-                                        <>
-                                            <PageIcon
-                                                srcIcon={empty_activity}
-                                                altIcon={t("accessibility.asset.empty-activity-alt")}
-                                            />
-                                            <FlexCenter>
-                                                <Typography className={cx(classes.label, classes.grey)}>
-                                                    {t("page.activity-planner.no-activity")}
+                                    <Box className={classes.innerContentScroll}>
+                                        <FlexCenter>
+                                            <Alert
+                                                isAlertDisplayed={isAlertDisplayed}
+                                                onCompleteCallBack={() => onFinish(true)}
+                                                onCancelCallBack={() => setIsAlertDisplayed(false)}
+                                                labels={alertLabels}
+                                                icon={errorIcon}
+                                                errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                                            ></Alert>
+                                            <Box className={classes.infoBox}>
+                                                <Typography className={classes.label}>
+                                                    {t("page.activity-planner.activity-for-day")}
                                                 </Typography>
-                                            </FlexCenter>
-                                            {isItDesktop && isSubchildDisplayed && (
-                                                <Box className={classes.spacer}></Box>
-                                            )}
-                                        </>
-                                    ) : (
-                                        <>
-                                            {activitiesRoutesOrGaps.map(activity => (
-                                                <FlexCenter key={uuidv4()}>
-                                                    <ActivityOrRouteCard
-                                                        labelledBy={""}
-                                                        describedBy={""}
-                                                        onClick={() =>
-                                                            navToActivityOrRoute(
-                                                                activity.iteration || 0,
-                                                                activity.isRoute,
-                                                            )
-                                                        }
-                                                        onClickGap={onOpenAddActivityOrRoute}
-                                                        activityOrRoute={activity}
-                                                        onEdit={() =>
-                                                            onEditActivityOrRoute(
-                                                                activity.iteration || 0,
-                                                                activity,
-                                                            )
-                                                        }
-                                                        onDelete={() =>
-                                                            onDeleteActivityOrRoute(
-                                                                context.idSurvey,
-                                                                context.source,
-                                                                activity.iteration ?? 0,
-                                                            )
-                                                        }
-                                                    />
+                                                <Typography className={classes.date}>
+                                                    {formateDateToFrenchFormat(
+                                                        generateDateFromStringInput(surveyDate),
+                                                    )}
+                                                </Typography>
+                                            </Box>
+                                        </FlexCenter>
+
+                                        {activitiesRoutesOrGaps.length === 0 ? (
+                                            <>
+                                                <PageIcon
+                                                    srcIcon={empty_activity}
+                                                    altIcon={t("accessibility.asset.empty-activity-alt")}
+                                                />
+                                                <FlexCenter>
+                                                    <Typography
+                                                        className={cx(classes.label, classes.grey)}
+                                                    >
+                                                        {t("page.activity-planner.no-activity")}
+                                                    </Typography>
                                                 </FlexCenter>
-                                            ))}
-                                        </>
-                                    )}
+                                            </>
+                                        ) : (
+                                            <>
+                                                {activitiesRoutesOrGaps.map(activity => (
+                                                    <FlexCenter key={uuidv4()}>
+                                                        <ActivityOrRouteCard
+                                                            labelledBy={""}
+                                                            describedBy={""}
+                                                            onClick={() =>
+                                                                navToActivityOrRoute(
+                                                                    activity.iteration || 0,
+                                                                    activity.isRoute,
+                                                                )
+                                                            }
+                                                            onClickGap={onOpenAddActivityOrRoute}
+                                                            activityOrRoute={activity}
+                                                            onEdit={() =>
+                                                                onEditActivityOrRoute(
+                                                                    activity.iteration || 0,
+                                                                    activity,
+                                                                )
+                                                            }
+                                                            onDelete={() =>
+                                                                onDeleteActivityOrRoute(
+                                                                    context.idSurvey,
+                                                                    context.source,
+                                                                    activity.iteration ?? 0,
+                                                                )
+                                                            }
+                                                        />
+                                                    </FlexCenter>
+                                                ))}
+                                            </>
+                                        )}
+                                    </Box>
                                 </Box>
                             </Box>
                         </SurveyPage>
@@ -365,9 +388,14 @@ const ActivityOrRoutePlannerPage = () => {
                                 }}
                             />
                         )}
-                    </>
+                    </Box>
                 )}
-                <Box className={isItDesktop && isSubchildDisplayed ? classes.outletBoxDesktop : ""}>
+                <Box
+                    className={cx(
+                        isSubchildDisplayed && isItDesktop ? classes.outletBoxDesktop : "",
+                        isSubchildDisplayed && !isItDesktop ? classes.outletBoxMobileTablet : "",
+                    )}
+                >
                     {isItDesktop && isSubchildDisplayed && <Divider orientation="vertical" light />}
                     <Outlet
                         context={{
@@ -407,27 +435,52 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
     grey: {
         color: theme.palette.action.hover,
     },
-    desktop: {
+    surveyPageBox: {
+        flexGrow: "1",
         display: "flex",
-    },
-    activitiesListDesktop: {
-        width: "30%",
+        alignItems: "flex-start",
+        overflow: "auto",
     },
     outletBoxDesktop: {
-        width: "70%",
+        flexGrow: "12",
         display: "flex",
+        height: "100%",
+    },
+    outletBoxMobileTablet: {
+        flexGrow: "1",
+        display: "flex",
+        height: "100%",
     },
     innerContentBox: {
         border: "1px solid transparent",
         borderRadius: "20px",
         backgroundColor: theme.palette.background.default,
+        flexGrow: "1",
+        display: "flex",
+        padding: "1rem 0",
+    },
+    innerContentScroll: {
+        overflowY: "auto",
+        flexGrow: "1",
+        paddingBottom: "1rem",
     },
     outerContentBox: {
         padding: "0.5rem",
+        flexGrow: "1",
+        display: "flex",
         backgroundColor: theme.variables.white,
+        height: "100%",
     },
-    spacer: {
-        height: "37vh",
+    innerSurveyPageBox: {
+        flexGrow: "1",
+        height: "100%",
+        display: "flex",
+    },
+    fullHeight: {
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        flexGrow: "1",
     },
 }));
 

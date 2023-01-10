@@ -129,7 +129,7 @@ const getLastCompletedStep = (): number => {
         : lastStep.stepNumber;
 };
 
-const getOrchestratorPage = (page: EdtRoutesNameEnum, parentPage?: EdtRoutesNameEnum) => {
+const getOrchestratorPage = (page: EdtRoutesNameEnum, parentPage?: EdtRoutesNameEnum): string => {
     return (
         mappingPageOrchestrator.find(
             pageData =>

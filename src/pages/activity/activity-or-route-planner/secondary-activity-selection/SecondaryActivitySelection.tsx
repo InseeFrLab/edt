@@ -22,7 +22,13 @@ import {
     getActivitySecondaryActivityRef,
     getRouteSecondaryActivityRef,
 } from "service/referentiel-service";
-import { FieldNameEnum, getValue } from "service/survey-service";
+import {
+    FieldNameEnum,
+    getValue,
+    addToSecondaryActivityReferentiel,
+    ReferentielsEnum,
+} from "service/survey-service";
+import { CheckboxOneCustomOption, CheckboxOneSpecificProps } from "lunatic-edt";
 
 const SecondaryActivitySelectionPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -38,7 +44,7 @@ const SecondaryActivitySelectionPage = () => {
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
-    const specificProps = {
+    const specificProps: CheckboxOneSpecificProps = {
         labels: {
             otherButtonLabel: t("page.secondary-activity-selection.other-button"),
             subchildLabel: t("page.secondary-activity-selection.add-activity-label"),
@@ -63,9 +69,18 @@ const SecondaryActivitySelectionPage = () => {
                 saveAndLoopNavigate(EdtRoutesNameEnum.ACTIVITY_LOCATION);
             }
         },
+        addToReferentielCallBack: (newItem: CheckboxOneCustomOption) => {
+            addToSecondaryActivityReferentiel(
+                context.isRoute
+                    ? ReferentielsEnum.ROUTESECONDARYACTIVITY
+                    : ReferentielsEnum.ACTIVITYSECONDARYACTIVITY,
+                newItem,
+            );
+        },
     };
 
     const alertLabels = {
+        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
         content: !isRoute
             ? t("page.alert-when-quit.activity.alert-content")
             : t("page.alert-when-quit.route.alert-content"),
@@ -118,7 +133,7 @@ const SecondaryActivitySelectionPage = () => {
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
-                    callbackHolder={callbackHolder}
+                    cbHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}

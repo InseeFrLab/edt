@@ -33,7 +33,6 @@ const useStyles = makeStylesEdt({ "name": { LoopSurveyPageHeader } })(theme => (
     topBox: {
         padding: "1rem 1rem 0 1rem",
         display: "flex",
-        flexGrow: "1",
         justifyContent: "space-between",
         alignItems: "center",
     },

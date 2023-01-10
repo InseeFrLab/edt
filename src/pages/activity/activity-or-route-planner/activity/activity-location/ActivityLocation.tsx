@@ -48,6 +48,7 @@ const ActivityLocationPage = () => {
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
     const alertLabels = {
+        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
         content: t("page.alert-when-quit.activity.alert-content"),
         cancel: t("page.alert-when-quit.alert-cancel"),
         complete: t("page.alert-when-quit.alert-complete"),
@@ -132,7 +133,7 @@ const ActivityLocationPage = () => {
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
-                    callbackHolder={callbackHolder}
+                    cbHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}

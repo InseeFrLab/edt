@@ -54,7 +54,7 @@ const GreatestActivityDayPage = () => {
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
-                    callbackHolder={callbackHolder}
+                    cbHolder={callbackHolder}
                     componentSpecificProps={specificProps}
                     page={getOrchestratorPage(currentPage)}
                 ></OrchestratorForStories>
