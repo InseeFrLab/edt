@@ -573,7 +573,7 @@
                 "ISCOMPLETED"
             ],
             "loopDependencies": [],
-            "iterations": { "value": "20", "type": "VTL" },
+            "iterations": { "value": "1", "type": "VTL" },
             "components": [
                 {
                     "componentType": "Sequence",

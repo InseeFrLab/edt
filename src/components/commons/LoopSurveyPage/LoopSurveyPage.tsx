@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import AddActivityOrRouteStepper from "components/edt/AddActivityOrRouteStepper/AddActivityOrRouteStepper";
+import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { getLoopLastCompletedStep, LoopEnum } from "service/loop-service";
@@ -39,6 +40,7 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
 
     const { t } = useTranslation();
     const { idSurvey, iteration } = useParams();
+    const { classes, cx } = useStyles();
 
     const lastCompletedStep = getLoopLastCompletedStep(
         idSurvey ?? "",
@@ -48,7 +50,7 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
 
     //TODO: send isRoute as a parameter
     return (
-        <Box className={className} sx={{ flexGrow: 1 }}>
+        <Box className={cx(classes.page, className)}>
             {displayStepper &&
                 currentStepIcon &&
                 currentStepIconAlt &&
@@ -73,8 +75,7 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
                     onNavigateBack={onClose}
                 />
             )}
-            {children}
-
+            <Box className={classes.content}>{children}</Box>
             <LoopNavigator
                 onNext={onNext}
                 onPrevious={onPrevious}
@@ -86,5 +87,20 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
         </Box>
     );
 };
+
+const useStyles = makeStylesEdt({ "name": { NavButton: LoopSurveyPage } })(() => ({
+    page: {
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        flexGrow: "1",
+    },
+    content: {
+        flexGrow: "1",
+        overflow: "auto",
+        minHeight: "0",
+        paddingBottom: "1rem",
+    },
+}));
 
 export default LoopSurveyPage;

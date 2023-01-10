@@ -9,9 +9,15 @@ html * {
 
 html, body {
     max-width: 100%;
-    min-height: 100%;
-    overflow-x: hidden !important;
+    min-height: 100vh;
+    overflow: hidden !important;
     padding: 0 !important;
+}
+
+#root {
+    height: 100vh;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
 button {

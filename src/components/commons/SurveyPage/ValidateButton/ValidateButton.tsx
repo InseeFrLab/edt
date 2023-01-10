@@ -1,7 +1,6 @@
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { makeStylesEdt } from "lunatic-edt";
-import React from "react";
 
 interface ValidateButtonProps {
     onClick(): void;
@@ -17,7 +16,6 @@ const ValidateButton = (props: ValidateButtonProps) => {
 
     return (
         <>
-            <Box className={classes.gap}></Box>
             <FlexCenter className={disabled ? classes.invalidButtonBox : classes.validateButtonBox}>
                 <Button
                     variant="contained"
@@ -35,8 +33,6 @@ const ValidateButton = (props: ValidateButtonProps) => {
 const useStyles = makeStylesEdt({ "name": { NavButton: ValidateButton } })(theme => ({
     validateButtonBox: {
         width: "100%",
-        position: "fixed",
-        bottom: "0",
         backgroundColor: theme.variables.white,
     },
     validateButton: {
@@ -54,10 +50,6 @@ const useStyles = makeStylesEdt({ "name": { NavButton: ValidateButton } })(theme
         width: "80%",
         maxWidth: "18rem",
         margin: "1rem 0",
-    },
-    gap: {
-        height: "4.25rem",
-        width: "100%",
     },
 }));
 
