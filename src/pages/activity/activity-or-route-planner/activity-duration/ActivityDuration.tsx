@@ -21,6 +21,7 @@ import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { isDesktop } from "service/responsive";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
@@ -164,7 +165,7 @@ const ActivityDurationPage = () => {
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}
                 ></Alert>
                 <Snackbar
-                    className={classes.snackbar}
+                    className={isDesktop() ? classes.snackbarDesktop : classes.snackbar}
                     open={openSnackbar}
                     onClose={handleCloseSnackBar}
                     message={snackbarText}
@@ -194,6 +195,33 @@ const useStyles = makeStylesEdt({ "name": { ActivityDurationPage } })(theme => (
         "& .MuiSnackbarContent-root": {
             backgroundColor: theme.palette.error.light,
             color: theme.variables.alertActivity,
+        },
+        ".MuiSnackbarContent-message": {
+            width: "90%",
+        },
+        ".MuiSnackbarContent-action": {
+            width: "6%",
+            paddingLeft: "0px",
+            marginRight: "0px",
+        },
+    },
+    snackbarDesktop: {
+        height: "30%",
+        "& .MuiSnackbarContent-root": {
+            backgroundColor: theme.palette.error.light,
+            color: theme.variables.alertActivity,
+        },
+        left: "30% !important",
+        right: "0 !important",
+        webkitTransform: "translateX(0%) !important",
+        transform: "translateX(0%) !important",
+        ".MuiSnackbarContent-message": {
+            width: "90%",
+        },
+        ".MuiSnackbarContent-action": {
+            width: "6%",
+            paddingLeft: "0px",
+            marginRight: "0px",
         },
     },
 }));
