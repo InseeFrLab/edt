@@ -249,7 +249,7 @@ const ActivityOrRoutePlannerPage = () => {
         <>
             <Box className={classes.surveyPageBox}>
                 {(isItDesktop || !isSubchildDisplayed) && (
-                    <Box className={classes.test}>
+                    <Box className={classes.innerSurveyPageBox}>
                         <SurveyPage
                             onNavigateBack={() => navToHome()}
                             onPrevious={() => navToHome()}
@@ -471,7 +471,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
         backgroundColor: theme.variables.white,
         height: "100%",
     },
-    test: {
+    innerSurveyPageBox: {
         flexGrow: "1",
         height: "100%",
         display: "flex",
