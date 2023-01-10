@@ -150,7 +150,7 @@
             "what-to-edit": "Que souhaitez-vous modifier ?"
         },
         "activity-duration": {
-            "hour-alert": "test"
+            "hour-alert": "Attention! L'heure de fin est antérieure à l'heure de début"
         }
     },
     "component": {
