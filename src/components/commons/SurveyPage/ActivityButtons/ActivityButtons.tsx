@@ -1,5 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { makeStylesEdt } from "lunatic-edt";
 
@@ -17,6 +17,7 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
     const { classes } = useStyles({ "width": widthPercent });
     return (
         <>
+            <Box className={classes.gap}></Box>
             <FlexCenter className={classes.ButtonsBox}>
                 <>
                     {!addLabel && (
@@ -40,10 +41,17 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
 
 const useStyles = makeStylesEdt<{ width: string }>({ "name": { ActivityButtons } })(
     (theme, { width }) => ({
+        gap: {
+            height: "5rem",
+            width: "100%",
+        },
         ButtonsBox: {
             width: "100%",
             backgroundColor: theme.variables.white,
             padding: "0.75rem",
+            position: "fixed",
+            left: "0",
+            bottom: "0",
         },
         aloneAddButton: {
             width: "80%",

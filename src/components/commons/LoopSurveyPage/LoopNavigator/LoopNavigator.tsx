@@ -22,6 +22,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
     const hasTwoButtons = (onPrevious && onNext) || (onPrevious && onValidate);
     return (
         <>
+            <Box className={classes.gap}></Box>
             <FlexCenter className={classes.validateButtonBox}>
                 <>
                     {onPrevious && (
@@ -71,9 +72,16 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
 
 const useStyles = makeStylesEdt<{ width: string }>({ "name": { LoopNavigator } })(
     (theme, { width }) => ({
+        gap: {
+            height: "5rem",
+            width: "100%",
+        },
         validateButtonBox: {
             width: "100%",
             backgroundColor: theme.variables.white,
+            position: "fixed",
+            bottom: "0",
+            left: "0",
         },
         navButton: {
             borderRadius: "0",
