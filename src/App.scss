@@ -21,6 +21,10 @@ html, body {
     flex-direction: column !important;
 }
 
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
 button {
     text-transform: none !important;
 }
