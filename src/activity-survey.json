@@ -696,7 +696,7 @@
                                 "name": "PRIVATECAR"
                             },
                             "id": "4",
-                            "label": "\"Voiture privée (covoiturage)\""
+                            "label": "\"Voiture privée (y compris covoiturage)\""
                         },
                         {
                             "response": {
