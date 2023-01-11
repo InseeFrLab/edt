@@ -959,7 +959,7 @@
             "mandatory": false
         },
         {
-            "componentType": "Timepicker",
+            "componentType": "Duration",
             "bindingDependencies": ["TRAVELTIME"],
             "response": { "name": "TRAVELTIME" },
             "hierarchy": {
@@ -973,12 +973,14 @@
             "id": "timepicker_travelTime",
             "page": "9",
             "label": "\" Au total, combien de temps avez-vous passé en trajets ? \"",
-            "tipsLabel": "Heures et minutes",
+            "hourLabel": "Heures",
+            "andLabel": "et",
+            "minLabel": "minutes",
             "mandatory": false,
             "maxLength": 249
         },
         {
-            "componentType": "Timepicker",
+            "componentType": "Duration",
             "bindingDependencies": ["PHONETIME"],
             "response": { "name": "PHONETIME" },
             "hierarchy": {
@@ -992,7 +994,9 @@
             "id": "timepicker_phoneTime",
             "page": "10",
             "label": "\" Au total, combien de temps avez-vous passé à consulter votre téléphone (y compris les petits moments de quelques minutes) ? \"",
-            "tipsLabel": "Heures et minutes",
+            "hourLabel": "Heures",
+            "andLabel": "et",
+            "minLabel": "minutes",
             "mandatory": false,
             "maxLength": 249
         },
