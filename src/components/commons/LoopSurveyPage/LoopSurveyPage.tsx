@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { getLoopLastCompletedStep, LoopEnum } from "service/loop-service";
 import { loopActivityStepperData } from "service/loop-stepper-service";
+import { FieldNameEnum } from "service/survey-service";
 import LoopNavigator from "./LoopNavigator/LoopNavigator";
 import LoopSurveyPageHeader from "./LoopSurveyPageHeader/LoopSurveyPageHeader";
 import LoopSurveyPageSimpleHeader from "./LoopSurveyPageSimpleHeader/LoopSurveyPageSimpleHeader";
@@ -21,6 +22,7 @@ interface LoopSurveyPageProps {
     currentStepIconAlt?: string;
     currentStepNumber?: number;
     currentStepLabel?: string;
+    isRoute?: boolean;
 }
 
 const LoopSurveyPage = (props: LoopSurveyPageProps) => {
@@ -36,6 +38,7 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
         displayStepper = true,
         className,
         children,
+        isRoute,
     } = props;
 
     const { t } = useTranslation();
@@ -56,7 +59,12 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
                 currentStepIconAlt &&
                 currentStepNumber &&
                 currentStepLabel && (
-                    <LoopSurveyPageHeader onClose={onClose} label={t("common.stepper.add-activity")}>
+                    <LoopSurveyPageHeader
+                        onClose={onClose}
+                        label={
+                            isRoute ? t("common.stepper.add-route") : t("common.stepper.add-activity")
+                        }
+                    >
                         <AddActivityOrRouteStepper
                             numberOfSteps={
                                 loopActivityStepperData[loopActivityStepperData.length - 1].stepNumber
