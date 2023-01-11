@@ -99,7 +99,7 @@ const useStyles = makeStylesEdt({ "name": { NavButton: LoopSurveyPage } })(() =>
         flexGrow: "1",
         overflow: "auto",
         minHeight: "0",
-        paddingBottom: "5rem",
+        paddingBottom: "6rem",
     },
 }));
 
