@@ -148,6 +148,9 @@
         "edit-activity-information": {
             "header": "MODIFIER L'ACTIVITÉ",
             "what-to-edit": "Que souhaitez-vous modifier ?"
+        },
+        "activity-duration": {
+            "hour-alert": "Attention! L'heure de fin est antérieure à l'heure de début"
         }
     },
     "component": {
