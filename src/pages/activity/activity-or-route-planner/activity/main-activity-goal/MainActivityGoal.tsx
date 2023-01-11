@@ -32,6 +32,7 @@ const MainActivityGoalPage = () => {
 
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL;
     const stepData = getStepData(currentPage, context.isRoute);
+
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
@@ -101,7 +102,7 @@ const MainActivityGoalPage = () => {
             onPrevious={onPrevious}
             onClose={() => onClose(false)}
             displayStepper={false}
-            currentStepLabel={stepData.stepLabel}
+            currentStepLabel={t("component.add-activity-stepper.step-2-label")}
         >
             <FlexCenter>
                 <Alert
