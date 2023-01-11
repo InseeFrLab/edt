@@ -72,7 +72,7 @@ const HomePage = () => {
 const useStyles = makeStylesEdt({ "name": { NavButton: HomePage } })(() => ({
     cardsBox: {
         overflowY: "scroll",
-        paddingBottom: "2rem",
+        paddingBottom: "5rem",
     },
 }));
 
