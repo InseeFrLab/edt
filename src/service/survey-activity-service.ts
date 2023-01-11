@@ -198,14 +198,17 @@ const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string =
 
     dayjs.extend(customParseFormat);
     const startTime = dayjs(activity.startTime, "HH:mm");
-    const endTime = dayjs(activity.endTime, "HH:mm");
+    let endTime = dayjs(activity.endTime, "HH:mm");
 
-    let diffHours = Math.abs(startTime.diff(endTime, "hour"));
-    let diffMinutes = Math.abs(startTime.diff(endTime, "minute"));
+    if (startTime.isAfter(endTime)) {
+        endTime = endTime.add(1, "day");
+    }
+    let diffHours = Math.abs(endTime.diff(startTime, "hour"));
+    let diffMinutes = Math.abs(endTime.diff(startTime, "minute"));
     diffMinutes = diffMinutes - diffHours * 60;
 
     if (diffMinutes >= 0 && diffHours > 0) {
-        return diffHours + "h ";
+        return diffHours + "h " + diffMinutes;
     } else if (diffHours == 0) {
         return diffMinutes + "min";
     } else return "";
