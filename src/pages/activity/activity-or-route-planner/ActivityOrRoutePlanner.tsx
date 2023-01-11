@@ -265,7 +265,6 @@ const ActivityOrRoutePlannerPage = () => {
                                     ? t("common.navigation.add")
                                     : undefined
                             }
-                            isSubchildDisplayedAndDesktop={isItDesktop && isSubchildDisplayed}
                             activityProgressBar={true}
                             idSurvey={context.idSurvey}
                         >

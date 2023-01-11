@@ -1,6 +1,7 @@
 import { Box, Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { makeStylesEdt } from "lunatic-edt";
+import { isDesktop } from "service/responsive";
 
 interface ValidateButtonProps {
     onClick(): void;
@@ -10,12 +11,19 @@ interface ValidateButtonProps {
 
 const ValidateButton = (props: ValidateButtonProps) => {
     const { text, onClick, disabled } = props;
-    const { classes } = useStyles();
+    const { classes, cx } = useStyles();
+    const isItDesktop = isDesktop();
 
     return (
         <>
-            <Box className={classes.gap}></Box>
-            <FlexCenter className={disabled ? classes.invalidButtonBox : classes.validateButtonBox}>
+            {!isItDesktop && <Box className={classes.gap}></Box>}
+            <FlexCenter
+                className={cx(
+                    disabled ? classes.invalidButtonBox : classes.validateButtonBox,
+                    !isItDesktop && disabled ? classes.invalidButtonBoxMobileTablet : "",
+                    !isItDesktop && !disabled ? classes.validateButtonBoxMobileTablet : "",
+                )}
+            >
                 <Button
                     variant="contained"
                     onClick={onClick}
@@ -34,6 +42,8 @@ const useStyles = makeStylesEdt({ "name": { NavButton: ValidateButton } })(theme
     validateButtonBox: {
         width: "100%",
         backgroundColor: theme.variables.white,
+    },
+    validateButtonBoxMobileTablet: {
         position: "fixed",
         left: "0",
         bottom: "0",
@@ -45,10 +55,12 @@ const useStyles = makeStylesEdt({ "name": { NavButton: ValidateButton } })(theme
     },
     invalidButtonBox: {
         width: "100%",
+        backgroundColor: theme.variables.white,
+    },
+    invalidButtonBoxMobileTablet: {
         position: "fixed",
         bottom: "0",
         left: "0",
-        backgroundColor: theme.variables.white,
     },
     invalidButton: {
         width: "80%",
