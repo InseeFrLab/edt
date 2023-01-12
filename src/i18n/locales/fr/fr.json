@@ -1,5 +1,6 @@
 {
     "common": {
+        "version": "Version",
         "navigation": {
             "previous": "Précédent",
             "next": "Suivant",
