@@ -125,7 +125,9 @@ const getActivitiesOrRoutes = (
     }
 
     activitiesRoutes.sort(
-        (a, b) => hourToNormalizedTimeStamp(a.startTime) - hourToNormalizedTimeStamp(b.startTime),
+        (a, b) =>
+            hourToNormalizedTimeStamp(a.startTime, idSurvey) -
+            hourToNormalizedTimeStamp(b.startTime, idSurvey),
     );
 
     // Fill the gaps and overlaps
@@ -135,8 +137,8 @@ const getActivitiesOrRoutes = (
         // Gaps
         if (
             previousActivity &&
-            hourToNormalizedTimeStamp(act.startTime) >
-                hourToNormalizedTimeStamp(previousActivity.endTime)
+            hourToNormalizedTimeStamp(act.startTime, idSurvey) >
+                hourToNormalizedTimeStamp(previousActivity.endTime, idSurvey)
         ) {
             const index = activitiesRoutes.indexOf(act);
             activitiesRoutes.splice(index, 0, {
@@ -148,8 +150,8 @@ const getActivitiesOrRoutes = (
         // Overlaps to be completed...
         if (
             previousActivity &&
-            hourToNormalizedTimeStamp(act.startTime) -
-                hourToNormalizedTimeStamp(previousActivity.endTime) <
+            hourToNormalizedTimeStamp(act.startTime, idSurvey) -
+                hourToNormalizedTimeStamp(previousActivity.endTime, idSurvey) <
                 0
         ) {
             overlaps.push({
@@ -172,8 +174,18 @@ const getActivitiesOrRoutes = (
  * @param hour
  * @returns
  */
-const hourToNormalizedTimeStamp = (hour: string | undefined): number => {
-    return new Date(`01/01/1970 ${hour}`).getTime();
+const hourToNormalizedTimeStamp = (hour: string | undefined, idSurvey: string): number => {
+    dayjs.extend(customParseFormat);
+
+    const timeDay = dayjs(hour, "HH:mm");
+    const surveyDate = getValue(idSurvey, FieldNameEnum.SURVEYDATE) as string;
+    let dateActivity = dayjs(surveyDate, "YYYY-MM-DD");
+    if (timeDay.hour() < 4) {
+        dateActivity = dateActivity.add(1, "day");
+    }
+    dateActivity = dateActivity.set("minute", timeDay.minute());
+    dateActivity = dateActivity.set("hour", timeDay.hour());
+    return dateActivity.toDate().getTime();
 };
 
 const getActivitesSelectedLabel = (idSurvey: string): string[] => {
@@ -198,14 +210,17 @@ const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string =
 
     dayjs.extend(customParseFormat);
     const startTime = dayjs(activity.startTime, "HH:mm");
-    const endTime = dayjs(activity.endTime, "HH:mm");
+    let endTime = dayjs(activity.endTime, "HH:mm");
 
-    let diffHours = Math.abs(startTime.diff(endTime, "hour"));
-    let diffMinutes = Math.abs(startTime.diff(endTime, "minute"));
+    if (startTime.isAfter(endTime)) {
+        endTime = endTime.add(1, "day");
+    }
+    let diffHours = Math.abs(endTime.diff(startTime, "hour"));
+    let diffMinutes = Math.abs(endTime.diff(startTime, "minute"));
     diffMinutes = diffMinutes - diffHours * 60;
 
     if (diffMinutes >= 0 && diffHours > 0) {
-        return diffHours + "h ";
+        return diffHours + "h " + diffMinutes;
     } else if (diffHours == 0) {
         return diffMinutes + "min";
     } else return "";
