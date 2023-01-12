@@ -23,7 +23,6 @@ const LoopSurveyPageSimpleHeader = (props: LoopSurveyPageSimpleHeaderProps) => {
 const useStyles = makeStylesEdt({ "name": { LoopSurveyPageSimpleHeader } })(theme => ({
     headerBox: {
         display: "flex",
-        flexGrow: "1",
         justifyContent: "space-between",
         alignItems: "center",
         padding: "1rem",

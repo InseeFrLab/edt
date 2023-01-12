@@ -1,7 +1,7 @@
 import { Box, Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { makeStylesEdt } from "lunatic-edt";
-import React from "react";
+import { isDesktop } from "service/responsive";
 
 interface ValidateButtonProps {
     onClick(): void;
@@ -9,16 +9,21 @@ interface ValidateButtonProps {
     disabled?: boolean;
 }
 
-//const context = useOutletContext() as OrchestratorContext;
-
 const ValidateButton = (props: ValidateButtonProps) => {
     const { text, onClick, disabled } = props;
-    const { classes } = useStyles();
+    const { classes, cx } = useStyles();
+    const isItDesktop = isDesktop();
 
     return (
         <>
-            <Box className={classes.gap}></Box>
-            <FlexCenter className={disabled ? classes.invalidButtonBox : classes.validateButtonBox}>
+            {!isItDesktop && <Box className={classes.gap}></Box>}
+            <FlexCenter
+                className={cx(
+                    disabled ? classes.invalidButtonBox : classes.validateButtonBox,
+                    !isItDesktop && disabled ? classes.invalidButtonBoxMobileTablet : "",
+                    !isItDesktop && !disabled ? classes.validateButtonBoxMobileTablet : "",
+                )}
+            >
                 <Button
                     variant="contained"
                     onClick={onClick}
@@ -33,11 +38,15 @@ const ValidateButton = (props: ValidateButtonProps) => {
 };
 
 const useStyles = makeStylesEdt({ "name": { NavButton: ValidateButton } })(theme => ({
+    gap: { height: "5rem", width: "100%" },
     validateButtonBox: {
         width: "100%",
-        position: "fixed",
-        bottom: "0",
         backgroundColor: theme.variables.white,
+    },
+    validateButtonBoxMobileTablet: {
+        position: "fixed",
+        left: "0",
+        bottom: "0",
     },
     validateButton: {
         width: "80%",
@@ -46,18 +55,17 @@ const useStyles = makeStylesEdt({ "name": { NavButton: ValidateButton } })(theme
     },
     invalidButtonBox: {
         width: "100%",
+        backgroundColor: theme.variables.white,
+    },
+    invalidButtonBoxMobileTablet: {
         position: "fixed",
         bottom: "0",
-        backgroundColor: theme.variables.white,
+        left: "0",
     },
     invalidButton: {
         width: "80%",
         maxWidth: "18rem",
         margin: "1rem 0",
-    },
-    gap: {
-        height: "4.25rem",
-        width: "100%",
     },
 }));
 

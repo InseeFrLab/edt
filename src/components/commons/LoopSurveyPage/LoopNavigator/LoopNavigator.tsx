@@ -17,13 +17,18 @@ interface LoopNavigatorProps {
 
 const LoopNavigator = (props: LoopNavigatorProps) => {
     const { onNext, onPrevious, onValidate, nextLabel, previousLabel, validateLabel } = props;
-    const widthPercent = isDesktop() ? "70%" : "100%";
-    const { classes, cx } = useStyles({ "width": widthPercent });
+    const { classes, cx } = useStyles();
     const hasTwoButtons = (onPrevious && onNext) || (onPrevious && onValidate);
+    const isItDesktop = isDesktop();
     return (
         <>
-            <Box className={classes.gap}></Box>
-            <FlexCenter className={classes.validateButtonBox}>
+            {!isItDesktop && <Box className={classes.gap}></Box>}
+            <FlexCenter
+                className={cx(
+                    classes.validateButtonBox,
+                    isItDesktop ? "" : classes.validateButtonBoxMobileTablet,
+                )}
+            >
                 <>
                     {onPrevious && (
                         <Button
@@ -70,32 +75,33 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
     );
 };
 
-const useStyles = makeStylesEdt<{ width: string }>({ "name": { LoopNavigator } })(
-    (theme, { width }) => ({
-        validateButtonBox: {
-            width,
-            position: "fixed",
-            bottom: "0",
-            backgroundColor: theme.variables.white,
-        },
-        navButton: {
-            borderRadius: "0",
-            padding: "1rem",
-        },
-        navButtons: {
-            width: "50%",
-        },
-        singleNavButton: {
-            width: "100%",
-        },
-        label: {
-            color: theme.palette.secondary.main,
-        },
-        gap: {
-            height: "4.25rem",
-            width,
-        },
-    }),
-);
+const useStyles = makeStylesEdt({ "name": { LoopNavigator } })(theme => ({
+    gap: {
+        height: "5rem",
+        width: "100%",
+    },
+    validateButtonBox: {
+        width: "100%",
+        backgroundColor: theme.variables.white,
+    },
+    validateButtonBoxMobileTablet: {
+        position: "fixed",
+        bottom: "0",
+        left: "0",
+    },
+    navButton: {
+        borderRadius: "0",
+        padding: "1rem",
+    },
+    navButtons: {
+        width: "50%",
+    },
+    singleNavButton: {
+        width: "100%",
+    },
+    label: {
+        color: theme.palette.secondary.main,
+    },
+}));
 
 export default LoopNavigator;

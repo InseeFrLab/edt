@@ -76,7 +76,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
     };
 
     return (
-        <Box className={classes.surveySelecterBox} id={id}>
+        <Box id={id}>
             <AppBar className={classes.surveySelecterAppBar} position="static">
                 <Box className={classes.firstRow}>
                     <Tabs
@@ -113,9 +113,6 @@ const SurveySelecter = (props: SurveySelecterProps) => {
 };
 
 const useStyles = makeStylesEdt({ "name": { SurveySelecter } })(theme => ({
-    surveySelecterBox: {
-        flexGrow: 1,
-    },
     surveySelecterAppBar: {
         backgroundColor: theme.variables.white,
         color: theme.palette.primary.light,

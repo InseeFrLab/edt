@@ -8,9 +8,11 @@ import SurveyPageHeader from "components/commons/SurveyPage/SurveyPageHeader/Sur
 import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
 import EndActivityStepper from "components/edt/EndActivityStepper/EndActivityStepper";
+import { makeStylesEdt, ProgressBar } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 import { getLastCompletedStep } from "service/navigation-service";
 import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
+import { getScore } from "service/survey-activity-service";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;
@@ -37,7 +39,8 @@ interface SurveyPageProps {
     currentStepNumber?: number;
     currentStepLabel?: string;
     backgroundWhiteHeader?: boolean;
-    isSubchildDisplayedAndDesktop?: boolean;
+    activityProgressBar?: boolean;
+    idSurvey?: string;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -66,12 +69,13 @@ const SurveyPage = (props: SurveyPageProps) => {
         currentStepNumber,
         currentStepLabel,
         backgroundWhiteHeader,
-        isSubchildDisplayedAndDesktop,
+        activityProgressBar = false,
+        idSurvey,
     } = props;
     const { t } = useTranslation();
-
+    const { classes, cx } = useStyles();
     return (
-        <Box className={className}>
+        <Box className={cx(classes.page, className)}>
             {!simpleHeader && firstName && surveyDate && onNavigateBack && (
                 <SurveyPageHeader
                     surveyDate={surveyDate}
@@ -107,9 +111,15 @@ const SurveyPage = (props: SurveyPageProps) => {
                     currentStepLabel={currentStepLabel}
                 />
             )}
-
-            {srcIcon && altIcon && <PageIcon srcIcon={srcIcon} altIcon={altIcon} />}
-            {children}
+            {activityProgressBar && idSurvey && (
+                <Box className={classes.progressBar}>
+                    <ProgressBar value={Number(getScore(idSurvey))} showlabel={true}></ProgressBar>
+                </Box>
+            )}
+            <Box className={classes.content}>
+                {srcIcon && altIcon && <PageIcon srcIcon={srcIcon} altIcon={altIcon} />}
+                {children}
+            </Box>
 
             {displayStepper && (
                 <LoopNavigator
@@ -138,12 +148,35 @@ const SurveyPage = (props: SurveyPageProps) => {
                         onClickAdd={onAdd}
                         finishLabel={finishLabel}
                         addLabel={addLabel}
-                        isSubchildDisplayedAndDesktop={isSubchildDisplayedAndDesktop}
                     />
                 </FlexCenter>
             )}
         </Box>
     );
 };
+
+const useStyles = makeStylesEdt({ "name": { NavButton: SurveyPage } })(theme => ({
+    page: {
+        flexGrow: "1",
+        display: "flex",
+        flexDirection: "column",
+        maxHeight: "100%",
+        height: "100%",
+        overflow: "auto",
+    },
+    content: {
+        flexGrow: "1",
+        overflow: "auto",
+        minHeight: "0",
+        overflowX: "hidden",
+        overflowY: "auto",
+        display: "flex",
+        flexDirection: "column",
+    },
+    progressBar: {
+        padding: "0.5rem 1rem",
+        backgroundColor: theme.variables.white,
+    },
+}));
 
 export default SurveyPage;
