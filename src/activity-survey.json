@@ -722,7 +722,7 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "CheckboxBoolean",
+                    "componentType": "CheckboxBooleanEdt",
                     "bindingDependencies": ["WITHSECONDARYACTIVITY"],
                     "response": { "name": "WITHSECONDARYACTIVITY" },
                     "hierarchy": {
@@ -756,7 +756,7 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "CheckboxBoolean",
+                    "componentType": "CheckboxBooleanEdt",
                     "bindingDependencies": ["WITHSOMEONE"],
                     "response": { "name": "WITHSOMEONE" },
                     "hierarchy": {
@@ -773,7 +773,7 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "CheckboxBoolean",
+                    "componentType": "CheckboxBooleanEdt",
                     "bindingDependencies": ["WITHSCREEN"],
                     "response": { "name": "WITHSCREEN" },
                     "hierarchy": {
@@ -936,7 +936,7 @@
             "mandatory": false
         },
         {
-            "componentType": "CheckboxBoolean",
+            "componentType": "CheckboxBooleanEdt",
             "bindingDependencies": ["EXCEPTIONALDAY"],
             "response": { "name": "EXCEPTIONALDAY" },
             "hierarchy": {
