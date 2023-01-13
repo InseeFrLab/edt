@@ -239,10 +239,7 @@ const getTotalTimeOfActivities = (idSurvey: string): number => {
             totalHourActivities += diffTime;
         }
         return totalHourActivities;
-    }
-    //work time survey
-    //TODO: score of work time survey
-    else return 0;
+    } else return 0;
 };
 
 const getScore = (idSurvey: string): string => {

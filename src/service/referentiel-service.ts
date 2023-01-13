@@ -1,4 +1,3 @@
-import { ReferentielData } from "interface/lunatic/Lunatic";
 import {
     AutoCompleteActiviteOption,
     CheckboxOneCustomOption,
@@ -7,32 +6,8 @@ import {
     NomenclatureActivityOption,
     SelectedActivity,
 } from "lunatic-edt";
-import activitesAutoCompleteRef from "refs/activitesAutoCompleteRef.json";
-import categoriesAndActivitesNomenclature from "refs/activitiesCategoriesNomenclature.json";
-import placeRef from "refs/placeRef.json";
-import routeRef from "refs/routeRef.json";
-import kindOfWeekRef from "refs/kindOfWeekRef.json";
-import kindOfDayRef from "refs/kindOfDayRef.json";
-import routeSecondaryCategoriesRef from "refs/routeSecondaryActivityRef.json";
-import secondaryCategoriesRef from "refs/secondaryActivityRef.json";
-import { getReferentiel, ReferentielsEnum } from "./survey-service";
 
-export const fetchReferentiels = (): Promise<ReferentielData> => {
-    // To be replaced by API calls
-    return new Promise(resolve => {
-        const refs: ReferentielData = {
-            [ReferentielsEnum.ACTIVITYNOMENCLATURE]: categoriesAndActivitesNomenclature,
-            [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: activitesAutoCompleteRef,
-            [ReferentielsEnum.ACTIVITYSECONDARYACTIVITY]: secondaryCategoriesRef,
-            [ReferentielsEnum.ROUTESECONDARYACTIVITY]: routeSecondaryCategoriesRef,
-            [ReferentielsEnum.LOCATION]: placeRef,
-            [ReferentielsEnum.ROUTE]: routeRef,
-            [ReferentielsEnum.KINDOFWEEK]: kindOfWeekRef,
-            [ReferentielsEnum.KINDOFDAY]: kindOfDayRef,
-        };
-        resolve(refs);
-    });
-};
+import { getReferentiel, ReferentielsEnum } from "./survey-service";
 
 export const getAutoCompleteRef = (): AutoCompleteActiviteOption[] => {
     return getReferentiel(ReferentielsEnum.ACTIVITYAUTOCOMPLETE) as AutoCompleteActiviteOption[];
