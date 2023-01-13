@@ -36,6 +36,8 @@ const WithSomeoneSelectionPage = () => {
     const currentIteration = paramIteration ? +paramIteration : 0;
     const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
 
+    const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
+    const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
     const specificProps: CheckboxGroupSpecificProps = {
@@ -45,6 +47,21 @@ const WithSomeoneSelectionPage = () => {
             "3": childIcon,
             "4": otherKnownIcon,
             "5": otherIcon,
+        },
+        labels: {
+            alertMessage: t("component.with-someone-selecter.alert-message"),
+            alertIgnore: t("component.with-someone-selecter.alert-ignore"),
+            alertComplete: t("component.with-someone-selecter.alert-complete"),
+            alertAlticon: t("component.with-someone-selecter.alert-alt-icon"),
+        },
+        errorIcon: errorIcon,
+        backClickEvent: backClickEvent,
+        nextClickEvent: nextClickEvent,
+        backClickCallback: () => {
+            saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SOMEONE);
+        },
+        nextClickCallback: () => {
+            saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SCREEN);
         },
     };
 
@@ -61,12 +78,12 @@ const WithSomeoneSelectionPage = () => {
         saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     };
 
-    const onNext = () => {
-        saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SCREEN);
+    const onNext = (e: React.MouseEvent) => {
+        setNextClickEvent(e);
     };
 
-    const onPrevious = () => {
-        saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SOMEONE);
+    const onPrevious = (e: React.MouseEvent) => {
+        setBackClickEvent(e);
     };
 
     const onClose = (forceQuit: boolean) => {

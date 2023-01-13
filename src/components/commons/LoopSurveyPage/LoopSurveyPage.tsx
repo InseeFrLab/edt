@@ -13,7 +13,7 @@ import LoopSurveyPageSimpleHeader from "./LoopSurveyPageSimpleHeader/LoopSurveyP
 interface LoopSurveyPageProps {
     onNext?(event?: React.MouseEvent): void;
     onPrevious?(event?: React.MouseEvent): void;
-    onValidate?(): void;
+    onValidate?(event?: React.MouseEvent): void;
     onClose?(): void;
     displayStepper?: boolean;
     className?: string;
