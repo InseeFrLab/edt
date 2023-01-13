@@ -1,8 +1,8 @@
-import errorIcon from "assets/illustration/error/activity.svg";
+import screenErrorIcon from "assets/illustration/error/screen.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Alert } from "lunatic-edt";
+import { Alert, CheckboxBooleanEdtSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,6 +31,8 @@ const WithScreenPage = () => {
     const currentIteration = paramIteration ? +paramIteration : 0;
     const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
 
+    const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
+    const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const alertLabels = {
         boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
@@ -41,24 +43,42 @@ const WithScreenPage = () => {
         complete: t("page.alert-when-quit.alert-complete"),
     };
 
-    const saveAndGoToActivityPlanner = () => {
-        saveAndNav(
-            getCurrentNavigatePath(
-                context.idSurvey,
-                EdtRoutesNameEnum.ACTIVITY,
-                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            ),
-        );
+    const specificProps: CheckboxBooleanEdtSpecificProps = {
+        backClickEvent: backClickEvent,
+        nextClickEvent: nextClickEvent,
+        backClickCallback: () => {
+            saveAndLoopNavigate(
+                EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+                FieldNameEnum.WITHSOMEONE,
+                getPreviousLoopPage(currentPage),
+            );
+        },
+        nextClickCallback: () => {
+            saveAndNav(
+                getCurrentNavigatePath(
+                    context.idSurvey,
+                    EdtRoutesNameEnum.ACTIVITY,
+                    getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                ),
+            );
+        },
+        labels: {
+            alertMessage: t("component.with-screen-selecter.alert-message"),
+            alertIgnore: t("component.with-screen-selecter.alert-ignore"),
+            alertComplete: t("component.with-screen-selecter.alert-complete"),
+            alertAlticon: t("component.with-screen-selecter.alert-alt-icon"),
+        },
+        errorIcon: screenErrorIcon,
     };
 
-    const onprevious = () => {
-        saveAndLoopNavigate(
-            EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
-            LoopEnum.ACTIVITY_OR_ROUTE,
-            currentIteration,
-            FieldNameEnum.WITHSOMEONE,
-            getPreviousLoopPage(currentPage),
-        );
+    const onNext = (e: React.MouseEvent) => {
+        setNextClickEvent(e);
+    };
+
+    const onPrevious = (e: React.MouseEvent) => {
+        setBackClickEvent(e);
     };
 
     const onClose = (forceQuit: boolean) => {
@@ -76,8 +96,8 @@ const WithScreenPage = () => {
 
     return (
         <LoopSurveyPage
-            onPrevious={onprevious}
-            onValidate={saveAndGoToActivityPlanner}
+            onPrevious={onPrevious}
+            onValidate={onNext}
             onClose={() => onClose(false)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
@@ -91,7 +111,7 @@ const WithScreenPage = () => {
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
                     onCancelCallBack={onClose}
                     labels={alertLabels}
-                    icon={errorIcon}
+                    icon={screenErrorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}
                 ></Alert>
                 <OrchestratorForStories
@@ -101,6 +121,7 @@ const WithScreenPage = () => {
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
+                    componentSpecificProps={specificProps}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>

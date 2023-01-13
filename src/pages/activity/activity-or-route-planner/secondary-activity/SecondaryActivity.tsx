@@ -1,8 +1,9 @@
+import activityErrorIcon from "assets/illustration/error/activity.svg";
 import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Alert, Info } from "lunatic-edt";
+import { Alert, CheckboxBooleanEdtSpecificProps, Info } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -24,8 +25,6 @@ import {
 } from "service/navigation-service";
 import { FieldNameEnum, getValue } from "service/survey-service";
 
-import errorIcon from "assets/illustration/error/activity.svg";
-
 const SecondaryActivityPage = () => {
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
@@ -37,7 +36,10 @@ const SecondaryActivityPage = () => {
     const currentIteration = paramIteration ? +paramIteration : 0;
     const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
 
+    const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
+    const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
+
     const alertLabels = {
         boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
         content: !isRoute
@@ -47,26 +49,43 @@ const SecondaryActivityPage = () => {
         complete: t("page.alert-when-quit.alert-complete"),
     };
 
-    const onNext = () => {
-        saveAndLoopNavigate(
-            EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
-            LoopEnum.ACTIVITY_OR_ROUTE,
-            currentIteration,
-            FieldNameEnum.WITHSECONDARYACTIVITY,
-            getNextLoopPage(currentPage, context.isRoute),
-        );
+    const specificProps: CheckboxBooleanEdtSpecificProps = {
+        backClickEvent: backClickEvent,
+        nextClickEvent: nextClickEvent,
+        backClickCallback: () => {
+            saveAndLoopNavigate(
+                EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+                FieldNameEnum.GOAL,
+                getPreviousLoopPage(currentPage, context.isRoute),
+            );
+        },
+        nextClickCallback: () => {
+            saveAndLoopNavigate(
+                EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+                FieldNameEnum.WITHSECONDARYACTIVITY,
+                getNextLoopPage(currentPage, context.isRoute),
+            );
+        },
+        labels: {
+            alertMessage: t("component.secondary-activity-selecter.alert-message"),
+            alertIgnore: t("component.secondary-activity-selecter.alert-ignore"),
+            alertComplete: t("component.secondary-activity-selecter.alert-complete"),
+            alertAlticon: t("component.secondary-activity-selecter.alert-alt-icon"),
+        },
+        errorIcon: activityErrorIcon,
     };
 
-    const onPrevious = () => {
-        saveAndLoopNavigate(
-            EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
-            LoopEnum.ACTIVITY_OR_ROUTE,
-            currentIteration,
-            FieldNameEnum.GOAL,
-            getPreviousLoopPage(currentPage, context.isRoute),
-        );
+    const onNext = (e: React.MouseEvent) => {
+        setNextClickEvent(e);
     };
 
+    const onPrevious = (e: React.MouseEvent) => {
+        setBackClickEvent(e);
+    };
     const onClose = (forceQuit: boolean) => {
         validateWithAlertAndNav(
             forceQuit,
@@ -96,7 +115,7 @@ const SecondaryActivityPage = () => {
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
                     onCancelCallBack={onClose}
                     labels={alertLabels}
-                    icon={errorIcon}
+                    icon={activityErrorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}
                 ></Alert>
                 <OrchestratorForStories
@@ -106,6 +125,7 @@ const SecondaryActivityPage = () => {
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
+                    componentSpecificProps={specificProps}
                 ></OrchestratorForStories>
             </FlexCenter>
             <FlexCenter>
