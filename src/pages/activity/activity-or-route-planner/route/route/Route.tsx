@@ -113,6 +113,7 @@ const RoutePage = () => {
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}
+            isRoute={true}
         >
             <FlexCenter>
                 <Alert

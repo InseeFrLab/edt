@@ -39,7 +39,6 @@ interface SurveyPageProps {
     currentStepNumber?: number;
     currentStepLabel?: string;
     backgroundWhiteHeader?: boolean;
-    isSubchildDisplayedAndDesktop?: boolean;
     activityProgressBar?: boolean;
     idSurvey?: string;
 }
@@ -70,7 +69,6 @@ const SurveyPage = (props: SurveyPageProps) => {
         currentStepNumber,
         currentStepLabel,
         backgroundWhiteHeader,
-        isSubchildDisplayedAndDesktop,
         activityProgressBar = false,
         idSurvey,
     } = props;
@@ -150,7 +148,6 @@ const SurveyPage = (props: SurveyPageProps) => {
                         onClickAdd={onAdd}
                         finishLabel={finishLabel}
                         addLabel={addLabel}
-                        isSubchildDisplayedAndDesktop={isSubchildDisplayedAndDesktop}
                     />
                 </FlexCenter>
             )}

@@ -18,7 +18,7 @@ import {
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
-import { fetchReferentiels } from "./referentiel-service";
+import { fetchReferentiels } from "./api-service";
 import { getScore } from "./survey-activity-service";
 
 const datas = new Map<string, LunaticData>();
@@ -79,15 +79,15 @@ const toIgnoreForActivity = [
     FieldNameEnum.PUBLIC,
 ];
 
-const enum ReferentielsEnum {
-    ACTIVITYNOMENCLATURE = "activityNomenclature",
-    ACTIVITYAUTOCOMPLETE = "activityAutocomplete",
-    ROUTE = "route",
-    ACTIVITYSECONDARYACTIVITY = "activitySecondaryActivity",
-    ROUTESECONDARYACTIVITY = "routeSecondaryActivity",
-    LOCATION = "location",
-    KINDOFWEEK = "kindOfWeek",
-    KINDOFDAY = "kindOfDay",
+enum ReferentielsEnum {
+    ACTIVITYNOMENCLATURE = "edt-activitiesCategoriesNomenclature",
+    ACTIVITYAUTOCOMPLETE = "edt-activitesAutoComplete",
+    ROUTE = "edt-route",
+    ACTIVITYSECONDARYACTIVITY = "edt-secondaryActivityRef",
+    ROUTESECONDARYACTIVITY = "edt-routeSecondaryActivity",
+    LOCATION = "edt-place",
+    KINDOFWEEK = "edt-kindOfWeek",
+    KINDOFDAY = "edt-kindOfDay",
 }
 
 const initializeDatas = (): Promise<LunaticData[]> => {

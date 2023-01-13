@@ -1,23 +1,26 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { makeStylesEdt } from "lunatic-edt";
+import { isDesktop } from "service/responsive";
 
 interface ActivityButtonsProps {
     onClickFinish(): void;
     onClickAdd(): void;
     finishLabel?: string;
     addLabel?: string;
-    isSubchildDisplayedAndDesktop?: boolean;
 }
 
 const ActivityButtons = (props: ActivityButtonsProps) => {
-    const { onClickFinish, onClickAdd, finishLabel, addLabel, isSubchildDisplayedAndDesktop } = props;
-    const widthPercent = isSubchildDisplayedAndDesktop ? "30%" : "100%";
-    const { classes } = useStyles({ "width": widthPercent });
+    const { onClickFinish, onClickAdd, finishLabel, addLabel } = props;
+    const { classes, cx } = useStyles();
+    const isItDesktop = isDesktop();
     return (
         <>
-            <FlexCenter className={classes.ButtonsBox}>
+            {!isItDesktop && <Box className={classes.gap}></Box>}
+            <FlexCenter
+                className={cx(classes.ButtonsBox, isItDesktop ? "" : classes.ButtonsBoxMobileTablet)}
+            >
                 <>
                     {!addLabel && (
                         <Button variant="outlined" onClick={onClickFinish} className={classes.buttons}>
@@ -38,24 +41,31 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
     );
 };
 
-const useStyles = makeStylesEdt<{ width: string }>({ "name": { ActivityButtons } })(
-    (theme, { width }) => ({
-        ButtonsBox: {
-            width: "100%",
-            backgroundColor: theme.variables.white,
-            padding: "0.75rem",
-        },
-        aloneAddButton: {
-            width: "80%",
-            maxWidth: "18rem",
-        },
-        buttons: {
-            width: "40%",
-            maxWidth: "9rem",
-            margin: "0 1rem",
-            lineHeight: "1.25rem",
-        },
-    }),
-);
+const useStyles = makeStylesEdt({ "name": { ActivityButtons } })(theme => ({
+    gap: {
+        height: "5rem",
+        width: "100%",
+    },
+    ButtonsBox: {
+        width: "100%",
+        backgroundColor: theme.variables.white,
+        padding: "0.75rem",
+    },
+    ButtonsBoxMobileTablet: {
+        position: "fixed",
+        left: "0",
+        bottom: "0",
+    },
+    aloneAddButton: {
+        width: "80%",
+        maxWidth: "18rem",
+    },
+    buttons: {
+        width: "40%",
+        maxWidth: "9rem",
+        margin: "0 1rem",
+        lineHeight: "1.25rem",
+    },
+}));
 
 export default ActivityButtons;

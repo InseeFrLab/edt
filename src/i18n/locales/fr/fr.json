@@ -1,5 +1,6 @@
 {
     "common": {
+        "version": "Version",
         "navigation": {
             "previous": "Précédent",
             "next": "Suivant",
@@ -143,11 +144,14 @@
             "simple-header-label": "CARACTÉRISTIQUES DE LA SEMAINE"
         },
         "complementary-questions": {
-            "simple-header-label": "CARACTÉRISTIQUES DE LA SEMAINE"
+            "simple-header-label": "CARACTÉRISTIQUES DE LA JOURNÉE"
         },
         "edit-activity-information": {
             "header": "MODIFIER L'ACTIVITÉ",
             "what-to-edit": "Que souhaitez-vous modifier ?"
+        },
+        "activity-duration": {
+            "hour-alert": "Attention! L'heure de fin est antérieure à l'heure de début"
         }
     },
     "component": {
@@ -168,6 +172,7 @@
             "step-5-label": "Présence",
             "step-6-label": "Écran"
         },
+
         "end-activity-stepper": {
             "step-1-label": "Préférence",
             "step-2-label": "Type de journée",

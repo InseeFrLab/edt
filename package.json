@@ -1,6 +1,7 @@
 {
     "name": "edt",
-    "version": "0.1.0",
+    "version": "1.5.2",
+    "dateVersion": "13/01/2023",
     "licence": "MIT",
     "dependencies": {
         "@emotion/react": "^11.10.4",
@@ -8,6 +9,7 @@
         "@inseefr/lunatic": "2.0.2-v2",
         "@mui/icons-material": "^5.10.6",
         "@mui/material": "^5.10.7",
+        "axios": "^1.2.2",
         "dexie": "^3.2.2",
         "i18next": "^21.9.2",
         "lunatic-edt": "^0.4.0",

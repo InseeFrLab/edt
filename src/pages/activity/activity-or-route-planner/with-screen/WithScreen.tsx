@@ -83,6 +83,7 @@ const WithScreenPage = () => {
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}
+            isRoute={isRoute}
         >
             <FlexCenter>
                 <Alert

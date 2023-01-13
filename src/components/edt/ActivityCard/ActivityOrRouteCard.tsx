@@ -119,7 +119,11 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         );
     };
 
-    const renderPlace = () => {
+    const renderPlace = (
+        activityOrRoute: ActivityRouteOrGap,
+        classes: any,
+        renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
+    ) => {
         return (
             !activityOrRoute.isRoute &&
             (activityOrRoute.place ? (
@@ -130,16 +134,30 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         );
     };
 
-    const renderWithSomeone = () => {
-        const withSomeoneLabel = activityOrRoute.withSomeone
-            ? activityOrRoute.withSomeoneLabels
-            : t("page.activity-planner.alone");
+    const renderWithSomeone = (
+        activityOrRoute: ActivityRouteOrGap,
+        classes: any,
+        renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
+        t: TFunction<"translation", undefined>,
+    ) => {
+        const withSomeoneLabel =
+            activityOrRoute.withSomeoneLabels != null && activityOrRoute.withSomeoneLabels ? (
+                <Box className={classes.otherInfoLabel}>{activityOrRoute.withSomeoneLabels}</Box>
+            ) : (
+                renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
+            );
 
-        return activityOrRoute.withSomeone == null ? (
-            renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
+        const isWithSecondaryActivity = activityOrRoute.withSomeone ? (
+            withSomeoneLabel
         ) : (
-            <Box className={classes.otherInfoLabel}>{withSomeoneLabel}</Box>
+            <Box className={classes.otherInfoLabel}>
+                {t("page.activity-planner.without-secondary-activity")}
+            </Box>
         );
+
+        return activityOrRoute.withSomeone == null
+            ? renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
+            : isWithSecondaryActivity;
     };
 
     const renderActivityOrRoute = () => {
@@ -170,8 +188,8 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                         renderInsideAlert(InsideAlertTypes.ACTIVITY)}
                     {renderMeanOfTransport()}
                     {renderSecondaryActivity(activityOrRoute, classes, renderInsideAlert, t)}
-                    {renderPlace()}
-                    {renderWithSomeone()}
+                    {renderPlace(activityOrRoute, classes, renderInsideAlert)}
+                    {renderWithSomeone(activityOrRoute, classes, renderInsideAlert, t)}
                     {renderWithScreen(activityOrRoute, classes, renderInsideAlert, t)}
                 </Box>
                 {onEdit && onDelete && (

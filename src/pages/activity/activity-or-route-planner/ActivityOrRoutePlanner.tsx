@@ -265,7 +265,6 @@ const ActivityOrRoutePlannerPage = () => {
                                     ? t("common.navigation.add")
                                     : undefined
                             }
-                            isSubchildDisplayedAndDesktop={isItDesktop && isSubchildDisplayed}
                             activityProgressBar={true}
                             idSurvey={context.idSurvey}
                         >
@@ -445,6 +444,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
         flexGrow: "12",
         display: "flex",
         height: "100%",
+        width: "100%",
     },
     outletBoxMobileTablet: {
         flexGrow: "1",

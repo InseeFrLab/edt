@@ -43,7 +43,7 @@
                 "PREVIOUS": [null]
             },
             "name": "STARTTIME",
-            "componentRef": "timepicker_startTime"
+            "componentRef": "timepicker_durationActivity"
         },
         {
             "variableType": "COLLECTED",
@@ -55,7 +55,7 @@
                 "PREVIOUS": [null]
             },
             "name": "ENDTIME",
-            "componentRef": "timepicker_endTime"
+            "componentRef": "timepicker_durationActivity"
         },
         {
             "variableType": "COLLECTED",
@@ -590,9 +590,20 @@
                     "label": "\"I - \" || \"Sequence\""
                 },
                 {
-                    "componentType": "Timepicker",
-                    "bindingDependencies": ["STARTTIME"],
-                    "response": { "name": "STARTTIME" },
+                    "componentType": "ActivityTime",
+                    "bindingDependencies": ["STARTTIME", "ENDTIME"],
+                    "responses": [
+                        {
+                            "response": {
+                                "name": "STARTTIME"
+                            }
+                        },
+                        {
+                            "response": {
+                                "name": "ENDTIME"
+                            }
+                        }
+                    ],
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -601,27 +612,10 @@
                         }
                     },
                     "conditionFilter": { "value": "true" },
-                    "id": "timepicker_startTime",
+                    "id": "timepicker_durationActivity",
                     "page": "4.2",
-                    "tipsLabel": "Heure de début",
-                    "mandatory": false,
-                    "maxLength": 249
-                },
-                {
-                    "componentType": "Timepicker",
-                    "bindingDependencies": ["ENDTIME"],
-                    "response": { "name": "ENDTIME" },
-                    "hierarchy": {
-                        "sequence": {
-                            "id": "law86mv7",
-                            "page": "4.1",
-                            "label": "\"I - \" || \"Sequence\""
-                        }
-                    },
-                    "conditionFilter": { "value": "true" },
-                    "id": "timepicker_endTime",
-                    "page": "4.2",
-                    "tipsLabel": "Heure de fin",
+                    "startTimeLabel": "Heure de début",
+                    "endTimeLabel": "Heure de fin",
                     "mandatory": false,
                     "maxLength": 249
                 },
@@ -696,7 +690,7 @@
                                 "name": "PRIVATECAR"
                             },
                             "id": "4",
-                            "label": "\"Voiture privée (covoiturage)\""
+                            "label": "\"Voiture privée (y compris covoiturage)\""
                         },
                         {
                             "response": {
@@ -728,7 +722,7 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "CheckboxBoolean",
+                    "componentType": "CheckboxBooleanEdt",
                     "bindingDependencies": ["WITHSECONDARYACTIVITY"],
                     "response": { "name": "WITHSECONDARYACTIVITY" },
                     "hierarchy": {
@@ -762,7 +756,7 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "CheckboxBoolean",
+                    "componentType": "CheckboxBooleanEdt",
                     "bindingDependencies": ["WITHSOMEONE"],
                     "response": { "name": "WITHSOMEONE" },
                     "hierarchy": {
@@ -779,7 +773,7 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "CheckboxBoolean",
+                    "componentType": "CheckboxBooleanEdt",
                     "bindingDependencies": ["WITHSCREEN"],
                     "response": { "name": "WITHSCREEN" },
                     "hierarchy": {
@@ -942,7 +936,7 @@
             "mandatory": false
         },
         {
-            "componentType": "CheckboxBoolean",
+            "componentType": "CheckboxBooleanEdt",
             "bindingDependencies": ["EXCEPTIONALDAY"],
             "response": { "name": "EXCEPTIONALDAY" },
             "hierarchy": {
@@ -959,7 +953,7 @@
             "mandatory": false
         },
         {
-            "componentType": "Timepicker",
+            "componentType": "Duration",
             "bindingDependencies": ["TRAVELTIME"],
             "response": { "name": "TRAVELTIME" },
             "hierarchy": {
@@ -973,12 +967,14 @@
             "id": "timepicker_travelTime",
             "page": "9",
             "label": "\" Au total, combien de temps avez-vous passé en trajets ? \"",
-            "tipsLabel": "Heures et minutes",
+            "hourLabel": "Heures",
+            "andLabel": "et",
+            "minLabel": "minutes",
             "mandatory": false,
             "maxLength": 249
         },
         {
-            "componentType": "Timepicker",
+            "componentType": "Duration",
             "bindingDependencies": ["PHONETIME"],
             "response": { "name": "PHONETIME" },
             "hierarchy": {
@@ -992,7 +988,9 @@
             "id": "timepicker_phoneTime",
             "page": "10",
             "label": "\" Au total, combien de temps avez-vous passé à consulter votre téléphone (y compris les petits moments de quelques minutes) ? \"",
-            "tipsLabel": "Heures et minutes",
+            "hourLabel": "Heures",
+            "andLabel": "et",
+            "minLabel": "minutes",
             "mandatory": false,
             "maxLength": 249
         },
