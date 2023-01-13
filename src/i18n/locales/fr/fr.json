@@ -225,6 +225,18 @@
             "alert-complete": "Compléter",
             "alert-alt-icon": "alt pour icon no result"
         },
+        "with-screen-selecter": {
+            "alert-message": "Aucun écran n’a été renseigné",
+            "alert-ignore": "Ignorer",
+            "alert-complete": "Compléter",
+            "alert-alt-icon": "alt pour icon no result"
+        },
+        "with-someone-selecter": {
+            "alert-message": "Aucun présence n’a été renseigné",
+            "alert-ignore": "Ignorer",
+            "alert-complete": "Compléter",
+            "alert-alt-icon": "alt pour icon no result"
+        },
         "route-selecter": {
             "alert-message": "Aucun route n’a été renseigné",
             "alert-ignore": "Ignorer",

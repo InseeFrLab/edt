@@ -3,6 +3,11 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { SelectedActivity } from "lunatic-edt";
+import { IODataStructure } from "lunatic-edt/dist/interface/WeeklyPlannerTypes";
+import {
+    getProgressBarValue,
+    transformToWeeklyPlannerDataType,
+} from "lunatic-edt/dist/ui/components/Planner/WeeklyPlanner";
 import { useTranslation } from "react-i18next";
 import { FieldNameEnum, getData, getValue, saveData } from "service/survey-service";
 import { getLoopSize, LoopEnum } from "./loop-service";
@@ -248,6 +253,12 @@ const getScore = (idSurvey: string): string => {
     return percentage.toFixed(0);
 };
 
+const getWeeklyPlannerScore = (idSurvey: string): string => {
+    const value = getValue(idSurvey, FieldNameEnum.WEEKLYPLANNER) as IODataStructure[];
+    const weeklyPlannerValue = transformToWeeklyPlannerDataType(value);
+    return getProgressBarValue(weeklyPlannerValue).toString();
+};
+
 const getDiffTime = (startTime: string, endTime: string) => {
     if (startTime == null || endTime == null) return 0;
     dayjs.extend(customParseFormat);
@@ -362,5 +373,6 @@ export {
     getActivityLabel,
     getTotalTimeOfActivities,
     getScore,
+    getWeeklyPlannerScore,
     deleteActivity,
 };
