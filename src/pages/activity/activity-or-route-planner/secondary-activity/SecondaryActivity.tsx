@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getLabels } from "service/alert-service";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import {
     getLoopPageSubpage,
@@ -70,12 +71,8 @@ const SecondaryActivityPage = () => {
                 getNextLoopPage(currentPage, context.isRoute),
             );
         },
-        labels: {
-            alertMessage: t("component.secondary-activity-selecter.alert-message"),
-            alertIgnore: t("component.secondary-activity-selecter.alert-ignore"),
-            alertComplete: t("component.secondary-activity-selecter.alert-complete"),
-            alertAlticon: t("component.secondary-activity-selecter.alert-alt-icon"),
-        },
+        labels: getLabels("secondary-activity-selecter"),
+
         errorIcon: activityErrorIcon,
     };
 

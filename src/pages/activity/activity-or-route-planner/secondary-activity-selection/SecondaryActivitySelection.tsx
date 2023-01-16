@@ -29,6 +29,7 @@ import {
     ReferentielsEnum,
 } from "service/survey-service";
 import { CheckboxOneCustomOption, CheckboxOneSpecificProps } from "lunatic-edt";
+import { getLabels } from "service/alert-service";
 
 const SecondaryActivitySelectionPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -50,12 +51,7 @@ const SecondaryActivitySelectionPage = () => {
             subchildLabel: t("page.secondary-activity-selection.add-activity-label"),
             inputPlaceholder: t("page.secondary-activity-selection.input-placeholder"),
         },
-        labelsAlert: {
-            alertMessage: t("component.secondary-activity-selecter.alert-message"),
-            alertIgnore: t("component.secondary-activity-selecter.alert-ignore"),
-            alertComplete: t("component.secondary-activity-selecter.alert-complete"),
-            alertAlticon: t("component.secondary-activity-selecter.alert-alt-icon"),
-        },
+        labelsAlert: getLabels("secondary-activity-selecter"),
         errorIcon: errorIcon,
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,

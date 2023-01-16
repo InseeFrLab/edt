@@ -24,6 +24,7 @@ import { Alert, IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
+import { getLabels } from "service/alert-service";
 
 const MainActivityGoalPage = () => {
     const { t } = useTranslation();
@@ -55,12 +56,7 @@ const MainActivityGoalPage = () => {
         nextClickCallback: () => {
             saveAndLoopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY);
         },
-        labels: {
-            alertMessage: t("component.goal-selecter.alert-message"),
-            alertIgnore: t("component.goal-selecter.alert-ignore"),
-            alertComplete: t("component.goal-selecter.alert-complete"),
-            alertAlticon: t("component.goal-selecter.alert-alt-icon"),
-        },
+        labels: getLabels("goal-selecter"),
         errorIcon: errorIcon,
     };
 

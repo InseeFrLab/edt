@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getLabels } from "service/alert-service";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
@@ -48,12 +49,7 @@ const WithSomeoneSelectionPage = () => {
             "4": otherKnownIcon,
             "5": otherIcon,
         },
-        labels: {
-            alertMessage: t("component.with-someone-selecter.alert-message"),
-            alertIgnore: t("component.with-someone-selecter.alert-ignore"),
-            alertComplete: t("component.with-someone-selecter.alert-complete"),
-            alertAlticon: t("component.with-someone-selecter.alert-alt-icon"),
-        },
+        labels: getLabels("with-someone-selecter"),
         errorIcon: errorIcon,
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,

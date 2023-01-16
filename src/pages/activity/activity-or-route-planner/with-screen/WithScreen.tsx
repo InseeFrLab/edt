@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getLabels } from "service/alert-service";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
 import {
@@ -64,12 +65,8 @@ const WithScreenPage = () => {
                 ),
             );
         },
-        labels: {
-            alertMessage: t("component.with-screen-selecter.alert-message"),
-            alertIgnore: t("component.with-screen-selecter.alert-ignore"),
-            alertComplete: t("component.with-screen-selecter.alert-complete"),
-            alertAlticon: t("component.with-screen-selecter.alert-alt-icon"),
-        },
+        labels: getLabels("with-screen-selecter"),
+
         errorIcon: screenErrorIcon,
     };
 

@@ -32,6 +32,7 @@ import option4 from "assets/illustration/locations/4.svg";
 import option5 from "assets/illustration/locations/5.svg";
 import option6 from "assets/illustration/locations/6.svg";
 import { getPlaceRef } from "service/referentiel-service";
+import { getLabels } from "service/alert-service";
 
 const ActivityLocationPage = () => {
     const { t } = useTranslation();
@@ -81,12 +82,7 @@ const ActivityLocationPage = () => {
                 currentIteration,
             );
         },
-        labels: {
-            alertMessage: t("component.location-selecter.alert-message"),
-            alertIgnore: t("component.location-selecter.alert-ignore"),
-            alertComplete: t("component.location-selecter.alert-complete"),
-            alertAlticon: t("component.location-selecter.alert-alt-icon"),
-        },
+        labels: getLabels("location-selecter"),
         errorIcon: locationErrorIcon,
     };
 

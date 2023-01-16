@@ -14,7 +14,12 @@
             "edit": "Modifier",
             "delete": "Supprimer",
             "help": "Aide",
-            "back-to-home": "Retourner à l'accueil"
+            "back-to-home": "Retourner à l'accueil",
+            "alert": {
+                "ignore": "Ignorer",
+                "complete": "Compléter",
+                "alt-icon": "alt pour icon no result"
+            }
         },
         "stepper": {
             "step": "Étape",
@@ -197,9 +202,6 @@
             "select-in-category": "Sélectionnez une activité dans la catégorie",
             "add-activity": "Ajoutez une autre activité",
             "alert-message": "Attention ! Vous n’avez pas été au bout de cette étape. Souhaitez-vous la compléter ?",
-            "alert-ignore": "Ignorer",
-            "alert-complete": "Compléter",
-            "alert-alt-icon": "alt pour icon no result",
             "clickable-list-placeholder": "Saisissez une activité",
             "clickable-list-not-found-label": "Aucun résultat trouvé",
             "clickable-list-not-found-comment": "Vous pourrez l'ajouter en cliquant sur le bouton ci-dessous, ou le bouton + ci-dessus",
@@ -208,40 +210,22 @@
             "other-button": "Autre ?"
         },
         "location-selecter": {
-            "alert-message": "Aucun lieu n’a été renseigné",
-            "alert-ignore": "Ignorer",
-            "alert-complete": "Compléter",
-            "alert-alt-icon": "alt pour icon no result"
+            "alert-message": "Aucun lieu n’a été renseigné"
         },
         "goal-selecter": {
-            "alert-message": "Aucun but n’a été renseigné",
-            "alert-ignore": "Ignorer",
-            "alert-complete": "Compléter",
-            "alert-alt-icon": "alt pour icon no result"
+            "alert-message": "Aucun but n’a été renseigné"
         },
         "secondary-activity-selecter": {
-            "alert-message": "Aucun secondarie activitie n’a été renseigné",
-            "alert-ignore": "Ignorer",
-            "alert-complete": "Compléter",
-            "alert-alt-icon": "alt pour icon no result"
+            "alert-message": "Aucun secondarie activitie n’a été renseigné"
         },
         "with-screen-selecter": {
-            "alert-message": "Aucun écran n’a été renseigné",
-            "alert-ignore": "Ignorer",
-            "alert-complete": "Compléter",
-            "alert-alt-icon": "alt pour icon no result"
+            "alert-message": "Aucun écran n’a été renseigné"
         },
         "with-someone-selecter": {
-            "alert-message": "Aucun présence n’a été renseigné",
-            "alert-ignore": "Ignorer",
-            "alert-complete": "Compléter",
-            "alert-alt-icon": "alt pour icon no result"
+            "alert-message": "Aucun présence n’a été renseigné"
         },
         "route-selecter": {
-            "alert-message": "Aucun route n’a été renseigné",
-            "alert-ignore": "Ignorer",
-            "alert-complete": "Compléter",
-            "alert-alt-icon": "alt pour icon no result"
+            "alert-message": "Aucun route n’a été renseigné"
         },
         "weekly-planner": {
             "title": "Planning de votre semaine",

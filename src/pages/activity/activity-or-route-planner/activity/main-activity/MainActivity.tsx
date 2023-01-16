@@ -87,9 +87,9 @@ const MainActivityPage = () => {
             selectInCategory: t("component.activity-selecter.select-in-category"),
             addActivity: t("component.activity-selecter.add-activity"),
             alertMessage: t("component.activity-selecter.alert-message"),
-            alertIgnore: t("component.activity-selecter.alert-ignore"),
-            alertComplete: t("component.activity-selecter.alert-complete"),
-            alertAlticon: t("component.activity-selecter.alert-alt-icon"),
+            alertIgnore: t("common.navigation.alert.ignore"),
+            alertComplete: t("common.navigation.alert.complete"),
+            alertAlticon: t("common.navigation.alert.alt-icon"),
             clickableListPlaceholder: t("component.activity-selecter.clickable-list-placeholder"),
             clickableListNotFoundLabel: t("component.activity-selecter.clickable-list-not-found-label"),
             clickableListNotFoundComment: t(

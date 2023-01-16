@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getLabels } from "service/alert-service";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import {
     getLoopPageSubpage,
@@ -78,12 +79,8 @@ const RoutePage = () => {
         nextClickEvent: nextClickEvent,
         backClickCallback: onPrevious,
         nextClickCallback: onNext,
-        labels: {
-            alertMessage: t("component.route-selecter.alert-message"),
-            alertIgnore: t("component.route-selecter.alert-ignore"),
-            alertComplete: t("component.route-selecter.alert-complete"),
-            alertAlticon: t("component.route-selecter.alert-alt-icon"),
-        },
+        labels: getLabels("route-selecter"),
+
         errorIcon: errorIcon,
     };
 
