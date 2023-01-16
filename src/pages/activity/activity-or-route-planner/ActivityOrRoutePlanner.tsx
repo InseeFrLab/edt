@@ -64,11 +64,15 @@ const ActivityOrRoutePlannerPage = () => {
     const isItDesktop = isDesktop();
 
     let contextIteration = 0;
-
-    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(context.idSurvey, context.source);
+    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(
+        t,
+        context.idSurvey,
+        context.source,
+    );
     const [snackbarText, setSnackbarText] = React.useState<string | undefined>(undefined);
     const surveyDate = getSurveyDate(context.idSurvey) || "";
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
+    const [skip, setSkip] = useState<boolean>(false);
 
     const alertLabels = {
         boldContent: t("page.alert-when-quit.activity-planner.alert-content-close-bold"),
@@ -80,6 +84,27 @@ const ActivityOrRoutePlannerPage = () => {
     const isChildDisplayed = (path: string): boolean => {
         return path.split(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)[1].length > 0 ? true : false;
     };
+
+    useEffect(() => {
+        const isActivityPlanner =
+            location.pathname?.split("/")[3] == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER &&
+            location.pathname?.split("/")[4] == null;
+        if (isActivityPlanner) {
+            const act = getActivitiesOrRoutes(t, context.idSurvey, context.source);
+            if (act.overlaps.length > 0) {
+                setSnackbarText(
+                    t("page.activity-planner.start-alert") +
+                        overlaps
+                            .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
+                            .join(", ") +
+                        t("page.activity-planner.end-alert"),
+                );
+                if (!skip) setOpenSnackbar(true);
+            }
+        } else {
+            setSkip(false);
+        }
+    });
 
     useEffect(() => {
         //The loop have to have a default size in source but it's updated depending on the data array size
@@ -96,7 +121,7 @@ const ActivityOrRoutePlannerPage = () => {
                         .join(", ") +
                     t("page.activity-planner.end-alert"),
             );
-            setOpenSnackbar(true);
+            if (!skip) setOpenSnackbar(true);
         }
     }, []);
 
@@ -236,6 +261,7 @@ const ActivityOrRoutePlannerPage = () => {
             return;
         }
         setOpenSnackbar(false);
+        setSkip(true);
     }, []);
 
     const snackbarAction = (

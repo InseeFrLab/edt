@@ -57,13 +57,13 @@ const checkForSecondaryActivity = (idSurvey: string, i: number, activityOrRoute:
 };
 
 const getActivitiesOrRoutes = (
+    t: any,
     idSurvey: string,
     source?: LunaticModel,
 ): {
     activitiesRoutesOrGaps: ActivityRouteOrGap[];
     overlaps: { prev: string | undefined; current: string | undefined }[];
 } => {
-    const { t } = useTranslation();
     const overlaps = [];
     let activitiesRoutes: ActivityRouteOrGap[] = [];
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
@@ -195,7 +195,8 @@ const hourToNormalizedTimeStamp = (hour: string | undefined, idSurvey: string): 
 
 const getActivitesSelectedLabel = (idSurvey: string): string[] => {
     let activitesSelected: string[] = [];
-    getActivitiesOrRoutes(idSurvey).activitiesRoutesOrGaps.forEach(activityRouteOrGap => {
+    const { t } = useTranslation();
+    getActivitiesOrRoutes(t, idSurvey).activitiesRoutesOrGaps.forEach(activityRouteOrGap => {
         if (
             activityRouteOrGap?.activity?.activityLabel != null &&
             activityRouteOrGap?.activity?.activityLabel.length > 0

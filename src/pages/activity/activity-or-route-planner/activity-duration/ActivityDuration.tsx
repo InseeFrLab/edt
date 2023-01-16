@@ -35,7 +35,7 @@ const ActivityDurationPage = () => {
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
-    const activitiesAct = getActivitiesOrRoutes(context.idSurvey).activitiesRoutesOrGaps;
+    const activitiesAct = getActivitiesOrRoutes(t, context.idSurvey).activitiesRoutesOrGaps;
     const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
