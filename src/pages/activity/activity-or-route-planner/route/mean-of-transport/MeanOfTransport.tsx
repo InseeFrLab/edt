@@ -1,4 +1,4 @@
-import errorIcon from "assets/illustration/error/activity.svg";
+import meanOfTransportErrorIcon from "assets/illustration/error/mean-of-transport.svg";
 import option1 from "assets/illustration/mean-of-transport-categories/1.svg";
 import option2 from "assets/illustration/mean-of-transport-categories/2.svg";
 import option3 from "assets/illustration/mean-of-transport-categories/3.svg";
@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import {
     getLoopPageSubpage,
@@ -21,14 +22,7 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import {
-    getCurrentNavigatePath,
-    getOrchestratorPage,
-    loopNavigate,
-    saveAndLoopNavigate,
-    setEnviro,
-    validateWithAlertAndNav,
-} from "service/navigation-service";
+import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
 
 const MeanOfTransportPage = () => {
     const { t } = useTranslation();
@@ -40,14 +34,9 @@ const MeanOfTransportPage = () => {
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
+    const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
+    const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
-
-    const alertLabels = {
-        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
-        content: t("page.alert-when-quit.route.alert-content"),
-        cancel: t("page.alert-when-quit.alert-cancel"),
-        complete: t("page.alert-when-quit.alert-complete"),
-    };
 
     const specificProps: CheckboxGroupSpecificProps = {
         optionsIcons: {
@@ -58,42 +47,31 @@ const MeanOfTransportPage = () => {
             "5": option5,
             "6": option6,
         },
-    };
-
-    const onPrevious = () => {
-        loopNavigate(
-            getPreviousLoopPage(currentPage, true),
-            LoopEnum.ACTIVITY_OR_ROUTE,
-            currentIteration,
-        );
-    };
-
-    const onNext = () => {
-        saveAndLoopNavigate(
-            getNextLoopPage(currentPage, true),
-            LoopEnum.ACTIVITY_OR_ROUTE,
-            currentIteration,
-        );
-    };
-
-    const onClose = (forceQuit: boolean) => {
-        validateWithAlertAndNav(
-            forceQuit,
-            setIsAlertDisplayed,
-            currentIteration,
-            getCurrentNavigatePath(
-                context.idSurvey,
-                EdtRoutesNameEnum.ACTIVITY,
-                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            ),
-        );
+        backClickEvent: backClickEvent,
+        nextClickEvent: nextClickEvent,
+        backClickCallback: () => {
+            saveAndLoopNavigate(
+                getPreviousLoopPage(currentPage, true),
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+            );
+        },
+        nextClickCallback: () => {
+            saveAndLoopNavigate(
+                getNextLoopPage(currentPage, true),
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+            );
+        },
+        labels: getLabels("mean-of-transport-selecter"),
+        errorIcon: meanOfTransportErrorIcon,
     };
 
     return (
         <LoopSurveyPage
-            onPrevious={onPrevious}
-            onNext={onNext}
-            onClose={() => onClose(false)}
+            onNext={e => onNext(e, setNextClickEvent)}
+            onPrevious={e => onPrevious(e, setBackClickEvent)}
+            onClose={() => onClose(false, setIsAlertDisplayed, currentIteration)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -104,9 +82,9 @@ const MeanOfTransportPage = () => {
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
-                    onCancelCallBack={onClose}
-                    labels={alertLabels}
-                    icon={errorIcon}
+                    onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
+                    labels={getLabelsWhenQuit(true)}
+                    icon={meanOfTransportErrorIcon}
                     errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
                 ></Alert>
                 <OrchestratorForStories

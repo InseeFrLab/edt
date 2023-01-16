@@ -11,14 +11,7 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import {
-    getCurrentNavigatePath,
-    getLoopParameterizedNavigatePath,
-    getOrchestratorPage,
-    saveAndNav,
-    setEnviro,
-    validateWithAlertAndNav,
-} from "service/navigation-service";
+import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
 
 import catIcon100 from "assets/illustration/activity-categories/1.svg";
 import catIcon200 from "assets/illustration/activity-categories/2.svg";
@@ -32,6 +25,7 @@ import errorIcon from "assets/illustration/error/activity.svg";
 import { ActivitySelecterSpecificProps, Alert, AutoCompleteActiviteOption } from "lunatic-edt";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { addToAutocompleteActivityReferentiel } from "service/survey-service";
 
@@ -49,12 +43,6 @@ const MainActivityPage = () => {
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [displayStepper, setDisplayStepper] = useState<boolean>(true);
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
-    const alertLabels = {
-        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
-        content: t("page.alert-when-quit.activity.alert-content"),
-        cancel: t("page.alert-when-quit.alert-cancel"),
-        complete: t("page.alert-when-quit.alert-complete"),
-    };
 
     const specificProps: ActivitySelecterSpecificProps = {
         categoriesIcons: {
@@ -72,13 +60,25 @@ const MainActivityPage = () => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
-            saveAndLoopNavigate(getPreviousLoopPage(currentPage));
+            saveAndLoopNavigate(
+                getPreviousLoopPage(currentPage),
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+            );
         },
         nextClickCallback: (routeToGoal: boolean) => {
             if (routeToGoal) {
-                saveAndLoopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
+                saveAndLoopNavigate(
+                    EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
+                    LoopEnum.ACTIVITY_OR_ROUTE,
+                    currentIteration,
+                );
             } else {
-                saveAndLoopNavigate(getNextLoopPage(currentPage));
+                saveAndLoopNavigate(
+                    getNextLoopPage(currentPage),
+                    LoopEnum.ACTIVITY_OR_ROUTE,
+                    currentIteration,
+                );
             }
         },
         setDisplayStepper: setDisplayStepper,
@@ -87,9 +87,9 @@ const MainActivityPage = () => {
             selectInCategory: t("component.activity-selecter.select-in-category"),
             addActivity: t("component.activity-selecter.add-activity"),
             alertMessage: t("component.activity-selecter.alert-message"),
-            alertIgnore: t("component.activity-selecter.alert-ignore"),
-            alertComplete: t("component.activity-selecter.alert-complete"),
-            alertAlticon: t("component.activity-selecter.alert-alt-icon"),
+            alertIgnore: t("common.navigation.alert.ignore"),
+            alertComplete: t("common.navigation.alert.complete"),
+            alertAlticon: t("common.navigation.alert.alt-icon"),
             clickableListPlaceholder: t("component.activity-selecter.clickable-list-placeholder"),
             clickableListNotFoundLabel: t("component.activity-selecter.clickable-list-not-found-label"),
             clickableListNotFoundComment: t(
@@ -109,36 +109,15 @@ const MainActivityPage = () => {
         },
     };
 
-    const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
+    /*const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
         saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
-    };
-
-    const onNext = (e: React.MouseEvent) => {
-        setNextClickEvent(e);
-    };
-
-    const onPrevious = (e: React.MouseEvent) => {
-        setBackClickEvent(e);
-    };
-
-    const onClose = (forceQuit: boolean) => {
-        validateWithAlertAndNav(
-            forceQuit,
-            setIsAlertDisplayed,
-            currentIteration,
-            getCurrentNavigatePath(
-                context.idSurvey,
-                EdtRoutesNameEnum.ACTIVITY,
-                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            ),
-        );
-    };
+    };*/
 
     return (
         <LoopSurveyPage
-            onNext={onNext}
-            onPrevious={onPrevious}
-            onClose={() => onClose(false)}
+            onNext={e => onNext(e, setNextClickEvent)}
+            onPrevious={e => onPrevious(e, setBackClickEvent)}
+            onClose={() => onClose(false, setIsAlertDisplayed, currentIteration)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -149,8 +128,8 @@ const MainActivityPage = () => {
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
-                    onCancelCallBack={onClose}
-                    labels={alertLabels}
+                    onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
+                    labels={getLabelsWhenQuit()}
                     icon={errorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}
                 ></Alert>

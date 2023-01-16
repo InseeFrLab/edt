@@ -8,15 +8,18 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
 import {
     getCurrentNavigatePath,
     getOrchestratorPage,
+    onClose,
+    onNext,
+    onPrevious,
     saveAndLoopNavigate,
     saveAndNav,
     setEnviro,
-    validateWithAlertAndNav,
 } from "service/navigation-service";
 import { FieldNameEnum, getValue } from "service/survey-service";
 
@@ -34,14 +37,6 @@ const WithScreenPage = () => {
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
-    const alertLabels = {
-        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
-        content: !isRoute
-            ? t("page.alert-when-quit.activity.alert-content")
-            : t("page.alert-when-quit.route.alert-content"),
-        cancel: t("page.alert-when-quit.alert-cancel"),
-        complete: t("page.alert-when-quit.alert-complete"),
-    };
 
     const specificProps: CheckboxBooleanEdtSpecificProps = {
         backClickEvent: backClickEvent,
@@ -64,41 +59,16 @@ const WithScreenPage = () => {
                 ),
             );
         },
-        labels: {
-            alertMessage: t("component.with-screen-selecter.alert-message"),
-            alertIgnore: t("component.with-screen-selecter.alert-ignore"),
-            alertComplete: t("component.with-screen-selecter.alert-complete"),
-            alertAlticon: t("component.with-screen-selecter.alert-alt-icon"),
-        },
+        labels: getLabels("with-screen-selecter"),
+
         errorIcon: screenErrorIcon,
-    };
-
-    const onNext = (e: React.MouseEvent) => {
-        setNextClickEvent(e);
-    };
-
-    const onPrevious = (e: React.MouseEvent) => {
-        setBackClickEvent(e);
-    };
-
-    const onClose = (forceQuit: boolean) => {
-        validateWithAlertAndNav(
-            forceQuit,
-            setIsAlertDisplayed,
-            currentIteration,
-            getCurrentNavigatePath(
-                context.idSurvey,
-                EdtRoutesNameEnum.ACTIVITY,
-                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            ),
-        );
     };
 
     return (
         <LoopSurveyPage
-            onPrevious={onPrevious}
-            onValidate={onNext}
-            onClose={() => onClose(false)}
+            onValidate={e => onNext(e, setNextClickEvent)}
+            onPrevious={e => onPrevious(e, setBackClickEvent)}
+            onClose={() => onClose(false, setIsAlertDisplayed, currentIteration)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -109,8 +79,8 @@ const WithScreenPage = () => {
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
-                    onCancelCallBack={onClose}
-                    labels={alertLabels}
+                    onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
+                    labels={getLabelsWhenQuit(isRoute)}
                     icon={screenErrorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}
                 ></Alert>

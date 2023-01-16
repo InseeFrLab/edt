@@ -14,15 +14,8 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import {
-    getCurrentNavigatePath,
-    getOrchestratorPage,
-    saveAndLoopNavigate,
-    setEnviro,
-    validateWithAlertAndNav,
-} from "service/navigation-service";
+import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
 import { FieldNameEnum } from "service/survey-service";
-
 import errorIcon from "assets/illustration/error/activity.svg";
 import locationErrorIcon from "assets/illustration/error/location.svg";
 import option1 from "assets/illustration/locations/1.svg";
@@ -31,6 +24,7 @@ import option3 from "assets/illustration/locations/3.svg";
 import option4 from "assets/illustration/locations/4.svg";
 import option5 from "assets/illustration/locations/5.svg";
 import option6 from "assets/illustration/locations/6.svg";
+import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getPlaceRef } from "service/referentiel-service";
 
 const ActivityLocationPage = () => {
@@ -46,13 +40,6 @@ const ActivityLocationPage = () => {
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
-
-    const alertLabels = {
-        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
-        content: t("page.alert-when-quit.activity.alert-content"),
-        cancel: t("page.alert-when-quit.alert-cancel"),
-        complete: t("page.alert-when-quit.alert-complete"),
-    };
 
     const specificProps: IconGridCheckBoxOneSpecificProps = {
         optionsIcons: {
@@ -81,41 +68,15 @@ const ActivityLocationPage = () => {
                 currentIteration,
             );
         },
-        labels: {
-            alertMessage: t("component.location-selecter.alert-message"),
-            alertIgnore: t("component.location-selecter.alert-ignore"),
-            alertComplete: t("component.location-selecter.alert-complete"),
-            alertAlticon: t("component.location-selecter.alert-alt-icon"),
-        },
+        labels: getLabels("location-selecter"),
         errorIcon: locationErrorIcon,
-    };
-
-    const onClose = (forceQuit: boolean) => {
-        validateWithAlertAndNav(
-            forceQuit,
-            setIsAlertDisplayed,
-            currentIteration,
-            getCurrentNavigatePath(
-                context.idSurvey,
-                EdtRoutesNameEnum.ACTIVITY,
-                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            ),
-        );
-    };
-
-    const onNext = (e: React.MouseEvent) => {
-        setNextClickEvent(e);
-    };
-
-    const onPrevious = (e: React.MouseEvent) => {
-        setBackClickEvent(e);
     };
 
     return (
         <LoopSurveyPage
-            onNext={onNext}
-            onPrevious={onPrevious}
-            onClose={() => onClose(false)}
+            onNext={e => onNext(e, setNextClickEvent)}
+            onPrevious={e => onPrevious(e, setBackClickEvent)}
+            onClose={() => onClose(false, setIsAlertDisplayed, currentIteration)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -125,8 +86,8 @@ const ActivityLocationPage = () => {
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
-                    onCancelCallBack={onClose}
-                    labels={alertLabels}
+                    onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
+                    labels={getLabelsWhenQuit()}
                     icon={errorIcon}
                     errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
                 ></Alert>

@@ -22,6 +22,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { isDesktop } from "service/responsive";
+import { getLabelsWhenQuit } from "service/alert-service";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
@@ -34,22 +35,13 @@ const ActivityDurationPage = () => {
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
-    const activitiesAct = getActivitiesOrRoutes(context.idSurvey).activitiesRoutesOrGaps;
+    const activitiesAct = getActivitiesOrRoutes(t, context.idSurvey).activitiesRoutesOrGaps;
     const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const [snackbarText, setSnackbarText] = useState<string | undefined>(undefined);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [lastEndTime, setLastEndTime] = useState(dayjs());
-
-    const alertLabels = {
-        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
-        content: !isRoute
-            ? t("page.alert-when-quit.activity.alert-content")
-            : t("page.alert-when-quit.route.alert-content"),
-        cancel: t("page.alert-when-quit.alert-cancel"),
-        complete: t("page.alert-when-quit.alert-complete"),
-    };
 
     const specificProps: TimepickerSpecificProps = {
         activitiesAct: activitiesAct,
@@ -161,7 +153,7 @@ const ActivityDurationPage = () => {
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
                     onCancelCallBack={onClose}
-                    labels={alertLabels}
+                    labels={getLabelsWhenQuit(isRoute)}
                     icon={errorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}
                 ></Alert>
