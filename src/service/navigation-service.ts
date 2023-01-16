@@ -273,6 +273,27 @@ const validateWithAlertAndNav = (
     }
 };
 
+const onNext = (e: React.MouseEvent | undefined, setNextClickEvent: any) => {
+    setNextClickEvent(e);
+};
+
+const onPrevious = (e: React.MouseEvent | undefined, setBackClickEvent: any) => {
+    setBackClickEvent(e);
+};
+
+const onClose = (forceQuit: boolean, setIsAlertDisplayed: any, iteration: number) => {
+    validateWithAlertAndNav(
+        forceQuit,
+        setIsAlertDisplayed,
+        iteration,
+        getCurrentNavigatePath(
+            _context.idSurvey,
+            EdtRoutesNameEnum.ACTIVITY,
+            getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+        ),
+    );
+};
+
 export {
     getNavigatePath,
     getParameterizedNavigatePath,
@@ -297,4 +318,7 @@ export {
     getPage,
     getLoopPage,
     getSurveySubPage,
+    onNext,
+    onPrevious,
+    onClose,
 };

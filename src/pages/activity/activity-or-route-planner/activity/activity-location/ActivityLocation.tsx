@@ -14,13 +14,7 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import {
-    getCurrentNavigatePath,
-    getOrchestratorPage,
-    saveAndLoopNavigate,
-    setEnviro,
-    validateWithAlertAndNav,
-} from "service/navigation-service";
+import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
 import { FieldNameEnum } from "service/survey-service";
 
 import errorIcon from "assets/illustration/error/activity.svg";
@@ -31,8 +25,8 @@ import option3 from "assets/illustration/locations/3.svg";
 import option4 from "assets/illustration/locations/4.svg";
 import option5 from "assets/illustration/locations/5.svg";
 import option6 from "assets/illustration/locations/6.svg";
-import { getPlaceRef } from "service/referentiel-service";
 import { getLabels } from "service/alert-service";
+import { getPlaceRef } from "service/referentiel-service";
 
 const ActivityLocationPage = () => {
     const { t } = useTranslation();
@@ -86,32 +80,11 @@ const ActivityLocationPage = () => {
         errorIcon: locationErrorIcon,
     };
 
-    const onClose = (forceQuit: boolean) => {
-        validateWithAlertAndNav(
-            forceQuit,
-            setIsAlertDisplayed,
-            currentIteration,
-            getCurrentNavigatePath(
-                context.idSurvey,
-                EdtRoutesNameEnum.ACTIVITY,
-                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            ),
-        );
-    };
-
-    const onNext = (e: React.MouseEvent) => {
-        setNextClickEvent(e);
-    };
-
-    const onPrevious = (e: React.MouseEvent) => {
-        setBackClickEvent(e);
-    };
-
     return (
         <LoopSurveyPage
-            onNext={onNext}
-            onPrevious={onPrevious}
-            onClose={() => onClose(false)}
+            onNext={e => onNext(e, setNextClickEvent)}
+            onPrevious={e => onPrevious(e, setBackClickEvent)}
+            onClose={() => onClose(false, setIsAlertDisplayed, currentIteration)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -121,7 +94,7 @@ const ActivityLocationPage = () => {
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
-                    onCancelCallBack={onClose}
+                    onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
                     labels={alertLabels}
                     icon={errorIcon}
                     errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}

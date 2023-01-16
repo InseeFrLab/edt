@@ -6,12 +6,12 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import {
-    getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
-    getOrchestratorPage,
+    onClose,
+    onNext,
+    onPrevious,
     saveAndNav,
     setEnviro,
-    validateWithAlertAndNav,
 } from "service/navigation-service";
 
 import errorIcon from "assets/illustration/error/activity.svg";
@@ -23,8 +23,8 @@ import option4 from "assets/illustration/goals/4.svg";
 import { Alert, IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import { getLabels } from "service/alert-service";
+import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 
 const MainActivityGoalPage = () => {
     const { t } = useTranslation();
@@ -71,32 +71,11 @@ const MainActivityGoalPage = () => {
         saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     };
 
-    const onNext = (e: React.MouseEvent) => {
-        setNextClickEvent(e);
-    };
-
-    const onPrevious = (e: React.MouseEvent) => {
-        setBackClickEvent(e);
-    };
-
-    const onClose = (forceQuit: boolean) => {
-        validateWithAlertAndNav(
-            forceQuit,
-            setIsAlertDisplayed,
-            currentIteration,
-            getCurrentNavigatePath(
-                context.idSurvey,
-                EdtRoutesNameEnum.ACTIVITY,
-                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            ),
-        );
-    };
-
     return (
         <LoopSurveyPage
-            onNext={onNext}
-            onPrevious={onPrevious}
-            onClose={() => onClose(false)}
+            onNext={e => onNext(e, setNextClickEvent)}
+            onPrevious={e => onPrevious(e, setBackClickEvent)}
+            onClose={() => onClose(false, setIsAlertDisplayed, currentIteration)}
             displayStepper={false}
             currentStepLabel={t("component.add-activity-stepper.step-2-label")}
         >
@@ -104,7 +83,7 @@ const MainActivityGoalPage = () => {
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
-                    onCancelCallBack={onClose}
+                    onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
                     labels={alertLabels}
                     icon={errorIcon}
                     errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}

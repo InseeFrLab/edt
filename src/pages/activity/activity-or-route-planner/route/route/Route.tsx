@@ -22,12 +22,7 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import {
-    getCurrentNavigatePath,
-    getLoopParameterizedNavigatePath,
-    getOrchestratorPage,
-    validateWithAlertAndNav,
-} from "service/navigation-service";
+import { getLoopParameterizedNavigatePath, onClose } from "service/navigation-service";
 import { getRouteRef } from "service/referentiel-service";
 import { saveData } from "service/survey-service";
 
@@ -88,24 +83,11 @@ const RoutePage = () => {
         navigate(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     };
 
-    const onClose = (forceQuit: boolean) => {
-        validateWithAlertAndNav(
-            forceQuit,
-            setIsAlertDisplayed,
-            currentIteration,
-            getCurrentNavigatePath(
-                context.idSurvey,
-                EdtRoutesNameEnum.ACTIVITY,
-                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            ),
-        );
-    };
-
     return (
         <LoopSurveyPage
             onPrevious={onPrevious}
             onNext={onNext}
-            onClose={() => onClose(false)}
+            onClose={() => onClose(false, setIsAlertDisplayed, currentIteration)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -116,7 +98,7 @@ const RoutePage = () => {
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
-                    onCancelCallBack={onClose}
+                    onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
                     labels={alertLabels}
                     icon={errorIcon}
                     errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}

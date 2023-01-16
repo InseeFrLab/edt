@@ -16,13 +16,7 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import {
-    getCurrentNavigatePath,
-    getOrchestratorPage,
-    saveAndLoopNavigate,
-    setEnviro,
-    validateWithAlertAndNav,
-} from "service/navigation-service";
+import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
 import { FieldNameEnum, getValue } from "service/survey-service";
 
 const WithSomeonePage = () => {
@@ -82,32 +76,12 @@ const WithSomeonePage = () => {
 
         errorIcon: peopleErrorIcon,
     };
-    const onNext = (e: React.MouseEvent) => {
-        setNextClickEvent(e);
-    };
-
-    const onPrevious = (e: React.MouseEvent) => {
-        setBackClickEvent(e);
-    };
-
-    const onClose = (forceQuit: boolean) => {
-        validateWithAlertAndNav(
-            forceQuit,
-            setIsAlertDisplayed,
-            currentIteration,
-            getCurrentNavigatePath(
-                context.idSurvey,
-                EdtRoutesNameEnum.ACTIVITY,
-                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            ),
-        );
-    };
 
     return (
         <LoopSurveyPage
-            onNext={onNext}
-            onPrevious={onPrevious}
-            onClose={() => onClose(false)}
+            onNext={e => onNext(e, setNextClickEvent)}
+            onPrevious={e => onPrevious(e, setBackClickEvent)}
+            onClose={() => onClose(false, setIsAlertDisplayed, currentIteration)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -118,7 +92,7 @@ const WithSomeonePage = () => {
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
-                    onCancelCallBack={onClose}
+                    onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
                     labels={alertLabels}
                     icon={peopleErrorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}

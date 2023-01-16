@@ -21,14 +21,7 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import {
-    getCurrentNavigatePath,
-    getOrchestratorPage,
-    loopNavigate,
-    saveAndLoopNavigate,
-    setEnviro,
-    validateWithAlertAndNav,
-} from "service/navigation-service";
+import { loopNavigate, onClose, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
 
 const MeanOfTransportPage = () => {
     const { t } = useTranslation();
@@ -76,24 +69,11 @@ const MeanOfTransportPage = () => {
         );
     };
 
-    const onClose = (forceQuit: boolean) => {
-        validateWithAlertAndNav(
-            forceQuit,
-            setIsAlertDisplayed,
-            currentIteration,
-            getCurrentNavigatePath(
-                context.idSurvey,
-                EdtRoutesNameEnum.ACTIVITY,
-                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            ),
-        );
-    };
-
     return (
         <LoopSurveyPage
             onPrevious={onPrevious}
             onNext={onNext}
-            onClose={() => onClose(false)}
+            onClose={() => onClose(false, setIsAlertDisplayed, currentIteration)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -104,7 +84,7 @@ const MeanOfTransportPage = () => {
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
-                    onCancelCallBack={onClose}
+                    onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
                     labels={alertLabels}
                     icon={errorIcon}
                     errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
