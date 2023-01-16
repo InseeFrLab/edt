@@ -227,6 +227,9 @@
         "route-selecter": {
             "alert-message": "Aucun route n’a été renseigné"
         },
+        "mean-of-transport-selecter": {
+            "alert-message": "Aucun moyen de transport n’a été renseigné"
+        },
         "weekly-planner": {
             "title": "Planning de votre semaine",
             "work-sum-label": "Durée totale travaillée : ",

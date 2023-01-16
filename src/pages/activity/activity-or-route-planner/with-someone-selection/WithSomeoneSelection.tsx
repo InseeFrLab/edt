@@ -16,14 +16,7 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
-import {
-    getLoopParameterizedNavigatePath,
-    onClose,
-    onNext,
-    onPrevious,
-    saveAndNav,
-    setEnviro,
-} from "service/navigation-service";
+import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
 import { FieldNameEnum, getValue } from "service/survey-service";
 
 const WithSomeoneSelectionPage = () => {
@@ -54,15 +47,19 @@ const WithSomeoneSelectionPage = () => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
-            saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SOMEONE);
+            saveAndLoopNavigate(
+                EdtRoutesNameEnum.WITH_SOMEONE,
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+            );
         },
         nextClickCallback: () => {
-            saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SCREEN);
+            saveAndLoopNavigate(
+                EdtRoutesNameEnum.WITH_SCREEN,
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+            );
         },
-    };
-
-    const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
-        saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     };
 
     return (

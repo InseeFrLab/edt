@@ -11,14 +11,7 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import {
-    getLoopParameterizedNavigatePath,
-    onClose,
-    onNext,
-    onPrevious,
-    saveAndNav,
-    setEnviro,
-} from "service/navigation-service";
+import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
 
 import catIcon100 from "assets/illustration/activity-categories/1.svg";
 import catIcon200 from "assets/illustration/activity-categories/2.svg";
@@ -32,9 +25,9 @@ import errorIcon from "assets/illustration/error/activity.svg";
 import { ActivitySelecterSpecificProps, Alert, AutoCompleteActiviteOption } from "lunatic-edt";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { addToAutocompleteActivityReferentiel } from "service/survey-service";
-import { getLabelsWhenQuit } from "service/alert-service";
 
 const MainActivityPage = () => {
     const { t } = useTranslation();
@@ -67,13 +60,25 @@ const MainActivityPage = () => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
-            saveAndLoopNavigate(getPreviousLoopPage(currentPage));
+            saveAndLoopNavigate(
+                getPreviousLoopPage(currentPage),
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+            );
         },
         nextClickCallback: (routeToGoal: boolean) => {
             if (routeToGoal) {
-                saveAndLoopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
+                saveAndLoopNavigate(
+                    EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
+                    LoopEnum.ACTIVITY_OR_ROUTE,
+                    currentIteration,
+                );
             } else {
-                saveAndLoopNavigate(getNextLoopPage(currentPage));
+                saveAndLoopNavigate(
+                    getNextLoopPage(currentPage),
+                    LoopEnum.ACTIVITY_OR_ROUTE,
+                    currentIteration,
+                );
             }
         },
         setDisplayStepper: setDisplayStepper,
@@ -104,9 +109,9 @@ const MainActivityPage = () => {
         },
     };
 
-    const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
+    /*const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
         saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
-    };
+    };*/
 
     return (
         <LoopSurveyPage

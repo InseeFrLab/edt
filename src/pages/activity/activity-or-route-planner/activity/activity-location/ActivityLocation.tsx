@@ -16,7 +16,6 @@ import {
 } from "service/loop-stepper-service";
 import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
 import { FieldNameEnum } from "service/survey-service";
-
 import errorIcon from "assets/illustration/error/activity.svg";
 import locationErrorIcon from "assets/illustration/error/location.svg";
 import option1 from "assets/illustration/locations/1.svg";

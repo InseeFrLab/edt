@@ -5,14 +5,7 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import {
-    getLoopParameterizedNavigatePath,
-    onClose,
-    onNext,
-    onPrevious,
-    saveAndNav,
-    setEnviro,
-} from "service/navigation-service";
+import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
 
 import errorIcon from "assets/illustration/error/activity.svg";
 import option1 from "assets/illustration/goals/1.svg";
@@ -51,17 +44,21 @@ const MainActivityGoalPage = () => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
-            saveAndLoopNavigate(EdtRoutesNameEnum.MAIN_ACTIVITY);
+            saveAndLoopNavigate(
+                EdtRoutesNameEnum.MAIN_ACTIVITY,
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+            );
         },
         nextClickCallback: () => {
-            saveAndLoopNavigate(EdtRoutesNameEnum.SECONDARY_ACTIVITY);
+            saveAndLoopNavigate(
+                EdtRoutesNameEnum.SECONDARY_ACTIVITY,
+                LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+            );
         },
         labels: getLabels("goal-selecter"),
         errorIcon: errorIcon,
-    };
-
-    const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
-        saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     };
 
     return (

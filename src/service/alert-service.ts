@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { validateWithAlertAndNav } from "./navigation-service";
 
 export type LabelsAlerts = {
     alertMessage: string;
@@ -20,4 +19,19 @@ const getLabels = (component: string) => {
     return labels;
 };
 
-export { getLabels };
+const getLabelsWhenQuit = (isRoute?: boolean) => {
+    const { t } = useTranslation();
+
+    const labels = {
+        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
+        content: isRoute
+            ? t("page.alert-when-quit.route.alert-content")
+            : t("page.alert-when-quit.activity.alert-content"),
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: t("page.alert-when-quit.alert-complete"),
+    };
+
+    return labels;
+};
+
+export { getLabels, getLabelsWhenQuit };

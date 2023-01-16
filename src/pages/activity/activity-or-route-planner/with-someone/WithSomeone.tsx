@@ -64,7 +64,6 @@ const WithSomeonePage = () => {
             );
         },
         labels: getLabels("with-someone-selecter"),
-
         errorIcon: peopleErrorIcon,
     };
 
