@@ -34,6 +34,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { addToAutocompleteActivityReferentiel } from "service/survey-service";
+import { getLabelsWhenQuit } from "service/alert-service";
 
 const MainActivityPage = () => {
     const { t } = useTranslation();
@@ -49,12 +50,6 @@ const MainActivityPage = () => {
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [displayStepper, setDisplayStepper] = useState<boolean>(true);
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
-    const alertLabels = {
-        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
-        content: t("page.alert-when-quit.activity.alert-content"),
-        cancel: t("page.alert-when-quit.alert-cancel"),
-        complete: t("page.alert-when-quit.alert-complete"),
-    };
 
     const specificProps: ActivitySelecterSpecificProps = {
         categoriesIcons: {
@@ -129,7 +124,7 @@ const MainActivityPage = () => {
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
                     onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
-                    labels={alertLabels}
+                    labels={getLabelsWhenQuit()}
                     icon={errorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}
                 ></Alert>

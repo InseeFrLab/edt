@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getLabels } from "service/alert-service";
+import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
 import {
@@ -37,14 +37,6 @@ const WithScreenPage = () => {
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
-    const alertLabels = {
-        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
-        content: !isRoute
-            ? t("page.alert-when-quit.activity.alert-content")
-            : t("page.alert-when-quit.route.alert-content"),
-        cancel: t("page.alert-when-quit.alert-cancel"),
-        complete: t("page.alert-when-quit.alert-complete"),
-    };
 
     const specificProps: CheckboxBooleanEdtSpecificProps = {
         backClickEvent: backClickEvent,
@@ -88,7 +80,7 @@ const WithScreenPage = () => {
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
                     onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
-                    labels={alertLabels}
+                    labels={getLabelsWhenQuit(isRoute)}
                     icon={screenErrorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}
                 ></Alert>

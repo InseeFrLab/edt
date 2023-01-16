@@ -23,7 +23,7 @@ import option4 from "assets/illustration/goals/4.svg";
 import { Alert, IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getLabels } from "service/alert-service";
+import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 
 const MainActivityGoalPage = () => {
@@ -60,13 +60,6 @@ const MainActivityGoalPage = () => {
         errorIcon: errorIcon,
     };
 
-    const alertLabels = {
-        boldContent: t("page.alert-when-quit.activity.alert-content-bold"),
-        content: t("page.alert-when-quit.activity.alert-content"),
-        cancel: t("page.alert-when-quit.alert-cancel"),
-        complete: t("page.alert-when-quit.alert-complete"),
-    };
-
     const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
         saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
     };
@@ -84,7 +77,7 @@ const MainActivityGoalPage = () => {
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={() => setIsAlertDisplayed(false)}
                     onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
-                    labels={alertLabels}
+                    labels={getLabelsWhenQuit()}
                     icon={errorIcon}
                     errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
                 ></Alert>
