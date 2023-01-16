@@ -140,8 +140,8 @@ const ActivityDurationPage = () => {
 
     return (
         <LoopSurveyPage
-            onNext={onNext}
-            onClose={() => onClose(false)}
+            onNext={useCallback(() => onNext(), [])}
+            onClose={useCallback(() => onClose(false), [])}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -151,8 +151,8 @@ const ActivityDurationPage = () => {
             <FlexCenter>
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
-                    onCompleteCallBack={() => setIsAlertDisplayed(false)}
-                    onCancelCallBack={onClose}
+                    onCompleteCallBack={useCallback(() => setIsAlertDisplayed(false), [])}
+                    onCancelCallBack={useCallback(cancel => onClose(cancel), [])}
                     labels={getLabelsWhenQuit(isRoute)}
                     icon={errorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}

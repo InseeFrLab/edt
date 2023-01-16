@@ -6,6 +6,7 @@ import PageIcon from "components/commons/PageIcon/PageIcon";
 import DayCard from "components/edt/DayCard/DayCard";
 import WeekCard from "components/edt/WeekCard/WeekCard";
 import { makeStylesEdt } from "lunatic-edt";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
@@ -28,7 +29,7 @@ const HomePage = () => {
                 <Button
                     color="secondary"
                     startIcon={<HelpIcon />}
-                    onClick={() => navigate(getNavigatePath(EdtRoutesNameEnum.HELP))}
+                    onClick={useCallback(() => navigate(getNavigatePath(EdtRoutesNameEnum.HELP)), [])}
                 >
                     {t("page.home.navigation.link-help-label")}
                 </Button>
@@ -43,9 +44,13 @@ const HomePage = () => {
                         key={idSurvey + "-dayCard"}
                         labelledBy={""}
                         describedBy={""}
-                        onClick={() =>
-                            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey))
-                        }
+                        onClick={useCallback(
+                            () =>
+                                navigate(
+                                    getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey),
+                                ),
+                            [],
+                        )}
                         firstName={getPrintedFirstName(idSurvey)}
                         surveyDate={getPrintedSurveyDate(idSurvey)}
                         idSurvey={idSurvey}
@@ -57,9 +62,13 @@ const HomePage = () => {
                         key={idSurvey + "-weekCard"}
                         labelledBy={""}
                         describedBy={""}
-                        onClick={() =>
-                            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey))
-                        }
+                        onClick={useCallback(
+                            () =>
+                                navigate(
+                                    getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey),
+                                ),
+                            [],
+                        )}
                         firstName={getPrintedFirstName(idSurvey)}
                         surveyDate={getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME)}
                     />
