@@ -30,8 +30,11 @@ const EditActivityInformationPage = () => {
 
     return (
         <SurveyPage
-            onNavigateBack={() => navFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)}
-            onPrevious={() => navFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)}
+            onNavigateBack={useCallback(
+                () => navFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                [],
+            )}
+            onPrevious={useCallback(() => navFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER), [])}
             simpleHeaderLabel={t("page.edit-activity-information.header")}
             simpleHeader={true}
             backgroundWhiteHeader={false}
@@ -54,7 +57,7 @@ const EditActivityInformationPage = () => {
                     .map(stepData => (
                         <StepNavCard
                             key={"nav-to-step-" + stepData.stepNumber}
-                            onClick={() => navToStep(stepData.page)}
+                            onClick={useCallback(() => navToStep(stepData.page), [])}
                             labelledBy={""}
                             describedBy={""}
                             stepData={stepData}

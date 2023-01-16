@@ -13,7 +13,7 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getLastCompletedStep } from "service/navigation-service";
 import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
-import { getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
+import { getScore } from "service/survey-activity-service";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;

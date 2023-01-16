@@ -1,7 +1,7 @@
 module.exports = {
     "root": true,
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint", "tss-unused-classes"],
+    "plugins": ["@typescript-eslint", "tss-unused-classes", "react"],
     "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier", "plugin:storybook/recommended"],
     "rules": {
       "no-extra-boolean-cast": "off",
@@ -9,13 +9,16 @@ module.exports = {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-namespace": "off",
       "@typescript-eslint/ban-types": "off",
+      "@typescript-eslint/no-empty-interface": "off",
       "prefer-const": "off",
-      'tss-unused-classes/unused-classes': "warn"
+      'tss-unused-classes/unused-classes': "warn",
+      "react/jsx-no-bind": "error"
     },
     "overrides": [{
       "files": ["**/*.stories.*"],
       "rules": {
         "import/no-anonymous-default-export": "off"
       }
-    }]
+    }],
+    "ignorePatterns": ["*.js"],
   };

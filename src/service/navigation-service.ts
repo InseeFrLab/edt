@@ -210,7 +210,7 @@ const navToErrorPage = (): void => {
     _navigate(getNavigatePath(EdtRoutesNameEnum.ERROR));
 };
 
-const navToActivitRouteHome = () => {
+const navToActivityRoutePlanner = () => {
     _navigate(
         getCurrentNavigatePath(
             _context.idSurvey,
@@ -338,7 +338,7 @@ export {
     navToHome,
     navToHelp,
     navToErrorPage,
-    navToActivitRouteHome,
+    navToActivityRoutePlanner,
     navToEditActivity,
     navFullPath,
     saveAndNav,
