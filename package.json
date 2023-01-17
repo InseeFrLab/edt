@@ -1,6 +1,6 @@
 {
     "name": "edt",
-    "version": "1.5.3",
+    "version": "1.5.4",
     "dateVersion": "17/01/2023",
     "licence": "MIT",
     "dependencies": {
@@ -12,7 +12,7 @@
         "axios": "^1.2.2",
         "dexie": "^3.2.2",
         "i18next": "^21.9.2",
-        "lunatic-edt": "^0.4.0",
+        "lunatic-edt": "^0.6.0",
         "react": "^18.2.0",
         "react-detect-offline": "^2.4.5",
         "react-dom": "^18.2.0",
