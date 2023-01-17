@@ -4,6 +4,7 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { CheckboxOneSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
@@ -32,9 +33,9 @@ const KindOfDayPage = () => {
 
     return (
         <SurveyPage
-            onNavigateBack={() => saveAndNav()}
-            onNext={() => saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage)}
-            onPrevious={() => saveAndNavFullPath(EdtRoutesNameEnum.WORST_ACTIVITY_DAY)}
+            onNavigateBack={useCallback(() => saveAndNav(), [])}
+            onNext={useCallback(() => saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage), [])}
+            onPrevious={useCallback(() => saveAndNavFullPath(EdtRoutesNameEnum.WORST_ACTIVITY_DAY), [])}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={true}

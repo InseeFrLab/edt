@@ -3,7 +3,7 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { WeeklyPlannerSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
@@ -57,10 +57,10 @@ const WeeklyPlannerPage = () => {
 
     return (
         <SurveyPage
-            validate={validateAndNav}
-            onNavigateBack={validateAndNav}
-            onPrevious={() => saveAndNav()}
-            onEdit={onEdit}
+            validate={useCallback(() => validateAndNav(), [])}
+            onNavigateBack={useCallback(() => validateAndNav(), [])}
+            onPrevious={useCallback(() => saveAndNav(), [])}
+            onEdit={useCallback(() => onEdit(), [])}
             onHelp={navToHelp}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
