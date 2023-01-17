@@ -26,6 +26,10 @@ const WeeklyPlannerPage = () => {
 
     const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
 
+    const save = (): void => {
+        saveData(context.idSurvey, callbackHolder.getData());
+    };
+
     const specificProps: WeeklyPlannerSpecificProps = {
         surveyDate: getSurveyDate(context.idSurvey),
         isSubChildDisplayed: displayDayOverview,
@@ -36,10 +40,7 @@ const WeeklyPlannerPage = () => {
             presentButtonLabel: t("component.weekly-planner.present-button-label"),
             futureButtonLabel: t("component.weekly-planner.future-button-label"),
         },
-    };
-
-    const save = (): void => {
-        saveData(context.idSurvey, callbackHolder.getData());
+        saveAll: save,
     };
 
     const validateAndNav = (): void => {
