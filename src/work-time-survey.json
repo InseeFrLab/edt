@@ -224,7 +224,7 @@
             "conditionFilter": { "value": "true" },
             "id": "datepicker_surveyDate2",
             "page": "5",
-            "label": "\"La journée de l'enquête : \"",
+            "label": "\"Le premier jour de votre de semainier : \"",
             "mandatory": false,
             "controls": [
                 {

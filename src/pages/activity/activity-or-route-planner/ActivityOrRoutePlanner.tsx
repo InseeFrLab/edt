@@ -20,14 +20,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getLabelsWhenQuit } from "service/alert-service";
 import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
     getOrchestratorPage,
     navFullPath,
-    navToActivitRouteHome,
+    navToActivityRoutePlanner,
     navToEditActivity,
     navToHelp,
     navToHome,
@@ -64,11 +63,15 @@ const ActivityOrRoutePlannerPage = () => {
     const isItDesktop = isDesktop();
 
     let contextIteration = 0;
-
-    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(context.idSurvey, context.source);
+    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(
+        t,
+        context.idSurvey,
+        context.source,
+    );
     const [snackbarText, setSnackbarText] = React.useState<string | undefined>(undefined);
     const surveyDate = getSurveyDate(context.idSurvey) || "";
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
+    const [skip, setSkip] = useState<boolean>(false);
 
     const alertLabels = {
         boldContent: t("page.alert-when-quit.activity-planner.alert-content-close-bold"),
@@ -80,6 +83,27 @@ const ActivityOrRoutePlannerPage = () => {
     const isChildDisplayed = (path: string): boolean => {
         return path.split(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)[1].length > 0 ? true : false;
     };
+
+    useEffect(() => {
+        const isActivityPlanner =
+            location.pathname?.split("/")[3] == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER &&
+            location.pathname?.split("/")[4] == null;
+        if (isActivityPlanner) {
+            const act = getActivitiesOrRoutes(t, context.idSurvey, context.source);
+            if (act.overlaps.length > 0) {
+                setSnackbarText(
+                    t("page.activity-planner.start-alert") +
+                        overlaps
+                            .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
+                            .join(", ") +
+                        t("page.activity-planner.end-alert"),
+                );
+                if (!skip) setOpenSnackbar(true);
+            }
+        } else {
+            setSkip(false);
+        }
+    });
 
     useEffect(() => {
         //The loop have to have a default size in source but it's updated depending on the data array size
@@ -96,7 +120,7 @@ const ActivityOrRoutePlannerPage = () => {
                         .join(", ") +
                     t("page.activity-planner.end-alert"),
             );
-            setOpenSnackbar(true);
+            if (!skip) setOpenSnackbar(true);
         }
     }, []);
 
@@ -180,27 +204,30 @@ const ActivityOrRoutePlannerPage = () => {
         });
     };
 
-    const onOpenAddActivityOrRoute = (startTime?: string, endTime?: string) => {
-        setIsAddActivityOrRouteOpen(true);
-        if (startTime && endTime) {
-            setAddActivityOrRouteFromGap(true);
-            setGapStartTime(startTime);
-            setGapEndTime(endTime);
-        }
-    };
+    const onOpenAddActivityOrRoute = useCallback(
+        (startTime?: string, endTime?: string) => {
+            setIsAddActivityOrRouteOpen(true);
+            if (startTime && endTime) {
+                setAddActivityOrRouteFromGap(true);
+                setGapStartTime(startTime);
+                setGapEndTime(endTime);
+            }
+        },
+        [addActivityOrRouteFromGap, gapStartTime, gapEndTime],
+    );
 
-    const onCloseAddActivityOrRoute = () => {
+    const onCloseAddActivityOrRoute = useCallback(() => {
         setIsAddActivityOrRouteOpen(false);
         setAddActivityOrRouteFromGap(false);
-    };
+    }, [isAddActivityOrRouteOpen, addActivityOrRouteFromGap]);
 
-    const onEdit = () => {
+    const onEdit = useCallback(() => {
         navFullPath(EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.ACTIVITY);
-    };
+    }, []);
 
-    const onHelp = () => {
+    const onHelp = useCallback(() => {
         navToHelp();
-    };
+    }, []);
 
     const navToActivityOrRoute = (iteration: number, isItRoute?: boolean): void => {
         setIsSubChildDisplayed(true);
@@ -226,16 +253,18 @@ const ActivityOrRoutePlannerPage = () => {
         (idSurvey: string, source: LunaticModel, iteration: number) => {
             deleteActivity(idSurvey, source, iteration);
             activitiesRoutesOrGaps.splice(iteration);
-            navToActivitRouteHome();
+            navToActivityRoutePlanner();
         },
         [],
     );
 
     const handleCloseSnackBar = useCallback((_event: React.SyntheticEvent | Event, reason?: string) => {
+        console.log(reason);
         if (reason === "clickaway") {
             return;
         }
         setOpenSnackbar(false);
+        setSkip(true);
     }, []);
 
     const snackbarAction = (
@@ -246,19 +275,55 @@ const ActivityOrRoutePlannerPage = () => {
         </React.Fragment>
     );
 
+    const navToActivityRouteHome = useCallback(() => {
+        navToHome();
+    }, []);
+
+    const onEditActivity = useCallback(
+        (iteration: number, activity: ActivityRouteOrGap) => () =>
+            onEditActivityOrRoute(iteration, activity),
+        [],
+    );
+
+    const onDeleteActivity = useCallback(
+        (idSurvey: string, source: any, iteration: number) => () =>
+            onDeleteActivityOrRoute(idSurvey, source, iteration),
+        [],
+    );
+
+    const onAddActivity = useCallback((isRoute: boolean) => () => onAddActivityOrRoute(isRoute), []);
+
+    const onAddActivityGap = useCallback(
+        (isRoute: boolean, startTime?: string, endTime?: string) => () =>
+            onAddActivityOrRouteFromGap(isRoute, startTime, endTime),
+        [],
+    );
+
+    const navToCard = useCallback(
+        (iteration: number, isRoute?: boolean) => () => navToActivityOrRoute(iteration, isRoute),
+        [],
+    );
+
+    const closeActivity = useCallback((closed: boolean) => () => onFinish(closed), []);
+
+    const displayAlert = useCallback(
+        (setDisplayAlert: any, display: boolean) => () => setDisplayAlert(display),
+        [],
+    );
+
     return (
         <>
             <Box className={classes.surveyPageBox}>
                 {(isItDesktop || !isSubchildDisplayed) && (
                     <Box className={classes.innerSurveyPageBox}>
                         <SurveyPage
-                            onNavigateBack={() => navToHome()}
-                            onPrevious={() => navToHome()}
+                            onNavigateBack={navToActivityRouteHome}
+                            onPrevious={navToActivityRouteHome}
                             onEdit={onEdit}
                             onHelp={onHelp}
                             firstName={getPrintedFirstName(context.idSurvey)}
                             firstNamePrefix={t("component.survey-page-edit-header.planning-of")}
-                            onFinish={() => onFinish(false)}
+                            onFinish={closeActivity(false)}
                             onAdd={onOpenAddActivityOrRoute}
                             finishLabel={t("common.navigation.finish")}
                             addLabel={
@@ -287,8 +352,11 @@ const ActivityOrRoutePlannerPage = () => {
                                         <FlexCenter>
                                             <Alert
                                                 isAlertDisplayed={isAlertDisplayed}
-                                                onCompleteCallBack={() => onFinish(true)}
-                                                onCancelCallBack={() => setIsAlertDisplayed(false)}
+                                                onCompleteCallBack={closeActivity(true)}
+                                                onCancelCallBack={displayAlert(
+                                                    setIsAlertDisplayed,
+                                                    false,
+                                                )}
                                                 labels={alertLabels}
                                                 icon={errorIcon}
                                                 errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
@@ -326,27 +394,21 @@ const ActivityOrRoutePlannerPage = () => {
                                                         <ActivityOrRouteCard
                                                             labelledBy={""}
                                                             describedBy={""}
-                                                            onClick={() =>
-                                                                navToActivityOrRoute(
-                                                                    activity.iteration || 0,
-                                                                    activity.isRoute,
-                                                                )
-                                                            }
+                                                            onClick={navToCard(
+                                                                activity.iteration || 0,
+                                                                activity.isRoute,
+                                                            )}
                                                             onClickGap={onOpenAddActivityOrRoute}
                                                             activityOrRoute={activity}
-                                                            onEdit={() =>
-                                                                onEditActivityOrRoute(
-                                                                    activity.iteration || 0,
-                                                                    activity,
-                                                                )
-                                                            }
-                                                            onDelete={() =>
-                                                                onDeleteActivityOrRoute(
-                                                                    context.idSurvey,
-                                                                    context.source,
-                                                                    activity.iteration ?? 0,
-                                                                )
-                                                            }
+                                                            onEdit={onEditActivity(
+                                                                activity.iteration || 0,
+                                                                activity,
+                                                            )}
+                                                            onDelete={onDeleteActivity(
+                                                                context.idSurvey,
+                                                                context.source,
+                                                                activity.iteration ?? 0,
+                                                            )}
                                                         />
                                                     </FlexCenter>
                                                 ))}
@@ -362,13 +424,13 @@ const ActivityOrRoutePlannerPage = () => {
                             describedBy={""}
                             onClickActivity={
                                 addActivityOrRouteFromGap
-                                    ? () => onAddActivityOrRouteFromGap(false, gapStartTime, gapEndTime)
-                                    : () => onAddActivityOrRoute(false)
+                                    ? onAddActivityGap(false, gapStartTime, gapEndTime)
+                                    : onAddActivity(false)
                             }
                             onClickRoute={
                                 addActivityOrRouteFromGap
-                                    ? () => onAddActivityOrRouteFromGap(true, gapStartTime, gapEndTime)
-                                    : () => onAddActivityOrRoute(true)
+                                    ? onAddActivityGap(true, gapStartTime, gapEndTime)
+                                    : onAddActivity(true)
                             }
                             handleClose={onCloseAddActivityOrRoute}
                             open={isAddActivityOrRouteOpen}

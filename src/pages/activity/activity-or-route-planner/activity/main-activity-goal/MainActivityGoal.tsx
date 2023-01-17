@@ -17,7 +17,7 @@ import { Alert, IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getLabels, getLabelsWhenQuit } from "service/alert-service";
-import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
+import { getLoopPageSubpage } from "service/loop-stepper-service";
 
 const MainActivityGoalPage = () => {
     const { t } = useTranslation();

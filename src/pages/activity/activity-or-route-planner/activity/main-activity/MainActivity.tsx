@@ -109,10 +109,6 @@ const MainActivityPage = () => {
         },
     };
 
-    /*const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
-        saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
-    };*/
-
     return (
         <LoopSurveyPage
             onNext={useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [])}

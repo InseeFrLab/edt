@@ -71,6 +71,7 @@ const HomePage = () => {
                         )}
                         firstName={getPrintedFirstName(idSurvey)}
                         surveyDate={getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME)}
+                        idSurvey={idSurvey}
                     />
                 ))}
             </Box>

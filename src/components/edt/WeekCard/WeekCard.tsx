@@ -3,16 +3,18 @@ import Box from "@mui/material/Box";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
 import { makeStylesEdt } from "lunatic-edt";
+import { getWeeklyPlannerScore } from "service/survey-activity-service";
 interface WeekCardProps {
     labelledBy: string;
     describedBy: string;
     onClick(): void;
     firstName: string;
     surveyDate: string;
+    idSurvey: string;
 }
 
 const WeekCard = (props: WeekCardProps) => {
-    const { labelledBy, describedBy, onClick, firstName, surveyDate } = props;
+    const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey } = props;
     const { classes } = useStyles();
     return (
         <FlexCenter>
@@ -32,7 +34,11 @@ const WeekCard = (props: WeekCardProps) => {
                     </Box>
                 </Box>
                 <Box>
-                    <PourcentProgress labelledBy={""} describedBy={""} progress={"0"} />
+                    <PourcentProgress
+                        labelledBy={""}
+                        describedBy={""}
+                        progress={getWeeklyPlannerScore(idSurvey)}
+                    />
                 </Box>
             </Box>
         </FlexCenter>

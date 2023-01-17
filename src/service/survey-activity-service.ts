@@ -3,6 +3,11 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { SelectedActivity } from "lunatic-edt";
+import { IODataStructure } from "lunatic-edt/dist/interface/WeeklyPlannerTypes";
+import {
+    getProgressBarValue,
+    transformToWeeklyPlannerDataType,
+} from "lunatic-edt/dist/ui/components/Planner/WeeklyPlanner";
 import { useTranslation } from "react-i18next";
 import { FieldNameEnum, getData, getValue, saveData } from "service/survey-service";
 import { getLoopSize, LoopEnum } from "./loop-service";
@@ -52,13 +57,13 @@ const checkForSecondaryActivity = (idSurvey: string, i: number, activityOrRoute:
 };
 
 const getActivitiesOrRoutes = (
+    t: any,
     idSurvey: string,
     source?: LunaticModel,
 ): {
     activitiesRoutesOrGaps: ActivityRouteOrGap[];
     overlaps: { prev: string | undefined; current: string | undefined }[];
 } => {
-    const { t } = useTranslation();
     const overlaps = [];
     let activitiesRoutes: ActivityRouteOrGap[] = [];
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
@@ -190,7 +195,8 @@ const hourToNormalizedTimeStamp = (hour: string | undefined, idSurvey: string): 
 
 const getActivitesSelectedLabel = (idSurvey: string): string[] => {
     let activitesSelected: string[] = [];
-    getActivitiesOrRoutes(idSurvey).activitiesRoutesOrGaps.forEach(activityRouteOrGap => {
+    const { t } = useTranslation();
+    getActivitiesOrRoutes(t, idSurvey).activitiesRoutesOrGaps.forEach(activityRouteOrGap => {
         if (
             activityRouteOrGap?.activity?.activityLabel != null &&
             activityRouteOrGap?.activity?.activityLabel.length > 0
@@ -246,6 +252,12 @@ const getScore = (idSurvey: string): string => {
     const totalHourActivities = getTotalTimeOfActivities(idSurvey);
     const percentage = (totalHourActivities / 24) * 100;
     return percentage.toFixed(0);
+};
+
+const getWeeklyPlannerScore = (idSurvey: string): string => {
+    const value = getValue(idSurvey, FieldNameEnum.WEEKLYPLANNER) as IODataStructure[];
+    const weeklyPlannerValue = transformToWeeklyPlannerDataType(value);
+    return getProgressBarValue(weeklyPlannerValue).toString();
 };
 
 const getDiffTime = (startTime: string, endTime: string) => {
@@ -362,5 +374,6 @@ export {
     getActivityLabel,
     getTotalTimeOfActivities,
     getScore,
+    getWeeklyPlannerScore,
     deleteActivity,
 };
