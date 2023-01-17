@@ -124,7 +124,7 @@
             "conditionFilter": { "value": "true" },
             "id": "datepicker_surveyDate",
             "page": "2",
-            "label": "\"Quel est le premier jour de votre semainier ?\"",
+            "label": "\"Quel est le premier jour de votre semaine ?\"",
             "mandatory": false,
             "controls": [
                 {
@@ -224,7 +224,7 @@
             "conditionFilter": { "value": "true" },
             "id": "datepicker_surveyDate2",
             "page": "5",
-            "label": "\"Le premier jour de votre de semainier : \"",
+            "label": "\"Le premier jour de votre semaine : \"",
             "mandatory": false,
             "controls": [
                 {
