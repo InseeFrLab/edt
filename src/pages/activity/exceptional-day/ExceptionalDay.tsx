@@ -15,6 +15,7 @@ import {
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName } from "service/survey-service";
 import exceptionalDay from "assets/illustration/exceptional-day.svg";
+import { useCallback } from "react";
 
 const ExceptionalDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -26,9 +27,9 @@ const ExceptionalDayPage = () => {
 
     return (
         <SurveyPage
-            onNavigateBack={() => saveAndNav()}
-            onNext={() => saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage)}
-            onPrevious={() => saveAndNavFullPath(EdtRoutesNameEnum.KIND_OF_DAY)}
+            onNavigateBack={useCallback(() => saveAndNav(), [])}
+            onNext={useCallback(() => saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage), [])}
+            onPrevious={useCallback(() => saveAndNavFullPath(EdtRoutesNameEnum.KIND_OF_DAY), [])}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={true}

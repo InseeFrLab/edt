@@ -21,9 +21,9 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
     const openPopOver = Boolean(anchorEl);
     const id = openPopOver ? "edit-or-help-popover" : undefined;
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setAnchorEl(null);
-    };
+    }, [anchorEl]);
 
     const onEditSurvey = useCallback((e: any) => {
         setAnchorEl(e.currentTarget);

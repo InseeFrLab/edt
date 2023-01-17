@@ -76,10 +76,13 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const openPopOver = Boolean(anchorEl);
     const id = openPopOver ? "edit-or-delete-popover" : undefined;
 
-    const handleClose = (e: any) => {
-        setAnchorEl(null);
-        e.stopPropagation();
-    };
+    const handleClose = useCallback(
+        (e: any) => {
+            setAnchorEl(null);
+            e.stopPropagation();
+        },
+        [anchorEl],
+    );
 
     const onEditIn = useCallback((e: any) => {
         onEdit && onEdit();
@@ -227,9 +230,9 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         return (
             <Box
                 className={cx(classes.mainCardBox, classes.gapBox)}
-                onClick={() => {
+                onClick={useCallback(() => {
                     onClickGap && onClickGap(activityOrRoute.startTime, activityOrRoute.endTime);
-                }}
+                }, [])}
             >
                 <img className={classes.insideAlertIcon} src={gapIcon}></img>
                 <Typography className={cx(classes.mainActivityLabel, classes.gapText)}>

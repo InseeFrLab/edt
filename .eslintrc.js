@@ -1,21 +1,27 @@
 module.exports = {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint", "tss-unused-classes"],
-    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier", "plugin:storybook/recommended"],
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "tss-unused-classes", "react"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier", "plugin:storybook/recommended","plugin:react/recommended"],
+  "rules": {
+    "no-extra-boolean-cast": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "prefer-const": "off",
+    "tss-unused-classes/unused-classes": "warn",
+    "react/jsx-no-bind": "error"
+  },
+  "overrides": [{
+    "files": ["**/*.stories.*"],
     "rules": {
-      "no-extra-boolean-cast": "off",
-      "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-namespace": "off",
-      "@typescript-eslint/ban-types": "off",
-      "prefer-const": "off",
-      'tss-unused-classes/unused-classes': "warn"
-    },
-    "overrides": [{
-      "files": ["**/*.stories.*"],
-      "rules": {
-        "import/no-anonymous-default-export": "off"
-      }
-    }]
-  };
+      "import/no-anonymous-default-export": "off"
+    }
+  }],
+  "ignorePatterns": ["*.js"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+  ],
+};

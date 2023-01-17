@@ -2,8 +2,9 @@ import iconNoResult from "assets/illustration/error/activity.svg";
 import { ClickableList, makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 import activites from "refs/activitesAutoCompleteRef.json";
-import { Paper, Box, Typography, Container } from "@mui/material";
+import { Paper, Box, Typography } from "@mui/material";
 import packageJson from "../../../package.json";
+import { useCallback } from "react";
 
 const HelpPage = () => {
     const { t } = useTranslation();
@@ -15,8 +16,8 @@ const HelpPage = () => {
             <Box className={classes.clickableListBox}>
                 <ClickableList
                     options={activites}
-                    handleChange={() => console.log("handleChange")}
-                    createActivity={() => console.log("createActivity")}
+                    handleChange={useCallback(() => console.log("handleChange"), [])}
+                    createActivity={useCallback(() => console.log("createActivity"), [])}
                     placeholder="Saisissez une activité"
                     notFoundLabel="Aucun résultat trouvé"
                     notFoundComment="Vous pourrez l'ajouter en cliquant sur le bouton ci-dessous, ou le bouton + ci-dessus"
@@ -37,7 +38,7 @@ const HelpPage = () => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { HelpPage } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { HelpPage } })(() => ({
     clickableListBox: {
         height: "90vh",
     },
