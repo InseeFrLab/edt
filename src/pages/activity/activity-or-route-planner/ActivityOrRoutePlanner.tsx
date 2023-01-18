@@ -20,7 +20,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getLabelsWhenQuit } from "service/alert-service";
 import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
