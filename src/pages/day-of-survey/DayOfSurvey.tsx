@@ -3,7 +3,7 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import React, { useCallback } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
@@ -49,11 +49,11 @@ const DayOfSurveyPage = () => {
     return (
         <>
             <SurveyPage
-                validate={useCallback(() => saveAndNextStep(context.surveyRootPage, currentPage), [])}
+                validate={() => saveAndNextStep(context.surveyRootPage, currentPage)}
                 srcIcon={day_of_survey}
                 altIcon={t("accessibility.asset.day-of-survey-alt")}
-                onNavigateBack={useCallback(() => saveAndNav(), [])}
-                onPrevious={useCallback(() => navToHome(), [])}
+                onNavigateBack={() => saveAndNav()}
+                onPrevious={() => navToHome()}
                 firstName={getPrintedFirstName(context.idSurvey)}
                 surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
                 disableNav={disabledButton}

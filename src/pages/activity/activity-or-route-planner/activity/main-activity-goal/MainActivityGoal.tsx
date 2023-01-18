@@ -14,10 +14,10 @@ import option3 from "assets/illustration/goals/3.svg";
 import option4 from "assets/illustration/goals/4.svg";
 
 import { Alert, IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getLabels, getLabelsWhenQuit } from "service/alert-service";
-import { getLoopPageSubpage } from "service/loop-stepper-service";
+import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 
 const MainActivityGoalPage = () => {
     const { t } = useTranslation();
@@ -25,6 +25,8 @@ const MainActivityGoalPage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
 
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL;
+    const stepData = getStepData(currentPage, context.isRoute);
+
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
 
@@ -61,20 +63,17 @@ const MainActivityGoalPage = () => {
 
     return (
         <LoopSurveyPage
-            onNext={useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [])}
-            onPrevious={useCallback((e: React.MouseEvent) => onPrevious(e, setBackClickEvent), [])}
-            onClose={useCallback(() => onClose(false, setIsAlertDisplayed, currentIteration), [])}
+            onNext={e => onNext(e, setNextClickEvent)}
+            onPrevious={e => onPrevious(e, setBackClickEvent)}
+            onClose={() => onClose(false, setIsAlertDisplayed, currentIteration)}
             displayStepper={false}
             currentStepLabel={t("component.add-activity-stepper.step-2-label")}
         >
             <FlexCenter>
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
-                    onCompleteCallBack={useCallback(() => setIsAlertDisplayed(false), [])}
-                    onCancelCallBack={useCallback(
-                        cancel => onClose(cancel, setIsAlertDisplayed, currentIteration),
-                        [],
-                    )}
+                    onCompleteCallBack={() => setIsAlertDisplayed(false)}
+                    onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
                     labels={getLabelsWhenQuit()}
                     icon={errorIcon}
                     errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}

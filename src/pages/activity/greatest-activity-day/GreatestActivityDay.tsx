@@ -17,7 +17,6 @@ import { getStepData } from "service/stepper.service";
 import { getActivitesSelectedLabel } from "service/survey-activity-service";
 import { getPrintedFirstName } from "service/survey-service";
 import greatestActivityDay from "assets/illustration/greatest-activity-day.svg";
-import { useCallback } from "react";
 
 const GreatestActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -37,12 +36,9 @@ const GreatestActivityDayPage = () => {
 
     return (
         <SurveyPage
-            onNavigateBack={useCallback(() => saveAndNav(), [])}
-            onNext={useCallback(() => saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage), [])}
-            onPrevious={useCallback(
-                () => saveAndNavFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                [],
-            )}
+            onNavigateBack={() => saveAndNav()}
+            onNext={() => saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage)}
+            onPrevious={() => saveAndNavFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={true}
