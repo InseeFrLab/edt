@@ -11,7 +11,7 @@ import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
 import {
     getLoopParameterizedNavigatePath,
-    navToActivityRoutePlanner,
+    navToActivitRouteHome,
     setEnviro,
 } from "service/navigation-service";
 import { getActivitiesOrRoutes } from "service/survey-activity-service";
@@ -112,20 +112,18 @@ const ActivityDurationPage = () => {
             if (!isCompleted) {
                 if (forceQuit) {
                     saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                        navToActivityRoutePlanner();
+                        navToActivitRouteHome();
                     });
                 } else {
                     setIsAlertDisplayed(true);
                 }
             } else {
-                navToActivityRoutePlanner();
+                navToActivitRouteHome();
             }
         }
     };
 
     const handleCloseSnackBar = useCallback((event: React.SyntheticEvent | Event, reason?: string) => {
-        console.log(reason);
-
         if (reason === "clickaway") {
             return;
         }
@@ -142,8 +140,8 @@ const ActivityDurationPage = () => {
 
     return (
         <LoopSurveyPage
-            onNext={useCallback(() => onNext(), [])}
-            onClose={useCallback(() => onClose(false), [])}
+            onNext={onNext}
+            onClose={() => onClose(false)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -153,8 +151,8 @@ const ActivityDurationPage = () => {
             <FlexCenter>
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
-                    onCompleteCallBack={useCallback(() => setIsAlertDisplayed(false), [])}
-                    onCancelCallBack={useCallback(cancel => onClose(cancel), [])}
+                    onCompleteCallBack={() => setIsAlertDisplayed(false)}
+                    onCancelCallBack={onClose}
                     labels={getLabelsWhenQuit(isRoute)}
                     icon={errorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}

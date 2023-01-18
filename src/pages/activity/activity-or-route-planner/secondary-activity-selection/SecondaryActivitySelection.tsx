@@ -4,7 +4,7 @@ import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { Alert, CheckboxOneCustomOption, CheckboxOneSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
@@ -89,20 +89,17 @@ const SecondaryActivitySelectionPage = () => {
 
     return (
         <LoopSurveyPage
-            onNext={useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [])}
-            onPrevious={useCallback((e: React.MouseEvent) => onPrevious(e, setBackClickEvent), [])}
-            onClose={useCallback(() => onClose(false, setIsAlertDisplayed, currentIteration), [])}
+            onNext={e => onNext(e, setNextClickEvent)}
+            onPrevious={e => onPrevious(e, setBackClickEvent)}
+            onClose={() => onClose(false, setIsAlertDisplayed, currentIteration)}
             displayStepper={false}
             currentStepLabel={stepData.stepLabel}
         >
             <FlexCenter>
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
-                    onCompleteCallBack={useCallback(() => setIsAlertDisplayed(false), [])}
-                    onCancelCallBack={useCallback(
-                        cancel => onClose(cancel, setIsAlertDisplayed, currentIteration),
-                        [],
-                    )}
+                    onCompleteCallBack={() => setIsAlertDisplayed(false)}
+                    onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
                     labels={alertLabels}
                     icon={errorIcon}
                     errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}

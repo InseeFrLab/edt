@@ -3,7 +3,7 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import React, { useCallback } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
@@ -53,17 +53,11 @@ const EditGlobalInformationPage = () => {
 
     return (
         <SurveyPage
-            validate={useCallback(
-                () => saveAndNavFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                [],
-            )}
+            validate={() => saveAndNavFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)}
             srcIcon={who_are_you}
             altIcon={t("accessibility.asset.who-are-you-alt")}
-            onNavigateBack={useCallback(
-                () => saveAndNavFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                [],
-            )}
-            onPrevious={useCallback(() => navFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER), [])}
+            onNavigateBack={() => saveAndNavFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)}
+            onPrevious={() => navFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)}
             firstName={getPrintedFirstName(context.idSurvey)}
             surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
             disableNav={disabledButton}

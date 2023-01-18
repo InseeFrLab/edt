@@ -23,7 +23,7 @@ import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
 import { ActivitySelecterSpecificProps, Alert, AutoCompleteActiviteOption } from "lunatic-edt";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
@@ -109,11 +109,15 @@ const MainActivityPage = () => {
         },
     };
 
+    /*const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
+        saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
+    };*/
+
     return (
         <LoopSurveyPage
-            onNext={useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [])}
-            onPrevious={useCallback((e: React.MouseEvent) => onPrevious(e, setBackClickEvent), [])}
-            onClose={useCallback(() => onClose(false, setIsAlertDisplayed, currentIteration), [])}
+            onNext={e => onNext(e, setNextClickEvent)}
+            onPrevious={e => onPrevious(e, setBackClickEvent)}
+            onClose={() => onClose(false, setIsAlertDisplayed, currentIteration)}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -123,11 +127,8 @@ const MainActivityPage = () => {
             <FlexCenter>
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
-                    onCompleteCallBack={useCallback(() => setIsAlertDisplayed(false), [])}
-                    onCancelCallBack={useCallback(
-                        cancel => onClose(cancel, setIsAlertDisplayed, currentIteration),
-                        [],
-                    )}
+                    onCompleteCallBack={() => setIsAlertDisplayed(false)}
+                    onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
                     labels={getLabelsWhenQuit()}
                     icon={errorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}

@@ -4,7 +4,6 @@ import defaultErrorIcon from "assets/illustration/error/error.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import { makeStylesEdt } from "lunatic-edt";
-import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -25,11 +24,7 @@ const ErrorPage = () => {
                 <Typography>{t("common.error.error-default")}</Typography>
             </Box>
             <FlexCenter className={classes.buttonBox}>
-                <Button
-                    variant="contained"
-                    startIcon={<HomeIcon />}
-                    onClick={useCallback(() => navToHome, [])}
-                >
+                <Button variant="contained" startIcon={<HomeIcon />} onClick={navToHome}>
                     {t("common.navigation.back-to-home")}
                 </Button>
             </FlexCenter>

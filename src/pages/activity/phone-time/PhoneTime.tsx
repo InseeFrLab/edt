@@ -3,7 +3,7 @@ import FelicitationModal from "components/commons/Modal/FelicitationModal/Felici
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import { SetStateAction, useCallback, useState } from "react";
+import { SetStateAction, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
@@ -38,9 +38,9 @@ const PhoneTimePage = () => {
 
     return (
         <SurveyPage
-            validate={useCallback(() => validateAndNav(false, setIsModalDisplayed), [])}
-            onNavigateBack={useCallback(() => validateAndNav(false, setIsModalDisplayed), [])}
-            onPrevious={useCallback(() => saveAndNavFullPath(EdtRoutesNameEnum.TRAVEL_TIME), [])}
+            validate={() => validateAndNav(false, setIsModalDisplayed)}
+            onNavigateBack={() => validateAndNav(false, setIsModalDisplayed)}
+            onPrevious={() => saveAndNavFullPath(EdtRoutesNameEnum.TRAVEL_TIME)}
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={true}
@@ -53,7 +53,7 @@ const PhoneTimePage = () => {
             <FlexCenter>
                 <FelicitationModal
                     isModalDisplayed={isModalDisplayed}
-                    onCompleteCallBack={useCallback(() => validateAndNav(true, setIsModalDisplayed), [])}
+                    onCompleteCallBack={() => validateAndNav(true, setIsModalDisplayed)}
                     content={t("component.modal-edt.modal-felicitation.activity-content")}
                 />
                 <OrchestratorForStories
