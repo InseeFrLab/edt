@@ -150,9 +150,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         const isWithSecondaryActivity = activityOrRoute.withSomeone ? (
             withSomeoneLabel
         ) : (
-            <Box className={classes.otherInfoLabel}>
-                {t("page.activity-planner.without-secondary-activity")}
-            </Box>
+            <Box className={classes.otherInfoLabel}>{t("page.activity-planner.alone")}</Box>
         );
 
         return activityOrRoute.withSomeone == null
