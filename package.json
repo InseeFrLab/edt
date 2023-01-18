@@ -6,7 +6,7 @@
     "dependencies": {
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",
-        "@inseefr/lunatic": "2.0.2-v2",
+        "@inseefr/lunatic": "2.0.6-v2",
         "@mui/icons-material": "^5.10.6",
         "@mui/material": "^5.10.7",
         "axios": "^1.2.2",

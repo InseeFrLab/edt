@@ -1495,10 +1495,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@inseefr/lunatic@2.0.2-v2":
-  version "2.0.2-v2"
-  resolved "https://registry.yarnpkg.com/@inseefr/lunatic/-/lunatic-2.0.2-v2.tgz#1998d9b6704eb1dd104ea148ffa935ec8c82ae6a"
-  integrity sha512-EqxAd2IwdJXmSmMtQwKaRfLGX7Mor9o22Lun3P7E3D8IyB3vguFDTbUs1S3swR1xA4dmRNDc9y5GENTms4BmJA==
+"@inseefr/lunatic@2.0.6-v2":
+  version "2.0.6-v2"
+  resolved "https://registry.yarnpkg.com/@inseefr/lunatic/-/lunatic-2.0.6-v2.tgz#64cc92f973b470d5ef997cf5d8449b71bbf90ccc"
+  integrity sha512-+RlrvU97O/VRc+2Ihn8ESmVFaGvazbL0UeSktI0yAymH/94Ppjg7vEhx7WHlWvjSbYjvUmjCIXf+Eav2jlIIcg==
   dependencies:
     "@inseefr/trevas" "^0.1.16"
     "@inseefr/vtl-2.0-antlr-tools" "^0.1.0-bundle"
@@ -8634,7 +8634,7 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-lunatic-edt@^0.4.0:
+lunatic-edt@^0.6.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/lunatic-edt/-/lunatic-edt-0.4.0.tgz#be981a70000928636dac3719fa0e5d04b4bc543c"
   integrity sha512-QoBleroXBubcjfVISefEDkLBw2+W3Lz4Rkqdohqkb0Ywo+4tRuyE/9wc/OGltcqlrNMW7OfkpnOri3+k870QUg==
