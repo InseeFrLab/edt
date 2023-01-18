@@ -1,8 +1,8 @@
+import { Box, Paper, Typography } from "@mui/material";
 import iconNoResult from "assets/illustration/error/activity.svg";
 import { ClickableList, makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 import activites from "refs/activitesAutoCompleteRef.json";
-import { Paper, Box, Typography, Container } from "@mui/material";
 import packageJson from "../../../package.json";
 
 const HelpPage = () => {
@@ -37,7 +37,7 @@ const HelpPage = () => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { HelpPage } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { HelpPage } })(() => ({
     clickableListBox: {
         height: "90vh",
     },

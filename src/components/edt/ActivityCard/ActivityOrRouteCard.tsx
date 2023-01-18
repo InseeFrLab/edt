@@ -150,9 +150,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         const isWithSecondaryActivity = activityOrRoute.withSomeone ? (
             withSomeoneLabel
         ) : (
-            <Box className={classes.otherInfoLabel}>
-                {t("page.activity-planner.without-secondary-activity")}
-            </Box>
+            <Box className={classes.otherInfoLabel}>{t("page.activity-planner.alone")}</Box>
         );
 
         return activityOrRoute.withSomeone == null
@@ -193,7 +191,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                     {renderWithScreen(activityOrRoute, classes, renderInsideAlert, t)}
                 </Box>
                 {onEdit && onDelete && (
-                    <Box>
+                    <Box className={classes.editBox}>
                         <MoreHorizIcon
                             className={classes.actionIcon}
                             onClick={onEditCard}
@@ -362,6 +360,9 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
         "&:hover": {
             color: theme.palette.primary.light,
         },
+    },
+    editBox: {
+        marginLeft: "auto",
     },
 }));
 

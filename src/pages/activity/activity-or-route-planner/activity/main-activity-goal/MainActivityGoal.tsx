@@ -17,7 +17,7 @@ import { Alert, IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getLabels, getLabelsWhenQuit } from "service/alert-service";
-import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
+import { getLoopPageSubpage } from "service/loop-stepper-service";
 
 const MainActivityGoalPage = () => {
     const { t } = useTranslation();
@@ -25,7 +25,6 @@ const MainActivityGoalPage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
 
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL;
-    const stepData = getStepData(currentPage, context.isRoute);
 
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;

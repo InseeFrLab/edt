@@ -20,7 +20,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getLabelsWhenQuit } from "service/alert-service";
 import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
@@ -404,7 +403,7 @@ const ActivityOrRoutePlannerPage = () => {
                             <Snackbar
                                 className={classes.snackbar}
                                 open={openSnackbar}
-                                autoHideDuration={10000}
+                                autoHideDuration={100000}
                                 onClose={handleCloseSnackBar}
                                 message={snackbarText}
                                 action={snackbarAction}
@@ -441,7 +440,7 @@ const ActivityOrRoutePlannerPage = () => {
 
 const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(theme => ({
     snackbar: {
-        height: "30%",
+        bottom: "90px !important",
         "& .MuiSnackbarContent-root": {
             backgroundColor: theme.palette.error.light,
             color: theme.variables.alertActivity,
