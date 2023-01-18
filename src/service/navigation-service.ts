@@ -195,7 +195,7 @@ const navToHelp = (): void => {
     _navigate(getNavigatePath(EdtRoutesNameEnum.HELP));
 };
 
-const navToActivityRoutePlanner = () => {
+const navToActivitRouteHome = () => {
     _navigate(
         getCurrentNavigatePath(
             _context.idSurvey,
@@ -305,7 +305,7 @@ export {
     getNextPage,
     navToHome,
     navToHelp,
-    navToActivityRoutePlanner,
+    navToActivitRouteHome,
     navToEditActivity,
     navFullPath,
     saveAndNav,

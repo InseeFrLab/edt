@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { getLoopLastCompletedStep, LoopEnum } from "service/loop-service";
 import { loopActivityStepperData } from "service/loop-stepper-service";
+import { FieldNameEnum } from "service/survey-service";
 import LoopNavigator from "./LoopNavigator/LoopNavigator";
 import LoopSurveyPageHeader from "./LoopSurveyPageHeader/LoopSurveyPageHeader";
 import LoopSurveyPageSimpleHeader from "./LoopSurveyPageSimpleHeader/LoopSurveyPageSimpleHeader";

@@ -80,10 +80,10 @@ const toIgnoreForActivity = [
 ];
 
 enum ReferentielsEnum {
-    ACTIVITYNOMENCLATURE = "edt-activitiesCategoriesNomenclature",
-    ACTIVITYAUTOCOMPLETE = "edt-activitesAutoComplete",
+    ACTIVITYNOMENCLATURE = "edt-activityCategory",
+    ACTIVITYAUTOCOMPLETE = "edt-activityAutoComplete",
     ROUTE = "edt-route",
-    ACTIVITYSECONDARYACTIVITY = "edt-secondaryActivityRef",
+    ACTIVITYSECONDARYACTIVITY = "edt-activitySecondaryActivity",
     ROUTESECONDARYACTIVITY = "edt-routeSecondaryActivity",
     LOCATION = "edt-place",
     KINDOFWEEK = "edt-kindOfWeek",
