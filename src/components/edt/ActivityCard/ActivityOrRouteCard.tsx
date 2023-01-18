@@ -191,7 +191,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                     {renderWithScreen(activityOrRoute, classes, renderInsideAlert, t)}
                 </Box>
                 {onEdit && onDelete && (
-                    <Box>
+                    <Box className={classes.editBox}>
                         <MoreHorizIcon
                             className={classes.actionIcon}
                             onClick={onEditCard}
@@ -360,6 +360,9 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
         "&:hover": {
             color: theme.palette.primary.light,
         },
+    },
+    editBox: {
+        marginLeft: "auto",
     },
 }));
 

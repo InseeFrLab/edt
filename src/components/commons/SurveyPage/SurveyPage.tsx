@@ -174,8 +174,9 @@ const useStyles = makeStylesEdt({ "name": { NavButton: SurveyPage } })(theme => 
         flexDirection: "column",
     },
     progressBar: {
-        padding: "0.5rem 1rem",
+        padding: "1rem 0.5rem",
         backgroundColor: theme.variables.white,
+        overflow: "hidden",
     },
 }));
 
