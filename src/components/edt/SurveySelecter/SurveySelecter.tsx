@@ -123,7 +123,7 @@ const useStyles = makeStylesEdt({ "name": { SurveySelecter } })(theme => ({
     tabsBox: {
         width: "97%",
         alignItems: "center",
-        "& .MuiTabs-flexContainer": { justifyContent: "left" },
+        "& .MuiTabs-flexContainer": { justifyContent: "space-evenly" },
     },
     tab: {
         flexDirection: "row",
