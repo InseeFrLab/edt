@@ -278,7 +278,6 @@ const getPrintedFirstName = (idSurvey: string): string => {
 const getTabsData = (): TabData[] => {
     let tabsData: TabData[] = [];
 
-    //TODO : Complete score with value
     activitySurveysIds.forEach(idSurvey => {
         let tabData: TabData = {
             idSurvey: idSurvey,

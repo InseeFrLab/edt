@@ -132,7 +132,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         {
             initialPage: subPage
                 ? getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)
-                : page, //Page 3 if we have subpage because we start from the sequence before the loop
+                : page,
             activeControls: true,
         },
     );
