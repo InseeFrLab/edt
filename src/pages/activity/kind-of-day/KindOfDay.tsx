@@ -16,7 +16,7 @@ import {
 } from "service/navigation-service";
 import { getKindOfDayRef } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
-import { getPrintedFirstName } from "service/survey-service";
+import { getPrintedFirstName, saveData } from "service/survey-service";
 
 const KindOfDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -28,6 +28,12 @@ const KindOfDayPage = () => {
 
     const specificProps: CheckboxOneSpecificProps = {
         icon: bagIcon,
+        onClick: () => {
+            const save = saveData(context.idSurvey, callbackHolder.getData());
+            save.then(() => {
+                saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage);
+            });
+        },
     };
 
     return (

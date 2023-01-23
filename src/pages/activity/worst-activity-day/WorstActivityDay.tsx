@@ -15,7 +15,7 @@ import {
 } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
 import { getActivitesSelectedLabel } from "service/survey-activity-service";
-import { getPrintedFirstName } from "service/survey-service";
+import { getPrintedFirstName, saveData } from "service/survey-service";
 import worstActivityDay from "assets/illustration/worst-activity-day.svg";
 
 const WorstActivityDayPage = () => {
@@ -32,6 +32,12 @@ const WorstActivityDayPage = () => {
             return { label: activity, value: activity };
         }),
         defaultIcon: true,
+        onClick: () => {
+            const save = saveData(context.idSurvey, callbackHolder.getData());
+            save.then(() => {
+                saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage);
+            });
+        },
     };
 
     return (
