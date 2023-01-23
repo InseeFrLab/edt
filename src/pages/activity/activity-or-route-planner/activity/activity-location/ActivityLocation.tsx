@@ -1,3 +1,11 @@
+import errorIcon from "assets/illustration/error/activity.svg";
+import locationErrorIcon from "assets/illustration/error/location.svg";
+import option1 from "assets/illustration/locations/1.svg";
+import option2 from "assets/illustration/locations/2.svg";
+import option3 from "assets/illustration/locations/3.svg";
+import option4 from "assets/illustration/locations/4.svg";
+import option5 from "assets/illustration/locations/5.svg";
+import option6 from "assets/illustration/locations/6.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
@@ -7,6 +15,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import {
     getLoopPageSubpage,
@@ -14,18 +23,16 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
-import { FieldNameEnum } from "service/survey-service";
-import errorIcon from "assets/illustration/error/activity.svg";
-import locationErrorIcon from "assets/illustration/error/location.svg";
-import option1 from "assets/illustration/locations/1.svg";
-import option2 from "assets/illustration/locations/2.svg";
-import option3 from "assets/illustration/locations/3.svg";
-import option4 from "assets/illustration/locations/4.svg";
-import option5 from "assets/illustration/locations/5.svg";
-import option6 from "assets/illustration/locations/6.svg";
-import { getLabels, getLabelsWhenQuit } from "service/alert-service";
+import {
+    onClose,
+    onNext,
+    onPrevious,
+    saveAndLoopNavigate,
+    setEnviro,
+    validateAndNextLoopStep,
+} from "service/navigation-service";
 import { getPlaceRef } from "service/referentiel-service";
+import { FieldNameEnum } from "service/survey-service";
 
 const ActivityLocationPage = () => {
     const { t } = useTranslation();
@@ -70,6 +77,9 @@ const ActivityLocationPage = () => {
         },
         labels: getLabels("location-selecter"),
         errorIcon: locationErrorIcon,
+        onClick: () => {
+            validateAndNextLoopStep(getNextLoopPage(currentPage), currentIteration);
+        },
     };
 
     return (
