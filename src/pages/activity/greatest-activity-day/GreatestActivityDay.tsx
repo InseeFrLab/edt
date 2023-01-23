@@ -1,3 +1,4 @@
+import greatestActivityDay from "assets/illustration/greatest-activity-day.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
@@ -12,11 +13,11 @@ import {
     saveAndNavFullPath,
     saveAndNextStep,
     setEnviro,
+    validateAndNextStep,
 } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
 import { getActivitesSelectedLabel } from "service/survey-activity-service";
-import { getPrintedFirstName, saveData } from "service/survey-service";
-import greatestActivityDay from "assets/illustration/greatest-activity-day.svg";
+import { getPrintedFirstName } from "service/survey-service";
 
 const GreatestActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -32,12 +33,7 @@ const GreatestActivityDayPage = () => {
             return { label: activity, value: activity };
         }),
         defaultIcon: true,
-        onClick: () => {
-            const save = saveData(context.idSurvey, callbackHolder.getData());
-            save.then(() => {
-                saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage);
-            });
-        },
+        onClick: () => validateAndNextStep(currentPage),
     };
 
     return (

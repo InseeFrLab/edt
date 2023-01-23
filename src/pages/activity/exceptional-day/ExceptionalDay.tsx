@@ -1,6 +1,8 @@
+import exceptionalDay from "assets/illustration/exceptional-day.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { CheckboxBooleanEdtSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -11,11 +13,10 @@ import {
     saveAndNavFullPath,
     saveAndNextStep,
     setEnviro,
+    validateAndNextStep,
 } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
-import { getPrintedFirstName, saveData } from "service/survey-service";
-import exceptionalDay from "assets/illustration/exceptional-day.svg";
-import { CheckboxBooleanEdtSpecificProps } from "lunatic-edt";
+import { getPrintedFirstName } from "service/survey-service";
 
 const ExceptionalDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -26,12 +27,7 @@ const ExceptionalDayPage = () => {
     const stepData = getStepData(currentPage);
 
     const specificProps: CheckboxBooleanEdtSpecificProps = {
-        onClick: () => {
-            const save = saveData(context.idSurvey, callbackHolder.getData());
-            save.then(() => {
-                saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage);
-            });
-        },
+        onClick: () => validateAndNextStep(currentPage),
     };
     return (
         <SurveyPage

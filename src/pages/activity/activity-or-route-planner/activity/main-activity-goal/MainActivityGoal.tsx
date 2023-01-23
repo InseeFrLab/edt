@@ -5,7 +5,14 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
+import {
+    onClose,
+    onNext,
+    onPrevious,
+    saveAndLoopNavigate,
+    setEnviro,
+    validateAndNextLoopStep,
+} from "service/navigation-service";
 
 import errorIcon from "assets/illustration/error/activity.svg";
 import option1 from "assets/illustration/goals/1.svg";
@@ -58,6 +65,9 @@ const MainActivityGoalPage = () => {
         },
         labels: getLabels("goal-selecter"),
         errorIcon: errorIcon,
+        onClick: () => {
+            validateAndNextLoopStep(EdtRoutesNameEnum.SECONDARY_ACTIVITY, currentIteration);
+        },
     };
 
     return (

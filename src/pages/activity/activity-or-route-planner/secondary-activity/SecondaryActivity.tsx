@@ -22,10 +22,10 @@ import {
     onNext,
     onPrevious,
     saveAndLoopNavigate,
-    saveAndNav,
     setEnviro,
+    validateAndNextLoopStep,
 } from "service/navigation-service";
-import { FieldNameEnum, getValue, saveData } from "service/survey-service";
+import { FieldNameEnum, getValue } from "service/survey-service";
 
 const SecondaryActivityPage = () => {
     const { t } = useTranslation();
@@ -64,16 +64,12 @@ const SecondaryActivityPage = () => {
             );
         },
         onClick: () => {
-            const save = saveData(context.idSurvey, callbackHolder.getData());
-            save.then(() => {
-                saveAndLoopNavigate(
-                    EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
-                    LoopEnum.ACTIVITY_OR_ROUTE,
-                    currentIteration,
-                    FieldNameEnum.WITHSECONDARYACTIVITY,
-                    getNextLoopPage(currentPage, context.isRoute),
-                );
-            });
+            validateAndNextLoopStep(
+                EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+                currentIteration,
+                FieldNameEnum.WITHSECONDARYACTIVITY,
+                getNextLoopPage(currentPage, context.isRoute),
+            );
         },
         labels: getLabels("secondary-activity-selecter"),
         errorIcon: activityErrorIcon,

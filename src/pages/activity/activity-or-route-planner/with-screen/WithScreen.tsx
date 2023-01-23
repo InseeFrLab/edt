@@ -20,8 +20,9 @@ import {
     saveAndLoopNavigate,
     saveAndNav,
     setEnviro,
+    validate,
 } from "service/navigation-service";
-import { FieldNameEnum, getValue, saveData } from "service/survey-service";
+import { FieldNameEnum, getValue } from "service/survey-service";
 
 const WithScreenPage = () => {
     const { t } = useTranslation();
@@ -60,8 +61,7 @@ const WithScreenPage = () => {
             );
         },
         onClick: () => {
-            const save = saveData(context.idSurvey, callbackHolder.getData());
-            save.then(() => {
+            validate().then(() => {
                 saveAndNav(
                     getCurrentNavigatePath(
                         context.idSurvey,

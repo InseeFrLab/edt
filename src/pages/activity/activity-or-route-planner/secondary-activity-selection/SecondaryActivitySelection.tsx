@@ -18,6 +18,7 @@ import {
     onPrevious,
     saveAndNav,
     setEnviro,
+    validate,
 } from "service/navigation-service";
 import {
     getActivitySecondaryActivityRef,
@@ -74,8 +75,7 @@ const SecondaryActivitySelectionPage = () => {
             );
         },
         onClick: () => {
-            const save = saveData(context.idSurvey, callbackHolder.getData());
-            save.then(() => {
+            validate().then(() => {
                 if (context.isRoute) {
                     saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SOMEONE);
                 } else {
