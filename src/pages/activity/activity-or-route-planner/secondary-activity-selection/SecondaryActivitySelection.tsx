@@ -28,6 +28,7 @@ import {
     FieldNameEnum,
     getValue,
     ReferentielsEnum,
+    saveData,
 } from "service/survey-service";
 
 const SecondaryActivitySelectionPage = () => {
@@ -71,6 +72,16 @@ const SecondaryActivitySelectionPage = () => {
                     : ReferentielsEnum.ACTIVITYSECONDARYACTIVITY,
                 newItem,
             );
+        },
+        onClick: () => {
+            const save = saveData(context.idSurvey, callbackHolder.getData());
+            save.then(() => {
+                if (context.isRoute) {
+                    saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SOMEONE);
+                } else {
+                    saveAndLoopNavigate(EdtRoutesNameEnum.ACTIVITY_LOCATION);
+                }
+            });
         },
     };
 

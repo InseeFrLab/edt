@@ -13,8 +13,9 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
-import { getPrintedFirstName } from "service/survey-service";
+import { getPrintedFirstName, saveData } from "service/survey-service";
 import exceptionalDay from "assets/illustration/exceptional-day.svg";
+import { CheckboxBooleanEdtSpecificProps } from "lunatic-edt";
 
 const ExceptionalDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -24,6 +25,14 @@ const ExceptionalDayPage = () => {
     const currentPage = EdtRoutesNameEnum.EXCEPTIONAL_DAY;
     const stepData = getStepData(currentPage);
 
+    const specificProps: CheckboxBooleanEdtSpecificProps = {
+        onClick: () => {
+            const save = saveData(context.idSurvey, callbackHolder.getData());
+            save.then(() => {
+                saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage);
+            });
+        },
+    };
     return (
         <SurveyPage
             onNavigateBack={() => saveAndNav()}
@@ -46,6 +55,7 @@ const ExceptionalDayPage = () => {
                     data={context.data}
                     cbHolder={callbackHolder}
                     page={getOrchestratorPage(currentPage)}
+                    componentSpecificProps={specificProps}
                 ></OrchestratorForStories>
             </FlexCenter>
         </SurveyPage>

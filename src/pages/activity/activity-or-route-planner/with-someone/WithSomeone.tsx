@@ -17,7 +17,7 @@ import {
     getStepData,
 } from "service/loop-stepper-service";
 import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
-import { FieldNameEnum, getValue } from "service/survey-service";
+import { FieldNameEnum, getValue, saveData } from "service/survey-service";
 
 const WithSomeonePage = () => {
     const { t } = useTranslation();
@@ -62,6 +62,18 @@ const WithSomeonePage = () => {
                 FieldNameEnum.WITHSOMEONE,
                 getNextLoopPage(currentPage, context.isRoute),
             );
+        },
+        onClick: () => {
+            const save = saveData(context.idSurvey, callbackHolder.getData());
+            save.then(() => {
+                saveAndLoopNavigate(
+                    EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
+                    LoopEnum.ACTIVITY_OR_ROUTE,
+                    currentIteration,
+                    FieldNameEnum.WITHSOMEONE,
+                    getNextLoopPage(currentPage, context.isRoute),
+                );
+            });
         },
         labels: getLabels("with-someone-selecter"),
         errorIcon: peopleErrorIcon,

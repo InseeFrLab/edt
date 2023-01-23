@@ -21,7 +21,7 @@ import {
     saveAndNav,
     setEnviro,
 } from "service/navigation-service";
-import { FieldNameEnum, getValue } from "service/survey-service";
+import { FieldNameEnum, getValue, saveData } from "service/survey-service";
 
 const WithScreenPage = () => {
     const { t } = useTranslation();
@@ -59,8 +59,19 @@ const WithScreenPage = () => {
                 ),
             );
         },
+        onClick: () => {
+            const save = saveData(context.idSurvey, callbackHolder.getData());
+            save.then(() => {
+                saveAndNav(
+                    getCurrentNavigatePath(
+                        context.idSurvey,
+                        EdtRoutesNameEnum.ACTIVITY,
+                        getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                    ),
+                );
+            });
+        },
         labels: getLabels("with-screen-selecter"),
-
         errorIcon: screenErrorIcon,
     };
 
