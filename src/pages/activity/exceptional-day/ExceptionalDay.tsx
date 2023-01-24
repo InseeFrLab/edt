@@ -27,7 +27,7 @@ const ExceptionalDayPage = () => {
     const stepData = getStepData(currentPage);
 
     const specificProps: CheckboxBooleanEdtSpecificProps = {
-        onClick: () => validateAndNextStep(currentPage),
+        onSelectValue: () => validateAndNextStep(currentPage),
     };
     return (
         <SurveyPage

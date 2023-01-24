@@ -77,7 +77,7 @@ const ActivityLocationPage = () => {
         },
         labels: getLabels("location-selecter"),
         errorIcon: locationErrorIcon,
-        onClick: () => {
+        onSelectValue: () => {
             validateAndNextLoopStep(getNextLoopPage(currentPage), currentIteration);
         },
     };

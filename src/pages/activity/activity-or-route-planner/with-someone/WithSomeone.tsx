@@ -70,7 +70,7 @@ const WithSomeonePage = () => {
                 getNextLoopPage(currentPage, context.isRoute),
             );
         },
-        onClick: () => {
+        onSelectValue: () => {
             validateAndNextLoopStep(
                 EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
                 currentIteration,

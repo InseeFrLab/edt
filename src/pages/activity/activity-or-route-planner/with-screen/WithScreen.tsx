@@ -60,7 +60,7 @@ const WithScreenPage = () => {
                 ),
             );
         },
-        onClick: () => {
+        onSelectValue: () => {
             validate().then(() => {
                 saveAndNav(
                     getCurrentNavigatePath(

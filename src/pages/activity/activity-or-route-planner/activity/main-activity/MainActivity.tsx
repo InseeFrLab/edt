@@ -88,7 +88,7 @@ const MainActivityPage = () => {
                 );
             }
         },
-        onClick: () => {
+        onSelectValue: () => {
             validateAndNextLoopStep(getNextLoopPage(currentPage), currentIteration);
         },
         setDisplayStepper: setDisplayStepper,

@@ -63,7 +63,7 @@ const SecondaryActivityPage = () => {
                 getNextLoopPage(currentPage, context.isRoute),
             );
         },
-        onClick: () => {
+        onSelectValue: () => {
             validateAndNextLoopStep(
                 EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
                 currentIteration,

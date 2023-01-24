@@ -65,7 +65,7 @@ const MainActivityGoalPage = () => {
         },
         labels: getLabels("goal-selecter"),
         errorIcon: errorIcon,
-        onClick: () => {
+        onSelectValue: () => {
             validateAndNextLoopStep(EdtRoutesNameEnum.SECONDARY_ACTIVITY, currentIteration);
         },
     };

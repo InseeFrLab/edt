@@ -30,7 +30,7 @@ const KindOfWeekPage = () => {
 
     const specificProps: CheckboxOneSpecificProps = {
         icon: calendarWeek,
-        onClick: () => validateWithAlertAndNav(false, setIsModalDisplayed),
+        onSelectValue: () => validateWithAlertAndNav(false, setIsModalDisplayed),
     };
 
     return (

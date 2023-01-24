@@ -171,12 +171,12 @@ const saveAndNav = (
     });
 };
 
-const validate = (
-    route?: string,
-    value?: FieldNameEnum,
-    routeNotSelection?: string,
-    currentIteration?: number,
-): Promise<void | LunaticData> => {
+/**
+ * Due to the lack of a hook that lets us know when the event has ended,
+ * a change of a variable in the callbackholder,
+ * we need to make the call twice to be able to retrieve the current state of the database
+ */
+const validate = (): Promise<void | LunaticData> => {
     return saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
         return saveData(_context.idSurvey, _callbackHolder.getData());
     });

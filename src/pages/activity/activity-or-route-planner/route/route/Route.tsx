@@ -70,7 +70,7 @@ const RoutePage = () => {
         },
         labels: getLabels("route-selecter"),
         errorIcon: routeErrorIcon,
-        onClick: () => {
+        onSelectValue: () => {
             validateAndNextLoopStep(getNextLoopPage(currentPage, true), currentIteration);
         },
     };

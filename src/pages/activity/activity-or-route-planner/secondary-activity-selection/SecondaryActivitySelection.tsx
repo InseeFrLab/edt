@@ -74,7 +74,7 @@ const SecondaryActivitySelectionPage = () => {
                 newItem,
             );
         },
-        onClick: () => {
+        onSelectValue: () => {
             validate().then(() => {
                 if (context.isRoute) {
                     saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SOMEONE);

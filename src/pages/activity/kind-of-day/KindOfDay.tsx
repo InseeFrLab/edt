@@ -29,7 +29,7 @@ const KindOfDayPage = () => {
 
     const specificProps: CheckboxOneSpecificProps = {
         icon: bagIcon,
-        onClick: () => validateAndNextStep(currentPage),
+        onSelectValue: () => validateAndNextStep(currentPage),
     };
 
     return (

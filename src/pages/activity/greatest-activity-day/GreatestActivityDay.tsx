@@ -33,7 +33,7 @@ const GreatestActivityDayPage = () => {
             return { label: activity, value: activity };
         }),
         defaultIcon: true,
-        onClick: () => validateAndNextStep(currentPage),
+        onSelectValue: () => validateAndNextStep(currentPage),
     };
 
     return (
