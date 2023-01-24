@@ -330,57 +330,53 @@ const ActivityOrRoutePlannerPage = () => {
                                             </Box>
                                         </FlexCenter>
 
-                                        <Box className={classes.activityCardsContainer}>
-                                            {activitiesRoutesOrGaps.length === 0 ? (
-                                                <>
-                                                    <PageIcon
-                                                        srcIcon={empty_activity}
-                                                        altIcon={t(
-                                                            "accessibility.asset.empty-activity-alt",
-                                                        )}
-                                                    />
-                                                    <FlexCenter>
-                                                        <Typography
-                                                            className={cx(classes.label, classes.grey)}
-                                                        >
-                                                            {t("page.activity-planner.no-activity")}
-                                                        </Typography>
+                                        {activitiesRoutesOrGaps.length === 0 ? (
+                                            <>
+                                                <PageIcon
+                                                    srcIcon={empty_activity}
+                                                    altIcon={t("accessibility.asset.empty-activity-alt")}
+                                                />
+                                                <FlexCenter>
+                                                    <Typography
+                                                        className={cx(classes.label, classes.grey)}
+                                                    >
+                                                        {t("page.activity-planner.no-activity")}
+                                                    </Typography>
+                                                </FlexCenter>
+                                            </>
+                                        ) : (
+                                            <Box className={classes.activityCardsContainer}>
+                                                {activitiesRoutesOrGaps.map(activity => (
+                                                    <FlexCenter key={uuidv4()}>
+                                                        <ActivityOrRouteCard
+                                                            labelledBy={""}
+                                                            describedBy={""}
+                                                            onClick={() =>
+                                                                navToActivityOrRoute(
+                                                                    activity.iteration || 0,
+                                                                    activity.isRoute,
+                                                                )
+                                                            }
+                                                            onClickGap={onOpenAddActivityOrRoute}
+                                                            activityOrRoute={activity}
+                                                            onEdit={() =>
+                                                                onEditActivityOrRoute(
+                                                                    activity.iteration || 0,
+                                                                    activity,
+                                                                )
+                                                            }
+                                                            onDelete={() =>
+                                                                onDeleteActivityOrRoute(
+                                                                    context.idSurvey,
+                                                                    context.source,
+                                                                    activity.iteration ?? 0,
+                                                                )
+                                                            }
+                                                        />
                                                     </FlexCenter>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    {activitiesRoutesOrGaps.map(activity => (
-                                                        <FlexCenter key={uuidv4()}>
-                                                            <ActivityOrRouteCard
-                                                                labelledBy={""}
-                                                                describedBy={""}
-                                                                onClick={() =>
-                                                                    navToActivityOrRoute(
-                                                                        activity.iteration || 0,
-                                                                        activity.isRoute,
-                                                                    )
-                                                                }
-                                                                onClickGap={onOpenAddActivityOrRoute}
-                                                                activityOrRoute={activity}
-                                                                onEdit={() =>
-                                                                    onEditActivityOrRoute(
-                                                                        activity.iteration || 0,
-                                                                        activity,
-                                                                    )
-                                                                }
-                                                                onDelete={() =>
-                                                                    onDeleteActivityOrRoute(
-                                                                        context.idSurvey,
-                                                                        context.source,
-                                                                        activity.iteration ?? 0,
-                                                                    )
-                                                                }
-                                                            />
-                                                        </FlexCenter>
-                                                    ))}
-                                                </>
-                                            )}
-                                        </Box>
+                                                ))}
+                                            </Box>
+                                        )}
                                     </Box>
                                 </Box>
                             </Box>
