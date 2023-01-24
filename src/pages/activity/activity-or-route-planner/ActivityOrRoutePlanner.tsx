@@ -330,53 +330,57 @@ const ActivityOrRoutePlannerPage = () => {
                                             </Box>
                                         </FlexCenter>
 
-                                        {activitiesRoutesOrGaps.length === 0 ? (
-                                            <>
-                                                <PageIcon
-                                                    srcIcon={empty_activity}
-                                                    altIcon={t("accessibility.asset.empty-activity-alt")}
-                                                />
-                                                <FlexCenter>
-                                                    <Typography
-                                                        className={cx(classes.label, classes.grey)}
-                                                    >
-                                                        {t("page.activity-planner.no-activity")}
-                                                    </Typography>
-                                                </FlexCenter>
-                                            </>
-                                        ) : (
-                                            <>
-                                                {activitiesRoutesOrGaps.map(activity => (
-                                                    <FlexCenter key={uuidv4()}>
-                                                        <ActivityOrRouteCard
-                                                            labelledBy={""}
-                                                            describedBy={""}
-                                                            onClick={() =>
-                                                                navToActivityOrRoute(
-                                                                    activity.iteration || 0,
-                                                                    activity.isRoute,
-                                                                )
-                                                            }
-                                                            onClickGap={onOpenAddActivityOrRoute}
-                                                            activityOrRoute={activity}
-                                                            onEdit={() =>
-                                                                onEditActivityOrRoute(
-                                                                    activity.iteration || 0,
-                                                                    activity,
-                                                                )
-                                                            }
-                                                            onDelete={() =>
-                                                                onDeleteActivityOrRoute(
-                                                                    context.idSurvey,
-                                                                    context.source,
-                                                                    activity.iteration ?? 0,
-                                                                )
-                                                            }
-                                                        />
+                                        <Box className={classes.activityCardsContainer}>
+                                            {activitiesRoutesOrGaps.length === 0 ? (
+                                                <>
+                                                    <PageIcon
+                                                        srcIcon={empty_activity}
+                                                        altIcon={t(
+                                                            "accessibility.asset.empty-activity-alt",
+                                                        )}
+                                                    />
+                                                    <FlexCenter>
+                                                        <Typography
+                                                            className={cx(classes.label, classes.grey)}
+                                                        >
+                                                            {t("page.activity-planner.no-activity")}
+                                                        </Typography>
                                                     </FlexCenter>
-                                                ))}
-                                            </>
-                                        )}
+                                                </>
+                                            ) : (
+                                                <>
+                                                    {activitiesRoutesOrGaps.map(activity => (
+                                                        <FlexCenter key={uuidv4()}>
+                                                            <ActivityOrRouteCard
+                                                                labelledBy={""}
+                                                                describedBy={""}
+                                                                onClick={() =>
+                                                                    navToActivityOrRoute(
+                                                                        activity.iteration || 0,
+                                                                        activity.isRoute,
+                                                                    )
+                                                                }
+                                                                onClickGap={onOpenAddActivityOrRoute}
+                                                                activityOrRoute={activity}
+                                                                onEdit={() =>
+                                                                    onEditActivityOrRoute(
+                                                                        activity.iteration || 0,
+                                                                        activity,
+                                                                    )
+                                                                }
+                                                                onDelete={() =>
+                                                                    onDeleteActivityOrRoute(
+                                                                        context.idSurvey,
+                                                                        context.source,
+                                                                        activity.iteration ?? 0,
+                                                                    )
+                                                                }
+                                                            />
+                                                        </FlexCenter>
+                                                    ))}
+                                                </>
+                                            )}
+                                        </Box>
                                     </Box>
                                 </Box>
                             </Box>
@@ -449,6 +453,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
     infoBox: {
         width: "350px",
         padding: "1rem 0.25rem 0.5rem 1rem",
+        marginBottom: "1rem",
     },
     label: {
         fontSize: "14px",
@@ -484,6 +489,13 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
         flexGrow: "1",
         display: "flex",
         padding: "1rem 0",
+    },
+    activityCardsContainer: {
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(300px, max-content))",
+        gridGap: "1rem",
+        justifyContent: "center",
+        padding: "initial",
     },
     innerContentScroll: {
         overflowY: "auto",

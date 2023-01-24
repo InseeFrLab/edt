@@ -293,9 +293,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
         padding: "1rem",
         display: "flex",
         cursor: "pointer",
-        width: "90%",
-        maxWidth: "310px",
-        marginTop: "1rem",
+        width: "300px",
     },
     activityCardBox: {
         backgroundColor: theme.variables.white,
