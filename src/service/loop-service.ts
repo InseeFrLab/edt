@@ -184,8 +184,8 @@ const getLoopSizeOfVariable = (
     } else return currentLoopSize;
 };
 
-const getLoopSize = (idSurvey: string, currentLoop: LoopEnum): number => {
-    const source = getCurrentPageSource();
+const getLoopSize = (idSurvey: string, currentLoop: LoopEnum, sourceModel?: LunaticModel): number => {
+    const source = sourceModel != null ? sourceModel : getCurrentPageSource();
     const loopPage = getLoopInitialPage(currentLoop);
     if (!source?.components) {
         return 0;

@@ -284,7 +284,7 @@ const getPrintedFirstName = (idSurvey: string): string => {
     return getFirstName(idSurvey) || t("common.user.person") + " " + getPersonNumber(idSurvey);
 };
 
-const getTabsData = (): TabData[] => {
+const getTabsData = (t: any): TabData[] => {
     let tabsData: TabData[] = [];
 
     activitySurveysIds.forEach(idSurvey => {
@@ -292,7 +292,7 @@ const getTabsData = (): TabData[] => {
             idSurvey: idSurvey,
             surveyDateLabel: getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.ACTIVITY),
             firstNameLabel: getPrintedFirstName(idSurvey),
-            score: getScore(idSurvey),
+            score: getScore(idSurvey, t),
             isActivitySurvey: true,
         };
         tabsData.push(tabData);
@@ -302,7 +302,7 @@ const getTabsData = (): TabData[] => {
             idSurvey: idSurvey,
             surveyDateLabel: getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME),
             firstNameLabel: getPrintedFirstName(idSurvey),
-            score: getScore(idSurvey),
+            score: getScore(idSurvey, t),
             isActivitySurvey: false,
         };
         tabsData.push(tabData);
