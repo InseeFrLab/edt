@@ -71,7 +71,7 @@ const RoutePage = () => {
         labels: getLabels("route-selecter"),
         errorIcon: routeErrorIcon,
         onClick: () => {
-            validateAndNextLoopStep(EdtRoutesNameEnum.SECONDARY_ACTIVITY, currentIteration);
+            validateAndNextLoopStep(getNextLoopPage(currentPage, true), currentIteration);
         },
     };
 
