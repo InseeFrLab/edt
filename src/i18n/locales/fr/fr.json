@@ -216,16 +216,16 @@
             "alert-message": "Aucun but n’a été renseigné"
         },
         "secondary-activity-selecter": {
-            "alert-message": "Aucun secondarie activitie n’a été renseigné"
+            "alert-message": "Aucune activité secondaire n’a été renseignée"
         },
         "with-screen-selecter": {
             "alert-message": "Aucun écran n’a été renseigné"
         },
         "with-someone-selecter": {
-            "alert-message": "Aucun présence n’a été renseigné"
+            "alert-message": "Aucune compagnie n’a été renseignée"
         },
         "route-selecter": {
-            "alert-message": "Aucun route n’a été renseigné"
+            "alert-message": "Aucun type de trajet n’a été renseigné"
         },
         "mean-of-transport-selecter": {
             "alert-message": "Aucun moyen de transport n’a été renseigné"
