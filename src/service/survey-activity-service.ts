@@ -20,11 +20,26 @@ import {
 } from "./referentiel-service";
 
 const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
-    const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
-    if (mainActivityValue) {
-        const activitySelection: SelectedActivity = mainActivityValue
-            ? JSON.parse(mainActivityValue.toString())
-            : undefined;
+    const mainActivityId = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_ID, i) as string;
+    const mainActivitySuggesterId = getValue(
+        idSurvey,
+        FieldNameEnum.MAINACTIVITY_SUGGESTERID,
+        i,
+    ) as string;
+    const mainActivityLabel = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL, i) as string;
+    const mainActivityIsFullyCompleted = getValue(
+        idSurvey,
+        FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED,
+        i,
+    ) as boolean;
+
+    if (mainActivityId || mainActivitySuggesterId || mainActivityLabel || mainActivityIsFullyCompleted) {
+        const activitySelection: SelectedActivity = {
+            id: mainActivityId,
+            suggesterId: mainActivitySuggesterId,
+            label: mainActivityLabel,
+            isFullyCompleted: mainActivityIsFullyCompleted,
+        };
         activityOrRoute.activity = {
             activityCode: activitySelection.suggesterId ?? activitySelection.id,
             activityLabel: getActivityLabel(activitySelection) || "",
