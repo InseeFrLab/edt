@@ -20,6 +20,7 @@ import {
     saveAndLoopNavigate,
     saveAndNav,
     setEnviro,
+    validate,
 } from "service/navigation-service";
 import { FieldNameEnum, getValue } from "service/survey-service";
 
@@ -59,8 +60,18 @@ const WithScreenPage = () => {
                 ),
             );
         },
+        onSelectValue: () => {
+            validate().then(() => {
+                saveAndNav(
+                    getCurrentNavigatePath(
+                        context.idSurvey,
+                        EdtRoutesNameEnum.ACTIVITY,
+                        getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                    ),
+                );
+            });
+        },
         labels: getLabels("with-screen-selecter"),
-
         errorIcon: screenErrorIcon,
     };
 

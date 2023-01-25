@@ -1,4 +1,4 @@
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { LunaticData, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import { SetStateAction } from "react";
 import { NavigateFunction } from "react-router-dom";
@@ -171,6 +171,17 @@ const saveAndNav = (
     });
 };
 
+/**
+ * Due to the lack of a hook that lets us know when the event has ended,
+ * a change of a variable in the callbackholder,
+ * we need to make the call twice to be able to retrieve the current state of the database
+ */
+const validate = (): Promise<void | LunaticData> => {
+    return saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
+        return saveData(_context.idSurvey, _callbackHolder.getData());
+    });
+};
+
 const navToRouteOrRouteNotSelection = (
     route?: string,
     value?: FieldNameEnum,
@@ -247,6 +258,23 @@ const saveAndLoopNavigate = (
     } else saveAndNav(pathRoute);
 };
 
+const validateAndNextStep = (page: EdtRoutesNameEnum) => {
+    validate().then(() => {
+        saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, page);
+    });
+};
+
+const validateAndNextLoopStep = (
+    page: EdtRoutesNameEnum,
+    iteration: number,
+    value?: FieldNameEnum,
+    routeNotSelection?: EdtRoutesNameEnum,
+) => {
+    validate().then(() => {
+        saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, iteration, value, routeNotSelection);
+    });
+};
+
 const loopNavigate = (page: EdtRoutesNameEnum, loop: LoopEnum, iteration: number) => {
     _navigate(getLoopParameterizedNavigatePath(page, loop, iteration));
 };
@@ -321,4 +349,7 @@ export {
     onNext,
     onPrevious,
     onClose,
+    validate,
+    validateAndNextLoopStep,
+    validateAndNextStep,
 };

@@ -18,6 +18,7 @@ import {
     onPrevious,
     saveAndNav,
     setEnviro,
+    validate,
 } from "service/navigation-service";
 import {
     getActivitySecondaryActivityRef,
@@ -28,6 +29,7 @@ import {
     FieldNameEnum,
     getValue,
     ReferentielsEnum,
+    saveData,
 } from "service/survey-service";
 
 const SecondaryActivitySelectionPage = () => {
@@ -71,6 +73,15 @@ const SecondaryActivitySelectionPage = () => {
                     : ReferentielsEnum.ACTIVITYSECONDARYACTIVITY,
                 newItem,
             );
+        },
+        onSelectValue: () => {
+            validate().then(() => {
+                if (context.isRoute) {
+                    saveAndLoopNavigate(EdtRoutesNameEnum.WITH_SOMEONE);
+                } else {
+                    saveAndLoopNavigate(EdtRoutesNameEnum.ACTIVITY_LOCATION);
+                }
+            });
         },
     };
 
