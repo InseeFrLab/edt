@@ -19,10 +19,6 @@ import {
 import { getKindOfWeekRef } from "service/referentiel-service";
 import { getPrintedFirstName } from "service/survey-service";
 
-const specificProps: CheckboxOneSpecificProps = {
-    icon: calendarWeek,
-};
-
 const KindOfWeekPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { t } = useTranslation();
@@ -31,6 +27,11 @@ const KindOfWeekPage = () => {
     const currentPage = EdtRoutesNameEnum.KIND_OF_WEEK;
 
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
+
+    const specificProps: CheckboxOneSpecificProps = {
+        icon: calendarWeek,
+        onSelectValue: () => validateWithAlertAndNav(false, setIsModalDisplayed),
+    };
 
     return (
         <SurveyPage

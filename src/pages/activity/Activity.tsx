@@ -32,7 +32,7 @@ const ActivityPage = () => {
     }
     const surveyRootPage = getCurrentSurveyRootPage();
     const { t } = useTranslation();
-    const tabsData = getTabsData();
+    const tabsData = getTabsData(t);
     const selectedTab = tabsData.findIndex(tab => tab.idSurvey === idSurvey);
     const maxTabsPerRow = isTablet() ? 3 : 4;
 

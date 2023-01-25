@@ -1,8 +1,6 @@
 import { Box, Paper, Typography } from "@mui/material";
-import iconNoResult from "assets/illustration/error/activity.svg";
-import { ClickableList, makeStylesEdt } from "lunatic-edt";
+import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
-import activites from "refs/activitesAutoCompleteRef.json";
 import packageJson from "../../../package.json";
 
 const HelpPage = () => {
@@ -12,19 +10,6 @@ const HelpPage = () => {
     return (
         <>
             <header>Help - {t("page.home.welcome")}</header>
-            <Box className={classes.clickableListBox}>
-                <ClickableList
-                    options={activites}
-                    handleChange={() => console.log("handleChange")}
-                    createActivity={() => console.log("createActivity")}
-                    placeholder="Saisissez une activité"
-                    notFoundLabel="Aucun résultat trouvé"
-                    notFoundComment="Vous pourrez l'ajouter en cliquant sur le bouton ci-dessous, ou le bouton + ci-dessus"
-                    addActivityButtonLabel="Ajouter l'activité"
-                    iconNoResult={iconNoResult}
-                    iconNoResultAlt="alt pour icon no result"
-                ></ClickableList>
-            </Box>
 
             <Paper className={classes.footerBox} component="footer" square variant="outlined">
                 <Box>

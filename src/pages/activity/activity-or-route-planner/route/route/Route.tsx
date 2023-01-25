@@ -22,7 +22,13 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import { onClose, onNext, onPrevious, saveAndLoopNavigate } from "service/navigation-service";
+import {
+    onClose,
+    onNext,
+    onPrevious,
+    saveAndLoopNavigate,
+    validateAndNextLoopStep,
+} from "service/navigation-service";
 import { getRouteRef } from "service/referentiel-service";
 
 const RoutePage = () => {
@@ -64,6 +70,9 @@ const RoutePage = () => {
         },
         labels: getLabels("route-selecter"),
         errorIcon: routeErrorIcon,
+        onSelectValue: () => {
+            validateAndNextLoopStep(getNextLoopPage(currentPage, true), currentIteration);
+        },
     };
 
     return (

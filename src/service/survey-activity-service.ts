@@ -1,3 +1,4 @@
+import activitySurveySource from "activity-survey.json";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
@@ -20,11 +21,26 @@ import {
 } from "./referentiel-service";
 
 const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
-    const mainActivityValue = getValue(idSurvey, FieldNameEnum.MAINACTIVITY, i);
-    if (mainActivityValue) {
-        const activitySelection: SelectedActivity = mainActivityValue
-            ? JSON.parse(mainActivityValue.toString())
-            : undefined;
+    const mainActivityId = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_ID, i) as string;
+    const mainActivitySuggesterId = getValue(
+        idSurvey,
+        FieldNameEnum.MAINACTIVITY_SUGGESTERID,
+        i,
+    ) as string;
+    const mainActivityLabel = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL, i) as string;
+    const mainActivityIsFullyCompleted = getValue(
+        idSurvey,
+        FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED,
+        i,
+    ) as boolean;
+
+    if (mainActivityId || mainActivitySuggesterId || mainActivityLabel || mainActivityIsFullyCompleted) {
+        const activitySelection: SelectedActivity = {
+            id: mainActivityId,
+            suggesterId: mainActivitySuggesterId,
+            label: mainActivityLabel,
+            isFullyCompleted: mainActivityIsFullyCompleted,
+        };
         activityOrRoute.activity = {
             activityCode: activitySelection.suggesterId ?? activitySelection.id,
             activityLabel: getActivityLabel(activitySelection) || "",
@@ -66,7 +82,7 @@ const getActivitiesOrRoutes = (
 } => {
     const overlaps = [];
     let activitiesRoutes: ActivityRouteOrGap[] = [];
-    const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE);
+    const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE, activitySurveySource);
     for (let i = 0; i < activityLoopSize; i++) {
         let activityOrRoute: ActivityRouteOrGap = {};
         activityOrRoute.iteration = i;
@@ -232,24 +248,38 @@ const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string =
     } else return "";
 };
 
-const getTotalTimeOfActivities = (idSurvey: string): number => {
-    const startTimeArray = getValue(idSurvey, FieldNameEnum.STARTTIME) as string[];
+const getTotalTimeOfActivities = (idSurvey: string, t: any): number => {
+    const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey);
+    let totalTimeGap = 0;
+    let leftTimeActivities = 0;
 
-    //activity survey
-    if (startTimeArray != null) {
-        const lastTimeArray = getValue(idSurvey, FieldNameEnum.ENDTIME) as string[];
-
-        let totalHourActivities = 0;
-        for (let i = 0; i < startTimeArray.length; i++) {
-            const diffTime = getDiffTime(startTimeArray[i], lastTimeArray[i]);
-            totalHourActivities += diffTime;
+    for (let i = 0; i < activitiesRoutesOrGaps.length; i++) {
+        if (activitiesRoutesOrGaps[i].isGap) {
+            let startTime = getTime(activitiesRoutesOrGaps[i].startTime);
+            let endTime = getTime(activitiesRoutesOrGaps[i].endTime);
+            const diffTime = getDiffTime(startTime, endTime);
+            totalTimeGap += diffTime;
         }
-        return totalHourActivities;
-    } else return 0;
+    }
+
+    const beforeFirstActivity = getDiffTime(
+        getTime("04:00"),
+        getTime(activitiesRoutesOrGaps[0]?.startTime),
+    );
+
+    const afterLastActivity = getDiffTime(
+        getTime(activitiesRoutesOrGaps[activitiesRoutesOrGaps.length - 1]?.endTime),
+        getTime("04:00"),
+    );
+
+    leftTimeActivities = beforeFirstActivity + afterLastActivity + totalTimeGap;
+
+    if (activitiesRoutesOrGaps.length == 0) return 0;
+    else return 24 - leftTimeActivities;
 };
 
-const getScore = (idSurvey: string): string => {
-    const totalHourActivities = getTotalTimeOfActivities(idSurvey);
+const getScore = (idSurvey: string, t: any): string => {
+    const totalHourActivities = getTotalTimeOfActivities(idSurvey, t);
     const percentage = (totalHourActivities / 24) * 100;
     return percentage.toFixed(0);
 };
@@ -260,15 +290,26 @@ const getWeeklyPlannerScore = (idSurvey: string): string => {
     return getProgressBarValue(weeklyPlannerValue).toString();
 };
 
-const getDiffTime = (startTime: string, endTime: string) => {
+const getTime = (time?: string) => {
+    let timeDay = dayjs(time, "HH:mm");
+    if (timeDay.hour() < 4) {
+        return timeDay.add(1, "day");
+    } else return timeDay;
+};
+
+const getDiffTime = (startTime?: any, endTime?: any) => {
     if (startTime == null || endTime == null) return 0;
     dayjs.extend(customParseFormat);
+    let startFinalTime = startTime;
+    let endTimeDay = endTime;
 
-    const startTimeDay = dayjs(startTime, "HH:mm");
-    const endTimeDay = dayjs(endTime, "HH:mm");
-
-    const diffInHours = Math.abs(startTimeDay.diff(endTimeDay, "hour", true));
-    return diffInHours;
+    if (startTime.hour() < 4 && endTime.hour() >= 4) {
+        endTimeDay = endTimeDay.set("day", dayjs().day() + 1);
+    } else if (startTime.hour() >= 4 && endTime.hour() >= 4 && startTime.hour() > endTime.hour()) {
+        endTimeDay = endTimeDay.set("day", dayjs().day() + 1);
+    }
+    const diffHours = Math.abs(startFinalTime.diff(endTimeDay, "hour", true));
+    return diffHours;
 };
 
 const getActivityLabel = (activity: SelectedActivity | undefined): string | undefined => {

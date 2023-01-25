@@ -17,7 +17,14 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
+import {
+    onClose,
+    onNext,
+    onPrevious,
+    saveAndLoopNavigate,
+    setEnviro,
+    validateAndNextLoopStep,
+} from "service/navigation-service";
 import { FieldNameEnum, getValue } from "service/survey-service";
 
 const SecondaryActivityPage = () => {
@@ -56,8 +63,15 @@ const SecondaryActivityPage = () => {
                 getNextLoopPage(currentPage, context.isRoute),
             );
         },
+        onSelectValue: () => {
+            validateAndNextLoopStep(
+                EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
+                currentIteration,
+                FieldNameEnum.WITHSECONDARYACTIVITY,
+                getNextLoopPage(currentPage, context.isRoute),
+            );
+        },
         labels: getLabels("secondary-activity-selecter"),
-
         errorIcon: activityErrorIcon,
     };
 

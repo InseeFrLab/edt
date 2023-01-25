@@ -13,6 +13,7 @@ import {
     saveAndNavFullPath,
     saveAndNextStep,
     setEnviro,
+    validateAndNextStep,
 } from "service/navigation-service";
 import { getKindOfDayRef } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
@@ -28,6 +29,7 @@ const KindOfDayPage = () => {
 
     const specificProps: CheckboxOneSpecificProps = {
         icon: bagIcon,
+        onSelectValue: () => validateAndNextStep(currentPage),
     };
 
     return (

@@ -33,7 +33,10 @@ const enum FieldNameEnum {
     SURVEYDATE = "SURVEYDATE",
     STARTTIME = "STARTTIME",
     ENDTIME = "ENDTIME",
-    MAINACTIVITY = "MAINACTIVITY",
+    MAINACTIVITY_ID = "MAINACTIVITY_ID",
+    MAINACTIVITY_SUGGESTERID = "MAINACTIVITY_SUGGESTERID",
+    MAINACTIVITY_ISFULLYCOMPLETED = "MAINACTIVITY_ISFULLYCOMPLETED",
+    MAINACTIVITY_LABEL = "MAINACTIVITY_LABEL",
     ROUTE = "ROUTE",
     GOAL = "GOAL",
     WITHSECONDARYACTIVITY = "WITHSECONDARYACTIVITY",
@@ -67,7 +70,13 @@ const enum FieldNameEnum {
     ISCOMPLETED = "ISCOMPLETED",
 }
 
-const toIgnoreForRoute = [FieldNameEnum.PLACE, FieldNameEnum.MAINACTIVITY, FieldNameEnum.GOAL];
+const toIgnoreForRoute = [
+    FieldNameEnum.PLACE,
+    FieldNameEnum.MAINACTIVITY_ID,
+    FieldNameEnum.MAINACTIVITY_SUGGESTERID,
+    FieldNameEnum.MAINACTIVITY_LABEL,
+    FieldNameEnum.GOAL,
+];
 
 const toIgnoreForActivity = [
     FieldNameEnum.ROUTE,
@@ -275,16 +284,15 @@ const getPrintedFirstName = (idSurvey: string): string => {
     return getFirstName(idSurvey) || t("common.user.person") + " " + getPersonNumber(idSurvey);
 };
 
-const getTabsData = (): TabData[] => {
+const getTabsData = (t: any): TabData[] => {
     let tabsData: TabData[] = [];
 
-    //TODO : Complete score with value
     activitySurveysIds.forEach(idSurvey => {
         let tabData: TabData = {
             idSurvey: idSurvey,
             surveyDateLabel: getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.ACTIVITY),
             firstNameLabel: getPrintedFirstName(idSurvey),
-            score: getScore(idSurvey),
+            score: getScore(idSurvey, t),
             isActivitySurvey: true,
         };
         tabsData.push(tabData);
@@ -294,7 +302,7 @@ const getTabsData = (): TabData[] => {
             idSurvey: idSurvey,
             surveyDateLabel: getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME),
             firstNameLabel: getPrintedFirstName(idSurvey),
-            score: getScore(idSurvey),
+            score: getScore(idSurvey, t),
             isActivitySurvey: false,
         };
         tabsData.push(tabData);

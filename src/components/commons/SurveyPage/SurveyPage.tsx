@@ -9,6 +9,7 @@ import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimp
 import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
 import EndActivityStepper from "components/edt/EndActivityStepper/EndActivityStepper";
 import { makeStylesEdt, ProgressBar } from "lunatic-edt";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getLastCompletedStep } from "service/navigation-service";
 import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
@@ -74,6 +75,12 @@ const SurveyPage = (props: SurveyPageProps) => {
     } = props;
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
+    let score = "0";
+
+    useEffect(() => {
+        if (idSurvey) score = getScore(idSurvey, t);
+    }, [children]);
+
     return (
         <Box className={cx(classes.page, className)}>
             {!simpleHeader && firstName && surveyDate && onNavigateBack && (
@@ -113,7 +120,7 @@ const SurveyPage = (props: SurveyPageProps) => {
             )}
             {activityProgressBar && idSurvey && (
                 <Box className={classes.progressBar}>
-                    <ProgressBar value={Number(getScore(idSurvey))} showlabel={true}></ProgressBar>
+                    <ProgressBar value={Number(getScore(idSurvey, t))} showlabel={true}></ProgressBar>
                 </Box>
             )}
             <Box className={classes.content}>

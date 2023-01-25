@@ -16,7 +16,14 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
+import {
+    onClose,
+    onNext,
+    onPrevious,
+    saveAndLoopNavigate,
+    setEnviro,
+    validateAndNextLoopStep,
+} from "service/navigation-service";
 import { FieldNameEnum, getValue } from "service/survey-service";
 
 const WithSomeonePage = () => {
@@ -58,6 +65,14 @@ const WithSomeonePage = () => {
             saveAndLoopNavigate(
                 EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
                 LoopEnum.ACTIVITY_OR_ROUTE,
+                currentIteration,
+                FieldNameEnum.WITHSOMEONE,
+                getNextLoopPage(currentPage, context.isRoute),
+            );
+        },
+        onSelectValue: () => {
+            validateAndNextLoopStep(
+                EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
                 currentIteration,
                 FieldNameEnum.WITHSOMEONE,
                 getNextLoopPage(currentPage, context.isRoute),

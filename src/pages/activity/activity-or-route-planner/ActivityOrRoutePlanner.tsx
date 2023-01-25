@@ -345,7 +345,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                 </FlexCenter>
                                             </>
                                         ) : (
-                                            <>
+                                            <Box className={classes.activityCardsContainer}>
                                                 {activitiesRoutesOrGaps.map(activity => (
                                                     <FlexCenter key={uuidv4()}>
                                                         <ActivityOrRouteCard
@@ -375,7 +375,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                         />
                                                     </FlexCenter>
                                                 ))}
-                                            </>
+                                            </Box>
                                         )}
                                     </Box>
                                 </Box>
@@ -449,6 +449,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
     infoBox: {
         width: "350px",
         padding: "1rem 0.25rem 0.5rem 1rem",
+        marginBottom: "1rem",
     },
     label: {
         fontSize: "14px",
@@ -484,6 +485,13 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
         flexGrow: "1",
         display: "flex",
         padding: "1rem 0",
+    },
+    activityCardsContainer: {
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(300px, max-content))",
+        gridGap: "1rem",
+        justifyContent: "center",
+        padding: "initial",
     },
     innerContentScroll: {
         overflowY: "auto",

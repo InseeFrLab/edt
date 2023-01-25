@@ -11,7 +11,14 @@ import {
     getPreviousLoopPage,
     getStepData,
 } from "service/loop-stepper-service";
-import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
+import {
+    onClose,
+    onNext,
+    onPrevious,
+    saveAndLoopNavigate,
+    setEnviro,
+    validateAndNextLoopStep,
+} from "service/navigation-service";
 
 import catIcon100 from "assets/illustration/activity-categories/1.svg";
 import catIcon200 from "assets/illustration/activity-categories/2.svg";
@@ -81,6 +88,9 @@ const MainActivityPage = () => {
                 );
             }
         },
+        onSelectValue: () => {
+            validateAndNextLoopStep(getNextLoopPage(currentPage), currentIteration);
+        },
         setDisplayStepper: setDisplayStepper,
         categoriesAndActivitesNomenclature: getNomenclatureRef(),
         labels: {
@@ -108,10 +118,6 @@ const MainActivityPage = () => {
             addToAutocompleteActivityReferentiel(newItem);
         },
     };
-
-    /*const saveAndLoopNavigate = (page: EdtRoutesNameEnum) => {
-        saveAndNav(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
-    };*/
 
     return (
         <LoopSurveyPage

@@ -19,7 +19,7 @@ const DayCard = (props: DayCardProps) => {
     const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey } = props;
     const { classes } = useStyles();
     const { t } = useTranslation();
-    const progressActivity = getScore(idSurvey);
+    const progressActivity = getScore(idSurvey, t);
 
     return (
         <FlexCenter>
