@@ -4,10 +4,10 @@ import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import workTimeSurveySource from "work-time-survey.json";
 
 const getCurrentPageSource = (): LunaticModel => {
-    if (window.location.pathname.includes(EdtRoutesNameEnum.ACTIVITY.split(":")[0])) {
-        return activitySurveySource;
-    } else {
+    if (!window.location.pathname.includes(EdtRoutesNameEnum.ACTIVITY.split(":")[0])) {
         return workTimeSurveySource;
+    } else {
+        return activitySurveySource;
     }
 };
 
