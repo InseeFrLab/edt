@@ -30,7 +30,7 @@ const WorstActivityDayPage = () => {
 
     const specificProps: CheckboxOneSpecificProps = {
         options: activites.map(activity => {
-            return { label: activity, value: activity };
+            return { label: activity.activityLabel || "", value: activity.activityCode || "" };
         }),
         defaultIcon: true,
         onSelectValue: () => validateAndNextStep(currentPage),

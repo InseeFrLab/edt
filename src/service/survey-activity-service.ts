@@ -1,7 +1,7 @@
 import activitySurveySource from "activity-survey.json";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
+import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { SelectedActivity } from "lunatic-edt";
 import { IODataStructure } from "lunatic-edt/dist/interface/WeeklyPlannerTypes";
@@ -209,20 +209,20 @@ const hourToNormalizedTimeStamp = (hour: string | undefined, idSurvey: string): 
     return dateActivity.toDate().getTime();
 };
 
-const getActivitesSelectedLabel = (idSurvey: string): string[] => {
-    let activitesSelected: string[] = [];
+const getActivitesSelectedLabel = (idSurvey: string): Activity[] => {
+    let activitesSelected: Activity[] = [];
     const { t } = useTranslation();
     getActivitiesOrRoutes(t, idSurvey).activitiesRoutesOrGaps.forEach(activityRouteOrGap => {
         if (
             activityRouteOrGap?.activity?.activityLabel != null &&
             activityRouteOrGap?.activity?.activityLabel.length > 0
         )
-            activitesSelected.push(activityRouteOrGap.activity?.activityLabel);
+            activitesSelected.push(activityRouteOrGap.activity);
         if (
             activityRouteOrGap?.secondaryActivity?.activityLabel != null &&
             activityRouteOrGap?.secondaryActivity?.activityLabel.length > 0
         )
-            activitesSelected.push(activityRouteOrGap.secondaryActivity.activityLabel);
+            activitesSelected.push(activityRouteOrGap.secondaryActivity);
     });
     return activitesSelected;
 };
