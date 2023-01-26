@@ -15,10 +15,11 @@ import {
     generateDateFromStringInput,
     getFrenchDayFromDate,
 } from "lunatic-edt";
+import { AuthContextProps } from "oidc-react";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
-import { fetchReferentiels } from "./api-service";
+import { fetchReferentiels, fetchSurveysIds } from "./api-service";
 import { getScore } from "./survey-activity-service";
 
 const datas = new Map<string, LunaticData>();
@@ -99,26 +100,28 @@ enum ReferentielsEnum {
     KINDOFDAY = "edt-kindOfDay",
 }
 
-const initializeDatas = (): Promise<LunaticData[]> => {
+const initializeDatas = (auth: AuthContextProps): Promise<LunaticData[]> => {
     // fetch referentiels only first time when they are not in indexedDB
     return lunaticDatabase.get(REFERENTIEL_ID).then((refData: any) => {
         const promises: Promise<LunaticData>[] = [];
         if (!refData) {
-            fetchReferentiels().then(refs => {
+            fetchReferentiels(auth).then(refs => {
                 promises.push(saveReferentiels(refs));
             });
         } else {
             referentielsData = refData;
         }
-
-        for (const idSurvey of surveysIds) {
-            promises.push(
-                lunaticDatabase.get(idSurvey).then(data => {
-                    datas.set(idSurvey, data || {});
-                    return data || {};
-                }),
-            );
-        }
+        fetchSurveysIds(auth).then(surveysIds => {
+            console.log(surveysIds);
+            for (const idSurvey of surveysIds) {
+                promises.push(
+                    lunaticDatabase.get(idSurvey).then(data => {
+                        datas.set(idSurvey, data || {});
+                        return data || {};
+                    }),
+                );
+            }
+        });
         return Promise.all(promises);
     });
 };

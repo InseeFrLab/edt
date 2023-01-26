@@ -4616,6 +4616,11 @@ crypto-browserify@^3.11.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
+crypto-js@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.1.1.tgz#9e485bcf03521041bd85844786b83fb7619736cf"
+  integrity sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==
+
 crypto-random-string@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-1.0.0.tgz#a230f64f568310e1498009940790ec99545bca7e"
@@ -8300,6 +8305,11 @@ jsonparse@^1.2.0:
     array-includes "^3.1.5"
     object.assign "^4.1.3"
 
+jwt-decode@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
+  integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
+
 killable@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/killable/-/killable-1.0.1.tgz#4c8ce441187a061c7474fb87ca08e2a638194892"
@@ -9642,6 +9652,21 @@ obuf@^1.0.0, obuf@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
+
+oidc-client-ts@^2.0.5:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/oidc-client-ts/-/oidc-client-ts-2.2.1.tgz#aa397119db54952acd08efe04bac4eff9a9169db"
+  integrity sha512-g/W+DsUVeHZ8A7xUSTeK4bI6BNs9ROtMiiOOo+0M6IiTHxueJ757GD8e/8nPBL+k/o6bkfM5mWg4cZcSI8Iosw==
+  dependencies:
+    crypto-js "^4.1.1"
+    jwt-decode "^3.1.2"
+
+oidc-react@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/oidc-react/-/oidc-react-2.1.0.tgz#5348509e461dbf088e2dbb7b05435dfa1cc5927f"
+  integrity sha512-o0/pk7eNYGzNJI8+eUSP8wJjA0wfWXzZSt4PdWx9BVmcAmQY/ptVwz8ZKwaY2zztpzRqNaGF1GcJmP7kbKmdKQ==
+  dependencies:
+    oidc-client-ts "^2.0.5"
 
 on-finished@2.4.1:
   version "2.4.1"

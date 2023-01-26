@@ -3,6 +3,7 @@
     "version": "1.5.5",
     "dateVersion": "25/01/2023",
     "licence": "MIT",
+    "proxy": "https://edt-api-kc.demo.insee.io",
     "dependencies": {
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",
@@ -13,6 +14,7 @@
         "dexie": "^3.2.2",
         "i18next": "^21.9.2",
         "lunatic-edt": "^0.4.0",
+        "oidc-react": "^2.1.0",
         "react": "^18.2.0",
         "react-detect-offline": "^2.4.5",
         "react-dom": "^18.2.0",

@@ -1,15 +1,29 @@
+import { AuthProvider } from "oidc-react";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import App from "./App";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+
+const oidcConfig = {
+    onSignIn: () => {
+        //to remove keycloak params in url
+        window.history.replaceState(null, "", window.location.pathname);
+    },
+    authority: process.env.REACT_APP_KEYCLOAK_AUTHORITY,
+    clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID,
+    redirectUri: process.env.REACT_APP_KEYCLOAK_REDIRECT_URI,
+};
+
 root.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>,
+    <AuthProvider {...oidcConfig}>
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    </AuthProvider>,
 );
 
 // If you want your app to work offline and load faster, you can change
