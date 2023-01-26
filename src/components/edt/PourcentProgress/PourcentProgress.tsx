@@ -4,7 +4,7 @@ import { makeStylesEdt } from "lunatic-edt";
 interface PourcentProgressProps {
     labelledBy: string;
     describedBy: string;
-    progress: string;
+    progress: number;
 }
 
 const PourcentProgress = (props: PourcentProgressProps) => {
