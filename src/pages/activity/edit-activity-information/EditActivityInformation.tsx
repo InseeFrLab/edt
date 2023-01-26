@@ -24,9 +24,13 @@ const EditActivityInformationPage = () => {
         ? loopActivityRouteStepperData
         : loopActivityStepperData;
 
-    const navToStep = useCallback((page: EdtRoutesNameEnum) => {
-        navigate(getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration));
-    }, []);
+    const navToStep = useCallback(
+        (page: EdtRoutesNameEnum) => () =>
+            navigate(
+                getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration),
+            ),
+        [],
+    );
 
     return (
         <SurveyPage
@@ -57,7 +61,7 @@ const EditActivityInformationPage = () => {
                     .map(stepData => (
                         <StepNavCard
                             key={"nav-to-step-" + stepData.stepNumber}
-                            onClick={useCallback(() => navToStep(stepData.page), [])}
+                            onClick={navToStep(stepData.page)}
                             labelledBy={""}
                             describedBy={""}
                             stepData={stepData}

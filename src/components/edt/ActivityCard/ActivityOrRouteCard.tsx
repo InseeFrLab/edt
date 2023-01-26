@@ -270,14 +270,13 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         );
     };
 
+    const clickToGap = useCallback((e: any) => {
+        onClickGap && onClickGap(activityOrRoute.startTime, activityOrRoute.endTime);
+    }, []);
+
     const renderGap = () => {
         return (
-            <Box
-                className={cx(classes.mainCardBox, classes.gapBox)}
-                onClick={useCallback(() => {
-                    onClickGap && onClickGap(activityOrRoute.startTime, activityOrRoute.endTime);
-                }, [])}
-            >
+            <Box className={cx(classes.mainCardBox, classes.gapBox)} onClick={clickToGap}>
                 <img className={classes.insideAlertIcon} src={gapIcon}></img>
                 <Typography className={cx(classes.mainActivityLabel, classes.gapText)}>
                     {" "}

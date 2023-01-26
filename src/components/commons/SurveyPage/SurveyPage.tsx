@@ -85,7 +85,6 @@ const SurveyPage = (props: SurveyPageProps) => {
     }, [score]);
 
     const renderProgressBar = () => {
-        console.log(scoreAct);
         return (
             activityProgressBar &&
             idSurvey && (

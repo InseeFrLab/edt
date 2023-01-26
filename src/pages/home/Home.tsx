@@ -23,6 +23,18 @@ const HomePage = () => {
     const navigate = useNavigate();
     const { classes } = useStyles();
 
+    const navWorkTime = useCallback(
+        (idSurvey: string) => () =>
+            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey)),
+        [],
+    );
+
+    const navActivity = useCallback(
+        (idSurvey: string) => () =>
+            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey)),
+        [],
+    );
+
     return (
         <>
             <FlexEnd>
@@ -44,13 +56,7 @@ const HomePage = () => {
                         key={idSurvey + "-dayCard"}
                         labelledBy={""}
                         describedBy={""}
-                        onClick={useCallback(
-                            () =>
-                                navigate(
-                                    getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey),
-                                ),
-                            [],
-                        )}
+                        onClick={navActivity(idSurvey)}
                         firstName={getPrintedFirstName(idSurvey)}
                         surveyDate={getPrintedSurveyDate(idSurvey)}
                         idSurvey={idSurvey}
@@ -62,13 +68,7 @@ const HomePage = () => {
                         key={idSurvey + "-weekCard"}
                         labelledBy={""}
                         describedBy={""}
-                        onClick={useCallback(
-                            () =>
-                                navigate(
-                                    getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey),
-                                ),
-                            [],
-                        )}
+                        onClick={navWorkTime(idSurvey)}
                         firstName={getPrintedFirstName(idSurvey)}
                         surveyDate={getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME)}
                         idSurvey={idSurvey}
