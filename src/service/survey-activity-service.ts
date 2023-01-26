@@ -278,16 +278,16 @@ const getTotalTimeOfActivities = (idSurvey: string, t: any): number => {
     else return 24 - leftTimeActivities;
 };
 
-const getScore = (idSurvey: string, t: any): string => {
+const getScore = (idSurvey: string, t: any): number => {
     const totalHourActivities = getTotalTimeOfActivities(idSurvey, t);
     const percentage = (totalHourActivities / 24) * 100;
-    return percentage.toFixed(0);
+    return totalHourActivities > 0 ? Number(percentage.toFixed(0)) : 0;
 };
 
-const getWeeklyPlannerScore = (idSurvey: string): string => {
+const getWeeklyPlannerScore = (idSurvey: string): number => {
     const value = getValue(idSurvey, FieldNameEnum.WEEKLYPLANNER) as IODataStructure[];
     const weeklyPlannerValue = transformToWeeklyPlannerDataType(value);
-    return getProgressBarValue(weeklyPlannerValue).toString();
+    return getProgressBarValue(weeklyPlannerValue);
 };
 
 const getTime = (time?: string) => {
