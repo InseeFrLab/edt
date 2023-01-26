@@ -42,7 +42,7 @@ interface SurveyPageProps {
     backgroundWhiteHeader?: boolean;
     activityProgressBar?: boolean;
     idSurvey?: string;
-    score?: string;
+    score?: number;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -78,13 +78,14 @@ const SurveyPage = (props: SurveyPageProps) => {
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
 
-    const [scoreAct, setScoreAct] = React.useState<number | undefined>(getScore(idSurvey || "", t));
+    const [scoreAct, setScoreAct] = React.useState<number | undefined>(score);
 
     useEffect(() => {
         setScoreAct(getScore(idSurvey || "", t));
     }, [score]);
 
     const renderProgressBar = () => {
+        console.log(scoreAct);
         return (
             activityProgressBar &&
             idSurvey && (

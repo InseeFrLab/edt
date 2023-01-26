@@ -303,6 +303,12 @@ const ActivityOrRoutePlannerPage = () => {
         [],
     );
 
+    const addActivityOrRoute = (isRoute: boolean) => {
+        return addActivityOrRouteFromGap
+            ? onAddActivityGap(isRoute, gapStartTime, gapEndTime)
+            : onAddActivity(isRoute);
+    };
+
     const navToCard = useCallback(
         (iteration: number, isRoute?: boolean) => () => navToActivityOrRoute(iteration, isRoute),
         [],
@@ -337,7 +343,7 @@ const ActivityOrRoutePlannerPage = () => {
                             }
                             activityProgressBar={true}
                             idSurvey={context.idSurvey}
-                            score={score?.toString()}
+                            score={score}
                         >
                             <Box
                                 className={
@@ -427,16 +433,8 @@ const ActivityOrRoutePlannerPage = () => {
                         <AddActivityOrRoute
                             labelledBy={""}
                             describedBy={""}
-                            onClickActivity={
-                                addActivityOrRouteFromGap
-                                    ? onAddActivityGap(false, gapStartTime, gapEndTime)
-                                    : onAddActivity(false)
-                            }
-                            onClickRoute={
-                                addActivityOrRouteFromGap
-                                    ? onAddActivityGap(true, gapStartTime, gapEndTime)
-                                    : onAddActivity(true)
-                            }
+                            onClickActivity={addActivityOrRoute(false)}
+                            onClickRoute={addActivityOrRoute(true)}
                             handleClose={onCloseAddActivityOrRoute}
                             open={isAddActivityOrRouteOpen}
                         />

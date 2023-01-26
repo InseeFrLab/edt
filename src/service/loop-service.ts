@@ -89,6 +89,38 @@ const skipPage = (
     } else return Number(getLoopLastSubPage(LoopEnum.ACTIVITY_OR_ROUTE)) + 1;
 };
 
+const ignoreDeps = (dependency: string, isRoute?: boolean) => {
+    return (
+        (isRoute && toIgnoreForRoute.find(dep => dependency == dep)) ||
+        (!isRoute && toIgnoreForActivity.find(dep => dependency == dep))
+    );
+};
+
+const getCurrentLoopPageForSource = (
+    component: LunaticModelComponent,
+    data: LunaticData | undefined,
+    source: LunaticModel,
+    currentLoopSubpage: number,
+    iteration: number,
+    isRoute?: boolean,
+) => {
+    if (component.bindingDependencies) {
+        for (const dependency of component.bindingDependencies) {
+            if (ignoreDeps(dependency, isRoute)) continue;
+            const variable = getVariable(source, dependency);
+            currentLoopSubpage = getCurrentLoopPageOfVariable(
+                data,
+                variable,
+                currentLoopSubpage,
+                iteration,
+                component,
+                isRoute,
+            );
+        }
+    }
+    return currentLoopSubpage;
+};
+
 // Give the first loop subpage that don't have any data fill
 const getCurrentLoopPage = (
     idSurvey: string,
@@ -117,25 +149,14 @@ const getCurrentLoopPage = (
     const lastLoopSubPage = +getLoopLastSubPage(currentLoop);
     let currentLoopSubpage = initialLoopSubPage;
     for (const component of loop.components) {
-        if (component.bindingDependencies) {
-            for (const dependency of component.bindingDependencies) {
-                if (isRoute && toIgnoreForRoute.find(dep => dependency == dep)) {
-                    continue;
-                }
-                if (!isRoute && toIgnoreForActivity.find(dep => dependency == dep)) {
-                    continue;
-                }
-                const variable = getVariable(source, dependency);
-                currentLoopSubpage = getCurrentLoopPageOfVariable(
-                    data,
-                    variable,
-                    currentLoopSubpage,
-                    iteration,
-                    component,
-                    isRoute,
-                );
-            }
-        }
+        currentLoopSubpage = getCurrentLoopPageForSource(
+            component,
+            data,
+            source,
+            currentLoopSubpage,
+            iteration,
+            isRoute,
+        );
     }
     setLoopCompleted(idSurvey, iteration, currentLoopSubpage > lastLoopSubPage);
     if (currentLoopSubpage > lastLoopSubPage) {
