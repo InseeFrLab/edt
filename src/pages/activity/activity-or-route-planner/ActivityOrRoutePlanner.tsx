@@ -33,7 +33,7 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { isDesktop } from "service/responsive";
-import { deleteActivity, getActivitiesOrRoutes } from "service/survey-activity-service";
+import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
 import {
     FieldNameEnum,
     getPrintedFirstName,
@@ -72,6 +72,7 @@ const ActivityOrRoutePlannerPage = () => {
     const surveyDate = getSurveyDate(context.idSurvey) || "";
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const [skip, setSkip] = useState<boolean>(false);
+    const [score, setScore] = React.useState<number | undefined>(undefined);
 
     const alertLabels = {
         boldContent: t("page.alert-when-quit.activity-planner.alert-content-close-bold"),
@@ -271,6 +272,10 @@ const ActivityOrRoutePlannerPage = () => {
         </React.Fragment>
     );
 
+    useEffect(() => {
+        setScore(getScore(context.idSurvey, t));
+    }, [activitiesRoutesOrGaps]);
+
     return (
         <>
             <Box className={classes.surveyPageBox}>
@@ -293,6 +298,7 @@ const ActivityOrRoutePlannerPage = () => {
                             }
                             activityProgressBar={true}
                             idSurvey={context.idSurvey}
+                            score={score?.toString()}
                         >
                             <Box
                                 className={
