@@ -206,6 +206,10 @@ const navToHelp = (): void => {
     _navigate(getNavigatePath(EdtRoutesNameEnum.HELP));
 };
 
+const navToErrorPage = (): void => {
+    _navigate(getNavigatePath(EdtRoutesNameEnum.ERROR));
+};
+
 const navToActivitRouteHome = () => {
     _navigate(
         getCurrentNavigatePath(
@@ -333,6 +337,7 @@ export {
     getNextPage,
     navToHome,
     navToHelp,
+    navToErrorPage,
     navToActivitRouteHome,
     navToEditActivity,
     navFullPath,

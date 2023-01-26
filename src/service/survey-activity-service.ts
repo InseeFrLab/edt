@@ -253,10 +253,10 @@ const getTotalTimeOfActivities = (idSurvey: string, t: any): number => {
     let totalTimeGap = 0;
     let leftTimeActivities = 0;
 
-    for (let i = 0; i < activitiesRoutesOrGaps.length; i++) {
-        if (activitiesRoutesOrGaps[i].isGap) {
-            let startTime = getTime(activitiesRoutesOrGaps[i].startTime);
-            let endTime = getTime(activitiesRoutesOrGaps[i].endTime);
+    for (let activityRouteOrGap of activitiesRoutesOrGaps) {
+        if (activityRouteOrGap.isGap) {
+            let startTime = getTime(activityRouteOrGap.startTime);
+            let endTime = getTime(activityRouteOrGap.endTime);
             const diffTime = getDiffTime(startTime, endTime);
             totalTimeGap += diffTime;
         }
@@ -303,9 +303,11 @@ const getDiffTime = (startTime?: any, endTime?: any) => {
     let startFinalTime = startTime;
     let endTimeDay = endTime;
 
-    if (startTime.hour() < 4 && endTime.hour() >= 4) {
-        endTimeDay = endTimeDay.set("day", dayjs().day() + 1);
-    } else if (startTime.hour() >= 4 && endTime.hour() >= 4 && startTime.hour() > endTime.hour()) {
+    let startTimeAfterMidnightAfterEndTime = startTime.hour() < 4 && endTime.hour() >= 4;
+    let startTimeBeforeMidnightAfterEndTime =
+        startTime.hour() >= 4 && endTime.hour() >= 4 && startTime.hour() > endTime.hour();
+
+    if (startTimeAfterMidnightAfterEndTime || startTimeBeforeMidnightAfterEndTime) {
         endTimeDay = endTimeDay.set("day", dayjs().day() + 1);
     }
     const diffHours = Math.abs(startFinalTime.diff(endTimeDay, "hour", true));

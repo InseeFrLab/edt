@@ -9,6 +9,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getOrchestratorPage,
+    navToErrorPage,
     navToHome,
     saveAndNav,
     saveAndNextStep,
@@ -30,12 +31,15 @@ const WhoAreYouPage = () => {
     let [disabledButton, setDisabledButton] = React.useState<boolean>(true);
 
     const keydownChange = () => {
-        //TODO: nav to error page when componentId empty
-        const componentId = getComponentId(FieldNameEnum.FIRSTNAME, context.source) || "";
-        setDisabledButton(
-            callbackHolder.getErrors() == undefined ||
-                callbackHolder.getErrors()[componentId].length > 0,
-        );
+        const componentId = getComponentId(FieldNameEnum.FIRSTNAME, context.source);
+        if (componentId == null) {
+            navToErrorPage();
+        } else {
+            setDisabledButton(
+                callbackHolder.getErrors() == undefined ||
+                    callbackHolder.getErrors()[componentId].length > 0,
+            );
+        }
     };
 
     React.useEffect(() => {

@@ -4,6 +4,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import { Box, Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { makeStylesEdt } from "lunatic-edt";
+import { useCallback } from "react";
 import { isDesktop } from "service/responsive";
 
 interface LoopNavigatorProps {
@@ -20,6 +21,10 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
     const { classes, cx } = useStyles();
     const hasTwoButtons = (onPrevious && onNext) || (onPrevious && onValidate);
     const isItDesktop = isDesktop();
+
+    const backClick = useCallback((event: any) => onPrevious && onPrevious(event), [onPrevious]);
+    const nextClick = useCallback((event: any) => onNext && onNext(event), [onNext]);
+
     return (
         <>
             {!isItDesktop && <Box className={classes.gap}></Box>}
@@ -34,7 +39,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                         <Button
                             variant="outlined"
                             startIcon={<ArrowBackIosIcon />}
-                            onClick={e => onPrevious(e)}
+                            onClick={backClick}
                             className={cx(
                                 classes.navButton,
                                 hasTwoButtons ? classes.navButtons : classes.singleNavButton,
@@ -47,7 +52,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                         <Button
                             variant="outlined"
                             endIcon={<ArrowForwardIosIcon />}
-                            onClick={e => onNext(e)}
+                            onClick={nextClick}
                             className={cx(
                                 classes.navButton,
                                 hasTwoButtons ? classes.navButtons : classes.singleNavButton,

@@ -9,6 +9,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getOrchestratorPage,
+    navToErrorPage,
     navToHome,
     saveAndNav,
     saveAndNextStep,
@@ -31,14 +32,16 @@ const DayOfSurveyPage = () => {
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
 
     const keydownChange = () => {
-        //TODO: nav to error page when componentId empty
-        const componentId = getComponentId(FieldNameEnum.SURVEYDATE, context.source) || "";
-        const dataSurveyDate = callbackHolder.getData().COLLECTED?.SURVEYDATE.COLLECTED;
-        const errorData =
-            dataSurveyDate != null &&
-            (typeof dataSurveyDate == "string" ? dataSurveyDate.includes("Invalid") : false);
-
-        setDisabledButton(callbackHolder.getErrors()[componentId].length > 0 || errorData);
+        const componentId = getComponentId(FieldNameEnum.SURVEYDATE, context.source);
+        if (componentId == null) {
+            navToErrorPage();
+        } else {
+            const dataSurveyDate = callbackHolder.getData().COLLECTED?.SURVEYDATE.COLLECTED;
+            const errorData =
+                dataSurveyDate != null &&
+                (typeof dataSurveyDate == "string" ? dataSurveyDate.includes("Invalid") : false);
+            setDisabledButton(callbackHolder.getErrors()[componentId].length > 0 || errorData);
+        }
     };
 
     React.useEffect(() => {

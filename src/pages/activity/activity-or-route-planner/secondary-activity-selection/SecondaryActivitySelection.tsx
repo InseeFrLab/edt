@@ -29,7 +29,6 @@ import {
     FieldNameEnum,
     getValue,
     ReferentielsEnum,
-    saveData,
 } from "service/survey-service";
 
 const SecondaryActivitySelectionPage = () => {
