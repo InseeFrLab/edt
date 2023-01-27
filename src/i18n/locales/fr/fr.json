@@ -53,6 +53,7 @@
             }
         },
         "asset": {
+            "logo-alt": "Alt pour logo",
             "reminder-notes-alt": "Alt pour reminder-note",
             "who-are-you-alt": "Alt pour who-are-you",
             "day-of-survey-alt": "Alt pour day-of-survey",
