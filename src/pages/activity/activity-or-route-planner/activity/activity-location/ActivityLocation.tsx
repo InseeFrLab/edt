@@ -29,7 +29,7 @@ const ActivityLocationPage = () => {
             labelOfPage={"location-selecter"}
             errorIcon={locationErrorIcon}
             backRoute={EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION}
-            fieldCondition={FieldNameEnum.WITHSECONDARYACTIVITY}
+            fieldConditionBack={FieldNameEnum.WITHSECONDARYACTIVITY}
             specifiquesProps={specifiquesProps}
         />
     );

@@ -154,7 +154,7 @@ const getStepData = (page: EdtRoutesNameEnum, isRoute?: boolean): StepData => {
     }
 };
 
-const getNextLoopPage = (currentPage: EdtRoutesNameEnum, isRoute?: boolean) => {
+const getNextLoopPage = (currentPage: EdtRoutesNameEnum, isRoute?: boolean, isConditional?: boolean) => {
     const stepper = getStepper(isRoute);
     let index = stepper.find(stepData => stepData.page === currentPage)?.stepNumber ?? 0;
     let nextPage =
@@ -163,7 +163,11 @@ const getNextLoopPage = (currentPage: EdtRoutesNameEnum, isRoute?: boolean) => {
     return nextPage.page;
 };
 
-const getPreviousLoopPage = (currentPage: EdtRoutesNameEnum, isRoute?: boolean) => {
+const getPreviousLoopPage = (
+    currentPage: EdtRoutesNameEnum,
+    isRoute?: boolean,
+    isConditional?: boolean,
+) => {
     const stepper = getStepper(isRoute);
     let index = stepper.find(stepData => stepData.page === currentPage)?.stepNumber ?? 0;
     let previousPage =

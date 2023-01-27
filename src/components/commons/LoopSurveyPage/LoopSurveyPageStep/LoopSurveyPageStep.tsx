@@ -22,7 +22,7 @@ import {
     setEnviro,
     validateAndNextLoopStep,
 } from "service/navigation-service";
-import { FieldNameEnum } from "service/survey-service";
+import { FieldNameEnum, getValue } from "service/survey-service";
 import LoopSurveyPage from "../LoopSurveyPage";
 
 export interface LoopSurveyPageStepProps {
@@ -31,9 +31,9 @@ export interface LoopSurveyPageStepProps {
     errorIcon: string;
     backRoute?: EdtRoutesNameEnum;
     nextRoute?: EdtRoutesNameEnum;
-    fieldCondition?: FieldNameEnum;
+    fieldConditionNext?: FieldNameEnum;
+    fieldConditionBack?: FieldNameEnum;
     specifiquesProps?: any;
-    isRoute?: boolean;
 }
 
 const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
@@ -43,18 +43,19 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         errorIcon,
         backRoute,
         nextRoute,
-        fieldCondition,
+        fieldConditionNext,
+        fieldConditionBack,
         specifiquesProps,
-        isRoute,
     } = props;
 
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
 
-    const stepData = getStepData(currentPage, isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
+    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
+    const stepData = getStepData(currentPage, isRoute);
 
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
@@ -69,21 +70,28 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
                 backRoute || getPreviousLoopPage(currentPage, isRoute),
                 LoopEnum.ACTIVITY_OR_ROUTE,
                 currentIteration,
-                fieldCondition,
-                getPreviousLoopPage(currentPage, isRoute),
+                backRoute ? fieldConditionBack : undefined,
+                backRoute ? getPreviousLoopPage(currentPage, isRoute) : undefined,
             );
         },
         nextClickCallback: () => {
             saveAndLoopNavigate(
-                getNextLoopPage(currentPage, isRoute),
+                nextRoute || getNextLoopPage(currentPage, isRoute),
                 LoopEnum.ACTIVITY_OR_ROUTE,
                 currentIteration,
+                nextRoute != null ? fieldConditionNext : undefined,
+                nextRoute != null ? getNextLoopPage(currentPage, isRoute) : undefined,
             );
         },
         labels: getLabels(labelOfPage),
         errorIcon: errorIcon,
         onSelectValue: () => {
-            validateAndNextLoopStep(getNextLoopPage(currentPage, isRoute), currentIteration);
+            validateAndNextLoopStep(
+                nextRoute ? nextRoute : getNextLoopPage(currentPage, isRoute),
+                currentIteration,
+                nextRoute ? fieldConditionNext : undefined,
+                nextRoute ? getNextLoopPage(currentPage, isRoute) : undefined,
+            );
         },
     };
 
@@ -123,7 +131,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         page: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
         subPage: getLoopPageSubpage(currentPage),
         iteration: currentIteration,
-        overrideOptions: specifiquesProps.referentiel,
+        overrideOptions: specifiquesProps?.referentiel,
         componentSpecificProps: componentLunaticProps,
     };
 
