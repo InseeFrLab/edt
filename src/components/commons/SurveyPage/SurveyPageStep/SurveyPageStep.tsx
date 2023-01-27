@@ -15,20 +15,31 @@ import {
     validateAndNextStep,
 } from "service/navigation-service";
 import { getStepData } from "service/stepper.service";
-import { getPrintedFirstName } from "service/survey-service";
+import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import SurveyPage from "../SurveyPage";
 
 export interface SurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
-    backRoute: EdtRoutesNameEnum;
+    backRoute?: EdtRoutesNameEnum;
     nextRoute?: EdtRoutesNameEnum;
+    isStep?: boolean;
     errorIcon?: string;
     errorAltIcon?: string;
     specifiquesProps?: any;
+    disableButton?: boolean;
 }
 
 const SurveyPageStep = (props: SurveyPageStepProps) => {
-    const { currentPage, errorIcon, errorAltIcon, backRoute, specifiquesProps } = props;
+    const {
+        currentPage,
+        backRoute,
+        nextRoute,
+        isStep = true,
+        errorIcon,
+        errorAltIcon,
+        specifiquesProps,
+        disableButton,
+    } = props;
 
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
@@ -44,7 +55,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         icon: specifiquesProps?.icon,
     };
 
-    const surveyPageProps = {
+    const surveyPageStepProps = {
         onNavigateBack: useCallback(
             () =>
                 specifiquesProps?.displayModal
@@ -59,7 +70,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
                     : saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage),
             [isModalDisplayed],
         ),
-        onPrevious: useCallback(() => saveAndNavFullPath(backRoute), []),
+        onPrevious: useCallback(() => (backRoute ? saveAndNavFullPath(backRoute) : saveAndNav()), []),
         firstName: getPrintedFirstName(context.idSurvey),
         firstNamePrefix: t("component.survey-page-edit-header.week-of"),
         simpleHeader: true,
@@ -70,6 +81,24 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         currentStepNumber: stepData.stepNumber,
         currentStepLabel: stepData.stepLabel,
         backgroundWhiteHeader: true,
+        disableNav: disableButton,
+    };
+
+    const surveyPageNotStepProps = {
+        validate: useCallback(
+            () =>
+                nextRoute
+                    ? saveAndNavFullPath(nextRoute)
+                    : saveAndNextStep(context.surveyRootPage, currentPage),
+            [],
+        ),
+        srcIcon: errorIcon,
+        altIcon: errorAltIcon ? t(errorAltIcon) : undefined,
+        onNavigateBack: useCallback(() => saveAndNav(), []),
+        onPrevious: useCallback(() => (backRoute ? saveAndNavFullPath(backRoute) : saveAndNav()), []),
+        firstName: getPrintedFirstName(context.idSurvey),
+        surveyDate: getPrintedSurveyDate(context.idSurvey, context.surveyRootPage),
+        disableNav: disableButton,
     };
 
     const orchestratorProps = {
@@ -91,6 +120,8 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             setIsModalDisplayed(true);
         }
     };
+
+    const surveyPageProps = isStep ? surveyPageStepProps : surveyPageNotStepProps;
 
     return (
         <SurveyPage {...surveyPageProps}>

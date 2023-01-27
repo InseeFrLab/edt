@@ -1,34 +1,15 @@
 import day_of_survey from "assets/illustration/day-of-survey.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
+import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import React, { useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { callbackHolder } from "orchestrator/Orchestrator";
+import React from "react";
+import { useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import {
-    getOrchestratorPage,
-    navToErrorPage,
-    navToHome,
-    saveAndNav,
-    saveAndNextStep,
-    setEnviro,
-} from "service/navigation-service";
-import {
-    FieldNameEnum,
-    getComponentId,
-    getPrintedFirstName,
-    getPrintedSurveyDate,
-} from "service/survey-service";
+import { navToErrorPage } from "service/navigation-service";
+import { FieldNameEnum, getComponentId } from "service/survey-service";
 
 const DayOfSurveyPage = () => {
-    const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
-    setEnviro(context, useNavigate(), callbackHolder);
-
-    const currentPage = EdtRoutesNameEnum.DAY_OF_SURVEY;
-
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
 
     const keydownChange = () => {
@@ -51,25 +32,13 @@ const DayOfSurveyPage = () => {
 
     return (
         <>
-            <SurveyPage
-                validate={useCallback(() => saveAndNextStep(context.surveyRootPage, currentPage), [])}
-                srcIcon={day_of_survey}
-                altIcon={t("accessibility.asset.day-of-survey-alt")}
-                onNavigateBack={useCallback(() => saveAndNav(), [])}
-                onPrevious={useCallback(() => navToHome(), [])}
-                firstName={getPrintedFirstName(context.idSurvey)}
-                surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
-                disableNav={disabledButton}
-            >
-                <FlexCenter>
-                    <OrchestratorForStories
-                        source={context.source}
-                        data={context.data}
-                        cbHolder={callbackHolder}
-                        page={getOrchestratorPage(currentPage)}
-                    ></OrchestratorForStories>
-                </FlexCenter>
-            </SurveyPage>
+            <SurveyPageStep
+                currentPage={EdtRoutesNameEnum.DAY_OF_SURVEY}
+                errorIcon={day_of_survey}
+                errorAltIcon={"accessibility.asset.day-of-survey-alt"}
+                isStep={false}
+                disableButton={disabledButton}
+            />
         </>
     );
 };

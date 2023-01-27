@@ -1,9 +1,8 @@
-import { IconButton, Snackbar } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Alert, makeStylesEdt } from "lunatic-edt";
+import { Alert } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import { Fragment, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
@@ -23,11 +22,8 @@ import {
     setEnviro,
     validateAndNextLoopStep,
 } from "service/navigation-service";
-import { isDesktop } from "service/responsive";
 import { FieldNameEnum, getValue } from "service/survey-service";
 import LoopSurveyPage from "../LoopSurveyPage";
-import CloseIcon from "@mui/icons-material/Close";
-import dayjs from "dayjs";
 
 export interface LoopSurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
