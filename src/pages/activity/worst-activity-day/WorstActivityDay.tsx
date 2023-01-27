@@ -1,71 +1,29 @@
 import worstActivityDay from "assets/illustration/worst-activity-day.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
+import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { CheckboxOneSpecificProps } from "lunatic-edt";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import {
-    getOrchestratorPage,
-    saveAndNav,
-    saveAndNavFullPath,
-    saveAndNextStep,
-    setEnviro,
-    validateAndNextStep,
-} from "service/navigation-service";
-import { getStepData } from "service/stepper.service";
 import { getActivitesSelectedLabel } from "service/survey-activity-service";
-import { getPrintedFirstName } from "service/survey-service";
-import { useCallback } from "react";
 
 const WorstActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
-    const { t } = useTranslation();
-    setEnviro(context, useNavigate(), callbackHolder);
-
-    const currentPage = EdtRoutesNameEnum.WORST_ACTIVITY_DAY;
-    const stepData = getStepData(currentPage);
     const activites = getActivitesSelectedLabel(context.idSurvey);
 
-    const specificProps: CheckboxOneSpecificProps = {
+    const specifiquesProps = {
         options: activites.map(activity => {
             return { label: activity, value: activity };
         }),
         defaultIcon: true,
-        onSelectValue: () => validateAndNextStep(currentPage),
     };
 
     return (
-        <SurveyPage
-            onNavigateBack={useCallback(() => saveAndNav(), [])}
-            onNext={useCallback(() => saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage), [])}
-            onPrevious={useCallback(
-                () => saveAndNavFullPath(EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY),
-                [],
-            )}
-            firstName={getPrintedFirstName(context.idSurvey)}
-            firstNamePrefix={t("component.survey-page-edit-header.week-of")}
-            simpleHeader={true}
-            simpleHeaderLabel={t("page.complementary-questions.simple-header-label")}
-            srcIcon={worstActivityDay}
-            altIcon={t("accessibility.asset.worst-activity-day-alt")}
-            displayStepper={true}
-            currentStepNumber={stepData.stepNumber}
-            currentStepLabel={stepData.stepLabel}
-            backgroundWhiteHeader={true}
-        >
-            <FlexCenter>
-                <OrchestratorForStories
-                    source={context.source}
-                    data={context.data}
-                    cbHolder={callbackHolder}
-                    componentSpecificProps={specificProps}
-                    page={getOrchestratorPage(currentPage)}
-                ></OrchestratorForStories>
-            </FlexCenter>
-        </SurveyPage>
+        <SurveyPageStep
+            currentPage={EdtRoutesNameEnum.WORST_ACTIVITY_DAY}
+            backRoute={EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY}
+            errorIcon={worstActivityDay}
+            errorAltIcon={"accessibility.asset.worst-activity-day-alt"}
+            specifiquesProps={specifiquesProps}
+        />
     );
 };
 
