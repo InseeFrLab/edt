@@ -23,6 +23,7 @@ const WeeklyPlannerPage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
 
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
+    const [displayedDayHeader, setDisplayedDayHeader] = React.useState<string>("");
 
     const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
 
@@ -34,6 +35,8 @@ const WeeklyPlannerPage = () => {
         surveyDate: getSurveyDate(context.idSurvey),
         isSubChildDisplayed: displayDayOverview,
         setIsSubChildDisplayed: setDisplayDayOverview,
+        displayedDayHeader: displayedDayHeader,
+        setDisplayedDayHeader: setDisplayedDayHeader,
         labels: {
             title: t("component.weekly-planner.title"),
             workSumLabel: t("component.weekly-planner.work-sum-label"),
@@ -66,6 +69,8 @@ const WeeklyPlannerPage = () => {
             firstName={getPrintedFirstName(context.idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={displayDayOverview}
+            simpleHeaderLabel={displayedDayHeader}
+            backgroundWhiteHeader={displayDayOverview}
         >
             <FlexCenter>
                 <OrchestratorForStories
