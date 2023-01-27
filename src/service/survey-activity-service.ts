@@ -156,7 +156,14 @@ const getActivitiesOrRoutes = (
     const copy = [...activitiesRoutes];
     for (const act of copy) {
         // Gaps
-        if (
+        const beforeFirstActivity = getDiffTime(getTime("04:00"), getTime(act?.startTime));
+        if (activitiesRoutes.indexOf(act) == 0 && beforeFirstActivity > 0) {
+            activitiesRoutes.splice(0, 0, {
+                startTime: "04:00",
+                endTime: act.startTime,
+                isGap: true,
+            });
+        } else if (
             previousActivity &&
             hourToNormalizedTimeStamp(act.startTime, idSurvey) >
                 hourToNormalizedTimeStamp(previousActivity.endTime, idSurvey)
@@ -240,7 +247,6 @@ const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string =
     let diffHours = Math.abs(endTime.diff(startTime, "hour"));
     let diffMinutes = Math.abs(endTime.diff(startTime, "minute"));
     diffMinutes = diffMinutes - diffHours * 60;
-
     if (diffMinutes >= 0 && diffHours > 0) {
         return diffHours + "h" + diffMinutes;
     } else if (diffHours == 0) {
