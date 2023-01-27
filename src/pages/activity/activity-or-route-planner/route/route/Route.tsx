@@ -28,7 +28,6 @@ const RoutePage = () => {
             labelOfPage={"route-selecter"}
             errorIcon={routeErrorIcon}
             specifiquesProps={specifiquesProps}
-            //isRoute={true}
         />
     );
 };

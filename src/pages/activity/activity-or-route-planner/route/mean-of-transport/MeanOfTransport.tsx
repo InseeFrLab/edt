@@ -27,7 +27,6 @@ const MeanOfTransportPage = () => {
             labelOfPage={"mean-of-transport-selecter"}
             errorIcon={meanOfTransportErrorIcon}
             specifiquesProps={specifiquesProps}
-            //isRoute={true}
         />
     );
 };

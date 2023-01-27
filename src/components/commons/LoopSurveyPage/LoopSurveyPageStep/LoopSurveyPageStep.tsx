@@ -1,8 +1,9 @@
+import { IconButton, Snackbar } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Alert } from "lunatic-edt";
+import { Alert, makeStylesEdt } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import { useCallback, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
@@ -22,8 +23,11 @@ import {
     setEnviro,
     validateAndNextLoopStep,
 } from "service/navigation-service";
+import { isDesktop } from "service/responsive";
 import { FieldNameEnum, getValue } from "service/survey-service";
 import LoopSurveyPage from "../LoopSurveyPage";
+import CloseIcon from "@mui/icons-material/Close";
+import dayjs from "dayjs";
 
 export interface LoopSurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
@@ -66,32 +70,35 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
-            saveAndLoopNavigate(
-                backRoute || getPreviousLoopPage(currentPage, isRoute),
-                LoopEnum.ACTIVITY_OR_ROUTE,
-                currentIteration,
-                backRoute ? fieldConditionBack : undefined,
-                backRoute ? getPreviousLoopPage(currentPage, isRoute) : undefined,
-            );
+            specifiquesProps?.backClickback ??
+                saveAndLoopNavigate(
+                    backRoute || getPreviousLoopPage(currentPage, isRoute),
+                    LoopEnum.ACTIVITY_OR_ROUTE,
+                    currentIteration,
+                    fieldConditionBack,
+                    fieldConditionBack ? getPreviousLoopPage(currentPage, isRoute) : undefined,
+                );
         },
         nextClickCallback: () => {
-            saveAndLoopNavigate(
-                nextRoute || getNextLoopPage(currentPage, isRoute),
-                LoopEnum.ACTIVITY_OR_ROUTE,
-                currentIteration,
-                nextRoute != null ? fieldConditionNext : undefined,
-                nextRoute != null ? getNextLoopPage(currentPage, isRoute) : undefined,
-            );
+            specifiquesProps?.nextClickback ??
+                saveAndLoopNavigate(
+                    nextRoute || getNextLoopPage(currentPage, isRoute),
+                    LoopEnum.ACTIVITY_OR_ROUTE,
+                    currentIteration,
+                    fieldConditionNext,
+                    fieldConditionNext ? getNextLoopPage(currentPage, isRoute) : undefined,
+                );
         },
         labels: getLabels(labelOfPage),
         errorIcon: errorIcon,
         onSelectValue: () => {
-            validateAndNextLoopStep(
-                nextRoute ? nextRoute : getNextLoopPage(currentPage, isRoute),
-                currentIteration,
-                nextRoute ? fieldConditionNext : undefined,
-                nextRoute ? getNextLoopPage(currentPage, isRoute) : undefined,
-            );
+            specifiquesProps?.onSelectValue ??
+                validateAndNextLoopStep(
+                    nextRoute || getNextLoopPage(currentPage, isRoute),
+                    currentIteration,
+                    fieldConditionNext,
+                    fieldConditionNext ? getNextLoopPage(currentPage, isRoute) : undefined,
+                );
         },
     };
 
@@ -108,18 +115,21 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         currentStepIcon: stepData.stepIcon,
         currentStepIconAlt: stepData.stepIconAlt,
         currentStepNumber: stepData.stepNumber,
-        currentStepLabel: stepData.stepLabel,
+        currentStepLabel: specifiquesProps?.currentStepLabel
+            ? t(specifiquesProps?.currentStepLabel)
+            : stepData.stepLabel,
         isRoute: isRoute,
+        displayStepper: specifiquesProps?.displayStepper,
     };
 
-    const alertPprop = {
+    const alertProps = {
         isAlertDisplayed: isAlertDisplayed,
         onCompleteCallBack: useCallback(() => setIsAlertDisplayed(false), [isAlertDisplayed]),
         onCancelCallBack: useCallback(
             (cancel: boolean) => onClose(cancel, setIsAlertDisplayed, currentIteration),
             [isAlertDisplayed],
         ),
-        labels: getLabelsWhenQuit(),
+        labels: getLabelsWhenQuit(isRoute),
         icon: errorIcon,
         errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
     };
@@ -138,7 +148,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
     return (
         <LoopSurveyPage {...loopSurveyPageProps}>
             <FlexCenter>
-                <Alert {...alertPprop} />
+                <Alert {...alertProps} />
                 <OrchestratorForStories {...orchestratorProps} />
             </FlexCenter>
         </LoopSurveyPage>
