@@ -391,9 +391,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                     altIcon={t("accessibility.asset.empty-activity-alt")}
                                                 />
                                                 <FlexCenter>
-                                                    <Typography
-                                                        className={cx(classes.label, classes.grey)}
-                                                    >
+                                                    <Typography className={cx(classes.label)}>
                                                         {t("page.activity-planner.no-activity")}
                                                     </Typography>
                                                 </FlexCenter>
@@ -498,9 +496,9 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
         fontSize: "18px",
         fontWeight: "bold",
     },
-    grey: {
+    /* grey: {
         color: theme.palette.action.hover,
-    },
+    },*/
     surveyPageBox: {
         flexGrow: "1",
         display: "flex",
