@@ -1,7 +1,7 @@
 import activitySurveySource from "activity-survey.json";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
+import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { SelectedActivity } from "lunatic-edt";
 import { IODataStructure } from "lunatic-edt/dist/interface/WeeklyPlannerTypes";
@@ -170,7 +170,14 @@ const createGapsOverlaps = (idSurvey: string, activitiesRoutes: ActivityRouteOrG
     const copy = [...activitiesRoutes];
     for (const act of copy) {
         // Gaps
-        if (
+        const beforeFirstActivity = getDiffTime(getTime("04:00"), getTime(act?.startTime));
+        if (activitiesRoutes.indexOf(act) == 0 && beforeFirstActivity > 0) {
+            activitiesRoutes.splice(0, 0, {
+                startTime: "04:00",
+                endTime: act.startTime,
+                isGap: true,
+            });
+        } else if (
             previousActivity &&
             hourToNormalizedTimeStamp(act.startTime, idSurvey) >
                 hourToNormalizedTimeStamp(previousActivity.endTime, idSurvey)
@@ -247,20 +254,20 @@ const hourToNormalizedTimeStamp = (hour: string | undefined, idSurvey: string): 
     return dateActivity.toDate().getTime();
 };
 
-const getActivitesSelectedLabel = (idSurvey: string): string[] => {
-    let activitesSelected: string[] = [];
+const getActivitesSelectedLabel = (idSurvey: string): Activity[] => {
+    let activitesSelected: Activity[] = [];
     const { t } = useTranslation();
     getActivitiesOrRoutes(t, idSurvey).activitiesRoutesOrGaps.forEach(activityRouteOrGap => {
         if (
             activityRouteOrGap?.activity?.activityLabel != null &&
             activityRouteOrGap?.activity?.activityLabel.length > 0
         )
-            activitesSelected.push(activityRouteOrGap.activity?.activityLabel);
+            activitesSelected.push(activityRouteOrGap.activity);
         if (
             activityRouteOrGap?.secondaryActivity?.activityLabel != null &&
             activityRouteOrGap?.secondaryActivity?.activityLabel.length > 0
         )
-            activitesSelected.push(activityRouteOrGap.secondaryActivity.activityLabel);
+            activitesSelected.push(activityRouteOrGap.secondaryActivity);
     });
     return activitesSelected;
 };
@@ -278,7 +285,6 @@ const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string =
     let diffHours = Math.abs(endTime.diff(startTime, "hour"));
     let diffMinutes = Math.abs(endTime.diff(startTime, "minute"));
     diffMinutes = diffMinutes - diffHours * 60;
-
     if (diffMinutes >= 0 && diffHours > 0) {
         return diffHours + "h" + diffMinutes;
     } else if (diffHours == 0) {
