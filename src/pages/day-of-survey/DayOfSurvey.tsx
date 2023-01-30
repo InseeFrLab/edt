@@ -30,6 +30,17 @@ const DayOfSurveyPage = () => {
         return () => document.removeEventListener("keyup", keydownChange, true);
     }, [callbackHolder]);
 
+    const keypressChange = (event: any) => {
+        if (event.key === "Enter") {
+            document.getElementById("validateButton")?.click();
+        }
+    };
+
+    React.useEffect(() => {
+        document.addEventListener("keypress", keypressChange, true);
+        return () => document.removeEventListener("keypress", keypressChange, true);
+    }, [callbackHolder]);
+
     return (
         <>
             <SurveyPageStep
