@@ -231,7 +231,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                         !activityOrRoute.route?.routeCode &&
                         renderInsideAlert(InsideAlertTypes.ROUTE)}
                     {!activityOrRoute.isRoute &&
-                        !activityOrRoute.activity?.activityCode &&
+                        !activityOrRoute.activity?.activityLabel &&
                         renderInsideAlert(InsideAlertTypes.ACTIVITY)}
                     {renderMeanOfTransport(activityOrRoute, classes.otherInfoLabel, renderInsideAlert)}
                     {renderSecondaryActivity(activityOrRoute, classes, renderInsideAlert, t)}

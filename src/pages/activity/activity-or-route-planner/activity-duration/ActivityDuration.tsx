@@ -66,6 +66,12 @@ const ActivityDurationPage = () => {
             if (startTime && endTime) {
                 startTimeDay = dayjs(startTime[currentIteration], "HH:mm");
                 endTimeDay = dayjs(endTime[currentIteration], "HH:mm");
+                if (endTimeDay.hour() < 4) {
+                    endTimeDay = endTimeDay.add(1, "day");
+                }
+                if (startTimeDay.hour() < 4) {
+                    startTimeDay = startTimeDay.add(1, "day");
+                }
                 if (startTimeDay.isAfter(endTimeDay)) {
                     isAfter = true;
                 }
