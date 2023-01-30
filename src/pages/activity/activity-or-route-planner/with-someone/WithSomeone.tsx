@@ -4,7 +4,7 @@ import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { Alert, CheckboxBooleanEdtSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
@@ -84,9 +84,15 @@ const WithSomeonePage = () => {
 
     return (
         <LoopSurveyPage
-            onNext={e => onNext(e, setNextClickEvent)}
-            onPrevious={e => onPrevious(e, setBackClickEvent)}
-            onClose={() => onClose(false, setIsAlertDisplayed, currentIteration)}
+            onNext={useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [nextClickEvent])}
+            onPrevious={useCallback(
+                (e: React.MouseEvent) => onPrevious(e, setBackClickEvent),
+                [backClickEvent],
+            )}
+            onClose={useCallback(
+                () => onClose(false, setIsAlertDisplayed, currentIteration),
+                [isAlertDisplayed],
+            )}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -96,8 +102,14 @@ const WithSomeonePage = () => {
             <FlexCenter>
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
-                    onCompleteCallBack={() => setIsAlertDisplayed(false)}
-                    onCancelCallBack={cancel => onClose(cancel, setIsAlertDisplayed, currentIteration)}
+                    onCompleteCallBack={useCallback(
+                        () => setIsAlertDisplayed(false),
+                        [isAlertDisplayed],
+                    )}
+                    onCancelCallBack={useCallback(
+                        cancel => onClose(cancel, setIsAlertDisplayed, currentIteration),
+                        [isAlertDisplayed],
+                    )}
                     labels={getLabelsWhenQuit(isRoute)}
                     icon={peopleErrorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}

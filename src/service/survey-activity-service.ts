@@ -10,7 +10,7 @@ import {
     transformToWeeklyPlannerDataType,
 } from "lunatic-edt/dist/ui/components/Planner/WeeklyPlanner";
 import { useTranslation } from "react-i18next";
-import { FieldNameEnum, getData, getValue, saveData } from "service/survey-service";
+import { FieldNameEnum, getData, getValue, saveData, setValue } from "service/survey-service";
 import { getLoopSize, LoopEnum } from "./loop-service";
 import {
     findActivityInAutoCompleteReferentiel,
@@ -72,17 +72,51 @@ const checkForSecondaryActivity = (idSurvey: string, i: number, activityOrRoute:
     }
 };
 
-const getActivitiesOrRoutes = (
-    t: any,
+const createRoute = (
     idSurvey: string,
-    source?: LunaticModel,
-): {
-    activitiesRoutesOrGaps: ActivityRouteOrGap[];
-    overlaps: { prev: string | undefined; current: string | undefined }[];
-} => {
-    const overlaps = [];
+    source: LunaticModel,
+    activityOrRoute: ActivityRouteOrGap,
+    iteration: number,
+    t: any,
+) => {
+    // Label
+    activityOrRoute.route = { routeLabel: t("common.activity.unknown-route") + (iteration + 1) };
+
+    const routeCode = getValue(idSurvey, FieldNameEnum.ROUTE, iteration) as string | undefined;
+    if (routeCode) {
+        activityOrRoute.route = {
+            routeCode: routeCode,
+            routeLabel: getRouteLabel(routeCode),
+        };
+    }
+
+    //Mean of transport
+    activityOrRoute.meanOfTransportLabels = getMeanOfTransportLabel(idSurvey, iteration, source);
+    return activityOrRoute;
+};
+
+const createActivity = (
+    idSurvey: string,
+    activityOrRoute: ActivityRouteOrGap,
+    iteration: number,
+    t: any,
+) => {
+    // Label
+    activityOrRoute.activity = {
+        activityLabel: t("common.activity.unknown-activity") + (iteration + 1),
+    };
+    // Main activity
+    checkForMainActivity(idSurvey, iteration, activityOrRoute);
+
+    // Location
+    checkForPlace(idSurvey, iteration, activityOrRoute);
+    return activityOrRoute;
+};
+
+const createActivitiesOrRoutes = (idSurvey: string, source: LunaticModel, t: any) => {
     let activitiesRoutes: ActivityRouteOrGap[] = [];
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE, activitySurveySource);
+
     for (let i = 0; i < activityLoopSize; i++) {
         let activityOrRoute: ActivityRouteOrGap = {};
         activityOrRoute.iteration = i;
@@ -93,29 +127,9 @@ const getActivitiesOrRoutes = (
         activityOrRoute.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
 
         if (activityOrRoute.isRoute) {
-            // Label
-            activityOrRoute.route = { routeLabel: t("common.activity.unknown-route") + (i + 1) };
-
-            const routeCode = getValue(idSurvey, FieldNameEnum.ROUTE, i) as string | undefined;
-            if (routeCode) {
-                activityOrRoute.route = {
-                    routeCode: routeCode,
-                    routeLabel: getRouteLabel(routeCode),
-                };
-            }
-
-            //Mean of transport
-            activityOrRoute.meanOfTransportLabels = getMeanOfTransportLabel(idSurvey, i, source);
+            activityOrRoute = createRoute(idSurvey, source, activityOrRoute, i, t);
         } else {
-            // Label
-            activityOrRoute.activity = {
-                activityLabel: t("common.activity.unknown-activity") + (i + 1),
-            };
-            // Main activity
-            checkForMainActivity(idSurvey, i, activityOrRoute);
-
-            // Location
-            checkForPlace(idSurvey, i, activityOrRoute);
+            activityOrRoute = createActivity(idSurvey, activityOrRoute, i, t);
         }
 
         // With Secondary activity
@@ -145,13 +159,13 @@ const getActivitiesOrRoutes = (
         activitiesRoutes.push(activityOrRoute);
     }
 
-    activitiesRoutes.sort(
-        (a, b) =>
-            hourToNormalizedTimeStamp(a.startTime, idSurvey) -
-            hourToNormalizedTimeStamp(b.startTime, idSurvey),
-    );
+    return activitiesRoutes;
+};
 
+const createGapsOverlaps = (idSurvey: string, activitiesRoutes: ActivityRouteOrGap[]) => {
     // Fill the gaps and overlaps
+    const overlaps = [];
+
     let previousActivity: ActivityRouteOrGap | undefined;
     const copy = [...activitiesRoutes];
     for (const act of copy) {
@@ -189,6 +203,30 @@ const getActivitiesOrRoutes = (
         }
         previousActivity = act;
     }
+    return overlaps;
+};
+
+const getActivitiesOrRoutes = (
+    t: any,
+    idSurvey: string,
+    source?: LunaticModel,
+): {
+    activitiesRoutesOrGaps: ActivityRouteOrGap[];
+    overlaps: { prev: string | undefined; current: string | undefined }[];
+} => {
+    let overlaps = [];
+    let activitiesRoutes: ActivityRouteOrGap[] = [];
+    if (source == null) source = activitySurveySource;
+
+    activitiesRoutes = createActivitiesOrRoutes(idSurvey, source, t);
+
+    activitiesRoutes.sort(
+        (a, b) =>
+            hourToNormalizedTimeStamp(a.startTime, idSurvey) -
+            hourToNormalizedTimeStamp(b.startTime, idSurvey),
+    );
+
+    overlaps = createGapsOverlaps(idSurvey, activitiesRoutes);
 
     return {
         activitiesRoutesOrGaps: activitiesRoutes,
@@ -259,10 +297,10 @@ const getTotalTimeOfActivities = (idSurvey: string, t: any): number => {
     let totalTimeGap = 0;
     let leftTimeActivities = 0;
 
-    for (let i = 0; i < activitiesRoutesOrGaps.length; i++) {
-        if (activitiesRoutesOrGaps[i].isGap) {
-            let startTime = getTime(activitiesRoutesOrGaps[i].startTime);
-            let endTime = getTime(activitiesRoutesOrGaps[i].endTime);
+    for (let activityRouteOrGap of activitiesRoutesOrGaps) {
+        if (activityRouteOrGap.isGap) {
+            let startTime = getTime(activityRouteOrGap.startTime);
+            let endTime = getTime(activityRouteOrGap.endTime);
             const diffTime = getDiffTime(startTime, endTime);
             totalTimeGap += diffTime;
         }
@@ -309,9 +347,11 @@ const getDiffTime = (startTime?: any, endTime?: any) => {
     let startFinalTime = startTime;
     let endTimeDay = endTime;
 
-    if (startTime.hour() < 4 && endTime.hour() >= 4) {
-        endTimeDay = endTimeDay.set("day", dayjs().day() + 1);
-    } else if (startTime.hour() >= 4 && endTime.hour() >= 4 && startTime.hour() > endTime.hour()) {
+    let startTimeAfterMidnightAfterEndTime = startTime.hour() < 4 && endTime.hour() >= 4;
+    let startTimeBeforeMidnightAfterEndTime =
+        startTime.hour() >= 4 && endTime.hour() >= 4 && startTime.hour() > endTime.hour();
+
+    if (startTimeAfterMidnightAfterEndTime || startTimeBeforeMidnightAfterEndTime) {
         endTimeDay = endTimeDay.set("day", dayjs().day() + 1);
     }
     const diffHours = Math.abs(startFinalTime.diff(endTimeDay, "hour", true));
@@ -404,9 +444,6 @@ const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: numbe
             if (Array.isArray(value)) {
                 if (value.length >= iteration + 1) {
                     value.splice(iteration, 1);
-                }
-                if (value.length == 0) {
-                    value = [null];
                 }
             }
         });

@@ -3,12 +3,13 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getOrchestratorPage,
+    navToErrorPage,
     navToHome,
     saveAndNav,
     saveAndNextStep,
@@ -30,12 +31,15 @@ const WhoAreYouPage = () => {
     let [disabledButton, setDisabledButton] = React.useState<boolean>(true);
 
     const keydownChange = () => {
-        //TODO: nav to error page when componentId empty
-        const componentId = getComponentId(FieldNameEnum.FIRSTNAME, context.source) || "";
-        setDisabledButton(
-            callbackHolder.getErrors() == undefined ||
-                callbackHolder.getErrors()[componentId].length > 0,
-        );
+        const componentId = getComponentId(FieldNameEnum.FIRSTNAME, context.source);
+        if (componentId == null) {
+            navToErrorPage();
+        } else {
+            setDisabledButton(
+                callbackHolder.getErrors() == undefined ||
+                    callbackHolder.getErrors()[componentId].length > 0,
+            );
+        }
     };
 
     React.useEffect(() => {
@@ -46,11 +50,11 @@ const WhoAreYouPage = () => {
     return (
         <>
             <SurveyPage
-                validate={() => saveAndNextStep(context.surveyRootPage, currentPage)}
+                validate={useCallback(() => saveAndNextStep(context.surveyRootPage, currentPage), [])}
                 srcIcon={who_are_you}
                 altIcon={t("accessibility.asset.who-are-you-alt")}
-                onNavigateBack={() => saveAndNav()}
-                onPrevious={() => navToHome()}
+                onNavigateBack={useCallback(() => saveAndNav(), [])}
+                onPrevious={useCallback(() => navToHome(), [])}
                 firstName={getPrintedFirstName(context.idSurvey)}
                 surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
                 disableNav={disabledButton}

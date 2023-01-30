@@ -6,7 +6,7 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { CheckboxOneSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
@@ -35,9 +35,15 @@ const KindOfWeekPage = () => {
 
     return (
         <SurveyPage
-            validate={() => validateWithAlertAndNav(false, setIsModalDisplayed)}
-            onNavigateBack={() => validateWithAlertAndNav(false, setIsModalDisplayed)}
-            onPrevious={() => navFullPath(EdtRoutesNameEnum.WEEKLY_PLANNER)}
+            validate={useCallback(
+                () => validateWithAlertAndNav(false, setIsModalDisplayed),
+                [isModalDisplayed],
+            )}
+            onNavigateBack={useCallback(
+                () => validateWithAlertAndNav(false, setIsModalDisplayed),
+                [isModalDisplayed],
+            )}
+            onPrevious={useCallback(() => navFullPath(EdtRoutesNameEnum.WEEKLY_PLANNER), [])}
             srcIcon={kindOfWeek}
             altIcon={t("accessibility.asset.kind-of-week-alt")}
             firstName={getPrintedFirstName(context.idSurvey)}
@@ -48,7 +54,10 @@ const KindOfWeekPage = () => {
             <FlexCenter>
                 <FelicitationModal
                     isModalDisplayed={isModalDisplayed}
-                    onCompleteCallBack={() => validateWithAlertAndNav(true, setIsModalDisplayed)}
+                    onCompleteCallBack={useCallback(
+                        () => validateWithAlertAndNav(true, setIsModalDisplayed),
+                        [],
+                    )}
                     content={t("component.modal-edt.modal-felicitation.survey-content")}
                 />
                 <OrchestratorForStories

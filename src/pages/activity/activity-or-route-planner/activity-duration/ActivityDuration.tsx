@@ -11,7 +11,7 @@ import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
 import {
     getLoopParameterizedNavigatePath,
-    navToActivitRouteHome,
+    navToActivityRoutePlanner,
     setEnviro,
 } from "service/navigation-service";
 import { getActivitiesOrRoutes } from "service/survey-activity-service";
@@ -35,7 +35,11 @@ const ActivityDurationPage = () => {
     const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
-    const activitiesAct = getActivitiesOrRoutes(t, context.idSurvey).activitiesRoutesOrGaps;
+    const activitiesAct = getActivitiesOrRoutes(
+        t,
+        context.idSurvey,
+        context.source,
+    ).activitiesRoutesOrGaps;
     const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
@@ -118,23 +122,26 @@ const ActivityDurationPage = () => {
             if (!isCompleted) {
                 if (forceQuit) {
                     saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                        navToActivitRouteHome();
+                        navToActivityRoutePlanner();
                     });
                 } else {
                     setIsAlertDisplayed(true);
                 }
             } else {
-                navToActivitRouteHome();
+                navToActivityRoutePlanner();
             }
         }
     };
 
-    const handleCloseSnackBar = useCallback((event: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === "clickaway") {
-            return;
-        }
-        setOpenSnackbar(false);
-    }, []);
+    const handleCloseSnackBar = useCallback(
+        (event: React.SyntheticEvent | Event, reason?: string) => {
+            if (reason === "clickaway") {
+                return;
+            }
+            setOpenSnackbar(false);
+        },
+        [openSnackbar],
+    );
 
     const snackbarAction = (
         <Fragment>
@@ -146,8 +153,8 @@ const ActivityDurationPage = () => {
 
     return (
         <LoopSurveyPage
-            onNext={onNext}
-            onClose={() => onClose(false)}
+            onNext={useCallback(() => onNext(), [snackbarText, lastEndTime, openSnackbar])}
+            onClose={useCallback(() => onClose(false), [isAlertDisplayed])}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -157,8 +164,11 @@ const ActivityDurationPage = () => {
             <FlexCenter>
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
-                    onCompleteCallBack={() => setIsAlertDisplayed(false)}
-                    onCancelCallBack={onClose}
+                    onCompleteCallBack={useCallback(
+                        () => setIsAlertDisplayed(false),
+                        [isAlertDisplayed],
+                    )}
+                    onCancelCallBack={useCallback(cancel => onClose(cancel), [])}
                     labels={getLabelsWhenQuit(isRoute)}
                     icon={errorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}

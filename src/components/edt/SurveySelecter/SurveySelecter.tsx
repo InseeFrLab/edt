@@ -4,7 +4,7 @@ import { AppBar, Box, Divider, Tab, Tabs, Typography } from "@mui/material";
 import PersonSunIcon from "assets/illustration/card/person-sun.svg";
 import { TabData } from "interface/component/Component";
 import { makeStylesEdt } from "lunatic-edt";
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 interface SurveySelecterProps {
@@ -37,17 +37,23 @@ const SurveySelecter = (props: SurveySelecterProps) => {
     );
     const [isOpen, setIsOpen] = React.useState(isDefaultOpen);
 
-    const handleChangeRowOne = (_event: React.ChangeEvent<{}>, newValue: number) => {
-        setValueRowOne(newValue);
-        onChangeSelected(tabsData[newValue]);
-        setValueRowTwo(false);
-    };
+    const handleChangeRowOne = useCallback(
+        (_event: React.ChangeEvent<{}>, newValue: number) => {
+            setValueRowOne(newValue);
+            onChangeSelected(tabsData[newValue]);
+            setValueRowTwo(false);
+        },
+        [valueRowOne, valueRowTwo],
+    );
 
-    const handleChangeRowTwo = (_event: React.ChangeEvent<{}>, newValue: number) => {
-        setValueRowTwo(newValue);
-        onChangeSelected(tabsData[newValue + maxTabsPerRow]);
-        setValueRowOne(false);
-    };
+    const handleChangeRowTwo = useCallback(
+        (_event: React.ChangeEvent<{}>, newValue: number) => {
+            setValueRowTwo(newValue);
+            onChangeSelected(tabsData[newValue + maxTabsPerRow]);
+            setValueRowOne(false);
+        },
+        [valueRowOne, valueRowTwo],
+    );
 
     const getTabIcon = (isActivitySurvey: boolean): JSX.Element => {
         if (isActivitySurvey) {
@@ -89,7 +95,10 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                             .filter((_, index) => index < maxTabsPerRow)
                             .map((tabData, index) => getTab(tabData, index))}
                     </Tabs>
-                    <Box className={classes.actionBox} onClick={() => setIsOpen(!isOpen)}>
+                    <Box
+                        className={classes.actionBox}
+                        onClick={useCallback(() => setIsOpen(!isOpen), [open])}
+                    >
                         {isOpen ? <ExpandLess /> : <ExpandMore />}
                     </Box>
                 </Box>

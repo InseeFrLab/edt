@@ -13,7 +13,7 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getLastCompletedStep } from "service/navigation-service";
 import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
-import { getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
+import { getScore } from "service/survey-activity-service";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;
@@ -42,7 +42,7 @@ interface SurveyPageProps {
     backgroundWhiteHeader?: boolean;
     activityProgressBar?: boolean;
     idSurvey?: string;
-    score?: string;
+    score?: number;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -78,7 +78,7 @@ const SurveyPage = (props: SurveyPageProps) => {
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
 
-    const [scoreAct, setScoreAct] = React.useState<number | undefined>(getScore(idSurvey || "", t));
+    const [scoreAct, setScoreAct] = React.useState<number | undefined>(score);
 
     useEffect(() => {
         setScoreAct(getScore(idSurvey || "", t));
