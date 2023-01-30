@@ -10,7 +10,7 @@ import {
     transformToWeeklyPlannerDataType,
 } from "lunatic-edt/dist/ui/components/Planner/WeeklyPlanner";
 import { useTranslation } from "react-i18next";
-import { FieldNameEnum, getData, getValue, saveData, setValue } from "service/survey-service";
+import { FieldNameEnum, getData, getValue, saveData } from "service/survey-service";
 import { getLoopSize, LoopEnum } from "./loop-service";
 import {
     findActivityInAutoCompleteReferentiel,

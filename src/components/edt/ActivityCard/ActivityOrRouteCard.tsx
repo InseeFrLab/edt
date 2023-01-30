@@ -270,7 +270,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         );
     };
 
-    const clickToGap = useCallback((e: any) => {
+    const clickToGap = useCallback(() => {
         onClickGap && onClickGap(activityOrRoute.startTime, activityOrRoute.endTime);
     }, []);
 

@@ -3,7 +3,6 @@ import { Box, Button } from "@mui/material";
 import logo from "assets/illustration/logo.png";
 import reminder_note from "assets/illustration/reminder-note.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import PageIcon from "components/commons/PageIcon/PageIcon";
 import DayCard from "components/edt/DayCard/DayCard";
 import WeekCard from "components/edt/WeekCard/WeekCard";
 import { makeStylesEdt } from "lunatic-edt";
