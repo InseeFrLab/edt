@@ -109,7 +109,7 @@
             "no-secondary-activity": "Activité secondaire non renseignée",
             "without-secondary-activity": "Sans activité secondaire",
             "no-place": "Aucun lieu renseigné",
-            "no-with-someone": "Aucune présence renseignée",
+            "no-with-someone": "Aucune compagnie renseignée",
             "alone": "Seul",
             "no-screen": "Aucun écran renseigné",
             "with-screen": "Écran utilisé",
@@ -175,7 +175,7 @@
             "step-3-label": "Activité secondaire",
             "step-3-bis-label": "Moyen de transport",
             "step-4-label": "Lieu",
-            "step-5-label": "Présence",
+            "step-5-label": "Compagnie",
             "step-6-label": "Écran"
         },
 
