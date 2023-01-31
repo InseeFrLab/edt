@@ -20,7 +20,7 @@ const SecondaryActivitySelectionPage = () => {
     const { t } = useTranslation();
 
     const specifiquesProps = {
-        labelsSpecifiques: {
+        labelsSpecifics: {
             otherButtonLabel: t("page.secondary-activity-selection.other-button"),
             subchildLabel: t("page.secondary-activity-selection.add-activity-label"),
             inputPlaceholder: t("page.secondary-activity-selection.input-placeholder"),
