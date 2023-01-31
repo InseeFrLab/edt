@@ -8,6 +8,7 @@ import option5 from "assets/illustration/locations/5.svg";
 import option6 from "assets/illustration/locations/6.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { Alert, IconGridCheckBoxOneSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
@@ -32,7 +33,6 @@ import {
     validateAndNextLoopStep,
 } from "service/navigation-service";
 import { getPlaceRef } from "service/referentiel-service";
-import { FieldNameEnum } from "service/survey-service";
 
 const ActivityLocationPage = () => {
     const { t } = useTranslation();

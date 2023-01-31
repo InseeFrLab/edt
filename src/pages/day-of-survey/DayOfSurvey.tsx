@@ -1,6 +1,7 @@
 import day_of_survey from "assets/illustration/day-of-survey.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React from "react";
@@ -14,12 +15,7 @@ import {
     saveAndNextStep,
     setEnviro,
 } from "service/navigation-service";
-import {
-    FieldNameEnum,
-    getComponentId,
-    getPrintedFirstName,
-    getPrintedSurveyDate,
-} from "service/survey-service";
+import { getComponentId, getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 
 const DayOfSurveyPage = () => {
     const { t } = useTranslation();

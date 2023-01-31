@@ -1,10 +1,11 @@
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LunaticData, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import { SetStateAction } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentLoopPage, getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { FieldNameEnum, getCurrentPage, getData, getValue, saveData } from "service/survey-service";
+import { getCurrentPage, getData, getValue, saveData } from "service/survey-service";
 import { getLastPageStep, getLastStep } from "./stepper.service";
 
 let _context: any = null;

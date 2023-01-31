@@ -1,6 +1,8 @@
 import errorIcon from "assets/illustration/error/activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { Alert, CheckboxOneCustomOption, CheckboxOneSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
@@ -24,13 +26,7 @@ import {
     getActivitySecondaryActivityRef,
     getRouteSecondaryActivityRef,
 } from "service/referentiel-service";
-import {
-    addToSecondaryActivityReferentiel,
-    FieldNameEnum,
-    getValue,
-    ReferentielsEnum,
-    saveData,
-} from "service/survey-service";
+import { addToSecondaryActivityReferentiel, getValue } from "service/survey-service";
 
 const SecondaryActivitySelectionPage = () => {
     const context: OrchestratorContext = useOutletContext();

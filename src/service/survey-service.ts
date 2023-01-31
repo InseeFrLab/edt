@@ -1,5 +1,11 @@
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
+import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { t } from "i18next";
 import { TabData } from "interface/component/Component";
+import { StateData, SurveyData } from "interface/entity/Api";
 import {
     Collected,
     LunaticData,
@@ -7,7 +13,11 @@ import {
     LunaticModelComponent,
     LunaticModelVariable,
     ReferentielData,
-    REFERENTIEL_ID,
+    REFERENTIELS_ID,
+    SourceData,
+    SOURCES_MODELS,
+    SurveysIds,
+    SURVEYS_IDS,
 } from "interface/lunatic/Lunatic";
 import {
     AutoCompleteActiviteOption,
@@ -15,61 +25,22 @@ import {
     generateDateFromStringInput,
     getFrenchDayFromDate,
 } from "lunatic-edt";
-import { AuthContextProps } from "oidc-react";
+import { AuthContextProps, useAuth } from "oidc-react";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
-import { fetchReferentiels, fetchSurveysIds } from "./api-service";
+import {
+    fetchReferentiels,
+    fetchSurveysSourcesByIds,
+    fetchUserSurveysInfo,
+    remoteSaveSurveyData,
+} from "./api-service";
 import { getScore } from "./survey-activity-service";
 
 const datas = new Map<string, LunaticData>();
 let referentielsData: ReferentielData;
-const activitySurveysIds = ["activitySurvey1", "activitySurvey2", "activitySurvey3"];
-const workingTimeSurveysIds = ["workingSurvey1", "workingSurvey2"];
-const surveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
-
-const enum FieldNameEnum {
-    LASTNAME = "LASTNAME",
-    FIRSTNAME = "FIRSTNAME",
-    SURVEYDATE = "SURVEYDATE",
-    STARTTIME = "STARTTIME",
-    ENDTIME = "ENDTIME",
-    MAINACTIVITY_ID = "MAINACTIVITY_ID",
-    MAINACTIVITY_SUGGESTERID = "MAINACTIVITY_SUGGESTERID",
-    MAINACTIVITY_ISFULLYCOMPLETED = "MAINACTIVITY_ISFULLYCOMPLETED",
-    MAINACTIVITY_LABEL = "MAINACTIVITY_LABEL",
-    ROUTE = "ROUTE",
-    GOAL = "GOAL",
-    WITHSECONDARYACTIVITY = "WITHSECONDARYACTIVITY",
-    SECONDARYACTIVITY = "SECONDARYACTIVITY",
-    FOOT = "FOOT",
-    BICYCLE = "BICYCLE",
-    TWOWHEELSMOTORIZED = "TWOWHEELSMOTORIZED",
-    PRIVATECAR = "PRIVATECAR",
-    OTHERPRIVATE = "OTHERPRIVATE",
-    PUBLIC = "PUBLIC",
-    PLACE = "PLACE",
-    WITHSOMEONE = "WITHSOMEONE",
-    COUPLE = "COUPLE",
-    PARENTS = "PARENTS",
-    CHILD = "CHILD",
-    OTHERKNOWN = "OTHERKNOWN",
-    OTHER = "OTHER",
-    WITHSCREEN = "WITHSCREEN",
-    WEEKLYPLANNER = "WEEKLYPLANNER",
-    WORKINGWEEK = "WORKINGWEEK",
-    HOLIDAYWEEK = "HOLIDAYWEEK",
-    OTHERWEEK = "OTHERWEEK",
-    GREATESTACTIVITYDAY = "GREATESTACTIVITYDAY",
-    WORSTACTIVITYDAY = "WORSTACTIVITYDAY",
-    KINDOFDAY = "KINDOFDAY",
-    EXCEPTIONALDAY = "EXCEPTIONALDAY",
-    TRAVELTIME = "TRAVELTIME",
-    PHONETIME = "PHONETIME",
-    ISCLOSED = "ISCLOSED",
-    ISROUTE = "ISROUTE",
-    ISCOMPLETED = "ISCOMPLETED",
-}
+let sourcesData: SourceData;
+let surveysIds: SurveysIds;
 
 const toIgnoreForRoute = [
     FieldNameEnum.PLACE,
@@ -89,39 +60,91 @@ const toIgnoreForActivity = [
     FieldNameEnum.PUBLIC,
 ];
 
-enum ReferentielsEnum {
-    ACTIVITYNOMENCLATURE = "edt-activityCategory",
-    ACTIVITYAUTOCOMPLETE = "edt-activityAutoComplete",
-    ROUTE = "edt-route",
-    ACTIVITYSECONDARYACTIVITY = "edt-activitySecondaryActivity",
-    ROUTESECONDARYACTIVITY = "edt-routeSecondaryActivity",
-    LOCATION = "edt-place",
-    KINDOFWEEK = "edt-kindOfWeek",
-    KINDOFDAY = "edt-kindOfDay",
-}
+const initializeDatas = (auth: AuthContextProps): Promise<boolean> => {
+    const promisesToWait: Promise<any>[] = [];
+    return new Promise(resolve => {
+        promisesToWait.push(initializeRefs(auth));
+        promisesToWait.push(initializeSurveysIdsAndSources(auth));
+        Promise.all(promisesToWait).then(() => {
+            resolve(true);
+        });
+    });
+};
 
-const initializeDatas = (auth: AuthContextProps): Promise<LunaticData[]> => {
-    // fetch referentiels only first time when they are not in indexedDB
-    return lunaticDatabase.get(REFERENTIEL_ID).then((refData: any) => {
-        const promises: Promise<LunaticData>[] = [];
+const initializeRefs = (auth: AuthContextProps) => {
+    return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
         if (!refData) {
-            fetchReferentiels(auth).then(refs => {
-                promises.push(saveReferentiels(refs));
+            return fetchReferentiels(auth).then(refs => {
+                saveReferentiels(refs);
+                console.log("refs fetched");
             });
         } else {
-            referentielsData = refData;
+            referentielsData = refData as ReferentielData;
         }
-        fetchSurveysIds(auth).then(surveysIds => {
-            console.log(surveysIds);
-            for (const idSurvey of surveysIds) {
-                promises.push(
-                    lunaticDatabase.get(idSurvey).then(data => {
-                        datas.set(idSurvey, data || {});
-                        return data || {};
-                    }),
-                );
-            }
-        });
+    });
+};
+
+const initializeSurveysIdsAndSources = (auth: AuthContextProps): Promise<any> => {
+    const promises: Promise<any>[] = [];
+    return lunaticDatabase.get(SURVEYS_IDS).then(data => {
+        if (!data) {
+            promises.push(
+                fetchUserSurveysInfo(auth).then(userSurveyData => {
+                    const distinctSources = Array.from(
+                        new Set(userSurveyData.map(surveyData => surveyData.questionnaireModelId)),
+                    );
+                    let activitySurveysIds: string[] = [];
+                    let workingTimeSurveysIds: string[] = [];
+                    userSurveyData.forEach(surveyData => {
+                        if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
+                            activitySurveysIds.push(surveyData.surveyUnitId);
+                        }
+                        if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
+                            workingTimeSurveysIds.push(surveyData.surveyUnitId);
+                        }
+                    });
+                    let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
+                    const surveysIds: SurveysIds = {
+                        [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+                        [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
+                        [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
+                    };
+                    const innerPromises: Promise<any>[] = [
+                        saveSurveysIds(surveysIds).then(() => {
+                            return promises.push(initializeSurveysDatasCache());
+                        }),
+                        fetchSurveysSourcesByIds(auth, distinctSources).then(sources => {
+                            saveSources(sources);
+                        }),
+                    ];
+                    return Promise.all(innerPromises);
+                }),
+            );
+        } else {
+            surveysIds = data as SurveysIds;
+            promises.push(
+                lunaticDatabase.get(SOURCES_MODELS).then(data => {
+                    sourcesData = data as SourceData;
+                }),
+            );
+            promises.push(initializeSurveysDatasCache());
+        }
+        return Promise.all(promises);
+    });
+};
+
+const initializeSurveysDatasCache = (): Promise<any> => {
+    const promises: Promise<any>[] = [];
+    return lunaticDatabase.get(SURVEYS_IDS).then(data => {
+        surveysIds = data as SurveysIds;
+        for (const idSurvey of surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]) {
+            promises.push(
+                lunaticDatabase.get(idSurvey).then(data => {
+                    datas.set(idSurvey, data || {});
+                    return data || {};
+                }),
+            );
+        }
         return Promise.all(promises);
     });
 };
@@ -137,13 +160,47 @@ const getData = (idSurvey: string): LunaticData => {
 const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => {
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
+        //We try to submit each time the local database is updated if the user is online
+        if (navigator.onLine) {
+            const surveyData: SurveyData = {
+                stateData: getSurveyStateData(data),
+                data: data,
+            };
+            remoteSaveSurveyData(useAuth(), idSurvey, surveyData).then(res => {
+                console.log(res);
+                console.log("saved lunatic");
+            });
+        }
         return data;
     });
 };
 
+const getSurveyStateData = (data: LunaticData): StateData => {
+    const stateData: StateData = {
+        state: StateDataStateEnum.INIT,
+        date: Date.now(),
+        currentPage: getCurrentPage(data),
+    };
+    return stateData;
+};
+
 const saveReferentiels = (data: ReferentielData): Promise<ReferentielData> => {
-    return lunaticDatabase.save(REFERENTIEL_ID, data).then(() => {
+    return lunaticDatabase.save(REFERENTIELS_ID, data).then(() => {
         referentielsData = data;
+        return data;
+    });
+};
+
+const saveSources = (data: SourceData): Promise<SourceData> => {
+    return lunaticDatabase.save(SOURCES_MODELS, data).then(() => {
+        sourcesData = data;
+        return data;
+    });
+};
+
+const saveSurveysIds = (data: SurveysIds): Promise<SurveysIds> => {
+    return lunaticDatabase.save(SURVEYS_IDS, data).then(() => {
+        surveysIds = data;
         return data;
     });
 };
@@ -152,14 +209,14 @@ const addToSecondaryActivityReferentiel = (
     referentiel: ReferentielsEnum.ACTIVITYSECONDARYACTIVITY | ReferentielsEnum.ROUTESECONDARYACTIVITY,
     newItem: CheckboxOneCustomOption,
 ) => {
-    lunaticDatabase.get(REFERENTIEL_ID).then((currentData: any) => {
+    lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
         currentData[referentiel].push(newItem);
         saveReferentiels(currentData);
     });
 };
 
 const addToAutocompleteActivityReferentiel = (newItem: AutoCompleteActiviteOption) => {
-    lunaticDatabase.get(REFERENTIEL_ID).then((currentData: any) => {
+    lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
         currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE].push(newItem);
         saveReferentiels(currentData);
     });
@@ -169,13 +226,16 @@ const getReferentiel = (refName: ReferentielsEnum) => {
     return referentielsData[refName];
 };
 
+const getSource = (refName: SourcesEnum) => {
+    return sourcesData[refName];
+};
+
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
     return source.variables.find(v => v.variableType === "COLLECTED" && v.name === dependency);
 };
 
 //Return the last lunatic model page that has been fill with data
 const getCurrentPage = (data: LunaticData | undefined): number => {
-    //TODO : redirect if we got error page and data is undefined
     const source = getCurrentPageSource();
     if (!data || !source?.components) {
         return 0;
@@ -290,7 +350,7 @@ const getPrintedFirstName = (idSurvey: string): string => {
 const getTabsData = (t: any): TabData[] => {
     let tabsData: TabData[] = [];
 
-    activitySurveysIds.forEach(idSurvey => {
+    surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].forEach(idSurvey => {
         let tabData: TabData = {
             idSurvey: idSurvey,
             surveyDateLabel: getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.ACTIVITY),
@@ -300,7 +360,7 @@ const getTabsData = (t: any): TabData[] => {
         };
         tabsData.push(tabData);
     });
-    workingTimeSurveysIds.forEach(idSurvey => {
+    surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].forEach(idSurvey => {
         let tabData: TabData = {
             idSurvey: idSurvey,
             surveyDateLabel: getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME),
@@ -333,9 +393,9 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
 
 const getPersonNumber = (idSurvey: string) => {
     const index =
-        activitySurveysIds.indexOf(idSurvey) !== -1
-            ? activitySurveysIds.indexOf(idSurvey)
-            : workingTimeSurveysIds.indexOf(idSurvey);
+        surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey) !== -1
+            ? surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey)
+            : surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].indexOf(idSurvey);
     return index + 1;
 };
 
@@ -353,14 +413,12 @@ export {
     getValue,
     setValue,
     getReferentiel,
+    getSource,
     getComponentId,
     getComponentsOfVariable,
     getVariable,
     getTabsData,
-    activitySurveysIds,
-    workingTimeSurveysIds,
-    FieldNameEnum,
-    ReferentielsEnum,
+    surveysIds,
     toIgnoreForRoute,
     toIgnoreForActivity,
     addToSecondaryActivityReferentiel,

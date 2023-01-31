@@ -1,6 +1,7 @@
 import who_are_you from "assets/illustration/who-are-you.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React from "react";
@@ -14,7 +15,6 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import {
-    FieldNameEnum,
     getComponentsOfVariable,
     getPrintedFirstName,
     getPrintedSurveyDate,

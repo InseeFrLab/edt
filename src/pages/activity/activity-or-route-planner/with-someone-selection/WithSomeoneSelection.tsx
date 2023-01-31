@@ -6,6 +6,7 @@ import otherIcon from "assets/illustration/with-someone-categories/other.svg";
 import parentsIcon from "assets/illustration/with-someone-categories/parents.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { Alert, CheckboxGroupSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
@@ -17,7 +18,7 @@ import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import { onClose, onNext, onPrevious, saveAndLoopNavigate, setEnviro } from "service/navigation-service";
-import { FieldNameEnum, getValue } from "service/survey-service";
+import { getValue } from "service/survey-service";
 
 const WithSomeoneSelectionPage = () => {
     const { t } = useTranslation();

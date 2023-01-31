@@ -1,9 +1,9 @@
 import axios from "axios";
-import { UserSurveys } from "interface/entity/Api";
-import { ReferentielData } from "interface/lunatic/Lunatic";
+import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
+import { SurveyData, UserSurveys } from "interface/entity/Api";
+import { ReferentielData, SourceData } from "interface/lunatic/Lunatic";
 import { NomenclatureActivityOption } from "lunatic-edt";
 import { AuthContextProps } from "oidc-react";
-import { ReferentielsEnum } from "./survey-service";
 
 const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
 const stromaeBackOfficeApiBaseUrl = process.env.REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL;
@@ -57,8 +57,7 @@ export const fetchReferentiels = (auth: AuthContextProps): Promise<ReferentielDa
     });
 };
 
-const fetchSurveysIds = (auth: AuthContextProps): Promise<string[]> => {
-    let idsSurvey: string[] = [];
+const fetchUserSurveysInfo = (auth: AuthContextProps): Promise<UserSurveys[]> => {
     return new Promise(resolve => {
         axios
             .get(
@@ -67,14 +66,40 @@ const fetchSurveysIds = (auth: AuthContextProps): Promise<string[]> => {
             )
             .then(response => {
                 const data: UserSurveys[] = response.data;
-                idsSurvey = data.map(survey => survey.surveyUnitId);
-                resolve(idsSurvey);
+                resolve(data);
             });
     });
 };
 
-const saveSurveysData = (): void => {
-    //TODO : to complete
+const fetchSurveysSourcesByIds = (auth: AuthContextProps, sourcesIds: string[]): Promise<SourceData> => {
+    let sources: any = {};
+    let sourcesEndPoints: string[] = [];
+    sourcesIds.map(sourceId => sourcesEndPoints.push("api/questionnaire/" + sourceId));
+    return new Promise(resolve => {
+        axios
+            .all(
+                sourcesEndPoints.map(endPoint =>
+                    axios.get(stromaeBackOfficeApiBaseUrl + endPoint, getHeader(auth)),
+                ),
+            )
+            .then(res => {
+                sourcesIds.forEach((idSource, index) => {
+                    sources[idSource] = res[index].data.value;
+                });
+                resolve(sources as SourceData);
+            });
+    });
 };
 
-export { fetchReferentiel, fetchSurveysIds };
+const remoteSaveSurveyData = (auth: AuthContextProps, idSurvey: string, data: SurveyData) => {
+    return new Promise(resolve => {
+        axios
+            .put(edtOrganisationApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader(auth))
+            .then(response => {
+                console.log(response);
+                resolve(response);
+            });
+    });
+};
+
+export { fetchReferentiel, fetchUserSurveysInfo, fetchSurveysSourcesByIds, remoteSaveSurveyData };

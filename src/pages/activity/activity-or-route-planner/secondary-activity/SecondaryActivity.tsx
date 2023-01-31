@@ -2,6 +2,7 @@ import activityErrorIcon from "assets/illustration/error/activity.svg";
 import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { Alert, CheckboxBooleanEdtSpecificProps, Info } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
@@ -25,7 +26,7 @@ import {
     setEnviro,
     validateAndNextLoopStep,
 } from "service/navigation-service";
-import { FieldNameEnum, getValue } from "service/survey-service";
+import { getValue } from "service/survey-service";
 
 const SecondaryActivityPage = () => {
     const { t } = useTranslation();
