@@ -496,9 +496,6 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
         fontSize: "18px",
         fontWeight: "bold",
     },
-    /* grey: {
-        color: theme.palette.action.hover,
-    },*/
     surveyPageBox: {
         flexGrow: "1",
         display: "flex",
