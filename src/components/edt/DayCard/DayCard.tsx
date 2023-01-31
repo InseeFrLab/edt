@@ -38,7 +38,7 @@ const DayCard = (props: DayCardProps) => {
                         <Box>{firstName}</Box>
                     </Box>
                 </Box>
-                <Box>
+                <Box className={classes.scoreBox}>
                     <PourcentProgress labelledBy={""} describedBy={""} progress={progressActivity} />
                 </Box>
             </Box>
@@ -57,7 +57,7 @@ const useStyles = makeStylesEdt({ "name": { DayCard } })(theme => ({
         alignItems: "center",
         justifyContent: "space-between",
         backgroundColor: theme.variables.white,
-        color: theme.palette.primary.light,
+        color: theme.palette.primary.main,
         marginTop: "1rem",
         cursor: "pointer",
     },
@@ -67,6 +67,9 @@ const useStyles = makeStylesEdt({ "name": { DayCard } })(theme => ({
     },
     iconBox: {
         marginRight: "1rem",
+    },
+    scoreBox: {
+        color: theme.palette.secondary.main,
     },
 }));
 
