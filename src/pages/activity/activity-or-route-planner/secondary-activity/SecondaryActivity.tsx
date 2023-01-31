@@ -13,6 +13,10 @@ const SecondaryActivityPage = () => {
             nextRoute={EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION}
             fieldConditionBack={FieldNameEnum.GOAL}
             fieldConditionNext={FieldNameEnum.WITHSECONDARYACTIVITY}
+            specifiquesProps={{
+                infoLight: "page.secondary-activity.info-light",
+                infoBold: "page.secondary-activity.info-bold",
+            }}
         />
     );
 };

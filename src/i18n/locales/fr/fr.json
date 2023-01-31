@@ -118,7 +118,8 @@
             "gap-secondary": "Ajouter une activité ou un trajet",
             "start-alert": "Les heures des activités de : ",
             "and": " et ",
-            "end-alert": " se chevauchent."
+            "end-alert": " se chevauchent.",
+            "info": "Indiquez vos différents occupations de la journée. Par défaut, votre première activité débute à 4h du matin."
         },
         "secondary-activity": {
             "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",

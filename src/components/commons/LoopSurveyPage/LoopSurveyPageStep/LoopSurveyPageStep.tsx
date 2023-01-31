@@ -1,6 +1,6 @@
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Alert } from "lunatic-edt";
+import { Alert, Info } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -24,6 +24,7 @@ import {
 } from "service/navigation-service";
 import { FieldNameEnum, getValue } from "service/survey-service";
 import LoopSurveyPage from "../LoopSurveyPage";
+import InfoIcon from "assets/illustration/info.svg";
 
 export interface LoopSurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
@@ -146,6 +147,16 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
             <FlexCenter>
                 <Alert {...alertProps} />
                 <OrchestratorForStories {...orchestratorProps} />
+            </FlexCenter>
+            <FlexCenter>
+                {(specifiquesProps?.infoLight || specifiquesProps?.infoBold) && (
+                    <Info
+                        normalText={t(specifiquesProps?.infoLight)}
+                        boldText={t(specifiquesProps?.infoBold)}
+                        infoIcon={InfoIcon}
+                        infoIconAlt={t("accessibility.asset.info.info-alt")}
+                    />
+                )}
             </FlexCenter>
         </LoopSurveyPage>
     );
