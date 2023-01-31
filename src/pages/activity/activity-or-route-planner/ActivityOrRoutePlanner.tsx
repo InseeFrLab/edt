@@ -13,6 +13,7 @@ import {
     Alert,
     formateDateToFrenchFormat,
     generateDateFromStringInput,
+    Info,
     makeStylesEdt,
 } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
@@ -42,6 +43,7 @@ import {
     setValue,
 } from "service/survey-service";
 import { v4 as uuidv4 } from "uuid";
+import InfoIcon from "assets/illustration/info.svg";
 
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
@@ -394,6 +396,15 @@ const ActivityOrRoutePlannerPage = () => {
                                                     <Typography className={cx(classes.label)}>
                                                         {t("page.activity-planner.no-activity")}
                                                     </Typography>
+                                                </FlexCenter>
+                                                <FlexCenter>
+                                                    <Info
+                                                        boldText={t("page.activity-planner.info")}
+                                                        infoIcon={InfoIcon}
+                                                        infoIconAlt={t(
+                                                            "accessibility.asset.info.info-alt",
+                                                        )}
+                                                    />
                                                 </FlexCenter>
                                             </>
                                         ) : (
