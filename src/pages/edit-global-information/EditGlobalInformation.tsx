@@ -1,30 +1,15 @@
 import who_are_you from "assets/illustration/who-are-you.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
+import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { callbackHolder } from "orchestrator/Orchestrator";
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import {
-    getOrchestratorPage,
-    navFullPath,
-    saveAndNavFullPath,
-    setEnviro,
-} from "service/navigation-service";
-import {
-    getComponentsOfVariable,
-    getPrintedFirstName,
-    getPrintedSurveyDate,
-} from "service/survey-service";
+import { getComponentsOfVariable } from "service/survey-service";
 
 const EditGlobalInformationPage = () => {
     const context: OrchestratorContext = useOutletContext();
-    const { t } = useTranslation();
-    setEnviro(context, useNavigate(), callbackHolder);
-
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
 
     const keydownChange = () => {
@@ -52,28 +37,15 @@ const EditGlobalInformationPage = () => {
     }, [callbackHolder]);
 
     return (
-        <SurveyPage
-            validate={() => saveAndNavFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)}
-            srcIcon={who_are_you}
-            altIcon={t("accessibility.asset.who-are-you-alt")}
-            onNavigateBack={() => saveAndNavFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)}
-            onPrevious={() => navFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)}
-            firstName={getPrintedFirstName(context.idSurvey)}
-            surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
-            disableNav={disabledButton}
-        >
-            <FlexCenter>
-                <OrchestratorForStories
-                    source={context.source}
-                    data={context.data}
-                    cbHolder={callbackHolder}
-                    page={getOrchestratorPage(
-                        EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
-                        context.surveyRootPage,
-                    )}
-                ></OrchestratorForStories>
-            </FlexCenter>
-        </SurveyPage>
+        <SurveyPageStep
+            currentPage={EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION}
+            nextRoute={EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER}
+            backRoute={EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER}
+            errorIcon={who_are_you}
+            errorAltIcon={"accessibility.asset.who-are-you-alt"}
+            isStep={false}
+            disableButton={disabledButton}
+        />
     );
 };
 

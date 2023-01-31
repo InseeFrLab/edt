@@ -25,6 +25,7 @@ const ValidateButton = (props: ValidateButtonProps) => {
                 )}
             >
                 <Button
+                    id={"validateButton"}
                     variant="contained"
                     onClick={onClick}
                     disabled={disabled}

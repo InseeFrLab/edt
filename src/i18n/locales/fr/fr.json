@@ -109,7 +109,7 @@
             "no-secondary-activity": "Activité secondaire non renseignée",
             "without-secondary-activity": "Sans activité secondaire",
             "no-place": "Aucun lieu renseigné",
-            "no-with-someone": "Aucune présence renseignée",
+            "no-with-someone": "Aucune compagnie renseignée",
             "alone": "Seul",
             "no-screen": "Aucun écran renseigné",
             "with-screen": "Écran utilisé",
@@ -118,7 +118,8 @@
             "gap-secondary": "Ajouter une activité ou un trajet",
             "start-alert": "Les heures des activités de : ",
             "and": " et ",
-            "end-alert": " se chevauchent."
+            "end-alert": " se chevauchent.",
+            "info": "Indiquez vos différents occupations de la journée. Par défaut, votre première activité débute à 4h du matin."
         },
         "secondary-activity": {
             "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",
@@ -175,7 +176,7 @@
             "step-3-label": "Activité secondaire",
             "step-3-bis-label": "Moyen de transport",
             "step-4-label": "Lieu",
-            "step-5-label": "Présence",
+            "step-5-label": "Compagnie",
             "step-6-label": "Écran"
         },
 

@@ -1,40 +1,29 @@
 import day_of_survey from "assets/illustration/day-of-survey.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
+import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { callbackHolder } from "orchestrator/Orchestrator";
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import {
-    getOrchestratorPage,
-    navToHome,
-    saveAndNav,
-    saveAndNextStep,
-    setEnviro,
-} from "service/navigation-service";
-import { getComponentId, getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
+import { navToErrorPage } from "service/navigation-service";
+import { getComponentId } from "service/survey-service";
 
 const DayOfSurveyPage = () => {
-    const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
-    setEnviro(context, useNavigate(), callbackHolder);
-
-    const currentPage = EdtRoutesNameEnum.DAY_OF_SURVEY;
-
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
 
     const keydownChange = () => {
-        //TODO: nav to error page when componentId empty
-        const componentId = getComponentId(FieldNameEnum.SURVEYDATE, context.source) || "";
-        const dataSurveyDate = callbackHolder.getData().COLLECTED?.SURVEYDATE.COLLECTED;
-        const errorData =
-            dataSurveyDate != null &&
-            (typeof dataSurveyDate == "string" ? dataSurveyDate.includes("Invalid") : false);
-
-        setDisabledButton(callbackHolder.getErrors()[componentId].length > 0 || errorData);
+        const componentId = getComponentId(FieldNameEnum.SURVEYDATE, context.source);
+        if (componentId == null) {
+            navToErrorPage();
+        } else {
+            const dataSurveyDate = callbackHolder.getData().COLLECTED?.SURVEYDATE.COLLECTED;
+            const errorData =
+                dataSurveyDate != null &&
+                (typeof dataSurveyDate == "string" ? dataSurveyDate.includes("Invalid") : false);
+            setDisabledButton(callbackHolder.getErrors()[componentId].length > 0 || errorData);
+        }
     };
 
     React.useEffect(() => {
@@ -42,27 +31,26 @@ const DayOfSurveyPage = () => {
         return () => document.removeEventListener("keyup", keydownChange, true);
     }, [callbackHolder]);
 
+    const keypressChange = (event: any) => {
+        if (event.key === "Enter") {
+            document.getElementById("validateButton")?.click();
+        }
+    };
+
+    React.useEffect(() => {
+        document.addEventListener("keypress", keypressChange, true);
+        return () => document.removeEventListener("keypress", keypressChange, true);
+    }, [callbackHolder]);
+
     return (
         <>
-            <SurveyPage
-                validate={() => saveAndNextStep(context.surveyRootPage, currentPage)}
-                srcIcon={day_of_survey}
-                altIcon={t("accessibility.asset.day-of-survey-alt")}
-                onNavigateBack={() => saveAndNav()}
-                onPrevious={() => navToHome()}
-                firstName={getPrintedFirstName(context.idSurvey)}
-                surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
-                disableNav={disabledButton}
-            >
-                <FlexCenter>
-                    <OrchestratorForStories
-                        source={context.source}
-                        data={context.data}
-                        cbHolder={callbackHolder}
-                        page={getOrchestratorPage(currentPage)}
-                    ></OrchestratorForStories>
-                </FlexCenter>
-            </SurveyPage>
+            <SurveyPageStep
+                currentPage={EdtRoutesNameEnum.DAY_OF_SURVEY}
+                errorIcon={day_of_survey}
+                errorAltIcon={"accessibility.asset.day-of-survey-alt"}
+                isStep={false}
+                disableButton={disabledButton}
+            />
         </>
     );
 };
