@@ -1,3 +1,4 @@
+import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { Alert, Info } from "lunatic-edt";
@@ -8,23 +9,17 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import {
-    getLoopPageSubpage,
-    getNextLoopPage,
-    getPreviousLoopPage,
-    getStepData,
-} from "service/loop-stepper-service";
+import { getLoopPageSubpage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
 import {
     onClose,
     onNext,
     onPrevious,
     saveAndLoopNavigate,
     setEnviro,
-    validateAndNextLoopStep,
+    validate,
 } from "service/navigation-service";
-import { FieldNameEnum, getValue } from "service/survey-service";
+import { activityIgnore, FieldNameEnum, getValue, skipNextPage } from "service/survey-service";
 import LoopSurveyPage from "../LoopSurveyPage";
-import InfoIcon from "assets/illustration/info.svg";
 
 export interface LoopSurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
@@ -67,35 +62,58 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
+            const previousPageRoute = backRoute
+                ? activityIgnore(context.idSurvey, context.source, currentIteration, backRoute)
+                    ? getPreviousLoopPage(backRoute, isRoute)
+                    : backRoute
+                : undefined;
+
+            const previousCurrentPage = getPreviousLoopPage(currentPage, isRoute);
+            const previousPageNextLoop = activityIgnore(
+                context.idSurvey,
+                context.source,
+                currentIteration,
+                previousCurrentPage,
+            )
+                ? getPreviousLoopPage(previousCurrentPage, isRoute)
+                : previousCurrentPage;
+
             specifiquesProps?.backClickback ??
                 saveAndLoopNavigate(
-                    backRoute || getPreviousLoopPage(currentPage, isRoute),
+                    previousPageRoute || previousPageNextLoop,
                     LoopEnum.ACTIVITY_OR_ROUTE,
                     currentIteration,
                     fieldConditionBack,
-                    fieldConditionBack ? getPreviousLoopPage(currentPage, isRoute) : undefined,
+                    fieldConditionBack ? previousPageNextLoop : undefined,
                 );
         },
         nextClickCallback: () => {
             specifiquesProps?.nextClickback ??
-                saveAndLoopNavigate(
-                    nextRoute || getNextLoopPage(currentPage, isRoute),
-                    LoopEnum.ACTIVITY_OR_ROUTE,
+                skipNextPage(
+                    context.idSurvey,
+                    context.source,
                     currentIteration,
+                    currentPage,
                     fieldConditionNext,
-                    fieldConditionNext ? getNextLoopPage(currentPage, isRoute) : undefined,
+                    nextRoute,
+                    isRoute,
                 );
         },
         labels: getLabels(labelOfPage),
         errorIcon: errorIcon,
         onSelectValue: () => {
             specifiquesProps?.onSelectValue ??
-                validateAndNextLoopStep(
-                    nextRoute || getNextLoopPage(currentPage, isRoute),
-                    currentIteration,
-                    fieldConditionNext,
-                    fieldConditionNext ? getNextLoopPage(currentPage, isRoute) : undefined,
-                );
+                validate().then(() => {
+                    skipNextPage(
+                        context.idSurvey,
+                        context.source,
+                        currentIteration,
+                        currentPage,
+                        fieldConditionNext,
+                        nextRoute,
+                        isRoute,
+                    );
+                });
         },
     };
 
