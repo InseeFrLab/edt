@@ -30,6 +30,7 @@ import {
     navToActivityRoutePlanner,
     navToEditActivity,
     navToHelp,
+    navToHome,
     setEnviro,
 } from "service/navigation-service";
 import { isDesktop } from "service/responsive";
