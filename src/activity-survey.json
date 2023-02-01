@@ -868,7 +868,7 @@
                     "label": "\"Dans quel but avez-vous fait cette activité ?\"",
                     "mandatory": false,
                     "options": [
-                        { "label": "\"Personnel, pour son ménage\"", "value": "1" },
+                        { "label": "\"Personnel, pour mon ménage\"", "value": "1" },
                         { "label": "\"Professionnel\"", "value": "2" },
                         { "label": "\"Aide à un autre ménage\"", "value": "3" },
                         { "label": "\"Bénévole, pour une association\"", "value": "4" }
@@ -907,7 +907,7 @@
                                 "name": "PARENTS"
                             },
                             "id": "2",
-                            "label": "\"Votre Mère, votre Père\""
+                            "label": "\"Votre mère, votre père\""
                         },
                         {
                             "response": {
@@ -941,7 +941,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxgroup_presentpeople",
                     "page": "4.12",
-                    "label": "\"En présence de qui étiez-vous ?\"",
+                    "label": "\"En compagnie de qui étiez-vous ?\"",
                     "tipsLabel": "Vous pouvez en selectionner plusieurs",
                     "mandatory": false
                 }

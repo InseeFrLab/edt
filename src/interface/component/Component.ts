@@ -2,6 +2,6 @@ export interface TabData {
     idSurvey: string;
     surveyDateLabel: string;
     firstNameLabel: string;
-    score: string;
+    score: number;
     isActivitySurvey: boolean;
 }

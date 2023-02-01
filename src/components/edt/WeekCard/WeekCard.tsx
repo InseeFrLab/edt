@@ -33,7 +33,7 @@ const WeekCard = (props: WeekCardProps) => {
                         <Box>{firstName}</Box>
                     </Box>
                 </Box>
-                <Box>
+                <Box className={classes.scoreBox}>
                     <PourcentProgress
                         labelledBy={""}
                         describedBy={""}
@@ -67,6 +67,9 @@ const useStyles = makeStylesEdt({ "name": { WeekCard } })(theme => ({
     iconBox: {
         marginRight: "1rem",
         color: theme.palette.primary.light,
+    },
+    scoreBox: {
+        color: theme.palette.secondary.main,
     },
 }));
 

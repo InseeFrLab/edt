@@ -32,6 +32,102 @@ interface ActivityOrRouteCardProps {
     onDelete?(): void;
 }
 
+const renderMeanOfTransport = (
+    activityOrRoute: ActivityRouteOrGap,
+    classes: any,
+    renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
+) => {
+    return (
+        activityOrRoute.isRoute &&
+        (activityOrRoute.meanOfTransportLabels ? (
+            <Box className={classes.otherInfoLabel}>{activityOrRoute.meanOfTransportLabels}</Box>
+        ) : (
+            renderInsideAlert(InsideAlertTypes.MEANOFTRANSPORT)
+        ))
+    );
+};
+
+const renderPlace = (
+    activityOrRoute: ActivityRouteOrGap,
+    classes: any,
+    renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
+) => {
+    return (
+        !activityOrRoute.isRoute &&
+        (activityOrRoute.place ? (
+            <Box className={classes.otherInfoLabel}>{activityOrRoute.place.placeLabel}</Box>
+        ) : (
+            renderInsideAlert(InsideAlertTypes.PLACE)
+        ))
+    );
+};
+
+const renderWithSomeone = (
+    activityOrRoute: ActivityRouteOrGap,
+    classes: any,
+    renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
+    t: TFunction<"translation", undefined>,
+) => {
+    const withSomeoneLabel =
+        activityOrRoute.withSomeoneLabels != null && activityOrRoute.withSomeoneLabels ? (
+            <Box className={classes.otherInfoLabel}>{activityOrRoute.withSomeoneLabels}</Box>
+        ) : (
+            renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
+        );
+
+    const isWithSecondaryActivity = activityOrRoute.withSomeone ? (
+        withSomeoneLabel
+    ) : (
+        <Box className={classes.otherInfoLabel}>{t("page.activity-planner.alone")}</Box>
+    );
+
+    return activityOrRoute.withSomeone == null
+        ? renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
+        : isWithSecondaryActivity;
+};
+
+const renderSecondaryActivity = (
+    activityOrRoute: ActivityRouteOrGap,
+    classes: any,
+    renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
+    t: TFunction<"translation", undefined>,
+) => {
+    const hasLabel = activityOrRoute.secondaryActivity?.activityLabel ? (
+        <Box className={classes.otherInfoLabel}>{activityOrRoute.secondaryActivity.activityLabel}</Box>
+    ) : (
+        renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
+    );
+
+    const isWithSecondaryActivity = activityOrRoute.withSecondaryActivity ? (
+        hasLabel
+    ) : (
+        <Box className={classes.otherInfoLabel}>
+            {t("page.activity-planner.without-secondary-activity")}
+        </Box>
+    );
+
+    return activityOrRoute.withSecondaryActivity == null
+        ? renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
+        : isWithSecondaryActivity;
+};
+
+const renderWithScreen = (
+    activityOrRoute: ActivityRouteOrGap,
+    classes: any,
+    renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
+    t: TFunction<"translation", undefined>,
+) => {
+    const withScreenLabel = activityOrRoute.withScreen
+        ? t("page.activity-planner.with-screen")
+        : t("page.activity-planner.without-screen");
+
+    return activityOrRoute.withScreen == null ? (
+        renderInsideAlert(InsideAlertTypes.SCREEN)
+    ) : (
+        <Box className={classes.otherInfoLabel}>{withScreenLabel}</Box>
+    );
+};
+
 const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const { labelledBy, describedBy, onClick, onClickGap, activityOrRoute, onEdit, onDelete } = props;
     const { t } = useTranslation();
@@ -76,10 +172,13 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const openPopOver = Boolean(anchorEl);
     const id = openPopOver ? "edit-or-delete-popover" : undefined;
 
-    const handleClose = (e: any) => {
-        setAnchorEl(null);
-        e.stopPropagation();
-    };
+    const handleClose = useCallback(
+        (e: any) => {
+            setAnchorEl(null);
+            e.stopPropagation();
+        },
+        [anchorEl],
+    );
 
     const onEditIn = useCallback((e: any) => {
         onEdit && onEdit();
@@ -108,56 +207,6 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         setAnchorEl(e.currentTarget);
     }, []);
 
-    const renderMeanOfTransport = () => {
-        return (
-            activityOrRoute.isRoute &&
-            (activityOrRoute.meanOfTransportLabels ? (
-                <Box className={classes.otherInfoLabel}>{activityOrRoute.meanOfTransportLabels}</Box>
-            ) : (
-                renderInsideAlert(InsideAlertTypes.MEANOFTRANSPORT)
-            ))
-        );
-    };
-
-    const renderPlace = (
-        activityOrRoute: ActivityRouteOrGap,
-        classes: any,
-        renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
-    ) => {
-        return (
-            !activityOrRoute.isRoute &&
-            (activityOrRoute.place ? (
-                <Box className={classes.otherInfoLabel}>{activityOrRoute.place.placeLabel}</Box>
-            ) : (
-                renderInsideAlert(InsideAlertTypes.PLACE)
-            ))
-        );
-    };
-
-    const renderWithSomeone = (
-        activityOrRoute: ActivityRouteOrGap,
-        classes: any,
-        renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
-        t: TFunction<"translation", undefined>,
-    ) => {
-        const withSomeoneLabel =
-            activityOrRoute.withSomeoneLabels != null && activityOrRoute.withSomeoneLabels ? (
-                <Box className={classes.otherInfoLabel}>{activityOrRoute.withSomeoneLabels}</Box>
-            ) : (
-                renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
-            );
-
-        const isWithSecondaryActivity = activityOrRoute.withSomeone ? (
-            withSomeoneLabel
-        ) : (
-            <Box className={classes.otherInfoLabel}>{t("page.activity-planner.alone")}</Box>
-        );
-
-        return activityOrRoute.withSomeone == null
-            ? renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
-            : isWithSecondaryActivity;
-    };
-
     const renderActivityOrRoute = () => {
         return (
             <Box
@@ -182,9 +231,9 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                         !activityOrRoute.route?.routeCode &&
                         renderInsideAlert(InsideAlertTypes.ROUTE)}
                     {!activityOrRoute.isRoute &&
-                        !activityOrRoute.activity?.activityCode &&
+                        !activityOrRoute.activity?.activityLabel &&
                         renderInsideAlert(InsideAlertTypes.ACTIVITY)}
-                    {renderMeanOfTransport()}
+                    {renderMeanOfTransport(activityOrRoute, classes.otherInfoLabel, renderInsideAlert)}
                     {renderSecondaryActivity(activityOrRoute, classes, renderInsideAlert, t)}
                     {renderPlace(activityOrRoute, classes, renderInsideAlert)}
                     {renderWithSomeone(activityOrRoute, classes, renderInsideAlert, t)}
@@ -221,14 +270,13 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         );
     };
 
+    const clickToGap = useCallback(() => {
+        onClickGap && onClickGap(activityOrRoute.startTime, activityOrRoute.endTime);
+    }, []);
+
     const renderGap = () => {
         return (
-            <Box
-                className={cx(classes.mainCardBox, classes.gapBox)}
-                onClick={() => {
-                    onClickGap && onClickGap(activityOrRoute.startTime, activityOrRoute.endTime);
-                }}
-            >
+            <Box className={cx(classes.mainCardBox, classes.gapBox)} onClick={clickToGap}>
                 <img className={classes.insideAlertIcon} src={gapIcon}></img>
                 <Typography className={cx(classes.mainActivityLabel, classes.gapText)}>
                     {" "}
@@ -243,48 +291,6 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     };
 
     return activityOrRoute.isGap ? renderGap() : renderActivityOrRoute();
-};
-
-const renderSecondaryActivity = (
-    activityOrRoute: ActivityRouteOrGap,
-    classes: any,
-    renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
-    t: TFunction<"translation", undefined>,
-) => {
-    const hasLabel = activityOrRoute.secondaryActivity?.activityLabel ? (
-        <Box className={classes.otherInfoLabel}>{activityOrRoute.secondaryActivity.activityLabel}</Box>
-    ) : (
-        renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
-    );
-
-    const isWithSecondaryActivity = activityOrRoute.withSecondaryActivity ? (
-        hasLabel
-    ) : (
-        <Box className={classes.otherInfoLabel}>
-            {t("page.activity-planner.without-secondary-activity")}
-        </Box>
-    );
-
-    return activityOrRoute.withSecondaryActivity == null
-        ? renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
-        : isWithSecondaryActivity;
-};
-
-const renderWithScreen = (
-    activityOrRoute: ActivityRouteOrGap,
-    classes: any,
-    renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
-    t: TFunction<"translation", undefined>,
-) => {
-    const withScreenLabel = activityOrRoute.withScreen
-        ? t("page.activity-planner.with-screen")
-        : t("page.activity-planner.without-screen");
-
-    return activityOrRoute.withScreen == null ? (
-        renderInsideAlert(InsideAlertTypes.SCREEN)
-    ) : (
-        <Box className={classes.otherInfoLabel}>{withScreenLabel}</Box>
-    );
 };
 
 const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({

@@ -9,7 +9,7 @@ import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimp
 import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
 import EndActivityStepper from "components/edt/EndActivityStepper/EndActivityStepper";
 import { makeStylesEdt, ProgressBar } from "lunatic-edt";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getLastCompletedStep } from "service/navigation-service";
 import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
@@ -42,6 +42,7 @@ interface SurveyPageProps {
     backgroundWhiteHeader?: boolean;
     activityProgressBar?: boolean;
     idSurvey?: string;
+    score?: number;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -72,14 +73,27 @@ const SurveyPage = (props: SurveyPageProps) => {
         backgroundWhiteHeader,
         activityProgressBar = false,
         idSurvey,
+        score,
     } = props;
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
-    let score = "0";
+
+    const [scoreAct, setScoreAct] = React.useState<number | undefined>(score);
 
     useEffect(() => {
-        if (idSurvey) score = getScore(idSurvey, t);
-    }, [children]);
+        setScoreAct(getScore(idSurvey || "", t));
+    }, [score]);
+
+    const renderProgressBar = () => {
+        return (
+            activityProgressBar &&
+            idSurvey && (
+                <Box className={classes.progressBar}>
+                    <ProgressBar value={scoreAct} showlabel={true}></ProgressBar>
+                </Box>
+            )
+        );
+    };
 
     return (
         <Box className={cx(classes.page, className)}>
@@ -118,11 +132,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                     currentStepLabel={currentStepLabel}
                 />
             )}
-            {activityProgressBar && idSurvey && (
-                <Box className={classes.progressBar}>
-                    <ProgressBar value={Number(getScore(idSurvey, t))} showlabel={true}></ProgressBar>
-                </Box>
-            )}
+            {renderProgressBar()}
             <Box className={classes.content}>
                 {srcIcon && altIcon && <PageIcon srcIcon={srcIcon} altIcon={altIcon} />}
                 {children}

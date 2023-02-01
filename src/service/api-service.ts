@@ -20,7 +20,7 @@ export const fetchReferentiels = (): Promise<ReferentielData> => {
         [ReferentielsEnum.KINDOFDAY]: [],
     };
     let refsEndPoints: string[] = [];
-    Object.values(ReferentielsEnum).map(value => {
+    Object.values(ReferentielsEnum).forEach(value => {
         refsEndPoints.push("/nomenclature/" + value);
     });
 

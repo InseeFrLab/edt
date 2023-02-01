@@ -10,7 +10,6 @@ const HelpPage = () => {
     return (
         <>
             <header>Help - {t("page.home.welcome")}</header>
-
             <Paper className={classes.footerBox} component="footer" square variant="outlined">
                 <Box>
                     <Typography variant="caption" color="initial">
