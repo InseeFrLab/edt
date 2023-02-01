@@ -25,7 +25,6 @@ import {
     generateDateFromStringInput,
     getFrenchDayFromDate,
 } from "lunatic-edt";
-import { AuthContextProps, useAuth } from "oidc-react";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
@@ -33,7 +32,8 @@ import {
     fetchReferentiels,
     fetchSurveysSourcesByIds,
     fetchUserSurveysInfo,
-    remoteSaveSurveyData,
+    remoteGetSurveyData,
+    remotePutSurveyData,
 } from "./api-service";
 import { getScore } from "./survey-activity-service";
 
@@ -60,21 +60,21 @@ const toIgnoreForActivity = [
     FieldNameEnum.PUBLIC,
 ];
 
-const initializeDatas = (auth: AuthContextProps): Promise<boolean> => {
+const initializeDatas = (): Promise<boolean> => {
     const promisesToWait: Promise<any>[] = [];
     return new Promise(resolve => {
-        promisesToWait.push(initializeRefs(auth));
-        promisesToWait.push(initializeSurveysIdsAndSources(auth));
+        promisesToWait.push(initializeRefs());
+        promisesToWait.push(initializeSurveysIdsAndSources());
         Promise.all(promisesToWait).then(() => {
             resolve(true);
         });
     });
 };
 
-const initializeRefs = (auth: AuthContextProps) => {
+const initializeRefs = () => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
         if (!refData) {
-            return fetchReferentiels(auth).then(refs => {
+            return fetchReferentiels().then(refs => {
                 saveReferentiels(refs);
                 console.log("refs fetched");
             });
@@ -84,12 +84,12 @@ const initializeRefs = (auth: AuthContextProps) => {
     });
 };
 
-const initializeSurveysIdsAndSources = (auth: AuthContextProps): Promise<any> => {
+const initializeSurveysIdsAndSources = (): Promise<any> => {
     const promises: Promise<any>[] = [];
     return lunaticDatabase.get(SURVEYS_IDS).then(data => {
         if (!data) {
             promises.push(
-                fetchUserSurveysInfo(auth).then(userSurveyData => {
+                fetchUserSurveysInfo().then(userSurveyData => {
                     const distinctSources = Array.from(
                         new Set(userSurveyData.map(surveyData => surveyData.questionnaireModelId)),
                     );
@@ -109,11 +109,14 @@ const initializeSurveysIdsAndSources = (auth: AuthContextProps): Promise<any> =>
                         [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
                         [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
                     };
+
+                    getRemoteSavedSurveysDatas(allSurveysIds);
+
                     const innerPromises: Promise<any>[] = [
                         saveSurveysIds(surveysIds).then(() => {
                             return promises.push(initializeSurveysDatasCache());
                         }),
-                        fetchSurveysSourcesByIds(auth, distinctSources).then(sources => {
+                        fetchSurveysSourcesByIds(distinctSources).then(sources => {
                             saveSources(sources);
                         }),
                     ];
@@ -127,9 +130,18 @@ const initializeSurveysIdsAndSources = (auth: AuthContextProps): Promise<any> =>
                     sourcesData = data as SourceData;
                 }),
             );
+            getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]);
             promises.push(initializeSurveysDatasCache());
         }
         return Promise.all(promises);
+    });
+};
+
+const getRemoteSavedSurveysDatas = (surveysIds: string[]) => {
+    surveysIds.forEach(surveyId => {
+        remoteGetSurveyData(surveyId).then((surveyData: SurveyData) => {
+            console.log(surveyData);
+        });
     });
 };
 
@@ -166,10 +178,7 @@ const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => 
                 stateData: getSurveyStateData(data),
                 data: data,
             };
-            remoteSaveSurveyData(useAuth(), idSurvey, surveyData).then(res => {
-                console.log(res);
-                console.log("saved lunatic");
-            });
+            remotePutSurveyData(idSurvey, surveyData);
         }
         return data;
     });

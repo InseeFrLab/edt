@@ -3,7 +3,6 @@
     "version": "1.5.5",
     "dateVersion": "25/01/2023",
     "licence": "MIT",
-    "proxy": "https://edt-api-kc.demo.insee.io",
     "dependencies": {
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",

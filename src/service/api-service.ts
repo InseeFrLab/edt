@@ -4,14 +4,15 @@ import { SurveyData, UserSurveys } from "interface/entity/Api";
 import { ReferentielData, SourceData } from "interface/lunatic/Lunatic";
 import { NomenclatureActivityOption } from "lunatic-edt";
 import { AuthContextProps } from "oidc-react";
+import { getUserToken } from "./user-service";
 
 const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
 const stromaeBackOfficeApiBaseUrl = process.env.REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL;
 
-const getHeader = (auth: AuthContextProps) => {
+const getHeader = () => {
     return {
         headers: {
-            "Authorization": "Bearer " + auth.userData?.access_token,
+            "Authorization": "Bearer " + getUserToken(),
             "Access-Control-Allow-Origin": "*",
             "Content-type": "application/json",
         },
@@ -21,11 +22,11 @@ const getHeader = (auth: AuthContextProps) => {
 const fetchReferentiel = (auth: AuthContextProps, idReferentiel: ReferentielsEnum) => {
     return axios.get<NomenclatureActivityOption[]>(
         stromaeBackOfficeApiBaseUrl + "api/nomenclature/" + idReferentiel,
-        getHeader(auth),
+        getHeader(),
     );
 };
 
-export const fetchReferentiels = (auth: AuthContextProps): Promise<ReferentielData> => {
+export const fetchReferentiels = (): Promise<ReferentielData> => {
     let refs: ReferentielData = {
         [ReferentielsEnum.ACTIVITYNOMENCLATURE]: [],
         [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: [],
@@ -45,7 +46,7 @@ export const fetchReferentiels = (auth: AuthContextProps): Promise<ReferentielDa
         axios
             .all(
                 refsEndPoints.map(endPoint =>
-                    axios.get(stromaeBackOfficeApiBaseUrl + endPoint, getHeader(auth)),
+                    axios.get(stromaeBackOfficeApiBaseUrl + endPoint, getHeader()),
                 ),
             )
             .then(res => {
@@ -57,13 +58,10 @@ export const fetchReferentiels = (auth: AuthContextProps): Promise<ReferentielDa
     });
 };
 
-const fetchUserSurveysInfo = (auth: AuthContextProps): Promise<UserSurveys[]> => {
+const fetchUserSurveysInfo = (): Promise<UserSurveys[]> => {
     return new Promise(resolve => {
         axios
-            .get(
-                edtOrganisationApiBaseUrl + "api/survey-assigment/interviewer/my-surveys",
-                getHeader(auth),
-            )
+            .get(edtOrganisationApiBaseUrl + "api/survey-assigment/interviewer/my-surveys", getHeader())
             .then(response => {
                 const data: UserSurveys[] = response.data;
                 resolve(data);
@@ -71,7 +69,7 @@ const fetchUserSurveysInfo = (auth: AuthContextProps): Promise<UserSurveys[]> =>
     });
 };
 
-const fetchSurveysSourcesByIds = (auth: AuthContextProps, sourcesIds: string[]): Promise<SourceData> => {
+const fetchSurveysSourcesByIds = (sourcesIds: string[]): Promise<SourceData> => {
     let sources: any = {};
     let sourcesEndPoints: string[] = [];
     sourcesIds.map(sourceId => sourcesEndPoints.push("api/questionnaire/" + sourceId));
@@ -79,7 +77,7 @@ const fetchSurveysSourcesByIds = (auth: AuthContextProps, sourcesIds: string[]):
         axios
             .all(
                 sourcesEndPoints.map(endPoint =>
-                    axios.get(stromaeBackOfficeApiBaseUrl + endPoint, getHeader(auth)),
+                    axios.get(stromaeBackOfficeApiBaseUrl + endPoint, getHeader()),
                 ),
             )
             .then(res => {
@@ -91,15 +89,30 @@ const fetchSurveysSourcesByIds = (auth: AuthContextProps, sourcesIds: string[]):
     });
 };
 
-const remoteSaveSurveyData = (auth: AuthContextProps, idSurvey: string, data: SurveyData) => {
+const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<boolean> => {
     return new Promise(resolve => {
         axios
-            .put(edtOrganisationApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader(auth))
-            .then(response => {
-                console.log(response);
-                resolve(response);
+            .put(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader())
+            .then(() => {
+                resolve(true);
             });
     });
 };
 
-export { fetchReferentiel, fetchUserSurveysInfo, fetchSurveysSourcesByIds, remoteSaveSurveyData };
+const remoteGetSurveyData = (idSurvey: string): Promise<SurveyData> => {
+    return new Promise(resolve => {
+        axios
+            .get(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, getHeader())
+            .then(response => {
+                resolve(response.data);
+            });
+    });
+};
+
+export {
+    fetchReferentiel,
+    fetchUserSurveysInfo,
+    fetchSurveysSourcesByIds,
+    remotePutSurveyData,
+    remoteGetSurveyData,
+};
