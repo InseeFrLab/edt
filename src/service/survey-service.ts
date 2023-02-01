@@ -377,41 +377,30 @@ const CODES_ACTIVITY_IGNORE_GOAL = [
 const CODES_ACTIVITY_IGNORE_SCREEN = ["110", "674", "649", "671"];
 const CODES_ACTIVITY_IGNORE_LOCATION = ["652"];
 
-const skipPage = (page: EdtRoutesNameEnum, activityOrRoute: ActivityRouteOrGap) => {
-    let nextPage = null;
+const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
     let codesToIgnore;
-    let ignoreLabel = "";
     let listToIgnore: string[] = [];
 
     switch (page) {
         case EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL:
-            ignoreLabel = "goal";
             listToIgnore = CODES_ACTIVITY_IGNORE_GOAL;
             break;
         case EdtRoutesNameEnum.ACTIVITY_LOCATION:
-            ignoreLabel = "location";
             listToIgnore = CODES_ACTIVITY_IGNORE_LOCATION;
             break;
         case EdtRoutesNameEnum.WITH_SOMEONE:
-            ignoreLabel = "with someone";
             listToIgnore = CODES_ACTIVITY_IGNORE_SOMEONE;
             break;
         case EdtRoutesNameEnum.WITH_SCREEN:
-            ignoreLabel = "screen";
             listToIgnore = CODES_ACTIVITY_IGNORE_SCREEN;
             break;
         default:
-            nextPage = page;
             listToIgnore = [];
             break;
     }
 
     codesToIgnore = getCodesAIgnorer(listToIgnore);
-    const find = codesToIgnore.indexOf(activityOrRoute.activity?.activityCode ?? "");
-    if (find >= 0) {
-        console.log(ignoreLabel);
-    }
-    return find >= 0;
+    return codesToIgnore.indexOf(activityCode) >= 0;
 };
 
 const activityIgnore = (
@@ -423,7 +412,7 @@ const activityIgnore = (
     const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey, source);
 
     let activityOrRoute = activitiesRoutesOrGaps.filter(act => !act.isGap)[iteration];
-    const skip = skipPage(pageNext, activityOrRoute);
+    const skip = filtrePage(pageNext, activityOrRoute.activity?.activityCode ?? "");
     return skip;
 };
 
@@ -478,29 +467,10 @@ const skipAllNextPage = (
             return EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER;
         } else page = getNextLoopPage(nextPage, isRoute);
     }
-    console.log(nextPage);
-    console.log(page);
-
     if (activityIgnore(idSurvey, source, iteration, page)) {
-        console.log("skip");
         return skipAllNextPage(idSurvey, source, iteration, page);
     }
-    console.log(getStepPage(page, isRoute)?.stepNumber);
     return page;
-};
-
-const existActivity = (activitiesLabel: string[], activity: string) => {
-    activitiesLabel.find(act => getLabelWithoutDiff(act) == getLabelWithoutDiff(activity));
-};
-
-/**
- * Return label without case, accents and blanks
- */
-const getLabelWithoutDiff = (label: string) => {
-    return label
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/\p{Diacritic}/gu, "");
 };
 
 const findItemInCategoriesNomenclature = (
@@ -546,7 +516,6 @@ const getCodesAIgnorer = (listAIgnorer: string[]) => {
             }
         }
     });
-    console.log(codesActivity);
     return codesActivity;
 };
 
@@ -594,4 +563,5 @@ export {
     addToAutocompleteActivityReferentiel,
     activityIgnore,
     skipNextPage,
+    filtrePage,
 };
