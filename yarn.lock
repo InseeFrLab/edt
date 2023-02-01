@@ -1495,10 +1495,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@inseefr/lunatic@2.0.6-v2":
-  version "2.0.6-v2"
-  resolved "https://registry.yarnpkg.com/@inseefr/lunatic/-/lunatic-2.0.6-v2.tgz#64cc92f973b470d5ef997cf5d8449b71bbf90ccc"
-  integrity sha512-+RlrvU97O/VRc+2Ihn8ESmVFaGvazbL0UeSktI0yAymH/94Ppjg7vEhx7WHlWvjSbYjvUmjCIXf+Eav2jlIIcg==
+"@inseefr/lunatic@2.0.7-v2":
+  version "2.0.7-v2"
+  resolved "https://registry.yarnpkg.com/@inseefr/lunatic/-/lunatic-2.0.7-v2.tgz#98b818c4f8e76735d3e0e1d7dc1ae0c847c9886e"
+  integrity sha512-XMeF5uTme3MZBVgMpTPBiJ9T6co74MzYQCGhjG2MF/LlbkLWKoRJkeUWGt3V0dwBUkRY3V9GJ+e/GSuP3UCVQA==
   dependencies:
     "@inseefr/trevas" "^0.1.16"
     "@inseefr/vtl-2.0-antlr-tools" "^0.1.0-bundle"

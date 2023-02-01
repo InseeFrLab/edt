@@ -1,12 +1,12 @@
 {
     "name": "edt",
-    "version": "1.5.5",
-    "dateVersion": "25/01/2023",
+    "version": "1.6",
+    "dateVersion": "01/02/2023",
     "licence": "MIT",
     "dependencies": {
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",
-        "@inseefr/lunatic": "2.0.6-v2",
+        "@inseefr/lunatic": "2.0.7-v2",
         "@mui/icons-material": "^5.10.6",
         "@mui/material": "^5.10.7",
         "axios": "^1.2.2",
