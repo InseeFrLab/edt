@@ -76,7 +76,6 @@ const initializeRefs = () => {
         if (!refData) {
             return fetchReferentiels().then(refs => {
                 saveReferentiels(refs);
-                console.log("refs fetched");
             });
         } else {
             referentielsData = refData as ReferentielData;
@@ -130,19 +129,36 @@ const initializeSurveysIdsAndSources = (): Promise<any> => {
                     sourcesData = data as SourceData;
                 }),
             );
-            getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]);
-            promises.push(initializeSurveysDatasCache());
+            getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]).then(() => {
+                return promises.push(initializeSurveysDatasCache());
+            });
         }
         return Promise.all(promises);
     });
 };
 
-const getRemoteSavedSurveysDatas = (surveysIds: string[]) => {
+const getRemoteSavedSurveysDatas = (surveysIds: string[]): Promise<any> => {
+    const promises: Promise<any>[] = [];
     surveysIds.forEach(surveyId => {
-        remoteGetSurveyData(surveyId).then((surveyData: SurveyData) => {
-            console.log(surveyData);
-        });
+        promises.push(
+            remoteGetSurveyData(surveyId).then((remoteSurveyData: SurveyData) => {
+                console.log(remoteSurveyData);
+                lunaticDatabase.get(surveyId).then(localSurveyData => {
+                    console.log(localSurveyData);
+                    if (
+                        (localSurveyData === undefined && remoteSurveyData.stateData.date > 0) ||
+                        (remoteSurveyData.stateData.date > 0 &&
+                            localSurveyData?.lastSaveDate &&
+                            localSurveyData.lastSaveDate < remoteSurveyData.stateData.date)
+                    ) {
+                        console.log("content is newer on remote for survey :" + surveyId);
+                        lunaticDatabase.save(surveyId, remoteSurveyData.data);
+                    }
+                });
+            }),
+        );
     });
+    return Promise.all(promises);
 };
 
 const initializeSurveysDatasCache = (): Promise<any> => {
@@ -178,7 +194,13 @@ const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => 
                 stateData: getSurveyStateData(data),
                 data: data,
             };
-            remotePutSurveyData(idSurvey, surveyData);
+            remotePutSurveyData(idSurvey, surveyData).then(surveyData => {
+                data.lastSaveDate = surveyData.stateData.date;
+                //set the last remote save date inside local database to be able to compare it later with remote data
+                lunaticDatabase.save(idSurvey, data).then(() => {
+                    datas.set(idSurvey, data);
+                });
+            });
         }
         return data;
     });

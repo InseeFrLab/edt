@@ -31,6 +31,7 @@ export interface MultiCollected {
 
 export interface LunaticData {
     id?: string;
+    lastSaveDate?: number;
     EXTERNAL?: any;
     CALCULATED?: any;
     COLLECTED?: { [key: string]: Collected | MultiCollected }; // TOFIX : good var type with collected array

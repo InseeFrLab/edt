@@ -89,12 +89,12 @@ const fetchSurveysSourcesByIds = (sourcesIds: string[]): Promise<SourceData> => 
     });
 };
 
-const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<boolean> => {
+const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<SurveyData> => {
     return new Promise(resolve => {
         axios
             .put(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader())
             .then(() => {
-                resolve(true);
+                resolve(data);
             });
     });
 };
