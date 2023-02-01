@@ -1,3 +1,4 @@
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import {
     LoopData,
     LunaticData,
@@ -8,7 +9,6 @@ import {
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getCurrentPageSource } from "service/orchestrator-service";
 import {
-    FieldNameEnum,
     getData,
     getValue,
     getVariable,

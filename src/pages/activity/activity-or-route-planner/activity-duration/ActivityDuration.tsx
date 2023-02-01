@@ -1,5 +1,11 @@
+import CloseIcon from "@mui/icons-material/Close";
+import { IconButton, Snackbar } from "@mui/material";
+import errorIcon from "assets/illustration/error/activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
+import dayjs, { Dayjs } from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { Alert, makeStylesEdt, TimepickerSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
@@ -7,6 +13,7 @@ import { Fragment, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage, LoopEnum } from "service/loop-service";
 import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
 import {
@@ -14,15 +21,9 @@ import {
     navToActivityRoutePlanner,
     setEnviro,
 } from "service/navigation-service";
-import { getActivitiesOrRoutes } from "service/survey-activity-service";
-import { FieldNameEnum, getValue, saveData } from "service/survey-service";
-import errorIcon from "assets/illustration/error/activity.svg";
-import dayjs, { Dayjs } from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import { IconButton, Snackbar } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { isDesktop } from "service/responsive";
-import { getLabelsWhenQuit } from "service/alert-service";
+import { getActivitiesOrRoutes } from "service/survey-activity-service";
+import { getValue, saveData } from "service/survey-service";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
