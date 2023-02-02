@@ -47,10 +47,12 @@ const toIgnoreForRoute = [
     FieldNameEnum.MAINACTIVITY_ID,
     FieldNameEnum.MAINACTIVITY_SUGGESTERID,
     FieldNameEnum.MAINACTIVITY_LABEL,
+    FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED,
     FieldNameEnum.GOAL,
 ];
 
 const toIgnoreForActivity = [
+    FieldNameEnum.GOAL,
     FieldNameEnum.ROUTE,
     FieldNameEnum.FOOT,
     FieldNameEnum.BICYCLE,
