@@ -47,10 +47,12 @@ const toIgnoreForRoute = [
     FieldNameEnum.MAINACTIVITY_ID,
     FieldNameEnum.MAINACTIVITY_SUGGESTERID,
     FieldNameEnum.MAINACTIVITY_LABEL,
+    FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED,
     FieldNameEnum.GOAL,
 ];
 
 const toIgnoreForActivity = [
+    FieldNameEnum.GOAL,
     FieldNameEnum.ROUTE,
     FieldNameEnum.FOOT,
     FieldNameEnum.BICYCLE,
@@ -58,6 +60,7 @@ const toIgnoreForActivity = [
     FieldNameEnum.PRIVATECAR,
     FieldNameEnum.OTHERPRIVATE,
     FieldNameEnum.PUBLIC,
+    FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED,
 ];
 
 const initializeDatas = (): Promise<boolean> => {
@@ -109,12 +112,11 @@ const initializeSurveysIdsAndSources = (): Promise<any> => {
                         [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
                     };
 
-                    getRemoteSavedSurveysDatas(allSurveysIds);
-
                     const innerPromises: Promise<any>[] = [
-                        saveSurveysIds(surveysIds).then(() => {
-                            return promises.push(initializeSurveysDatasCache());
+                        getRemoteSavedSurveysDatas(allSurveysIds).then(() => {
+                            return initializeSurveysDatasCache();
                         }),
+                        saveSurveysIds(surveysIds),
                         fetchSurveysSourcesByIds(distinctSources).then(sources => {
                             saveSources(sources);
                         }),
@@ -129,9 +131,11 @@ const initializeSurveysIdsAndSources = (): Promise<any> => {
                     sourcesData = data as SourceData;
                 }),
             );
-            getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]).then(() => {
-                return promises.push(initializeSurveysDatasCache());
-            });
+            promises.push(
+                getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]).then(() => {
+                    return initializeSurveysDatasCache();
+                }),
+            );
         }
         return Promise.all(promises);
     });
@@ -142,17 +146,13 @@ const getRemoteSavedSurveysDatas = (surveysIds: string[]): Promise<any> => {
     surveysIds.forEach(surveyId => {
         promises.push(
             remoteGetSurveyData(surveyId).then((remoteSurveyData: SurveyData) => {
-                console.log(remoteSurveyData);
-                lunaticDatabase.get(surveyId).then(localSurveyData => {
-                    console.log(localSurveyData);
+                return lunaticDatabase.get(surveyId).then(localSurveyData => {
                     if (
-                        (localSurveyData === undefined && remoteSurveyData.stateData.date > 0) ||
-                        (remoteSurveyData.stateData.date > 0 &&
-                            localSurveyData?.lastSaveDate &&
-                            localSurveyData.lastSaveDate < remoteSurveyData.stateData.date)
+                        remoteSurveyData.stateData.date > 0 &&
+                        (localSurveyData === undefined ||
+                            (localSurveyData.lastRemoteSaveDate ?? 0) < remoteSurveyData.stateData.date)
                     ) {
-                        console.log("content is newer on remote for survey :" + surveyId);
-                        lunaticDatabase.save(surveyId, remoteSurveyData.data);
+                        return lunaticDatabase.save(surveyId, remoteSurveyData.data);
                     }
                 });
             }),
@@ -186,8 +186,10 @@ const getData = (idSurvey: string): LunaticData => {
 };
 
 const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => {
+    data.lastLocalSaveDate = Date.now();
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
+
         //We try to submit each time the local database is updated if the user is online
         if (navigator.onLine) {
             const surveyData: SurveyData = {
@@ -195,13 +197,14 @@ const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => 
                 data: data,
             };
             remotePutSurveyData(idSurvey, surveyData).then(surveyData => {
-                data.lastSaveDate = surveyData.stateData.date;
+                data.lastRemoteSaveDate = surveyData.stateData.date;
                 //set the last remote save date inside local database to be able to compare it later with remote data
                 lunaticDatabase.save(idSurvey, data).then(() => {
                     datas.set(idSurvey, data);
                 });
             });
         }
+
         return data;
     });
 };
