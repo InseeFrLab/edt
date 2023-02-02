@@ -40,53 +40,8 @@ const getLoopInitialSubPage = (loop: LoopEnum): string => {
     return loopPageInfo.get(loop)?.loopInitialSubpage || "";
 };
 
-const getLoopLastSubPage = (loop: LoopEnum): string => {
-    return loopPageInfo.get(loop)?.loopLastSubpage || "";
-};
-
 const getLoopInitialSequencePage = (loop: LoopEnum): string => {
     return loopPageInfo.get(loop)?.loopInitialSequencePage || "";
-};
-
-const getCurrentLoopPageOfVariable = (
-    data: LunaticData | undefined,
-    variable: LunaticModelVariable | undefined,
-    currentLoopSubpage: number,
-    iteration: number,
-    component: LunaticModelComponent,
-    isRoute?: boolean,
-) => {
-    if (variable) {
-        const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-        if (Array.isArray(value) && value[iteration] !== undefined && value[iteration] !== null) {
-            //return last fill subpage + 1
-            const subpage = component.page ? +component?.page.split(".")[1] : 0;
-            const pageSubpage = getLoopPage(subpage);
-            let currentLoop = skipPage(currentLoopSubpage, pageSubpage?.page, isRoute);
-            return currentLoop;
-        }
-        return currentLoopSubpage;
-    }
-    return currentLoopSubpage;
-};
-
-const skipPage = (
-    currentLoopSubpage: number,
-    currentPage?: EdtRoutesNameEnum,
-    isRoute?: boolean,
-): number => {
-    const lastStep = getLastStep(isRoute)?.stepNumber;
-    const stepper = getStepper(isRoute);
-
-    let index = getStepPage(currentPage, isRoute)?.stepNumber;
-    index = index && index >= lastStep ? lastStep : index;
-
-    const nextPage = stepper.find(stepData => stepData.stepNumber == (index ?? 0) + 1)?.page;
-    const surveySubPage = Number(getSurveySubPage(nextPage) ?? currentLoopSubpage);
-
-    if (nextPage) {
-        return surveySubPage > currentLoopSubpage ? surveySubPage : currentLoopSubpage;
-    } else return Number(getLoopLastSubPage(LoopEnum.ACTIVITY_OR_ROUTE)) + 1;
 };
 
 const LOOP_PAGES_CONDITIONALS = ["4.7", "4.10"];
@@ -144,6 +99,47 @@ const ignoreVariablesCondtionals = (
     } else return false;
 };
 
+const ignoreDepsActivity = (
+    variable: LunaticModelVariable | undefined,
+    component: LunaticModelComponent | undefined,
+    data: LunaticData | undefined,
+    iteration: number,
+) => {
+    const variableActivity =
+        component?.componentType == "ActivitySelecter" &&
+        (component?.bindingDependencies?.indexOf(variable?.name ?? "") ?? -1) >= 0;
+    if (variableActivity) {
+        let oneActivityIsAdded = false;
+        const activityCategory = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_ID]?.COLLECTED;
+        const isFullyCompleted =
+            data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED]?.COLLECTED;
+
+        if (
+            Array.isArray(activityCategory) &&
+            activityCategory[iteration] != null &&
+            Array.isArray(isFullyCompleted) &&
+            isFullyCompleted[iteration] != null &&
+            isFullyCompleted[iteration]
+        ) {
+            oneActivityIsAdded = true;
+        }
+
+        const activityAutoComplete =
+            data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_SUGGESTERID]?.COLLECTED;
+        if (Array.isArray(activityAutoComplete) && activityAutoComplete[iteration] != null) {
+            oneActivityIsAdded = true;
+        }
+
+        const newActivity = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_LABEL]?.COLLECTED;
+        if (Array.isArray(newActivity) && newActivity[iteration] != null) {
+            oneActivityIsAdded = true;
+        }
+        return oneActivityIsAdded;
+    } else {
+        return false;
+    }
+};
+
 /**
  * Ignore variables depending on type (activity or journey)
  * @param variable
@@ -163,10 +159,14 @@ const ignoreDeps = (
     isRoute?: boolean,
 ) => {
     let toIgnore = ignoreVariablesCondtionals(loopComponents, component, data, iteration);
+    let toIgnoreActivity = ignoreDepsActivity(variable, component, data, iteration);
+    let toIgnoreIfInputInCheckboxGroup =
+        component?.componentType == "CheckboxGroupEdt" &&
+        ignoreDepsOfCheckboxGroup(component, data, iteration);
     return (
         toIgnore ||
-        (component?.componentType == "CheckboxGroupEdt" &&
-            ignoreDepsOfCheckboxGroup(component, data, iteration)) ||
+        toIgnoreActivity ||
+        toIgnoreIfInputInCheckboxGroup ||
         (isRoute && toIgnoreForRoute.find(dep => variable?.name == dep)) ||
         (!isRoute && toIgnoreForActivity.find(dep => variable?.name == dep))
     );
@@ -216,7 +216,6 @@ const getCurrentLoopPage = (
         return { step: 0, completed: false };
     }
     const initialLoopSubPage = +getLoopInitialSubPage(currentLoop);
-    const lastLoopSubPage = +getLoopLastSubPage(currentLoop);
     let currentLoopSubpage = initialLoopSubPage;
 
     const components = loop.components;
@@ -325,7 +324,6 @@ const haveVariableNotFilled = (
     const variables = component?.bindingDependencies;
     if (variables == null || variables.length == 0) return false;
     let filled = false;
-
     variables.forEach(v => {
         const variable = getVariable(source, v);
         if (!ignoreDeps(variable, loopComponents, component, data, iteration, isRoute) && variable) {

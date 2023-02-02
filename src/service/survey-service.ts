@@ -89,6 +89,7 @@ const toIgnoreForActivity = [
     FieldNameEnum.PRIVATECAR,
     FieldNameEnum.OTHERPRIVATE,
     FieldNameEnum.PUBLIC,
+    FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED,
 ];
 
 enum ReferentielsEnum {
