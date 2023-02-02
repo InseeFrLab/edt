@@ -1,6 +1,7 @@
-import { EdtRoutesNameEnum } from "interface/route/EdtRoutesNameEnum";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
-import { getLoopInitialPage, LoopEnum } from "service/loop-service";
+import { getLoopInitialPage } from "service/loop-service";
 
 let mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
     {

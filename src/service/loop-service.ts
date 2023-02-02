@@ -1,4 +1,5 @@
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { LoopEnum } from "enumerations/LoopEnum";
 import {
     LoopData,
     LunaticData,
@@ -6,7 +7,6 @@ import {
     LunaticModelComponent,
     LunaticModelVariable,
 } from "interface/lunatic/Lunatic";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getCurrentPageSource } from "service/orchestrator-service";
 import {
     getData,
@@ -17,12 +17,8 @@ import {
     toIgnoreForActivity,
     toIgnoreForRoute,
 } from "service/survey-service";
-import { getLastStep, getStepPage, getStepper } from "./loop-stepper-service";
-import { getLoopPage, getSurveySubPage } from "./navigation-service";
-
-const enum LoopEnum {
-    ACTIVITY_OR_ROUTE = "ACTIVITY_OR_ROUTE",
-}
+import { getLastStep, getStepPage } from "./loop-stepper-service";
+import { getLoopPage } from "./navigation-service";
 
 const loopPageInfo: Map<LoopEnum, LoopData> = new Map();
 loopPageInfo.set(LoopEnum.ACTIVITY_OR_ROUTE, {
@@ -339,7 +335,6 @@ const haveVariableNotFilled = (
 };
 
 export {
-    LoopEnum,
     getLoopInitialPage,
     getLoopInitialSubPage,
     getLoopInitialSequencePage,

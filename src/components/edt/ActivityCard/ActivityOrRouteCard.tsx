@@ -6,21 +6,12 @@ import meanOfTransportErrorIconSvg from "assets/illustration/error/mean-of-trans
 import peopleErrorIconSvg from "assets/illustration/error/people.svg";
 import routeErrorIconSvg from "assets/illustration/error/route.svg";
 import screenErrorIconSvg from "assets/illustration/error/screen.svg";
+import { InsideAlertTypes } from "enumerations/InsideAlertTypesEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { makeStylesEdt } from "lunatic-edt";
 import React, { useCallback } from "react";
 import { TFunction, useTranslation } from "react-i18next";
 import { getActivityOrRouteDurationLabel } from "service/survey-activity-service";
-
-export const enum InsideAlertTypes {
-    PLACE = "place",
-    ACTIVITY = "activity",
-    ROUTE = "route",
-    MEANOFTRANSPORT = "meanOfTransport",
-    SECONDARYACTIVITY = "secondaryActivity",
-    WITHSOMEONE = "withSomeone",
-    SCREEN = "screen",
-}
 
 interface ActivityOrRouteCardProps {
     labelledBy: string;

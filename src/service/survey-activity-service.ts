@@ -2,6 +2,7 @@ import activitySurveySource from "activity-survey.json";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { LoopEnum } from "enumerations/LoopEnum";
 import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { SelectedActivity } from "lunatic-edt";
@@ -12,7 +13,7 @@ import {
 } from "lunatic-edt/dist/ui/components/Planner/WeeklyPlanner";
 import { useTranslation } from "react-i18next";
 import { getData, getValue, saveData } from "service/survey-service";
-import { getLoopSize, LoopEnum } from "./loop-service";
+import { getLoopSize } from "./loop-service";
 import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,

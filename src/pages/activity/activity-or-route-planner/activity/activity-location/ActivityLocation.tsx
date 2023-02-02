@@ -6,8 +6,8 @@ import option4 from "assets/illustration/locations/4.svg";
 import option5 from "assets/illustration/locations/5.svg";
 import option6 from "assets/illustration/locations/6.svg";
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getPlaceRef } from "service/referentiel-service";
 
 const ActivityLocationPage = () => {

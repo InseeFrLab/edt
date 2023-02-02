@@ -1,3 +1,4 @@
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
@@ -7,7 +8,6 @@ import {
     CheckboxOneCustomOption,
     NomenclatureActivityOption,
 } from "lunatic-edt";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 
 export const REFERENTIELS_ID = "referentiels";
 export const SOURCES_MODELS = "sources";

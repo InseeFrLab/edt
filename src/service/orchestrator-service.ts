@@ -1,6 +1,6 @@
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { LunaticModel } from "interface/lunatic/Lunatic";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getSource } from "service/survey-service";
 
 const getCurrentPageSource = (): LunaticModel => {

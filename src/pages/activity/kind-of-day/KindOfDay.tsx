@@ -1,6 +1,6 @@
 import bagIcon from "assets/illustration/type-of-day-categories/bag.svg";
 import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { getKindOfDayRef } from "service/referentiel-service";
 
 const KindOfDayPage = () => {
