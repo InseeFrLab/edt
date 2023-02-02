@@ -1,3 +1,4 @@
+import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import {
     AutoCompleteActiviteOption,
     CheckboxOneCustomOption,
@@ -7,7 +8,7 @@ import {
     SelectedActivity,
 } from "lunatic-edt";
 
-import { getReferentiel, ReferentielsEnum } from "./survey-service";
+import { getReferentiel } from "./survey-service";
 
 export const getAutoCompleteRef = (): AutoCompleteActiviteOption[] => {
     return getReferentiel(ReferentielsEnum.ACTIVITYAUTOCOMPLETE) as AutoCompleteActiviteOption[];

@@ -1,7 +1,7 @@
 import peopleErrorIcon from "assets/illustration/error/people.svg";
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { FieldNameEnum } from "service/survey-service";
 
 const WithSomeonePage = () => {
     return (

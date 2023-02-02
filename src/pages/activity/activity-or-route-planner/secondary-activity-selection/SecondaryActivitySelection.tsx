@@ -1,5 +1,7 @@
 import errorIcon from "assets/illustration/error/activity.svg";
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { CheckboxOneCustomOption } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
@@ -9,11 +11,7 @@ import {
     getActivitySecondaryActivityRef,
     getRouteSecondaryActivityRef,
 } from "service/referentiel-service";
-import {
-    addToSecondaryActivityReferentiel,
-    FieldNameEnum,
-    ReferentielsEnum,
-} from "service/survey-service";
+import { addToSecondaryActivityReferentiel } from "service/survey-service";
 
 const SecondaryActivitySelectionPage = () => {
     const context: OrchestratorContext = useOutletContext();

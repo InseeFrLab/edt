@@ -1,3 +1,6 @@
+import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import {
     AutoCompleteActiviteOption,
@@ -5,7 +8,11 @@ import {
     NomenclatureActivityOption,
 } from "lunatic-edt";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { ReferentielsEnum } from "service/survey-service";
+
+export const REFERENTIELS_ID = "referentiels";
+export const SOURCES_MODELS = "sources";
+export const SURVEYS_IDS = "surveysIds";
+
 export interface Collected {
     COLLECTED: string | boolean | null;
     EDITED: any;
@@ -24,12 +31,13 @@ export interface MultiCollected {
 
 export interface LunaticData {
     id?: string;
+    lastRemoteSaveDate?: number;
+    lastLocalSaveDate?: number;
     EXTERNAL?: any;
     CALCULATED?: any;
     COLLECTED?: { [key: string]: Collected | MultiCollected }; // TOFIX : good var type with collected array
 }
 
-export const REFERENTIEL_ID = "referentiels";
 export interface ReferentielData extends LunaticData {
     [ReferentielsEnum.ACTIVITYNOMENCLATURE]: NomenclatureActivityOption[];
     [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: AutoCompleteActiviteOption[];
@@ -39,6 +47,17 @@ export interface ReferentielData extends LunaticData {
     [ReferentielsEnum.LOCATION]: CheckboxOneCustomOption[];
     [ReferentielsEnum.KINDOFWEEK]: CheckboxOneCustomOption[];
     [ReferentielsEnum.KINDOFDAY]: CheckboxOneCustomOption[];
+}
+
+export interface SourceData extends LunaticData {
+    [SourcesEnum.ACTIVITY_SURVEY]: LunaticModel;
+    [SourcesEnum.WORK_TIME_SURVEY]: LunaticModel;
+}
+
+export interface SurveysIds extends LunaticData {
+    [SurveysIdsEnum.ALL_SURVEYS_IDS]: string[];
+    [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: string[];
+    [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: string[];
 }
 
 export interface LunaticModel {

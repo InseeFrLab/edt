@@ -1,3 +1,4 @@
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import {
     LoopData,
     LunaticData,
@@ -8,7 +9,6 @@ import {
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getCurrentPageSource } from "service/orchestrator-service";
 import {
-    FieldNameEnum,
     getData,
     getValue,
     getVariable,
@@ -40,85 +40,155 @@ const getLoopInitialSubPage = (loop: LoopEnum): string => {
     return loopPageInfo.get(loop)?.loopInitialSubpage || "";
 };
 
-const getLoopLastSubPage = (loop: LoopEnum): string => {
-    return loopPageInfo.get(loop)?.loopLastSubpage || "";
-};
-
 const getLoopInitialSequencePage = (loop: LoopEnum): string => {
     return loopPageInfo.get(loop)?.loopInitialSequencePage || "";
 };
 
-const getCurrentLoopPageOfVariable = (
+const LOOP_PAGES_CONDITIONALS = ["4.7", "4.10"];
+
+/**
+ * Skip pages conditionals
+ * if conditional value is false or
+ * if one of values of composant it's added
+ *
+ * @param loopComponents components of loop
+ * @param component
+ * @param data
+ * @param iteration
+ * @returns if skip variable
+ */
+const ignoreVariablesCondtionals = (
+    loopComponents: LunaticModelComponent[],
+    component: LunaticModelComponent | undefined,
     data: LunaticData | undefined,
-    variable: LunaticModelVariable | undefined,
-    currentLoopSubpage: number,
     iteration: number,
-    component: LunaticModelComponent,
+) => {
+    const pageOfConditional = Number(component?.page?.split(".")[1]) - 1;
+    const isPageOfConditional = LOOP_PAGES_CONDITIONALS.indexOf(component?.page ?? "") >= 0;
+
+    const componentConditional = loopComponents.find(
+        component => component.page == component?.page?.split(".")[0] + "." + pageOfConditional,
+    );
+    const depConditional = componentConditional?.bindingDependencies?.[0];
+    const valueOfConditional = data?.COLLECTED?.[depConditional ?? ""]?.COLLECTED as boolean[];
+
+    //is page of values of conditional = true
+    if (isPageOfConditional) {
+        const mustShowPageOfConditional =
+            valueOfConditional[iteration] != null && valueOfConditional[iteration];
+        //in page of conditional select yes
+        if (mustShowPageOfConditional) {
+            let ignore = false;
+            const deps = component?.bindingDependencies; //values of composant
+            let isInputConditional = false;
+            //ignore all variables of composant if it's added one of dependencies of component
+            deps?.forEach(dep => {
+                const value = data?.COLLECTED?.[dep ?? ""]?.COLLECTED;
+                if (Array.isArray(value) && value[iteration] != null) {
+                    const conditional = value[iteration] as string | boolean;
+                    if (!isInputConditional) {
+                        if (typeof conditional == "string") isInputConditional = conditional.length > 0;
+                        if (typeof conditional == "boolean") isInputConditional = conditional;
+                    }
+                }
+            });
+            ignore = isInputConditional;
+            return ignore;
+        } //other, skip variables of conditional
+        else return true;
+    } else return false;
+};
+
+const ignoreDepsActivity = (
+    variable: LunaticModelVariable | undefined,
+    component: LunaticModelComponent | undefined,
+    data: LunaticData | undefined,
+    iteration: number,
+) => {
+    const variableActivity =
+        component?.componentType == "ActivitySelecter" &&
+        (component?.bindingDependencies?.indexOf(variable?.name ?? "") ?? -1) >= 0;
+    if (variableActivity) {
+        let oneActivityIsAdded = false;
+        const activityCategory = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_ID]?.COLLECTED;
+        const isFullyCompleted =
+            data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED]?.COLLECTED;
+
+        if (
+            Array.isArray(activityCategory) &&
+            activityCategory[iteration] != null &&
+            Array.isArray(isFullyCompleted) &&
+            isFullyCompleted[iteration] != null &&
+            isFullyCompleted[iteration]
+        ) {
+            oneActivityIsAdded = true;
+        }
+
+        const activityAutoComplete =
+            data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_SUGGESTERID]?.COLLECTED;
+        if (Array.isArray(activityAutoComplete) && activityAutoComplete[iteration] != null) {
+            oneActivityIsAdded = true;
+        }
+
+        const newActivity = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_LABEL]?.COLLECTED;
+        if (Array.isArray(newActivity) && newActivity[iteration] != null) {
+            oneActivityIsAdded = true;
+        }
+        return oneActivityIsAdded;
+    } else {
+        return false;
+    }
+};
+
+/**
+ * Ignore variables depending on type (activity or journey)
+ * @param variable
+ * @param loopComponents
+ * @param component
+ * @param data
+ * @param iteration
+ * @param isRoute
+ * @returns if skip variable
+ */
+const ignoreDeps = (
+    variable: LunaticModelVariable | undefined,
+    loopComponents: LunaticModelComponent[],
+    component: LunaticModelComponent | undefined,
+    data: LunaticData | undefined,
+    iteration: number,
     isRoute?: boolean,
 ) => {
-    if (variable) {
-        const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
-        if (Array.isArray(value) && value[iteration] !== undefined && value[iteration] !== null) {
-            //return last fill subpage + 1
-            const subpage = component.page ? +component?.page.split(".")[1] : 0;
-            const pageSubpage = getLoopPage(subpage);
-            let currentLoop = skipPage(currentLoopSubpage, pageSubpage?.page, isRoute);
-            return currentLoop;
-        }
-        return currentLoopSubpage;
-    }
-    return currentLoopSubpage;
-};
-
-const skipPage = (
-    currentLoopSubpage: number,
-    currentPage?: EdtRoutesNameEnum,
-    isRoute?: boolean,
-): number => {
-    const lastStep = getLastStep(isRoute)?.stepNumber;
-    const stepper = getStepper(isRoute);
-
-    let index = getStepPage(currentPage, isRoute)?.stepNumber;
-    index = index && index >= lastStep ? lastStep : index;
-
-    const nextPage = stepper.find(stepData => stepData.stepNumber == (index ?? 0) + 1)?.page;
-    const surveySubPage = Number(getSurveySubPage(nextPage) ?? currentLoopSubpage);
-
-    if (nextPage) {
-        return surveySubPage > currentLoopSubpage ? surveySubPage : currentLoopSubpage;
-    } else return Number(getLoopLastSubPage(LoopEnum.ACTIVITY_OR_ROUTE)) + 1;
-};
-
-const ignoreDeps = (dependency: string, isRoute?: boolean) => {
+    let toIgnore = ignoreVariablesCondtionals(loopComponents, component, data, iteration);
+    let toIgnoreActivity = ignoreDepsActivity(variable, component, data, iteration);
+    let toIgnoreIfInputInCheckboxGroup =
+        component?.componentType == "CheckboxGroupEdt" &&
+        ignoreDepsOfCheckboxGroup(component, data, iteration);
     return (
-        (isRoute && toIgnoreForRoute.find(dep => dependency == dep)) ||
-        (!isRoute && toIgnoreForActivity.find(dep => dependency == dep))
+        toIgnore ||
+        toIgnoreActivity ||
+        toIgnoreIfInputInCheckboxGroup ||
+        (isRoute && toIgnoreForRoute.find(dep => variable?.name == dep)) ||
+        (!isRoute && toIgnoreForActivity.find(dep => variable?.name == dep))
     );
 };
 
-const getCurrentLoopPageForSource = (
-    component: LunaticModelComponent,
+/**
+ * Ignore reste of variables if one of bindingDependencies is added
+ */
+const ignoreDepsOfCheckboxGroup = (
+    component: LunaticModelComponent | undefined,
     data: LunaticData | undefined,
-    source: LunaticModel,
-    currentLoopSubpage: number,
     iteration: number,
-    isRoute?: boolean,
 ) => {
-    if (component.bindingDependencies) {
-        for (const dependency of component.bindingDependencies) {
-            if (ignoreDeps(dependency, isRoute)) continue;
-            const variable = getVariable(source, dependency);
-            currentLoopSubpage = getCurrentLoopPageOfVariable(
-                data,
-                variable,
-                currentLoopSubpage,
-                iteration,
-                component,
-                isRoute,
-            );
+    let existOneDepAdded = false;
+    component?.bindingDependencies?.forEach(dep => {
+        const value = data?.COLLECTED?.[dep ?? ""]?.COLLECTED;
+        if (Array.isArray(value) && value[iteration] != null) {
+            const conditional = value[iteration] as string | boolean;
+            if (conditional) existOneDepAdded = true;
         }
-    }
-    return currentLoopSubpage;
+    });
+    return existOneDepAdded;
 };
 
 // Give the first loop subpage that don't have any data fill
@@ -146,20 +216,26 @@ const getCurrentLoopPage = (
         return { step: 0, completed: false };
     }
     const initialLoopSubPage = +getLoopInitialSubPage(currentLoop);
-    const lastLoopSubPage = +getLoopLastSubPage(currentLoop);
     let currentLoopSubpage = initialLoopSubPage;
-    for (const component of loop.components) {
-        currentLoopSubpage = getCurrentLoopPageForSource(
-            component,
-            data,
-            source,
-            currentLoopSubpage,
-            iteration,
-            isRoute,
-        );
+
+    const components = loop.components;
+    let notFilled = false;
+    let completed = false;
+    let i = 0;
+    while (!notFilled && i < components.length) {
+        const component = components[i];
+        notFilled = haveVariableNotFilled(components, component, source, data, iteration, isRoute);
+        if (notFilled) {
+            const subpage = component.page ? +component?.page.split(".")[1] : 0;
+            const pageSubpage = getLoopPage(subpage);
+            currentLoopSubpage = Number(pageSubpage?.surveySubPage);
+        }
+        i++;
     }
-    setLoopCompleted(idSurvey, iteration, currentLoopSubpage > lastLoopSubPage);
-    if (currentLoopSubpage > lastLoopSubPage) {
+    if (i == components.length && !notFilled) completed = true;
+    setLoopCompleted(idSurvey, iteration, completed);
+
+    if (completed) {
         //means we have fully completed iteration, in this case we want to go back to the first question of the loopPage
         return { step: initialLoopSubPage, completed: true };
     }
@@ -184,7 +260,6 @@ const getLoopLastCompletedStep = (
     const lastStep = getLastStep(isRoute).stepNumber;
 
     if (currentLoopPage.completed) return lastStep;
-
     const currentPage = getLoopPage(currentLoopPage.step)?.page;
     const currentStep = getStepPage(currentPage, isRoute)?.stepNumber ?? lastStep + 1;
     const currentLastCompletedLoopPage = currentStep <= lastStep ? currentStep - 1 : lastStep;
@@ -236,6 +311,31 @@ const setLoopSize = (source: LunaticModel, currentLoop: LoopEnum, size: number):
         return +loop.iterations.value;
     }
     return 0;
+};
+
+const haveVariableNotFilled = (
+    loopComponents: LunaticModelComponent[],
+    component: LunaticModelComponent | undefined,
+    source: LunaticModel,
+    data: LunaticData | undefined,
+    iteration: number,
+    isRoute?: boolean,
+) => {
+    const variables = component?.bindingDependencies;
+    if (variables == null || variables.length == 0) return false;
+    let filled = false;
+    variables.forEach(v => {
+        const variable = getVariable(source, v);
+        if (!ignoreDeps(variable, loopComponents, component, data, iteration, isRoute) && variable) {
+            const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+            if (Array.isArray(value) && value[iteration] != null) {
+                filled = false;
+            } else {
+                filled = true;
+            }
+        }
+    });
+    return filled;
 };
 
 export {

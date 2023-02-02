@@ -7,6 +7,7 @@ import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import {
@@ -34,13 +35,7 @@ import {
 } from "service/navigation-service";
 import { isDesktop } from "service/responsive";
 import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
-import {
-    FieldNameEnum,
-    getPrintedFirstName,
-    getSurveyDate,
-    saveData,
-    setValue,
-} from "service/survey-service";
+import { getPrintedFirstName, getSurveyDate, saveData, setValue } from "service/survey-service";
 import { v4 as uuidv4 } from "uuid";
 
 const ActivityOrRoutePlannerPage = () => {

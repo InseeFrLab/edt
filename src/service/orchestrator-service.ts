@@ -1,13 +1,13 @@
-import activitySurveySource from "activity-survey.json";
+import { SourcesEnum } from "enumerations/SourcesEnum";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import workTimeSurveySource from "work-time-survey.json";
+import { getSource } from "service/survey-service";
 
 const getCurrentPageSource = (): LunaticModel => {
     if (!window.location.pathname.includes(EdtRoutesNameEnum.ACTIVITY.split(":")[0])) {
-        return workTimeSurveySource;
+        return getSource(SourcesEnum.WORK_TIME_SURVEY);
     } else {
-        return activitySurveySource;
+        return getSource(SourcesEnum.ACTIVITY_SURVEY);
     }
 };
 
