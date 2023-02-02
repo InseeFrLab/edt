@@ -527,6 +527,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
         gridGap: "1rem",
         justifyContent: "center",
         padding: "initial",
+        marginBottom: "6rem",
     },
     innerContentScroll: {
         overflowY: "auto",
