@@ -148,10 +148,9 @@ const getRemoteSavedSurveysDatas = (surveysIds: string[]): Promise<any> => {
             remoteGetSurveyData(surveyId).then((remoteSurveyData: SurveyData) => {
                 return lunaticDatabase.get(surveyId).then(localSurveyData => {
                     if (
-                        (localSurveyData === undefined && remoteSurveyData.stateData.date > 0) ||
-                        (remoteSurveyData.stateData.date > 0 &&
-                            localSurveyData?.lastSaveDate &&
-                            localSurveyData.lastSaveDate < remoteSurveyData.stateData.date)
+                        remoteSurveyData.stateData.date > 0 &&
+                        (localSurveyData === undefined ||
+                            (localSurveyData.lastRemoteSaveDate ?? 0) < remoteSurveyData.stateData.date)
                     ) {
                         return lunaticDatabase.save(surveyId, remoteSurveyData.data);
                     }
@@ -187,8 +186,10 @@ const getData = (idSurvey: string): LunaticData => {
 };
 
 const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => {
+    data.lastLocalSaveDate = Date.now();
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
+
         //We try to submit each time the local database is updated if the user is online
         if (navigator.onLine) {
             const surveyData: SurveyData = {
@@ -196,13 +197,14 @@ const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => 
                 data: data,
             };
             remotePutSurveyData(idSurvey, surveyData).then(surveyData => {
-                data.lastSaveDate = surveyData.stateData.date;
+                data.lastRemoteSaveDate = surveyData.stateData.date;
                 //set the last remote save date inside local database to be able to compare it later with remote data
                 lunaticDatabase.save(idSurvey, data).then(() => {
                     datas.set(idSurvey, data);
                 });
             });
         }
+
         return data;
     });
 };
