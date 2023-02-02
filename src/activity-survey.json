@@ -801,6 +801,23 @@
                     "mandatory": false
                 },
                 {
+                    "componentType": "CheckboxOneEdt",
+                    "bindingDependencies": ["SECONDARYACTIVITY"],
+                    "response": { "name": "SECONDARYACTIVITY" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxone_secondaryactivity",
+                    "page": "4.7",
+                    "label": "\"Que faisiez-vous en même temps ?\"",
+                    "mandatory": false
+                },
+                {
                     "componentType": "IconGridCheckBoxOne",
                     "bindingDependencies": ["PLACE"],
                     "response": { "name": "PLACE" },
@@ -813,7 +830,7 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "input_place",
-                    "page": "4.7",
+                    "page": "4.8",
                     "label": "\"Où étiez-vous ?\"",
                     "mandatory": false
                 },
@@ -830,65 +847,8 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxboolean_withsomeone",
-                    "page": "4.8",
-                    "label": "\"Etiez-vous en compagnie de quelqu'un ?\"",
-                    "mandatory": false
-                },
-                {
-                    "componentType": "CheckboxBooleanEdt",
-                    "bindingDependencies": ["WITHSCREEN"],
-                    "response": { "name": "WITHSCREEN" },
-                    "hierarchy": {
-                        "sequence": {
-                            "id": "law86mv7",
-                            "page": "4.1",
-                            "label": "\"I - \" || \"Sequence\""
-                        }
-                    },
-                    "conditionFilter": { "value": "true" },
-                    "id": "checkboxboolean_withscreen",
                     "page": "4.9",
-                    "label": "\"Avez-vous utilisé un ordinateur, un smartphone, une tablette ou un autre objet connecté à internet ?\"",
-                    "mandatory": false
-                },
-                {
-                    "componentType": "IconGridCheckBoxOne",
-                    "bindingDependencies": ["GOAL"],
-                    "response": { "name": "GOAL" },
-                    "hierarchy": {
-                        "sequence": {
-                            "id": "law86mv7",
-                            "page": "4.1",
-                            "label": "\"I - \" || \"Sequence\""
-                        }
-                    },
-                    "conditionFilter": { "value": "true" },
-                    "id": "goalselecter_goal",
-                    "page": "4.10",
-                    "label": "\"Dans quel but avez-vous fait cette activité ?\"",
-                    "mandatory": false,
-                    "options": [
-                        { "label": "\"Personnel, pour mon ménage\"", "value": "1" },
-                        { "label": "\"Professionnel\"", "value": "2" },
-                        { "label": "\"Aide à un autre ménage\"", "value": "3" },
-                        { "label": "\"Bénévole, pour une association\"", "value": "4" }
-                    ]
-                },
-                {
-                    "componentType": "CheckboxOneEdt",
-                    "bindingDependencies": ["SECONDARYACTIVITY"],
-                    "response": { "name": "SECONDARYACTIVITY" },
-                    "hierarchy": {
-                        "sequence": {
-                            "id": "law86mv7",
-                            "page": "4.1",
-                            "label": "\"I - \" || \"Sequence\""
-                        }
-                    },
-                    "conditionFilter": { "value": "true" },
-                    "id": "checkboxone_secondaryactivity",
-                    "page": "4.11",
-                    "label": "\"Que faisiez-vous en même temps ?\"",
+                    "label": "\"Etiez-vous en compagnie de quelqu'un ?\"",
                     "mandatory": false
                 },
                 {
@@ -940,10 +900,50 @@
                     },
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxgroup_presentpeople",
-                    "page": "4.12",
+                    "page": "4.10",
                     "label": "\"En compagnie de qui étiez-vous ?\"",
                     "tipsLabel": "Vous pouvez en selectionner plusieurs",
                     "mandatory": false
+                },
+                {
+                    "componentType": "CheckboxBooleanEdt",
+                    "bindingDependencies": ["WITHSCREEN"],
+                    "response": { "name": "WITHSCREEN" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "checkboxboolean_withscreen",
+                    "page": "4.11",
+                    "label": "\"Avez-vous utilisé un ordinateur, un smartphone, une tablette ou un autre objet connecté à internet ?\"",
+                    "mandatory": false
+                },
+                {
+                    "componentType": "IconGridCheckBoxOne",
+                    "bindingDependencies": ["GOAL"],
+                    "response": { "name": "GOAL" },
+                    "hierarchy": {
+                        "sequence": {
+                            "id": "law86mv7",
+                            "page": "4.1",
+                            "label": "\"I - \" || \"Sequence\""
+                        }
+                    },
+                    "conditionFilter": { "value": "true" },
+                    "id": "goalselecter_goal",
+                    "page": "4.12",
+                    "label": "\"Dans quel but avez-vous fait cette activité ?\"",
+                    "mandatory": false,
+                    "options": [
+                        { "label": "\"Personnel, pour mon ménage\"", "value": "1" },
+                        { "label": "\"Professionnel\"", "value": "2" },
+                        { "label": "\"Aide à un autre ménage\"", "value": "3" },
+                        { "label": "\"Bénévole, pour une association\"", "value": "4" }
+                    ]
                 }
             ]
         },
