@@ -8,17 +8,10 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getLabels, getLabelsWhenQuit } from "service/alert-service";
-import { getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { getLoopPageSubpage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
-import {
-    onClose,
-    onNext,
-    onPrevious,
-    saveAndLoopNavigate,
-    setEnviro,
-    validate,
-} from "service/navigation-service";
-import { activityIgnore, FieldNameEnum, getValue, skipNextPage } from "service/survey-service";
+import { getLoopInitialPage, LoopEnum, skipBackPage, skipNextPage } from "service/loop-service";
+import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
+import { onClose, onNext, onPrevious, setEnviro, validate } from "service/navigation-service";
+import { FieldNameEnum, getValue } from "service/survey-service";
 import LoopSurveyPage from "../LoopSurveyPage";
 
 export interface LoopSurveyPageStepProps {
@@ -62,29 +55,16 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
-            const previousPageRoute = backRoute
-                ? activityIgnore(context.idSurvey, context.source, currentIteration, backRoute)
-                    ? getPreviousLoopPage(backRoute, isRoute)
-                    : backRoute
-                : undefined;
-
-            const previousCurrentPage = getPreviousLoopPage(currentPage, isRoute);
-            const previousPageNextLoop = activityIgnore(
-                context.idSurvey,
-                context.source,
-                currentIteration,
-                previousCurrentPage,
-            )
-                ? getPreviousLoopPage(previousCurrentPage, isRoute)
-                : previousCurrentPage;
-
             specifiquesProps?.backClickback ??
-                saveAndLoopNavigate(
-                    previousPageRoute || previousPageNextLoop,
-                    LoopEnum.ACTIVITY_OR_ROUTE,
+                skipBackPage(
+                    context.idSurvey,
+                    context.source,
                     currentIteration,
+                    currentPage,
+                    t,
                     fieldConditionBack,
-                    fieldConditionBack ? previousPageNextLoop : undefined,
+                    backRoute,
+                    isRoute,
                 );
         },
         nextClickCallback: () => {
@@ -94,6 +74,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
                     context.source,
                     currentIteration,
                     currentPage,
+                    t,
                     fieldConditionNext,
                     nextRoute,
                     isRoute,
@@ -109,6 +90,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
                         context.source,
                         currentIteration,
                         currentPage,
+                        t,
                         fieldConditionNext,
                         nextRoute,
                         isRoute,

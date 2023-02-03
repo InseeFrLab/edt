@@ -1,6 +1,5 @@
 import { t } from "i18next";
 import { TabData } from "interface/component/Component";
-import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import {
     Collected,
     LunaticData,
@@ -15,22 +14,12 @@ import {
     CheckboxOneCustomOption,
     generateDateFromStringInput,
     getFrenchDayFromDate,
-    NomenclatureActivityOption,
 } from "lunatic-edt";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
 import { fetchReferentiels } from "./api-service";
-import { LoopEnum } from "./loop-service";
-import { getNextLoopPage, getStepPage, getLastStep } from "./loop-stepper-service";
-import {
-    getCurrentNavigatePath,
-    getOrchestratorPage,
-    saveAndLoopNavigate,
-    saveAndNav,
-} from "./navigation-service";
-import { getNomenclatureRef } from "./referentiel-service";
-import { getActivitiesOrRoutes, getScore } from "./survey-activity-service";
+import { getScore } from "./survey-activity-service";
 
 const datas = new Map<string, LunaticData>();
 let referentielsData: ReferentielData;
@@ -350,192 +339,6 @@ const getPersonNumber = (idSurvey: string) => {
     return index + 1;
 };
 
-const CODES_ACTIVITY_IGNORE_SOMEONE = ["110"];
-
-const CODES_ACTIVITY_IGNORE_GOAL = [
-    "110", //111,114,112,113
-    "140",
-    "210", //"215,213,221,223,231,232,233,234,241,251,264"
-    "270",
-    "260", //261,262,263, 264, 271,272
-    "516",
-    "531",
-    "532",
-    "510",
-
-    "601", //620,623,624,625,627
-    "631", //633,632
-    "639",
-    "641",
-    "649",
-    "652",
-    "656",
-    "658",
-    "674",
-    "664",
-    "680", //671,668,662,663
-];
-const CODES_ACTIVITY_IGNORE_SCREEN = ["110", "674", "649", "671"];
-const CODES_ACTIVITY_IGNORE_LOCATION = ["652"];
-
-const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
-    let codesToIgnore;
-    let listToIgnore: string[] = [];
-
-    switch (page) {
-        case EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL:
-            listToIgnore = CODES_ACTIVITY_IGNORE_GOAL;
-            break;
-        case EdtRoutesNameEnum.ACTIVITY_LOCATION:
-            listToIgnore = CODES_ACTIVITY_IGNORE_LOCATION;
-            break;
-        case EdtRoutesNameEnum.WITH_SOMEONE:
-            listToIgnore = CODES_ACTIVITY_IGNORE_SOMEONE;
-            break;
-        case EdtRoutesNameEnum.WITH_SCREEN:
-            listToIgnore = CODES_ACTIVITY_IGNORE_SCREEN;
-            break;
-        default:
-            listToIgnore = [];
-            break;
-    }
-
-    codesToIgnore = getCodesAIgnorer(listToIgnore);
-    return codesToIgnore.indexOf(activityCode) >= 0;
-};
-
-const activityIgnore = (
-    idSurvey: string,
-    source: LunaticModel,
-    iteration: number,
-    pageNext: EdtRoutesNameEnum,
-) => {
-    const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey, source);
-
-    let activityOrRoute = activitiesRoutesOrGaps.filter(act => !act.isGap)[iteration];
-    const skip = filtrePage(pageNext, activityOrRoute.activity?.activityCode ?? "");
-    return skip;
-};
-
-const skipNextPage = (
-    idSurvey: string,
-    source: LunaticModel,
-    iteration: number,
-    currentPage: EdtRoutesNameEnum,
-    fieldConditionNext?: FieldNameEnum,
-    nextRoute?: EdtRoutesNameEnum,
-    isRoute?: boolean,
-) => {
-    const nextPageRoute = nextRoute
-        ? skipAllNextPage(idSurvey, source, iteration, nextRoute, isRoute)
-        : undefined;
-
-    const nextCurrentPage = getNextLoopPage(currentPage, isRoute);
-    const nextPageNextLoop = skipAllNextPage(idSurvey, source, iteration, nextCurrentPage, isRoute);
-
-    if (
-        nextPageRoute == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER ||
-        nextPageNextLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER
-    ) {
-        saveAndNav(
-            getCurrentNavigatePath(
-                idSurvey,
-                EdtRoutesNameEnum.ACTIVITY,
-                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            ),
-        );
-    } else {
-        saveAndLoopNavigate(
-            nextPageRoute || nextPageNextLoop,
-            LoopEnum.ACTIVITY_OR_ROUTE,
-            iteration,
-            fieldConditionNext,
-            fieldConditionNext ? nextPageNextLoop : undefined,
-        );
-    }
-};
-
-const skipAllNextPage = (
-    idSurvey: string,
-    source: LunaticModel,
-    iteration: number,
-    nextPage: EdtRoutesNameEnum,
-    isRoute?: boolean,
-): EdtRoutesNameEnum => {
-    let page = nextPage;
-    if (activityIgnore(idSurvey, source, iteration, nextPage)) {
-        if (getStepPage(nextPage) == getLastStep(isRoute)) {
-            return EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER;
-        } else page = getNextLoopPage(nextPage, isRoute);
-    }
-    if (activityIgnore(idSurvey, source, iteration, page)) {
-        return skipAllNextPage(idSurvey, source, iteration, page);
-    }
-    return page;
-};
-
-const findItemInCategoriesNomenclature = (
-    id: string | undefined,
-    ref: NomenclatureActivityOption[],
-    parent?: NomenclatureActivityOption,
-): { item: NomenclatureActivityOption; parent: NomenclatureActivityOption | undefined } | undefined => {
-    let res = ref.find(a => a.id === id);
-    if (res) {
-        return {
-            item: res,
-            parent: parent,
-        };
-    } else {
-        for (let i = 0; i < ref.length; i++) {
-            let subsubs = ref[i].subs;
-            if (subsubs) {
-                let res2 = findItemInCategoriesNomenclature(id, subsubs, ref[i]);
-                if (res2) {
-                    return res2;
-                }
-            }
-        }
-    }
-};
-
-const getCodesAIgnorer = (listAIgnorer: string[]) => {
-    const categoriesActivity = getNomenclatureRef();
-
-    let codesActivity: string[] = [];
-
-    listAIgnorer.forEach((code: string) => {
-        if (codesActivity.indexOf(code) < 0) {
-            codesActivity.push(code);
-        }
-        const findCategory = findItemInCategoriesNomenclature(code.toString(), categoriesActivity);
-        if (findCategory?.item?.subs) {
-            for (let category of findCategory?.item?.subs) {
-                if (codesActivity.indexOf(category.id) < 0) {
-                    codesActivity.push(category.id);
-                    getCodesSubCategories(category.id, codesActivity, categoriesActivity);
-                }
-            }
-        }
-    });
-    return codesActivity;
-};
-
-const getCodesSubCategories = (
-    code: string,
-    codesActivity: string[],
-    categoriesActivity: NomenclatureActivityOption[],
-) => {
-    const findCategory = findItemInCategoriesNomenclature(code.toString(), categoriesActivity);
-    if (findCategory?.item?.subs) {
-        for (let category of findCategory?.item?.subs) {
-            if (codesActivity.indexOf(category.id) < 0) {
-                codesActivity.push(category.id);
-                getCodesSubCategories(category.id, codesActivity, categoriesActivity);
-            }
-        }
-    }
-};
-
 export {
     getData,
     getDatas,
@@ -562,7 +365,4 @@ export {
     toIgnoreForActivity,
     addToSecondaryActivityReferentiel,
     addToAutocompleteActivityReferentiel,
-    activityIgnore,
-    skipNextPage,
-    filtrePage,
 };

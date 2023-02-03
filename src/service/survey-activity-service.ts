@@ -313,7 +313,7 @@ const getTotalTimeOfActivities = (idSurvey: string, t: any): number => {
 
     const afterLastActivity = getDiffTime(
         getTime(activitiesRoutesOrGaps[activitiesRoutesOrGaps.length - 1]?.endTime),
-        getTime("04:00"),
+        getTime("03:55"),
     );
 
     leftTimeActivities = beforeFirstActivity + afterLastActivity + totalTimeGap;
