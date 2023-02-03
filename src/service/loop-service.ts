@@ -11,6 +11,7 @@ import { getCurrentPageSource } from "service/orchestrator-service";
 import {
     FieldNameEnum,
     getData,
+    getDatas,
     getValue,
     getVariable,
     saveData,
@@ -69,7 +70,7 @@ const getValueOfActivity = (data: LunaticData | undefined, iteration: number) =>
 
     const activityAutoComplete = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_SUGGESTERID]?.COLLECTED;
     if (Array.isArray(activityAutoComplete) && activityAutoComplete[iteration] != null) {
-        return activityAutoComplete[iteration] as string;
+        return (activityAutoComplete[iteration] as string).split("-")[0];
     }
 };
 
@@ -299,7 +300,8 @@ const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
     }
 
     codesToIgnore = getCodesAIgnorer(listToIgnore);
-    return codesToIgnore.indexOf(activityCode) >= 0;
+    const exist = codesToIgnore.indexOf(activityCode) >= 0;
+    return exist;
 };
 
 /**
@@ -311,17 +313,12 @@ const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
  * @param t
  * @returns true if have to skip page according to the selected activity
  */
-const activityIgnore = (
-    idSurvey: string,
-    source: LunaticModel,
-    iteration: number,
-    pageNext: EdtRoutesNameEnum,
-    t: any,
-): boolean => {
-    const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey, source);
-
-    let activityOrRoute = activitiesRoutesOrGaps.filter(act => !act.isGap)[iteration];
-    const skip = filtrePage(pageNext, activityOrRoute.activity?.activityCode ?? "");
+const activityIgnore = (idSurvey: string, iteration: number, page: EdtRoutesNameEnum): boolean => {
+    const data = getDatas().get(idSurvey);
+    const codeActivity = getValueOfActivity(data, iteration) ?? "";
+    const skip = filtrePage(page, codeActivity ?? "");
+    console.log("codeActivity" + codeActivity);
+    console.log("fautSkip" + skip);
     return skip;
 };
 
@@ -351,7 +348,6 @@ const skipNextPage = (
 
     const nextCurrentPage = getNextLoopPage(currentPage, isRoute);
     const nextPageNextLoop = skipAllNextPage(idSurvey, source, iteration, nextCurrentPage, t, isRoute);
-
     if (
         nextPageRoute == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER ||
         nextPageNextLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER
@@ -442,12 +438,12 @@ const skipAllNextPage = (
     isRoute?: boolean,
 ): EdtRoutesNameEnum => {
     let page = nextPage;
-    if (activityIgnore(idSurvey, source, iteration, nextPage, t)) {
+    if (activityIgnore(idSurvey, iteration, nextPage)) {
         if (getStepPage(nextPage) == getLastStep(isRoute)) {
             return EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER;
         } else page = getNextLoopPage(nextPage, isRoute);
     }
-    if (activityIgnore(idSurvey, source, iteration, page, t)) {
+    if (activityIgnore(idSurvey, iteration, page)) {
         return skipAllNextPage(idSurvey, source, iteration, page, t, isRoute);
     }
     return page;
@@ -472,12 +468,12 @@ const skipAllBackPage = (
     isRoute?: boolean,
 ): EdtRoutesNameEnum => {
     let page = backPage;
-    if (activityIgnore(idSurvey, source, iteration, backPage, t)) {
+    if (activityIgnore(idSurvey, iteration, backPage)) {
         if (getStepPage(backPage) == getStepper(isRoute)[0]) {
             return EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER;
         } else page = getPreviousLoopPage(backPage, isRoute);
     }
-    if (activityIgnore(idSurvey, source, iteration, page, t)) {
+    if (activityIgnore(idSurvey, iteration, page)) {
         return skipAllBackPage(idSurvey, source, iteration, page, t, isRoute);
     }
     return page;
@@ -720,6 +716,8 @@ export {
     getLoopSize,
     setLoopSize,
     activityIgnore,
+    getValueOfActivity,
+    filtrePage,
     skipNextPage,
     skipBackPage,
 };
