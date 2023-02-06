@@ -35,7 +35,6 @@ import {
     saveAndNav,
 } from "./navigation-service";
 import { getNomenclatureRef } from "./referentiel-service";
-import { getActivitiesOrRoutes } from "./survey-activity-service";
 
 const loopPageInfo: Map<LoopEnum, LoopData> = new Map();
 loopPageInfo.set(LoopEnum.ACTIVITY_OR_ROUTE, {
@@ -127,19 +126,17 @@ const ignoreVariablesCondtionals = (
         if (mustShowPageOfConditional) {
             let ignore = false;
             const deps = component?.bindingDependencies; //values of composant
-            let isInputConditional = false;
             //ignore all variables of composant if it's added one of dependencies of component
             deps?.forEach(dep => {
                 const value = data?.COLLECTED?.[dep ?? ""]?.COLLECTED;
                 if (Array.isArray(value) && value[iteration] != null) {
                     const conditional = value[iteration] as string | boolean;
-                    if (!isInputConditional) {
-                        if (typeof conditional == "string") isInputConditional = conditional.length > 0;
-                        if (typeof conditional == "boolean") isInputConditional = conditional;
+                    if (!ignore) {
+                        if (typeof conditional == "string") ignore = conditional.length > 0;
+                        if (typeof conditional == "boolean") ignore = conditional;
                     }
                 }
             });
-            ignore = isInputConditional;
             return ignore;
         } //other, skip variables of conditional
         else return true;
@@ -314,8 +311,6 @@ const activityIgnore = (idSurvey: string, iteration: number, page: EdtRoutesName
     const data = getDatas().get(idSurvey);
     const codeActivity = getValueOfActivity(data, iteration) ?? "";
     const skip = filtrePage(page, codeActivity ?? "");
-    console.log("codeActivity" + codeActivity);
-    console.log("fautSkip" + skip);
     return skip;
 };
 
@@ -334,20 +329,19 @@ const skipNextPage = (
     source: LunaticModel,
     iteration: number,
     currentPage: EdtRoutesNameEnum,
-    t: any,
     fieldConditionNext?: FieldNameEnum,
     nextRoute?: EdtRoutesNameEnum,
     isRoute?: boolean,
 ) => {
     const nextPageRoute = nextRoute
-        ? skipAllNextPage(idSurvey, source, iteration, nextRoute, t, isRoute)
+        ? skipAllNextPage(idSurvey, source, iteration, nextRoute, isRoute)
         : undefined;
-
     const nextCurrentPage = getNextLoopPage(currentPage, isRoute);
-    const nextPageNextLoop = skipAllNextPage(idSurvey, source, iteration, nextCurrentPage, t, isRoute);
+    const nextPageNextLoop = skipAllNextPage(idSurvey, source, iteration, nextCurrentPage, isRoute);
+
     if (
         nextPageRoute == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER ||
-        nextPageNextLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER
+        (nextPageRoute == null && nextPageNextLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)
     ) {
         saveAndNav(
             getCurrentNavigatePath(
@@ -382,17 +376,16 @@ const skipBackPage = (
     source: LunaticModel,
     iteration: number,
     currentPage: EdtRoutesNameEnum,
-    t: any,
     fieldConditionBack?: FieldNameEnum,
     backRoute?: EdtRoutesNameEnum,
     isRoute?: boolean,
 ) => {
     const backPageRoute = backRoute
-        ? skipAllBackPage(idSurvey, source, iteration, backRoute, t, isRoute)
+        ? skipAllBackPage(idSurvey, source, iteration, backRoute, isRoute)
         : undefined;
 
     const backCurrentPage = getPreviousLoopPage(currentPage, isRoute);
-    const backPageBackLoop = skipAllBackPage(idSurvey, source, iteration, backCurrentPage, t, isRoute);
+    const backPageBackLoop = skipAllBackPage(idSurvey, source, iteration, backCurrentPage, isRoute);
 
     if (
         backPageRoute == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER ||
@@ -431,7 +424,6 @@ const skipAllNextPage = (
     source: LunaticModel,
     iteration: number,
     nextPage: EdtRoutesNameEnum,
-    t: any,
     isRoute?: boolean,
 ): EdtRoutesNameEnum => {
     let page = nextPage;
@@ -441,7 +433,7 @@ const skipAllNextPage = (
         } else page = getNextLoopPage(nextPage, isRoute);
     }
     if (activityIgnore(idSurvey, iteration, page)) {
-        return skipAllNextPage(idSurvey, source, iteration, page, t, isRoute);
+        return skipAllNextPage(idSurvey, source, iteration, page, isRoute);
     }
     return page;
 };
@@ -461,7 +453,6 @@ const skipAllBackPage = (
     source: LunaticModel,
     iteration: number,
     backPage: EdtRoutesNameEnum,
-    t: any,
     isRoute?: boolean,
 ): EdtRoutesNameEnum => {
     let page = backPage;
@@ -471,7 +462,7 @@ const skipAllBackPage = (
         } else page = getPreviousLoopPage(backPage, isRoute);
     }
     if (activityIgnore(idSurvey, iteration, page)) {
-        return skipAllBackPage(idSurvey, source, iteration, page, t, isRoute);
+        return skipAllBackPage(idSurvey, source, iteration, page, isRoute);
     }
     return page;
 };
@@ -485,20 +476,20 @@ const skipAllBackPage = (
  */
 const findItemInCategoriesNomenclature = (
     id: string | undefined,
-    ref: NomenclatureActivityOption[],
+    referentiel: NomenclatureActivityOption[],
     parent?: NomenclatureActivityOption,
 ): { item: NomenclatureActivityOption; parent: NomenclatureActivityOption | undefined } | undefined => {
-    let res = ref.find(a => a.id === id);
+    let res = referentiel.find(a => a.id === id);
     if (res) {
         return {
             item: res,
             parent: parent,
         };
     } else {
-        for (let i = 0; i < ref.length; i++) {
-            let subsubs = ref[i].subs;
+        for (let ref of referentiel) {
+            let subsubs = ref.subs;
             if (subsubs) {
-                let res2 = findItemInCategoriesNomenclature(id, subsubs, ref[i]);
+                let res2 = findItemInCategoriesNomenclature(id, subsubs, ref);
                 if (res2) {
                     return res2;
                 }
@@ -601,7 +592,8 @@ const getCurrentLoopPage = (
     setLoopCompleted(idSurvey, iteration, completed);
 
     if (completed) {
-        //means we have fully completed iteration, in this case we want to go back to the first question of the loopPage
+        //means we have fully completed iteration,
+        //in this case we want to go back to the first question of the loopPage
         return { step: initialLoopSubPage, completed: true };
     }
     return { step: currentLoopSubpage, completed: false };
