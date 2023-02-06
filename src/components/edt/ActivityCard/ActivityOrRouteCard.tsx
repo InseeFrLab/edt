@@ -10,6 +10,8 @@ import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { makeStylesEdt } from "lunatic-edt";
 import React, { useCallback } from "react";
 import { TFunction, useTranslation } from "react-i18next";
+import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { filtrePage } from "service/loop-service";
 import { getActivityOrRouteDurationLabel } from "service/survey-activity-service";
 
 export const enum InsideAlertTypes {
@@ -52,7 +54,13 @@ const renderPlace = (
     classes: any,
     renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
 ) => {
+    const sectionFiltrer = filtrePage(
+        EdtRoutesNameEnum.ACTIVITY_LOCATION,
+        activityOrRoute.activity?.activityCode ?? "",
+    );
+
     return (
+        !sectionFiltrer &&
         !activityOrRoute.isRoute &&
         (activityOrRoute.place ? (
             <Box className={classes.otherInfoLabel}>{activityOrRoute.place.placeLabel}</Box>
@@ -81,9 +89,17 @@ const renderWithSomeone = (
         <Box className={classes.otherInfoLabel}>{t("page.activity-planner.alone")}</Box>
     );
 
-    return activityOrRoute.withSomeone == null
-        ? renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
-        : isWithSecondaryActivity;
+    const sectionFiltrer = filtrePage(
+        EdtRoutesNameEnum.WITH_SOMEONE,
+        activityOrRoute.activity?.activityCode ?? "",
+    );
+
+    return (
+        !sectionFiltrer &&
+        (activityOrRoute.withSomeone == null
+            ? renderInsideAlert(InsideAlertTypes.WITHSOMEONE)
+            : isWithSecondaryActivity)
+    );
 };
 
 const renderSecondaryActivity = (
@@ -121,10 +137,18 @@ const renderWithScreen = (
         ? t("page.activity-planner.with-screen")
         : t("page.activity-planner.without-screen");
 
-    return activityOrRoute.withScreen == null ? (
-        renderInsideAlert(InsideAlertTypes.SCREEN)
-    ) : (
-        <Box className={classes.otherInfoLabel}>{withScreenLabel}</Box>
+    const sectionFiltrer = filtrePage(
+        EdtRoutesNameEnum.WITH_SCREEN,
+        activityOrRoute.activity?.activityCode ?? "",
+    );
+
+    return (
+        !sectionFiltrer &&
+        (activityOrRoute.withScreen == null ? (
+            renderInsideAlert(InsideAlertTypes.SCREEN)
+        ) : (
+            <Box className={classes.otherInfoLabel}>{withScreenLabel}</Box>
+        ))
     );
 };
 
