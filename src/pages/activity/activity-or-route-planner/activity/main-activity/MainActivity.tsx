@@ -4,7 +4,7 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { getLoopInitialPage } from "service/loop-service";
+import { filtrePage, getLoopInitialPage, getValueOfActivity } from "service/loop-service";
 import {
     getLoopPageSubpage,
     getNextLoopPage,
@@ -75,7 +75,9 @@ const MainActivityPage = () => {
             );
         },
         nextClickCallback: (routeToGoal: boolean) => {
-            if (routeToGoal) {
+            const codeActivity = getValueOfActivity(callbackHolder.getData(), currentIteration) ?? "";
+            const skip = filtrePage(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL, codeActivity);
+            if (routeToGoal && !skip) {
                 saveAndLoopNavigate(
                     EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
                     LoopEnum.ACTIVITY_OR_ROUTE,
