@@ -289,7 +289,7 @@ Lunatic is used by EDT to :
 
 This lib was designed to be integrated in the future inside another MUI reusable components lib of INSEE. This lib being in development at the time of EDT development, Lunatic-EDT was created to accelerate the process.
 
-It contains all the survey "fields" components and an associated storybook documentation (please refer to Lunatic-EDT local install section to launch the storybook).
+It contains all the survey "fields" components and an associated storybook documentation (please refer to [Lunatic-EDT local install](#lunatic-edt-local-install) section to launch the storybook).
 
 ### Project structure
 
@@ -319,7 +319,7 @@ It contains all the survey "fields" components and an associated storybook docum
 
 #### Keycloak
 
-EDT is using a Keycloak for authentification. It uses `oidc-react` (https://github.com/bjerkio/oidc-react) to manage the connection between the Keycloak and the app.
+EDT is using a Keycloak for authentification. It uses `oidc-react` (https://github.com/bjerkio/oidc-react) to manage the connection between the Keycloak and the app. You can find the oidc config inside the `src/index.tsx` file.
 
 These two environment variables are used to setup the connection :
 
