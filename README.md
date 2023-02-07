@@ -309,7 +309,7 @@ It contains all the survey "fields" components and an associated storybook docum
 
 `pages` : Contains all app pages. The `activity` folder holds the specific pages for the activity survey and `work-time` the ones for the work time survey. Other common pages are directly inside the `pages` folder.
 
-`documentation` : Contains the app technical documentation.
+`documentation` : Contains the app technical documentation. Including `LunaticSourceToEdt.xlsx` file that contains the links between the EDT pages, the Lunatic-EDT components used and the sources variables.
 
 `i18n` : Contains i18n configuration and `fr.json` which is the file that holds all the app labels including accessility labels.
 
@@ -1008,7 +1008,7 @@ This will run a watcher on Lunatic-EDT that execute a build of Lunatic-EDT on ea
 Both projects are using TSS-React (https://www.tss-react.dev/) that allows to include the style directly inside de `tsx` component file. It has been developed using css flex properties as much as possible. The style is made to be responsive and is working on mobile device, tablet or desktop.
 
 Material UI (https://mui.com/) for React is used as much in Lunatic-EDT as in EDT.
-You will find the EDT material UI custom theme inside the Lunatic-EDT project under the `/src/ui/theme` folder.
+You will find the EDT material UI custom theme inside the Lunatic-EDT project under the `src/ui/theme` folder.
 
 <details>
 <summary>Theme</summary>
@@ -1062,13 +1062,14 @@ hover: "#5C6F99",
 
 ### Add a survey page
 To add a survey page inside the app, you should follow these steps :
-- Complete the source file you wish to edit with your new variables and components information.
+- Edit the source you wish to edit with your new variables and components information and ask INSEE to edit the source.
 >If you wish to know more about how to edit a Lunatic source, please refer to the Lunatic documentation. (https://github.com/InseeFr/Lunatic)
 - Add any new variable inside the `src/enumerations/FieldNameEnum` enumeration.
 - Add your page inside the map `src/routes/EdtRoutesMapping.ts` `mappingPageOrchestrator`
 - Create your new `tsx` page in the right section of `src/pages`
 - Refer to any other page close from your goal to see how to use the existing navigation and components deppending on if you are creating a page inside a loop or outside. You can also see there how to use the Orchestrator component and how it recovers the wished Lunatic model page from the source.
-- If your page contains more labels than the survey question label, please add it in the `src/i18n` section.
+  - If your page contains more labels than the survey question label, please add it in the `src/i18n` section.
+  - If your page contains assets such as images, please add it in the `src/assets` section and add the accessibility description of these asstets in the`src/i18n` section.
 - Add your new route inside the `src/routes/EdtRoutes.tsx` file which needs the `src/enumerations/EdtRoutesNameEnum` enumeration to be incremented as well.
 
 You should now be able to test your development.
