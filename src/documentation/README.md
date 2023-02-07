@@ -22,7 +22,7 @@ Stromae Back Office API which is used to GET all required nomenclatures for the 
 
 Lunatic is used by EDT to :
 
--   Print the questions and associated surveys fields from the lunatic sources provided. In the case of EDT, the sources ids are `edt-activity-survey` and `edt-work-time-survey` (recovered via API call to stromae back office `GET questionnaire/{id}`).
+-   Print the questions and associated surveys fields from the lunatic sources provided. In the case of EDT, the sources ids are `edt-activity-survey` and `edt-work-time-survey` (recovered via API call to [Queen Back Office `GET questionnaire/{id}`](#api-queen-back-office)).
 
 <details>
 <summary>Source example : </summary>
@@ -299,13 +299,13 @@ It contains all the survey "fields" components and an associated storybook docum
 
 `enumerations` : Contains all enumerations of the application.
 
-`service` : Contains all the app services. Please refer to the _Services_ section for further information.
+`service` : Contains all the app services. Please refer to the [Services section](#services) for further information.
 
 `components` : Contains two folders. `commons` which has all the components that could be reusable in another app that would work like EDT using Lunatic. `edt` that has all the EDT specific components.
 
 `interface` : Contains all the Typescript interfaces of the used entities, lunatic models etc...
 
-`routes` : Contains `EdtRoutes.tsx` which holds the React BrowserRouter tag and all the navigation routes. `EdtRoutesMapping.ts` is holding the `mappingPageOrchestrator` (refer to the _Enumerations & Maps_ section).
+`routes` : Contains `EdtRoutes.tsx` which holds the React BrowserRouter tag and all the navigation routes. `EdtRoutesMapping.ts` is holding the `mappingPageOrchestrator` (refer to the [Enumerations & Maps](#maps) section).
 
 `pages` : Contains all app pages. The `activity` folder holds the specific pages for the activity survey and `work-time` the ones for the work time survey. Other common pages are directly inside the `pages` folder.
 
@@ -586,7 +586,7 @@ KINDOFDAY = "edt-kindOfDay",
 </details>
 <br>
 
-Usage : this enumeration is used to define the nomenclature ids that are used by EDT in order to be able to recover it by id from API call (please refer to Stromae Back Office API section).
+Usage : this enumeration is used to define the nomenclature ids that are used by EDT in order to be able to recover it by id from API call (please refer to [Queen Back Office](#api-queen-back-office) section).
 
 ---
 
@@ -1075,7 +1075,7 @@ You should now be able to test your development.
 ### Edit a label
 #### Survey label
 A survey label is a label that is linked to an answer of the user. Most of the time it is a question. Those labels can be found in the related survey source : `edt-activity-survey` or `edt-work-time-survey`. To edit the sources, you need to ask directly to INSEE since they are saved and managed in INSEE's information system.
-Refer to the map `mappingPageOrchestrator` to find which source your page is using and the `surveyPage` property to find your `component` in the source. There you sould be able to edit the `label`.
+Refer to the [map](#maps) `mappingPageOrchestrator` to find which source your page is using and the `surveyPage` property to find your `component` in the source. There you sould be able to edit the `label`.
 #### App label
 All the labels that are not directly related to the survey answers are referenced inside the `fr.json` file in the `src/i18n` folder.
 
@@ -1088,4 +1088,8 @@ E2E tests using React Testing Library have been done to cover the nominal naviga
 ### Unit Tests
 JEST Unit tests have been done to cover the complexe Lunatic-EDT components such as `ActivitySelecter` or `HourChecker`.
 Run `yarn test` command inside Lunatic-EDT to execute the tests.
+
+## Release and versionning
+
+[TO COMPLETE BY INSEE]
 ```
