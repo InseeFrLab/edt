@@ -5,7 +5,7 @@ import otherKnownIcon from "assets/illustration/with-someone-categories/other-kn
 import otherIcon from "assets/illustration/with-someone-categories/other.svg";
 import parentsIcon from "assets/illustration/with-someone-categories/parents.svg";
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 
 const WithSomeoneSelectionPage = () => {
     const specifiquesProps = {

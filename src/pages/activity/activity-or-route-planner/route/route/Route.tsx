@@ -6,7 +6,7 @@ import option4 from "assets/illustration/route-categories/4.svg";
 import option5 from "assets/illustration/route-categories/5.svg";
 import option6 from "assets/illustration/route-categories/6.svg";
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { getRouteRef } from "service/referentiel-service";
 
 const RoutePage = () => {
