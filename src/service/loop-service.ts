@@ -7,9 +7,12 @@ import {
     LunaticModelComponent,
     LunaticModelVariable,
 } from "interface/lunatic/Lunatic";
+import { NomenclatureActivityOption } from "lunatic-edt";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { getCurrentPageSource } from "service/orchestrator-service";
 import {
     getData,
+    getDatas,
     getValue,
     getVariable,
     saveData,
@@ -17,8 +20,21 @@ import {
     toIgnoreForActivity,
     toIgnoreForRoute,
 } from "service/survey-service";
-import { getLastStep, getStepPage } from "./loop-stepper-service";
-import { getLoopPage } from "./navigation-service";
+import {
+    getLastStep,
+    getNextLoopPage,
+    getPreviousLoopPage,
+    getStepPage,
+    getStepper,
+} from "./loop-stepper-service";
+import {
+    getCurrentNavigatePath,
+    getLoopPage,
+    getOrchestratorPage,
+    saveAndLoopNavigate,
+    saveAndNav,
+} from "./navigation-service";
+import { getNomenclatureRef } from "./referentiel-service";
 
 const loopPageInfo: Map<LoopEnum, LoopData> = new Map();
 loopPageInfo.set(LoopEnum.ACTIVITY_OR_ROUTE, {
@@ -42,6 +58,40 @@ const getLoopInitialSequencePage = (loop: LoopEnum): string => {
 
 const LOOP_PAGES_CONDITIONALS = ["4.7", "4.10"];
 
+const getValueOfActivity = (data: LunaticData | undefined, iteration: number) => {
+    const activityCategory = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_ID]?.COLLECTED;
+    if (Array.isArray(activityCategory) && activityCategory[iteration] != null) {
+        return activityCategory[iteration] as string;
+    }
+
+    const activityAutoComplete = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_SUGGESTERID]?.COLLECTED;
+    if (Array.isArray(activityAutoComplete) && activityAutoComplete[iteration] != null) {
+        return (activityAutoComplete[iteration] as string).split("-")[0];
+    }
+};
+
+/**
+ *
+ * @param component
+ * @param data
+ * @param iteration
+ * @param pageToSkip
+ * @returns
+ */
+const ignoreActivity = (
+    component: LunaticModelComponent | undefined,
+    data: LunaticData | undefined,
+    iteration: number,
+    pageToSkip: EdtRoutesNameEnum,
+) => {
+    const pageLoop = Number(component?.page?.split(".")[1]);
+    const loop = getLoopPage(pageLoop);
+    if (loop?.page == pageToSkip) {
+        const codeActivity = getValueOfActivity(data, iteration) ?? "";
+        return filtrePage(pageToSkip, codeActivity);
+    }
+    return false;
+};
 /**
  * Skip pages conditionals
  * if conditional value is false or
@@ -76,19 +126,17 @@ const ignoreVariablesCondtionals = (
         if (mustShowPageOfConditional) {
             let ignore = false;
             const deps = component?.bindingDependencies; //values of composant
-            let isInputConditional = false;
             //ignore all variables of composant if it's added one of dependencies of component
             deps?.forEach(dep => {
                 const value = data?.COLLECTED?.[dep ?? ""]?.COLLECTED;
                 if (Array.isArray(value) && value[iteration] != null) {
                     const conditional = value[iteration] as string | boolean;
-                    if (!isInputConditional) {
-                        if (typeof conditional == "string") isInputConditional = conditional.length > 0;
-                        if (typeof conditional == "boolean") isInputConditional = conditional;
+                    if (!ignore) {
+                        if (typeof conditional == "string") ignore = conditional.length > 0;
+                        if (typeof conditional == "boolean") ignore = conditional;
                     }
                 }
             });
-            ignore = isInputConditional;
             return ignore;
         } //other, skip variables of conditional
         else return true;
@@ -155,12 +203,21 @@ const ignoreDeps = (
     isRoute?: boolean,
 ) => {
     let toIgnore = ignoreVariablesCondtionals(loopComponents, component, data, iteration);
+    let ignoreLocation = ignoreActivity(component, data, iteration, EdtRoutesNameEnum.ACTIVITY_LOCATION);
+    let ignoreSomeone = ignoreActivity(component, data, iteration, EdtRoutesNameEnum.WITH_SOMEONE);
+    let ignoreScreen = ignoreActivity(component, data, iteration, EdtRoutesNameEnum.WITH_SCREEN);
+    let ignoreGoal = ignoreActivity(component, data, iteration, EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
+
+    const filtrerActivities = ignoreLocation || ignoreSomeone || ignoreScreen || ignoreGoal;
+
     let toIgnoreActivity = ignoreDepsActivity(variable, component, data, iteration);
     let toIgnoreIfInputInCheckboxGroup =
         component?.componentType == "CheckboxGroupEdt" &&
         ignoreDepsOfCheckboxGroup(component, data, iteration);
+
     return (
         toIgnore ||
+        filtrerActivities ||
         toIgnoreActivity ||
         toIgnoreIfInputInCheckboxGroup ||
         (isRoute && toIgnoreForRoute.find(dep => variable?.name == dep)) ||
@@ -185,6 +242,309 @@ const ignoreDepsOfCheckboxGroup = (
         }
     });
     return existOneDepAdded;
+};
+
+const CODES_ACTIVITY_IGNORE_SOMEONE = ["110"];
+
+const CODES_ACTIVITY_IGNORE_GOAL = [
+    "110", //111,114,112,113
+    "140",
+    "210", //"215,213,221,223,231,232,233,234,241,251,264"
+    "270",
+    "260", //261,262,263, 264, 271,272
+    "516",
+    "531",
+    "532",
+    "510",
+    "601", //620,623,624,625,627
+    "631", //633,632
+    "639",
+    "641",
+    "649",
+    "652",
+    "656",
+    "658",
+    "674",
+    "664",
+    "680", //671,668,662,663
+];
+const CODES_ACTIVITY_IGNORE_SCREEN = ["110", "674", "649", "671"];
+const CODES_ACTIVITY_IGNORE_LOCATION = ["652"];
+
+const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
+    let codesToIgnore;
+    let listToIgnore: string[] = [];
+
+    switch (page) {
+        case EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL:
+            listToIgnore = CODES_ACTIVITY_IGNORE_GOAL;
+            break;
+        case EdtRoutesNameEnum.ACTIVITY_LOCATION:
+            listToIgnore = CODES_ACTIVITY_IGNORE_LOCATION;
+            break;
+        case EdtRoutesNameEnum.WITH_SOMEONE:
+            listToIgnore = CODES_ACTIVITY_IGNORE_SOMEONE;
+            break;
+        case EdtRoutesNameEnum.WITH_SCREEN:
+            listToIgnore = CODES_ACTIVITY_IGNORE_SCREEN;
+            break;
+        default:
+            listToIgnore = [];
+            break;
+    }
+
+    codesToIgnore = getCodesAIgnorer(listToIgnore);
+    const exist = codesToIgnore.indexOf(activityCode) >= 0;
+    return exist;
+};
+
+/**
+ * Skip page according to the selected activity
+ * @param idSurvey
+ * @param source
+ * @param iteration
+ * @param pageNext
+ * @param t
+ * @returns true if have to skip page according to the selected activity
+ */
+const activityIgnore = (idSurvey: string, iteration: number, page: EdtRoutesNameEnum): boolean => {
+    const data = getDatas().get(idSurvey);
+    const codeActivity = getValueOfActivity(data, iteration) ?? "";
+    const skip = filtrePage(page, codeActivity ?? "");
+    return skip;
+};
+
+/**
+ * Navigate to next page by skipping pages that should not be shown depending on the activty
+ * @param idSurvey
+ * @param source
+ * @param iteration
+ * @param currentPage
+ * @param fieldConditionNext
+ * @param nextRoute
+ * @param isRoute
+ */
+const skipNextPage = (
+    idSurvey: string,
+    source: LunaticModel,
+    iteration: number,
+    currentPage: EdtRoutesNameEnum,
+    fieldConditionNext?: FieldNameEnum,
+    nextRoute?: EdtRoutesNameEnum,
+    isRoute?: boolean,
+) => {
+    const nextPageRoute = nextRoute
+        ? skipAllNextPage(idSurvey, source, iteration, nextRoute, isRoute)
+        : undefined;
+    const nextCurrentPage = getNextLoopPage(currentPage, isRoute);
+    const nextPageNextLoop = skipAllNextPage(idSurvey, source, iteration, nextCurrentPage, isRoute);
+
+    if (
+        nextPageRoute == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER ||
+        (nextPageRoute == null && nextPageNextLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)
+    ) {
+        saveAndNav(
+            getCurrentNavigatePath(
+                idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            ),
+        );
+    } else {
+        saveAndLoopNavigate(
+            nextPageRoute || nextPageNextLoop,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            iteration,
+            fieldConditionNext,
+            fieldConditionNext ? nextPageNextLoop : undefined,
+        );
+    }
+};
+
+/**
+ * Navigate to previous page by skipping pages that should not be shown depending on the activty
+ * @param idSurvey
+ * @param source
+ * @param iteration
+ * @param currentPage
+ * @param fieldConditionNext
+ * @param nextRoute
+ * @param isRoute
+ */
+const skipBackPage = (
+    idSurvey: string,
+    source: LunaticModel,
+    iteration: number,
+    currentPage: EdtRoutesNameEnum,
+    fieldConditionBack?: FieldNameEnum,
+    backRoute?: EdtRoutesNameEnum,
+    isRoute?: boolean,
+) => {
+    const backPageRoute = backRoute
+        ? skipAllBackPage(idSurvey, source, iteration, backRoute, isRoute)
+        : undefined;
+
+    const backCurrentPage = getPreviousLoopPage(currentPage, isRoute);
+    const backPageBackLoop = skipAllBackPage(idSurvey, source, iteration, backCurrentPage, isRoute);
+
+    if (
+        backPageRoute == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER ||
+        backPageBackLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER
+    ) {
+        saveAndNav(
+            getCurrentNavigatePath(
+                idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            ),
+        );
+    } else {
+        saveAndLoopNavigate(
+            backPageRoute || backPageBackLoop,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            iteration,
+            fieldConditionBack,
+            fieldConditionBack ? backPageBackLoop : undefined,
+        );
+    }
+};
+
+/**
+ * Skip all pages that should be filtre
+ * @param idSurvey
+ * @param source
+ * @param iteration
+ * @param nextPage
+ * @param t
+ * @param isRoute
+ * @returns next page by skipping all pages that should not be shown depending on the activty
+ */
+const skipAllNextPage = (
+    idSurvey: string,
+    source: LunaticModel,
+    iteration: number,
+    nextPage: EdtRoutesNameEnum,
+    isRoute?: boolean,
+): EdtRoutesNameEnum => {
+    let page = nextPage;
+    if (activityIgnore(idSurvey, iteration, nextPage)) {
+        if (getStepPage(nextPage) == getLastStep(isRoute)) {
+            return EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER;
+        } else page = getNextLoopPage(nextPage, isRoute);
+    }
+    if (activityIgnore(idSurvey, iteration, page)) {
+        return skipAllNextPage(idSurvey, source, iteration, page, isRoute);
+    }
+    return page;
+};
+
+/**
+ * Skip all pages that should be filtre
+ * @param idSurvey
+ * @param source
+ * @param iteration
+ * @param nextPage
+ * @param t
+ * @param isRoute
+ * @returns previous page by skipping all pages that should not be shown depending on the activty
+ */
+const skipAllBackPage = (
+    idSurvey: string,
+    source: LunaticModel,
+    iteration: number,
+    backPage: EdtRoutesNameEnum,
+    isRoute?: boolean,
+): EdtRoutesNameEnum => {
+    let page = backPage;
+    if (activityIgnore(idSurvey, iteration, backPage)) {
+        if (getStepPage(backPage) == getStepper(isRoute)[0]) {
+            return EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER;
+        } else page = getPreviousLoopPage(backPage, isRoute);
+    }
+    if (activityIgnore(idSurvey, iteration, page)) {
+        return skipAllBackPage(idSurvey, source, iteration, page, isRoute);
+    }
+    return page;
+};
+
+/**
+ * Find activity
+ * @param id
+ * @param ref
+ * @param parent
+ * @returns
+ */
+const findItemInCategoriesNomenclature = (
+    id: string | undefined,
+    referentiel: NomenclatureActivityOption[],
+    parent?: NomenclatureActivityOption,
+): { item: NomenclatureActivityOption; parent: NomenclatureActivityOption | undefined } | undefined => {
+    let res = referentiel.find(a => a.id === id);
+    if (res) {
+        return {
+            item: res,
+            parent: parent,
+        };
+    } else {
+        for (let ref of referentiel) {
+            let subsubs = ref.subs;
+            if (subsubs) {
+                let res2 = findItemInCategoriesNomenclature(id, subsubs, ref);
+                if (res2) {
+                    return res2;
+                }
+            }
+        }
+    }
+};
+
+/**
+ * Get codes of activities to ignore dependend
+ * @param listAIgnorer
+ * @returns
+ */
+const getCodesAIgnorer = (listAIgnorer: string[]) => {
+    const categoriesActivity = getNomenclatureRef();
+
+    let codesActivity: string[] = [];
+
+    listAIgnorer.forEach((code: string) => {
+        if (codesActivity.indexOf(code) < 0) {
+            codesActivity.push(code);
+        }
+        const findCategory = findItemInCategoriesNomenclature(code.toString(), categoriesActivity);
+        if (findCategory?.item?.subs) {
+            for (let category of findCategory?.item?.subs) {
+                if (codesActivity.indexOf(category.id) < 0) {
+                    codesActivity.push(category.id);
+                    getCodesSubCategories(category.id, codesActivity, categoriesActivity);
+                }
+            }
+        }
+    });
+    return codesActivity;
+};
+
+/**
+ *
+ * @param code
+ * @param codesActivity
+ * @param categoriesActivity
+ */
+const getCodesSubCategories = (
+    code: string,
+    codesActivity: string[],
+    categoriesActivity: NomenclatureActivityOption[],
+) => {
+    const findCategory = findItemInCategoriesNomenclature(code.toString(), categoriesActivity);
+    if (findCategory?.item?.subs) {
+        for (let category of findCategory?.item?.subs) {
+            if (codesActivity.indexOf(category.id) < 0) {
+                codesActivity.push(category.id);
+                getCodesSubCategories(category.id, codesActivity, categoriesActivity);
+            }
+        }
+    }
 };
 
 // Give the first loop subpage that don't have any data fill
@@ -232,7 +592,8 @@ const getCurrentLoopPage = (
     setLoopCompleted(idSurvey, iteration, completed);
 
     if (completed) {
-        //means we have fully completed iteration, in this case we want to go back to the first question of the loopPage
+        //means we have fully completed iteration,
+        //in this case we want to go back to the first question of the loopPage
         return { step: initialLoopSubPage, completed: true };
     }
     return { step: currentLoopSubpage, completed: false };
@@ -342,4 +703,9 @@ export {
     getLoopLastCompletedStep,
     getLoopSize,
     setLoopSize,
+    activityIgnore,
+    getValueOfActivity,
+    filtrePage,
+    skipNextPage,
+    skipBackPage,
 };

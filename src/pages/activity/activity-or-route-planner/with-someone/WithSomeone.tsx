@@ -9,7 +9,7 @@ const WithSomeonePage = () => {
             currentPage={EdtRoutesNameEnum.WITH_SOMEONE}
             labelOfPage={"with-someone-selecter"}
             errorIcon={peopleErrorIcon}
-            backRoute={EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION}
+            backRoute={EdtRoutesNameEnum.ACTIVITY_LOCATION}
             nextRoute={EdtRoutesNameEnum.WITH_SOMEONE_SELECTION}
             fieldConditionBack={FieldNameEnum.WITHSECONDARYACTIVITY}
             fieldConditionNext={FieldNameEnum.WITHSOMEONE}
