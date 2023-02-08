@@ -286,7 +286,7 @@ const ActivityOrRoutePlannerPage = () => {
     );
 
     const onDeleteActivity = useCallback(
-        (idSurvey: string, source: any, iteration: number) => () =>
+        (idSurvey: string, source: LunaticModel, iteration: number) => () =>
             onDeleteActivityOrRoute(idSurvey, source, iteration),
         [],
     );

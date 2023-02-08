@@ -3,17 +3,21 @@ import { LoopEnum } from "enumerations/LoopEnum";
 import { LunaticData, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import { SetStateAction } from "react";
-import { NavigateFunction } from "react-router-dom";
+import { NavigateFunction, To } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentLoopPage, getLoopInitialPage } from "service/loop-service";
 import { getCurrentPage, getData, getValue, saveData } from "service/survey-service";
 import { getLastPageStep, getLastStep } from "./stepper.service";
 
-let _context: any = null;
-let _navigate: any = null;
-let _callbackHolder: any = null;
+let _context: OrchestratorContext;
+let _navigate: NavigateFunction;
+let _callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } };
 
-const setEnviro = (context: OrchestratorContext, navigate: NavigateFunction, callbackHolder: any) => {
+const setEnviro = (
+    context: OrchestratorContext,
+    navigate: NavigateFunction,
+    callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } },
+) => {
     _context = context;
     _navigate = navigate;
     _callbackHolder = callbackHolder;
@@ -204,9 +208,9 @@ const navToRouteOrRouteNotSelection = (
     if (value) {
         const conditional = getValue(_context.idSurvey, value, currentIteration);
         if (conditional || (typeof conditional == "string" && conditional != "")) {
-            _navigate(route);
+            _navigate(route as To);
         } else {
-            _navigate(routeNotSelection);
+            _navigate(routeNotSelection as To);
         }
     } else _navigate(route ? route : "/");
 };
