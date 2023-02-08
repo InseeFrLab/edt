@@ -105,7 +105,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         source: context.source,
         data: context.data,
         cbHolder: callbackHolder,
-        page: getOrchestratorPage(currentPage),
+        page: getOrchestratorPage(currentPage, context.surveyRootPage),
         overrideOptions: specifiquesProps?.referentiel,
         componentSpecificProps: componentLunaticProps,
     };
