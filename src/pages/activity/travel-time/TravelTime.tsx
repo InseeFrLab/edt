@@ -1,5 +1,5 @@
 import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 
 const TravelTimePage = () => {
     return (

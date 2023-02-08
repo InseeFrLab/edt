@@ -22,8 +22,18 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
     const hasTwoButtons = (onPrevious && onNext) || (onPrevious && onValidate);
     const isItDesktop = isDesktop();
 
-    const backClick = useCallback((event: any) => onPrevious && onPrevious(event), [onPrevious]);
-    const nextClick = useCallback((event: any) => onNext && onNext(event), [onNext]);
+    const backClick = useCallback(
+        (event: React.MouseEvent) => {
+            onPrevious && onPrevious(event);
+        },
+        [onPrevious],
+    );
+    const nextClick = useCallback(
+        (event: React.MouseEvent) => {
+            onNext && onNext(event);
+        },
+        [onNext],
+    );
 
     return (
         <>

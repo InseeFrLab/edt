@@ -1,6 +1,6 @@
 import exceptionalDay from "assets/illustration/exceptional-day.svg";
 import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 
 const ExceptionalDayPage = () => {
     return (
