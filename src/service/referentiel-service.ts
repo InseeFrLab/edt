@@ -34,6 +34,10 @@ export const getRouteRef = (): CheckboxOneCustomOption[] => {
     return getReferentiel(ReferentielsEnum.ROUTE) as CheckboxOneCustomOption[];
 };
 
+export const getMeanOfTransportRef = (): CheckboxOneCustomOption[] => {
+    return getReferentiel(ReferentielsEnum.MEANOFTRANSPORT) as CheckboxOneCustomOption[];
+};
+
 export const getKindOfWeekRef = (): CheckboxOneCustomOption[] => {
     return getReferentiel(ReferentielsEnum.KINDOFWEEK) as CheckboxOneCustomOption[];
 };

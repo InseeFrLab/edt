@@ -258,67 +258,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "FOOT",
-            "componentRef": "checkboxgroup_meanoftransport"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
-            },
-            "name": "BICYCLE",
-            "componentRef": "checkboxgroup_meanoftransport"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
-            },
-            "name": "TWOWHEELSMOTORIZED",
-            "componentRef": "checkboxgroup_meanoftransport"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
-            },
-            "name": "PRIVATECAR",
-            "componentRef": "checkboxgroup_meanoftransport"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
-            },
-            "name": "OTHERPRIVATE",
-            "componentRef": "checkboxgroup_meanoftransport"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
-            },
-            "name": "PUBLIC",
+            "name": "MEANOFTRANSPORT",
             "componentRef": "checkboxgroup_meanoftransport"
         },
         {
@@ -589,12 +529,7 @@
                 "MAINACTIVITY",
                 "GOAL",
                 "ROUTE",
-                "FOOT",
-                "BICYCLE",
-                "TWOWHEELSMOTORIZED",
-                "PRIVATECAR",
-                "OTHERPRIVATE",
-                "PUBLIC",
+                "MEANOFTRANSPORT",
                 "WITHSECONDARYACTIVITY",
                 "SECONDARYACTIVITY",
                 "PLACE",
@@ -716,59 +651,9 @@
                     "mandatory": false
                 },
                 {
-                    "componentType": "CheckboxGroupEdt",
-                    "bindingDependencies": [
-                        "FOOT",
-                        "BICYCLE",
-                        "TWOWHEELSMOTORIZED",
-                        "PRIVATECAR",
-                        "OTHERPRIVATE",
-                        "PUBLIC"
-                    ],
-                    "responses": [
-                        {
-                            "response": {
-                                "name": "FOOT"
-                            },
-                            "id": "1",
-                            "label": "\"À pied\""
-                        },
-                        {
-                            "response": {
-                                "name": "BICYCLE"
-                            },
-                            "id": "2",
-                            "label": "\"Vélo (électrique ou non)\""
-                        },
-                        {
-                            "response": {
-                                "name": "TWOWHEELSMOTORIZED"
-                            },
-                            "id": "3",
-                            "label": "\"Deux roues motorisé (scooter, moto...)\""
-                        },
-                        {
-                            "response": {
-                                "name": "PRIVATECAR"
-                            },
-                            "id": "4",
-                            "label": "\"Voiture privée (y compris covoiturage)\""
-                        },
-                        {
-                            "response": {
-                                "name": "OTHERPRIVATE"
-                            },
-                            "id": "5",
-                            "label": "\"Autre moyen privé (monoroue, trottinette ou skate, bateau, électrique ou non…)\""
-                        },
-                        {
-                            "response": {
-                                "name": "PUBLIC"
-                            },
-                            "id": "6",
-                            "label": "\"Transports publics (bus, train, taxi, Uber, avion…)\""
-                        }
-                    ],
+                    "componentType": "CheckboxOneEdt",
+                    "bindingDependencies": ["MEANOFTRANSPORT"],
+                    "response": { "name": "MEANOFTRANSPORT" },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",

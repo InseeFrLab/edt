@@ -430,14 +430,7 @@ const getMeanOfTransportLabel = (
     i: number,
     source: LunaticModel | undefined,
 ): string | undefined => {
-    const fieldNames = [
-        FieldNameEnum.FOOT,
-        FieldNameEnum.BICYCLE,
-        FieldNameEnum.TWOWHEELSMOTORIZED,
-        FieldNameEnum.PRIVATECAR,
-        FieldNameEnum.OTHERPRIVATE,
-        FieldNameEnum.PUBLIC,
-    ];
+    const fieldNames = [FieldNameEnum.MEANOFTRANSPORT];
     const result = filterFieldNames(fieldNames, idSurvey, i, source);
     return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
 };
