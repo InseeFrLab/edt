@@ -1,5 +1,6 @@
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
+import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
@@ -14,6 +15,7 @@ import {
     setEnviro,
     validateAndNextStep,
 } from "service/navigation-service";
+import { getLanguage } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import SurveyPage from "../SurveyPage";
@@ -53,6 +55,12 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         options: specifiquesProps?.options,
         defaultIcon: specifiquesProps?.defaultIcon,
         icon: specifiquesProps?.icon,
+        language: getLanguage(),
+        constants: {
+            START_TIME_DAY: START_TIME_DAY,
+            FORMAT_TIME: FORMAT_TIME,
+            MINUTE_LABEL: MINUTE_LABEL,
+        },
     };
 
     const surveyPageStepProps = {

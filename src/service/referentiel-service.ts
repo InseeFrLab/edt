@@ -7,8 +7,8 @@ import {
     NomenclatureActivityOption,
     SelectedActivity,
 } from "lunatic-edt";
-
 import { getReferentiel } from "./survey-service";
+import i18n from "i18next";
 
 export const getAutoCompleteRef = (): AutoCompleteActiviteOption[] => {
     return getReferentiel(ReferentielsEnum.ACTIVITYAUTOCOMPLETE) as AutoCompleteActiviteOption[];
@@ -64,4 +64,8 @@ export const findPlaceInRef = (id: string): CheckboxOneCustomOption | undefined 
 
 export const findRouteInRef = (id: string): CheckboxOneCustomOption | undefined => {
     return getRouteRef().find(a => a.value === id);
+};
+
+export const getLanguage = () => {
+    return i18n.language || (typeof window !== "undefined" && window.localStorage.i18nextLng) || "fr";
 };

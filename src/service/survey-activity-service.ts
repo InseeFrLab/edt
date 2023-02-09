@@ -20,6 +20,7 @@ import {
     findPlaceInRef,
     findRouteInRef,
     findSecondaryActivityInRef,
+    getLanguage,
 } from "./referentiel-service";
 
 const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
@@ -129,8 +130,8 @@ const createActivitiesOrRoutes = (
         activityOrRoute.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean | undefined;
 
         activityOrRoute.startTime =
-            getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
-        activityOrRoute.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
+            getValue(idSurvey, FieldNameEnum.START_TIME, i)?.toString() || undefined;
+        activityOrRoute.endTime = getValue(idSurvey, FieldNameEnum.END_TIME, i)?.toString() || undefined;
 
         if (activityOrRoute.isRoute) {
             activityOrRoute = createRoute(idSurvey, source, activityOrRoute, i, t);
@@ -336,7 +337,7 @@ const getScore = (idSurvey: string, t: TFunction<"translation", undefined>): num
 
 const getWeeklyPlannerScore = (idSurvey: string): number => {
     const value = getValue(idSurvey, FieldNameEnum.WEEKLYPLANNER) as IODataStructure[];
-    const weeklyPlannerValue = transformToWeeklyPlannerDataType(value);
+    const weeklyPlannerValue = transformToWeeklyPlannerDataType(value, getLanguage());
     return getProgressBarValue(weeklyPlannerValue);
 };
 
