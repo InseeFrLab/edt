@@ -15,6 +15,7 @@ import {
     saveAndNav,
     setEnviro,
 } from "service/navigation-service";
+import { getLanguage } from "service/referentiel-service";
 import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 
 const WeeklyPlannerPage = () => {
@@ -44,6 +45,7 @@ const WeeklyPlannerPage = () => {
             futureButtonLabel: t("component.weekly-planner.future-button-label"),
         },
         saveAll: save,
+        language: getLanguage(),
     };
 
     const validateAndNav = (): void => {

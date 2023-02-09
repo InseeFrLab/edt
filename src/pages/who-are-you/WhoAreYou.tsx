@@ -30,7 +30,7 @@ const WhoAreYouPage = () => {
         return () => document.removeEventListener("keyup", keydownChange, true);
     }, [callbackHolder]);
 
-    const keypressChange = (event: any) => {
+    const keypressChange = (event: KeyboardEvent) => {
         if (event.key === "Enter") {
             document.getElementById("validateButton")?.click();
         }

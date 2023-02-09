@@ -1,5 +1,6 @@
 import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
@@ -13,6 +14,7 @@ import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage, skipBackPage, skipNextPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import { onClose, onNext, onPrevious, setEnviro, validate } from "service/navigation-service";
+import { getLanguage } from "service/referentiel-service";
 import { getValue } from "service/survey-service";
 import LoopSurveyPage from "../LoopSurveyPage";
 
@@ -95,6 +97,12 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
                         isRoute,
                     );
                 });
+        },
+        language: getLanguage(),
+        constants: {
+            START_TIME_DAY: START_TIME_DAY,
+            FORMAT_TIME: FORMAT_TIME,
+            MINUTE_LABEL: MINUTE_LABEL,
         },
     };
 

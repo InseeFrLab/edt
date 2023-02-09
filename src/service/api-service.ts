@@ -31,6 +31,7 @@ export const fetchReferentiels = (): Promise<ReferentielData> => {
         [ReferentielsEnum.ACTIVITYNOMENCLATURE]: [],
         [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: [],
         [ReferentielsEnum.ROUTE]: [],
+        [ReferentielsEnum.MEANOFTRANSPORT]: [],
         [ReferentielsEnum.ACTIVITYSECONDARYACTIVITY]: [],
         [ReferentielsEnum.ROUTESECONDARYACTIVITY]: [],
         [ReferentielsEnum.LOCATION]: [],
