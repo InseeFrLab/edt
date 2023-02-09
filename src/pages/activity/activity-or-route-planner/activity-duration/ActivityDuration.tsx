@@ -61,8 +61,8 @@ const ActivityDurationPage = () => {
         const data = callbackHolder.getData();
         let isAfter = false;
         if (data) {
-            const startTime = data.COLLECTED?.[FieldNameEnum.STARTTIME]?.COLLECTED as string[];
-            const endTime = data.COLLECTED?.[FieldNameEnum.ENDTIME]?.COLLECTED as string[];
+            const startTime = data.COLLECTED?.[FieldNameEnum.START_TIME]?.COLLECTED as string[];
+            const endTime = data.COLLECTED?.[FieldNameEnum.END_TIME]?.COLLECTED as string[];
 
             dayjs.extend(customParseFormat);
             if (startTime && endTime) {

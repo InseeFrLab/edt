@@ -180,8 +180,8 @@ const ActivityOrRoutePlannerPage = () => {
         );
         contextIteration = loopSize - 1;
 
-        setValue(context.idSurvey, FieldNameEnum.STARTTIME, startTime || null, contextIteration);
-        setValue(context.idSurvey, FieldNameEnum.ENDTIME, endTime || null, contextIteration);
+        setValue(context.idSurvey, FieldNameEnum.START_TIME, startTime || null, contextIteration);
+        setValue(context.idSurvey, FieldNameEnum.END_TIME, endTime || null, contextIteration);
         const updatedData = setValue(
             context.idSurvey,
             FieldNameEnum.ISROUTE,

@@ -129,8 +129,8 @@ const createActivitiesOrRoutes = (
         activityOrRoute.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean | undefined;
 
         activityOrRoute.startTime =
-            getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
-        activityOrRoute.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
+            getValue(idSurvey, FieldNameEnum.START_TIME, i)?.toString() || undefined;
+        activityOrRoute.endTime = getValue(idSurvey, FieldNameEnum.END_TIME, i)?.toString() || undefined;
 
         if (activityOrRoute.isRoute) {
             activityOrRoute = createRoute(idSurvey, source, activityOrRoute, i, t);
