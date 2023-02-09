@@ -20,6 +20,7 @@ import {
     findPlaceInRef,
     findRouteInRef,
     findSecondaryActivityInRef,
+    getLanguage,
 } from "./referentiel-service";
 
 const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
@@ -336,7 +337,7 @@ const getScore = (idSurvey: string, t: TFunction<"translation", undefined>): num
 
 const getWeeklyPlannerScore = (idSurvey: string): number => {
     const value = getValue(idSurvey, FieldNameEnum.WEEKLYPLANNER) as IODataStructure[];
-    const weeklyPlannerValue = transformToWeeklyPlannerDataType(value);
+    const weeklyPlannerValue = transformToWeeklyPlannerDataType(value, getLanguage());
     return getProgressBarValue(weeklyPlannerValue);
 };
 

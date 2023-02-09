@@ -14,6 +14,7 @@ import {
     setEnviro,
     validateAndNextStep,
 } from "service/navigation-service";
+import { getLanguage } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import SurveyPage from "../SurveyPage";
@@ -53,6 +54,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         options: specifiquesProps?.options,
         defaultIcon: specifiquesProps?.defaultIcon,
         icon: specifiquesProps?.icon,
+        language: getLanguage(),
     };
 
     const surveyPageStepProps = {

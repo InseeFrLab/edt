@@ -13,6 +13,7 @@ import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage, skipBackPage, skipNextPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import { onClose, onNext, onPrevious, setEnviro, validate } from "service/navigation-service";
+import { getLanguage } from "service/referentiel-service";
 import { getValue } from "service/survey-service";
 import LoopSurveyPage from "../LoopSurveyPage";
 
@@ -96,6 +97,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
                     );
                 });
         },
+        language: getLanguage(),
     };
 
     const loopSurveyPageProps = {
