@@ -2,6 +2,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Box, Divider, IconButton, Snackbar, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
+import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
@@ -16,6 +17,7 @@ import {
     Alert,
     formateDateToFrenchFormat,
     generateDateFromStringInput,
+    Info,
     makeStylesEdt,
 } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
@@ -178,8 +180,8 @@ const ActivityOrRoutePlannerPage = () => {
         );
         contextIteration = loopSize - 1;
 
-        setValue(context.idSurvey, FieldNameEnum.STARTTIME, startTime || null, contextIteration);
-        setValue(context.idSurvey, FieldNameEnum.ENDTIME, endTime || null, contextIteration);
+        setValue(context.idSurvey, FieldNameEnum.START_TIME, startTime || null, contextIteration);
+        setValue(context.idSurvey, FieldNameEnum.END_TIME, endTime || null, contextIteration);
         const updatedData = setValue(
             context.idSurvey,
             FieldNameEnum.ISROUTE,
@@ -286,7 +288,7 @@ const ActivityOrRoutePlannerPage = () => {
     );
 
     const onDeleteActivity = useCallback(
-        (idSurvey: string, source: any, iteration: number) => () =>
+        (idSurvey: string, source: LunaticModel, iteration: number) => () =>
             onDeleteActivityOrRoute(idSurvey, source, iteration),
         [],
     );
@@ -313,7 +315,8 @@ const ActivityOrRoutePlannerPage = () => {
     const closeActivity = useCallback((closed: boolean) => () => onFinish(closed), []);
 
     const displayAlert = useCallback(
-        (setDisplayAlert: any, display: boolean) => () => setDisplayAlert(display),
+        (setDisplayAlert: React.Dispatch<React.SetStateAction<boolean>>, display: boolean) => () =>
+            setDisplayAlert(display),
         [],
     );
 
@@ -390,6 +393,15 @@ const ActivityOrRoutePlannerPage = () => {
                                                     <Typography className={cx(classes.label)}>
                                                         {t("page.activity-planner.no-activity")}
                                                     </Typography>
+                                                </FlexCenter>
+                                                <FlexCenter>
+                                                    <Info
+                                                        boldText={t("page.activity-planner.info")}
+                                                        infoIcon={InfoIcon}
+                                                        infoIconAlt={t(
+                                                            "accessibility.asset.info.info-alt",
+                                                        )}
+                                                    />
                                                 </FlexCenter>
                                             </>
                                         ) : (

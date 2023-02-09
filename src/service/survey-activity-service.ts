@@ -11,7 +11,7 @@ import {
     getProgressBarValue,
     transformToWeeklyPlannerDataType,
 } from "lunatic-edt/dist/ui/components/Planner/WeeklyPlanner";
-import { useTranslation } from "react-i18next";
+import { TFunction, useTranslation } from "react-i18next";
 import { getData, getValue, saveData } from "service/survey-service";
 import { getLoopSize } from "./loop-service";
 import {
@@ -20,6 +20,7 @@ import {
     findPlaceInRef,
     findRouteInRef,
     findSecondaryActivityInRef,
+    getLanguage,
 } from "./referentiel-service";
 
 const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
@@ -79,7 +80,7 @@ const createRoute = (
     source: LunaticModel,
     activityOrRoute: ActivityRouteOrGap,
     iteration: number,
-    t: any,
+    t: TFunction<"translation", undefined>,
 ) => {
     // Label
     activityOrRoute.route = { routeLabel: t("common.activity.unknown-route") + (iteration + 1) };
@@ -101,7 +102,7 @@ const createActivity = (
     idSurvey: string,
     activityOrRoute: ActivityRouteOrGap,
     iteration: number,
-    t: any,
+    t: TFunction<"translation", undefined>,
 ) => {
     // Label
     activityOrRoute.activity = {
@@ -115,7 +116,11 @@ const createActivity = (
     return activityOrRoute;
 };
 
-const createActivitiesOrRoutes = (idSurvey: string, source: LunaticModel, t: any) => {
+const createActivitiesOrRoutes = (
+    idSurvey: string,
+    source: LunaticModel,
+    t: TFunction<"translation", undefined>,
+) => {
     let activitiesRoutes: ActivityRouteOrGap[] = [];
     const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE, activitySurveySource);
 
@@ -125,8 +130,8 @@ const createActivitiesOrRoutes = (idSurvey: string, source: LunaticModel, t: any
         activityOrRoute.isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, i) as boolean | undefined;
 
         activityOrRoute.startTime =
-            getValue(idSurvey, FieldNameEnum.STARTTIME, i)?.toString() || undefined;
-        activityOrRoute.endTime = getValue(idSurvey, FieldNameEnum.ENDTIME, i)?.toString() || undefined;
+            getValue(idSurvey, FieldNameEnum.START_TIME, i)?.toString() || undefined;
+        activityOrRoute.endTime = getValue(idSurvey, FieldNameEnum.END_TIME, i)?.toString() || undefined;
 
         if (activityOrRoute.isRoute) {
             activityOrRoute = createRoute(idSurvey, source, activityOrRoute, i, t);
@@ -209,7 +214,7 @@ const createGapsOverlaps = (idSurvey: string, activitiesRoutes: ActivityRouteOrG
 };
 
 const getActivitiesOrRoutes = (
-    t: any,
+    t: TFunction<"translation", undefined>,
     idSurvey: string,
     source?: LunaticModel,
 ): {
@@ -294,7 +299,7 @@ const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string =
     } else return "";
 };
 
-const getTotalTimeOfActivities = (idSurvey: string, t: any): number => {
+const getTotalTimeOfActivities = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
     const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey);
     let totalTimeGap = 0;
     let leftTimeActivities = 0;
@@ -324,7 +329,7 @@ const getTotalTimeOfActivities = (idSurvey: string, t: any): number => {
     else return 24 - leftTimeActivities;
 };
 
-const getScore = (idSurvey: string, t: any): number => {
+const getScore = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
     const totalHourActivities = getTotalTimeOfActivities(idSurvey, t);
     const percentage = (totalHourActivities / 24) * 100;
     return totalHourActivities > 0 ? Number(percentage.toFixed(0)) : 0;
@@ -332,7 +337,7 @@ const getScore = (idSurvey: string, t: any): number => {
 
 const getWeeklyPlannerScore = (idSurvey: string): number => {
     const value = getValue(idSurvey, FieldNameEnum.WEEKLYPLANNER) as IODataStructure[];
-    const weeklyPlannerValue = transformToWeeklyPlannerDataType(value);
+    const weeklyPlannerValue = transformToWeeklyPlannerDataType(value, getLanguage());
     return getProgressBarValue(weeklyPlannerValue);
 };
 
@@ -343,7 +348,7 @@ const getTime = (time?: string) => {
     } else return timeDay;
 };
 
-const getDiffTime = (startTime?: any, endTime?: any) => {
+const getDiffTime = (startTime?: dayjs.Dayjs, endTime?: dayjs.Dayjs) => {
     if (startTime == null || endTime == null) return 0;
     dayjs.extend(customParseFormat);
     let startFinalTime = startTime;

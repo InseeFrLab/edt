@@ -42,7 +42,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "STARTTIME",
+            "name": "START_TIME",
             "componentRef": "timepicker_durationActivity"
         },
         {
@@ -54,7 +54,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "ENDTIME",
+            "name": "END_TIME",
             "componentRef": "timepicker_durationActivity"
         },
         {
@@ -524,8 +524,8 @@
             "paginatedLoop": true,
             "conditionFilter": { "value": "true" },
             "bindingDependencies": [
-                "STARTTIME",
-                "ENDTIME",
+                "START_TIME",
+                "END_TIME",
                 "MAINACTIVITY",
                 "GOAL",
                 "ROUTE",
@@ -562,16 +562,16 @@
                 },
                 {
                     "componentType": "ActivityTime",
-                    "bindingDependencies": ["STARTTIME", "ENDTIME"],
+                    "bindingDependencies": ["START_TIME", "END_TIME"],
                     "responses": [
                         {
                             "response": {
-                                "name": "STARTTIME"
+                                "name": "START_TIME"
                             }
                         },
                         {
                             "response": {
-                                "name": "ENDTIME"
+                                "name": "END_TIME"
                             }
                         }
                     ],

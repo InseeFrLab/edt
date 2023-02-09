@@ -1,5 +1,6 @@
 import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
@@ -10,21 +11,10 @@ import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { getLabels, getLabelsWhenQuit } from "service/alert-service";
-import { getLoopInitialPage } from "service/loop-service";
-import {
-    getLoopPageSubpage,
-    getNextLoopPage,
-    getPreviousLoopPage,
-    getStepData,
-} from "service/loop-stepper-service";
-import {
-    onClose,
-    onNext,
-    onPrevious,
-    saveAndLoopNavigate,
-    setEnviro,
-    validateAndNextLoopStep,
-} from "service/navigation-service";
+import { getLoopInitialPage, skipBackPage, skipNextPage } from "service/loop-service";
+import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
+import { onClose, onNext, onPrevious, setEnviro, validate } from "service/navigation-service";
+import { getLanguage } from "service/referentiel-service";
 import { getValue } from "service/survey-service";
 import LoopSurveyPage from "../LoopSurveyPage";
 
@@ -70,34 +60,49 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
             specifiquesProps?.backClickback ??
-                saveAndLoopNavigate(
-                    backRoute || getPreviousLoopPage(currentPage, isRoute),
-                    LoopEnum.ACTIVITY_OR_ROUTE,
+                skipBackPage(
+                    context.idSurvey,
+                    context.source,
                     currentIteration,
+                    currentPage,
                     fieldConditionBack,
-                    fieldConditionBack ? getPreviousLoopPage(currentPage, isRoute) : undefined,
+                    backRoute,
+                    isRoute,
                 );
         },
         nextClickCallback: () => {
             specifiquesProps?.nextClickback ??
-                saveAndLoopNavigate(
-                    nextRoute || getNextLoopPage(currentPage, isRoute),
-                    LoopEnum.ACTIVITY_OR_ROUTE,
+                skipNextPage(
+                    context.idSurvey,
+                    context.source,
                     currentIteration,
+                    currentPage,
                     fieldConditionNext,
-                    fieldConditionNext ? getNextLoopPage(currentPage, isRoute) : undefined,
+                    nextRoute,
+                    isRoute,
                 );
         },
         labels: getLabels(labelOfPage),
         errorIcon: errorIcon,
         onSelectValue: () => {
             specifiquesProps?.onSelectValue ??
-                validateAndNextLoopStep(
-                    nextRoute || getNextLoopPage(currentPage, isRoute),
-                    currentIteration,
-                    fieldConditionNext,
-                    fieldConditionNext ? getNextLoopPage(currentPage, isRoute) : undefined,
-                );
+                validate().then(() => {
+                    skipNextPage(
+                        context.idSurvey,
+                        context.source,
+                        currentIteration,
+                        currentPage,
+                        fieldConditionNext,
+                        nextRoute,
+                        isRoute,
+                    );
+                });
+        },
+        language: getLanguage(),
+        constants: {
+            START_TIME_DAY: START_TIME_DAY,
+            FORMAT_TIME: FORMAT_TIME,
+            MINUTE_LABEL: MINUTE_LABEL,
         },
     };
 
