@@ -3,6 +3,7 @@ import { IconButton, Snackbar } from "@mui/material";
 import errorIcon from "assets/illustration/error/activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
+import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -52,6 +53,11 @@ const ActivityDurationPage = () => {
     const specificProps: TimepickerSpecificProps = {
         activitiesAct: activitiesAct,
         defaultValue: true,
+        constants: {
+            START_TIME_DAY: START_TIME_DAY,
+            FORMAT_TIME: FORMAT_TIME,
+            MINUTE_LABEL: MINUTE_LABEL,
+        },
     };
 
     let startTimeDay: Dayjs;

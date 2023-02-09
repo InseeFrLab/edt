@@ -1,5 +1,6 @@
 import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
@@ -98,6 +99,11 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
                 });
         },
         language: getLanguage(),
+        constants: {
+            START_TIME_DAY: START_TIME_DAY,
+            FORMAT_TIME: FORMAT_TIME,
+            MINUTE_LABEL: MINUTE_LABEL,
+        },
     };
 
     const loopSurveyPageProps = {
