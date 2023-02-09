@@ -42,6 +42,7 @@ export interface ReferentielData extends LunaticData {
     [ReferentielsEnum.ACTIVITYNOMENCLATURE]: NomenclatureActivityOption[];
     [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: AutoCompleteActiviteOption[];
     [ReferentielsEnum.ROUTE]: CheckboxOneCustomOption[];
+    [ReferentielsEnum.MEANOFTRANSPORT]: CheckboxOneCustomOption[];
     [ReferentielsEnum.ACTIVITYSECONDARYACTIVITY]: CheckboxOneCustomOption[];
     [ReferentielsEnum.ROUTESECONDARYACTIVITY]: CheckboxOneCustomOption[];
     [ReferentielsEnum.LOCATION]: CheckboxOneCustomOption[];
