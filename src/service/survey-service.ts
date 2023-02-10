@@ -1,4 +1,5 @@
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
@@ -58,11 +59,11 @@ const toIgnoreForActivity = [
     FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED,
 ];
 
-const initializeDatas = (): Promise<boolean> => {
+const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<boolean> => {
     const promisesToWait: Promise<any>[] = [];
     return new Promise(resolve => {
         promisesToWait.push(initializeRefs());
-        promisesToWait.push(initializeSurveysIdsAndSources());
+        promisesToWait.push(initializeSurveysIdsAndSources(setError));
         Promise.all(promisesToWait).then(() => {
             resolve(true);
         });
@@ -81,12 +82,12 @@ const initializeRefs = () => {
     });
 };
 
-const initializeSurveysIdsAndSources = (): Promise<any> => {
+const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     const promises: Promise<any>[] = [];
     return lunaticDatabase.get(SURVEYS_IDS).then(data => {
         if (!data) {
             promises.push(
-                fetchUserSurveysInfo().then(userSurveyData => {
+                fetchUserSurveysInfo(setError).then(userSurveyData => {
                     const distinctSources = Array.from(
                         new Set(userSurveyData.map(surveyData => surveyData.questionnaireModelId)),
                     );
@@ -108,7 +109,7 @@ const initializeSurveysIdsAndSources = (): Promise<any> => {
                     };
 
                     const innerPromises: Promise<any>[] = [
-                        getRemoteSavedSurveysDatas(allSurveysIds).then(() => {
+                        getRemoteSavedSurveysDatas(allSurveysIds, setError).then(() => {
                             return initializeSurveysDatasCache();
                         }),
                         saveSurveysIds(surveysIds),
@@ -127,20 +128,25 @@ const initializeSurveysIdsAndSources = (): Promise<any> => {
                 }),
             );
             promises.push(
-                getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]).then(() => {
-                    return initializeSurveysDatasCache();
-                }),
+                getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS], setError).then(
+                    () => {
+                        return initializeSurveysDatasCache();
+                    },
+                ),
             );
         }
         return Promise.all(promises);
     });
 };
 
-const getRemoteSavedSurveysDatas = (surveysIds: string[]): Promise<any> => {
+const getRemoteSavedSurveysDatas = (
+    surveysIds: string[],
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<any> => {
     const promises: Promise<any>[] = [];
     surveysIds.forEach(surveyId => {
         promises.push(
-            remoteGetSurveyData(surveyId).then((remoteSurveyData: SurveyData) => {
+            remoteGetSurveyData(surveyId, setError).then((remoteSurveyData: SurveyData) => {
                 return lunaticDatabase.get(surveyId).then(localSurveyData => {
                     if (
                         remoteSurveyData.stateData.date > 0 &&

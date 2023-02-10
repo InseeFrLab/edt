@@ -15,6 +15,7 @@
             "delete": "Supprimer",
             "help": "Aide",
             "back-to-home": "Retourner à l'accueil",
+            "retry": "Réessayer",
             "alert": {
                 "ignore": "Ignorer",
                 "complete": "Compléter",
@@ -29,6 +30,7 @@
         "error": {
             "error-default-title": "OUPS...",
             "error-default": "Une erreur s'est produite...",
+            "error-no-rights": "Il semblerait que vous n'avez pas les droits d'accès nécessaires pour répondre au(x) questionnaire(s). Veuillez contacter votre enquêteur référent.",
             "error-location": {
                 "message": "Aucun lieu n'a été renseigné"
             }

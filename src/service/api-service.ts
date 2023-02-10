@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SurveyData, UserSurveys } from "interface/entity/Api";
 import { ReferentielData, SourceData } from "interface/lunatic/Lunatic";
@@ -59,13 +60,16 @@ export const fetchReferentiels = (): Promise<ReferentielData> => {
     });
 };
 
-const fetchUserSurveysInfo = (): Promise<UserSurveys[]> => {
+const fetchUserSurveysInfo = (setError: (error: ErrorCodeEnum) => void): Promise<UserSurveys[]> => {
     return new Promise(resolve => {
         axios
             .get(edtOrganisationApiBaseUrl + "api/survey-assigment/interviewer/my-surveys", getHeader())
             .then(response => {
                 const data: UserSurveys[] = response.data;
                 resolve(data);
+            })
+            .catch(err => {
+                setError(ErrorCodeEnum.NO_RIGHTS);
             });
     });
 };
@@ -100,12 +104,18 @@ const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<Survey
     });
 };
 
-const remoteGetSurveyData = (idSurvey: string): Promise<SurveyData> => {
+const remoteGetSurveyData = (
+    idSurvey: string,
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<SurveyData> => {
     return new Promise(resolve => {
         axios
             .get(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, getHeader())
             .then(response => {
                 resolve(response.data);
+            })
+            .catch(err => {
+                if (err.response.status === 403) setError(ErrorCodeEnum.NO_RIGHTS);
             });
     });
 };
