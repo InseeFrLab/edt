@@ -69,7 +69,7 @@ const fetchUserSurveysInfo = (setError: (error: ErrorCodeEnum) => void): Promise
                 resolve(data);
             })
             .catch(err => {
-                setError(ErrorCodeEnum.NO_RIGHTS);
+                if (err.response.status === 403) setError(ErrorCodeEnum.NO_RIGHTS);
             });
     });
 };
@@ -99,6 +99,7 @@ const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<Survey
         axios
             .put(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader())
             .then(() => {
+                console.log("inner resolve");
                 resolve(data);
             });
     });
