@@ -1,11 +1,9 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
-import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { SurveyData } from "interface/entity/Api";
 import { makeStylesEdt } from "lunatic-edt";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { remotePutSurveyData } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import { surveysIds } from "service/survey-service";
@@ -14,28 +12,31 @@ import packageJson from "../../../package.json";
 const HelpPage = () => {
     const { t } = useTranslation();
     const { classes } = useStyles();
-    const navigate = useNavigate();
 
     const resetDataAndReload = useCallback(() => {
         const promises: any[] = [];
         surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
             const surveyData: SurveyData = {
-                stateData: { state: StateDataStateEnum.NULL, date: 0, currentPage: 0 },
+                stateData: { state: null, date: 0, currentPage: 1 },
                 data: {},
             };
             promises.push(remotePutSurveyData(idSurvey, surveyData));
         });
         Promise.all(promises).then(() => {
             lunaticDatabase.clear().then(() => {
-                navigate("/");
+                window.location.href = window.location.origin;
             });
         });
     }, []);
 
     return (
         <>
-            <header>Help - {t("page.home.welcome")}</header>
-            <Button onClick={resetDataAndReload}>Supprimer les données et recharger</Button>
+            <header>Help - Page temporaire</header>
+            <br />
+            <Button variant="contained" onClick={resetDataAndReload}>
+                Supprimer les données et recharger
+            </Button>
+            <br />
             <Paper className={classes.footerBox} component="footer" square variant="outlined">
                 <Box>
                     <Typography variant="caption" color="initial">

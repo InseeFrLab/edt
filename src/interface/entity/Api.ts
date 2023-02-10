@@ -16,7 +16,7 @@ export interface SurveyData {
 }
 
 export interface StateData {
-    state: StateDataStateEnum;
+    state: StateDataStateEnum | null;
     date: number;
     currentPage: number;
 }
