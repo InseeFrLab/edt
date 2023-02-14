@@ -1,6 +1,6 @@
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { Box, Divider, Popover, Typography } from "@mui/material";
-import activityErrorIconSvg, { default as gapIconSvg } from "assets/illustration/error/activity.svg";
+import { Box, Button, Divider, Popover, Typography } from "@mui/material";
+import activityErrorIconSvg from "assets/illustration/error/activity.svg";
 import locationErrorIconSvg from "assets/illustration/error/location.svg";
 import meanOfTransportErrorIconSvg from "assets/illustration/error/mean-of-transport.svg";
 import peopleErrorIconSvg from "assets/illustration/error/people.svg";
@@ -177,7 +177,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
             label: t("page.activity-planner.no-screen"),
         },
     };
-    const gapIcon = gapIconSvg;
+
     const gapLabels = {
         main: t("page.activity-planner.gap-main"),
         secondary: t("page.activity-planner.gap-secondary"),
@@ -292,13 +292,15 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const renderGap = () => {
         return (
             <Box className={cx(classes.mainCardBox, classes.gapBox)} onClick={clickToGap}>
-                <img className={classes.insideAlertIcon} src={gapIcon}></img>
                 <Typography className={cx(classes.mainActivityLabel, classes.gapText)}>
                     {gapLabels.main}
                 </Typography>
                 <Typography className={cx(classes.otherInfoLabel, classes.gapText)}>
                     {gapLabels.secondary}
                 </Typography>
+                <Button className={classes.addActivityButton} variant="contained">
+                    {t("common.navigation.add")}
+                </Button>
             </Box>
         );
     };
@@ -380,6 +382,13 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
     },
     editBox: {
         marginLeft: "auto",
+    },
+    addActivityButton: {
+        marginTop: "0.5rem",
+        backgroundColor: theme.variables.alertActivity,
+        "&:hover": {
+            backgroundColor: theme.variables.alertActivity + "99",
+        },
     },
 }));
 

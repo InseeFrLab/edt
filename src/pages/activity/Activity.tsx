@@ -1,6 +1,7 @@
 import { Default } from "components/commons/Responsive/Responsive";
 import SurveySelecter from "components/edt/SurveySelecter/SurveySelecter";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { TabData } from "interface/component/Component";
@@ -9,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import {
     getCurrentNavigatePath,
-    getNavigatePath,
     getOrchestratorPage,
     getParameterizedNavigatePath,
     navToHome,
@@ -49,7 +49,7 @@ const ActivityPage = () => {
                 ),
             );
         } else {
-            navigate(getNavigatePath(EdtRoutesNameEnum.ERROR));
+            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON));
         }
     }, []);
 
