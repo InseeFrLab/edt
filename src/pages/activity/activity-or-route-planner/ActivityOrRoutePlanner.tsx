@@ -36,6 +36,7 @@ import {
     navToHome,
     setEnviro,
 } from "service/navigation-service";
+import { getLanguage } from "service/referentiel-service";
 import { isDesktop } from "service/responsive";
 import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
 import { getPrintedFirstName, getSurveyDate, saveData, setValue } from "service/survey-service";
@@ -378,6 +379,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                 <Typography className={classes.date}>
                                                     {formateDateToFrenchFormat(
                                                         generateDateFromStringInput(surveyDate),
+                                                        getLanguage(),
                                                     )}
                                                 </Typography>
                                             </Box>
