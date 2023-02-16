@@ -404,6 +404,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                         infoIconAlt={t(
                                                             "accessibility.asset.info.info-alt",
                                                         )}
+                                                        border={true}
                                                     />
                                                 </FlexCenter>
                                             </>

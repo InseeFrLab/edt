@@ -119,7 +119,7 @@
             "start-alert": "Les heures des activités de : ",
             "and": " et ",
             "end-alert": " se chevauchent.",
-            "info": "Indiquez vos différents occupations de la journée. Par défaut, votre première activité débute à 4h du matin."
+            "info": "Indiquez vos différentes occupations de la journée. Par défaut, votre première activité débute à 4h du matin."
         },
         "secondary-activity": {
             "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",
@@ -159,6 +159,10 @@
         },
         "activity-duration": {
             "hour-alert": "Attention! L'heure de fin est antérieure à l'heure de début"
+        },
+        "weekly-planner": {
+            "info-light": "Pour remplir votre calendrier de travail de la semaine, indiquez chaque jour les moments de la journée où vous travaillez.",
+            "info-bold": "Indiquez votre temps de travail réel et le travail éventuel que vous rapportez à la maison."
         }
     },
     "component": {
