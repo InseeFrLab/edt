@@ -161,6 +161,10 @@
         },
         "activity-duration": {
             "hour-alert": "Attention! L'heure de fin est antérieure à l'heure de début"
+        },
+        "weekly-planner": {
+            "info-light": "Pour remplir votre calendrier de travail de la semaine, indiquez chaque jour les moments de la journée où vous travaillez.",
+            "info-bold": "Indiquez votre temps de travail réel et le travail éventuel que vous rapportez à la maison."
         }
     },
     "component": {
