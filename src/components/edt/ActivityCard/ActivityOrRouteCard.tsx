@@ -1,11 +1,12 @@
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { Box, Divider, Popover, Typography } from "@mui/material";
-import activityErrorIconSvg, { default as gapIconSvg } from "assets/illustration/error/activity.svg";
+import { Box, Button, Divider, Popover, Typography } from "@mui/material";
+import activityErrorIconSvg from "assets/illustration/error/activity.svg";
 import locationErrorIconSvg from "assets/illustration/error/location.svg";
 import meanOfTransportErrorIconSvg from "assets/illustration/error/mean-of-transport.svg";
 import peopleErrorIconSvg from "assets/illustration/error/people.svg";
 import routeErrorIconSvg from "assets/illustration/error/route.svg";
 import screenErrorIconSvg from "assets/illustration/error/screen.svg";
+import { InsideAlertTypes } from "enumerations/InsideAlertTypesEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { makeStylesEdt } from "lunatic-edt";
 import React, { useCallback } from "react";
@@ -13,16 +14,6 @@ import { TFunction, useTranslation } from "react-i18next";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { filtrePage } from "service/loop-service";
 import { getActivityOrRouteDurationLabel } from "service/survey-activity-service";
-
-export const enum InsideAlertTypes {
-    PLACE = "place",
-    ACTIVITY = "activity",
-    ROUTE = "route",
-    MEANOFTRANSPORT = "meanOfTransport",
-    SECONDARYACTIVITY = "secondaryActivity",
-    WITHSOMEONE = "withSomeone",
-    SCREEN = "screen",
-}
 
 interface ActivityOrRouteCardProps {
     labelledBy: string;
@@ -36,7 +27,7 @@ interface ActivityOrRouteCardProps {
 
 const renderMeanOfTransport = (
     activityOrRoute: ActivityRouteOrGap,
-    classes: any,
+    classes: Record<string, string>,
     renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
 ) => {
     return (
@@ -51,7 +42,7 @@ const renderMeanOfTransport = (
 
 const renderPlace = (
     activityOrRoute: ActivityRouteOrGap,
-    classes: any,
+    classes: Record<string, string>,
     renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
 ) => {
     const sectionFiltrer = filtrePage(
@@ -72,7 +63,7 @@ const renderPlace = (
 
 const renderWithSomeone = (
     activityOrRoute: ActivityRouteOrGap,
-    classes: any,
+    classes: Record<string, string>,
     renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
     t: TFunction<"translation", undefined>,
 ) => {
@@ -104,7 +95,7 @@ const renderWithSomeone = (
 
 const renderSecondaryActivity = (
     activityOrRoute: ActivityRouteOrGap,
-    classes: any,
+    classes: Record<string, string>,
     renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
     t: TFunction<"translation", undefined>,
 ) => {
@@ -129,7 +120,7 @@ const renderSecondaryActivity = (
 
 const renderWithScreen = (
     activityOrRoute: ActivityRouteOrGap,
-    classes: any,
+    classes: Record<string, string>,
     renderInsideAlert: (type: InsideAlertTypes) => JSX.Element,
     t: TFunction<"translation", undefined>,
 ) => {
@@ -186,7 +177,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
             label: t("page.activity-planner.no-screen"),
         },
     };
-    const gapIcon = gapIconSvg;
+
     const gapLabels = {
         main: t("page.activity-planner.gap-main"),
         secondary: t("page.activity-planner.gap-secondary"),
@@ -197,19 +188,19 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const id = openPopOver ? "edit-or-delete-popover" : undefined;
 
     const handleClose = useCallback(
-        (e: any) => {
+        (e: React.MouseEvent) => {
             setAnchorEl(null);
             e.stopPropagation();
         },
         [anchorEl],
     );
 
-    const onEditIn = useCallback((e: any) => {
+    const onEditIn = useCallback((e: React.MouseEvent) => {
         onEdit && onEdit();
         e.stopPropagation();
     }, []);
 
-    const onDeleteIn = useCallback((e: any) => {
+    const onDeleteIn = useCallback((e: React.MouseEvent) => {
         onDelete && onDelete();
         e.stopPropagation();
     }, []);
@@ -226,9 +217,9 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         );
     };
 
-    const onEditCard = useCallback((e: any) => {
+    const onEditCard = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
-        setAnchorEl(e.currentTarget);
+        setAnchorEl(e.currentTarget as HTMLButtonElement);
     }, []);
 
     const renderActivityOrRoute = () => {
@@ -257,7 +248,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                     {!activityOrRoute.isRoute &&
                         !activityOrRoute.activity?.activityLabel &&
                         renderInsideAlert(InsideAlertTypes.ACTIVITY)}
-                    {renderMeanOfTransport(activityOrRoute, classes.otherInfoLabel, renderInsideAlert)}
+                    {renderMeanOfTransport(activityOrRoute, classes, renderInsideAlert)}
                     {renderSecondaryActivity(activityOrRoute, classes, renderInsideAlert, t)}
                     {renderPlace(activityOrRoute, classes, renderInsideAlert)}
                     {renderWithSomeone(activityOrRoute, classes, renderInsideAlert, t)}
@@ -301,15 +292,15 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const renderGap = () => {
         return (
             <Box className={cx(classes.mainCardBox, classes.gapBox)} onClick={clickToGap}>
-                <img className={classes.insideAlertIcon} src={gapIcon}></img>
                 <Typography className={cx(classes.mainActivityLabel, classes.gapText)}>
-                    {" "}
-                    {gapLabels.main}{" "}
+                    {gapLabels.main}
                 </Typography>
                 <Typography className={cx(classes.otherInfoLabel, classes.gapText)}>
-                    {" "}
-                    {gapLabels.secondary}{" "}
+                    {gapLabels.secondary}
                 </Typography>
+                <Button className={classes.addActivityButton} variant="contained">
+                    {t("common.navigation.add")}
+                </Button>
             </Box>
         );
     };
@@ -391,6 +382,13 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
     },
     editBox: {
         marginLeft: "auto",
+    },
+    addActivityButton: {
+        marginTop: "0.5rem",
+        backgroundColor: theme.variables.alertActivity,
+        "&:hover": {
+            backgroundColor: theme.variables.alertActivity + "99",
+        },
     },
 }));
 

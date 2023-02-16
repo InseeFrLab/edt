@@ -6,11 +6,11 @@ import option4 from "assets/illustration/mean-of-transport-categories/4.svg";
 import option5 from "assets/illustration/mean-of-transport-categories/5.svg";
 import option6 from "assets/illustration/mean-of-transport-categories/6.svg";
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
-import { CheckboxGroupSpecificProps } from "lunatic-edt";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { getMeanOfTransportRef } from "service/referentiel-service";
 
 const MeanOfTransportPage = () => {
-    const specifiquesProps: CheckboxGroupSpecificProps = {
+    const specifiquesProps = {
         optionsIcons: {
             "1": option1,
             "2": option2,
@@ -19,6 +19,7 @@ const MeanOfTransportPage = () => {
             "5": option5,
             "6": option6,
         },
+        referentiel: getMeanOfTransportRef(),
     };
 
     return (

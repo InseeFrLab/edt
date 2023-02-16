@@ -1,33 +1,29 @@
 import { Default } from "components/commons/Responsive/Responsive";
 import SurveySelecter from "components/edt/SurveySelecter/SurveySelecter";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { TabData } from "interface/component/Component";
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getCurrentNavigatePath,
-    getNavigatePath,
     getOrchestratorPage,
     getParameterizedNavigatePath,
     navToHome,
 } from "service/navigation-service";
 import { getCurrentPageSource, getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isTablet } from "service/responsive";
-import {
-    activitySurveysIds,
-    FieldNameEnum,
-    getData,
-    getTabsData,
-    getValue,
-} from "service/survey-service";
+import { getData, getTabsData, getValue, surveysIds } from "service/survey-service";
 
 const ActivityPage = () => {
     let { idSurvey } = useParams();
     let data = getData(idSurvey || "");
     const source = getCurrentPageSource();
     const navigate = useNavigate();
-    if (idSurvey && !activitySurveysIds.find(id => id === idSurvey)) {
+    if (idSurvey && !surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].find(id => id === idSurvey)) {
         navToHome();
     }
     const surveyRootPage = getCurrentSurveyRootPage();
@@ -53,7 +49,7 @@ const ActivityPage = () => {
                 ),
             );
         } else {
-            navigate(getNavigatePath(EdtRoutesNameEnum.ERROR));
+            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON));
         }
     }, []);
 

@@ -1,17 +1,24 @@
+import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { LoopEnum } from "enumerations/LoopEnum";
 import { LunaticData, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import { SetStateAction } from "react";
-import { NavigateFunction } from "react-router-dom";
+import { NavigateFunction, To } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
-import { getCurrentLoopPage, getLoopInitialPage, LoopEnum } from "service/loop-service";
-import { FieldNameEnum, getCurrentPage, getData, getValue, saveData } from "service/survey-service";
+import { getCurrentLoopPage, getLoopInitialPage } from "service/loop-service";
+import { getCurrentPage, getData, getValue, saveData } from "service/survey-service";
 import { getLastPageStep, getLastStep } from "./stepper.service";
 
-let _context: any = null;
-let _navigate: any = null;
-let _callbackHolder: any = null;
+let _context: OrchestratorContext;
+let _navigate: NavigateFunction;
+let _callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } };
 
-const setEnviro = (context: OrchestratorContext, navigate: NavigateFunction, callbackHolder: any) => {
+const setEnviro = (
+    context: OrchestratorContext,
+    navigate: NavigateFunction,
+    callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } },
+) => {
     _context = context;
     _navigate = navigate;
     _callbackHolder = callbackHolder;
@@ -46,10 +53,10 @@ const getLoopParameterizedNavigatePath = (
                 getParameterizedNavigatePath(page, iteration.toString())
             );
         } else {
-            return getNavigatePath(EdtRoutesNameEnum.ERROR);
+            return getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON);
         }
     } else {
-        return getNavigatePath(EdtRoutesNameEnum.ERROR);
+        return getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON);
     }
 };
 
@@ -65,7 +72,7 @@ const getFullNavigatePath = (page: EdtRoutesNameEnum, parentPage?: EdtRoutesName
     } else if (targetPage) {
         return getNavigatePath(page);
     } else {
-        return getNavigatePath(EdtRoutesNameEnum.ERROR);
+        return getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON);
     }
 };
 
@@ -86,7 +93,7 @@ const getPathOfPage = (
     } else if (page) {
         return getParameterizedNavigatePath(rootPage, idSurvey) + getNavigatePath(page);
     } else {
-        return getNavigatePath(EdtRoutesNameEnum.ERROR);
+        return getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON);
     }
 };
 
@@ -202,9 +209,9 @@ const navToRouteOrRouteNotSelection = (
     if (value) {
         const conditional = getValue(_context.idSurvey, value, currentIteration);
         if (conditional || (typeof conditional == "string" && conditional != "")) {
-            _navigate(route);
+            _navigate(route as To);
         } else {
-            _navigate(routeNotSelection);
+            _navigate(routeNotSelection as To);
         }
     } else _navigate(route ? route : "/");
 };
@@ -217,8 +224,12 @@ const navToHelp = (): void => {
     _navigate(getNavigatePath(EdtRoutesNameEnum.HELP));
 };
 
-const navToErrorPage = (): void => {
-    _navigate(getNavigatePath(EdtRoutesNameEnum.ERROR));
+const navToErrorPage = (errorCode?: ErrorCodeEnum): void => {
+    if (errorCode) {
+        _navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, errorCode));
+    } else {
+        _navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON));
+    }
 };
 
 const navToActivityRoutePlanner = () => {

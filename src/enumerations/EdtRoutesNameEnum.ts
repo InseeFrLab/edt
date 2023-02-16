@@ -1,6 +1,6 @@
 export enum EdtRoutesNameEnum {
     HELP = "help",
-    ERROR = "error",
+    ERROR = "error/:code",
     ACTIVITY = "activity/:idSurvey",
     WHO_ARE_YOU = "who-are-you",
     DAY_OF_SURVEY = "day-of-survey",

@@ -1,4 +1,4 @@
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 
 import errorIcon from "assets/illustration/error/activity.svg";
 import option1 from "assets/illustration/goals/1.svg";

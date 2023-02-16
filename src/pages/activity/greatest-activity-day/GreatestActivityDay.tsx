@@ -1,8 +1,8 @@
 import greatestActivityDay from "assets/illustration/greatest-activity-day.svg";
 import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { useOutletContext } from "react-router-dom";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { getActivitesSelectedLabel } from "service/survey-activity-service";
 
 const GreatestActivityDayPage = () => {

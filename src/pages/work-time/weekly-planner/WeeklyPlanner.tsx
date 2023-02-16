@@ -1,13 +1,13 @@
 import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { WeeklyPlannerSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getFullNavigatePath,
     getOrchestratorPage,
@@ -16,6 +16,7 @@ import {
     saveAndNav,
     setEnviro,
 } from "service/navigation-service";
+import { getLanguage } from "service/referentiel-service";
 import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 
 const WeeklyPlannerPage = () => {
@@ -52,6 +53,7 @@ const WeeklyPlannerPage = () => {
             },
         },
         saveAll: save,
+        language: getLanguage(),
     };
 
     const validateAndNav = (): void => {

@@ -1,7 +1,7 @@
 import activityErrorIcon from "assets/illustration/error/activity.svg";
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { FieldNameEnum } from "service/survey-service";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 
 const SecondaryActivityPage = () => {
     return (

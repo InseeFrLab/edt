@@ -2,11 +2,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Box, Divider, IconButton, Snackbar, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
+import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { LoopEnum } from "enumerations/LoopEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import {
@@ -20,8 +24,7 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getLoopSize, LoopEnum, setLoopSize } from "service/loop-service";
+import { getLoopSize, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
@@ -35,15 +38,8 @@ import {
 } from "service/navigation-service";
 import { isDesktop } from "service/responsive";
 import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
-import {
-    FieldNameEnum,
-    getPrintedFirstName,
-    getSurveyDate,
-    saveData,
-    setValue,
-} from "service/survey-service";
+import { getPrintedFirstName, getSurveyDate, saveData, setValue } from "service/survey-service";
 import { v4 as uuidv4 } from "uuid";
-import InfoIcon from "assets/illustration/info.svg";
 
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
@@ -184,8 +180,8 @@ const ActivityOrRoutePlannerPage = () => {
         );
         contextIteration = loopSize - 1;
 
-        setValue(context.idSurvey, FieldNameEnum.STARTTIME, startTime || null, contextIteration);
-        setValue(context.idSurvey, FieldNameEnum.ENDTIME, endTime || null, contextIteration);
+        setValue(context.idSurvey, FieldNameEnum.START_TIME, startTime || null, contextIteration);
+        setValue(context.idSurvey, FieldNameEnum.END_TIME, endTime || null, contextIteration);
         const updatedData = setValue(
             context.idSurvey,
             FieldNameEnum.ISROUTE,
@@ -292,7 +288,7 @@ const ActivityOrRoutePlannerPage = () => {
     );
 
     const onDeleteActivity = useCallback(
-        (idSurvey: string, source: any, iteration: number) => () =>
+        (idSurvey: string, source: LunaticModel, iteration: number) => () =>
             onDeleteActivityOrRoute(idSurvey, source, iteration),
         [],
     );
@@ -319,7 +315,8 @@ const ActivityOrRoutePlannerPage = () => {
     const closeActivity = useCallback((closed: boolean) => () => onFinish(closed), []);
 
     const displayAlert = useCallback(
-        (setDisplayAlert: any, display: boolean) => () => setDisplayAlert(display),
+        (setDisplayAlert: React.Dispatch<React.SetStateAction<boolean>>, display: boolean) => () =>
+            setDisplayAlert(display),
         [],
     );
 

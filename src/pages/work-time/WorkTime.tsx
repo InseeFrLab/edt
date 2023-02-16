@@ -1,26 +1,27 @@
 import { Default } from "components/commons/Responsive/Responsive";
 import SurveySelecter from "components/edt/SurveySelecter/SurveySelecter";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { TabData } from "interface/component/Component";
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getCurrentNavigatePath,
-    getNavigatePath,
     getParameterizedNavigatePath,
     navToHome,
 } from "service/navigation-service";
 import { getCurrentPageSource, getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isTablet } from "service/responsive";
-import { getData, getTabsData, workingTimeSurveysIds } from "service/survey-service";
+import { getData, getTabsData, surveysIds } from "service/survey-service";
 
 const WorkTimePage = () => {
     let { idSurvey } = useParams();
     let data = getData(idSurvey || "");
     const source = getCurrentPageSource();
     const navigate = useNavigate();
-    if (idSurvey && !workingTimeSurveysIds.find(id => id === idSurvey)) {
+    if (idSurvey && !surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].find(id => id === idSurvey)) {
         navToHome();
     }
     const surveyRootPage = getCurrentSurveyRootPage();
@@ -37,7 +38,7 @@ const WorkTimePage = () => {
         if (idSurvey && source) {
             navigate(getCurrentNavigatePath(idSurvey, surveyRootPage, source.maxPage));
         } else {
-            navigate(getNavigatePath(EdtRoutesNameEnum.ERROR));
+            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON));
         }
     }, []);
 

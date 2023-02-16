@@ -1,38 +1,51 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import "App.scss";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
+import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import "i18n/i18n";
 import { theme } from "lunatic-edt";
+import { useAuth } from "oidc-react";
+import ErrorPage from "pages/error/Error";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EdtRoutes } from "routes/EdtRoutes";
-import { initializeDatas, getDatas } from "service/survey-service";
+import { getDatas, initializeDatas } from "service/survey-service";
+import { setUserToken } from "service/user-service";
 
 const App = () => {
     const { t } = useTranslation();
     const [initialized, setInitialized] = useState(false);
+    const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
+    const auth = useAuth();
 
     useEffect(() => {
-        if (getDatas().size === 0) {
-            initializeDatas()
-                .then(() => {
-                    setInitialized(true);
-                })
-                .catch(err => console.error(err));
+        if (auth.userData?.access_token && getDatas().size === 0 && error === undefined) {
+            setUserToken(auth.userData?.access_token);
+            //keeps user token up to date after session renewal
+            auth.userManager.events.addUserLoaded(() => {
+                auth.userManager.getUser().then(user => {
+                    setUserToken(user?.access_token || "");
+                });
+            });
+            initializeDatas(setError).then(() => {
+                setInitialized(true);
+            });
         }
-    }, []);
+    }, [auth]);
 
     return (
         <>
             <ThemeProvider theme={theme}>
                 <CssBaseline enableColorScheme />
-                {initialized ? (
+                {initialized && !error ? (
                     <EdtRoutes />
-                ) : (
+                ) : !error ? (
                     <LoadingFull
                         message={t("page.home.loading.message")}
                         thanking={t("page.home.loading.thanking")}
                     />
+                ) : (
+                    <ErrorPage errorCode={error} atInit={true} />
                 )}
             </ThemeProvider>
         </>

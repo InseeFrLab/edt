@@ -1,28 +1,31 @@
+import CloseIcon from "@mui/icons-material/Close";
+import { IconButton, Snackbar } from "@mui/material";
+import errorIcon from "assets/illustration/error/activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
+import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
+import dayjs, { Dayjs } from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { Alert, makeStylesEdt, TimepickerSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { Fragment, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { getLoopInitialPage, LoopEnum } from "service/loop-service";
+import { getLabelsWhenQuit } from "service/alert-service";
+import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
 import {
     getLoopParameterizedNavigatePath,
     navToActivityRoutePlanner,
     setEnviro,
 } from "service/navigation-service";
-import { getActivitiesOrRoutes } from "service/survey-activity-service";
-import { FieldNameEnum, getValue, saveData } from "service/survey-service";
-import errorIcon from "assets/illustration/error/activity.svg";
-import dayjs, { Dayjs } from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import { IconButton, Snackbar } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { isDesktop } from "service/responsive";
-import { getLabelsWhenQuit } from "service/alert-service";
+import { getActivitiesOrRoutes } from "service/survey-activity-service";
+import { getValue, saveData } from "service/survey-service";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
@@ -50,6 +53,11 @@ const ActivityDurationPage = () => {
     const specificProps: TimepickerSpecificProps = {
         activitiesAct: activitiesAct,
         defaultValue: true,
+        constants: {
+            START_TIME_DAY: START_TIME_DAY,
+            FORMAT_TIME: FORMAT_TIME,
+            MINUTE_LABEL: MINUTE_LABEL,
+        },
     };
 
     let startTimeDay: Dayjs;
@@ -59,8 +67,8 @@ const ActivityDurationPage = () => {
         const data = callbackHolder.getData();
         let isAfter = false;
         if (data) {
-            const startTime = data.COLLECTED?.[FieldNameEnum.STARTTIME]?.COLLECTED as string[];
-            const endTime = data.COLLECTED?.[FieldNameEnum.ENDTIME]?.COLLECTED as string[];
+            const startTime = data.COLLECTED?.[FieldNameEnum.START_TIME]?.COLLECTED as string[];
+            const endTime = data.COLLECTED?.[FieldNameEnum.END_TIME]?.COLLECTED as string[];
 
             dayjs.extend(customParseFormat);
             if (startTime && endTime) {

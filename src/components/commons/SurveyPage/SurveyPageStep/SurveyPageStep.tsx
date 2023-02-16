@@ -1,11 +1,12 @@
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
+import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { SetStateAction, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import {
     getOrchestratorPage,
     saveAndNav,
@@ -14,6 +15,7 @@ import {
     setEnviro,
     validateAndNextStep,
 } from "service/navigation-service";
+import { getLanguage } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import SurveyPage from "../SurveyPage";
@@ -53,6 +55,12 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         options: specifiquesProps?.options,
         defaultIcon: specifiquesProps?.defaultIcon,
         icon: specifiquesProps?.icon,
+        language: getLanguage(),
+        constants: {
+            START_TIME_DAY: START_TIME_DAY,
+            FORMAT_TIME: FORMAT_TIME,
+            MINUTE_LABEL: MINUTE_LABEL,
+        },
     };
 
     const surveyPageStepProps = {
@@ -105,7 +113,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         source: context.source,
         data: context.data,
         cbHolder: callbackHolder,
-        page: getOrchestratorPage(currentPage),
+        page: getOrchestratorPage(currentPage, context.surveyRootPage),
         overrideOptions: specifiquesProps?.referentiel,
         componentSpecificProps: componentLunaticProps,
     };

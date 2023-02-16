@@ -3,13 +3,13 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import StepNavCard from "components/edt/StepNavCard/StepNavCard";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { makeStylesEdt } from "lunatic-edt";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { LoopEnum } from "service/loop-service";
 import { loopActivityRouteStepperData, loopActivityStepperData } from "service/loop-stepper-service";
 import { getLoopParameterizedNavigatePath, navFullPath } from "service/navigation-service";
 

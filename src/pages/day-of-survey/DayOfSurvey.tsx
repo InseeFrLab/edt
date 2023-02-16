@@ -1,12 +1,13 @@
 import day_of_survey from "assets/illustration/day-of-survey.svg";
 import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React from "react";
 import { useOutletContext } from "react-router-dom";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { navToErrorPage } from "service/navigation-service";
-import { FieldNameEnum, getComponentId } from "service/survey-service";
+import { getComponentId } from "service/survey-service";
 
 const DayOfSurveyPage = () => {
     const context: OrchestratorContext = useOutletContext();
