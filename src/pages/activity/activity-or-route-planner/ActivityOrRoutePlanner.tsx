@@ -392,6 +392,18 @@ const ActivityOrRoutePlannerPage = () => {
                                                         titleLabels={titleLabels}
                                                     />
                                                 )}
+                                                {activitiesRoutesOrGaps.length === 0 && (
+                                                    <>
+                                                        <Typography className={classes.label}>
+                                                            {t("page.activity-planner.activity-for-day")}
+                                                        </Typography>
+                                                        <Typography className={classes.date}>
+                                                            {formateDateToFrenchFormat(
+                                                                generateDateFromStringInput(surveyDate),
+                                                            )}
+                                                        </Typography>
+                                                    </>
+                                                )}
                                             </Box>
                                         </FlexCenter>
 
@@ -505,6 +517,10 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
     },
     label: {
         fontSize: "14px",
+    },
+    date: {
+        fontSize: "18px",
+        fontWeight: "bold",
     },
     surveyPageBox: {
         flexGrow: "1",

@@ -292,8 +292,9 @@ const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string =
     let diffHours = Math.abs(endTime.diff(startTime, "hour"));
     let diffMinutes = Math.abs(endTime.diff(startTime, "minute"));
     diffMinutes = diffMinutes - diffHours * 60;
+
     if (diffMinutes >= 0 && diffHours > 0) {
-        return diffHours + "h" + diffMinutes;
+        return diffHours + "h" + (diffMinutes < 10 ? "0" : "") + diffMinutes;
     } else if (diffHours == 0) {
         return diffMinutes + "min";
     } else return "";
