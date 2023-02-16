@@ -242,6 +242,13 @@ const navToActivityRoutePlanner = () => {
     );
 };
 
+const navToActivitySummary = () => {
+    _navigate(
+        getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, _context.idSurvey) +
+            getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
+    );
+};
+
 const navFullPath = (route: EdtRoutesNameEnum, parentPage?: EdtRoutesNameEnum): void => {
     _navigate(getFullNavigatePath(route, parentPage));
 };
@@ -336,15 +343,19 @@ const onPrevious = (e: React.MouseEvent | undefined, setBackClickEvent: any) => 
 };
 
 const onClose = (forceQuit: boolean, setIsAlertDisplayed: any, iteration: number) => {
+    const isCloture = getValue(_context.idSurvey, FieldNameEnum.ISCLOSED) as boolean;
     validateWithAlertAndNav(
         forceQuit,
         setIsAlertDisplayed,
         iteration,
-        getCurrentNavigatePath(
-            _context.idSurvey,
-            EdtRoutesNameEnum.ACTIVITY,
-            getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-        ),
+        isCloture
+            ? getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, _context.idSurvey) +
+                  getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)
+            : getCurrentNavigatePath(
+                  _context.idSurvey,
+                  EdtRoutesNameEnum.ACTIVITY,
+                  getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+              ),
     );
 };
 
@@ -359,6 +370,7 @@ export {
     getNextPage,
     navToHome,
     navToHelp,
+    navToActivitySummary,
     navToErrorPage,
     navToActivityRoutePlanner,
     navToEditActivity,

@@ -104,7 +104,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                     onNavigateBack={onNavigateBack}
                 />
             )}
-            {!simpleHeader && firstName && firstNamePrefix && onEdit && onHelp && onPrevious && (
+            {!simpleHeader && firstName && firstNamePrefix && (onEdit || onHelp) && onPrevious && (
                 <SurveyPageEditHeader
                     firstName={firstName}
                     firstNamePrefix={firstNamePrefix}

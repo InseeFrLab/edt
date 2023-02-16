@@ -11,6 +11,7 @@ import SecondaryActivityPage from "pages/activity/activity-or-route-planner/seco
 import WithScreenPage from "pages/activity/activity-or-route-planner/with-screen/WithScreen";
 import WithSomeoneSelectionPage from "pages/activity/activity-or-route-planner/with-someone-selection/WithSomeoneSelection";
 import WithSomeonePage from "pages/activity/activity-or-route-planner/with-someone/WithSomeone";
+import ActivitySummaryPage from "pages/activity/activity-summary/ActivitySummary";
 import EditActivityInformationPage from "pages/activity/edit-activity-information/EditActivityInformation";
 import ExceptionalDayPage from "pages/activity/exceptional-day/ExceptionalDay";
 import GreatestActivityDayPage from "pages/activity/greatest-activity-day/GreatestActivityDay";
@@ -99,6 +100,7 @@ const EdtRoutes = (): JSX.Element => {
                         path={EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION}
                         element={<EditGlobalInformationPage />}
                     />
+                    <Route path={EdtRoutesNameEnum.ACTIVITY_SUMMARY} element={<ActivitySummaryPage />} />
                 </Route>
                 <Route path={EdtRoutesNameEnum.WORK_TIME} element={<WorkTimePage />}>
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />

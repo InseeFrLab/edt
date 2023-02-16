@@ -2,6 +2,8 @@ export interface ActivityRouteOrGap {
     isRoute?: boolean;
     startTime?: string;
     endTime?: string;
+    durationMinutes?: number;
+    durationLabel?: string;
     activity?: Activity;
     route?: Route;
     meanOfTransportLabels?: string;

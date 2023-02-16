@@ -1,4 +1,5 @@
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
+import i18n from "i18next";
 import {
     AutoCompleteActiviteOption,
     CheckboxOneCustomOption,
@@ -8,7 +9,6 @@ import {
     SelectedActivity,
 } from "lunatic-edt";
 import { getReferentiel } from "./survey-service";
-import i18n from "i18next";
 
 export const getAutoCompleteRef = (): AutoCompleteActiviteOption[] => {
     return getReferentiel(ReferentielsEnum.ACTIVITYAUTOCOMPLETE) as AutoCompleteActiviteOption[];
@@ -52,10 +52,22 @@ export const findActivityInAutoCompleteReferentiel = (
     return findItemInAutoCompleteRef(selectedActivity?.suggesterId, getAutoCompleteRef());
 };
 
+export const findActivityInAutoCompleteReferentielById = (
+    activityCode: string,
+): AutoCompleteActiviteOption | undefined => {
+    return findItemInAutoCompleteRef(activityCode, getAutoCompleteRef());
+};
+
 export const findActivityInNomenclatureReferentiel = (
     selectedActivity: SelectedActivity,
 ): NomenclatureActivityOption | undefined => {
     return findItemInCategoriesNomenclature(selectedActivity.id, getNomenclatureRef())?.item;
+};
+
+export const findActivityInNomenclatureReferentielById = (
+    activityCode: string,
+): NomenclatureActivityOption | undefined => {
+    return findItemInCategoriesNomenclature(activityCode, getNomenclatureRef())?.item;
 };
 
 export const findSecondaryActivityInRef = (id: string): CheckboxOneCustomOption | undefined => {
@@ -68,6 +80,10 @@ export const findPlaceInRef = (id: string): CheckboxOneCustomOption | undefined 
 
 export const findRouteInRef = (id: string): CheckboxOneCustomOption | undefined => {
     return getRouteRef().find(a => a.value === id);
+};
+
+export const findKindOfDayInRef = (id: string): CheckboxOneCustomOption | undefined => {
+    return getKindOfDayRef().find(a => a.value === id);
 };
 
 export const getLanguage = () => {

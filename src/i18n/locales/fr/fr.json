@@ -165,6 +165,9 @@
         "weekly-planner": {
             "info-light": "Pour remplir votre calendrier de travail de la semaine, indiquez chaque jour les moments de la journée où vous travaillez.",
             "info-bold": "Indiquez votre temps de travail réel et le travail éventuel que vous rapportez à la maison."
+        },
+        "activity-summary": {
+            "download-pdf": "Télécharger le PDF"
         }
     },
     "component": {
@@ -253,6 +256,26 @@
                 "survey-content": "Vous avez complété votre semainier.",
                 "activity-content": "Vous avez complété votre 1ère journée."
             }
+        },
+        "day-characteristic": {
+            "title": "CARACTÉRISTIQUES DE LA JOURNÉE",
+            "normal-day": "Journée normale",
+            "exceptional-day": "Journée exceptionnelle",
+            "travel-time": " de trajet",
+            "phone-time": " de consultation du téléphone"
+        },
+        "day-summary": {
+            "title": "RÉSUMÉ DE LA JOURNÉE",
+            "no-time": "0min",
+            "activity-done": "Activités réalisées",
+            "route-done": "Trajets effectués",
+            "work-time": "Temps de travail",
+            "sleep-time": "Temps de sommeil",
+            "home-task-time": "Temps de tâches ménagères",
+            "other-home-time": "Temps pour un autre ménage",
+            "real-route-time": "Temps de trajet effectif",
+            "activity-or-route-with-screen": "Activités/trajets avec un écran",
+            "activity-time-with-screen": "Temps d'activité avec un écran"
         }
     }
 }

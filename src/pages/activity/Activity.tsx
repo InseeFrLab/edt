@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import {
     getCurrentNavigatePath,
+    getNavigatePath,
     getOrchestratorPage,
     getParameterizedNavigatePath,
     navToHome,
@@ -38,16 +39,21 @@ const ActivityPage = () => {
         };
 
         if (idSurvey && source) {
-            const activityIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
-            navigate(
-                getCurrentNavigatePath(
-                    idSurvey,
-                    surveyRootPage,
-                    activityIsClosed
-                        ? source.maxPage
-                        : getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                ),
-            );
+            const surveyIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
+            if (surveyIsClosed) {
+                navigate(
+                    getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
+                        getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
+                );
+            } else {
+                navigate(
+                    getCurrentNavigatePath(
+                        idSurvey,
+                        surveyRootPage,
+                        getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                    ),
+                );
+            }
         } else {
             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON));
         }
