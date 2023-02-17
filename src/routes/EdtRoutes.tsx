@@ -21,6 +21,7 @@ import TravelTimePage from "pages/activity/travel-time/TravelTime";
 import WorstActivityDayPage from "pages/activity/worst-activity-day/WorstActivityDay";
 import DayOfSurveyPage from "pages/day-of-survey/DayOfSurvey";
 import EditGlobalInformationPage from "pages/edit-global-information/EditGlobalInformation";
+import EndSurveyPage from "pages/end-survey/EndSurvey";
 import ErrorPage from "pages/error/Error";
 import HelpPage from "pages/help/Help";
 import HomePage from "pages/home/Home";
@@ -100,6 +101,7 @@ const EdtRoutes = (): JSX.Element => {
                         path={EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION}
                         element={<EditGlobalInformationPage />}
                     />
+                    <Route path={EdtRoutesNameEnum.END_SURVEY} element={<EndSurveyPage />} />
                     <Route path={EdtRoutesNameEnum.ACTIVITY_SUMMARY} element={<ActivitySummaryPage />} />
                 </Route>
                 <Route path={EdtRoutesNameEnum.WORK_TIME} element={<WorkTimePage />}>
@@ -111,6 +113,7 @@ const EdtRoutes = (): JSX.Element => {
                         path={EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION}
                         element={<EditGlobalInformationPage />}
                     />
+                    <Route path={EdtRoutesNameEnum.END_SURVEY} element={<EndSurveyPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

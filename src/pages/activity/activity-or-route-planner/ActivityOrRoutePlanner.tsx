@@ -134,19 +134,16 @@ const ActivityOrRoutePlannerPage = () => {
 
     const onFinish = (closed: boolean) => {
         if (closed) {
-            const data = setValue(context.idSurvey, FieldNameEnum.ISCLOSED, true);
-            saveData(context.idSurvey, data ? data : callbackHolder.getData()).then(() => {
-                navigate(
-                    getCurrentNavigatePath(
-                        context.idSurvey,
-                        context.surveyRootPage,
-                        getOrchestratorPage(
-                            EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
-                            EdtRoutesNameEnum.ACTIVITY,
-                        ),
+            navigate(
+                getCurrentNavigatePath(
+                    context.idSurvey,
+                    context.surveyRootPage,
+                    getOrchestratorPage(
+                        EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
+                        EdtRoutesNameEnum.ACTIVITY,
                     ),
-                );
-            });
+                ),
+            );
         } else {
             setIsAlertDisplayed(true);
         }

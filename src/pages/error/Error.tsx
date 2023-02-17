@@ -38,7 +38,7 @@ const ErrorPage = (props: ErrorPageProps) => {
         if (errorCode === ErrorCodeEnum.NO_RIGHTS) {
             return t("common.error.error-no-rights");
         } else {
-            return t("common.error-default");
+            return t("common.error.error-default");
         }
     };
 

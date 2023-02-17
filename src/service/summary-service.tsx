@@ -63,8 +63,8 @@ const getUserActivitiesCharacteristics = (
             findKindOfDayInRef(getValue(idSurvey, FieldNameEnum.KINDOFDAY) as string)?.label ||
             undefined,
         isExceptionalDay: getValue(idSurvey, FieldNameEnum.EXCEPTIONALDAY) as boolean,
-        routeTimeLabel: (getValue(idSurvey, FieldNameEnum.TRAVELTIME) as string).replace(":", "h"),
-        phoneTimeLabel: (getValue(idSurvey, FieldNameEnum.PHONETIME) as string).replace(":", "h"),
+        routeTimeLabel: (getValue(idSurvey, FieldNameEnum.TRAVELTIME) as string)?.replace(":", "h"),
+        phoneTimeLabel: (getValue(idSurvey, FieldNameEnum.PHONETIME) as string)?.replace(":", "h"),
         userMarkLabel: "Groupe A",
     };
     return activitiesCharacteristics;

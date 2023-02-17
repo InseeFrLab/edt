@@ -186,13 +186,13 @@ const getData = (idSurvey: string): LunaticData => {
     return datas.get(idSurvey) || {};
 };
 
-const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => {
+const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): Promise<LunaticData> => {
     data.lastLocalSaveDate = Date.now();
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
 
         //We try to submit each time the local database is updated if the user is online
-        if (navigator.onLine) {
+        if (!localSaveOnly && navigator.onLine) {
             const surveyData: SurveyData = {
                 stateData: getSurveyStateData(data),
                 data: data,
