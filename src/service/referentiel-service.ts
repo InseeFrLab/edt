@@ -82,6 +82,10 @@ export const findRouteInRef = (id: string): CheckboxOneCustomOption | undefined 
     return getRouteRef().find(a => a.value === id);
 };
 
+export const findMeanOfTransportInRef = (id: string): CheckboxOneCustomOption | undefined => {
+    return getMeanOfTransportRef().find(a => a.value === id);
+};
+
 export const findKindOfDayInRef = (id: string): CheckboxOneCustomOption | undefined => {
     return getKindOfDayRef().find(a => a.value === id);
 };

@@ -17,6 +17,7 @@ import { getLoopSize } from "./loop-service";
 import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
+    findMeanOfTransportInRef,
     findPlaceInRef,
     findRouteInRef,
     findSecondaryActivityInRef,
@@ -94,7 +95,7 @@ const createRoute = (
     }
 
     //Mean of transport
-    activityOrRoute.meanOfTransportLabels = getMeanOfTransportLabel(idSurvey, iteration, source);
+    activityOrRoute.meanOfTransportLabels = getMeanOfTransportLabel(idSurvey, iteration);
     return activityOrRoute;
 };
 
@@ -460,14 +461,12 @@ const getWithSomeoneLabel = (
     return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
 };
 
-const getMeanOfTransportLabel = (
-    idSurvey: string,
-    i: number,
-    source: LunaticModel | undefined,
-): string | undefined => {
-    const fieldNames = [FieldNameEnum.MEANOFTRANSPORT];
-    const result = filterFieldNames(fieldNames, idSurvey, i, source);
-    return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
+const getMeanOfTransportLabel = (idSurvey: string, i: number): string | undefined => {
+    const meanOfTransportValue = getValue(idSurvey, FieldNameEnum.MEANOFTRANSPORT, i) as
+        | string
+        | undefined;
+
+    return meanOfTransportValue ? findMeanOfTransportInRef(meanOfTransportValue)?.label : undefined;
 };
 
 const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: number) => {
