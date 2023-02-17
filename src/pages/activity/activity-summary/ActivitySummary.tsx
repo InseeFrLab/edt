@@ -21,6 +21,7 @@ import {
     navToHome,
     setEnviro,
 } from "service/navigation-service";
+import { getLanguage } from "service/referentiel-service";
 import { getUserActivitiesCharacteristics, getUserActivitiesSummary } from "service/summary-service";
 import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
 import { getPrintedFirstName, getSurveyDate } from "service/survey-service";
@@ -118,7 +119,10 @@ const ActivitySummaryPage = () => {
                         {t("page.activity-planner.activity-for-day")}
                     </Typography>
                     <Typography className={classes.date}>
-                        {formateDateToFrenchFormat(generateDateFromStringInput(surveyDate))}
+                        {formateDateToFrenchFormat(
+                            generateDateFromStringInput(surveyDate),
+                            getLanguage(),
+                        )}
                     </Typography>
                 </Box>
             </FlexCenter>
