@@ -11,6 +11,7 @@ import SecondaryActivityPage from "pages/activity/activity-or-route-planner/seco
 import WithScreenPage from "pages/activity/activity-or-route-planner/with-screen/WithScreen";
 import WithSomeoneSelectionPage from "pages/activity/activity-or-route-planner/with-someone-selection/WithSomeoneSelection";
 import WithSomeonePage from "pages/activity/activity-or-route-planner/with-someone/WithSomeone";
+import ActivitySummaryPage from "pages/activity/activity-summary/ActivitySummary";
 import EditActivityInformationPage from "pages/activity/edit-activity-information/EditActivityInformation";
 import ExceptionalDayPage from "pages/activity/exceptional-day/ExceptionalDay";
 import GreatestActivityDayPage from "pages/activity/greatest-activity-day/GreatestActivityDay";
@@ -20,6 +21,7 @@ import TravelTimePage from "pages/activity/travel-time/TravelTime";
 import WorstActivityDayPage from "pages/activity/worst-activity-day/WorstActivityDay";
 import DayOfSurveyPage from "pages/day-of-survey/DayOfSurvey";
 import EditGlobalInformationPage from "pages/edit-global-information/EditGlobalInformation";
+import EndSurveyPage from "pages/end-survey/EndSurvey";
 import ErrorPage from "pages/error/Error";
 import HelpPage from "pages/help/Help";
 import HomePage from "pages/home/Home";
@@ -99,6 +101,8 @@ const EdtRoutes = (): JSX.Element => {
                         path={EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION}
                         element={<EditGlobalInformationPage />}
                     />
+                    <Route path={EdtRoutesNameEnum.END_SURVEY} element={<EndSurveyPage />} />
+                    <Route path={EdtRoutesNameEnum.ACTIVITY_SUMMARY} element={<ActivitySummaryPage />} />
                 </Route>
                 <Route path={EdtRoutesNameEnum.WORK_TIME} element={<WorkTimePage />}>
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
@@ -109,6 +113,7 @@ const EdtRoutes = (): JSX.Element => {
                         path={EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION}
                         element={<EditGlobalInformationPage />}
                     />
+                    <Route path={EdtRoutesNameEnum.END_SURVEY} element={<EndSurveyPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

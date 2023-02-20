@@ -1,3 +1,4 @@
+import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -43,6 +44,13 @@ const WeeklyPlannerPage = () => {
             workSumLabel: t("component.weekly-planner.work-sum-label"),
             presentButtonLabel: t("component.weekly-planner.present-button-label"),
             futureButtonLabel: t("component.weekly-planner.future-button-label"),
+            infoLabels: {
+                normalText: t("page.weekly-planner.info-light"),
+                boldText: t("page.weekly-planner.info-bold"),
+                infoIconAlt: t("accessibility.asset.info.info-alt"),
+                infoIcon: InfoIcon,
+                border: true,
+            },
         },
         saveAll: save,
         language: getLanguage(),

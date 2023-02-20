@@ -16,6 +16,7 @@
             "help": "Aide",
             "back-to-home": "Retourner à l'accueil",
             "retry": "Réessayer",
+            "send": "Envoyer",
             "alert": {
                 "ignore": "Ignorer",
                 "complete": "Compléter",
@@ -33,7 +34,8 @@
             "error-no-rights": "Il semblerait que vous n'avez pas les droits d'accès nécessaires pour répondre au(x) questionnaire(s). Veuillez contacter votre enquêteur référent.",
             "error-location": {
                 "message": "Aucun lieu n'a été renseigné"
-            }
+            },
+            "error-submit-survey": "Une erreur s'est produite lors de l'envoie de votre questionnaire à l'insee. Veuillez réessayer plus tard."
         },
         "user": {
             "person": "PERSONNE"
@@ -67,6 +69,7 @@
             "exceptional-day-alt": "Alt pour exceptional day",
             "greatest-activity-day-alt": "Alt pour greatest activity day",
             "worst-activity-day-alt": "Alt pour worst activity day",
+            "submit-alt": "Alt pour submit",
             "info": {
                 "info-alt": "Alt pour info"
             },
@@ -161,6 +164,19 @@
         },
         "activity-duration": {
             "hour-alert": "Attention! L'heure de fin est antérieure à l'heure de début"
+        },
+        "weekly-planner": {
+            "info-light": "Pour remplir votre calendrier de travail de la semaine, indiquez chaque jour les moments de la journée où vous travaillez.",
+            "info-bold": "Indiquez votre temps de travail réel et le travail éventuel que vous rapportez à la maison."
+        },
+        "activity-summary": {
+            "download-pdf": "Télécharger le PDF"
+        },
+        "end-survey": {
+            "end-of-work-time-survey": "Vous êtes arrivé à la fin du semainier.",
+            "end-of-activity-survey": "Vous êtes arrivé à la fin du carnet d'activités.",
+            "end-explanation": "Merci de cliquer sur le bouton \" Envoyer \" pour le transmettre à l'Insee. Pour toute modification, cliquer sur le bouton \" Précédent \"",
+            "online-tooltip-text": "Il est nécessaire d'être connecté à internet pour pouvoir soumettre votre questionnaire."
         }
     },
     "component": {
@@ -249,6 +265,26 @@
                 "survey-content": "Vous avez complété votre semainier.",
                 "activity-content": "Vous avez complété votre 1ère journée."
             }
+        },
+        "day-characteristic": {
+            "title": "CARACTÉRISTIQUES DE LA JOURNÉE",
+            "normal-day": "Journée normale",
+            "exceptional-day": "Journée exceptionnelle",
+            "travel-time": " de trajet",
+            "phone-time": " de consultation du téléphone"
+        },
+        "day-summary": {
+            "title": "RÉSUMÉ DE LA JOURNÉE",
+            "no-time": "0min",
+            "activity-done": "Activités réalisées",
+            "route-done": "Trajets effectués",
+            "work-time": "Temps de travail",
+            "sleep-time": "Temps de sommeil",
+            "home-task-time": "Temps de tâches ménagères",
+            "other-home-time": "Temps pour un autre ménage",
+            "real-route-time": "Temps de trajet effectif",
+            "activity-or-route-with-screen": "Activités/trajets avec un écran",
+            "activity-time-with-screen": "Temps d'activité avec un écran"
         }
     }
 }

@@ -9,8 +9,8 @@ interface SurveyPageEditHeaderProps {
     firstName: string;
     firstNamePrefix: string;
     onNavigateBack(): void;
-    onEdit(): void;
-    onHelp(): void;
+    onEdit?(): void;
+    onHelp?(): void;
 }
 
 const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
@@ -54,12 +54,16 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
                         }}
                         className={classes.popOver}
                     >
-                        <Typography onClick={onEdit} className={classes.clickableText}>
-                            {t("common.navigation.edit")}
-                        </Typography>
-                        <Typography onClick={onHelp} className={classes.clickableText}>
-                            {t("common.navigation.help")}
-                        </Typography>
+                        {onEdit && (
+                            <Typography onClick={onEdit} className={classes.clickableText}>
+                                {t("common.navigation.edit")}
+                            </Typography>
+                        )}
+                        {onHelp && (
+                            <Typography onClick={onHelp} className={classes.clickableText}>
+                                {t("common.navigation.help")}
+                            </Typography>
+                        )}
                     </Popover>
                 </Box>
             </Box>

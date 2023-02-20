@@ -13,7 +13,6 @@ import React, { useCallback } from "react";
 import { TFunction, useTranslation } from "react-i18next";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { filtrePage } from "service/loop-service";
-import { getActivityOrRouteDurationLabel } from "service/survey-activity-service";
 
 interface ActivityOrRouteCardProps {
     labelledBy: string;
@@ -232,7 +231,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
             >
                 <Box className={classes.timeBox}>
                     <Box className={classes.hour}>{activityOrRoute.startTime}</Box>
-                    <Box>{getActivityOrRouteDurationLabel(activityOrRoute)}</Box>
+                    <Box>{activityOrRoute.durationLabel}</Box>
                     <Box className={classes.hour}>{activityOrRoute.endTime}</Box>
                 </Box>
                 <Divider orientation="vertical" variant="middle" flexItem />

@@ -50,6 +50,7 @@ const MainActivityPage = () => {
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [displayStepper, setDisplayStepper] = useState<boolean>(true);
+    const [displayHeader, setDisplayHeader] = useState<boolean>(true);
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
     const specificProps: ActivitySelecterSpecificProps = {
@@ -95,6 +96,7 @@ const MainActivityPage = () => {
             validateAndNextLoopStep(getNextLoopPage(currentPage), currentIteration);
         },
         setDisplayStepper: setDisplayStepper,
+        setDisplayHeader: setDisplayHeader,
         categoriesAndActivitesNomenclature: getNomenclatureRef(),
         labels: {
             selectInCategory: t("component.activity-selecter.select-in-category"),
@@ -120,6 +122,7 @@ const MainActivityPage = () => {
         addToReferentielCallBack: (newItem: AutoCompleteActiviteOption) => {
             addToAutocompleteActivityReferentiel(newItem);
         },
+        widthGlobal: true,
     };
 
     return (
@@ -138,6 +141,7 @@ const MainActivityPage = () => {
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}
             displayStepper={displayStepper}
+            displayHeader={displayHeader}
         >
             <FlexCenter>
                 <Alert
