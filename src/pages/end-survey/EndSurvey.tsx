@@ -45,14 +45,14 @@ const EndSurveyPage = () => {
     };
 
     const remoteSaveSurveyAndGoBackHome = useCallback(() => {
-        const dataWithIsClosed = setValue(context.idSurvey, FieldNameEnum.ISCLOSED, true);
+        const dataWithIsEnvoyed = setValue(context.idSurvey, FieldNameEnum.ISENVOYED, true);
         const surveyData: SurveyData = {
             stateData: {
                 state: StateDataStateEnum.VALIDATED,
                 date: Date.now(),
-                currentPage: getCurrentPage(dataWithIsClosed || callbackHolder.getData()),
+                currentPage: getCurrentPage(callbackHolder.getData()),
             },
-            data: dataWithIsClosed || callbackHolder.getData(),
+            data: dataWithIsEnvoyed ?? callbackHolder.getData(),
         };
         remotePutSurveyData(context.idSurvey, surveyData)
             .then(surveyDataAnswer => {
@@ -98,6 +98,7 @@ const EndSurveyPage = () => {
             onNavigateBack={navToHome}
             displayStepper={true}
             onPrevious={onPrevious}
+            simpleHeader={true}
         >
             <Box className={classes.contentBox}>
                 <h3>

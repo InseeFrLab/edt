@@ -37,7 +37,13 @@ const PhoneTimePage = () => {
                 ),
             [],
         ),
-        onPrevious: useCallback(() => saveAndNavFullPath(EdtRoutesNameEnum.TRAVEL_TIME), []),
+        onPrevious: useCallback(
+            () =>
+                context.surveyRootPage == EdtRoutesNameEnum.ACTIVITY
+                    ? saveAndNavFullPath(EdtRoutesNameEnum.TRAVEL_TIME)
+                    : saveAndNavFullPath(EdtRoutesNameEnum.WEEKLY_PLANNER),
+            [],
+        ),
         displayStepper: true,
         currentStepNumber: stepData.stepNumber,
         currentStepLabel: stepData.stepLabel,

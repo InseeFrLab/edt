@@ -11,7 +11,11 @@ import { makeStylesEdt } from "lunatic-edt";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { getNavigatePath, getParameterizedNavigatePath } from "service/navigation-service";
+import {
+    getNavigatePath,
+    getParameterizedNavigatePath,
+    navToActivityOrPlannerOrSummary,
+} from "service/navigation-service";
 import { getPrintedFirstName, getPrintedSurveyDate, surveysIds } from "service/survey-service";
 
 const HomePage = () => {
@@ -26,8 +30,9 @@ const HomePage = () => {
     );
 
     const navActivity = useCallback(
-        (idSurvey: string) => () =>
-            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey)),
+        (idSurvey: string) => () => {
+            navToActivityOrPlannerOrSummary(idSurvey, navigate);
+        },
         [],
     );
 

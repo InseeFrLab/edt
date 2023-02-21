@@ -32,6 +32,7 @@ export const enum FieldNameEnum {
     TRAVELTIME = "TRAVELTIME",
     PHONETIME = "PHONETIME",
     ISCLOSED = "ISCLOSED",
+    ISENVOYED = "ISENVOYED",
     ISROUTE = "ISROUTE",
     ISCOMPLETED = "ISCOMPLETED",
 }

@@ -1,7 +1,6 @@
 import calendarWeek from "assets/illustration/kind-of-week-categories/calendar-week.svg";
 import kindOfWeek from "assets/illustration/kind-of-week.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
@@ -11,7 +10,9 @@ import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import {
+    getNavigatePath,
     getOrchestratorPage,
+    getParameterizedNavigatePath,
     navFullPath,
     setEnviro,
     validateWithAlertAndNav,
@@ -33,14 +34,21 @@ const KindOfWeekPage = () => {
         onSelectValue: () => validateWithAlertAndNav(false, setIsModalDisplayed),
     };
 
+    const routeEnd =
+        getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, context.idSurvey) +
+        getNavigatePath(EdtRoutesNameEnum.END_SURVEY);
+    const routeWeeklyPlanner =
+        getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, context.idSurvey) +
+        getNavigatePath(EdtRoutesNameEnum.WEEKLY_PLANNER);
+
     return (
         <SurveyPage
             validate={useCallback(
-                () => validateWithAlertAndNav(false, setIsModalDisplayed),
+                () => validateWithAlertAndNav(true, setIsModalDisplayed, undefined, routeEnd),
                 [isModalDisplayed],
             )}
             onNavigateBack={useCallback(
-                () => validateWithAlertAndNav(false, setIsModalDisplayed),
+                () => validateWithAlertAndNav(true, setIsModalDisplayed, undefined, routeWeeklyPlanner),
                 [isModalDisplayed],
             )}
             onPrevious={useCallback(() => navFullPath(EdtRoutesNameEnum.WEEKLY_PLANNER), [])}
@@ -52,14 +60,6 @@ const KindOfWeekPage = () => {
             simpleHeaderLabel={t("page.kind-of-week.simple-header-label")}
         >
             <FlexCenter>
-                <FelicitationModal
-                    isModalDisplayed={isModalDisplayed}
-                    onCompleteCallBack={useCallback(
-                        () => validateWithAlertAndNav(true, setIsModalDisplayed),
-                        [],
-                    )}
-                    content={t("component.modal-edt.modal-felicitation.survey-content")}
-                />
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}

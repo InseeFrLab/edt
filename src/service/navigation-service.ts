@@ -184,6 +184,7 @@ const saveAndNav = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
+    console.log(_callbackHolder.getData());
     saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
         navToRouteOrRouteNotSelection(route, value, routeNotSelection, currentIteration);
     });
@@ -240,6 +241,37 @@ const navToActivityRoutePlanner = () => {
             getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
         ),
     );
+};
+
+const navToActivityOrPlannerOrSummary = (idSurvey: string, maxPage: string, navigate: any) => {
+    const surveyIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
+    if (surveyIsClosed) {
+        const surveyIsEnvoyed = getValue(idSurvey, FieldNameEnum.ISENVOYED);
+        if (surveyIsEnvoyed) {
+            navigate(
+                getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
+                    getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
+            );
+        } else {
+            const currentPathNav = getCurrentNavigatePath(idSurvey, EdtRoutesNameEnum.ACTIVITY, maxPage);
+
+            const navEndSurvey =
+                getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
+                getNavigatePath(EdtRoutesNameEnum.END_SURVEY);
+            const allStepsAdded =
+                currentPathNav.indexOf(EdtRoutesNameEnum.PHONE_TIME) != 0 &&
+                getValue(idSurvey, FieldNameEnum.PHONETIME) != null;
+            navigate(allStepsAdded ? navEndSurvey : currentPathNav);
+        }
+    } else {
+        navigate(
+            getCurrentNavigatePath(
+                idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            ),
+        );
+    }
 };
 
 const navToActivitySummary = () => {
@@ -374,6 +406,7 @@ export {
     navToErrorPage,
     navToActivityRoutePlanner,
     navToEditActivity,
+    navToActivityOrPlannerOrSummary,
     navFullPath,
     saveAndNav,
     saveAndNavFullPath,

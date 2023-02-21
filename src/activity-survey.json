@@ -330,6 +330,18 @@
                 "FORCED": null,
                 "PREVIOUS": null
             },
+            "name": "ISENVOYED",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
             "name": "EXCEPTIONALDAY",
             "componentRef": "checkboxboolean_exceptionalDay"
         },

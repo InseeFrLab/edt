@@ -21,6 +21,7 @@ import {
     navToHome,
     setEnviro,
 } from "service/navigation-service";
+import { getLanguage } from "service/referentiel-service";
 import { getUserActivitiesCharacteristics, getUserActivitiesSummary } from "service/summary-service";
 import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
 import { getPrintedFirstName, getSurveyDate } from "service/survey-service";
@@ -32,27 +33,17 @@ const ActivitySummaryPage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
     const { classes } = useStyles();
     const { t } = useTranslation();
-    const [activityOrRoute, setActivityOrRoute] = React.useState<ActivityRouteOrGap | undefined>(
-        undefined,
-    );
-    const [isRoute, setIsRoute] = React.useState(false);
+    const [, setActivityOrRoute] = React.useState<ActivityRouteOrGap | undefined>(undefined);
+    const [, setIsRoute] = React.useState(false);
     const [score, setScore] = React.useState<number | undefined>(undefined);
 
-    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(
-        t,
-        context.idSurvey,
-        context.source,
-    );
+    const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, context.idSurvey, context.source);
     const surveyDate = getSurveyDate(context.idSurvey) || "";
     const userActivitiesCharacteristics = getUserActivitiesCharacteristics(context.idSurvey);
     const userActivitiesSummary = getUserActivitiesSummary(context.idSurvey, t);
     useEffect(() => {
         setScore(getScore(context.idSurvey, t));
     }, [activitiesRoutesOrGaps]);
-
-    const navToActivityRouteHome = useCallback(() => {
-        navToHome();
-    }, []);
 
     const navToCard = useCallback(
         (iteration: number, isRoute?: boolean) => () => navToActivityOrRoute(iteration, isRoute),
@@ -118,7 +109,10 @@ const ActivitySummaryPage = () => {
                         {t("page.activity-planner.activity-for-day")}
                     </Typography>
                     <Typography className={classes.date}>
-                        {formateDateToFrenchFormat(generateDateFromStringInput(surveyDate))}
+                        {formateDateToFrenchFormat(
+                            generateDateFromStringInput(surveyDate),
+                            getLanguage(),
+                        )}
                     </Typography>
                 </Box>
             </FlexCenter>
