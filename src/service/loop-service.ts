@@ -35,6 +35,12 @@ import {
     saveAndNav,
 } from "./navigation-service";
 import { getNomenclatureRef } from "./referentiel-service";
+import {
+    CODES_ACTIVITY_IGNORE_GOAL,
+    CODES_ACTIVITY_IGNORE_LOCATION,
+    CODES_ACTIVITY_IGNORE_SCREEN,
+    CODES_ACTIVITY_IGNORE_SOMEONE,
+} from "constants/constants";
 
 const loopPageInfo: Map<LoopEnum, LoopData> = new Map();
 loopPageInfo.set(LoopEnum.ACTIVITY_OR_ROUTE, {
@@ -244,33 +250,6 @@ const ignoreDepsOfCheckboxGroup = (
     return existOneDepAdded;
 };
 
-const CODES_ACTIVITY_IGNORE_SOMEONE = ["110"];
-
-const CODES_ACTIVITY_IGNORE_GOAL = [
-    "110", //111,114,112,113
-    "140",
-    "210", //"215,213,221,223,231,232,233,234,241,251,264"
-    "270",
-    "260", //261,262,263, 264, 271,272
-    "516",
-    "531",
-    "532",
-    "510",
-    "601", //620,623,624,625,627
-    "631", //633,632
-    "639",
-    "641",
-    "649",
-    "652",
-    "656",
-    "658",
-    "674",
-    "664",
-    "680", //671,668,662,663
-];
-const CODES_ACTIVITY_IGNORE_SCREEN = ["110", "674", "649", "671"];
-const CODES_ACTIVITY_IGNORE_LOCATION = ["652"];
-
 const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
     let codesToIgnore;
     let listToIgnore: string[] = [];
@@ -293,7 +272,7 @@ const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
             break;
     }
 
-    codesToIgnore = getCodesAIgnorer(listToIgnore);
+    codesToIgnore = getAllCodesFromActivitiesCodes(listToIgnore);
     const exist = codesToIgnore.indexOf(activityCode) >= 0;
     return exist;
 };
@@ -499,11 +478,11 @@ const findItemInCategoriesNomenclature = (
 };
 
 /**
- * Get codes of activities to ignore dependend
- * @param listAIgnorer
+ * Get all subcodes of activities
+ * @param listAIgnorer codes from which we want to obtain the subcategories
  * @returns
  */
-const getCodesAIgnorer = (listAIgnorer: string[]) => {
+const getAllCodesFromActivitiesCodes = (listAIgnorer: string[]) => {
     const categoriesActivity = getNomenclatureRef();
 
     let codesActivity: string[] = [];
@@ -708,4 +687,5 @@ export {
     filtrePage,
     skipNextPage,
     skipBackPage,
+    getAllCodesFromActivitiesCodes,
 };

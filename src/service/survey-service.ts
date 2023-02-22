@@ -1,3 +1,4 @@
+import { ConnectingAirportsOutlined } from "@mui/icons-material";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
@@ -169,8 +170,10 @@ const initializeSurveysDatasCache = (): Promise<any> => {
         for (const idSurvey of surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]) {
             promises.push(
                 lunaticDatabase.get(idSurvey).then(data => {
-                    datas.set(idSurvey, data || {});
-                    return data || {};
+                    if (data != null) {
+                        datas.set(idSurvey, data || {});
+                    }
+                    return data;
                 }),
             );
         }

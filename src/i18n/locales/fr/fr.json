@@ -276,15 +276,15 @@
         "day-summary": {
             "title": "RÉSUMÉ DE LA JOURNÉE",
             "no-time": "0min",
-            "activity-done": "Activités réalisées",
-            "route-done": "Trajets effectués",
-            "work-time": "Temps de travail",
+            "activity-done": "Nombre d’activités déclarées",
+            "route-done": "Nombre de trajets déclarés",
+            "real-route-time": "Temps consacrés aux trajets décrits",
+            "home-task-time": "Temps passé à son domicile",
+            "alone-task-time": "Temps passé seul",
             "sleep-time": "Temps de sommeil",
-            "home-task-time": "Temps de tâches ménagères",
-            "other-home-time": "Temps pour un autre ménage",
-            "real-route-time": "Temps de trajet effectif",
-            "activity-or-route-with-screen": "Activités/trajets avec un écran",
-            "activity-time-with-screen": "Temps d'activité avec un écran"
+            "work-time": "Temps de travail et étude",
+            "domestic-task-time": "Temps de tâches domestiques",
+            "other-home-time": "Temps pour un autre ménage"
         }
     }
 }
