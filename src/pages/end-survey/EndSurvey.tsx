@@ -31,6 +31,8 @@ const EndSurveyPage = () => {
     const { classes } = useStyles();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    const navigate = useNavigate();
+
     setEnviro(context, useNavigate(), callbackHolder);
 
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
@@ -57,9 +59,10 @@ const EndSurveyPage = () => {
         remotePutSurveyData(context.idSurvey, surveyData)
             .then(surveyDataAnswer => {
                 surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData.date;
-                saveData(context.idSurvey, surveyData.data, true).then(() => {
-                    setIsModalDisplayed(true);
-                    initializeSurveysDatasCache();
+                saveData(context.idSurvey, surveyData.data).then(() => {
+                    initializeSurveysDatasCache().finally(() => {
+                        setIsModalDisplayed(true);
+                    });
                 });
             })
             .catch(() => {
@@ -69,12 +72,12 @@ const EndSurveyPage = () => {
 
     const onPrevious = useCallback(() => {
         if (isActivitySurvey) {
-            saveAndNav(
+            navigate(
                 getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, context.idSurvey) +
                     getNavigatePath(EdtRoutesNameEnum.PHONE_TIME),
             );
         } else {
-            saveAndNav(
+            navigate(
                 getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, context.idSurvey) +
                     getNavigatePath(EdtRoutesNameEnum.KIND_OF_WEEK),
             );
@@ -86,7 +89,7 @@ const EndSurveyPage = () => {
         setIsModalDisplayed: (value: SetStateAction<boolean>) => void,
     ): void => {
         if (forceQuit) {
-            saveAndNav();
+            navToHome();
         } else {
             setIsModalDisplayed(true);
         }
