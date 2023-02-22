@@ -28,7 +28,7 @@ import {
     getFrenchDayFromDate,
 } from "lunatic-edt";
 import { lunaticDatabase } from "service/lunatic-database";
-import { getCurrentPageSource } from "service/orchestrator-service";
+import { getCurrentPageSource, LABEL_WORK_TIME_SURVEY } from "service/orchestrator-service";
 import {
     fetchReferentiels,
     fetchSurveysSourcesByIds,
@@ -186,13 +186,14 @@ const getData = (idSurvey: string): LunaticData => {
     return datas.get(idSurvey) || {};
 };
 
-const saveData = (idSurvey: string, data: LunaticData): Promise<LunaticData> => {
+const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): Promise<LunaticData> => {
     data.lastLocalSaveDate = Date.now();
+
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
 
         //We try to submit each time the local database is updated if the user is online
-        if (navigator.onLine) {
+        if (!localSaveOnly && navigator.onLine) {
             const surveyData: SurveyData = {
                 stateData: getSurveyStateData(data),
                 data: data,
@@ -290,6 +291,7 @@ const getCurrentPage = (data: LunaticData | undefined): number => {
     if (currentPage == 0) {
         const firstName = data.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED;
         if (firstName) currentPage = Number(components[components.length - 2].page);
+        if (source.label == LABEL_WORK_TIME_SURVEY) currentPage = 3;
     }
     return currentPage;
 };
@@ -309,6 +311,9 @@ const haveVariableNotFilled = (
             const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
             if (value != null && !Array.isArray(value)) {
                 filled = false;
+            } else if (Array.isArray(value)) {
+                const arrayWeeklyPlanner = value as { [key: string]: string }[];
+                filled = arrayWeeklyPlanner.find((val: any) => val != null) == null;
             } else filled = true;
         }
     });
@@ -458,4 +463,5 @@ export {
     toIgnoreForActivity,
     addToSecondaryActivityReferentiel,
     addToAutocompleteActivityReferentiel,
+    initializeSurveysDatasCache,
 };

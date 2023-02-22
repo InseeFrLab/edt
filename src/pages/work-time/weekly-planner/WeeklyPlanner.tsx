@@ -1,3 +1,4 @@
+import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -8,6 +9,7 @@ import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import {
+    closeFormularieAndNav,
     getFullNavigatePath,
     getOrchestratorPage,
     navFullPath,
@@ -43,6 +45,13 @@ const WeeklyPlannerPage = () => {
             workSumLabel: t("component.weekly-planner.work-sum-label"),
             presentButtonLabel: t("component.weekly-planner.present-button-label"),
             futureButtonLabel: t("component.weekly-planner.future-button-label"),
+            infoLabels: {
+                normalText: t("page.weekly-planner.info-light"),
+                boldText: t("page.weekly-planner.info-bold"),
+                infoIconAlt: t("accessibility.asset.info.info-alt"),
+                infoIcon: InfoIcon,
+                border: true,
+            },
         },
         saveAll: save,
         language: getLanguage(),
@@ -53,7 +62,7 @@ const WeeklyPlannerPage = () => {
             save();
             setDisplayDayOverview(false);
         } else {
-            saveAndNav(getFullNavigatePath(EdtRoutesNameEnum.KIND_OF_WEEK));
+            closeFormularieAndNav(getFullNavigatePath(EdtRoutesNameEnum.KIND_OF_WEEK));
         }
     };
 

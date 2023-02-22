@@ -17,6 +17,7 @@ import { getLoopSize } from "./loop-service";
 import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
+    findMeanOfTransportInRef,
     findPlaceInRef,
     findRouteInRef,
     findSecondaryActivityInRef,
@@ -94,7 +95,7 @@ const createRoute = (
     }
 
     //Mean of transport
-    activityOrRoute.meanOfTransportLabels = getMeanOfTransportLabel(idSurvey, iteration, source);
+    activityOrRoute.meanOfTransportLabels = getMeanOfTransportLabel(idSurvey, iteration);
     return activityOrRoute;
 };
 
@@ -132,6 +133,8 @@ const createActivitiesOrRoutes = (
         activityOrRoute.startTime =
             getValue(idSurvey, FieldNameEnum.START_TIME, i)?.toString() || undefined;
         activityOrRoute.endTime = getValue(idSurvey, FieldNameEnum.END_TIME, i)?.toString() || undefined;
+        activityOrRoute.durationMinutes = getActivityOrRouteDurationMinutes(activityOrRoute);
+        activityOrRoute.durationLabel = getActivityOrRouteDurationLabel(activityOrRoute);
 
         if (activityOrRoute.isRoute) {
             activityOrRoute = createRoute(idSurvey, source, activityOrRoute, i, t);
@@ -292,11 +295,44 @@ const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string =
     let diffHours = Math.abs(endTime.diff(startTime, "hour"));
     let diffMinutes = Math.abs(endTime.diff(startTime, "minute"));
     diffMinutes = diffMinutes - diffHours * 60;
+
     if (diffMinutes >= 0 && diffHours > 0) {
-        return diffHours + "h" + diffMinutes;
+        return diffHours + "h" + (diffMinutes < 10 ? "0" : "") + diffMinutes;
     } else if (diffHours == 0) {
         return diffMinutes + "min";
     } else return "";
+};
+
+const getActivityOrRouteDurationMinutes = (activity: ActivityRouteOrGap): number => {
+    if (!activity.startTime || !activity.endTime) return 0;
+    dayjs.extend(customParseFormat);
+    const startTime = dayjs(activity.startTime, "HH:mm");
+    let endTime = dayjs(activity.endTime, "HH:mm");
+    if (startTime.isAfter(endTime)) {
+        endTime = endTime.add(1, "day");
+    }
+    return Math.abs(endTime.diff(startTime, "minutes"));
+};
+
+const getActivityOrRouteDurationLabelFromDurationMinutes = (durationMinutes: number): string => {
+    const hours = Math.floor(durationMinutes / 60);
+    const minutes = Math.round(durationMinutes % 60);
+    let hoursLabel = hours > 1 ? hours + "h" : "";
+    let minutesLabel;
+    if (minutes >= 10) {
+        if (hours > 1) {
+            minutesLabel = minutes;
+        } else {
+            minutesLabel = minutes + "min";
+        }
+    } else {
+        if (hours > 1) {
+            minutesLabel = "0" + minutes;
+        } else {
+            minutesLabel = "0" + minutes + "min";
+        }
+    }
+    return hoursLabel + minutesLabel;
 };
 
 const getTotalTimeOfActivities = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
@@ -425,14 +461,12 @@ const getWithSomeoneLabel = (
     return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
 };
 
-const getMeanOfTransportLabel = (
-    idSurvey: string,
-    i: number,
-    source: LunaticModel | undefined,
-): string | undefined => {
-    const fieldNames = [FieldNameEnum.MEANOFTRANSPORT];
-    const result = filterFieldNames(fieldNames, idSurvey, i, source);
-    return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
+const getMeanOfTransportLabel = (idSurvey: string, i: number): string | undefined => {
+    const meanOfTransportValue = getValue(idSurvey, FieldNameEnum.MEANOFTRANSPORT, i) as
+        | string
+        | undefined;
+
+    return meanOfTransportValue ? findMeanOfTransportInRef(meanOfTransportValue)?.label : undefined;
 };
 
 const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: number) => {
@@ -455,6 +489,7 @@ export {
     getActivitiesOrRoutes,
     getActivitesSelectedLabel,
     getActivityOrRouteDurationLabel,
+    getActivityOrRouteDurationLabelFromDurationMinutes,
     getActivityLabel,
     getTotalTimeOfActivities,
     getScore,

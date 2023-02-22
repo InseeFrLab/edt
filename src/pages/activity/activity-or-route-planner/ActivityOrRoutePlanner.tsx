@@ -18,7 +18,9 @@ import {
     formateDateToFrenchFormat,
     generateDateFromStringInput,
     Info,
+    InfoProps,
     makeStylesEdt,
+    TooltipInfo,
 } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect, useState } from "react";
@@ -36,6 +38,7 @@ import {
     navToHome,
     setEnviro,
 } from "service/navigation-service";
+import { getLanguage } from "service/referentiel-service";
 import { isDesktop } from "service/responsive";
 import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
 import { getPrintedFirstName, getSurveyDate, saveData, setValue } from "service/survey-service";
@@ -320,6 +323,18 @@ const ActivityOrRoutePlannerPage = () => {
         [],
     );
 
+    const infoLabels: InfoProps = {
+        boldText: t("page.activity-planner.info"),
+        infoIcon: InfoIcon,
+        infoIconAlt: t("accessibility.asset.info.info-alt"),
+        border: true,
+    };
+
+    const titleLabels = {
+        normalTitle: t("page.activity-planner.activity-for-day"),
+        boldTitle: formateDateToFrenchFormat(generateDateFromStringInput(surveyDate), getLanguage()),
+    };
+
     return (
         <>
             <Box className={classes.surveyPageBox}>
@@ -372,14 +387,25 @@ const ActivityOrRoutePlannerPage = () => {
                                                 errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
                                             ></Alert>
                                             <Box className={classes.infoBox}>
-                                                <Typography className={classes.label}>
-                                                    {t("page.activity-planner.activity-for-day")}
-                                                </Typography>
-                                                <Typography className={classes.date}>
-                                                    {formateDateToFrenchFormat(
-                                                        generateDateFromStringInput(surveyDate),
-                                                    )}
-                                                </Typography>
+                                                {activitiesRoutesOrGaps.length !== 0 && (
+                                                    <TooltipInfo
+                                                        infoLabels={infoLabels}
+                                                        titleLabels={titleLabels}
+                                                    />
+                                                )}
+                                                {activitiesRoutesOrGaps.length === 0 && (
+                                                    <>
+                                                        <Typography className={classes.label}>
+                                                            {t("page.activity-planner.activity-for-day")}
+                                                        </Typography>
+                                                        <Typography className={classes.date}>
+                                                            {formateDateToFrenchFormat(
+                                                                generateDateFromStringInput(surveyDate),
+                                                                getLanguage(),
+                                                            )}
+                                                        </Typography>
+                                                    </>
+                                                )}
                                             </Box>
                                         </FlexCenter>
 
@@ -395,13 +421,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                     </Typography>
                                                 </FlexCenter>
                                                 <FlexCenter>
-                                                    <Info
-                                                        boldText={t("page.activity-planner.info")}
-                                                        infoIcon={InfoIcon}
-                                                        infoIconAlt={t(
-                                                            "accessibility.asset.info.info-alt",
-                                                        )}
-                                                    />
+                                                    <Info {...infoLabels} />
                                                 </FlexCenter>
                                             </>
                                         ) : (
@@ -494,7 +514,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
     },
     infoBox: {
         width: "350px",
-        padding: "1rem 0.25rem 0.5rem 1rem",
+        padding: "1rem 0.25rem 0.5rem 2rem",
         marginBottom: "1rem",
     },
     label: {

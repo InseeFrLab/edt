@@ -7,7 +7,8 @@ import { SetStateAction } from "react";
 import { NavigateFunction, To } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentLoopPage, getLoopInitialPage } from "service/loop-service";
-import { getCurrentPage, getData, getValue, saveData } from "service/survey-service";
+import { getCurrentPage, getData, getValue, saveData, setValue } from "service/survey-service";
+import { getCurrentPageSource } from "./orchestrator-service";
 import { getLastPageStep, getLastStep } from "./stepper.service";
 
 let _context: OrchestratorContext;
@@ -190,6 +191,17 @@ const saveAndNav = (
 };
 
 /**
+ * Close formulaire and nav to closing page
+ * @param route
+ */
+const closeFormularieAndNav = (route: string) => {
+    const data = setValue(_context.idSurvey, FieldNameEnum.ISCLOSED, true);
+    saveData(_context.idSurvey, data ? data : _callbackHolder.getData()).then(() => {
+        _navigate(route);
+    });
+};
+
+/**
  * Due to the lack of a hook that lets us know when the event has ended,
  * a change of a variable in the callbackholder,
  * we need to make the call twice to be able to retrieve the current state of the database
@@ -239,6 +251,72 @@ const navToActivityRoutePlanner = () => {
             EdtRoutesNameEnum.ACTIVITY,
             getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
         ),
+    );
+};
+
+const navToActivityOrPlannerOrSummary = (idSurvey: string, maxPage: string, navigate: any) => {
+    const surveyIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
+    if (surveyIsClosed) {
+        const surveyIsEnvoyed = getValue(idSurvey, FieldNameEnum.ISENVOYED);
+        if (surveyIsEnvoyed) {
+            navigate(
+                getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
+                    getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
+            );
+        } else {
+            const currentPathNav = getCurrentNavigatePath(idSurvey, EdtRoutesNameEnum.ACTIVITY, maxPage);
+            const navEndSurvey =
+                getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
+                getNavigatePath(EdtRoutesNameEnum.END_SURVEY);
+            const allStepsAdded =
+                currentPathNav.indexOf(EdtRoutesNameEnum.PHONE_TIME) != 0 &&
+                getValue(idSurvey, FieldNameEnum.PHONETIME) != null;
+            navigate(allStepsAdded ? navEndSurvey : currentPathNav);
+        }
+    } else {
+        navigate(
+            getCurrentNavigatePath(
+                idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            ),
+        );
+    }
+};
+
+const navToWeeklyPlannerOrClose = (idSurvey: string, navigate: any) => {
+    const surveyIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
+    const weeklyPlannerRoute = getCurrentNavigatePath(
+        idSurvey,
+        EdtRoutesNameEnum.WORK_TIME,
+        getOrchestratorPage(EdtRoutesNameEnum.WEEKLY_PLANNER),
+    );
+    const kindOfDayRoute =
+        getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey) +
+        getNavigatePath(EdtRoutesNameEnum.KIND_OF_WEEK);
+
+    if (surveyIsClosed) {
+        const surveyIsEnvoyed = getValue(idSurvey, FieldNameEnum.ISENVOYED);
+
+        if (surveyIsEnvoyed) {
+            navigate(weeklyPlannerRoute);
+        } else {
+            const navEndSurvey =
+                getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey) +
+                getNavigatePath(EdtRoutesNameEnum.END_SURVEY);
+            const allStepsAdded = getValue(idSurvey, FieldNameEnum.WEEKTYPE) != null;
+
+            navigate(allStepsAdded ? navEndSurvey : kindOfDayRoute);
+        }
+    } else {
+        navigate(weeklyPlannerRoute);
+    }
+};
+
+const navToActivitySummary = () => {
+    _navigate(
+        getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, _context.idSurvey) +
+            getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
     );
 };
 
@@ -336,15 +414,19 @@ const onPrevious = (e: React.MouseEvent | undefined, setBackClickEvent: any) => 
 };
 
 const onClose = (forceQuit: boolean, setIsAlertDisplayed: any, iteration: number) => {
+    const isCloture = getValue(_context.idSurvey, FieldNameEnum.ISCLOSED) as boolean;
     validateWithAlertAndNav(
         forceQuit,
         setIsAlertDisplayed,
         iteration,
-        getCurrentNavigatePath(
-            _context.idSurvey,
-            EdtRoutesNameEnum.ACTIVITY,
-            getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-        ),
+        isCloture
+            ? getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, _context.idSurvey) +
+                  getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)
+            : getCurrentNavigatePath(
+                  _context.idSurvey,
+                  EdtRoutesNameEnum.ACTIVITY,
+                  getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+              ),
     );
 };
 
@@ -359,14 +441,18 @@ export {
     getNextPage,
     navToHome,
     navToHelp,
+    navToActivitySummary,
     navToErrorPage,
     navToActivityRoutePlanner,
     navToEditActivity,
+    navToActivityOrPlannerOrSummary,
+    navToWeeklyPlannerOrClose,
     navFullPath,
     saveAndNav,
     saveAndNavFullPath,
     saveAndNextStep,
     saveAndLoopNavigate,
+    closeFormularieAndNav,
     loopNavigate,
     validateWithAlertAndNav,
     setEnviro,

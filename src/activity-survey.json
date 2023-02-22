@@ -6,7 +6,7 @@
     "generatingDate": "29-09-2022 13:56:00",
     "missing": false,
     "id": "l8lq5lp6",
-    "label": "Time",
+    "label": "ActivityTime",
     "maxPage": "11",
     "variables": [
         {
@@ -330,6 +330,18 @@
                 "FORCED": null,
                 "PREVIOUS": null
             },
+            "name": "ISENVOYED",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
             "name": "EXCEPTIONALDAY",
             "componentRef": "checkboxboolean_exceptionalDay"
         },
@@ -436,7 +448,7 @@
             "conditionFilter": { "value": "true" },
             "id": "datepicker_surveyDate",
             "page": "2",
-            "label": "\"Quelle est la date du jour sélectionnée pour l'enquête ?\"",
+            "tipsLabel": "Quelle est la date du jour sélectionnée pour l'enquête",
             "mandatory": false,
             "controls": [
                 {
@@ -630,7 +642,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "activityselecter_mainactivity",
                     "page": "4.3",
-                    "label": "\"Que faisiez-vous ?\"",
+                    "label": "\"Que faisiez-vous\"",
                     "mandatory": false
                 },
                 {
@@ -647,7 +659,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "icongridcheckboxone_route",
                     "page": "4.4",
-                    "label": "\"Quel était le type de trajet ?\"",
+                    "label": "\"Quel était le type de trajet\"",
                     "mandatory": false
                 },
                 {
@@ -664,7 +676,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxgroup_meanoftransport",
                     "page": "4.5",
-                    "label": "\"Quels étaient vos moyens de transport ?\"",
+                    "label": "\"Quels étaient vos moyens de transport\"",
                     "tipsLabel": "Vous pouvez en selectionner plusieurs",
                     "mandatory": false
                 },
@@ -682,7 +694,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxboolean_withsecondaryactivity",
                     "page": "4.6",
-                    "label": "\"Faisiez-vous autre chose en même temps ?\"",
+                    "label": "\"Faisiez-vous autre chose en même temps\"",
                     "mandatory": false
                 },
                 {
@@ -699,7 +711,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxone_secondaryactivity",
                     "page": "4.7",
-                    "label": "\"Que faisiez-vous en même temps ?\"",
+                    "label": "\"Que faisiez-vous en même temps\"",
                     "mandatory": false
                 },
                 {
@@ -716,7 +728,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "input_place",
                     "page": "4.8",
-                    "label": "\"Où étiez-vous ?\"",
+                    "label": "\"Où étiez-vous\"",
                     "mandatory": false
                 },
                 {
@@ -733,7 +745,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxboolean_withsomeone",
                     "page": "4.9",
-                    "label": "\"Etiez-vous en compagnie de quelqu'un ?\"",
+                    "label": "\"Etiez-vous en compagnie de quelqu'un\"",
                     "mandatory": false
                 },
                 {
@@ -786,7 +798,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxgroup_presentpeople",
                     "page": "4.10",
-                    "label": "\"En compagnie de qui étiez-vous ?\"",
+                    "label": "\"En compagnie de qui étiez-vous\"",
                     "tipsLabel": "Vous pouvez en selectionner plusieurs",
                     "mandatory": false
                 },
@@ -804,7 +816,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "checkboxboolean_withscreen",
                     "page": "4.11",
-                    "label": "\"Avez-vous utilisé un ordinateur, un smartphone, une tablette ou un autre objet connecté à internet ?\"",
+                    "label": "\"Avez-vous utilisé un ordinateur, un smartphone, une tablette ou un autre objet connecté à internet\"",
                     "mandatory": false
                 },
                 {
@@ -821,7 +833,7 @@
                     "conditionFilter": { "value": "true" },
                     "id": "goalselecter_goal",
                     "page": "4.12",
-                    "label": "\"Dans quel but avez-vous fait cette activité ?\"",
+                    "label": "\"Dans quel but avez-vous fait cette activité\"",
                     "mandatory": false,
                     "options": [
                         { "label": "\"Personnel, pour mon ménage\"", "value": "1" },
@@ -846,7 +858,7 @@
             "conditionFilter": { "value": "true" },
             "id": "checkboxone_greatestActivityDay",
             "page": "5",
-            "label": "\"Quelle a été votre activité la plus agréable durant cette journée ?\"",
+            "label": "\"Quelle a été votre activité la plus agréable durant cette journée\"",
             "mandatory": false
         },
         {
@@ -863,7 +875,7 @@
             "conditionFilter": { "value": "true" },
             "id": "checkboxone_worstActivityDay",
             "page": "6",
-            "label": "\"Quelle a été votre activité la plus désagréable durant cette journée ?\"",
+            "label": "\"Quelle a été votre activité la plus désagréable durant cette journée\"",
             "mandatory": false
         },
         {
@@ -879,7 +891,7 @@
             "conditionFilter": { "value": "true" },
             "id": "checkboxone_kindofday",
             "page": "7",
-            "label": "\"De quel type de journée s’agissait-il ?\"",
+            "label": "\"De quel type de journée s’agissait-il\"",
             "mandatory": false
         },
         {
@@ -896,7 +908,7 @@
             "conditionFilter": { "value": "true" },
             "id": "checkboxboolean_exceptionalDay",
             "page": "8",
-            "label": "\"Cette journée a-t-elle présenté un caractère exceptionnel ?\"",
+            "label": "\"Cette journée a-t-elle présenté un caractère exceptionnel\"",
             "mandatory": false
         },
         {
@@ -913,7 +925,7 @@
             "conditionFilter": { "value": "true" },
             "id": "timepicker_travelTime",
             "page": "9",
-            "label": "\" Au total, combien de temps avez-vous passé en trajets ? \"",
+            "label": "\" Au total, combien de temps avez-vous passé en trajets\"",
             "hourLabel": "Heures",
             "andLabel": "et",
             "minLabel": "minutes",
@@ -934,7 +946,7 @@
             "conditionFilter": { "value": "true" },
             "id": "timepicker_phoneTime",
             "page": "10",
-            "label": "\" Au total, combien de temps avez-vous passé à consulter votre téléphone (y compris les petits moments de quelques minutes) ? \"",
+            "label": "\" Au total, combien de temps avez-vous passé à consulter votre téléphone (y compris les petits moments de quelques minutes)\"",
             "hourLabel": "Heures",
             "andLabel": "et",
             "minLabel": "minutes",

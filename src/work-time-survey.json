@@ -6,8 +6,8 @@
     "generatingDate": "29-09-2022 13:56:00",
     "missing": false,
     "id": "l8lq5lp6",
-    "label": "Time",
-    "maxPage": "3",
+    "label": "WorkTime",
+    "maxPage": "4",
     "variables": [
         {
             "variableType": "COLLECTED",
@@ -58,6 +58,30 @@
             "componentRef": "checkboxone_weektype"
         },
         {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "ISCLOSED",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "ISENVOYED",
+            "componentRef": ""
+        },
+        {
             "variableType": "CALCULATED",
             "expression": "true",
             "name": "FILTER_RESULT_INPUTTEXT",
@@ -100,7 +124,7 @@
                     "criticality": "ERROR",
                     "errorMessage": {
                         "type": "VTL|MD",
-                        "value": "\" La valeur doit être rempli.\""
+                        "value": "\" La valeur doit être remplie.\""
                     },
                     "typeOfControl": "FORMAT",
                     "control": {
@@ -131,7 +155,7 @@
                     "criticality": "ERROR",
                     "errorMessage": {
                         "type": "VTL|MD",
-                        "value": "\" La valeur doit être rempli.\""
+                        "value": "\" La valeur doit être remplie.\""
                     },
                     "typeOfControl": "FORMAT",
                     "control": {
@@ -144,7 +168,7 @@
         },
         {
             "componentType": "WeeklyPlanner",
-            "bindingDependencies": ["WEEKLYPLANNER"],
+            "bindingDependencies": ["WEEKLYPLANNER", "ISCLOSED"],
             "response": {
                 "name": "WEEKLYPLANNER"
             },

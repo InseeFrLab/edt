@@ -4,13 +4,16 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { TabData } from "interface/component/Component";
+import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { callbackHolder } from "orchestrator/Orchestrator";
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import {
-    getCurrentNavigatePath,
     getParameterizedNavigatePath,
     navToHome,
+    navToWeeklyPlannerOrClose,
+    setEnviro,
 } from "service/navigation-service";
 import { getCurrentPageSource, getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isTablet } from "service/responsive";
@@ -30,13 +33,16 @@ const WorkTimePage = () => {
     const selectedTab = tabsData.findIndex(tab => tab.idSurvey === idSurvey);
     const maxTabsPerRow = isTablet() ? 3 : 4;
 
+    const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
     useEffect(() => {
         window.onpopstate = () => {
             navigate("/");
         };
 
         if (idSurvey && source) {
-            navigate(getCurrentNavigatePath(idSurvey, surveyRootPage, source.maxPage));
+            navToWeeklyPlannerOrClose(idSurvey, navigate);
         } else {
             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON));
         }
@@ -48,7 +54,7 @@ const WorkTimePage = () => {
         } else {
             idSurvey = tabData.idSurvey;
             data = getData(idSurvey);
-            navigate(getCurrentNavigatePath(idSurvey, surveyRootPage, source.maxPage));
+            navToWeeklyPlannerOrClose(idSurvey, navigate);
         }
     }, []);
 

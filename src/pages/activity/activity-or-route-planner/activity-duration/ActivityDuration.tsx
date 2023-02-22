@@ -21,6 +21,7 @@ import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-s
 import {
     getLoopParameterizedNavigatePath,
     navToActivityRoutePlanner,
+    navToActivitySummary,
     setEnviro,
 } from "service/navigation-service";
 import { isDesktop } from "service/responsive";
@@ -126,17 +127,26 @@ const ActivityDurationPage = () => {
 
     const onClose = (forceQuit: boolean) => {
         const isCompleted = getValue(context.idSurvey, FieldNameEnum.ISCOMPLETED, currentIteration);
+        const isCloture = getValue(context.idSurvey, FieldNameEnum.ISCLOSED) as boolean;
         if (!openSnackbar) {
             if (!isCompleted) {
                 if (forceQuit) {
                     saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                        navToActivityRoutePlanner();
+                        if (isCloture) {
+                            navToActivitySummary();
+                        } else {
+                            navToActivityRoutePlanner();
+                        }
                     });
                 } else {
                     setIsAlertDisplayed(true);
                 }
             } else {
-                navToActivityRoutePlanner();
+                if (isCloture) {
+                    navToActivitySummary();
+                } else {
+                    navToActivityRoutePlanner();
+                }
             }
         }
     };

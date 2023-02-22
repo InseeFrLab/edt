@@ -1,7 +1,10 @@
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { LunaticModel } from "interface/lunatic/Lunatic";
-import { getSource } from "service/survey-service";
+import { getSource } from "./survey-service";
+
+const LABEL_WORK_TIME_SURVEY = "WorkTime";
+const LABEL_ACTIVITY_SURVEY = "ActivityTime";
 
 const getCurrentPageSource = (): LunaticModel => {
     if (!window.location.pathname.includes(EdtRoutesNameEnum.ACTIVITY.split(":")[0])) {
@@ -19,4 +22,4 @@ const getCurrentSurveyRootPage = (): EdtRoutesNameEnum => {
     }
 };
 
-export { getCurrentPageSource, getCurrentSurveyRootPage };
+export { getCurrentPageSource, getCurrentSurveyRootPage, LABEL_WORK_TIME_SURVEY, LABEL_ACTIVITY_SURVEY };

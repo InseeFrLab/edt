@@ -131,7 +131,7 @@ Lunatic is used by EDT to :
                     "criticality": "ERROR",
                     "errorMessage": {
                         "type": "VTL|MD",
-                        "value": "\" La valeur doit être rempli.\""
+                        "value": "\" La valeur doit être remplie.\""
                     },
                     "typeOfControl": "FORMAT",
                     "control": {
@@ -162,7 +162,7 @@ Lunatic is used by EDT to :
                     "criticality": "ERROR",
                     "errorMessage": {
                         "type": "VTL|MD",
-                        "value": "\" La valeur doit être rempli.\""
+                        "value": "\" La valeur doit être remplie.\""
                     },
                     "typeOfControl": "FORMAT",
                     "control": {
