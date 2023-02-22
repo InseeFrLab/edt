@@ -8,7 +8,6 @@ import { NavigateFunction, To } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentLoopPage, getLoopInitialPage } from "service/loop-service";
 import { getCurrentPage, getData, getValue, saveData, setValue } from "service/survey-service";
-import { getCurrentPageSource } from "./orchestrator-service";
 import { getLastPageStep, getLastStep } from "./stepper.service";
 
 let _context: OrchestratorContext;
@@ -413,7 +412,7 @@ const onPrevious = (e: React.MouseEvent | undefined, setBackClickEvent: any) => 
     setBackClickEvent(e);
 };
 
-const onClose = (forceQuit: boolean, setIsAlertDisplayed: any, iteration: number) => {
+const onClose = (forceQuit: boolean, setIsAlertDisplayed: any, iteration?: number) => {
     const isCloture = getValue(_context.idSurvey, FieldNameEnum.ISCLOSED) as boolean;
     validateWithAlertAndNav(
         forceQuit,

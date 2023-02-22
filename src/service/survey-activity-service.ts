@@ -319,19 +319,13 @@ const getActivityOrRouteDurationLabelFromDurationMinutes = (durationMinutes: num
     const minutes = Math.round(durationMinutes % 60);
     let hoursLabel = hours > 1 ? hours + "h" : "";
     let minutesLabel;
-    if (minutes >= 10) {
-        if (hours > 1) {
-            minutesLabel = minutes;
-        } else {
-            minutesLabel = minutes + "min";
-        }
+
+    if (hours > 1) {
+        minutesLabel = (minutes < 10 && minutes > 0 ? "0" : "") + minutes;
     } else {
-        if (hours > 1) {
-            minutesLabel = "0" + minutes;
-        } else {
-            minutesLabel = "0" + minutes + "min";
-        }
+        minutesLabel = (minutes < 10 && minutes > 0 ? "0" : "") + minutes + "min";
     }
+
     return hoursLabel + minutesLabel;
 };
 

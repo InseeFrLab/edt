@@ -1,3 +1,10 @@
+import {
+    HOME_CATEGORY_PLACE_LIST,
+    SLEEPING_CATEGORIES_ACTIVITES_LIST,
+    WORKING_CATEGORIES_ACTIVITES_LIST,
+    DOMESTIC_CATEGORIES_ACTIVITES_LIST,
+    OTHER_FAMILY_CATEGORIES_ACTIVITES_LIST,
+} from "constants/constants";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import {
     UserActivitiesCharacteristics,
@@ -15,6 +22,7 @@ import {
     getActivityOrRouteDurationLabelFromDurationMinutes,
 } from "service/survey-activity-service";
 import { getValue } from "service/survey-service";
+import { getAllCodesFromActivitiesCodes } from "./loop-service";
 
 const getUserActivitiesSummary = (
     idSurvey: string,
@@ -25,11 +33,17 @@ const getUserActivitiesSummary = (
         activitiesAmount: activitiesRoutesOrGaps.filter(activityOrRoute => !activityOrRoute.isRoute)
             .length,
         routesAmount: activitiesRoutesOrGaps.filter(activityOrRoute => activityOrRoute.isRoute).length,
-        workingTimeLabel: undefined, //Tout dans 210 et 260 (catégorie entière travail et etudes)
-        sleepingTimeLabel: undefined, //"111, 112, 114" que activité principale
-        homeTasksTimeLabel: undefined, // Tout dans taches domestiques 300 ou taches domestiques/taches ménagères
-        otherFamilyTasksTimeLabel: undefined, // 440 Aide non rémunérée à ses voisins, ses amis, bénévolat ou 440 -> 441
         realRouteTimeLabel: getRealRouteTimeLabel(activitiesRoutesOrGaps),
+        homeTasksTimeLabel: getHomeTasksTime(activitiesRoutesOrGaps, HOME_CATEGORY_PLACE_LIST),
+        aloneTimeLabel: getAloneTime(activitiesRoutesOrGaps),
+        sleepingTimeLabel: getDuration(activitiesRoutesOrGaps, SLEEPING_CATEGORIES_ACTIVITES_LIST),
+        workingTimeLabel: getDuration(activitiesRoutesOrGaps, WORKING_CATEGORIES_ACTIVITES_LIST),
+        domesticTasksTimeLabel: getDuration(activitiesRoutesOrGaps, DOMESTIC_CATEGORIES_ACTIVITES_LIST),
+        otherFamilyTasksTimeLabel: getDuration(
+            activitiesRoutesOrGaps,
+            OTHER_FAMILY_CATEGORIES_ACTIVITES_LIST,
+        ),
+
         activitiesWithScreenAmount: activitiesRoutesOrGaps.filter(
             activityOrRoute => activityOrRoute.withScreen,
         ).length,
@@ -92,6 +106,37 @@ const getActivitiesTimeWithScreenLabel = (activitiesOrRoutes: ActivityRouteOrGap
         }
     });
     return getActivityOrRouteDurationLabelFromDurationMinutes(totalDurationMinutes);
+};
+
+const getAllTime = (listToSum: number[]) => {
+    return listToSum.reduce((a, b) => a + b, 0);
+};
+
+const getTime = (activitiesRoutesOrGaps: ActivityRouteOrGap[], codesActivities: string[]) => {
+    const codesWorkingTime = getAllCodesFromActivitiesCodes(codesActivities);
+    const activitesFiltred = activitiesRoutesOrGaps
+        .filter(act => codesWorkingTime.indexOf(act.activity?.activityCode || "") >= 0)
+        .map(act => act.durationMinutes ?? 0);
+    return getAllTime(activitesFiltred);
+};
+
+const getDuration = (activitiesRoutesOrGaps: ActivityRouteOrGap[], codesActivities: string[]) => {
+    const minutes = getTime(activitiesRoutesOrGaps, codesActivities);
+    return getActivityOrRouteDurationLabelFromDurationMinutes(minutes);
+};
+
+const getHomeTasksTime = (activitiesRoutesOrGaps: ActivityRouteOrGap[], codesPlace: string[]) => {
+    const activitesFiltred = activitiesRoutesOrGaps
+        .filter(act => codesPlace.indexOf(act.place?.placeCode ?? "") >= 0)
+        .map(act => act.durationMinutes ?? 0);
+    return getActivityOrRouteDurationLabelFromDurationMinutes(getAllTime(activitesFiltred));
+};
+
+const getAloneTime = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => {
+    const activitesFiltred = activitiesRoutesOrGaps
+        .filter(act => act.withSomeone != null && !act.withSomeone)
+        .map(act => act.durationMinutes ?? 0);
+    return getActivityOrRouteDurationLabelFromDurationMinutes(getAllTime(activitesFiltred));
 };
 
 export { getUserActivitiesSummary, getUserActivitiesCharacteristics };

@@ -14,6 +14,8 @@ export interface UserActivitiesSummary {
     workingTimeLabel?: string;
     sleepingTimeLabel?: string;
     homeTasksTimeLabel?: string;
+    aloneTimeLabel?: string;
+    domesticTasksTimeLabel?: string;
     otherFamilyTasksTimeLabel?: string;
     realRouteTimeLabel?: string;
     activitiesWithScreenAmount?: number;

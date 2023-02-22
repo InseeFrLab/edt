@@ -6,6 +6,7 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import DayCard from "components/edt/DayCard/DayCard";
 import WeekCard from "components/edt/WeekCard/WeekCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { makeStylesEdt } from "lunatic-edt";
@@ -21,6 +22,7 @@ import {
     getPrintedFirstName,
     getPrintedSurveyDate,
     getSource,
+    getValue,
     surveysIds,
 } from "service/survey-service";
 
@@ -44,6 +46,11 @@ const HomePage = () => {
         },
         [],
     );
+
+    const formClose = (idSurvey: string) => {
+        const surveyIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
+        return surveyIsClosed;
+    };
 
     return (
         <>
@@ -82,6 +89,7 @@ const HomePage = () => {
                         firstName={getPrintedFirstName(idSurvey)}
                         surveyDate={getPrintedSurveyDate(idSurvey)}
                         idSurvey={idSurvey}
+                        isClose={formClose(idSurvey)}
                     />
                 ))}
 
@@ -94,6 +102,7 @@ const HomePage = () => {
                         firstName={getPrintedFirstName(idSurvey)}
                         surveyDate={getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME)}
                         idSurvey={idSurvey}
+                        isClose={formClose(idSurvey)}
                     />
                 ))}
             </Box>

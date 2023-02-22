@@ -14,6 +14,20 @@ const DaySummary = (props: DaySummaryProps) => {
     const { classes } = useStyles();
     const { t } = useTranslation();
 
+    const getCardSummary = (timeLabel: string | undefined, label: string) => {
+        return (
+            <>
+                <Divider variant="middle" flexItem />
+                <Box className={classes.rowBox}>
+                    <Box className={classes.valueBox}>
+                        {timeLabel || t("component.day-summary.no-time")}
+                    </Box>
+                    <Typography className={classes.label}>{t(label)}</Typography>
+                </Box>
+            </>
+        );
+    };
+
     return (
         <Box className={classes.daySummaryBox}>
             <h3 className={classes.title}>{t("component.day-summary.title")}</h3>
@@ -29,68 +43,31 @@ const DaySummary = (props: DaySummaryProps) => {
                     {t("component.day-summary.route-done")}
                 </Typography>
             </Box>
-            <Divider variant="middle" flexItem />
-            <Box className={classes.rowBox}>
-                <Box className={classes.valueBox}>
-                    {userActivitiesSummary?.workingTimeLabel || t("component.day-summary.no-time")}
-                </Box>
-                <Typography className={classes.label}>{t("component.day-summary.work-time")}</Typography>
-            </Box>
-            <Divider variant="middle" flexItem />
-            <Box className={classes.rowBox}>
-                <Box className={classes.valueBox}>
-                    {userActivitiesSummary?.sleepingTimeLabel || t("component.day-summary.no-time")}
-                </Box>
-                <Typography className={classes.label}>
-                    {t("component.day-summary.sleep-time")}
-                </Typography>
-            </Box>
-            <Divider variant="middle" flexItem />
-            <Box className={classes.rowBox}>
-                <Box className={classes.valueBox}>
-                    {userActivitiesSummary?.homeTasksTimeLabel || t("component.day-summary.no-time")}
-                </Box>
-                <Typography className={classes.label}>
-                    {t("component.day-summary.home-task-time")}
-                </Typography>
-            </Box>
-            <Divider variant="middle" flexItem />
-            <Box className={classes.rowBox}>
-                <Box className={classes.valueBox}>
-                    {userActivitiesSummary?.otherFamilyTasksTimeLabel ||
-                        t("component.day-summary.no-time")}
-                </Box>
-                <Typography className={classes.label}>
-                    {t("component.day-summary.other-home-time")}
-                </Typography>
-            </Box>
-            <Divider variant="middle" flexItem />
-            <Box className={classes.rowBox}>
-                <Box className={classes.valueBox}>
-                    {userActivitiesSummary?.realRouteTimeLabel || t("component.day-summary.no-time")}
-                </Box>
-                <Typography className={classes.label}>
-                    {t("component.day-summary.real-route-time")}
-                </Typography>
-            </Box>
-            <Divider variant="middle" flexItem />
-            <Box className={classes.rowBox}>
-                <Box className={classes.valueBox}>
-                    {userActivitiesSummary?.activitiesWithScreenAmount || 0}
-                </Box>
-                <Typography className={classes.label}>
-                    {t("component.day-summary.activity-or-route-with-screen")}
-                </Typography>
-            </Box>
-            <Box className={classes.rowBox}>
-                <Box className={classes.valueBox}>
-                    {userActivitiesSummary?.activitiesTimeWithScreenLabel ||
-                        t("component.day-summary.no-time")}
-                </Box>
-                <Typography className={classes.label}>
-                    {t("component.day-summary.activity-time-with-screen")}
-                </Typography>
-            </Box>
+            {getCardSummary(
+                userActivitiesSummary?.realRouteTimeLabel,
+                "component.day-summary.real-route-time",
+            )}
+            {getCardSummary(
+                userActivitiesSummary?.homeTasksTimeLabel,
+                "component.day-summary.home-task-time",
+            )}
+            {getCardSummary(
+                userActivitiesSummary?.aloneTimeLabel,
+                "component.day-summary.alone-task-time",
+            )}
+            {getCardSummary(
+                userActivitiesSummary?.sleepingTimeLabel,
+                "component.day-summary.sleep-time",
+            )}
+            {getCardSummary(userActivitiesSummary?.workingTimeLabel, "component.day-summary.work-time")}
+            {getCardSummary(
+                userActivitiesSummary?.domesticTasksTimeLabel,
+                "component.day-summary.domestic-task-time",
+            )}
+            {getCardSummary(
+                userActivitiesSummary?.otherFamilyTasksTimeLabel,
+                "component.day-summary.other-home-time",
+            )}
         </Box>
     );
 };

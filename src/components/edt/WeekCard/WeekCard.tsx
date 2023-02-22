@@ -11,21 +11,22 @@ interface WeekCardProps {
     firstName: string;
     surveyDate: string;
     idSurvey: string;
+    isClose: boolean;
 }
 
 const WeekCard = (props: WeekCardProps) => {
-    const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey } = props;
-    const { classes } = useStyles();
+    const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey, isClose } = props;
+    const { classes, cx } = useStyles();
     return (
         <FlexCenter>
             <Box
                 aria-labelledby={labelledBy}
                 aria-describedby={describedBy}
-                className={classes.weekCardBox}
+                className={cx(classes.weekCardBox, isClose ? classes.closeCardBox : "")}
                 onClick={onClick}
             >
                 <Box className={classes.leftBox}>
-                    <Box className={classes.iconBox}>
+                    <Box className={cx(classes.iconBox, isClose ? classes.closeIconBox : "")}>
                         <CalendarMonthOutlinedIcon />
                     </Box>
                     <Box>
@@ -38,6 +39,7 @@ const WeekCard = (props: WeekCardProps) => {
                         labelledBy={""}
                         describedBy={""}
                         progress={getWeeklyPlannerScore(idSurvey)}
+                        isClose={isClose}
                     />
                 </Box>
             </Box>
@@ -60,6 +62,12 @@ const useStyles = makeStylesEdt({ "name": { WeekCard } })(theme => ({
         marginTop: "1rem",
         cursor: "pointer",
     },
+    closeCardBox: {
+        color: theme.palette.secondary.main,
+        backgroundColor: theme.palette.secondary.light,
+        border: "1px solid ",
+        borderColor: theme.palette.secondary.dark,
+    },
     leftBox: {
         display: "flex",
         alignItems: "center",
@@ -67,6 +75,9 @@ const useStyles = makeStylesEdt({ "name": { WeekCard } })(theme => ({
     iconBox: {
         marginRight: "1rem",
         color: theme.palette.primary.light,
+    },
+    closeIconBox: {
+        color: theme.palette.secondary.main,
     },
     scoreBox: {
         color: theme.palette.secondary.main,
