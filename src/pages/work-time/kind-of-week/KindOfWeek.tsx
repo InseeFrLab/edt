@@ -16,8 +16,6 @@ import {
     getParameterizedNavigatePath,
     navFullPath,
     onClose,
-    onNext,
-    onPrevious,
     saveAndNav,
     setEnviro,
     validate,
@@ -33,25 +31,21 @@ const KindOfWeekPage = () => {
 
     const currentPage = EdtRoutesNameEnum.KIND_OF_WEEK;
 
-    const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
-    const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
-    const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
-
-    const specificProps: CheckboxOneSpecificProps = {
-        icon: calendarWeek,
-        onSelectValue: () => {
-            validate().then(() => {
-                saveAndNav(routeEnd);
-            });
-        },
-    };
-
     const routeEnd =
         getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, context.idSurvey) +
         getNavigatePath(EdtRoutesNameEnum.END_SURVEY);
     const routeWeeklyPlanner =
         getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, context.idSurvey) +
         getNavigatePath(EdtRoutesNameEnum.WEEKLY_PLANNER);
+
+    const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
+
+    const specificProps: CheckboxOneSpecificProps = {
+        icon: calendarWeek,
+        onSelectValue: () => {
+            validate().then(() => saveAndNav(routeEnd));
+        },
+    };
 
     return (
         <SurveyPage

@@ -21,7 +21,6 @@ import {
     getNavigatePath,
     getParameterizedNavigatePath,
     navToHome,
-    saveAndNav,
     setEnviro,
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";

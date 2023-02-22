@@ -8,7 +8,6 @@ import { NavigateFunction, To } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentLoopPage, getLoopInitialPage } from "service/loop-service";
 import { getCurrentPage, getData, getValue, saveData, setValue } from "service/survey-service";
-import { getCurrentPageSource } from "./orchestrator-service";
 import { getLastPageStep, getLastStep } from "./stepper.service";
 
 let _context: OrchestratorContext;

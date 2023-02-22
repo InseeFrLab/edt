@@ -1,4 +1,3 @@
-import { ConnectingAirportsOutlined } from "@mui/icons-material";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
