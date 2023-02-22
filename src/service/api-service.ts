@@ -99,7 +99,6 @@ const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<Survey
         axios
             .put(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader())
             .then(() => {
-                console.log("inner resolve");
                 resolve(data);
             });
     });

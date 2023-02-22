@@ -6,8 +6,8 @@
     "generatingDate": "29-09-2022 13:56:00",
     "missing": false,
     "id": "l8lq5lp6",
-    "label": "Time",
-    "maxPage": "3",
+    "label": "WorkTime",
+    "maxPage": "4",
     "variables": [
         {
             "variableType": "COLLECTED",
@@ -56,6 +56,30 @@
             },
             "name": "WEEKTYPE",
             "componentRef": "checkboxone_weektype"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "ISCLOSED",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "ISENVOYED",
+            "componentRef": ""
         },
         {
             "variableType": "CALCULATED",
@@ -144,7 +168,7 @@
         },
         {
             "componentType": "WeeklyPlanner",
-            "bindingDependencies": ["WEEKLYPLANNER"],
+            "bindingDependencies": ["WEEKLYPLANNER", "ISCLOSED"],
             "response": {
                 "name": "WEEKLYPLANNER"
             },

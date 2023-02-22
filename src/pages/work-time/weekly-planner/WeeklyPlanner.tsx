@@ -9,6 +9,7 @@ import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import {
+    closeFormularieAndNav,
     getFullNavigatePath,
     getOrchestratorPage,
     navFullPath,
@@ -61,7 +62,7 @@ const WeeklyPlannerPage = () => {
             save();
             setDisplayDayOverview(false);
         } else {
-            saveAndNav(getFullNavigatePath(EdtRoutesNameEnum.KIND_OF_WEEK));
+            closeFormularieAndNav(getFullNavigatePath(EdtRoutesNameEnum.KIND_OF_WEEK));
         }
     };
 

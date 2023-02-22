@@ -65,6 +65,7 @@ export interface LunaticModel {
     variables: LunaticModelVariable[];
     components: LunaticModelComponent[];
     maxPage: string;
+    label?: string;
 }
 
 export interface LunaticModelComponent {

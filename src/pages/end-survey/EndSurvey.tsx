@@ -25,7 +25,7 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
-import { getCurrentPage, saveData, setValue } from "service/survey-service";
+import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from "service/survey-service";
 
 const EndSurveyPage = () => {
     const { classes } = useStyles();
@@ -59,6 +59,7 @@ const EndSurveyPage = () => {
                 surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData.date;
                 saveData(context.idSurvey, surveyData.data, true).then(() => {
                     setIsModalDisplayed(true);
+                    initializeSurveysDatasCache();
                 });
             })
             .catch(() => {

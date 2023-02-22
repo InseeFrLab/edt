@@ -20,7 +20,7 @@ const getUserActivitiesSummary = (
     idSurvey: string,
     t: TFunction<"translation", undefined>,
 ): UserActivitiesSummary | undefined => {
-    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
+    const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey);
     let activitiesSummary: UserActivitiesSummary = {
         activitiesAmount: activitiesRoutesOrGaps.filter(activityOrRoute => !activityOrRoute.isRoute)
             .length,

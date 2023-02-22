@@ -7,7 +7,8 @@ import { SetStateAction } from "react";
 import { NavigateFunction, To } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentLoopPage, getLoopInitialPage } from "service/loop-service";
-import { getCurrentPage, getData, getValue, saveData } from "service/survey-service";
+import { getCurrentPage, getData, getValue, saveData, setValue } from "service/survey-service";
+import { getCurrentPageSource } from "./orchestrator-service";
 import { getLastPageStep, getLastStep } from "./stepper.service";
 
 let _context: OrchestratorContext;
@@ -184,9 +185,19 @@ const saveAndNav = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
-    console.log(_callbackHolder.getData());
     saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
         navToRouteOrRouteNotSelection(route, value, routeNotSelection, currentIteration);
+    });
+};
+
+/**
+ * Close formulaire and nav to closing page
+ * @param route
+ */
+const closeFormularieAndNav = (route: string) => {
+    const data = setValue(_context.idSurvey, FieldNameEnum.ISCLOSED, true);
+    saveData(_context.idSurvey, data ? data : _callbackHolder.getData()).then(() => {
+        _navigate(route);
     });
 };
 
@@ -254,7 +265,6 @@ const navToActivityOrPlannerOrSummary = (idSurvey: string, maxPage: string, navi
             );
         } else {
             const currentPathNav = getCurrentNavigatePath(idSurvey, EdtRoutesNameEnum.ACTIVITY, maxPage);
-
             const navEndSurvey =
                 getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
                 getNavigatePath(EdtRoutesNameEnum.END_SURVEY);
@@ -271,6 +281,35 @@ const navToActivityOrPlannerOrSummary = (idSurvey: string, maxPage: string, navi
                 getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
             ),
         );
+    }
+};
+
+const navToWeeklyPlannerOrClose = (idSurvey: string, navigate: any) => {
+    const surveyIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
+    const weeklyPlannerRoute = getCurrentNavigatePath(
+        idSurvey,
+        EdtRoutesNameEnum.WORK_TIME,
+        getOrchestratorPage(EdtRoutesNameEnum.WEEKLY_PLANNER),
+    );
+    const kindOfDayRoute =
+        getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey) +
+        getNavigatePath(EdtRoutesNameEnum.KIND_OF_WEEK);
+
+    if (surveyIsClosed) {
+        const surveyIsEnvoyed = getValue(idSurvey, FieldNameEnum.ISENVOYED);
+
+        if (surveyIsEnvoyed) {
+            navigate(weeklyPlannerRoute);
+        } else {
+            const navEndSurvey =
+                getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey) +
+                getNavigatePath(EdtRoutesNameEnum.END_SURVEY);
+            const allStepsAdded = getValue(idSurvey, FieldNameEnum.WEEKTYPE) != null;
+
+            navigate(allStepsAdded ? navEndSurvey : kindOfDayRoute);
+        }
+    } else {
+        navigate(weeklyPlannerRoute);
     }
 };
 
@@ -407,11 +446,13 @@ export {
     navToActivityRoutePlanner,
     navToEditActivity,
     navToActivityOrPlannerOrSummary,
+    navToWeeklyPlannerOrClose,
     navFullPath,
     saveAndNav,
     saveAndNavFullPath,
     saveAndNextStep,
     saveAndLoopNavigate,
+    closeFormularieAndNav,
     loopNavigate,
     validateWithAlertAndNav,
     setEnviro,

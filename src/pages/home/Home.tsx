@@ -6,6 +6,7 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import DayCard from "components/edt/DayCard/DayCard";
 import WeekCard from "components/edt/WeekCard/WeekCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { makeStylesEdt } from "lunatic-edt";
 import { useCallback } from "react";
@@ -13,10 +14,15 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
     getNavigatePath,
-    getParameterizedNavigatePath,
     navToActivityOrPlannerOrSummary,
+    navToWeeklyPlannerOrClose,
 } from "service/navigation-service";
-import { getPrintedFirstName, getPrintedSurveyDate, surveysIds } from "service/survey-service";
+import {
+    getPrintedFirstName,
+    getPrintedSurveyDate,
+    getSource,
+    surveysIds,
+} from "service/survey-service";
 
 const HomePage = () => {
     const { t } = useTranslation();
@@ -24,14 +30,17 @@ const HomePage = () => {
     const { classes } = useStyles();
 
     const navWorkTime = useCallback(
-        (idSurvey: string) => () =>
-            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey)),
+        (idSurvey: string) => () => navToWeeklyPlannerOrClose(idSurvey, navigate),
         [],
     );
 
     const navActivity = useCallback(
         (idSurvey: string) => () => {
-            navToActivityOrPlannerOrSummary(idSurvey, navigate);
+            navToActivityOrPlannerOrSummary(
+                idSurvey,
+                getSource(SourcesEnum.ACTIVITY_SURVEY).maxPage,
+                navigate,
+            );
         },
         [],
     );

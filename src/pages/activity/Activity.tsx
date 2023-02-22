@@ -11,6 +11,7 @@ import {
     getParameterizedNavigatePath,
     navToActivityOrPlannerOrSummary,
     navToHome,
+    navToWeeklyPlannerOrClose,
 } from "service/navigation-service";
 import { getCurrentPageSource, getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isTablet } from "service/responsive";
@@ -36,7 +37,7 @@ const ActivityPage = () => {
         };
 
         if (idSurvey && source) {
-            navToActivityOrPlannerOrSummary(idSurvey, navigate);
+            navToActivityOrPlannerOrSummary(idSurvey, source.maxPage, navigate);
         } else {
             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON));
         }
@@ -46,9 +47,9 @@ const ActivityPage = () => {
         if (tabData.isActivitySurvey) {
             idSurvey = tabData.idSurvey;
             data = getData(idSurvey);
-            navToActivityOrPlannerOrSummary(idSurvey, navigate);
+            navToActivityOrPlannerOrSummary(idSurvey, source.maxPage, navigate);
         } else {
-            navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, tabData.idSurvey));
+            navToWeeklyPlannerOrClose(tabData.idSurvey, navigate);
         }
     }, []);
 
