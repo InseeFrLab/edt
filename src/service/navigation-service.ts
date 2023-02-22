@@ -413,7 +413,7 @@ const onPrevious = (e: React.MouseEvent | undefined, setBackClickEvent: any) => 
     setBackClickEvent(e);
 };
 
-const onClose = (forceQuit: boolean, setIsAlertDisplayed: any, iteration: number) => {
+const onClose = (forceQuit: boolean, setIsAlertDisplayed: any, iteration?: number) => {
     const isCloture = getValue(_context.idSurvey, FieldNameEnum.ISCLOSED) as boolean;
     validateWithAlertAndNav(
         forceQuit,

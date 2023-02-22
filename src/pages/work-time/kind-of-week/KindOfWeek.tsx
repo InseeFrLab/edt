@@ -4,17 +4,23 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { CheckboxOneSpecificProps } from "lunatic-edt";
+import { Alert, CheckboxOneSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { getLabelsWhenQuit } from "service/alert-service";
 import {
     getNavigatePath,
     getOrchestratorPage,
     getParameterizedNavigatePath,
     navFullPath,
+    onClose,
+    onNext,
+    onPrevious,
+    saveAndNav,
     setEnviro,
+    validate,
     validateWithAlertAndNav,
 } from "service/navigation-service";
 import { getKindOfWeekRef } from "service/referentiel-service";
@@ -27,11 +33,17 @@ const KindOfWeekPage = () => {
 
     const currentPage = EdtRoutesNameEnum.KIND_OF_WEEK;
 
-    const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
+    const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
+    const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
+    const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
     const specificProps: CheckboxOneSpecificProps = {
         icon: calendarWeek,
-        onSelectValue: () => validateWithAlertAndNav(false, setIsModalDisplayed),
+        onSelectValue: () => {
+            validate().then(() => {
+                saveAndNav(routeEnd);
+            });
+        },
     };
 
     const routeEnd =
@@ -44,12 +56,12 @@ const KindOfWeekPage = () => {
     return (
         <SurveyPage
             validate={useCallback(
-                () => validateWithAlertAndNav(true, setIsModalDisplayed, undefined, routeEnd),
-                [isModalDisplayed],
+                () => validateWithAlertAndNav(false, setIsAlertDisplayed, undefined, routeEnd),
+                [setIsAlertDisplayed],
             )}
             onNavigateBack={useCallback(
-                () => validateWithAlertAndNav(true, setIsModalDisplayed, undefined, routeWeeklyPlanner),
-                [isModalDisplayed],
+                () => validateWithAlertAndNav(false, setIsAlertDisplayed, undefined, routeWeeklyPlanner),
+                [setIsAlertDisplayed],
             )}
             onPrevious={useCallback(() => navFullPath(EdtRoutesNameEnum.WEEKLY_PLANNER), [])}
             srcIcon={kindOfWeek}
@@ -60,6 +72,20 @@ const KindOfWeekPage = () => {
             simpleHeaderLabel={t("page.kind-of-week.simple-header-label")}
         >
             <FlexCenter>
+                <Alert
+                    isAlertDisplayed={isAlertDisplayed}
+                    onCompleteCallBack={useCallback(
+                        () => setIsAlertDisplayed(false),
+                        [isAlertDisplayed],
+                    )}
+                    onCancelCallBack={useCallback(
+                        cancel => onClose(cancel, setIsAlertDisplayed),
+                        [isAlertDisplayed],
+                    )}
+                    labels={getLabelsWhenQuit()}
+                    icon={kindOfWeek}
+                    errorIconAlt={t("page.activity-duration.alt-alert-icon")}
+                ></Alert>
                 <OrchestratorForStories
                     source={context.source}
                     data={context.data}
