@@ -1,7 +1,7 @@
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
-import { LunaticData, OrchestratorContext } from "interface/lunatic/Lunatic";
+import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import { SetStateAction } from "react";
 import { NavigateFunction, To } from "react-router-dom";
@@ -102,6 +102,7 @@ const getCurrentNavigatePath = (
     idSurvey: string,
     rootPage: EdtRoutesNameEnum,
     maxPage: string,
+    source: LunaticModel,
     loop?: LoopEnum,
     iteration?: number,
     nextPage?: number,
@@ -126,7 +127,7 @@ const getCurrentNavigatePath = (
         page = pageOrchestrator?.page;
         parentPage = pageOrchestrator?.parentPage;
     } else {
-        const currentPage = getCurrentPage(surveyData);
+        const currentPage = getCurrentPage(surveyData, source);
         const firstEmptyPage = nextPage ? nextPage : currentPage;
         page = mappingPageOrchestrator.find(
             link =>
@@ -249,11 +250,17 @@ const navToActivityRoutePlanner = () => {
             _context.idSurvey,
             EdtRoutesNameEnum.ACTIVITY,
             getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            _context.source,
         ),
     );
 };
 
-const navToActivityOrPlannerOrSummary = (idSurvey: string, maxPage: string, navigate: any) => {
+const navToActivityOrPlannerOrSummary = (
+    idSurvey: string,
+    maxPage: string,
+    navigate: any,
+    source: LunaticModel,
+) => {
     const surveyIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
     if (surveyIsClosed) {
         const surveyIsEnvoyed = getValue(idSurvey, FieldNameEnum.ISENVOYED);
@@ -263,7 +270,12 @@ const navToActivityOrPlannerOrSummary = (idSurvey: string, maxPage: string, navi
                     getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
             );
         } else {
-            const currentPathNav = getCurrentNavigatePath(idSurvey, EdtRoutesNameEnum.ACTIVITY, maxPage);
+            const currentPathNav = getCurrentNavigatePath(
+                idSurvey,
+                EdtRoutesNameEnum.ACTIVITY,
+                maxPage,
+                source,
+            );
             const navEndSurvey =
                 getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
                 getNavigatePath(EdtRoutesNameEnum.END_SURVEY);
@@ -278,17 +290,19 @@ const navToActivityOrPlannerOrSummary = (idSurvey: string, maxPage: string, navi
                 idSurvey,
                 EdtRoutesNameEnum.ACTIVITY,
                 getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                source,
             ),
         );
     }
 };
 
-const navToWeeklyPlannerOrClose = (idSurvey: string, navigate: any) => {
+const navToWeeklyPlannerOrClose = (idSurvey: string, navigate: any, source: LunaticModel) => {
     const surveyIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
     const weeklyPlannerRoute = getCurrentNavigatePath(
         idSurvey,
         EdtRoutesNameEnum.WORK_TIME,
         getOrchestratorPage(EdtRoutesNameEnum.WEEKLY_PLANNER),
+        source,
     );
     const kindOfDayRoute =
         getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey) +
@@ -336,6 +350,7 @@ const saveAndNextStep = (rootPage: EdtRoutesNameEnum, currentPage: EdtRoutesName
             _context.idSurvey,
             rootPage,
             _context.source.maxPage,
+            _context.source,
             undefined,
             undefined,
             getNextPage(currentPage),
@@ -425,6 +440,7 @@ const onClose = (forceQuit: boolean, setIsAlertDisplayed: any, iteration?: numbe
                   _context.idSurvey,
                   EdtRoutesNameEnum.ACTIVITY,
                   getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                  _context.source,
               ),
     );
 };

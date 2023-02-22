@@ -2,29 +2,36 @@ import { Default } from "components/commons/Responsive/Responsive";
 import SurveySelecter from "components/edt/SurveySelecter/SurveySelecter";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { TabData } from "interface/component/Component";
+import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { callbackHolder } from "orchestrator/Orchestrator";
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import {
     getParameterizedNavigatePath,
     navToActivityOrPlannerOrSummary,
     navToHome,
     navToWeeklyPlannerOrClose,
+    setEnviro,
 } from "service/navigation-service";
-import { getCurrentPageSource, getCurrentSurveyRootPage } from "service/orchestrator-service";
+import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isTablet } from "service/responsive";
-import { getData, getTabsData, surveysIds } from "service/survey-service";
+import { getData, getSource, getTabsData, surveysIds } from "service/survey-service";
 
 const ActivityPage = () => {
     let { idSurvey } = useParams();
     let data = getData(idSurvey || "");
-    const source = getCurrentPageSource();
+    const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const navigate = useNavigate();
     if (idSurvey && !surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].find(id => id === idSurvey)) {
         navToHome();
     }
+    const context: OrchestratorContext = useOutletContext();
+
+    setEnviro(context, useNavigate(), callbackHolder);
     const surveyRootPage = getCurrentSurveyRootPage();
     const { t } = useTranslation();
     const tabsData = getTabsData(t);
@@ -37,7 +44,7 @@ const ActivityPage = () => {
         };
 
         if (idSurvey && source) {
-            navToActivityOrPlannerOrSummary(idSurvey, source.maxPage, navigate);
+            navToActivityOrPlannerOrSummary(idSurvey, source.maxPage, navigate, source);
         } else {
             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON));
         }
@@ -47,9 +54,9 @@ const ActivityPage = () => {
         if (tabData.isActivitySurvey) {
             idSurvey = tabData.idSurvey;
             data = getData(idSurvey);
-            navToActivityOrPlannerOrSummary(idSurvey, source.maxPage, navigate);
+            navToActivityOrPlannerOrSummary(idSurvey, source.maxPage, navigate, source);
         } else {
-            navToWeeklyPlannerOrClose(tabData.idSurvey, navigate);
+            navToWeeklyPlannerOrClose(tabData.idSurvey, navigate, source);
         }
     }, []);
 

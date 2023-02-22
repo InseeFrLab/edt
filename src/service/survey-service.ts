@@ -273,12 +273,11 @@ const getVariable = (source: LunaticModel, dependency: string): LunaticModelVari
 };
 
 //Return the last lunatic model page that has been fill with data
-const getCurrentPage = (data: LunaticData | undefined): number => {
-    const source = getCurrentPageSource();
+const getCurrentPage = (data: LunaticData | undefined, source?: LunaticModel): number => {
     if (data == null || !source?.components) {
         return -1;
     }
-    const components = source?.components;
+    const components = (source ?? getCurrentPageSource())?.components;
     let currentPage = 0;
     let notFilled = false;
     let i = 0;

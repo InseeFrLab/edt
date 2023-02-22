@@ -59,6 +59,7 @@ const WithScreenPage = () => {
                     context.idSurvey,
                     EdtRoutesNameEnum.ACTIVITY,
                     getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                    context.source,
                 ),
             );
         },
@@ -69,6 +70,7 @@ const WithScreenPage = () => {
                         context.idSurvey,
                         EdtRoutesNameEnum.ACTIVITY,
                         getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                        context.source,
                     ),
                 );
             });

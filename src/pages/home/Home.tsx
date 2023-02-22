@@ -32,7 +32,8 @@ const HomePage = () => {
     const { classes } = useStyles();
 
     const navWorkTime = useCallback(
-        (idSurvey: string) => () => navToWeeklyPlannerOrClose(idSurvey, navigate),
+        (idSurvey: string) => () =>
+            navToWeeklyPlannerOrClose(idSurvey, navigate, getSource(SourcesEnum.WORK_TIME_SURVEY)),
         [],
     );
 
@@ -42,6 +43,7 @@ const HomePage = () => {
                 idSurvey,
                 getSource(SourcesEnum.ACTIVITY_SURVEY).maxPage,
                 navigate,
+                getSource(SourcesEnum.ACTIVITY_SURVEY),
             );
         },
         [],
