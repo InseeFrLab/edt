@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
     getNavigatePath,
+    getParameterizedNavigatePath,
     navToActivityOrPlannerOrSummary,
     navToWeeklyPlannerOrClose,
 } from "service/navigation-service";
@@ -32,7 +33,8 @@ const HomePage = () => {
     const { classes } = useStyles();
 
     const navWorkTime = useCallback(
-        (idSurvey: string) => () => navToWeeklyPlannerOrClose(idSurvey, navigate),
+        (idSurvey: string) => () =>
+            navToWeeklyPlannerOrClose(idSurvey, navigate, getSource(SourcesEnum.WORK_TIME_SURVEY)),
         [],
     );
 
@@ -42,6 +44,7 @@ const HomePage = () => {
                 idSurvey,
                 getSource(SourcesEnum.ACTIVITY_SURVEY).maxPage,
                 navigate,
+                getSource(SourcesEnum.ACTIVITY_SURVEY),
             );
         },
         [],
@@ -67,7 +70,7 @@ const HomePage = () => {
                         color="secondary"
                         startIcon={<HelpIcon />}
                         onClick={useCallback(
-                            () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP)),
+                            () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY)),
                             [],
                         )}
                     >

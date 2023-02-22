@@ -29,4 +29,5 @@ export enum EdtRoutesNameEnum {
     PHONE_TIME = "phone-time",
     END_SURVEY = "end-survey",
     ACTIVITY_SUMMARY = "activity-summary",
+    HELP_ACTIVITY = "help-activity",
 }

@@ -327,6 +327,7 @@ const skipNextPage = (
                 idSurvey,
                 EdtRoutesNameEnum.ACTIVITY,
                 getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                source,
             ),
         );
     } else {
@@ -375,6 +376,7 @@ const skipBackPage = (
                 idSurvey,
                 EdtRoutesNameEnum.ACTIVITY,
                 getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                source,
             ),
         );
     } else {

@@ -2,6 +2,7 @@ import { Default } from "components/commons/Responsive/Responsive";
 import SurveySelecter from "components/edt/SurveySelecter/SurveySelecter";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { TabData } from "interface/component/Component";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
@@ -15,14 +16,14 @@ import {
     navToWeeklyPlannerOrClose,
     setEnviro,
 } from "service/navigation-service";
-import { getCurrentPageSource, getCurrentSurveyRootPage } from "service/orchestrator-service";
+import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isTablet } from "service/responsive";
-import { getData, getTabsData, surveysIds } from "service/survey-service";
+import { getData, getSource, getTabsData, surveysIds } from "service/survey-service";
 
 const WorkTimePage = () => {
     let { idSurvey } = useParams();
     let data = getData(idSurvey || "");
-    const source = getCurrentPageSource();
+    const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const navigate = useNavigate();
     if (idSurvey && !surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].find(id => id === idSurvey)) {
         navToHome();
@@ -42,7 +43,7 @@ const WorkTimePage = () => {
         };
 
         if (idSurvey && source) {
-            navToWeeklyPlannerOrClose(idSurvey, navigate);
+            navToWeeklyPlannerOrClose(idSurvey, navigate, source);
         } else {
             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON));
         }
@@ -54,7 +55,7 @@ const WorkTimePage = () => {
         } else {
             idSurvey = tabData.idSurvey;
             data = getData(idSurvey);
-            navToWeeklyPlannerOrClose(idSurvey, navigate);
+            navToWeeklyPlannerOrClose(idSurvey, navigate, source);
         }
     }, []);
 

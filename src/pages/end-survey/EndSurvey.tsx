@@ -51,7 +51,7 @@ const EndSurveyPage = () => {
             stateData: {
                 state: StateDataStateEnum.VALIDATED,
                 date: Date.now(),
-                currentPage: getCurrentPage(callbackHolder.getData()),
+                currentPage: getCurrentPage(callbackHolder.getData(), context.source),
             },
             data: dataWithIsEnvoyed ?? callbackHolder.getData(),
         };

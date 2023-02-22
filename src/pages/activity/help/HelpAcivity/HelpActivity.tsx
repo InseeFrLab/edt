@@ -1,3 +1,12 @@
+import {
+    Alert,
+    formateDateToFrenchFormat,
+    generateDateFromStringInput,
+    Info,
+    InfoProps,
+    makeStylesEdt,
+    TooltipInfo,
+} from "@inseefrlab/lunatic-edt";
 import CloseIcon from "@mui/icons-material/Close";
 import { Backdrop, Box, Divider, IconButton, Snackbar, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
@@ -14,15 +23,6 @@ import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
-import {
-    Alert,
-    formateDateToFrenchFormat,
-    generateDateFromStringInput,
-    Info,
-    InfoProps,
-    makeStylesEdt,
-    TooltipInfo,
-} from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -41,7 +41,12 @@ import {
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { isDesktop } from "service/responsive";
-import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
+import {
+    deleteActivity,
+    getActivitiesOrRoutes,
+    getScore,
+    mockActivitiesRoutesOrGaps,
+} from "service/survey-activity-service";
 import {
     getPrintedFirstName,
     getSurveyDate,
@@ -51,7 +56,7 @@ import {
 } from "service/survey-service";
 import { v4 as uuidv4 } from "uuid";
 
-const ActivityOrRoutePlannerPage = () => {
+const HelpActivity = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const context: OrchestratorContext = useOutletContext();
@@ -66,22 +71,15 @@ const ActivityOrRoutePlannerPage = () => {
     const [activityOrRoute, setActivityOrRoute] = React.useState<ActivityRouteOrGap | undefined>(
         undefined,
     );
-    const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [showHelp, setShowHelp] = React.useState(false);
 
     setEnviro(context, useNavigate(), callbackHolder);
     const isItDesktop = isDesktop();
 
     let contextIteration = 0;
-    let { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(
-        t,
-        context.idSurvey,
-        context.source,
-    );
-    const [snackbarText, setSnackbarText] = React.useState<string | undefined>(undefined);
-    const surveyDate = getSurveyDate(context.idSurvey) || "";
+    let activitiesRoutesOrGaps = mockActivitiesRoutesOrGaps();
+    const surveyDate = "2023-03-29";
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
-    const [skip, setSkip] = useState<boolean>(false);
     const [score, setScore] = React.useState<number | undefined>(undefined);
 
     const alertLabels = {
@@ -91,94 +89,16 @@ const ActivityOrRoutePlannerPage = () => {
         complete: t("page.alert-when-quit.alert-closed"),
     };
 
-    const isChildDisplayed = (path: string): boolean => {
-        return path.split(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)[1].length > 0 ? true : false;
-    };
-
-    useEffect(() => {
-        const isActivityPlanner =
-            location.pathname?.split("/")[3] == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER &&
-            location.pathname?.split("/")[4] == null;
-        if (isActivityPlanner) {
-            const act = getActivitiesOrRoutes(t, context.idSurvey, context.source);
-            if (act.overlaps.length > 0) {
-                setSnackbarText(
-                    t("page.activity-planner.start-alert") +
-                        overlaps
-                            .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
-                            .join(", ") +
-                        t("page.activity-planner.end-alert"),
-                );
-                if (!skip) setOpenSnackbar(true);
-            }
-        } else {
-            setSkip(false);
-        }
-    });
-
-    useEffect(() => {
-        //The loop have to have a default size in source but it's updated depending on the data array size
-        setLoopSize(
-            context.source,
-            LoopEnum.ACTIVITY_OR_ROUTE,
-            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE),
-        );
-        if (overlaps.length > 0) {
-            setSnackbarText(
-                t("page.activity-planner.start-alert") +
-                    overlaps
-                        .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
-                        .join(", ") +
-                    t("page.activity-planner.end-alert"),
-            );
-            if (!skip) setOpenSnackbar(true);
-        }
-    }, []);
-
-    useEffect(() => {
-        const currentIsChildDisplay = isChildDisplayed(location.pathname);
-        if (currentIsChildDisplay !== isSubchildDisplayed) {
-            setIsSubChildDisplayed(currentIsChildDisplay);
-        }
-    }, [location]);
-
     const onFinish = (closed: boolean) => {
         if (closed) {
-            const data = setValue(context.idSurvey, FieldNameEnum.ISCLOSED, true);
-            saveData(context.idSurvey, data ? data : callbackHolder.getData()).then(() => {
-                navigate(
-                    getCurrentNavigatePath(
-                        context.idSurvey,
-                        context.surveyRootPage,
-                        getOrchestratorPage(
-                            EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
-                            EdtRoutesNameEnum.ACTIVITY,
-                        ),
-                        context.source,
-                    ),
-                );
-            });
+            console.log(closed);
         } else {
             setIsAlertDisplayed(true);
         }
     };
 
     const onAddActivityOrRoute = (isRouteBool: boolean) => {
-        const loopSize = setLoopSize(
-            context.source,
-            LoopEnum.ACTIVITY_OR_ROUTE,
-            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
-        );
-        contextIteration = loopSize - 1;
-        const routeData = setValue(
-            context.idSurvey,
-            FieldNameEnum.ISROUTE,
-            isRouteBool,
-            contextIteration,
-        );
-        saveData(context.idSurvey, routeData || {}).then(() => {
-            navToActivityOrRoute(contextIteration, isRouteBool);
-        });
+        console.log("add");
     };
 
     const onAddActivityOrRouteFromGap = (
@@ -186,34 +106,7 @@ const ActivityOrRoutePlannerPage = () => {
         startTime: string | undefined,
         endTime: string | undefined,
     ) => {
-        const loopSize = setLoopSize(
-            context.source,
-            LoopEnum.ACTIVITY_OR_ROUTE,
-            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
-        );
-        contextIteration = loopSize - 1;
-
-        setValue(context.idSurvey, FieldNameEnum.START_TIME, startTime || null, contextIteration);
-        setValue(context.idSurvey, FieldNameEnum.END_TIME, endTime || null, contextIteration);
-        const updatedData = setValue(
-            context.idSurvey,
-            FieldNameEnum.ISROUTE,
-            isRouteBool,
-            contextIteration,
-        );
-
-        saveData(context.idSurvey, updatedData || {}).then(() => {
-            onCloseAddActivityOrRoute();
-            setIsRoute(isRouteBool);
-            navigate(
-                getLoopParameterizedNavigatePath(
-                    EdtRoutesNameEnum.ACTIVITY_DURATION,
-                    LoopEnum.ACTIVITY_OR_ROUTE,
-                    contextIteration,
-                ),
-            );
-            setAddActivityOrRouteFromGap(false);
-        });
+        console.log("add from gap");
     };
 
     const onOpenAddActivityOrRoute = useCallback(
@@ -242,19 +135,7 @@ const ActivityOrRoutePlannerPage = () => {
     }, []);
 
     const navToActivityOrRoute = (iteration: number, isItRoute?: boolean): void => {
-        setIsSubChildDisplayed(true);
-        setIsRoute(isItRoute ? true : false);
-        navigate(
-            getCurrentNavigatePath(
-                context.idSurvey,
-                context.surveyRootPage,
-                context.source.maxPage,
-                context.source,
-                LoopEnum.ACTIVITY_OR_ROUTE,
-                iteration,
-            ),
-        );
-        setIsAddActivityOrRouteOpen(false);
+        console.log("nav to activity");
     };
 
     const onEditActivityOrRoute = useCallback((iteration: number, activity: ActivityRouteOrGap) => {
@@ -271,24 +152,8 @@ const ActivityOrRoutePlannerPage = () => {
         [],
     );
 
-    const handleCloseSnackBar = useCallback((_event: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === "clickaway") {
-            return;
-        }
-        setOpenSnackbar(false);
-        setSkip(true);
-    }, []);
-
-    const snackbarAction = (
-        <React.Fragment>
-            <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
-                <CloseIcon fontSize="small" />
-            </IconButton>
-        </React.Fragment>
-    );
-
     useEffect(() => {
-        setScore(getScore(context.idSurvey, t));
+        setScore(10);
     }, [activitiesRoutesOrGaps]);
 
     const navToActivityRouteHome = useCallback(() => {
@@ -342,86 +207,16 @@ const ActivityOrRoutePlannerPage = () => {
     };
 
     const titleLabels = {
-        normalTitle: t("page.activity-planner.activity-for-day"),
         boldTitle: formateDateToFrenchFormat(generateDateFromStringInput(surveyDate), getLanguage()),
     };
 
     useEffect(() => {
-        let display = getValue(context.idSurvey, FieldNameEnum.DISPLAYHELP);
-        if (display == null || !display) {
-            setShowHelp(true);
-            console.log(activitiesRoutesOrGaps);
-            console.log(display);
-            if (activitiesRoutesOrGaps.length == 0) {
-                activitiesRoutesOrGaps = [
-                    {
-                        activity: {
-                            activityCode: "111",
-                            activityLabel: "Dormir (hors sieste)",
-                        },
-                        durationLabel: "8h00",
-                        durationMinutes: 480,
-                        endTime: "12:00",
-                        isRoute: false,
-                        iteration: 1,
-                        place: {
-                            placeCode: "11",
-                            placeLabel:
-                                "Chez soi (yc appartement étudiant si différent du domicile familial)",
-                        },
-                        startTime: "04:00",
-                        withScreen: undefined,
-                        withSecondaryActivity: false,
-                        withSomeone: undefined,
-                    },
-                    {
-                        activity: {
-                            activityCode: "140",
-                            activityLabel: "Manger",
-                        },
-                        durationLabel: "2h00",
-                        durationMinutes: 120,
-                        endTime: "14:00",
-                        isRoute: false,
-                        iteration: 0,
-                        place: {
-                            placeCode: "11",
-                            placeLabel:
-                                "Chez soi (yc appartement étudiant si différent du domicile familial)",
-                        },
-                        secondaryActivity: {
-                            activityCode: "1",
-                            activityLabel: '"Écouter la radio, des podcasts ou de la musique"',
-                        },
-                        startTime: "12:00",
-                        withScreen: true,
-                        withSecondaryActivity: true,
-                        withSomeone: false,
-                    },
-                    {
-                        endTime: "16:00",
-                        isGap: true,
-                        startTime: "14h00",
-                    },
-                    {
-                        durationLabel: "2h00",
-                        durationMinutes: 120,
-                        endTime: "18:00",
-                        isRoute: true,
-                        iteration: 2,
-                        meanOfTransportLabels: "Vélo (électrique ou non)",
-                        route: {
-                            routeCode: "1",
-                            routeLabel: "Trajet Domicile - Travail",
-                        },
-                        startTime: "16:00",
-                        withScreen: false,
-                        withSecondaryActivity: false,
-                        withSomeone: false,
-                    },
-                ];
-            }
-        }
+        //let display = getValue(context.idSurvey, FieldNameEnum.DISPLAYHELP);
+        setShowHelp(true);
+        //if(display == null || !display) {
+        console.log(activitiesRoutesOrGaps);
+        //    console.log(display);
+        //}
     }, []);
 
     return (
@@ -434,7 +229,7 @@ const ActivityOrRoutePlannerPage = () => {
                             onPrevious={navToActivityRouteHome}
                             onEdit={onEdit}
                             onHelp={onHelp}
-                            firstName={getPrintedFirstName(context.idSurvey)}
+                            firstName={""}
                             firstNamePrefix={t("component.survey-page-edit-header.planning-of")}
                             onFinish={closeActivity(false)}
                             onAdd={onOpenAddActivityOrRoute}
@@ -445,7 +240,7 @@ const ActivityOrRoutePlannerPage = () => {
                                     : undefined
                             }
                             activityProgressBar={true}
-                            idSurvey={context.idSurvey}
+                            idSurvey={""}
                             score={score}
                         >
                             <Box
@@ -477,10 +272,15 @@ const ActivityOrRoutePlannerPage = () => {
                                             ></Alert>
                                             <Box className={classes.infoBox}>
                                                 {activitiesRoutesOrGaps.length !== 0 && (
-                                                    <TooltipInfo
-                                                        infoLabels={infoLabels}
-                                                        titleLabels={titleLabels}
-                                                    />
+                                                    <>
+                                                        <Typography className={classes.label}>
+                                                            {t("page.activity-planner.activity-for-day")}
+                                                        </Typography>
+                                                        <TooltipInfo
+                                                            infoLabels={infoLabels}
+                                                            titleLabels={titleLabels}
+                                                        />
+                                                    </>
                                                 )}
                                                 {activitiesRoutesOrGaps.length === 0 && (
                                                     <>
@@ -509,7 +309,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                         {t("page.activity-planner.no-activity")}
                                                     </Typography>
                                                 </FlexCenter>
-                                                <FlexCenter>
+                                                <FlexCenter className={classes.noActivityInfo}>
                                                     <Info {...infoLabels} />
                                                 </FlexCenter>
                                             </>
@@ -526,15 +326,6 @@ const ActivityOrRoutePlannerPage = () => {
                                                             )}
                                                             onClickGap={onOpenAddActivityOrRoute}
                                                             activityOrRoute={activity}
-                                                            onEdit={onEditActivity(
-                                                                activity.iteration || 0,
-                                                                activity,
-                                                            )}
-                                                            onDelete={onDeleteActivity(
-                                                                context.idSurvey,
-                                                                context.source,
-                                                                activity.iteration ?? 0,
-                                                            )}
                                                         />
                                                     </FlexCenter>
                                                 ))}
@@ -553,21 +344,6 @@ const ActivityOrRoutePlannerPage = () => {
                             handleClose={onCloseAddActivityOrRoute}
                             open={isAddActivityOrRouteOpen}
                         />
-
-                        {snackbarText && openSnackbar && (
-                            <Snackbar
-                                className={classes.snackbar}
-                                open={openSnackbar}
-                                autoHideDuration={100000}
-                                onClose={handleCloseSnackBar}
-                                message={snackbarText}
-                                action={snackbarAction}
-                                anchorOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "center",
-                                }}
-                            />
-                        )}
                     </Box>
                 )}
                 <Box
@@ -579,10 +355,10 @@ const ActivityOrRoutePlannerPage = () => {
                     {isItDesktop && isSubchildDisplayed && <Divider orientation="vertical" light />}
                     <Outlet
                         context={{
-                            source: context.source,
-                            data: context.data,
-                            idSurvey: context.idSurvey,
-                            surveyRootPage: context.surveyRootPage,
+                            //source: context.source,
+                            //data: context.data,
+                            //idSurvey: context.idSurvey,
+                            //surveyRootPage: context.surveyRootPage,
                             isRoute: isRoute,
                             activityOrRoute: activityOrRoute,
                         }}
@@ -596,7 +372,7 @@ const ActivityOrRoutePlannerPage = () => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
     snackbar: {
         bottom: "90px !important",
         "& .MuiSnackbarContent-root": {
@@ -672,6 +448,9 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
         justifyContent: "center",
         flexGrow: "1",
     },
+    noActivityInfo: {
+        marginTop: "1rem",
+    },
 }));
 
-export default ActivityOrRoutePlannerPage;
+export default HelpActivity;

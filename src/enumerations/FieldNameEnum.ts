@@ -36,4 +36,5 @@ export const enum FieldNameEnum {
     ISENVOYED = "ISENVOYED",
     ISROUTE = "ISROUTE",
     ISCOMPLETED = "ISCOMPLETED",
+    DISPLAYHELP = "DISPLAYHELP",
 }

@@ -21,7 +21,8 @@
                 "ignore": "Ignorer",
                 "complete": "Compléter",
                 "alt-icon": "alt pour icon no result"
-            }
+            },
+            "skip": "Passer"
         },
         "stepper": {
             "step": "Étape",

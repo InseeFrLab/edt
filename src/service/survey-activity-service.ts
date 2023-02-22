@@ -479,6 +479,75 @@ const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: numbe
     }
 };
 
+const mockActivitiesRoutesOrGaps = () => {
+    const activitiesRoutesOrGaps = [
+        {
+            activity: {
+                activityCode: "111",
+                activityLabel: "Dormir (hors sieste)",
+            },
+            durationLabel: "8h00",
+            durationMinutes: 480,
+            endTime: "12:00",
+            isRoute: false,
+            iteration: 1,
+            place: {
+                placeCode: "11",
+                placeLabel: "Chez soi (yc appartement étudiant si différent du domicile familial)",
+            },
+            startTime: "04:00",
+            withScreen: undefined,
+            withSecondaryActivity: false,
+            withSomeone: undefined,
+        },
+        {
+            activity: {
+                activityCode: "140",
+                activityLabel: "Manger",
+            },
+            durationLabel: "2h00",
+            durationMinutes: 120,
+            endTime: "14:00",
+            isRoute: false,
+            iteration: 0,
+            place: {
+                placeCode: "11",
+                placeLabel: "Chez soi (yc appartement étudiant si différent du domicile familial)",
+            },
+            secondaryActivity: {
+                activityCode: "1",
+                activityLabel: '"Écouter la radio, des podcasts ou de la musique"',
+            },
+            startTime: "12:00",
+            withScreen: true,
+            withSecondaryActivity: true,
+            withSomeone: false,
+        },
+        {
+            endTime: "16:00",
+            isGap: true,
+            startTime: "14h00",
+        },
+        {
+            durationLabel: "2h00",
+            durationMinutes: 120,
+            endTime: "18:00",
+            isRoute: true,
+            iteration: 2,
+            meanOfTransportLabels: "Vélo (électrique ou non)",
+            route: {
+                routeCode: "1",
+                routeLabel: "Trajet Domicile - Travail",
+            },
+            startTime: "16:00",
+            withScreen: false,
+            withSecondaryActivity: false,
+            withSomeone: false,
+        },
+    ];
+    return activitiesRoutesOrGaps;
+};
+
 export {
     getActivitiesOrRoutes,
     getActivitesSelectedLabel,
@@ -489,4 +558,5 @@ export {
     getScore,
     getWeeklyPlannerScore,
     deleteActivity,
+    mockActivitiesRoutesOrGaps,
 };

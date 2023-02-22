@@ -57,6 +57,7 @@ const ActivitySummaryPage = () => {
                 context.idSurvey,
                 context.surveyRootPage,
                 context.source.maxPage,
+                context.source,
                 LoopEnum.ACTIVITY_OR_ROUTE,
                 iteration,
             ),
