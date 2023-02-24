@@ -20,6 +20,8 @@ export interface ActivityRouteOrGap {
 export interface Activity {
     activityLabel?: string;
     activityCode?: string;
+    activityGoal?: string;
+    isGoal?: boolean;
 }
 export interface Route {
     routeLabel?: string;

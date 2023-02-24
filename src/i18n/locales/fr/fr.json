@@ -170,7 +170,14 @@
             "info-bold": "Indiquez votre temps de travail réel et le travail éventuel que vous rapportez à la maison."
         },
         "activity-summary": {
-            "download-pdf": "Télécharger le PDF"
+            "download-pdf": "Télécharger le PDF",
+            "quality-score": {
+                "label": "GROUPE",
+                "type-1": "A",
+                "type-2": "B",
+                "type-3": "C",
+                "type-4": "D"
+            }
         },
         "end-survey": {
             "end-of-work-time-survey": "Vous êtes arrivé à la fin du semainier.",
