@@ -39,8 +39,9 @@ const ActivitySummaryPage = () => {
 
     const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, context.idSurvey, context.source);
     const surveyDate = getSurveyDate(context.idSurvey) || "";
-    const userActivitiesCharacteristics = getUserActivitiesCharacteristics(context.idSurvey);
+    const userActivitiesCharacteristics = getUserActivitiesCharacteristics(context.idSurvey, t);
     const userActivitiesSummary = getUserActivitiesSummary(context.idSurvey, t);
+
     useEffect(() => {
         setScore(getScore(context.idSurvey, t));
     }, [activitiesRoutesOrGaps]);

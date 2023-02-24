@@ -37,6 +37,7 @@ const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: Acti
         FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED,
         i,
     ) as boolean;
+    const goalActivity = getValue(idSurvey, FieldNameEnum.GOAL, i) as string;
 
     if (mainActivityId || mainActivitySuggesterId || mainActivityLabel || mainActivityIsFullyCompleted) {
         const activitySelection: SelectedActivity = {
@@ -48,6 +49,8 @@ const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: Acti
         activityOrRoute.activity = {
             activityCode: activitySelection.suggesterId ?? activitySelection.id,
             activityLabel: getActivityLabel(activitySelection) || "",
+            isGoal: mainActivitySuggesterId != null || mainActivityLabel != null,
+            activityGoal: goalActivity,
         };
     }
 };
