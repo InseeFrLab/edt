@@ -317,15 +317,18 @@ const getActivityOrRouteDurationMinutes = (activity: ActivityRouteOrGap): number
 const getActivityOrRouteDurationLabelFromDurationMinutes = (durationMinutes: number): string => {
     const hours = Math.floor(durationMinutes / 60);
     const minutes = Math.round(durationMinutes % 60);
-    let hoursLabel = hours > 1 ? hours + "h" : "";
+    return getLabelFromTime(hours, minutes);
+};
+
+const getLabelFromTime = (hours: number, minutes: number) => {
+    let hoursLabel = hours > 0 ? hours + "h" : "";
     let minutesLabel;
 
     if (hours > 1) {
-        minutesLabel = (minutes < 10 && minutes > 0 ? "0" : "") + minutes;
+        minutesLabel = (minutes < 10 ? "0" : "") + minutes;
     } else {
-        minutesLabel = (minutes < 10 && minutes > 0 ? "0" : "") + minutes + "min";
+        minutesLabel = minutes + "min";
     }
-
     return hoursLabel + minutesLabel;
 };
 
@@ -485,6 +488,7 @@ export {
     getActivityOrRouteDurationLabel,
     getActivityOrRouteDurationLabelFromDurationMinutes,
     getActivityLabel,
+    getLabelFromTime,
     getTotalTimeOfActivities,
     getScore,
     getWeeklyPlannerScore,

@@ -20,6 +20,7 @@ import {
 import {
     getActivitiesOrRoutes,
     getActivityOrRouteDurationLabelFromDurationMinutes,
+    getLabelFromTime,
 } from "service/survey-activity-service";
 import { getValue } from "service/survey-service";
 import { getAllCodesFromActivitiesCodes } from "./loop-service";
@@ -77,11 +78,23 @@ const getUserActivitiesCharacteristics = (
             findKindOfDayInRef(getValue(idSurvey, FieldNameEnum.KINDOFDAY) as string)?.label ||
             undefined,
         isExceptionalDay: getValue(idSurvey, FieldNameEnum.EXCEPTIONALDAY) as boolean,
-        routeTimeLabel: (getValue(idSurvey, FieldNameEnum.TRAVELTIME) as string)?.replace(":", "h"),
-        phoneTimeLabel: (getValue(idSurvey, FieldNameEnum.PHONETIME) as string)?.replace(":", "h"),
+        routeTimeLabel: transformTimeInLabel(idSurvey, FieldNameEnum.TRAVELTIME), //(getValue(idSurvey, FieldNameEnum.TRAVELTIME) as string)?.replace(":", "h"),
+        phoneTimeLabel: transformTimeInLabel(idSurvey, FieldNameEnum.PHONETIME), //(getValue(idSurvey, FieldNameEnum.PHONETIME) as string)?.replace(":", "h"),
         userMarkLabel: "Groupe A",
     };
     return activitiesCharacteristics;
+};
+
+const transformTimeInLabel = (idSurvey: string, variable: FieldNameEnum) => {
+    const value = getValue(idSurvey, variable) as string;
+
+    if (value == null) return "";
+
+    const valueSplitted = value.split(":");
+    const hours = Number(valueSplitted[0]);
+    const minutes = Number(valueSplitted[1]);
+
+    return getLabelFromTime(hours, minutes);
 };
 
 const getRealRouteTimeLabel = (activitiesOrRoutes: ActivityRouteOrGap[]): string => {
