@@ -1,3 +1,4 @@
+import { CheckboxOneSpecificProps } from "@inseefrlab/lunatic-edt";
 import calendarWeek from "assets/illustration/kind-of-week-categories/calendar-week.svg";
 import kindOfWeek from "assets/illustration/kind-of-week.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -5,7 +6,6 @@ import FelicitationModal from "components/commons/Modal/FelicitationModal/Felici
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { CheckboxOneSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";

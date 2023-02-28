@@ -1,9 +1,9 @@
 import * as lunatic from "@inseefr/lunatic";
+import * as lunaticEDT from "@inseefrlab/lunatic-edt";
+import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
-import * as lunaticEDT from "lunatic-edt";
-import { important, makeStylesEdt } from "lunatic-edt";
 import React from "react";
 
 const { ...edtComponents } = lunaticEDT;

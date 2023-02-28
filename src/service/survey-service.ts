@@ -1,3 +1,9 @@
+import {
+    AutoCompleteActiviteOption,
+    CheckboxOneCustomOption,
+    generateDateFromStringInput,
+    getFrenchDayFromDate,
+} from "@inseefrlab/lunatic-edt";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
@@ -21,12 +27,6 @@ import {
     SurveysIds,
     SURVEYS_IDS,
 } from "interface/lunatic/Lunatic";
-import {
-    AutoCompleteActiviteOption,
-    CheckboxOneCustomOption,
-    generateDateFromStringInput,
-    getFrenchDayFromDate,
-} from "lunatic-edt";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource } from "service/orchestrator-service";
 import {

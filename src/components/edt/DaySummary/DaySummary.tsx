@@ -1,8 +1,8 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { UserActivitiesSummary } from "interface/entity/ActivitiesSummary";
-import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 
 interface DaySummaryProps {

@@ -1,5 +1,3 @@
-import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
-import i18n from "i18next";
 import {
     AutoCompleteActiviteOption,
     CheckboxOneCustomOption,
@@ -7,7 +5,9 @@ import {
     findItemInCategoriesNomenclature,
     NomenclatureActivityOption,
     SelectedActivity,
-} from "lunatic-edt";
+} from "@inseefrlab/lunatic-edt";
+import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
+import i18n from "i18next";
 import { getReferentiel } from "./survey-service";
 
 export const getAutoCompleteRef = (): AutoCompleteActiviteOption[] => {

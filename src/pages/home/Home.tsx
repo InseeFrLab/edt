@@ -1,3 +1,4 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import HelpIcon from "@mui/icons-material/Help";
 import { Box, Button } from "@mui/material";
 import logo from "assets/illustration/logo.png";
@@ -7,7 +8,6 @@ import DayCard from "components/edt/DayCard/DayCard";
 import WeekCard from "components/edt/WeekCard/WeekCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { makeStylesEdt } from "lunatic-edt";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";

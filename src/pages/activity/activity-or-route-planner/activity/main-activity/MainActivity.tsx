@@ -20,6 +20,11 @@ import {
     validateAndNextLoopStep,
 } from "service/navigation-service";
 
+import {
+    ActivitySelecterSpecificProps,
+    Alert,
+    AutoCompleteActiviteOption,
+} from "@inseefrlab/lunatic-edt";
 import catIcon100 from "assets/illustration/activity-categories/1.svg";
 import catIcon200 from "assets/illustration/activity-categories/2.svg";
 import catIcon300 from "assets/illustration/activity-categories/3.svg";
@@ -30,7 +35,6 @@ import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
 import { LoopEnum } from "enumerations/LoopEnum";
-import { ActivitySelecterSpecificProps, Alert, AutoCompleteActiviteOption } from "lunatic-edt";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getLabelsWhenQuit } from "service/alert-service";

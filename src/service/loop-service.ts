@@ -1,3 +1,5 @@
+import { NomenclatureActivityOption } from "@inseefrlab/lunatic-edt";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import {
@@ -7,8 +9,6 @@ import {
     LunaticModelComponent,
     LunaticModelVariable,
 } from "interface/lunatic/Lunatic";
-import { NomenclatureActivityOption } from "lunatic-edt";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { getCurrentPageSource } from "service/orchestrator-service";
 import {
     getData,

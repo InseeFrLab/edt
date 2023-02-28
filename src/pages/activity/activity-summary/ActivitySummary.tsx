@@ -1,3 +1,8 @@
+import {
+    formateDateToFrenchFormat,
+    generateDateFromStringInput,
+    makeStylesEdt,
+} from "@inseefrlab/lunatic-edt";
 import DownloadIcon from "@mui/icons-material/Download";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -6,9 +11,7 @@ import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard
 import DayCharacteristics from "components/edt/DayCharacteristic/DayCharacteristic";
 import DaySummary from "components/edt/DaySummary/DaySummary";
 import { LoopEnum } from "enumerations/LoopEnum";
-import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
-import { formateDateToFrenchFormat, generateDateFromStringInput, makeStylesEdt } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -33,17 +36,9 @@ const ActivitySummaryPage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
     const { classes } = useStyles();
     const { t } = useTranslation();
-    const [activityOrRoute, setActivityOrRoute] = React.useState<ActivityRouteOrGap | undefined>(
-        undefined,
-    );
-    const [isRoute, setIsRoute] = React.useState(false);
     const [score, setScore] = React.useState<number | undefined>(undefined);
 
-    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(
-        t,
-        context.idSurvey,
-        context.source,
-    );
+    const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, context.idSurvey, context.source);
     const surveyDate = getSurveyDate(context.idSurvey) || "";
     const userActivitiesCharacteristics = getUserActivitiesCharacteristics(context.idSurvey);
     const userActivitiesSummary = getUserActivitiesSummary(context.idSurvey, t);
@@ -51,17 +46,9 @@ const ActivitySummaryPage = () => {
         setScore(getScore(context.idSurvey, t));
     }, [activitiesRoutesOrGaps]);
 
-    const navToActivityRouteHome = useCallback(() => {
-        navToHome();
-    }, []);
+    const navToCard = useCallback((iteration: number) => () => navToActivityOrRoute(iteration), []);
 
-    const navToCard = useCallback(
-        (iteration: number, isRoute?: boolean) => () => navToActivityOrRoute(iteration, isRoute),
-        [],
-    );
-
-    const navToActivityOrRoute = (iteration: number, isItRoute?: boolean): void => {
-        setIsRoute(isItRoute ? true : false);
+    const navToActivityOrRoute = (iteration: number): void => {
         navigate(
             getCurrentNavigatePath(
                 context.idSurvey,
@@ -73,8 +60,7 @@ const ActivitySummaryPage = () => {
         );
     };
 
-    const onEditActivityOrRoute = useCallback((iteration: number, activity: ActivityRouteOrGap) => {
-        setActivityOrRoute(activity);
+    const onEditActivityOrRoute = useCallback((iteration: number) => {
         navToEditActivity(iteration);
     }, []);
 
@@ -88,8 +74,7 @@ const ActivitySummaryPage = () => {
     );
 
     const onEditActivity = useCallback(
-        (iteration: number, activity: ActivityRouteOrGap) => () =>
-            onEditActivityOrRoute(iteration, activity),
+        (iteration: number) => () => onEditActivityOrRoute(iteration),
         [],
     );
 
@@ -132,9 +117,9 @@ const ActivitySummaryPage = () => {
                         <ActivityOrRouteCard
                             labelledBy={""}
                             describedBy={""}
-                            onClick={navToCard(activity.iteration || 0, activity.isRoute)}
+                            onClick={navToCard(activity.iteration || 0)}
                             activityOrRoute={activity}
-                            onEdit={onEditActivity(activity.iteration || 0, activity)}
+                            onEdit={onEditActivity(activity.iteration || 0)}
                             onDelete={onDeleteActivity(
                                 context.idSurvey,
                                 context.source,

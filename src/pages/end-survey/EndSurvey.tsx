@@ -1,3 +1,4 @@
+import { Info, InfoProps, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import SendIcon from "@mui/icons-material/Send";
 import { Box, Button, Typography } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
@@ -10,7 +11,6 @@ import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { SurveyData } from "interface/entity/Api";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Info, InfoProps, makeStylesEdt } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction, useCallback, useState } from "react";
 import { Offline, Online } from "react-detect-offline";

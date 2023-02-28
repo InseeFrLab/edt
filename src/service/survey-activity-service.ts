@@ -1,3 +1,9 @@
+import {
+    getProgressBarValue,
+    SelectedActivity,
+    transformToWeeklyPlannerDataType,
+} from "@inseefrlab/lunatic-edt";
+import { IODataStructure } from "@inseefrlab/lunatic-edt/interface/WeeklyPlannerTypes";
 import activitySurveySource from "activity-survey.json";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -5,12 +11,6 @@ import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
-import { SelectedActivity } from "lunatic-edt";
-import { IODataStructure } from "lunatic-edt/dist/interface/WeeklyPlannerTypes";
-import {
-    getProgressBarValue,
-    transformToWeeklyPlannerDataType,
-} from "lunatic-edt/dist/ui/components/Planner/WeeklyPlanner";
 import { TFunction, useTranslation } from "react-i18next";
 import { getData, getValue, saveData } from "service/survey-service";
 import { getLoopSize } from "./loop-service";

@@ -1,9 +1,9 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import { AppBar, Box, Divider, Tab, Tabs, Typography } from "@mui/material";
 import PersonSunIcon from "assets/illustration/card/person-sun.svg";
 import { TabData } from "interface/component/Component";
-import { makeStylesEdt } from "lunatic-edt";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 

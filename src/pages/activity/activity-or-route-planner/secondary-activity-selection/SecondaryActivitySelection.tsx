@@ -1,10 +1,10 @@
+import { CheckboxOneCustomOption } from "@inseefrlab/lunatic-edt";
 import errorIcon from "assets/illustration/error/activity.svg";
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { CheckboxOneCustomOption } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 import { useOutletContext } from "react-router-dom";
 import {
