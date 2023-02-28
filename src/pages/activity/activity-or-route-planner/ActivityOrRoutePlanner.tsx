@@ -145,6 +145,7 @@ const ActivityOrRoutePlannerPage = () => {
                             EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
                             EdtRoutesNameEnum.ACTIVITY,
                         ),
+                        context.source,
                     ),
                 );
             });
@@ -239,6 +240,7 @@ const ActivityOrRoutePlannerPage = () => {
                 context.idSurvey,
                 context.surveyRootPage,
                 context.source.maxPage,
+                context.source,
                 LoopEnum.ACTIVITY_OR_ROUTE,
                 iteration,
             ),

@@ -169,8 +169,10 @@ const initializeSurveysDatasCache = (): Promise<any> => {
         for (const idSurvey of surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]) {
             promises.push(
                 lunaticDatabase.get(idSurvey).then(data => {
-                    datas.set(idSurvey, data || {});
-                    return data || {};
+                    if (data != null) {
+                        datas.set(idSurvey, data || {});
+                    }
+                    return data;
                 }),
             );
         }
@@ -271,12 +273,11 @@ const getVariable = (source: LunaticModel, dependency: string): LunaticModelVari
 };
 
 //Return the last lunatic model page that has been fill with data
-const getCurrentPage = (data: LunaticData | undefined): number => {
-    const source = getCurrentPageSource();
+const getCurrentPage = (data: LunaticData | undefined, source?: LunaticModel): number => {
     if (data == null || !source?.components) {
         return -1;
     }
-    const components = source?.components;
+    const components = (source ?? getCurrentPageSource())?.components;
     let currentPage = 0;
     let notFilled = false;
     let i = 0;
@@ -431,6 +432,12 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
     }
 };
 
+//Return date with full french format dd/MM/YYYY
+const getFullFrenchDate = (surveyDate: string): string => {
+    const splittedDate = surveyDate.split("-");
+    return [splittedDate[2], splittedDate[1], splittedDate[0]].join("/");
+};
+
 const getPersonNumber = (idSurvey: string) => {
     const index =
         surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey) !== -1
@@ -450,6 +457,7 @@ export {
     getPrintedFirstName,
     getSurveyDate,
     getPrintedSurveyDate,
+    getFullFrenchDate,
     getValue,
     setValue,
     getReferentiel,
