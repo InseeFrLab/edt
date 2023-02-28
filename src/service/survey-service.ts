@@ -432,6 +432,12 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
     }
 };
 
+//Return date with full french format dd/MM/YYYY
+const getFullFrenchDate = (surveyDate: string): string => {
+    const splittedDate = surveyDate.split("-");
+    return [splittedDate[2], splittedDate[1], splittedDate[0]].join("/");
+};
+
 const getPersonNumber = (idSurvey: string) => {
     const index =
         surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey) !== -1
@@ -451,6 +457,7 @@ export {
     getPrintedFirstName,
     getSurveyDate,
     getPrintedSurveyDate,
+    getFullFrenchDate,
     getValue,
     setValue,
     getReferentiel,

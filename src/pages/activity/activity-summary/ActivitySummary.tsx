@@ -1,11 +1,13 @@
-import DownloadIcon from "@mui/icons-material/Download";
 import { Box, Button, Divider, Typography } from "@mui/material";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import DayCharacteristics from "components/edt/DayCharacteristic/DayCharacteristic";
 import DaySummary from "components/edt/DaySummary/DaySummary";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
+import { ActivitiesSummaryExportData } from "interface/entity/ActivitiesSummary";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { formateDateToFrenchFormat, generateDateFromStringInput, makeStylesEdt } from "lunatic-edt";
@@ -24,7 +26,8 @@ import {
 import { getLanguage } from "service/referentiel-service";
 import { getUserActivitiesCharacteristics, getUserActivitiesSummary } from "service/summary-service";
 import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
-import { getPrintedFirstName, getSurveyDate } from "service/survey-service";
+import { getFullFrenchDate, getPrintedFirstName, getSurveyDate, getValue } from "service/survey-service";
+import ActivitiesSummaryExportTemplate from "template/summary-export/ActivitiesSummaryExportTemplate";
 import { v4 as uuidv4 } from "uuid";
 
 const ActivitySummaryPage = () => {
@@ -41,6 +44,15 @@ const ActivitySummaryPage = () => {
     const surveyDate = getSurveyDate(context.idSurvey) || "";
     const userActivitiesCharacteristics = getUserActivitiesCharacteristics(context.idSurvey, t);
     const userActivitiesSummary = getUserActivitiesSummary(context.idSurvey, t);
+    const exportData: ActivitiesSummaryExportData = {
+        firstName: getValue(context.idSurvey, FieldNameEnum.FIRSTNAME) as string,
+        surveyDate: getFullFrenchDate(getValue(context.idSurvey, FieldNameEnum.SURVEYDATE) as string),
+        activitiesAndRoutes: activitiesRoutesOrGaps,
+        activities: activitiesRoutesOrGaps.filter(activity => !activity.isRoute),
+        routes: activitiesRoutesOrGaps.filter(activity => activity.isRoute),
+        userActivitiesSummary: userActivitiesSummary,
+        userActivitiesCharacteristics: userActivitiesCharacteristics,
+    };
 
     useEffect(() => {
         setScore(getScore(context.idSurvey, t));
@@ -91,10 +103,6 @@ const ActivitySummaryPage = () => {
         [],
     );
 
-    const onDownloadPdf = useCallback(() => {
-        //TODO: export pdf
-    }, []);
-
     return (
         <SurveyPage
             onPrevious={navToHome}
@@ -142,15 +150,27 @@ const ActivitySummaryPage = () => {
                 <DaySummary userActivitiesSummary={userActivitiesSummary} />
             </Box>
             <FlexCenter className={classes.download}>
-                <Button variant="contained" onClick={onDownloadPdf} endIcon={<DownloadIcon />}>
-                    {t("page.activity-summary.download-pdf")}
+                <Button variant="contained" className={classes.downloadButton}>
+                    <PDFDownloadLink
+                        className={classes.downloadLink}
+                        document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
+                        fileName={
+                            t("export.activities-summary.file-name") +
+                            getValue(context.idSurvey, FieldNameEnum.FIRSTNAME) +
+                            "_" +
+                            getValue(context.idSurvey, FieldNameEnum.SURVEYDATE) +
+                            ".pdf"
+                        }
+                    >
+                        {() => t("page.activity-summary.download-pdf")}
+                    </PDFDownloadLink>
                 </Button>
             </FlexCenter>
         </SurveyPage>
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { ActivitySummaryPage } })(() => ({
+const useStyles = makeStylesEdt({ "name": { ActivitySummaryPage } })(theme => ({
     infoBox: {
         width: "350px",
         padding: "1rem 0.25rem 0.5rem 1rem",
@@ -181,6 +201,14 @@ const useStyles = makeStylesEdt({ "name": { ActivitySummaryPage } })(() => ({
     },
     download: {
         marginBottom: "6rem",
+    },
+    downloadButton: {
+        padding: 0,
+    },
+    downloadLink: {
+        textDecoration: "none",
+        color: theme.variables.white,
+        padding: "6px 6px",
     },
 }));
 

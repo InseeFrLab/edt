@@ -293,5 +293,58 @@
             "domestic-task-time": "Temps de tâches domestiques",
             "other-home-time": "Temps pour un autre ménage"
         }
+    },
+    "export": {
+        "activities-summary": {
+            "file-name": "Export_carnet_EDT_",
+            "header": {
+                "survey-day": "Date de la journée enquêtée : ",
+                "edt-survey": "Carnet EDT",
+                "house-reference": "RÉFÉRENCE MÉNAGE "
+            },
+            "table-header": {
+                "schedule": "HORAIRES",
+                "duration": "DURÉE",
+                "activity": "ACTIVITÉ",
+                "activity-category": "CATÉGORIE D'ACTIVITÉ",
+                "secondary-activity": "ACTIVITÉ SECONDAIRE",
+                "location": "LIEU",
+                "presence": "PRÉSENCE",
+                "screen": "ÉCRAN",
+                "route": "TRAJET",
+                "mean-of-transport": "MOYEN DE TRANSPORT"
+            },
+            "title": {
+                "global-day-overview": "Organisation générale de la journée",
+                "activities-planning": "Planning des activités",
+                "routes-planning": "Planning des trajets",
+                "day-characteristics": "Caractéristiques de la journée",
+                "day-summary": "Résumé de la journée"
+            },
+            "table-data": {
+                "yes": "Oui",
+                "no": "Non",
+                "empty": "/"
+            },
+            "day-characteristics": {
+                "best-activity": "Activité la plus agréable",
+                "worst-activity": "Activité la moins agréable",
+                "kind-of-day": "Type de journée",
+                "special-day": "Caractère exceptionnel",
+                "route-time-estimation": "Estimation du temps de trajet",
+                "phone-time-estimation": "Estimation consultation du téléphone"
+            },
+            "day-summary": {
+                "activities-amount": "Nombre d'activités : ",
+                "routes-amount": "Nombre de trajets : ",
+                "working-time": "Temps de travail",
+                "sleeping-time": "Temps de sommeil",
+                "house-tasks-time": "Temps de tâches ménagères",
+                "other-house-tasks-time": "Temps pour un autre ménage",
+                "amount-activity-or-route-with-screen": "Nombre d'activités/trajets avec un écran",
+                "time-activity-with-screen": "Temps d'activité avec un écran",
+                "real-route-time": "Temps de trajet effectif"
+            }
+        }
     }
 }

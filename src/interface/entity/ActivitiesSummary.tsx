@@ -1,3 +1,5 @@
+import { ActivityRouteOrGap } from "./ActivityRouteOrGap";
+
 export interface UserActivitiesCharacteristics {
     greatestActivityLabel?: string;
     worstActivityLabel?: string;
@@ -20,4 +22,14 @@ export interface UserActivitiesSummary {
     realRouteTimeLabel?: string;
     activitiesWithScreenAmount?: number;
     activitiesTimeWithScreenLabel?: string;
+}
+
+export interface ActivitiesSummaryExportData {
+    firstName?: string;
+    surveyDate?: string;
+    activitiesAndRoutes: ActivityRouteOrGap[];
+    activities: ActivityRouteOrGap[];
+    routes: ActivityRouteOrGap[];
+    userActivitiesSummary?: UserActivitiesSummary;
+    userActivitiesCharacteristics?: UserActivitiesCharacteristics;
 }
