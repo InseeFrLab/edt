@@ -12,6 +12,7 @@ import DayCharacteristics from "components/edt/DayCharacteristic/DayCharacterist
 import DaySummary from "components/edt/DaySummary/DaySummary";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
+import { ActivitiesSummaryExportData } from "interface/entity/ActivitiesSummary";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect } from "react";
