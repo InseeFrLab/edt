@@ -1537,10 +1537,10 @@
   dependencies:
     antlr4 "4.8.0"
 
-"@inseefrlab/lunatic-edt@^0.6.8":
-  version "0.6.8"
-  resolved "https://registry.yarnpkg.com/@inseefrlab/lunatic-edt/-/lunatic-edt-0.6.8.tgz#ad8183601be88d6e37a806131242baad40e4b4f2"
-  integrity sha512-qyWGMIErdh+6odDfnzlwVxgwbi4MAytsBy8uCtVDLr3WVe7LEFy9XE0EcX1zHDiohc5npO+qv6QFX3cBumSA3g==
+"@inseefrlab/lunatic-edt@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@inseefrlab/lunatic-edt/-/lunatic-edt-0.7.0.tgz#d8202569c12a0197e2847cc29484d365498ac664"
+  integrity sha512-015zta2D//GKUbRsH3HNnBXOYcRCQ26WzimeBiwNT/8tZce/KISudIHdL5RUz1nsoT9elqQiG/9tTmN8njq/Zw==
   dependencies:
     "@date-io/dayjs" "^2.16.0"
     "@emotion/react" "^11.10.4"
@@ -10092,6 +10092,11 @@ oidc-react@^2.1.0:
   dependencies:
     oidc-client-ts "^2.0.5"
 
+ometa@0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/ometa/-/ometa-0.2.2.tgz#f53c4735ba6d56af5a46b04dfb7c4334c596d44e"
+  integrity sha512-LZuoK/yjU3FvrxPjUXUlZ1bavCfBPqauA7fsNdwi+AVhRdyk2IzgP3JRnevvjzQ6fKHdUw8YISshf53FmpHrng==
+
 on-finished@2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/on-finished/-/on-finished-2.4.1.tgz#58c8c44116e54845ad57f14ab10b03533184ac3f"
@@ -12356,6 +12361,13 @@ schema-utils@^3.0.0, schema-utils@^3.1.1:
     "@types/json-schema" "^7.0.8"
     ajv "^6.12.5"
     ajv-keywords "^3.5.2"
+
+scss@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/scss/-/scss-0.2.4.tgz#040d903ed37c5d4fa4ad33ae1fd389ac12a4e065"
+  integrity sha512-4u8V87F+Q/upVhUmhPnB4C1R11xojkRkWjExL2v0CX2EXTg18VrKd+9JWoeyCp2VEMdSpJsyAvVU+rVjogh51A==
+  dependencies:
+    ometa "0.2.2"
 
 select-hose@^2.0.0:
   version "2.0.0"

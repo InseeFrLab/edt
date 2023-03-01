@@ -7,7 +7,7 @@
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",
         "@inseefr/lunatic": "2.0.7-v2",
-        "@inseefrlab/lunatic-edt": "^0.6.8",
+        "@inseefrlab/lunatic-edt": "^0.7.0",
         "@mui/icons-material": "^5.10.6",
         "@mui/material": "^5.10.7",
         "@react-pdf/renderer": "^3.1.6",
@@ -22,6 +22,7 @@
         "react-responsive": "^9.0.0",
         "react-router-dom": "^6.4.2",
         "react-scripts": "4.0.3",
+        "scss": "^0.2.4",
         "tss-react": "^4.4.1",
         "uuidv4": "^6.2.13",
         "web-vitals": "^3.0.2",
@@ -41,8 +42,8 @@
         "@types/react": "^18.0.21",
         "@types/react-detect-offline": "^2.4.1",
         "@types/react-dom": "^18.0.6",
-        "@types/react-responsive": "^8.0.5",
         "@types/react-pdf": "^6.2.0",
+        "@types/react-responsive": "^8.0.5",
         "@types/uuid": "^8.3.4",
         "@typescript-eslint/eslint-plugin": "^5.38.0",
         "@typescript-eslint/parser": "^5.38.0",
@@ -65,9 +66,8 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "react-app-rewired build",
-        "start-rewired": "react-app-rewired start",
         "build": "react-scripts --max_old_space_size=4096 build",
+        "start-rewired": "react-app-rewired start",
         "test": "react-scripts test",
         "test-ci": "react-scripts test --watchAll=false",
         "eject": "react-scripts eject",
@@ -78,7 +78,7 @@
         "format:check": "npm run _format -- --list-different",
         "prepare": "husky install",
         "serve-build": "npm run build && npx serve -s ./build -l 8000",
-        "start-with-lib": "concurrently \"yarn start-rewired\"  \"cd ./node_modules/lunatic-edt && tsc-watch\""
+        "start-with-lib": "concurrently \"yarn start-rewired\"  \"cd ./node_modules/@inseefrlab/lunatic-edt && tsc-watch\""
     },
     "eslintConfig": {
         "extends": [

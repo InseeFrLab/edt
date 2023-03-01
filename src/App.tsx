@@ -1,6 +1,6 @@
 import { theme } from "@inseefrlab/lunatic-edt";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import "App.css";
+import "App.scss";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import "i18n/i18n";
