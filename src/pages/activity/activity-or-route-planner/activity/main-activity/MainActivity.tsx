@@ -20,6 +20,11 @@ import {
     validateAndNextLoopStep,
 } from "service/navigation-service";
 
+import {
+    ActivitySelecterSpecificProps,
+    Alert,
+    AutoCompleteActiviteOption,
+} from "@inseefrlab/lunatic-edt";
 import catIcon100 from "assets/illustration/activity-categories/1.svg";
 import catIcon200 from "assets/illustration/activity-categories/2.svg";
 import catIcon300 from "assets/illustration/activity-categories/3.svg";
@@ -30,7 +35,6 @@ import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
 import { LoopEnum } from "enumerations/LoopEnum";
-import { ActivitySelecterSpecificProps, Alert, AutoCompleteActiviteOption } from "lunatic-edt";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getLabelsWhenQuit } from "service/alert-service";
@@ -50,6 +54,7 @@ const MainActivityPage = () => {
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [displayStepper, setDisplayStepper] = useState<boolean>(true);
+    const [displayHeader, setDisplayHeader] = useState<boolean>(true);
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
     const specificProps: ActivitySelecterSpecificProps = {
@@ -95,6 +100,7 @@ const MainActivityPage = () => {
             validateAndNextLoopStep(getNextLoopPage(currentPage), currentIteration);
         },
         setDisplayStepper: setDisplayStepper,
+        setDisplayHeader: setDisplayHeader,
         categoriesAndActivitesNomenclature: getNomenclatureRef(),
         labels: {
             selectInCategory: t("component.activity-selecter.select-in-category"),
@@ -120,6 +126,7 @@ const MainActivityPage = () => {
         addToReferentielCallBack: (newItem: AutoCompleteActiviteOption) => {
             addToAutocompleteActivityReferentiel(newItem);
         },
+        widthGlobal: true,
     };
 
     return (
@@ -138,6 +145,7 @@ const MainActivityPage = () => {
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}
             displayStepper={displayStepper}
+            displayHeader={displayHeader}
         >
             <FlexCenter>
                 <Alert

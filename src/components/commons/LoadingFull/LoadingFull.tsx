@@ -1,8 +1,8 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { CircularProgress } from "@mui/material";
 import reminder_note from "assets/illustration/reminder-note.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
-import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 
 interface LoadingFullProps {

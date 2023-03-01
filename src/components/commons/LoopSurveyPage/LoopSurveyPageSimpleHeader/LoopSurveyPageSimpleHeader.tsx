@@ -1,6 +1,6 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box } from "@mui/material";
-import { makeStylesEdt } from "lunatic-edt";
 
 interface LoopSurveyPageSimpleHeaderProps {
     onNavigateBack(): void;

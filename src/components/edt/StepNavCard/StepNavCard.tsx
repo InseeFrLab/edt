@@ -1,6 +1,6 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Typography } from "@mui/material";
-import { makeStylesEdt } from "lunatic-edt";
 import { StepData } from "service/loop-stepper-service";
 
 interface StepNavCardProps {

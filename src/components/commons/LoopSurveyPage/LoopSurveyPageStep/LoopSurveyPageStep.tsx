@@ -1,3 +1,4 @@
+import { Alert, Info } from "@inseefrlab/lunatic-edt";
 import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
@@ -5,7 +6,6 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Alert, Info } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";

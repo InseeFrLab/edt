@@ -1,3 +1,4 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Typography } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
@@ -6,7 +7,6 @@ import StepNavCard from "components/edt/StepNavCard/StepNavCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { makeStylesEdt } from "lunatic-edt";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";

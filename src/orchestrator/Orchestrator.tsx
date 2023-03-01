@@ -1,9 +1,9 @@
 import * as lunatic from "@inseefr/lunatic";
+import * as lunaticEDT from "@inseefrlab/lunatic-edt";
+import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
-import * as lunaticEDT from "lunatic-edt";
-import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
 
 const { ...edtComponents } = lunaticEDT;
@@ -55,7 +55,15 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     return source && data ? (
         <>
             <Box className={classes.orchestratorBox}>
-                <div className={cx("components", classes.styleOverride)}>
+                <div
+                    className={cx(
+                        "components",
+                        classes.styleOverride,
+                        window.innerWidth <= 667 && componentSpecificProps.widthGlobal
+                            ? classes.styleOverrideMobile
+                            : "",
+                    )}
+                >
                     {components.map(function (component: any) {
                         const { id, componentType, response, options, ...other } = component;
                         const Component = lunatic[componentType];
@@ -103,6 +111,10 @@ const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
         "& .field-container": {
             margin: "1rem 0",
         },
+    },
+    styleOverrideMobile: {
+        maxWidth: important("100vw"),
+        width: important("100vw"),
     },
     orchestratorBox: {
         display: "flex",

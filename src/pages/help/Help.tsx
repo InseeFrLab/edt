@@ -1,7 +1,7 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { SurveyData } from "interface/entity/Api";
-import { makeStylesEdt } from "lunatic-edt";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { remotePutSurveyData } from "service/api-service";

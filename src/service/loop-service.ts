@@ -1,3 +1,10 @@
+import { NomenclatureActivityOption } from "@inseefrlab/lunatic-edt";
+import {
+    CODES_ACTIVITY_IGNORE_GOAL,
+    CODES_ACTIVITY_IGNORE_LOCATION,
+    CODES_ACTIVITY_IGNORE_SCREEN,
+    CODES_ACTIVITY_IGNORE_SOMEONE,
+} from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
@@ -8,7 +15,6 @@ import {
     LunaticModelComponent,
     LunaticModelVariable,
 } from "interface/lunatic/Lunatic";
-import { NomenclatureActivityOption } from "lunatic-edt";
 import { getCurrentPageSource } from "service/orchestrator-service";
 import {
     getData,
@@ -35,12 +41,6 @@ import {
     saveAndNav,
 } from "./navigation-service";
 import { getNomenclatureRef } from "./referentiel-service";
-import {
-    CODES_ACTIVITY_IGNORE_GOAL,
-    CODES_ACTIVITY_IGNORE_LOCATION,
-    CODES_ACTIVITY_IGNORE_SCREEN,
-    CODES_ACTIVITY_IGNORE_SOMEONE,
-} from "constants/constants";
 
 const loopPageInfo: Map<LoopEnum, LoopData> = new Map();
 loopPageInfo.set(LoopEnum.ACTIVITY_OR_ROUTE, {

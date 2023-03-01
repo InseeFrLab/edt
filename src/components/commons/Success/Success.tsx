@@ -1,7 +1,7 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import DoneIcon from "@mui/icons-material/Done";
 import { Box } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { makeStylesEdt } from "lunatic-edt";
 
 interface SuccessProps {
     labelledBy: string;

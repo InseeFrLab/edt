@@ -1,8 +1,8 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import CloseIcon from "@mui/icons-material/Close";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Button, Divider } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 
 interface AddActivityOrRouteMobileProps {

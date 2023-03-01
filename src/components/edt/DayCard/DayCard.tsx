@@ -1,9 +1,9 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import Box from "@mui/material/Box";
 import PersonSunIcon from "assets/illustration/card/person-sun.svg";
 import PersonSunCloseIcon from "assets/illustration/card/person-sun-close.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
-import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 import { getScore } from "service/survey-activity-service";
 
