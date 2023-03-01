@@ -1,3 +1,12 @@
+import {
+    Alert,
+    formateDateToFrenchFormat,
+    generateDateFromStringInput,
+    Info,
+    InfoProps,
+    makeStylesEdt,
+    TooltipInfo,
+} from "@inseefrlab/lunatic-edt";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Divider, IconButton, Snackbar, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
@@ -13,15 +22,6 @@ import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
-import {
-    Alert,
-    formateDateToFrenchFormat,
-    generateDateFromStringInput,
-    Info,
-    InfoProps,
-    makeStylesEdt,
-    TooltipInfo,
-} from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

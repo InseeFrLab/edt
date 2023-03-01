@@ -1,7 +1,7 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Box, Button, Divider, Popover, Typography } from "@mui/material";
-import { makeStylesEdt } from "lunatic-edt";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 

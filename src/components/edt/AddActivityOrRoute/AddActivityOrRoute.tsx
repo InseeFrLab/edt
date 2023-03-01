@@ -1,9 +1,9 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Modal } from "@mui/material";
 import activity from "assets/illustration/activity.svg";
 import route from "assets/illustration/route.svg";
 import yellow_plus from "assets/illustration/yellow-plus.svg";
 import { Default, Mobile } from "components/commons/Responsive/Responsive";
-import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
 import AddActivityOrRouteDefault from "./AddActivityOrRouteDefault";
 import AddActivityOrRouteMobile from "./AddActivityOrRouteMobile";

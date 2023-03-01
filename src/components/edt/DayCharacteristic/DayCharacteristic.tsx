@@ -1,3 +1,4 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CommuteIcon from "@mui/icons-material/Commute";
 import EventIcon from "@mui/icons-material/Event";
@@ -6,7 +7,6 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import WorkIcon from "@mui/icons-material/Work";
 import { Box, Divider, Typography } from "@mui/material";
 import { UserActivitiesCharacteristics } from "interface/entity/ActivitiesSummary";
-import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 
 interface DayCharacteristicsProps {

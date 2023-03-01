@@ -1,9 +1,9 @@
+import { theme } from "@inseefrlab/lunatic-edt";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import "App.scss";
+import "App.css";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import "i18n/i18n";
-import { theme } from "lunatic-edt";
 import { useAuth } from "oidc-react";
 import ErrorPage from "pages/error/Error";
 import { useEffect, useState } from "react";

@@ -1,13 +1,13 @@
+import {
+    AutoCompleteActiviteOption,
+    CheckboxOneCustomOption,
+    NomenclatureActivityOption,
+} from "@inseefrlab/lunatic-edt";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
-import {
-    AutoCompleteActiviteOption,
-    CheckboxOneCustomOption,
-    NomenclatureActivityOption,
-} from "lunatic-edt";
 
 export const REFERENTIELS_ID = "referentiels";
 export const SOURCES_MODELS = "sources";

@@ -1,6 +1,6 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
-import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
 import { useTranslation } from "react-i18next";
 

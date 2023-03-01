@@ -1,3 +1,8 @@
+import {
+    formateDateToFrenchFormat,
+    generateDateFromStringInput,
+    makeStylesEdt,
+} from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -7,10 +12,7 @@ import DayCharacteristics from "components/edt/DayCharacteristic/DayCharacterist
 import DaySummary from "components/edt/DaySummary/DaySummary";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
-import { ActivitiesSummaryExportData } from "interface/entity/ActivitiesSummary";
-import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
-import { formateDateToFrenchFormat, generateDateFromStringInput, makeStylesEdt } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -36,8 +38,6 @@ const ActivitySummaryPage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
     const { classes } = useStyles();
     const { t } = useTranslation();
-    const [, setActivityOrRoute] = React.useState<ActivityRouteOrGap | undefined>(undefined);
-    const [, setIsRoute] = React.useState(false);
     const [score, setScore] = React.useState<number | undefined>(undefined);
 
     const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, context.idSurvey, context.source);
@@ -58,13 +58,9 @@ const ActivitySummaryPage = () => {
         setScore(getScore(context.idSurvey, t));
     }, [activitiesRoutesOrGaps]);
 
-    const navToCard = useCallback(
-        (iteration: number, isRoute?: boolean) => () => navToActivityOrRoute(iteration, isRoute),
-        [],
-    );
+    const navToCard = useCallback((iteration: number) => () => navToActivityOrRoute(iteration), []);
 
-    const navToActivityOrRoute = (iteration: number, isItRoute?: boolean): void => {
-        setIsRoute(isItRoute ? true : false);
+    const navToActivityOrRoute = (iteration: number): void => {
         navigate(
             getCurrentNavigatePath(
                 context.idSurvey,
@@ -77,8 +73,7 @@ const ActivitySummaryPage = () => {
         );
     };
 
-    const onEditActivityOrRoute = useCallback((iteration: number, activity: ActivityRouteOrGap) => {
-        setActivityOrRoute(activity);
+    const onEditActivityOrRoute = useCallback((iteration: number) => {
         navToEditActivity(iteration);
     }, []);
 
@@ -92,8 +87,7 @@ const ActivitySummaryPage = () => {
     );
 
     const onEditActivity = useCallback(
-        (iteration: number, activity: ActivityRouteOrGap) => () =>
-            onEditActivityOrRoute(iteration, activity),
+        (iteration: number) => () => onEditActivityOrRoute(iteration),
         [],
     );
 
@@ -132,9 +126,9 @@ const ActivitySummaryPage = () => {
                         <ActivityOrRouteCard
                             labelledBy={""}
                             describedBy={""}
-                            onClick={navToCard(activity.iteration || 0, activity.isRoute)}
+                            onClick={navToCard(activity.iteration || 0)}
                             activityOrRoute={activity}
-                            onEdit={onEditActivity(activity.iteration || 0, activity)}
+                            onEdit={onEditActivity(activity.iteration || 0)}
                             onDelete={onDeleteActivity(
                                 context.idSurvey,
                                 context.source,

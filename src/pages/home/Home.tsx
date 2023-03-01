@@ -1,3 +1,4 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import HelpIcon from "@mui/icons-material/Help";
 import { Box, Button } from "@mui/material";
 import logo from "assets/illustration/logo.png";
@@ -9,7 +10,6 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { makeStylesEdt } from "lunatic-edt";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";

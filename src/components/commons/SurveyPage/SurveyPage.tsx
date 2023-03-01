@@ -1,3 +1,4 @@
+import { makeStylesEdt, ProgressBar } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopNavigator from "components/commons/LoopSurveyPage/LoopNavigator/LoopNavigator";
@@ -8,7 +9,6 @@ import SurveyPageHeader from "components/commons/SurveyPage/SurveyPageHeader/Sur
 import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
 import EndActivityStepper from "components/edt/EndActivityStepper/EndActivityStepper";
-import { makeStylesEdt, ProgressBar } from "lunatic-edt";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getLastCompletedStep } from "service/navigation-service";

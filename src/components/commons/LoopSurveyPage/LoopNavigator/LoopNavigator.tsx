@@ -1,9 +1,9 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import DoneIcon from "@mui/icons-material/Done";
 import { Box, Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { makeStylesEdt } from "lunatic-edt";
 import { useCallback } from "react";
 import { isDesktop } from "service/responsive";
 

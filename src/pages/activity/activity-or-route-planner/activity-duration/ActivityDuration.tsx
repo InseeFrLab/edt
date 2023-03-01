@@ -1,3 +1,4 @@
+import { Alert, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton, Snackbar } from "@mui/material";
 import errorIcon from "assets/illustration/error/activity.svg";
@@ -10,7 +11,6 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Alert, makeStylesEdt, TimepickerSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { Fragment, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
