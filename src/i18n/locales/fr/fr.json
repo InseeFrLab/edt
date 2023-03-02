@@ -298,6 +298,7 @@
         "activities-summary": {
             "file-name": "Export_carnet_EDT_",
             "header": {
+                "insee": "INSEE",
                 "survey-day": "Date de la journée enquêtée : ",
                 "edt-survey": "Carnet EDT",
                 "house-reference": "RÉFÉRENCE MÉNAGE "
