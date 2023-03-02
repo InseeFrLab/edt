@@ -1,6 +1,7 @@
-import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+import { Document, Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import { ActivitiesSummaryExportData } from "interface/entity/ActivitiesSummary";
 
+import logoInsee from "assets/illustration/logo.png";
 import { useTranslation } from "react-i18next";
 import { ActivitiesPlanningExportTemplate } from "template/summary-export/ActivitiesPlanningExportTemplate";
 import { DayCharacteristicsExportTemplate } from "template/summary-export/DayCharacteristicsExportTemplate";
@@ -14,7 +15,6 @@ interface ActivitiesSummaryExportTemplateProps {
 const ActivitiesSummaryExportTemplate = (props: ActivitiesSummaryExportTemplateProps) => {
     const { exportData } = props;
     const { t } = useTranslation();
-
     return (
         <Document>
             <Page orientation="landscape" wrap size="A4" style={classes.body}>
@@ -22,7 +22,7 @@ const ActivitiesSummaryExportTemplate = (props: ActivitiesSummaryExportTemplateP
                     <View style={classes.headerRow}>
                         <View>
                             <Text style={classes.title}>
-                                {t("export.activities-summary.header.insee")}
+                                <Image style={classes.logo} src={logoInsee} />
                             </Text>
                         </View>
                         <View>

@@ -18,42 +18,37 @@ const ActivitiesPlanningExportTemplate = (props: ActivitiesPlanningExportTemplat
             <View style={classes.activitiesPlanningBox}>
                 <View style={classes.table}>
                     <View style={classes.tableRowHeader}>
-                        <View style={classes.tableCol12}>
+                        <View style={classes.tableCol14}>
                             <Text style={classes.tableCell}>
                                 {t("export.activities-summary.table-header.schedule")}
                             </Text>
                         </View>
-                        <View style={classes.tableCol12}>
+                        <View style={classes.tableCol14}>
                             <Text style={classes.tableCell}>
                                 {t("export.activities-summary.table-header.duration")}
                             </Text>
                         </View>
-                        <View style={classes.tableCol12}>
+                        <View style={classes.tableCol14}>
                             <Text style={classes.tableCell}>
                                 {t("export.activities-summary.table-header.activity")}
                             </Text>
                         </View>
-                        <View style={classes.tableCol12}>
-                            <Text style={classes.tableCell}>
-                                {t("export.activities-summary.table-header.activity-category")}
-                            </Text>
-                        </View>
-                        <View style={classes.tableCol12}>
+                        <View style={classes.tableCol14}>
                             <Text style={classes.tableCell}>
                                 {t("export.activities-summary.table-header.secondary-activity")}
                             </Text>
                         </View>
-                        <View style={classes.tableCol12}>
+                        <View style={classes.tableCol14}>
                             <Text style={classes.tableCell}>
                                 {t("export.activities-summary.table-header.location")}
                             </Text>
                         </View>
-                        <View style={classes.tableCol12}>
+                        <View style={classes.tableCol14}>
                             <Text style={classes.tableCell}>
                                 {t("export.activities-summary.table-header.presence")}
                             </Text>
                         </View>
-                        <View style={classes.tableCol12}>
+                        <View style={classes.tableCol14}>
                             <Text style={classes.tableCell}>
                                 {t("export.activities-summary.table-header.screen")}
                             </Text>
@@ -61,36 +56,33 @@ const ActivitiesPlanningExportTemplate = (props: ActivitiesPlanningExportTemplat
                     </View>
                     {exportData.activities.map(activity => (
                         <View style={classes.tableRow}>
-                            <View style={classes.tableCol12}>
+                            <View style={classes.tableCol14}>
                                 <Text style={classes.tableCell}>
                                     {activity.startTime + " - " + activity.endTime}
                                 </Text>
                             </View>
-                            <View style={classes.tableCol12}>
+                            <View style={classes.tableCol14}>
                                 <Text style={classes.tableCell}>{activity.durationLabel}</Text>
                             </View>
-                            <View style={classes.tableCol12}>
+                            <View style={classes.tableCol14}>
                                 <Text style={classes.tableCell}>{activity.activity?.activityLabel}</Text>
                             </View>
-                            <View style={classes.tableCol12}>
-                                <Text style={classes.tableCell}>{"UNKNOWN"}</Text>
-                            </View>
-                            <View style={classes.tableCol12}>
+                            <View style={classes.tableCol14}>
                                 <Text style={classes.tableCell}>
                                     {activity.secondaryActivity?.activityLabel ??
                                         t("export.activities-summary.table-data.empty")}
                                 </Text>
                             </View>
-                            <View style={classes.tableCol12}>
+                            <View style={classes.tableCol14}>
                                 <Text style={classes.tableCell}>{activity.place?.placeLabel}</Text>
                             </View>
-                            <View style={classes.tableCol12}>
+                            <View style={classes.tableCol14}>
                                 <Text style={classes.tableCell}>
                                     {activity.withSomeoneLabels ??
                                         t("export.activities-summary.table-data.empty")}
                                 </Text>
                             </View>
-                            <View style={classes.tableCol12}>
+                            <View style={classes.tableCol14}>
                                 <Text style={classes.tableCell}>
                                     {activity.withScreen
                                         ? t("export.activities-summary.table-data.yes")
@@ -130,8 +122,8 @@ const classes = StyleSheet.create({
         flexDirection: "row",
         backgroundColor: "#EDECF4",
     },
-    tableCol12: {
-        width: "12.5%",
+    tableCol14: {
+        width: "14.3%",
         borderStyle: "solid",
         borderWidth: 1,
         borderLeftWidth: 0,

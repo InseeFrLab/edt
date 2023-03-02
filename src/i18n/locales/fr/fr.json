@@ -307,7 +307,6 @@
                 "schedule": "HORAIRES",
                 "duration": "DURÉE",
                 "activity": "ACTIVITÉ",
-                "activity-category": "CATÉGORIE D'ACTIVITÉ",
                 "secondary-activity": "ACTIVITÉ SECONDAIRE",
                 "location": "LIEU",
                 "presence": "PRÉSENCE",
