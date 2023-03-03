@@ -7,10 +7,13 @@ import { getActivitesSelectedLabel } from "service/survey-activity-service";
 
 const GreatestActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
-    const activites = getActivitesSelectedLabel(context.idSurvey);
+    const uniqueActivities = getActivitesSelectedLabel(context.idSurvey).filter(
+        (_value, index, self) =>
+            index === self.findIndex(activity => activity.activityCode === activity.activityCode),
+    );
 
     const specifiquesProps = {
-        options: activites.map(activity => {
+        options: uniqueActivities.map(activity => {
             return { label: activity.activityLabel || "", value: activity.activityCode || "" };
         }),
         defaultIcon: true,
