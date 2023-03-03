@@ -45,6 +45,7 @@ const WeeklyPlannerPage = () => {
             workSumLabel: t("component.weekly-planner.work-sum-label"),
             presentButtonLabel: t("component.weekly-planner.present-button-label"),
             futureButtonLabel: t("component.weekly-planner.future-button-label"),
+            editButtonLabel: t("common.navigation.edit"),
             infoLabels: {
                 normalText: t("page.weekly-planner.info-light"),
                 boldText: t("page.weekly-planner.info-bold"),
