@@ -3,7 +3,7 @@ import {
     SelectedActivity,
     transformToWeeklyPlannerDataType,
 } from "@inseefrlab/lunatic-edt";
-import { IODataStructure } from "@inseefrlab/lunatic-edt/interface/WeeklyPlannerTypes";
+import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
 import activitySurveySource from "activity-survey.json";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
