@@ -170,6 +170,7 @@
             "info-bold": "Indiquez votre temps de travail réel et le travail éventuel que vous rapportez à la maison."
         },
         "activity-summary": {
+            "add-activity-or-route": "Ajouter +",
             "download-pdf": "Télécharger le PDF",
             "quality-score": {
                 "label": "GROUPE",
@@ -177,6 +178,9 @@
                 "type-2": "B",
                 "type-3": "C",
                 "type-4": "D"
+            },
+            "alert-tooltip-edit": {
+                "alert-bold": "Vous avez ajouté ou modifié une activité. Pensez à mettre à jour vos réponses aux caractéristiques de votre journée si vous le souhaitez."
             }
         },
         "end-survey": {
@@ -281,6 +285,7 @@
             "phone-time": " de consultation du téléphone"
         },
         "day-summary": {
+            "tooltip-summary": "Toutes activités ajoutées manuellement, c’est à dire en ne sélectionnant pas parmi celles déjà proposées ainsi que les activités ajoutées via les boutons « autre » ne peuvent être prises en compte dans les calculs de ce résumé.",
             "title": "RÉSUMÉ DE LA JOURNÉE",
             "no-time": "0min",
             "activity-done": "Nombre d’activités déclarées",

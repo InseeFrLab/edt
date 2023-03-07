@@ -34,17 +34,18 @@ const ActivityDurationPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { classes } = useStyles();
     setEnviro(context, useNavigate(), callbackHolder);
-
-    const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
-    const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
+    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
+
+    const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
+    const stepData = getStepData(currentPage, isRoute);
+
     const activitiesAct = getActivitiesOrRoutes(
         t,
         context.idSurvey,
         context.source,
     ).activitiesRoutesOrGaps;
-    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const [snackbarText, setSnackbarText] = useState<string | undefined>(undefined);
@@ -116,7 +117,7 @@ const ActivityDurationPage = () => {
             saveData(context.idSurvey, callbackHolder.getData()).then(() => {
                 navigate(
                     getLoopParameterizedNavigatePath(
-                        getNextLoopPage(currentPage, context.isRoute),
+                        getNextLoopPage(currentPage, isRoute),
                         LoopEnum.ACTIVITY_OR_ROUTE,
                         currentIteration,
                     ),

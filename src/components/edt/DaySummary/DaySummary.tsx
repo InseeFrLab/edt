@@ -1,10 +1,10 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { makeStylesEdt, TooltipInfo } from "@inseefrlab/lunatic-edt";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import InfoIcon from "assets/illustration/info.svg";
 import { UserActivitiesSummary } from "interface/entity/ActivitiesSummary";
 import { useTranslation } from "react-i18next";
-
 interface DaySummaryProps {
     userActivitiesSummary?: UserActivitiesSummary;
 }
@@ -13,6 +13,16 @@ const DaySummary = (props: DaySummaryProps) => {
     const { userActivitiesSummary } = props;
     const { classes } = useStyles();
     const { t } = useTranslation();
+    const tooltipTitleLabels = {
+        boldText: t("component.day-summary.tooltip-summary"),
+        infoIconAlt: t("accessibility.asset.info.info-alt"),
+        infoIcon: InfoIcon,
+        border: true,
+        infoIconTop: true,
+    };
+    const titleLabels = {
+        boldTitle: t("component.day-summary.title"),
+    };
 
     const getCardSummary = (timeLabel: string | undefined, label: string) => {
         return (
@@ -30,7 +40,13 @@ const DaySummary = (props: DaySummaryProps) => {
 
     return (
         <Box className={classes.daySummaryBox}>
-            <h3 className={classes.title}>{t("component.day-summary.title")}</h3>
+            <Box className={classes.titleBox}>
+                <TooltipInfo
+                    displayTooltip={false}
+                    titleLabels={titleLabels}
+                    infoLabels={tooltipTitleLabels}
+                />
+            </Box>
             <Box className={classes.rowBox}>
                 <Box className={classes.valueBox}>{userActivitiesSummary?.activitiesAmount || 0}</Box>
                 <Typography className={classes.label}>
@@ -85,6 +101,9 @@ const useStyles = makeStylesEdt({ "name": { DaySummary } })(theme => ({
         color: theme.palette.primary.main,
         marginTop: "1rem",
     },
+    titleBox: {
+        marginBottom: "1rem",
+    },
     rowBox: {
         display: "flex",
         alignItems: "center",
@@ -99,6 +118,7 @@ const useStyles = makeStylesEdt({ "name": { DaySummary } })(theme => ({
     },
     title: {
         marginTop: 0,
+        marginBottom: 0,
     },
 }));
 

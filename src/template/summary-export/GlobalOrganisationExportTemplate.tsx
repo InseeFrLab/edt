@@ -39,8 +39,8 @@ const GlobalOrganisationExportTemplate = (props: GlobalOrganisationExportTemplat
                             </Text>
                         </View>
                     </View>
-                    {exportData.activitiesAndRoutes.map(activityOrRoute => (
-                        <View style={classes.tableRow}>
+                    {exportData.activitiesAndRoutes.map((activityOrRoute, index) => (
+                        <View style={classes.tableRow} key={"row-organisation-" + index}>
                             <View style={classes.tableCol25}>
                                 <Text style={classes.tableCell}>
                                     {activityOrRoute.startTime + " - " + activityOrRoute.endTime}

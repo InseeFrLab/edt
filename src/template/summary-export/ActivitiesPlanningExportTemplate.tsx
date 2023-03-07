@@ -54,8 +54,8 @@ const ActivitiesPlanningExportTemplate = (props: ActivitiesPlanningExportTemplat
                             </Text>
                         </View>
                     </View>
-                    {exportData.activities.map(activity => (
-                        <View style={classes.tableRow}>
+                    {exportData.activities.map((activity, index) => (
+                        <View style={classes.tableRow} key={"row-activities-planning-" + index}>
                             <View style={classes.tableCol14}>
                                 <Text style={classes.tableCell}>
                                     {activity.startTime + " - " + activity.endTime}

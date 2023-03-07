@@ -327,7 +327,7 @@ const getLabelFromTime = (hours: number, minutes: number) => {
     let hoursLabel = hours > 0 ? hours + "h" : "";
     let minutesLabel;
 
-    if (hours > 1) {
+    if (hours > 0) {
         minutesLabel = (minutes < 10 ? "0" : "") + minutes;
     } else {
         minutesLabel = minutes + "min";
