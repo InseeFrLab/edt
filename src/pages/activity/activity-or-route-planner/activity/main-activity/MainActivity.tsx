@@ -121,6 +121,7 @@ const MainActivityPage = () => {
                 "component.activity-selecter.clickable-list-icon-no-result-alt",
             ),
             otherButton: t("component.activity-selecter.other-button"),
+            saveButton: t("component.activity-selecter.save-button"),
         },
         errorIcon: errorIcon,
         addToReferentielCallBack: (newItem: AutoCompleteActiviteOption) => {
