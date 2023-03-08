@@ -10,7 +10,8 @@ export const DOMESTIC_CATEGORIES_ACTIVITES_LIST = ["300"];
 export const OTHER_FAMILY_CATEGORIES_ACTIVITES_LIST = ["441"];
 
 //activites filtred
-export const CODES_ACTIVITY_IGNORE_SOMEONE = ["110"];
+export const CODES_ACTIVITY_IGNORE_SOMEONE = ["111", "114"];
+export const CODES_ACTIVITY_IGNORE_SECONDARY_ACTIVITY = ["111", "114"];
 export const CODES_ACTIVITY_IGNORE_GOAL = [
     "110", //111,114,112,113
     "140",
@@ -33,7 +34,7 @@ export const CODES_ACTIVITY_IGNORE_GOAL = [
     "664",
     "680", //671,668,662,663
 ];
-export const CODES_ACTIVITY_IGNORE_SCREEN = ["110", "674", "649", "671"];
+export const CODES_ACTIVITY_IGNORE_SCREEN = ["111", "114", "674", "649", "671"];
 export const CODES_ACTIVITY_IGNORE_LOCATION = ["652"];
 
 //quality score

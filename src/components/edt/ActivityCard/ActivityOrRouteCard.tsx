@@ -112,9 +112,17 @@ const renderSecondaryActivity = (
         </Box>
     );
 
-    return activityOrRoute.withSecondaryActivity == null
-        ? renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
-        : isWithSecondaryActivity;
+    const sectionFiltrer = filtrePage(
+        EdtRoutesNameEnum.SECONDARY_ACTIVITY,
+        activityOrRoute.activity?.activityCode ?? "",
+    );
+
+    return (
+        !sectionFiltrer &&
+        (activityOrRoute.withSecondaryActivity == null
+            ? renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
+            : isWithSecondaryActivity)
+    );
 };
 
 const renderWithScreen = (

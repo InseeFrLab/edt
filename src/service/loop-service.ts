@@ -4,6 +4,7 @@ import {
     CODES_ACTIVITY_IGNORE_LOCATION,
     CODES_ACTIVITY_IGNORE_SCREEN,
     CODES_ACTIVITY_IGNORE_SOMEONE,
+    CODES_ACTIVITY_IGNORE_SECONDARY_ACTIVITY,
 } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
@@ -213,14 +214,20 @@ const ignoreDeps = (
     let ignoreSomeone = ignoreActivity(component, data, iteration, EdtRoutesNameEnum.WITH_SOMEONE);
     let ignoreScreen = ignoreActivity(component, data, iteration, EdtRoutesNameEnum.WITH_SCREEN);
     let ignoreGoal = ignoreActivity(component, data, iteration, EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
+    let ignoreSecondaryActivity = ignoreActivity(
+        component,
+        data,
+        iteration,
+        EdtRoutesNameEnum.SECONDARY_ACTIVITY,
+    );
 
-    const filtrerActivities = ignoreLocation || ignoreSomeone || ignoreScreen || ignoreGoal;
+    const filtrerActivities =
+        ignoreLocation || ignoreSomeone || ignoreScreen || ignoreGoal || ignoreSecondaryActivity;
 
     let toIgnoreActivity = ignoreDepsActivity(variable, component, data, iteration);
     let toIgnoreIfInputInCheckboxGroup =
         component?.componentType == "CheckboxGroupEdt" &&
         ignoreDepsOfCheckboxGroup(component, data, iteration);
-
     return (
         toIgnore ||
         filtrerActivities ||
@@ -269,6 +276,9 @@ const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
             break;
         case EdtRoutesNameEnum.WITH_SCREEN:
             listToIgnore = CODES_ACTIVITY_IGNORE_SCREEN;
+            break;
+        case EdtRoutesNameEnum.SECONDARY_ACTIVITY:
+            listToIgnore = CODES_ACTIVITY_IGNORE_SECONDARY_ACTIVITY;
             break;
         default:
             listToIgnore = [];
