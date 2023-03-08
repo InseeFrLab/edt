@@ -88,8 +88,7 @@ const fetchSurveysSourcesByIds = (sourcesIds: string[]): Promise<SourceData> => 
             )
             .then(res => {
                 sourcesIds.forEach((idSource, index) => {
-                    console.log(res[index].data.value);
-                    sources[idSource] = res[index].data.value.value;
+                    sources[idSource] = res[index].data.value;
                 });
                 resolve(sources as SourceData);
             });
