@@ -411,7 +411,6 @@ const validateWithAlertAndNav = (
     iteration?: number,
     route?: string,
 ): void => {
-    const isCompleted = getValue(_context.idSurvey, FieldNameEnum.ISCOMPLETED, iteration);
     if (!displayAlert) {
         setDisplayAlert(true);
     } else {
