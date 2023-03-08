@@ -7,6 +7,7 @@ import {
     OTHER_FAMILY_CATEGORIES_ACTIVITES_LIST,
     PERCENT_MIN_THRESHOLD,
     POINTS_REMOVE,
+    SKIP_WORKING_CATEGORIES_ACTIVITES_LIST,
     SLEEPING_CATEGORIES_ACTIVITES_LIST,
     WORKING_CATEGORIES_ACTIVITES_LIST,
 } from "constants/constants";
@@ -43,12 +44,21 @@ const getUserActivitiesSummary = (
         realRouteTimeLabel: getRealRouteTimeLabel(activitiesRoutesOrGaps),
         homeTasksTimeLabel: getHomeTasksTime(activitiesRoutesOrGaps, HOME_CATEGORY_PLACE_LIST),
         aloneTimeLabel: getAloneTime(activitiesRoutesOrGaps),
-        sleepingTimeLabel: getDuration(activitiesRoutesOrGaps, SLEEPING_CATEGORIES_ACTIVITES_LIST),
-        workingTimeLabel: getDuration(activitiesRoutesOrGaps, WORKING_CATEGORIES_ACTIVITES_LIST),
-        domesticTasksTimeLabel: getDuration(activitiesRoutesOrGaps, DOMESTIC_CATEGORIES_ACTIVITES_LIST),
+        sleepingTimeLabel: getDuration(activitiesRoutesOrGaps, SLEEPING_CATEGORIES_ACTIVITES_LIST, []),
+        workingTimeLabel: getDuration(
+            activitiesRoutesOrGaps,
+            WORKING_CATEGORIES_ACTIVITES_LIST,
+            SKIP_WORKING_CATEGORIES_ACTIVITES_LIST,
+        ),
+        domesticTasksTimeLabel: getDuration(
+            activitiesRoutesOrGaps,
+            DOMESTIC_CATEGORIES_ACTIVITES_LIST,
+            [],
+        ),
         otherFamilyTasksTimeLabel: getDuration(
             activitiesRoutesOrGaps,
             OTHER_FAMILY_CATEGORIES_ACTIVITES_LIST,
+            [],
         ),
 
         activitiesWithScreenAmount: activitiesRoutesOrGaps.filter(
@@ -134,16 +144,51 @@ const getAllTime = (listToSum: number[]) => {
     return listToSum.reduce((a, b) => a + b, 0);
 };
 
-const getTime = (activitiesRoutesOrGaps: ActivityRouteOrGap[], codesActivities: string[]) => {
+/**
+ * Takes activity or its code exist in list codesWorkingTime
+ * and not in list to skipper (codesActivitiesToSkip)
+ * @param activityRouteOrGap
+ * @param codesWorkingTime list with codes to consider
+ * @param codesActivitiesToSkip list with codes to skipper
+ * @returns
+ */
+const takeActivity = (
+    activityRouteOrGap: ActivityRouteOrGap,
+    codesWorkingTime: string[],
+    codesActivitiesToSkip: string[],
+) => {
+    let activityCode = activityRouteOrGap.activity?.activityCode;
+
+    if (activityCode != null) {
+        activityCode = activityCode.split("-").length > 1 ? activityCode.split("-")[0] : activityCode;
+
+        return (
+            codesActivitiesToSkip.indexOf(activityCode) < 0 &&
+            codesWorkingTime.indexOf(activityCode) >= 0
+        );
+    }
+    return false;
+};
+
+const getTime = (
+    activitiesRoutesOrGaps: ActivityRouteOrGap[],
+    codesActivities: string[],
+    codesActivitiesSkip: string[],
+) => {
     const codesWorkingTime = getAllCodesFromActivitiesCodes(codesActivities);
+    const codesActivitiesToSkip = getAllCodesFromActivitiesCodes(codesActivitiesSkip);
     const activitesFiltred = activitiesRoutesOrGaps
-        .filter(act => codesWorkingTime.indexOf(act.activity?.activityCode || "") >= 0)
+        .filter(act => takeActivity(act, codesWorkingTime, codesActivitiesToSkip))
         .map(act => act.durationMinutes ?? 0);
     return getAllTime(activitesFiltred);
 };
 
-const getDuration = (activitiesRoutesOrGaps: ActivityRouteOrGap[], codesActivities: string[]) => {
-    const minutes = getTime(activitiesRoutesOrGaps, codesActivities);
+const getDuration = (
+    activitiesRoutesOrGaps: ActivityRouteOrGap[],
+    codesActivities: string[],
+    codesActivitiesSkip: string[],
+) => {
+    const minutes = getTime(activitiesRoutesOrGaps, codesActivities, codesActivitiesSkip);
     return getActivityOrRouteDurationLabelFromDurationMinutes(minutes);
 };
 
