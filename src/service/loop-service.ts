@@ -254,6 +254,9 @@ const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
     let codesToIgnore;
     let listToIgnore: string[] = [];
 
+    const activityCodeOrSuggesterCode =
+        activityCode.split("-").length > 1 ? activityCode.split("-")[0] : activityCode;
+
     switch (page) {
         case EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL:
             listToIgnore = CODES_ACTIVITY_IGNORE_GOAL;
@@ -273,7 +276,7 @@ const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
     }
 
     codesToIgnore = getAllCodesFromActivitiesCodes(listToIgnore);
-    const exist = codesToIgnore.indexOf(activityCode) >= 0;
+    const exist = codesToIgnore.indexOf(activityCodeOrSuggesterCode) >= 0;
     return exist;
 };
 
