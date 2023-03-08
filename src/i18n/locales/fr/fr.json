@@ -135,6 +135,9 @@
             "input-placeholder": "Activité secondaire",
             "other-button": "Autre ?"
         },
+        "with-someone": {
+            "tooltip-bold": "Indiquer si d’autres personnes étaient présentes, dans la pièce ou à portée de voix, même si elles faisaient autre chose que vous."
+        },
         "alert-when-quit": {
             "activity-planner": {
                 "alert-content-close-bold": "Souhaitez-vous clôturer votre journée?",

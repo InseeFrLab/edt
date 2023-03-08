@@ -13,6 +13,9 @@ const WithSomeonePage = () => {
             nextRoute={EdtRoutesNameEnum.WITH_SOMEONE_SELECTION}
             fieldConditionBack={FieldNameEnum.WITHSECONDARYACTIVITY}
             fieldConditionNext={FieldNameEnum.WITHSOMEONE}
+            specifiquesProps={{
+                infoBold: "page.with-someone.tooltip-bold",
+            }}
         />
     );
 };
