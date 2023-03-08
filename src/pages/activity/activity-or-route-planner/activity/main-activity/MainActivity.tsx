@@ -18,7 +18,6 @@ import {
     saveAndLoopNavigate,
     setEnviro,
     validate,
-    validateAndNextLoopStep,
 } from "service/navigation-service";
 
 import {
