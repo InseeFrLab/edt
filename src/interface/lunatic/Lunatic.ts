@@ -48,6 +48,7 @@ export interface ReferentielData extends LunaticData {
     [ReferentielsEnum.LOCATION]: CheckboxOneCustomOption[];
     [ReferentielsEnum.KINDOFWEEK]: CheckboxOneCustomOption[];
     [ReferentielsEnum.KINDOFDAY]: CheckboxOneCustomOption[];
+    [ReferentielsEnum.ACTIVITYGOAL]: CheckboxOneCustomOption[];
 }
 
 export interface SourceData extends LunaticData {

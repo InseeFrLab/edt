@@ -38,6 +38,7 @@ export const fetchReferentiels = (): Promise<ReferentielData> => {
         [ReferentielsEnum.LOCATION]: [],
         [ReferentielsEnum.KINDOFWEEK]: [],
         [ReferentielsEnum.KINDOFDAY]: [],
+        [ReferentielsEnum.ACTIVITYGOAL]: [],
     };
     let refsEndPoints: string[] = [];
     Object.values(ReferentielsEnum).map(value => {
@@ -87,7 +88,8 @@ const fetchSurveysSourcesByIds = (sourcesIds: string[]): Promise<SourceData> => 
             )
             .then(res => {
                 sourcesIds.forEach((idSource, index) => {
-                    sources[idSource] = res[index].data.value;
+                    console.log(res[index].data.value);
+                    sources[idSource] = res[index].data.value.value;
                 });
                 resolve(sources as SourceData);
             });
