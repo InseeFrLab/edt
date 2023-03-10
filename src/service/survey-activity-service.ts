@@ -120,6 +120,10 @@ const createActivity = (
     return activityOrRoute;
 };
 
+const convertStringToBoolean = (value: string | undefined) => {
+    return value == "true" ? true : value == "false" ? false : undefined;
+};
+
 const createActivitiesOrRoutes = (
     idSurvey: string,
     source: LunaticModel,
@@ -145,29 +149,28 @@ const createActivitiesOrRoutes = (
             activityOrRoute = createActivity(idSurvey, activityOrRoute, i, t);
         }
 
+        const withSecondaryActivity = getValue(idSurvey, FieldNameEnum.WITHSECONDARYACTIVITY, i) as
+            | string
+            | undefined;
         // With Secondary activity
-        activityOrRoute.withSecondaryActivity = getValue(
-            idSurvey,
-            FieldNameEnum.WITHSECONDARYACTIVITY,
-            i,
-        ) as boolean | undefined;
+        activityOrRoute.withSecondaryActivity = convertStringToBoolean(withSecondaryActivity);
 
         // Secondary activity
         checkForSecondaryActivity(idSurvey, i, activityOrRoute);
 
         // With someone
-        activityOrRoute.withSomeone = getValue(idSurvey, FieldNameEnum.WITHSOMEONE, i) as
-            | boolean
-            | undefined;
+        activityOrRoute.withSomeone = convertStringToBoolean(
+            getValue(idSurvey, FieldNameEnum.WITHSOMEONE, i) as string | undefined,
+        );
         if (activityOrRoute.withSomeone) {
             const withSomeoneLabel = getWithSomeoneLabel(idSurvey, i, source);
             activityOrRoute.withSomeoneLabels = withSomeoneLabel;
         }
 
         // Screen
-        activityOrRoute.withScreen = getValue(idSurvey, FieldNameEnum.WITHSCREEN, i) as
-            | boolean
-            | undefined;
+        activityOrRoute.withScreen = convertStringToBoolean(
+            getValue(idSurvey, FieldNameEnum.WITHSCREEN, i) as string | undefined,
+        );
 
         activitiesRoutes.push(activityOrRoute);
     }
