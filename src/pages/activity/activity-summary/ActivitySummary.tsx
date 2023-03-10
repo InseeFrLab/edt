@@ -83,6 +83,15 @@ const ActivitySummaryPage = () => {
         setScore(getScore(context.idSurvey, t));
     }, [activitiesRoutesOrGaps]);
 
+    useEffect(() => {
+        //The loop have to have a default size in source but it's updated depending on the data array size
+        setLoopSize(
+            context.source,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE),
+        );
+    }, []);
+
     const navToCard = useCallback((iteration: number) => () => navToActivityOrRoute(iteration), []);
 
     const navToActivityOrRoute = (iteration: number): void => {

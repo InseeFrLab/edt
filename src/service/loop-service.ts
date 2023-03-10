@@ -123,12 +123,11 @@ const ignoreVariablesCondtionals = (
         component => component.page == component?.page?.split(".")[0] + "." + pageOfConditional,
     );
     const depConditional = componentConditional?.bindingDependencies?.[0];
-    const valueOfConditional = data?.COLLECTED?.[depConditional ?? ""]?.COLLECTED as boolean[];
-
+    const valueOfConditional = data?.COLLECTED?.[depConditional ?? ""]?.COLLECTED as string[];
     //is page of values of conditional = true
     if (isPageOfConditional) {
         const mustShowPageOfConditional =
-            valueOfConditional[iteration] != null && valueOfConditional[iteration];
+            valueOfConditional[iteration] != null && valueOfConditional[iteration] == "true";
         //in page of conditional select yes
         if (mustShowPageOfConditional) {
             let ignore = false;
