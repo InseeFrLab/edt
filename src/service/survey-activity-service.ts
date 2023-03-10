@@ -276,11 +276,6 @@ const getActivitesSelectedLabel = (idSurvey: string): Activity[] => {
             activityRouteOrGap?.activity?.activityLabel.length > 0
         )
             activitesSelected.push(activityRouteOrGap.activity);
-        if (
-            activityRouteOrGap?.secondaryActivity?.activityLabel != null &&
-            activityRouteOrGap?.secondaryActivity?.activityLabel.length > 0
-        )
-            activitesSelected.push(activityRouteOrGap.secondaryActivity);
     });
     return activitesSelected;
 };

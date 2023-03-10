@@ -8,8 +8,8 @@ import { getActivitesSelectedLabel } from "service/survey-activity-service";
 const GreatestActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const uniqueActivities = getActivitesSelectedLabel(context.idSurvey).filter(
-        (_value, index, self) =>
-            index === self.findIndex(activity => activity.activityCode === activity.activityCode),
+        (value, index, self) =>
+            index === self.findIndex(activity => activity.activityCode === value.activityCode),
     );
 
     const specifiquesProps = {
