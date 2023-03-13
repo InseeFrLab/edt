@@ -11,7 +11,7 @@ export interface UserSurveys {
 }
 
 export interface SurveyData {
-    stateData: StateData;
+    stateData?: StateData;
     data: LunaticData;
 }
 

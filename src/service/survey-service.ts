@@ -149,7 +149,8 @@ const getRemoteSavedSurveysDatas = (
             remoteGetSurveyData(surveyId, setError).then((remoteSurveyData: SurveyData) => {
                 return lunaticDatabase.get(surveyId).then(localSurveyData => {
                     if (
-                        remoteSurveyData.stateData.date > 0 &&
+                        remoteSurveyData.stateData?.date &&
+                        remoteSurveyData.stateData?.date > 0 &&
                         (localSurveyData === undefined ||
                             (localSurveyData.lastRemoteSaveDate ?? 0) < remoteSurveyData.stateData.date)
                     ) {
@@ -201,7 +202,7 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                 data: data,
             };
             remotePutSurveyData(idSurvey, surveyData).then(surveyData => {
-                data.lastRemoteSaveDate = surveyData.stateData.date;
+                data.lastRemoteSaveDate = surveyData.stateData?.date;
                 //set the last remote save date inside local database to be able to compare it later with remote data
                 lunaticDatabase.save(idSurvey, data).then(() => {
                     datas.set(idSurvey, data);
