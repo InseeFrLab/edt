@@ -9,7 +9,6 @@ import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrato
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { getLabelsWhenQuit } from "service/alert-service";
 import {
     getNavigatePath,
     getOrchestratorPage,
@@ -47,6 +46,13 @@ const KindOfWeekPage = () => {
         },
     };
 
+    const alertLabels = {
+        boldContent: t("component.activity-selecter.alert-message"),
+        content: "",
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: t("page.alert-when-quit.alert-complete"),
+    };
+
     return (
         <SurveyPage
             validate={useCallback(
@@ -76,7 +82,7 @@ const KindOfWeekPage = () => {
                         cancel => onClose(cancel, setIsAlertDisplayed),
                         [isAlertDisplayed],
                     )}
-                    labels={getLabelsWhenQuit()}
+                    labels={alertLabels}
                     icon={kindOfWeek}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}
                 ></Alert>
