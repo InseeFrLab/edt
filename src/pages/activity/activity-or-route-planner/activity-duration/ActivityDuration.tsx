@@ -4,7 +4,7 @@ import { IconButton, Snackbar } from "@mui/material";
 import errorIcon from "assets/illustration/error/activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
-import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
+import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -76,11 +76,18 @@ const ActivityDurationPage = () => {
             if (startTime && endTime) {
                 startTimeDay = dayjs(startTime[currentIteration], "HH:mm");
                 endTimeDay = dayjs(endTime[currentIteration], "HH:mm");
-                if (endTimeDay.hour() < 4) {
+                let init = dayjs(START_TIME_DAY, FORMAT_TIME);
+
+                if (startTimeDay.hour() < 4 && endTimeDay.isAfter(init)) {
+                    startTimeDay = startTimeDay.add(1, "day");
+                }
+
+                if (endTimeDay.hour() < 4 || endTimeDay.isSame(init)) {
                     endTimeDay = endTimeDay.add(1, "day");
                 }
-                if (startTimeDay.hour() < 4) {
-                    startTimeDay = startTimeDay.add(1, "day");
+
+                if (startTimeDay.isSame(endTimeDay) && startTimeDay.isSame(init)) {
+                    endTimeDay = endTimeDay.add(1, DAY_LABEL);
                 }
                 if (startTimeDay.isAfter(endTimeDay)) {
                     isAfter = true;
