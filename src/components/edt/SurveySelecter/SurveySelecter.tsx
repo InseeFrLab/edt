@@ -81,6 +81,10 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         );
     };
 
+    const handleToggle = useCallback(() => {
+        setIsOpen(isOpen => !isOpen);
+    }, []);
+
     return (
         <Box id={id}>
             <AppBar className={classes.surveySelecterAppBar} position="static">
@@ -95,10 +99,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                             .filter((_, index) => index < maxTabsPerRow)
                             .map((tabData, index) => getTab(tabData, index))}
                     </Tabs>
-                    <Box
-                        className={classes.actionBox}
-                        onClick={useCallback(() => setIsOpen(!isOpen), [open])}
-                    >
+                    <Box className={classes.actionBox} onClick={handleToggle}>
                         {isOpen ? <ExpandLess /> : <ExpandMore />}
                     </Box>
                 </Box>
