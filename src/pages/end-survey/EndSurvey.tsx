@@ -159,7 +159,11 @@ const EndSurveyPage = () => {
                         () => validateAndNav(true, setIsModalDisplayed),
                         [isModalDisplayed],
                     )}
-                    content={t("component.modal-edt.modal-felicitation.activity-content")}
+                    content={
+                        isActivitySurvey
+                            ? t("component.modal-edt.modal-felicitation.activity-content")
+                            : t("component.modal-edt.modal-felicitation.survey-content")
+                    }
                 />
             </FlexCenter>
         </SurveyPage>
