@@ -289,7 +289,7 @@
             "phone-time": " de consultation du téléphone"
         },
         "day-summary": {
-            "tooltip-summary": "Toutes activités ajoutées manuellement, c’est à dire en ne sélectionnant pas parmi celles déjà proposées ainsi que les activités ajoutées via les boutons « autre » ne peuvent être prises en compte dans les calculs de ce résumé.",
+            "tooltip-summary": "Toutes les activités ajoutées manuellement, c’est à dire en ne sélectionnant pas parmi celles déjà proposées ainsi que les activités ajoutées via les boutons « autre » ne peuvent être prises en compte dans les calculs de ce résumé.",
             "title": "RÉSUMÉ DE LA JOURNÉE",
             "no-time": "0min",
             "activity-done": "Nombre d’activités déclarées",
