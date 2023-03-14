@@ -1,6 +1,8 @@
 export const START_TIME_DAY = "04:00";
 export const FORMAT_TIME = "HH:mm";
 export const MINUTE_LABEL = "minute";
+export const DAY_LABEL = "day";
+export const HOURS_LABEL = "hours";
 
 export const HOME_CATEGORY_PLACE_LIST = ["11"];
 export const SLEEPING_CATEGORIES_ACTIVITES_LIST = ["111", "114"];

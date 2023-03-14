@@ -5,6 +5,7 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
 import activitySurveySource from "activity-survey.json";
+import { DAY_LABEL, FORMAT_TIME, HOURS_LABEL, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
@@ -12,6 +13,7 @@ import { LoopEnum } from "enumerations/LoopEnum";
 import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { TFunction, useTranslation } from "react-i18next";
+import { start } from "repl";
 import { getData, getValue, saveData } from "service/survey-service";
 import { getLoopSize } from "./loop-service";
 import {
@@ -186,7 +188,7 @@ const createGapsOverlaps = (idSurvey: string, activitiesRoutes: ActivityRouteOrG
     const copy = [...activitiesRoutes];
     for (const act of copy) {
         // Gaps
-        const beforeFirstActivity = getDiffTime(getTime("04:00"), getTime(act?.startTime));
+        const beforeFirstActivity = getDiffTime(getTime("04:00"), getTime(act?.startTime), "hours");
         if (activitiesRoutes.indexOf(act) == 0 && beforeFirstActivity > 0) {
             activitiesRoutes.splice(0, 0, {
                 startTime: "04:00",
@@ -283,18 +285,32 @@ const getActivitesSelectedLabel = (idSurvey: string): Activity[] => {
     return activitesSelected;
 };
 
+const getActivityOrRouteDuration = (activity: ActivityRouteOrGap, diffType: string): number => {
+    dayjs.extend(customParseFormat);
+    const startTime = dayjs(activity.startTime, FORMAT_TIME);
+    let endTime = dayjs(activity.endTime, FORMAT_TIME);
+
+    if (startTime.isAfter(endTime)) {
+        endTime = endTime.add(1, DAY_LABEL);
+    }
+
+    let init = dayjs(START_TIME_DAY, FORMAT_TIME);
+
+    if (startTime.isSame(endTime) && endTime.isSame(init)) {
+        endTime = endTime.add(1, DAY_LABEL);
+    }
+
+    let diffMinutes = Math.abs(endTime.diff(startTime, MINUTE_LABEL));
+    let diffHours = Math.trunc(diffMinutes / 60);
+
+    return diffType != MINUTE_LABEL ? diffHours : diffMinutes;
+};
+
 const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string => {
     if (!activity.startTime || !activity.endTime) return "?";
 
-    dayjs.extend(customParseFormat);
-    const startTime = dayjs(activity.startTime, "HH:mm");
-    let endTime = dayjs(activity.endTime, "HH:mm");
-
-    if (startTime.isAfter(endTime)) {
-        endTime = endTime.add(1, "day");
-    }
-    let diffHours = Math.abs(endTime.diff(startTime, "hour"));
-    let diffMinutes = Math.abs(endTime.diff(startTime, "minute"));
+    let diffMinutes = getActivityOrRouteDuration(activity, MINUTE_LABEL);
+    let diffHours = Math.trunc(diffMinutes / 60);
     diffMinutes = diffMinutes - diffHours * 60;
 
     if (diffMinutes >= 0 && diffHours > 0) {
@@ -306,13 +322,7 @@ const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string =
 
 const getActivityOrRouteDurationMinutes = (activity: ActivityRouteOrGap): number => {
     if (!activity.startTime || !activity.endTime) return 0;
-    dayjs.extend(customParseFormat);
-    const startTime = dayjs(activity.startTime, "HH:mm");
-    let endTime = dayjs(activity.endTime, "HH:mm");
-    if (startTime.isAfter(endTime)) {
-        endTime = endTime.add(1, "day");
-    }
-    return Math.abs(endTime.diff(startTime, "minutes"));
+    return getActivityOrRouteDuration(activity, MINUTE_LABEL);
 };
 
 const getActivityOrRouteDurationLabelFromDurationMinutes = (durationMinutes: number): string => {
@@ -336,37 +346,23 @@ const getLabelFromTime = (hours: number, minutes: number) => {
 const getTotalTimeOfActivities = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
     const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey);
     let totalTimeGap = 0;
-    let leftTimeActivities = 0;
+    let totalTimeActivities = 0;
 
     for (let activityRouteOrGap of activitiesRoutesOrGaps) {
         if (activityRouteOrGap.isGap) {
-            let startTime = getTime(activityRouteOrGap.startTime);
-            let endTime = getTime(activityRouteOrGap.endTime);
-            const diffTime = getDiffTime(startTime, endTime);
-            totalTimeGap += diffTime;
+            totalTimeGap += getActivityOrRouteDuration(activityRouteOrGap, MINUTE_LABEL);
+        } else {
+            totalTimeActivities += getActivityOrRouteDuration(activityRouteOrGap, MINUTE_LABEL);
         }
     }
-
-    const beforeFirstActivity = getDiffTime(
-        getTime("04:00"),
-        getTime(activitiesRoutesOrGaps[0]?.startTime),
-    );
-
-    const afterLastActivity = getDiffTime(
-        getTime(activitiesRoutesOrGaps[activitiesRoutesOrGaps.length - 1]?.endTime),
-        getTime("03:55"),
-    );
-
-    leftTimeActivities = beforeFirstActivity + afterLastActivity + totalTimeGap;
-
     if (activitiesRoutesOrGaps.length == 0) return 0;
-    else return 24 - leftTimeActivities;
+    else return totalTimeActivities - totalTimeGap;
 };
 
 const getScore = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
-    const totalHourActivities = getTotalTimeOfActivities(idSurvey, t);
+    const totalHourActivities = getTotalTimeOfActivities(idSurvey, t) / 60;
     const percentage = (totalHourActivities / 24) * 100;
-    return totalHourActivities > 0 ? Number(percentage.toFixed(0)) : 0;
+    return totalHourActivities > 0 ? Math.trunc(percentage) : 0;
 };
 
 const getWeeklyPlannerScore = (idSurvey: string): number => {
@@ -382,7 +378,7 @@ const getTime = (time?: string) => {
     } else return timeDay;
 };
 
-const getDiffTime = (startTime?: dayjs.Dayjs, endTime?: dayjs.Dayjs) => {
+const getDiffTime = (startTime?: dayjs.Dayjs, endTime?: dayjs.Dayjs, diffType?: "minutes" | "hours") => {
     if (startTime == null || endTime == null) return 0;
     dayjs.extend(customParseFormat);
     let startFinalTime = startTime;
@@ -395,7 +391,7 @@ const getDiffTime = (startTime?: dayjs.Dayjs, endTime?: dayjs.Dayjs) => {
     if (startTimeAfterMidnightAfterEndTime || startTimeBeforeMidnightAfterEndTime) {
         endTimeDay = endTimeDay.set("day", dayjs().day() + 1);
     }
-    const diffHours = Math.abs(startFinalTime.diff(endTimeDay, "hour", true));
+    const diffHours = Math.abs(startFinalTime.diff(endTimeDay, diffType, true));
     return diffHours;
 };
 
