@@ -9,7 +9,12 @@ const WorstActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const uniqueActivities = getActivitesSelectedLabel(context.idSurvey).filter(
         (value, index, self) =>
-            index === self.findIndex(activity => activity.activityCode === value.activityCode),
+            index ===
+            self.findIndex(
+                activity =>
+                    activity.activityCode === value.activityCode ||
+                    activity.activityLabel === value.activityLabel,
+            ),
     );
 
     const specifiquesProps = {

@@ -74,8 +74,12 @@ export const findActivityInNomenclatureReferentielById = (
     return findItemInCategoriesNomenclature(activityCode, getNomenclatureRef())?.item;
 };
 
-export const findSecondaryActivityInRef = (id: string): CheckboxOneCustomOption | undefined => {
+export const findActivitySecondaryActivityInRef = (id: string): CheckboxOneCustomOption | undefined => {
     return getActivitySecondaryActivityRef().find(a => a.value === id);
+};
+
+export const findRouteSecondaryActivityInRef = (id: string): CheckboxOneCustomOption | undefined => {
+    return getRouteSecondaryActivityRef().find(a => a.value === id);
 };
 
 export const findPlaceInRef = (id: string): CheckboxOneCustomOption | undefined => {
