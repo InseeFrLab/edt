@@ -5,7 +5,7 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
 import activitySurveySource from "activity-survey.json";
-import { DAY_LABEL, FORMAT_TIME, HOURS_LABEL, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
+import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
@@ -13,16 +13,16 @@ import { LoopEnum } from "enumerations/LoopEnum";
 import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { TFunction, useTranslation } from "react-i18next";
-import { start } from "repl";
 import { getData, getValue, saveData } from "service/survey-service";
 import { getLoopSize } from "./loop-service";
 import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
+    findActivitySecondaryActivityInRef,
     findMeanOfTransportInRef,
     findPlaceInRef,
     findRouteInRef,
-    findSecondaryActivityInRef,
+    findRouteSecondaryActivityInRef,
     getLanguage,
 } from "./referentiel-service";
 
@@ -75,7 +75,9 @@ const checkForSecondaryActivity = (idSurvey: string, i: number, activityOrRoute:
         if (secondaryActivityValue) {
             activityOrRoute.secondaryActivity = {
                 activityCode: secondaryActivityValue,
-                activityLabel: findSecondaryActivityInRef(secondaryActivityValue)?.label,
+                activityLabel: activityOrRoute.isRoute
+                    ? findRouteSecondaryActivityInRef(secondaryActivityValue)?.label
+                    : findActivitySecondaryActivityInRef(secondaryActivityValue)?.label,
             };
         }
     }
