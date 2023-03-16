@@ -3,7 +3,7 @@ import {
     SelectedActivity,
     transformToWeeklyPlannerDataType,
 } from "@inseefrlab/lunatic-edt";
-import { findItemInAutoCompleteRefByLabel } from "@inseefrlab/lunatic-edt/dist/ui/components/ActivitySelecter/activityUtils";
+import { findItemInAutoCompleteRefByLabel } from "@inseefrlab/lunatic-edt/src/ui/components/ActivitySelecter/activityUtils";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
 import activitySurveySource from "activity-survey.json";
 import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
