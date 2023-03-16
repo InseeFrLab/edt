@@ -3,6 +3,7 @@ import {
     SelectedActivity,
     transformToWeeklyPlannerDataType,
 } from "@inseefrlab/lunatic-edt";
+import { findItemInAutoCompleteRefByLabel } from "@inseefrlab/lunatic-edt/dist/ui/components/ActivitySelecter/activityUtils";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
 import activitySurveySource from "activity-survey.json";
 import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
@@ -13,8 +14,7 @@ import { LoopEnum } from "enumerations/LoopEnum";
 import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { TFunction, useTranslation } from "react-i18next";
-import { getData, getValue, saveData } from "service/survey-service";
-import { getLoopSize } from "./loop-service";
+import { getLoopSize } from "service/loop-service";
 import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
@@ -23,8 +23,10 @@ import {
     findPlaceInRef,
     findRouteInRef,
     findRouteSecondaryActivityInRef,
+    getAutoCompleteRef,
     getLanguage,
-} from "./referentiel-service";
+} from "service/referentiel-service";
+import { getData, getValue, saveData } from "service/survey-service";
 
 const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
     const mainActivityId = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_ID, i) as string;
@@ -49,7 +51,10 @@ const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: Acti
             isFullyCompleted: mainActivityIsFullyCompleted,
         };
         activityOrRoute.activity = {
-            activityCode: activitySelection.suggesterId ?? activitySelection.id,
+            activityCode:
+                activitySelection.suggesterId ??
+                activitySelection.id ??
+                findItemInAutoCompleteRefByLabel(activitySelection.label, getAutoCompleteRef())?.id,
             activityLabel: getActivityLabel(activitySelection) || "",
             isGoal: mainActivitySuggesterId != null || mainActivityLabel != null,
             activityGoal: goalActivity,
