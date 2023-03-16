@@ -219,7 +219,8 @@ const navToRouteOrRouteNotSelection = (
     currentIteration?: number,
 ) => {
     if (value) {
-        const conditional = getValue(_context.idSurvey, value, currentIteration) == "true";
+        const currentValue = getValue(_context.idSurvey, value, currentIteration);
+        const conditional = currentValue == "true";
         if (conditional || (typeof conditional == "string" && conditional != "")) {
             _navigate(route as To);
         } else {
