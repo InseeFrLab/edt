@@ -18,7 +18,6 @@ const DaySummary = (props: DaySummaryProps) => {
         infoIconAlt: t("accessibility.asset.info.info-alt"),
         infoIcon: InfoIcon,
         border: true,
-        infoIconTop: true,
     };
     const titleLabels = {
         boldTitle: t("component.day-summary.title"),
