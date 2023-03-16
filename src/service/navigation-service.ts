@@ -142,10 +142,8 @@ const getCurrentNavigatePath = (
 const getLastCompletedStep = (): number => {
     const data = getData(_context.idSurvey ?? "");
     const lastStepCompleted = getLastPageStep(data);
-    const lastStep = getLastStep();
-    return lastStepCompleted.stepNumber < lastStep.stepNumber
-        ? lastStepCompleted.stepNumber - 1
-        : lastStep.stepNumber;
+
+    return lastStepCompleted != null ? lastStepCompleted.stepNumber : 0;
 };
 
 const getOrchestratorPage = (page: EdtRoutesNameEnum, parentPage?: EdtRoutesNameEnum): string => {

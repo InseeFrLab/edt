@@ -79,8 +79,6 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             [isModalDisplayed],
         ),
         onPrevious: useCallback(() => (backRoute ? saveAndNavFullPath(backRoute) : saveAndNav()), []),
-        firstName: getPrintedFirstName(context.idSurvey),
-        firstNamePrefix: t("component.survey-page-edit-header.week-of"),
         simpleHeader: true,
         simpleHeaderLabel: t("page.complementary-questions.simple-header-label"),
         srcIcon: errorIcon,

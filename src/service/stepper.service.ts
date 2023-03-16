@@ -89,7 +89,7 @@ const haveVariableNotFilled = (
     return filled;
 };
 
-const getLastPageStep = (data: LunaticData | undefined): StepData => {
+const getLastPageStep = (data: LunaticData | undefined): StepData | null => {
     const stepper = activityComplementaryQuestionsStepperData;
     const source = getCurrentPageSource();
     let lastStepNotFilled = stepper[stepper.length - 1];
@@ -103,7 +103,16 @@ const getLastPageStep = (data: LunaticData | undefined): StepData => {
         if (notFilled) lastStepNotFilled = stepData;
         i++;
     }
-    return lastStepNotFilled;
+    let lastStepFilled =
+        lastStepNotFilled.stepNumber == 1 ? null : stepper[lastStepNotFilled.stepNumber - 1];
+
+    if (lastStepNotFilled == getLastStep()) {
+        const component = getComponentStep(lastStepNotFilled, source);
+        lastStepFilled = haveVariableNotFilled(component, source, data)
+            ? stepper[stepper.length - 2]
+            : stepper[stepper.length - 1];
+    }
+    return lastStepFilled;
 };
 
 export {
