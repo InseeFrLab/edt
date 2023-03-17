@@ -1,6 +1,8 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import HelpIcon from "@mui/icons-material/Help";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { Box, Button } from "@mui/material";
+import disconnectIcon from "assets/illustration/disconnect.svg";
 import logo from "assets/illustration/logo.png";
 import reminder_note from "assets/illustration/reminder-note.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -10,7 +12,8 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { useCallback } from "react";
+import { useAuth } from "oidc-react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
@@ -30,12 +33,43 @@ const HomePage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { classes } = useStyles();
+    const auth = useAuth();
+    const [isAlertDisplayed, setIsAlertDisplayed] = React.useState<boolean>(false);
+
+    const alertProps = {
+        isAlertDisplayed: isAlertDisplayed,
+        onCompleteCallBack: useCallback(() => disconnect(), []),
+        onCancelCallBack: useCallback(() => setIsAlertDisplayed(false), [isAlertDisplayed]),
+        labels: {
+            boldContent: t("page.home.logout-popup.content"),
+            content: "",
+            cancel: t("common.navigation.cancel"),
+            complete: t("page.home.navigation.logout"),
+        },
+        icon: disconnectIcon,
+        errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
+    };
 
     const navWorkTime = useCallback(
         (idSurvey: string) => () =>
             navToWeeklyPlannerOrClose(idSurvey, navigate, getSource(SourcesEnum.WORK_TIME_SURVEY)),
         [],
     );
+
+    const onDisconnect = useCallback(() => setIsAlertDisplayed(true), [isAlertDisplayed]);
+
+    const disconnect = useCallback(() => {
+        auth.signOut();
+        auth.userManager.signoutRedirect({
+            id_token_hint: localStorage.getItem("id_token") || undefined,
+        });
+        auth.userManager.clearStaleState();
+        auth.userManager.signoutRedirectCallback().then(() => {
+            localStorage.clear();
+            window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
+            auth.userManager.clearStaleState();
+        });
+    }, []);
 
     const navActivity = useCallback(
         (idSurvey: string) => () => {
@@ -56,6 +90,9 @@ const HomePage = () => {
 
     return (
         <>
+            <FlexCenter>
+                <Alert {...alertProps} />
+            </FlexCenter>
             <Box className={classes.headerBox}>
                 <Box className={classes.logoBox}>
                     <img
@@ -74,6 +111,13 @@ const HomePage = () => {
                         )}
                     >
                         {t("page.home.navigation.link-help-label")}
+                    </Button>
+                    <Button
+                        color="secondary"
+                        startIcon={<PowerSettingsNewIcon />}
+                        onClick={onDisconnect}
+                    >
+                        {t("page.home.navigation.logout")}
                     </Button>
                 </Box>
             </Box>

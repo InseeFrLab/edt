@@ -96,7 +96,11 @@
         "home": {
             "welcome": "Bienvenue sur la PWA Carnet EDT",
             "navigation": {
-                "link-help-label": "Aide"
+                "link-help-label": "Aide",
+                "logout": "Déconnexion"
+            },
+            "logout-popup": {
+                "content": "Êtes-vous sûr de vouloir vous déconnecter de l'application ?"
             },
             "loading": {
                 "message": "Nous mettons à jour vos données.",
