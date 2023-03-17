@@ -123,6 +123,9 @@ const MainActivityPage = () => {
             clickableListIconNoResultAlt: t(
                 "component.activity-selecter.clickable-list-icon-no-result-alt",
             ),
+            clickableListNoRechercheLabel: t(
+                "component.activity-selecter.clickable-list-no-recherche-label",
+            ),
             otherButton: t("component.activity-selecter.other-button"),
             saveButton: t("component.activity-selecter.save-button"),
         },
