@@ -245,7 +245,7 @@
             "clickable-list-not-found-comment": "Vous pourrez l'ajouter en cliquant sur le bouton ci-dessous, ou le bouton + ci-dessus",
             "clickable-list-add-activity-button": "Ajouter l'activité",
             "clickable-list-icon-no-result-alt": "alt pour icon no result",
-            "clickable-list-no-recherche-label": "Affinez votre recherche en saisissant au moins 4 caractères",
+            "clickable-list-not-search-label": "Affinez votre recherche en saisissant au moins 4 caractères",
             "other-button": "Autre ?",
             "save-button": "Sauvegarder"
         },
