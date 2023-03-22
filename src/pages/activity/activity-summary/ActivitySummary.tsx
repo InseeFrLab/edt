@@ -70,6 +70,7 @@ const ActivitySummaryPage = () => {
     const userActivitiesCharacteristics = getUserActivitiesCharacteristics(context.idSurvey, t);
     const userActivitiesSummary = getUserActivitiesSummary(context.idSurvey, t);
     const exportData: ActivitiesSummaryExportData = {
+        houseReference: context.data.houseReference || "",
         firstName: getValue(context.idSurvey, FieldNameEnum.FIRSTNAME) as string,
         surveyDate: getFullFrenchDate(getValue(context.idSurvey, FieldNameEnum.SURVEYDATE) as string),
         activitiesAndRoutes: activitiesRoutesOrGaps,

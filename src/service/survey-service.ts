@@ -147,6 +147,10 @@ const getRemoteSavedSurveysDatas = (
     surveysIds.forEach(surveyId => {
         promises.push(
             remoteGetSurveyData(surveyId, setError).then((remoteSurveyData: SurveyData) => {
+                const regexp = new RegExp(
+                    process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "",
+                );
+                remoteSurveyData.data.houseReference = surveyId.replace(regexp, "");
                 return lunaticDatabase.get(surveyId).then(localSurveyData => {
                     if (
                         remoteSurveyData.stateData?.date &&
@@ -171,6 +175,10 @@ const initializeSurveysDatasCache = (): Promise<any> => {
             promises.push(
                 lunaticDatabase.get(idSurvey).then(data => {
                     if (data != null) {
+                        const regexp = new RegExp(
+                            process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "",
+                        );
+                        data.houseReference = idSurvey.replace(regexp, "");
                         datas.set(idSurvey, data || {});
                     }
                     return data;
@@ -191,6 +199,10 @@ const getData = (idSurvey: string): LunaticData => {
 
 const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): Promise<LunaticData> => {
     data.lastLocalSaveDate = Date.now();
+    if (!data.houseReference) {
+        const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+        data.houseReference = idSurvey.replace(regexp, "");
+    }
 
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);

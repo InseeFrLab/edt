@@ -33,6 +33,7 @@ export interface LunaticData {
     id?: string;
     lastRemoteSaveDate?: number;
     lastLocalSaveDate?: number;
+    houseReference?: string;
     EXTERNAL?: any;
     CALCULATED?: any;
     COLLECTED?: { [key: string]: Collected | MultiCollected }; // TOFIX : good var type with collected array

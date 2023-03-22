@@ -25,6 +25,7 @@ export interface UserActivitiesSummary {
 }
 
 export interface ActivitiesSummaryExportData {
+    houseReference: string;
     firstName?: string;
     surveyDate?: string;
     activitiesAndRoutes: ActivityRouteOrGap[];

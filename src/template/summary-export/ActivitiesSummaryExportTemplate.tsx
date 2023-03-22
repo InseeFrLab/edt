@@ -30,7 +30,8 @@ const ActivitiesSummaryExportTemplate = (props: ActivitiesSummaryExportTemplateP
                                 {t("export.activities-summary.header.edt-survey")}
                             </Text>
                             <Text style={classes.headerGreyColor}>
-                                {t("export.activities-summary.header.house-reference")} XXXX
+                                {t("export.activities-summary.header.house-reference")}{" "}
+                                {exportData.houseReference}
                             </Text>
                             <Text>{exportData.firstName}</Text>
                         </View>
