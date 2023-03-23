@@ -210,7 +210,7 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
         //We try to submit each time the local database is updated if the user is online
         if (!localSaveOnly && navigator.onLine) {
             const surveyData: SurveyData = {
-                stateData: getSurveyStateData(data),
+                stateData: getSurveyStateData(data, idSurvey),
                 data: data,
             };
             remotePutSurveyData(idSurvey, surveyData).then(surveyData => {
@@ -226,9 +226,10 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
     });
 };
 
-const getSurveyStateData = (data: LunaticData): StateData => {
+const getSurveyStateData = (data: LunaticData, idSurvey: string): StateData => {
+    const isSent = getValue(idSurvey, FieldNameEnum.ISENVOYED) as boolean;
     const stateData: StateData = {
-        state: StateDataStateEnum.INIT,
+        state: isSent ? StateDataStateEnum.VALIDATED : StateDataStateEnum.INIT,
         date: Date.now(),
         currentPage: getCurrentPage(data),
     };
