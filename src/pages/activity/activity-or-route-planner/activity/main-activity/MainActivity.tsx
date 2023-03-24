@@ -34,6 +34,7 @@ import catIcon500 from "assets/illustration/activity-categories/6.svg";
 import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
+import { SEPARATOR_DEFAUT } from "constants/constants";
 import { LoopEnum } from "enumerations/LoopEnum";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -134,6 +135,7 @@ const MainActivityPage = () => {
             addToAutocompleteActivityReferentiel(newItem);
         },
         widthGlobal: true,
+        separatorSuggester: process.env.SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
     };
 
     return (

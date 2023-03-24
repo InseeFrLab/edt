@@ -64,3 +64,4 @@ export const PERCENT_MIN_THRESHOLD = {
     PERCENT_MIN_THRESHOLD_GOAL: 20,
 };
 export const MINUTES_DAY = 1440;
+export const SEPARATOR_DEFAUT = ";";
