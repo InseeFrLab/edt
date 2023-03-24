@@ -903,7 +903,7 @@ REACT_APP_EDT_ORGANISATION_API_BASE_URL=https://edt-api-kc.demo.insee.io/
 REACT_APP_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
 REACT_APP_KEYCLOAK_CLIENT_ID=client-edt
 REACT_APP_KEYCLOAK_REDIRECT_URI=https://insee-edt.k8s.keyconsulting.fr/
-SEPARATOR_SUGGESTER=;
+REACT_APP_SEPARATOR_SUGGESTER=;
 
 ```
 </details>

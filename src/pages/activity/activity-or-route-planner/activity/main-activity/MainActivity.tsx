@@ -135,7 +135,7 @@ const MainActivityPage = () => {
             addToAutocompleteActivityReferentiel(newItem);
         },
         widthGlobal: true,
-        separatorSuggester: process.env.SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
+        separatorSuggester: process.env.REACT_APP_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
     };
 
     return (
