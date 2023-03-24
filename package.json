@@ -1,6 +1,5 @@
 {
     "name": "edt",
-    "version": "3.1",
     "dateVersion": "24/03/2023",
     "licence": "MIT",
     "dependencies": {
@@ -13,6 +12,7 @@
         "@react-pdf/renderer": "2.1.2",
         "axios": "^1.2.2",
         "dexie": "^3.2.2",
+        "env-cmd": "^10.1.0",
         "i18next": "^21.9.2",
         "oidc-react": "^2.1.0",
         "react": "^18.2.0",
@@ -68,6 +68,7 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts --max_old_space_size=4096 build",
+        "build:staging": "env-cmd -f stag.env npm run build",
         "start-rewired": "react-app-rewired start",
         "test": "react-scripts test",
         "test-ci": "react-scripts test --watchAll=false",
