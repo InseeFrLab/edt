@@ -1,5 +1,3 @@
-import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
-import i18n from "i18next";
 import {
     AutoCompleteActiviteOption,
     CheckboxOneCustomOption,
@@ -7,7 +5,9 @@ import {
     findItemInCategoriesNomenclature,
     NomenclatureActivityOption,
     SelectedActivity,
-} from "lunatic-edt";
+} from "@inseefrlab/lunatic-edt";
+import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
+import i18n from "i18next";
 import { getReferentiel } from "./survey-service";
 
 export const getAutoCompleteRef = (): AutoCompleteActiviteOption[] => {
@@ -32,6 +32,10 @@ export const getPlaceRef = (): CheckboxOneCustomOption[] => {
 
 export const getRouteRef = (): CheckboxOneCustomOption[] => {
     return getReferentiel(ReferentielsEnum.ROUTE) as CheckboxOneCustomOption[];
+};
+
+export const getActivityGoalRef = (): CheckboxOneCustomOption[] => {
+    return getReferentiel(ReferentielsEnum.ACTIVITYGOAL) as CheckboxOneCustomOption[];
 };
 
 export const getMeanOfTransportRef = (): CheckboxOneCustomOption[] => {
@@ -70,8 +74,12 @@ export const findActivityInNomenclatureReferentielById = (
     return findItemInCategoriesNomenclature(activityCode, getNomenclatureRef())?.item;
 };
 
-export const findSecondaryActivityInRef = (id: string): CheckboxOneCustomOption | undefined => {
+export const findActivitySecondaryActivityInRef = (id: string): CheckboxOneCustomOption | undefined => {
     return getActivitySecondaryActivityRef().find(a => a.value === id);
+};
+
+export const findRouteSecondaryActivityInRef = (id: string): CheckboxOneCustomOption | undefined => {
+    return getRouteSecondaryActivityRef().find(a => a.value === id);
 };
 
 export const findPlaceInRef = (id: string): CheckboxOneCustomOption | undefined => {

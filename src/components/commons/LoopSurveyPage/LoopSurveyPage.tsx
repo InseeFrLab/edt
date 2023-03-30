@@ -1,7 +1,7 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
 import AddActivityOrRouteStepper from "components/edt/AddActivityOrRouteStepper/AddActivityOrRouteStepper";
 import { LoopEnum } from "enumerations/LoopEnum";
-import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { getLoopLastCompletedStep } from "service/loop-service";
@@ -16,6 +16,7 @@ interface LoopSurveyPageProps {
     onValidate?(event?: React.MouseEvent): void;
     onClose?(): void;
     displayStepper?: boolean;
+    displayHeader?: boolean;
     className?: string;
     children: JSX.Element[] | JSX.Element;
     currentStepIcon?: string;
@@ -36,6 +37,7 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
         onValidate,
         onClose,
         displayStepper = true,
+        displayHeader = true,
         className,
         children,
         isRoute,
@@ -76,7 +78,7 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
                         />
                     </LoopSurveyPageHeader>
                 )}
-            {!displayStepper && onClose && (
+            {!displayStepper && displayHeader && onClose && (
                 <LoopSurveyPageSimpleHeader
                     simpleHeaderLabel={currentStepLabel}
                     onNavigateBack={onClose}

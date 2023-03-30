@@ -1,3 +1,4 @@
+import { Alert, CheckboxBooleanEdtSpecificProps } from "@inseefrlab/lunatic-edt";
 import screenErrorIcon from "assets/illustration/error/screen.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
@@ -5,7 +6,6 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Alert, CheckboxBooleanEdtSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -15,7 +15,9 @@ import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getPreviousLoopPage, getStepData } from "service/loop-stepper-service";
 import {
     getCurrentNavigatePath,
+    getNavigatePath,
     getOrchestratorPage,
+    getParameterizedNavigatePath,
     onClose,
     onNext,
     onPrevious,
@@ -31,11 +33,15 @@ const WithScreenPage = () => {
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
 
-    const currentPage = EdtRoutesNameEnum.WITH_SCREEN;
-    const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
+    const currentPage = EdtRoutesNameEnum.WITH_SCREEN;
     const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
+    const stepData = getStepData(currentPage, isRoute);
+    const isCloture = getValue(context.idSurvey, FieldNameEnum.ISCLOSED) as boolean;
+    const summaryRoutePath =
+        getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, context.idSurvey) +
+        getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY);
 
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
@@ -55,23 +61,27 @@ const WithScreenPage = () => {
         },
         nextClickCallback: () => {
             saveAndNav(
-                getCurrentNavigatePath(
-                    context.idSurvey,
-                    EdtRoutesNameEnum.ACTIVITY,
-                    getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                    context.source,
-                ),
+                isCloture
+                    ? summaryRoutePath
+                    : getCurrentNavigatePath(
+                          context.idSurvey,
+                          EdtRoutesNameEnum.ACTIVITY,
+                          getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                          context.source,
+                      ),
             );
         },
         onSelectValue: () => {
             validate().then(() => {
                 saveAndNav(
-                    getCurrentNavigatePath(
-                        context.idSurvey,
-                        EdtRoutesNameEnum.ACTIVITY,
-                        getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                        context.source,
-                    ),
+                    isCloture
+                        ? summaryRoutePath
+                        : getCurrentNavigatePath(
+                              context.idSurvey,
+                              EdtRoutesNameEnum.ACTIVITY,
+                              getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                              context.source,
+                          ),
                 );
             });
         },

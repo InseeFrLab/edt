@@ -1,16 +1,16 @@
+import { Alert, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton, Snackbar } from "@mui/material";
 import errorIcon from "assets/illustration/error/activity.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
-import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
+import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Alert, makeStylesEdt, TimepickerSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { Fragment, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -34,17 +34,18 @@ const ActivityDurationPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { classes } = useStyles();
     setEnviro(context, useNavigate(), callbackHolder);
-
-    const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
-    const stepData = getStepData(currentPage, context.isRoute);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
+    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
+
+    const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
+    const stepData = getStepData(currentPage, isRoute);
+
     const activitiesAct = getActivitiesOrRoutes(
         t,
         context.idSurvey,
         context.source,
     ).activitiesRoutesOrGaps;
-    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const [snackbarText, setSnackbarText] = useState<string | undefined>(undefined);
@@ -75,11 +76,18 @@ const ActivityDurationPage = () => {
             if (startTime && endTime) {
                 startTimeDay = dayjs(startTime[currentIteration], "HH:mm");
                 endTimeDay = dayjs(endTime[currentIteration], "HH:mm");
-                if (endTimeDay.hour() < 4) {
+                let init = dayjs(START_TIME_DAY, FORMAT_TIME);
+
+                if (startTimeDay.hour() < 4 && endTimeDay.isAfter(init)) {
+                    startTimeDay = startTimeDay.add(1, "day");
+                }
+
+                if (endTimeDay.hour() < 4 || endTimeDay.isSame(init)) {
                     endTimeDay = endTimeDay.add(1, "day");
                 }
-                if (startTimeDay.hour() < 4) {
-                    startTimeDay = startTimeDay.add(1, "day");
+
+                if (startTimeDay.isSame(endTimeDay) && startTimeDay.isSame(init)) {
+                    endTimeDay = endTimeDay.add(1, DAY_LABEL);
                 }
                 if (startTimeDay.isAfter(endTimeDay)) {
                     isAfter = true;
@@ -116,7 +124,7 @@ const ActivityDurationPage = () => {
             saveData(context.idSurvey, callbackHolder.getData()).then(() => {
                 navigate(
                     getLoopParameterizedNavigatePath(
-                        getNextLoopPage(currentPage, context.isRoute),
+                        getNextLoopPage(currentPage, isRoute),
                         LoopEnum.ACTIVITY_OR_ROUTE,
                         currentIteration,
                     ),

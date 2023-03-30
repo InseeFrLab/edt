@@ -97,7 +97,11 @@
         "home": {
             "welcome": "Bienvenue sur la PWA Carnet EDT",
             "navigation": {
-                "link-help-label": "Aide"
+                "link-help-label": "Aide",
+                "logout": "Déconnexion"
+            },
+            "logout-popup": {
+                "content": "Êtes-vous sûr de vouloir vous déconnecter de l'application ?"
             },
             "loading": {
                 "message": "Nous mettons à jour vos données.",
@@ -136,6 +140,9 @@
             "input-placeholder": "Activité secondaire",
             "other-button": "Autre ?"
         },
+        "with-someone": {
+            "tooltip-bold": "Indiquer si d’autres personnes étaient présentes, dans la pièce ou à portée de voix, même si elles faisaient autre chose que vous."
+        },
         "alert-when-quit": {
             "activity-planner": {
                 "alert-content-close-bold": "Souhaitez-vous clôturer votre journée?",
@@ -171,7 +178,18 @@
             "info-bold": "Indiquez votre temps de travail réel et le travail éventuel que vous rapportez à la maison."
         },
         "activity-summary": {
-            "download-pdf": "Télécharger le PDF"
+            "add-activity-or-route": "Ajouter +",
+            "download-pdf": "Télécharger le PDF",
+            "quality-score": {
+                "label": "GROUPE",
+                "type-1": "A",
+                "type-2": "B",
+                "type-3": "C",
+                "type-4": "D"
+            },
+            "alert-tooltip-edit": {
+                "alert-bold": "Vous avez ajouté ou modifié une activité. Pensez à mettre à jour vos réponses aux caractéristiques de votre journée si vous le souhaitez."
+            }
         },
         "end-survey": {
             "end-of-work-time-survey": "Vous êtes arrivé à la fin du semainier.",
@@ -228,7 +246,9 @@
             "clickable-list-not-found-comment": "Vous pourrez l'ajouter en cliquant sur le bouton ci-dessous, ou le bouton + ci-dessus",
             "clickable-list-add-activity-button": "Ajouter l'activité",
             "clickable-list-icon-no-result-alt": "alt pour icon no result",
-            "other-button": "Autre ?"
+            "clickable-list-not-search-label": "Affinez votre recherche en saisissant au moins 4 caractères",
+            "other-button": "Autre ?",
+            "save-button": "Sauvegarder"
         },
         "location-selecter": {
             "alert-message": "Aucun lieu n’a été renseigné"
@@ -275,6 +295,7 @@
             "phone-time": " de consultation du téléphone"
         },
         "day-summary": {
+            "tooltip-summary": "Toutes les activités ajoutées manuellement, c’est à dire en ne sélectionnant pas parmi celles déjà proposées ainsi que les activités ajoutées via les boutons « autre » ne peuvent être prises en compte dans les calculs de ce résumé.",
             "title": "RÉSUMÉ DE LA JOURNÉE",
             "no-time": "0min",
             "activity-done": "Nombre d’activités déclarées",
@@ -286,6 +307,59 @@
             "work-time": "Temps de travail et étude",
             "domestic-task-time": "Temps de tâches domestiques",
             "other-home-time": "Temps pour un autre ménage"
+        }
+    },
+    "export": {
+        "activities-summary": {
+            "file-name": "Export_carnet_EDT_",
+            "header": {
+                "insee": "INSEE",
+                "survey-day": "Date de la journée enquêtée : ",
+                "edt-survey": "Carnet EDT",
+                "house-reference": "RÉFÉRENCE MÉNAGE "
+            },
+            "table-header": {
+                "schedule": "HORAIRES",
+                "duration": "DURÉE",
+                "activity": "ACTIVITÉ",
+                "secondary-activity": "ACTIVITÉ SECONDAIRE",
+                "location": "LIEU",
+                "presence": "PRÉSENCE",
+                "screen": "ÉCRAN",
+                "route": "TRAJET",
+                "mean-of-transport": "MOYEN DE TRANSPORT"
+            },
+            "title": {
+                "global-day-overview": "Organisation générale de la journée",
+                "activities-planning": "Planning des activités",
+                "routes-planning": "Planning des trajets",
+                "day-characteristics": "Caractéristiques de la journée",
+                "day-summary": "Résumé de la journée"
+            },
+            "table-data": {
+                "yes": "Oui",
+                "no": "Non",
+                "empty": "/"
+            },
+            "day-characteristics": {
+                "best-activity": "Activité la plus agréable",
+                "worst-activity": "Activité la moins agréable",
+                "kind-of-day": "Type de journée",
+                "special-day": "Caractère exceptionnel",
+                "route-time-estimation": "Estimation du temps de trajet",
+                "phone-time-estimation": "Estimation consultation du téléphone"
+            },
+            "day-summary": {
+                "activities-amount": "Nombre d'activités : ",
+                "routes-amount": "Nombre de trajets : ",
+                "working-time": "Temps de travail",
+                "sleeping-time": "Temps de sommeil",
+                "house-tasks-time": "Temps de tâches ménagères",
+                "other-house-tasks-time": "Temps pour un autre ménage",
+                "amount-activity-or-route-with-screen": "Nombre d'activités/trajets avec un écran",
+                "time-activity-with-screen": "Temps d'activité avec un écran",
+                "real-route-time": "Temps de trajet effectif"
+            }
         }
     }
 }

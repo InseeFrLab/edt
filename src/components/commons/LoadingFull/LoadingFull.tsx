@@ -1,8 +1,8 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { CircularProgress } from "@mui/material";
 import reminder_note from "assets/illustration/reminder-note.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
-import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 
 interface LoadingFullProps {
@@ -27,7 +27,7 @@ const LoadingFull = (props: LoadingFullProps) => {
                 <CircularProgress thickness={2} className={classes.loading} />
             </FlexCenter>
             <FlexCenter>
-                <h2>{message}</h2>
+                <h2 className={classes.centerMobile}>{message}</h2>
             </FlexCenter>
             <FlexCenter>{thanking ? <h3>{thanking}</h3> : <></>}</FlexCenter>
         </>
@@ -38,6 +38,10 @@ const useStyles = makeStylesEdt({ "name": { LoadingFull } })({
     loading: {
         width: "117px !important",
         height: "117px !important",
+    },
+    centerMobile: {
+        width: "100%",
+        textAlign: "center",
     },
 });
 

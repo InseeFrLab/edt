@@ -142,10 +142,8 @@ const getCurrentNavigatePath = (
 const getLastCompletedStep = (): number => {
     const data = getData(_context.idSurvey ?? "");
     const lastStepCompleted = getLastPageStep(data);
-    const lastStep = getLastStep();
-    return lastStepCompleted.stepNumber < lastStep.stepNumber
-        ? lastStepCompleted.stepNumber - 1
-        : lastStep.stepNumber;
+
+    return lastStepCompleted != null ? lastStepCompleted.stepNumber : 0;
 };
 
 const getOrchestratorPage = (page: EdtRoutesNameEnum, parentPage?: EdtRoutesNameEnum): string => {
@@ -219,7 +217,8 @@ const navToRouteOrRouteNotSelection = (
     currentIteration?: number,
 ) => {
     if (value) {
-        const conditional = getValue(_context.idSurvey, value, currentIteration);
+        const currentValue = getValue(_context.idSurvey, value, currentIteration);
+        const conditional = currentValue == "true";
         if (conditional || (typeof conditional == "string" && conditional != "")) {
             _navigate(route as To);
         } else {
@@ -411,8 +410,7 @@ const validateWithAlertAndNav = (
     iteration?: number,
     route?: string,
 ): void => {
-    const isCompleted = getValue(_context.idSurvey, FieldNameEnum.ISCOMPLETED, iteration);
-    if (!displayAlert && !isCompleted) {
+    if (!displayAlert) {
         setDisplayAlert(true);
     } else {
         saveAndNav(route);

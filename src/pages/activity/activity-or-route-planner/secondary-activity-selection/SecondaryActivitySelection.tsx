@@ -1,21 +1,25 @@
+import { CheckboxOneCustomOption } from "@inseefrlab/lunatic-edt";
 import errorIcon from "assets/illustration/error/activity.svg";
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { CheckboxOneCustomOption } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import {
     getActivitySecondaryActivityRef,
     getRouteSecondaryActivityRef,
 } from "service/referentiel-service";
-import { addToSecondaryActivityReferentiel } from "service/survey-service";
+import { addToSecondaryActivityReferentiel, getValue } from "service/survey-service";
 
 const SecondaryActivitySelectionPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { t } = useTranslation();
+
+    const paramIteration = useParams().iteration;
+    const currentIteration = paramIteration ? +paramIteration : 0;
+    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
 
     const specifiquesProps = {
         labelsSpecifics: {
@@ -25,15 +29,13 @@ const SecondaryActivitySelectionPage = () => {
         },
         addToReferentielCallBack: (newItem: CheckboxOneCustomOption) => {
             addToSecondaryActivityReferentiel(
-                context.isRoute
+                isRoute
                     ? ReferentielsEnum.ROUTESECONDARYACTIVITY
                     : ReferentielsEnum.ACTIVITYSECONDARYACTIVITY,
                 newItem,
             );
         },
-        referentiel: context.isRoute
-            ? getRouteSecondaryActivityRef()
-            : getActivitySecondaryActivityRef(),
+        referentiel: isRoute ? getRouteSecondaryActivityRef() : getActivitySecondaryActivityRef(),
         displayStepper: false,
     };
 
@@ -43,9 +45,7 @@ const SecondaryActivitySelectionPage = () => {
             labelOfPage={"secondary-activity-selecter"}
             errorIcon={errorIcon}
             backRoute={EdtRoutesNameEnum.SECONDARY_ACTIVITY}
-            nextRoute={
-                context.isRoute ? EdtRoutesNameEnum.WITH_SOMEONE : EdtRoutesNameEnum.ACTIVITY_LOCATION
-            }
+            nextRoute={isRoute ? EdtRoutesNameEnum.WITH_SOMEONE : EdtRoutesNameEnum.ACTIVITY_LOCATION}
             fieldConditionBack={FieldNameEnum.WITHSECONDARYACTIVITY}
             specifiquesProps={specifiquesProps}
         />

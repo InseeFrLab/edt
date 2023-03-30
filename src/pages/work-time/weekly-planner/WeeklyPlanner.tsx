@@ -1,9 +1,9 @@
+import { WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
 import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { WeeklyPlannerSpecificProps } from "lunatic-edt";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -45,6 +45,7 @@ const WeeklyPlannerPage = () => {
             workSumLabel: t("component.weekly-planner.work-sum-label"),
             presentButtonLabel: t("component.weekly-planner.present-button-label"),
             futureButtonLabel: t("component.weekly-planner.future-button-label"),
+            editButtonLabel: t("common.navigation.edit"),
             infoLabels: {
                 normalText: t("page.weekly-planner.info-light"),
                 boldText: t("page.weekly-planner.info-bold"),

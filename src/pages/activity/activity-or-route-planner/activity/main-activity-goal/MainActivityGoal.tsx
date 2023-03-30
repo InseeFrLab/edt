@@ -1,23 +1,47 @@
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 
 import errorIcon from "assets/illustration/error/activity.svg";
-import option1 from "assets/illustration/goals/1.svg";
-import option2 from "assets/illustration/goals/2.svg";
-import option3 from "assets/illustration/goals/3.svg";
-import option4 from "assets/illustration/goals/4.svg";
+import help from "assets/illustration/goals/help.svg";
+import home from "assets/illustration/goals/home.svg";
+import solidarity from "assets/illustration/goals/solidarity.svg";
+import work from "assets/illustration/goals/work.svg";
 
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
+import { getActivityGoalRef } from "service/referentiel-service";
 
 const MainActivityGoalPage = () => {
+    const getIcon = (iconName: string): string => {
+        switch (iconName) {
+            case "home": {
+                return home;
+            }
+            case "work": {
+                return work;
+            }
+            case "help": {
+                return help;
+            }
+            case "solidarity": {
+                return solidarity;
+            }
+            default: {
+                return home;
+            }
+        }
+    };
+
+    const referentiel = getActivityGoalRef();
+    const optionsIcons: { [key: string]: string } = {};
+
+    referentiel.forEach(option => {
+        optionsIcons[option.value] = getIcon(option?.iconName || "");
+    });
+
     const specifiquesProps = {
-        optionsIcons: {
-            "1": option1,
-            "2": option2,
-            "3": option3,
-            "4": option4,
-        },
+        optionsIcons: optionsIcons,
         displayStepper: true,
         currentStepLabel: "component.add-activity-stepper.step-2-label",
+        referentiel: referentiel,
     };
 
     return (

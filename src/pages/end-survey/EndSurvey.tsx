@@ -1,3 +1,4 @@
+import { Info, InfoProps, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import SendIcon from "@mui/icons-material/Send";
 import { Box, Button, Typography } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
@@ -10,7 +11,6 @@ import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { SurveyData } from "interface/entity/Api";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Info, InfoProps, makeStylesEdt } from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction, useCallback, useState } from "react";
 import { Offline, Online } from "react-detect-offline";
@@ -57,7 +57,7 @@ const EndSurveyPage = () => {
         };
         remotePutSurveyData(context.idSurvey, surveyData)
             .then(surveyDataAnswer => {
-                surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData.date;
+                surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
                 saveData(context.idSurvey, surveyData.data).then(() => {
                     initializeSurveysDatasCache().finally(() => {
                         setIsModalDisplayed(true);
@@ -159,7 +159,11 @@ const EndSurveyPage = () => {
                         () => validateAndNav(true, setIsModalDisplayed),
                         [isModalDisplayed],
                     )}
-                    content={t("component.modal-edt.modal-felicitation.activity-content")}
+                    content={
+                        isActivitySurvey
+                            ? t("component.modal-edt.modal-felicitation.activity-content")
+                            : t("component.modal-edt.modal-felicitation.survey-content")
+                    }
                 />
             </FlexCenter>
         </SurveyPage>

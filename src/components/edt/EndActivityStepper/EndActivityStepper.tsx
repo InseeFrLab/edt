@@ -1,6 +1,6 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { makeStylesEdt } from "lunatic-edt";
 import React from "react";
 
 interface EndActivityStepperProps {

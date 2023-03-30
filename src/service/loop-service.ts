@@ -1,3 +1,11 @@
+import { NomenclatureActivityOption } from "@inseefrlab/lunatic-edt";
+import {
+    CODES_ACTIVITY_IGNORE_GOAL,
+    CODES_ACTIVITY_IGNORE_LOCATION,
+    CODES_ACTIVITY_IGNORE_SCREEN,
+    CODES_ACTIVITY_IGNORE_SOMEONE,
+    CODES_ACTIVITY_IGNORE_SECONDARY_ACTIVITY,
+} from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
@@ -8,7 +16,6 @@ import {
     LunaticModelComponent,
     LunaticModelVariable,
 } from "interface/lunatic/Lunatic";
-import { NomenclatureActivityOption } from "lunatic-edt";
 import { getCurrentPageSource } from "service/orchestrator-service";
 import {
     getData,
@@ -35,12 +42,6 @@ import {
     saveAndNav,
 } from "./navigation-service";
 import { getNomenclatureRef } from "./referentiel-service";
-import {
-    CODES_ACTIVITY_IGNORE_GOAL,
-    CODES_ACTIVITY_IGNORE_LOCATION,
-    CODES_ACTIVITY_IGNORE_SCREEN,
-    CODES_ACTIVITY_IGNORE_SOMEONE,
-} from "constants/constants";
 
 const loopPageInfo: Map<LoopEnum, LoopData> = new Map();
 loopPageInfo.set(LoopEnum.ACTIVITY_OR_ROUTE, {
@@ -122,12 +123,11 @@ const ignoreVariablesCondtionals = (
         component => component.page == component?.page?.split(".")[0] + "." + pageOfConditional,
     );
     const depConditional = componentConditional?.bindingDependencies?.[0];
-    const valueOfConditional = data?.COLLECTED?.[depConditional ?? ""]?.COLLECTED as boolean[];
-
+    const valueOfConditional = data?.COLLECTED?.[depConditional ?? ""]?.COLLECTED as string[];
     //is page of values of conditional = true
     if (isPageOfConditional) {
         const mustShowPageOfConditional =
-            valueOfConditional[iteration] != null && valueOfConditional[iteration];
+            valueOfConditional[iteration] != null && valueOfConditional[iteration] == "true";
         //in page of conditional select yes
         if (mustShowPageOfConditional) {
             let ignore = false;
@@ -213,14 +213,20 @@ const ignoreDeps = (
     let ignoreSomeone = ignoreActivity(component, data, iteration, EdtRoutesNameEnum.WITH_SOMEONE);
     let ignoreScreen = ignoreActivity(component, data, iteration, EdtRoutesNameEnum.WITH_SCREEN);
     let ignoreGoal = ignoreActivity(component, data, iteration, EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
+    let ignoreSecondaryActivity = ignoreActivity(
+        component,
+        data,
+        iteration,
+        EdtRoutesNameEnum.SECONDARY_ACTIVITY,
+    );
 
-    const filtrerActivities = ignoreLocation || ignoreSomeone || ignoreScreen || ignoreGoal;
+    const filtrerActivities =
+        ignoreLocation || ignoreSomeone || ignoreScreen || ignoreGoal || ignoreSecondaryActivity;
 
     let toIgnoreActivity = ignoreDepsActivity(variable, component, data, iteration);
     let toIgnoreIfInputInCheckboxGroup =
         component?.componentType == "CheckboxGroupEdt" &&
         ignoreDepsOfCheckboxGroup(component, data, iteration);
-
     return (
         toIgnore ||
         filtrerActivities ||
@@ -254,6 +260,9 @@ const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
     let codesToIgnore;
     let listToIgnore: string[] = [];
 
+    const activityCodeOrSuggesterCode =
+        activityCode.split("-").length > 1 ? activityCode.split("-")[0] : activityCode;
+
     switch (page) {
         case EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL:
             listToIgnore = CODES_ACTIVITY_IGNORE_GOAL;
@@ -267,13 +276,16 @@ const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
         case EdtRoutesNameEnum.WITH_SCREEN:
             listToIgnore = CODES_ACTIVITY_IGNORE_SCREEN;
             break;
+        case EdtRoutesNameEnum.SECONDARY_ACTIVITY:
+            listToIgnore = CODES_ACTIVITY_IGNORE_SECONDARY_ACTIVITY;
+            break;
         default:
             listToIgnore = [];
             break;
     }
 
     codesToIgnore = getAllCodesFromActivitiesCodes(listToIgnore);
-    const exist = codesToIgnore.indexOf(activityCode) >= 0;
+    const exist = codesToIgnore.indexOf(activityCodeOrSuggesterCode) >= 0;
     return exist;
 };
 

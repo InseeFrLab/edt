@@ -1,9 +1,9 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import { AppBar, Box, Divider, Tab, Tabs, Typography } from "@mui/material";
 import PersonSunIcon from "assets/illustration/card/person-sun.svg";
 import { TabData } from "interface/component/Component";
-import { makeStylesEdt } from "lunatic-edt";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -81,6 +81,10 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         );
     };
 
+    const handleToggle = useCallback(() => {
+        setIsOpen(isOpen => !isOpen);
+    }, []);
+
     return (
         <Box id={id}>
             <AppBar className={classes.surveySelecterAppBar} position="static">
@@ -95,10 +99,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                             .filter((_, index) => index < maxTabsPerRow)
                             .map((tabData, index) => getTab(tabData, index))}
                     </Tabs>
-                    <Box
-                        className={classes.actionBox}
-                        onClick={useCallback(() => setIsOpen(!isOpen), [open])}
-                    >
+                    <Box className={classes.actionBox} onClick={handleToggle}>
                         {isOpen ? <ExpandLess /> : <ExpandMore />}
                     </Box>
                 </Box>

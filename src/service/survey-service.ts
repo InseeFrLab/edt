@@ -1,3 +1,9 @@
+import {
+    AutoCompleteActiviteOption,
+    CheckboxOneCustomOption,
+    generateDateFromStringInput,
+    getFrenchDayFromDate,
+} from "@inseefrlab/lunatic-edt";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
@@ -21,12 +27,6 @@ import {
     SurveysIds,
     SURVEYS_IDS,
 } from "interface/lunatic/Lunatic";
-import {
-    AutoCompleteActiviteOption,
-    CheckboxOneCustomOption,
-    generateDateFromStringInput,
-    getFrenchDayFromDate,
-} from "lunatic-edt";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getCurrentPageSource, LABEL_WORK_TIME_SURVEY } from "service/orchestrator-service";
 import {
@@ -147,9 +147,14 @@ const getRemoteSavedSurveysDatas = (
     surveysIds.forEach(surveyId => {
         promises.push(
             remoteGetSurveyData(surveyId, setError).then((remoteSurveyData: SurveyData) => {
+                const regexp = new RegExp(
+                    process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "",
+                );
+                remoteSurveyData.data.houseReference = surveyId.replace(regexp, "");
                 return lunaticDatabase.get(surveyId).then(localSurveyData => {
                     if (
-                        remoteSurveyData.stateData.date > 0 &&
+                        remoteSurveyData.stateData?.date &&
+                        remoteSurveyData.stateData?.date > 0 &&
                         (localSurveyData === undefined ||
                             (localSurveyData.lastRemoteSaveDate ?? 0) < remoteSurveyData.stateData.date)
                     ) {
@@ -170,6 +175,10 @@ const initializeSurveysDatasCache = (): Promise<any> => {
             promises.push(
                 lunaticDatabase.get(idSurvey).then(data => {
                     if (data != null) {
+                        const regexp = new RegExp(
+                            process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "",
+                        );
+                        data.houseReference = idSurvey.replace(regexp, "");
                         datas.set(idSurvey, data || {});
                     }
                     return data;
@@ -190,6 +199,10 @@ const getData = (idSurvey: string): LunaticData => {
 
 const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): Promise<LunaticData> => {
     data.lastLocalSaveDate = Date.now();
+    if (!data.houseReference) {
+        const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+        data.houseReference = idSurvey.replace(regexp, "");
+    }
 
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
@@ -197,11 +210,11 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
         //We try to submit each time the local database is updated if the user is online
         if (!localSaveOnly && navigator.onLine) {
             const surveyData: SurveyData = {
-                stateData: getSurveyStateData(data),
+                stateData: getSurveyStateData(data, idSurvey),
                 data: data,
             };
             remotePutSurveyData(idSurvey, surveyData).then(surveyData => {
-                data.lastRemoteSaveDate = surveyData.stateData.date;
+                data.lastRemoteSaveDate = surveyData.stateData?.date;
                 //set the last remote save date inside local database to be able to compare it later with remote data
                 lunaticDatabase.save(idSurvey, data).then(() => {
                     datas.set(idSurvey, data);
@@ -213,9 +226,10 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
     });
 };
 
-const getSurveyStateData = (data: LunaticData): StateData => {
+const getSurveyStateData = (data: LunaticData, idSurvey: string): StateData => {
+    const isSent = getValue(idSurvey, FieldNameEnum.ISENVOYED) as boolean;
     const stateData: StateData = {
-        state: StateDataStateEnum.INIT,
+        state: isSent ? StateDataStateEnum.VALIDATED : StateDataStateEnum.INIT,
         date: Date.now(),
         currentPage: getCurrentPage(data),
     };
@@ -432,6 +446,12 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
     }
 };
 
+//Return date with full french format dd/MM/YYYY
+const getFullFrenchDate = (surveyDate: string): string => {
+    const splittedDate = surveyDate.split("-");
+    return [splittedDate[2], splittedDate[1], splittedDate[0]].join("/");
+};
+
 const getPersonNumber = (idSurvey: string) => {
     const index =
         surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey) !== -1
@@ -451,6 +471,7 @@ export {
     getPrintedFirstName,
     getSurveyDate,
     getPrintedSurveyDate,
+    getFullFrenchDate,
     getValue,
     setValue,
     getReferentiel,

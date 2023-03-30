@@ -4,7 +4,7 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { filtrePage, getLoopInitialPage, getValueOfActivity } from "service/loop-service";
+import { filtrePage, getLoopInitialPage, getValueOfActivity, skipNextPage } from "service/loop-service";
 import {
     getLoopPageSubpage,
     getNextLoopPage,
@@ -17,9 +17,14 @@ import {
     onPrevious,
     saveAndLoopNavigate,
     setEnviro,
-    validateAndNextLoopStep,
+    validate,
 } from "service/navigation-service";
 
+import {
+    ActivitySelecterSpecificProps,
+    Alert,
+    AutoCompleteActiviteOption,
+} from "@inseefrlab/lunatic-edt";
 import catIcon100 from "assets/illustration/activity-categories/1.svg";
 import catIcon200 from "assets/illustration/activity-categories/2.svg";
 import catIcon300 from "assets/illustration/activity-categories/3.svg";
@@ -29,8 +34,8 @@ import catIcon500 from "assets/illustration/activity-categories/6.svg";
 import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
+import { SEPARATOR_DEFAUT } from "constants/constants";
 import { LoopEnum } from "enumerations/LoopEnum";
-import { ActivitySelecterSpecificProps, Alert, AutoCompleteActiviteOption } from "lunatic-edt";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getLabelsWhenQuit } from "service/alert-service";
@@ -50,6 +55,7 @@ const MainActivityPage = () => {
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [displayStepper, setDisplayStepper] = useState<boolean>(true);
+    const [displayHeader, setDisplayHeader] = useState<boolean>(true);
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
 
     const specificProps: ActivitySelecterSpecificProps = {
@@ -84,17 +90,21 @@ const MainActivityPage = () => {
                     currentIteration,
                 );
             } else {
+                const skip = filtrePage(EdtRoutesNameEnum.SECONDARY_ACTIVITY, codeActivity);
                 saveAndLoopNavigate(
-                    getNextLoopPage(currentPage),
+                    skip ? EdtRoutesNameEnum.ACTIVITY_LOCATION : getNextLoopPage(currentPage),
                     LoopEnum.ACTIVITY_OR_ROUTE,
                     currentIteration,
                 );
             }
         },
         onSelectValue: () => {
-            validateAndNextLoopStep(getNextLoopPage(currentPage), currentIteration);
+            validate().then(() => {
+                skipNextPage(context.idSurvey, context.source, currentIteration, currentPage);
+            });
         },
         setDisplayStepper: setDisplayStepper,
+        setDisplayHeader: setDisplayHeader,
         categoriesAndActivitesNomenclature: getNomenclatureRef(),
         labels: {
             selectInCategory: t("component.activity-selecter.select-in-category"),
@@ -114,12 +124,18 @@ const MainActivityPage = () => {
             clickableListIconNoResultAlt: t(
                 "component.activity-selecter.clickable-list-icon-no-result-alt",
             ),
+            clickableListNotSearchLabel: t(
+                "component.activity-selecter.clickable-list-not-search-label",
+            ),
             otherButton: t("component.activity-selecter.other-button"),
+            saveButton: t("component.activity-selecter.save-button"),
         },
         errorIcon: errorIcon,
         addToReferentielCallBack: (newItem: AutoCompleteActiviteOption) => {
             addToAutocompleteActivityReferentiel(newItem);
         },
+        widthGlobal: true,
+        separatorSuggester: process.env.REACT_APP_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
     };
 
     return (
@@ -138,6 +154,7 @@ const MainActivityPage = () => {
             currentStepNumber={stepData.stepNumber}
             currentStepLabel={stepData.stepLabel}
             displayStepper={displayStepper}
+            displayHeader={displayHeader}
         >
             <FlexCenter>
                 <Alert

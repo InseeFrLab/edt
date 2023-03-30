@@ -1,3 +1,12 @@
+import {
+    Alert,
+    formateDateToFrenchFormat,
+    generateDateFromStringInput,
+    Info,
+    InfoProps,
+    makeStylesEdt,
+    TooltipInfo,
+} from "@inseefrlab/lunatic-edt";
 import CloseIcon from "@mui/icons-material/Close";
 import { Backdrop, Box, Divider, IconButton, Snackbar, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
@@ -14,15 +23,6 @@ import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
-import {
-    Alert,
-    formateDateToFrenchFormat,
-    generateDateFromStringInput,
-    Info,
-    InfoProps,
-    makeStylesEdt,
-    TooltipInfo,
-} from "lunatic-edt";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -342,7 +342,6 @@ const ActivityOrRoutePlannerPage = () => {
     };
 
     const titleLabels = {
-        normalTitle: t("page.activity-planner.activity-for-day"),
         boldTitle: formateDateToFrenchFormat(generateDateFromStringInput(surveyDate), getLanguage()),
     };
 
@@ -477,10 +476,15 @@ const ActivityOrRoutePlannerPage = () => {
                                             ></Alert>
                                             <Box className={classes.infoBox}>
                                                 {activitiesRoutesOrGaps.length !== 0 && (
-                                                    <TooltipInfo
-                                                        infoLabels={infoLabels}
-                                                        titleLabels={titleLabels}
-                                                    />
+                                                    <>
+                                                        <Typography className={classes.label}>
+                                                            {t("page.activity-planner.activity-for-day")}
+                                                        </Typography>
+                                                        <TooltipInfo
+                                                            infoLabels={infoLabels}
+                                                            titleLabels={titleLabels}
+                                                        />
+                                                    </>
                                                 )}
                                                 {activitiesRoutesOrGaps.length === 0 && (
                                                     <>
@@ -509,7 +513,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                         {t("page.activity-planner.no-activity")}
                                                     </Typography>
                                                 </FlexCenter>
-                                                <FlexCenter>
+                                                <FlexCenter className={classes.noActivityInfo}>
                                                     <Info {...infoLabels} />
                                                 </FlexCenter>
                                             </>
@@ -671,6 +675,9 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
         display: "flex",
         justifyContent: "center",
         flexGrow: "1",
+    },
+    noActivityInfo: {
+        marginTop: "1rem",
     },
 }));
 

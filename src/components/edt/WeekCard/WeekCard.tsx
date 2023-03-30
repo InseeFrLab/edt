@@ -1,8 +1,8 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import Box from "@mui/material/Box";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
-import { makeStylesEdt } from "lunatic-edt";
 import { getWeeklyPlannerScore } from "service/survey-activity-service";
 interface WeekCardProps {
     labelledBy: string;

@@ -1,9 +1,9 @@
+import { NomenclatureActivityOption } from "@inseefrlab/lunatic-edt";
 import axios from "axios";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SurveyData, UserSurveys } from "interface/entity/Api";
 import { ReferentielData, SourceData } from "interface/lunatic/Lunatic";
-import { NomenclatureActivityOption } from "lunatic-edt";
 import { AuthContextProps } from "oidc-react";
 import { getUserToken } from "./user-service";
 
@@ -38,6 +38,7 @@ export const fetchReferentiels = (): Promise<ReferentielData> => {
         [ReferentielsEnum.LOCATION]: [],
         [ReferentielsEnum.KINDOFWEEK]: [],
         [ReferentielsEnum.KINDOFDAY]: [],
+        [ReferentielsEnum.ACTIVITYGOAL]: [],
     };
     let refsEndPoints: string[] = [];
     Object.values(ReferentielsEnum).map(value => {
