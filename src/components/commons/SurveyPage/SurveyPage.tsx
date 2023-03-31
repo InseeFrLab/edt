@@ -43,6 +43,7 @@ interface SurveyPageProps {
     activityProgressBar?: boolean;
     idSurvey?: string;
     score?: number;
+    helpStep?: number;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -74,6 +75,7 @@ const SurveyPage = (props: SurveyPageProps) => {
         activityProgressBar = false,
         idSurvey,
         score,
+        helpStep,
     } = props;
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
@@ -165,6 +167,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                         onClickAdd={onAdd}
                         finishLabel={finishLabel}
                         addLabel={addLabel}
+                        helpStep={helpStep}
                     />
                 </FlexCenter>
             )}

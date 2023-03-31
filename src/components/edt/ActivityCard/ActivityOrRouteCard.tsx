@@ -22,6 +22,7 @@ interface ActivityOrRouteCardProps {
     activityOrRoute: ActivityRouteOrGap;
     onEdit?(): void;
     onDelete?(): void;
+    helpStep?: number;
 }
 
 const renderMeanOfTransport = (
@@ -151,7 +152,8 @@ const renderWithScreen = (
 };
 
 const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
-    const { labelledBy, describedBy, onClick, onClickGap, activityOrRoute, onEdit, onDelete } = props;
+    const { labelledBy, describedBy, onClick, onClickGap, activityOrRoute, onEdit, onDelete, helpStep } =
+        props;
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
     const insideAlertLabels = {
@@ -232,7 +234,10 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const renderActivityOrRoute = () => {
         return (
             <Box
-                className={cx(classes.mainCardBox, classes.activityCardBox)}
+                className={cx(
+                    classes.mainCardBox,
+                    helpStep == 2 ? classes.activityCardHelpBox : classes.activityCardBox,
+                )}
                 onClick={onClick}
                 aria-labelledby={labelledBy}
                 aria-describedby={describedBy}
@@ -298,14 +303,30 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
 
     const renderGap = () => {
         return (
-            <Box className={cx(classes.mainCardBox, classes.gapBox)} onClick={clickToGap}>
-                <Typography className={cx(classes.mainActivityLabel, classes.gapText)}>
+            <Box
+                className={cx(classes.mainCardBox, helpStep == 2 ? classes.gapHelpBox : classes.gapBox)}
+                onClick={clickToGap}
+            >
+                <Typography
+                    className={cx(
+                        classes.mainActivityLabel,
+                        helpStep == 2 ? classes.gapHelpText : classes.gapText,
+                    )}
+                >
                     {gapLabels.main}
                 </Typography>
-                <Typography className={cx(classes.otherInfoLabel, classes.gapText)}>
+                <Typography
+                    className={cx(
+                        classes.otherInfoLabel,
+                        helpStep == 2 ? classes.gapHelpText : classes.gapText,
+                    )}
+                >
                     {gapLabels.secondary}
                 </Typography>
-                <Button className={classes.addActivityButton} variant="contained">
+                <Button
+                    className={helpStep == 2 ? classes.addActivityButtonHelp : classes.addActivityButton}
+                    variant="contained"
+                >
                     {t("common.navigation.add")}
                 </Button>
             </Box>
@@ -368,8 +389,20 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
         border: "1px dashed",
         borderColor: theme.variables.alertActivity,
     },
+    gapHelpBox: {
+        flexDirection: "column",
+        alignItems: "center",
+        border: "1px dashed",
+        borderColor: theme.variables.white,
+        zIndex: "1400",
+        position: "relative",
+        pointerEvents: "none",
+    },
     gapText: {
         color: theme.variables.alertActivity,
+    },
+    gapHelpText: {
+        color: theme.variables.white,
     },
     actionIcon: {
         cursor: "pointer",
@@ -395,6 +428,14 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
         backgroundColor: theme.variables.alertActivity,
         "&:hover": {
             backgroundColor: theme.variables.alertActivity + "99",
+        },
+    },
+    addActivityButtonHelp: {
+        marginTop: "0.5rem",
+        backgroundColor: "#FBE7E2",
+        color: theme.variables.alertActivity,
+        "&:hover": {
+            backgroundColor: theme.variables.alertActivity,
         },
     },
 }));

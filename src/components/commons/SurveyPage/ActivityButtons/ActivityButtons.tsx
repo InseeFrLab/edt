@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -9,10 +9,11 @@ interface ActivityButtonsProps {
     onClickAdd(): void;
     finishLabel?: string;
     addLabel?: string;
+    helpStep?: number;
 }
 
 const ActivityButtons = (props: ActivityButtonsProps) => {
-    const { onClickFinish, onClickAdd, finishLabel, addLabel } = props;
+    const { onClickFinish, onClickAdd, finishLabel, addLabel, helpStep } = props;
     const { classes, cx } = useStyles();
     const isItDesktop = isDesktop();
     return (
@@ -23,7 +24,15 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
             >
                 <>
                     {!addLabel && (
-                        <Button variant="outlined" onClick={onClickFinish} className={classes.buttons}>
+                        <Button
+                            variant="outlined"
+                            onClick={onClickFinish}
+                            className={cx(
+                                classes.buttons,
+                                helpStep == 3 ? classes.helpButton : "",
+                                helpStep == 3 ? classes.helpCloseButton : "",
+                            )}
+                        >
                             {finishLabel}
                         </Button>
                     )}
@@ -31,7 +40,11 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
                 <Button
                     variant="contained"
                     onClick={onClickAdd}
-                    className={addLabel === undefined ? classes.buttons : classes.aloneAddButton}
+                    className={cx(
+                        addLabel === undefined ? classes.buttons : classes.aloneAddButton,
+                        helpStep == 1 ? classes.helpButton : "",
+                        helpStep == 1 ? classes.helpAddButton : "",
+                    )}
                 >
                     <AddIcon />
                     {addLabel}
@@ -52,7 +65,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityButtons } })(theme => ({
         padding: "0.75rem",
     },
     ButtonsBoxMobileTablet: {
-        position: "fixed",
+        position: "absolute",
         left: "0",
         bottom: "0",
     },
@@ -65,6 +78,20 @@ const useStyles = makeStylesEdt({ "name": { ActivityButtons } })(theme => ({
         maxWidth: "9rem",
         margin: "0 1rem",
         lineHeight: "1.25rem",
+    },
+    helpButton: {
+        borderRadius: important("12px"),
+        zIndex: "1400",
+        position: "relative",
+        pointerEvents: "none",
+    },
+    helpAddButton: {
+        borderColor: important(theme.variables.white),
+        border: important("1px solid white"),
+    },
+    helpCloseButton: {
+        borderColor: important(theme.palette.secondary.main),
+        backgroundColor: important(theme.variables.white),
     },
 }));
 

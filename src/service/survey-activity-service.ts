@@ -497,25 +497,6 @@ const mockActivitiesRoutesOrGaps = () => {
     const activitiesRoutesOrGaps = [
         {
             activity: {
-                activityCode: "111",
-                activityLabel: "Dormir (hors sieste)",
-            },
-            durationLabel: "8h00",
-            durationMinutes: 480,
-            endTime: "12:00",
-            isRoute: false,
-            iteration: 1,
-            place: {
-                placeCode: "11",
-                placeLabel: "Chez soi (yc appartement étudiant si différent du domicile familial)",
-            },
-            startTime: "04:00",
-            withScreen: undefined,
-            withSecondaryActivity: false,
-            withSomeone: undefined,
-        },
-        {
-            activity: {
                 activityCode: "140",
                 activityLabel: "Manger",
             },
@@ -525,8 +506,8 @@ const mockActivitiesRoutesOrGaps = () => {
             isRoute: false,
             iteration: 0,
             place: {
-                placeCode: "11",
-                placeLabel: "Chez soi (yc appartement étudiant si différent du domicile familial)",
+                placeCode: "12",
+                placeLabel: "Lieu de travail ou d’études",
             },
             secondaryActivity: {
                 activityCode: "1",
@@ -534,7 +515,7 @@ const mockActivitiesRoutesOrGaps = () => {
             },
             startTime: "12:00",
             withScreen: true,
-            withSecondaryActivity: true,
+            withSecondaryActivity: false,
             withSomeone: false,
         },
         {

@@ -307,6 +307,13 @@
             "work-time": "Temps de travail et étude",
             "domestic-task-time": "Temps de tâches domestiques",
             "other-home-time": "Temps pour un autre ménage"
+        },
+        "help": {
+            "help-page-1": {
+                "help-step-1": "Cliquez ici pour ajouter une nouvelle activité ou un trajet",
+                "help-step-2": "Lorsqu'une plage horaire est vide entre deux activités, cliquez ici pour la compléter",
+                "help-step-3": "Une fois toutes les activities de votre journée remplies clôturez la journée"
+            }
         }
     },
     "export": {
