@@ -320,6 +320,9 @@
             },
             "help-page-4": {
                 "help-step-1": "Après avoir choisi la catégorie, sélectionnez l'activité exacte"
+            },
+            "help-page-5": {
+                "help-step-1": "Le cas échéant, renseignez qui vous tient compagnie lors de votre activité / trajet. Vous pouvez en renseigner plusieurs."
             }
         }
     },

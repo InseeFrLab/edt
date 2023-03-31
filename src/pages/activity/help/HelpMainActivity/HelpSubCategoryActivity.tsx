@@ -7,23 +7,16 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { filtrePage, getLoopInitialPage, getValueOfActivity, skipNextPage } from "service/loop-service";
-import {
-    getLoopPageSubpage,
-    getNextLoopPage,
-    getPreviousLoopPage,
-    getStepData,
-} from "service/loop-stepper-service";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { getLoopInitialPage } from "service/loop-service";
+import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
     getNavigatePath,
     navToHome,
     onClose,
     onNext,
     onPrevious,
-    saveAndLoopNavigate,
     setEnviro,
-    validate,
 } from "service/navigation-service";
 
 import {
@@ -42,19 +35,21 @@ import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
 import { SEPARATOR_DEFAUT } from "constants/constants";
 import { LoopEnum } from "enumerations/LoopEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { useState } from "react";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
+import { isDesktop } from "service/responsive";
 import {
     addToAutocompleteActivityReferentiel,
     getData,
-    getDatas,
     getSource,
     surveysIds,
 } from "service/survey-service";
-import { isDesktop } from "service/responsive";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const HelpSubCategoryActivity = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -142,21 +137,20 @@ const HelpSubCategoryActivity = () => {
     const navToActivityRouteHome = useCallback(() => {
         navToHome();
     }, []);
-    /*
+
     const navToNextPage = useCallback(
-        () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP_MAIN_ACTIVITY_CATEGORY)),
+        () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP_CHECKBOX)),
         [],
-    );*/
+    );
 
     const navToBackPage = useCallback(
         () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP_MAIN_ACTIVITY_CATEGORY)),
         [],
     );
-    /*
+
     const nextHelpStep = useCallback(() => {
-        console.log(helpStep);
-        helpStep <= 2 ? setHelpStep(helpStep + 1) : navToNextPage();
-    }, [helpStep]);*/
+        navToNextPage();
+    }, [helpStep]);
 
     const previousHelpStep = useCallback(() => {
         setHelpStep(1);
@@ -173,8 +167,19 @@ const HelpSubCategoryActivity = () => {
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
                                 onClick={previousHelpStep}
+                                startIcon={<ArrowBackIosIcon />}
                             >
                                 {t("common.navigation.previous")}
+                            </Button>
+                        }
+                        {
+                            <Button
+                                className={cx(classes.buttonBox, classes.buttonHelpBox)}
+                                variant="outlined"
+                                onClick={nextHelpStep}
+                                endIcon={<ArrowForwardIosIcon />}
+                            >
+                                {t("common.navigation.next")}
                             </Button>
                         }
                     </Box>
@@ -183,10 +188,12 @@ const HelpSubCategoryActivity = () => {
                             className={cx(classes.buttonBox, classes.buttonSkipBox)}
                             variant="outlined"
                             onClick={navToActivityRouteHome}
+                            endIcon={<ArrowForwardIcon />}
                         >
                             {t("common.navigation.skip")}
                         </Button>
                     </Box>
+                    {renderHelpStep()}
                 </Box>
             </Modal>
         );
@@ -195,16 +202,11 @@ const HelpSubCategoryActivity = () => {
     const renderHelpStep = () => {
         return (
             <>
-                {helpStep == 1 && (
+                {
                     <Box id="help-step-1" className={cx(classes.stepHelpBox, classes.stepHelpOne)}>
-                        {t("component.help.help-page-3.help-step-1")}
+                        {t("component.help.help-page-4.help-step-1")}
                     </Box>
-                )}
-                {helpStep == 2 && (
-                    <Box id="help-step-2" className={cx(classes.stepHelpBox, classes.stepHelpTwo)}>
-                        {t("component.help.help-page-3.help-step-2")}
-                    </Box>
-                )}
+                }
             </>
         );
     };
@@ -300,12 +302,8 @@ const useStyles = makeStylesEdt({ "name": { HelpSubCategoryActivity } })(theme =
         borderStyle: "dashed",
     },
     stepHelpOne: {
-        width: "13rem",
-        marginTop: "25.5rem",
-    },
-    stepHelpTwo: {
-        width: "20rem",
-        marginTop: "12.5rem",
+        width: "18rem",
+        marginTop: "16rem",
     },
 }));
 

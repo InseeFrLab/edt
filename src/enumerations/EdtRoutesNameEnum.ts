@@ -32,4 +32,5 @@ export enum EdtRoutesNameEnum {
     HELP_ACTIVITY = "help-activity",
     HELP_MAIN_ACTIVITY_CATEGORY = "help-main-activity-category",
     HELP_MAIN_ACTIVITY_SUB_CATEGORY = "help-main-activity-sub-category",
+    HELP_CHECKBOX = "help-checkbox",
 }

@@ -7,23 +7,16 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { filtrePage, getLoopInitialPage, getValueOfActivity, skipNextPage } from "service/loop-service";
-import {
-    getLoopPageSubpage,
-    getNextLoopPage,
-    getPreviousLoopPage,
-    getStepData,
-} from "service/loop-stepper-service";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { getLoopInitialPage } from "service/loop-service";
+import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
     getNavigatePath,
     navToHome,
     onClose,
     onNext,
     onPrevious,
-    saveAndLoopNavigate,
     setEnviro,
-    validate,
 } from "service/navigation-service";
 
 import {
@@ -42,19 +35,21 @@ import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
 import { SEPARATOR_DEFAUT } from "constants/constants";
 import { LoopEnum } from "enumerations/LoopEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { useState } from "react";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
+import { isDesktop } from "service/responsive";
 import {
     addToAutocompleteActivityReferentiel,
     getData,
-    getDatas,
     getSource,
     surveysIds,
 } from "service/survey-service";
-import { isDesktop } from "service/responsive";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const HelpCategoryActivity = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -171,6 +166,7 @@ const HelpCategoryActivity = () => {
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
                                 onClick={previousHelpStep}
+                                startIcon={<ArrowBackIosIcon />}
                             >
                                 {t("common.navigation.previous")}
                             </Button>
@@ -180,6 +176,7 @@ const HelpCategoryActivity = () => {
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
                                 onClick={nextHelpStep}
+                                endIcon={<ArrowForwardIosIcon />}
                             >
                                 {t("common.navigation.next")}
                             </Button>
@@ -190,6 +187,7 @@ const HelpCategoryActivity = () => {
                             className={cx(classes.buttonBox, classes.buttonSkipBox)}
                             variant="outlined"
                             onClick={navToActivityRouteHome}
+                            endIcon={<ArrowForwardIcon />}
                         >
                             {t("common.navigation.skip")}
                         </Button>

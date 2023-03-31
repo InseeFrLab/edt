@@ -29,6 +29,9 @@ import { getLanguage } from "service/referentiel-service";
 import { isDesktop, isMobile, isTablet } from "service/responsive";
 import { mockActivitiesRoutesOrGaps } from "service/survey-activity-service";
 import { v4 as uuidv4 } from "uuid";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const HelpActivity = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -116,6 +119,7 @@ const HelpActivity = () => {
                                 className={classes.buttonHelpBox}
                                 variant="outlined"
                                 onClick={previousHelpStep}
+                                startIcon={<ArrowBackIosIcon />}
                             >
                                 {t("common.navigation.previous")}
                             </Button>
@@ -125,6 +129,7 @@ const HelpActivity = () => {
                                 className={classes.buttonHelpBox}
                                 variant="outlined"
                                 onClick={nextHelpStep}
+                                endIcon={<ArrowForwardIosIcon />}
                             >
                                 {t("common.navigation.next")}
                             </Button>
@@ -135,6 +140,7 @@ const HelpActivity = () => {
                             className={classes.buttonSkipBox}
                             variant="outlined"
                             onClick={navToActivityRouteHome}
+                            endIcon={<ArrowForwardIcon />}
                         >
                             {t("common.navigation.skip")}
                         </Button>
