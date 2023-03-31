@@ -8,12 +8,11 @@ import {
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
 import CloseIcon from "@mui/icons-material/Close";
-import { Backdrop, Box, Divider, IconButton, Snackbar, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Snackbar, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
 import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import HelpModal from "components/commons/Modal/HelpModal/HelpModal";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
@@ -42,13 +41,7 @@ import {
 import { getLanguage } from "service/referentiel-service";
 import { isDesktop } from "service/responsive";
 import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
-import {
-    getPrintedFirstName,
-    getSurveyDate,
-    getValue,
-    saveData,
-    setValue,
-} from "service/survey-service";
+import { getPrintedFirstName, getSurveyDate, saveData, setValue } from "service/survey-service";
 import { v4 as uuidv4 } from "uuid";
 
 const ActivityOrRoutePlannerPage = () => {
@@ -345,84 +338,6 @@ const ActivityOrRoutePlannerPage = () => {
         boldTitle: formateDateToFrenchFormat(generateDateFromStringInput(surveyDate), getLanguage()),
     };
 
-    useEffect(() => {
-        let display = getValue(context.idSurvey, FieldNameEnum.DISPLAYHELP);
-        if (display == null || !display) {
-            setShowHelp(true);
-            console.log(activitiesRoutesOrGaps);
-            console.log(display);
-            if (activitiesRoutesOrGaps.length == 0) {
-                activitiesRoutesOrGaps = [
-                    {
-                        activity: {
-                            activityCode: "111",
-                            activityLabel: "Dormir (hors sieste)",
-                        },
-                        durationLabel: "8h00",
-                        durationMinutes: 480,
-                        endTime: "12:00",
-                        isRoute: false,
-                        iteration: 1,
-                        place: {
-                            placeCode: "11",
-                            placeLabel:
-                                "Chez soi (yc appartement étudiant si différent du domicile familial)",
-                        },
-                        startTime: "04:00",
-                        withScreen: undefined,
-                        withSecondaryActivity: false,
-                        withSomeone: undefined,
-                    },
-                    {
-                        activity: {
-                            activityCode: "140",
-                            activityLabel: "Manger",
-                        },
-                        durationLabel: "2h00",
-                        durationMinutes: 120,
-                        endTime: "14:00",
-                        isRoute: false,
-                        iteration: 0,
-                        place: {
-                            placeCode: "11",
-                            placeLabel:
-                                "Chez soi (yc appartement étudiant si différent du domicile familial)",
-                        },
-                        secondaryActivity: {
-                            activityCode: "1",
-                            activityLabel: '"Écouter la radio, des podcasts ou de la musique"',
-                        },
-                        startTime: "12:00",
-                        withScreen: true,
-                        withSecondaryActivity: true,
-                        withSomeone: false,
-                    },
-                    {
-                        endTime: "16:00",
-                        isGap: true,
-                        startTime: "14h00",
-                    },
-                    {
-                        durationLabel: "2h00",
-                        durationMinutes: 120,
-                        endTime: "18:00",
-                        isRoute: true,
-                        iteration: 2,
-                        meanOfTransportLabels: "Vélo (électrique ou non)",
-                        route: {
-                            routeCode: "1",
-                            routeLabel: "Trajet Domicile - Travail",
-                        },
-                        startTime: "16:00",
-                        withScreen: false,
-                        withSecondaryActivity: false,
-                        withSomeone: false,
-                    },
-                ];
-            }
-        }
-    }, []);
-
     return (
         <>
             <Box className={classes.surveyPageBox}>
@@ -592,9 +507,6 @@ const ActivityOrRoutePlannerPage = () => {
                         }}
                     />
                 </Box>
-                <>
-                    <HelpModal isModalDisplayed={showHelp} />
-                </>
             </Box>
         </>
     );
