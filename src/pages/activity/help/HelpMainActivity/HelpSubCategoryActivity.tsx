@@ -24,6 +24,9 @@ import {
     Alert,
     AutoCompleteActiviteOption,
 } from "@inseefrlab/lunatic-edt";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import catIcon100 from "assets/illustration/activity-categories/1.svg";
 import catIcon200 from "assets/illustration/activity-categories/2.svg";
 import catIcon300 from "assets/illustration/activity-categories/3.svg";
@@ -40,16 +43,12 @@ import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { useState } from "react";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
-import { isDesktop } from "service/responsive";
 import {
     addToAutocompleteActivityReferentiel,
     getData,
     getSource,
     surveysIds,
 } from "service/survey-service";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const HelpSubCategoryActivity = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -59,7 +58,6 @@ const HelpSubCategoryActivity = () => {
 
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY;
     const stepData = getStepData(currentPage);
-    const isItDesktop = isDesktop();
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
     let data = getData(idSurvey || "");
@@ -92,7 +90,7 @@ const HelpSubCategoryActivity = () => {
         backClickCallback: () => {
             console.log("");
         },
-        nextClickCallback: (routeToGoal: boolean) => {
+        nextClickCallback: () => {
             console.log("");
         },
         onSelectValue: () => {

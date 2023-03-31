@@ -5,6 +5,9 @@ import {
     makeStylesEdt,
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -29,16 +32,13 @@ import { getLanguage } from "service/referentiel-service";
 import { isDesktop, isMobile, isTablet } from "service/responsive";
 import { mockActivitiesRoutesOrGaps } from "service/survey-activity-service";
 import { v4 as uuidv4 } from "uuid";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const HelpActivity = () => {
     const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
+    const [isSubchildDisplayed] = React.useState(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
     const [addActivityOrRouteFromGap, setAddActivityOrRouteFromGap] = React.useState(false);
     const [gapStartTime, setGapStartTime] = React.useState<string>();
@@ -97,7 +97,7 @@ const HelpActivity = () => {
     };
 
     const navToNextPage = useCallback(
-        () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP_MAIN_ACTIVITY_CATEGORY)),
+        () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP_DURATION)),
         [],
     );
 
@@ -167,7 +167,7 @@ const HelpActivity = () => {
                             classes.stepHelpTwo,
                             isItDesktop ? classes.stepHelpTwoDesktop : "",
                             isItTablet ? classes.stepHelpTwoTablet : "",
-                            isItMobile ? classes.stepHelpTwoMobile : "",
+                            isItMobile && !isItTablet ? classes.stepHelpTwoMobile : "",
                         )}
                     >
                         {t("component.help.help-page-1.help-step-2")}

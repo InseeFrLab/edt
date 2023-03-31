@@ -322,6 +322,9 @@
                 "help-step-2": "2 - Lorsqu'une plage horaire est vide entre deux activités, cliquez ici pour la compléter",
                 "help-step-3": "3 - Une fois toutes les activities de votre journée remplies clôturez la journée"
             },
+            "help-page-2": {
+                "help-step-1": "Sélectionnez l’horaire à laquelle vous commencez et vous terminez votre activité / trajet. Puis cliquez sur « OK »"
+            },
             "help-page-3": {
                 "help-step-1": "1 - Recherchez votre activité par catégorie",
                 "help-step-2": "2 - Si vous ne trouvez pas de catégorie correspondante, cherchez votre activité en la saisissant manuellement"

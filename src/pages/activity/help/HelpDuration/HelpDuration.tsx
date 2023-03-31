@@ -1,62 +1,69 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Button, Modal } from "@mui/material";
-import childIcon from "assets/illustration/with-someone-categories/child.svg";
-import coupleIcon from "assets/illustration/with-someone-categories/couple.svg";
-import otherKnownIcon from "assets/illustration/with-someone-categories/other-known.svg";
-import otherIcon from "assets/illustration/with-someone-categories/other.svg";
-import parentsIcon from "assets/illustration/with-someone-categories/parents.svg";
+import imageHelp from "assets/illustration/hourpicker.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
+import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
-import {
-    getNavigatePath,
-    navToHome,
-    onClose,
-    onNext,
-    onPrevious,
-    setEnviro,
-} from "service/navigation-service";
+import { getNavigatePath, navToHome, setEnviro } from "service/navigation-service";
+import { getActivitiesOrRoutes } from "service/survey-activity-service";
 import { getData, getSource, surveysIds } from "service/survey-service";
 
-const HelpCheckbox = () => {
-    const context: OrchestratorContext = useOutletContext();
+const HelpDuration = () => {
     const navigate = useNavigate();
-    const { classes, cx } = useStyles();
     const { t } = useTranslation();
+    const context: OrchestratorContext = useOutletContext();
 
-    const currentPage = EdtRoutesNameEnum.WITH_SOMEONE_SELECTION;
+    setEnviro(context, useNavigate(), callbackHolder);
+
+    const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
     const stepData = getStepData(currentPage);
+
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
     let data = getData(idSurvey || "");
 
-    const [helpStep, setHelpStep] = React.useState(1);
+    const { classes, cx } = useStyles();
 
-    setEnviro(context, useNavigate(), callbackHolder);
+    const [helpStep] = React.useState(1);
+
+    const activitiesAct = getActivitiesOrRoutes(t, idSurvey, source).activitiesRoutesOrGaps;
+
+    const specificProps: TimepickerSpecificProps = {
+        activitiesAct: activitiesAct,
+        defaultValue: true,
+        constants: {
+            START_TIME_DAY: START_TIME_DAY,
+            FORMAT_TIME: FORMAT_TIME,
+            MINUTE_LABEL: MINUTE_LABEL,
+        },
+        helpStep: 1,
+        helpImage: imageHelp,
+    };
 
     const navToActivityRouteHome = useCallback(() => {
         navToHome();
     }, []);
 
-    const navToBackPage = useCallback(
-        () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP_MAIN_ACTIVITY_SUB_CATEGORY)),
-        [helpStep],
-    );
+    const nextHelpStep = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.HELP_MAIN_ACTIVITY_CATEGORY));
+    }, [helpStep]);
 
     const previousHelpStep = useCallback(() => {
-        helpStep > 1 ? setHelpStep(helpStep - 1) : navToBackPage();
+        navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
     }, [helpStep]);
 
     const renderHelp = () => {
@@ -74,6 +81,16 @@ const HelpCheckbox = () => {
                                 {t("common.navigation.previous")}
                             </Button>
                         }
+                        {helpStep < 3 && (
+                            <Button
+                                className={cx(classes.buttonBox, classes.buttonHelpBox)}
+                                variant="outlined"
+                                onClick={nextHelpStep}
+                                endIcon={<ArrowForwardIosIcon />}
+                            >
+                                {t("common.navigation.next")}
+                            </Button>
+                        )}
                     </Box>
                     <Box>
                         <Button
@@ -96,61 +113,23 @@ const HelpCheckbox = () => {
             <>
                 {helpStep == 1 && (
                     <Box id="help-step-1" className={cx(classes.stepHelpBox, classes.stepHelpOne)}>
-                        {t("component.help.help-page-5.help-step-1")}
+                        {t("component.help.help-page-2.help-step-1")}
                     </Box>
                 )}
             </>
         );
     };
 
-    const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
-    const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
-    const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
-    const [displayStepper] = useState<boolean>(true);
-    const [displayHeader] = useState<boolean>(true);
-
-    const specificProps = {
-        backClickEvent: backClickEvent,
-        nextClickEvent: nextClickEvent,
-        backClickCallback: () => {
-            console.log("");
-        },
-        nextClickCallback: () => {
-            console.log("");
-        },
-        onSelectValue: () => {
-            console.log("");
-        },
-        optionsIcons: {
-            "1": coupleIcon,
-            "2": parentsIcon,
-            "3": childIcon,
-            "4": otherKnownIcon,
-            "5": otherIcon,
-        },
-        displayStepper: false,
-        helpStep: helpStep,
-    };
-
     return (
-        <Box>
+        <>
             {renderHelp()}
             <LoopSurveyPage
-                onNext={useCallback(
-                    (e: React.MouseEvent) => onNext(e, setNextClickEvent),
-                    [nextClickEvent],
-                )}
-                onPrevious={useCallback(
-                    (e: React.MouseEvent) => onPrevious(e, setBackClickEvent),
-                    [backClickEvent],
-                )}
-                onClose={useCallback(() => onClose(false, setIsAlertDisplayed), [isAlertDisplayed])}
+                onNext={useCallback(() => console.log(""), [])}
+                onClose={useCallback(() => console.log(""), [])}
                 currentStepIcon={stepData.stepIcon}
                 currentStepIconAlt={stepData.stepIconAlt}
                 currentStepNumber={stepData.stepNumber}
                 currentStepLabel={stepData.stepLabel}
-                displayStepper={displayStepper}
-                displayHeader={displayHeader}
             >
                 <FlexCenter>
                     <OrchestratorForStories
@@ -164,11 +143,11 @@ const HelpCheckbox = () => {
                     ></OrchestratorForStories>
                 </FlexCenter>
             </LoopSurveyPage>
-        </Box>
+        </>
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { HelpCheckbox } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { HelpDuration } })(theme => ({
     headerHelpBox: {
         display: "flex",
     },
@@ -208,9 +187,10 @@ const useStyles = makeStylesEdt({ "name": { HelpCheckbox } })(theme => ({
         color: theme.variables.white,
     },
     stepHelpOne: {
-        width: "24rem",
-        marginTop: "21.5rem",
+        width: "20rem",
+        marginTop: "25.5rem",
+        textAlign: "center",
     },
 }));
 
-export default HelpCheckbox;
+export default HelpDuration;

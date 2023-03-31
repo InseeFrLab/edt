@@ -40,7 +40,6 @@ import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { useState } from "react";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
-import { isDesktop } from "service/responsive";
 import {
     addToAutocompleteActivityReferentiel,
     getData,
@@ -59,7 +58,6 @@ const HelpCategoryActivity = () => {
 
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY;
     const stepData = getStepData(currentPage);
-    const isItDesktop = isDesktop();
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
     let data = getData(idSurvey || "");
@@ -92,7 +90,7 @@ const HelpCategoryActivity = () => {
         backClickCallback: () => {
             console.log("");
         },
-        nextClickCallback: (routeToGoal: boolean) => {
+        nextClickCallback: () => {
             console.log("");
         },
         onSelectValue: () => {
@@ -144,7 +142,7 @@ const HelpCategoryActivity = () => {
     }, [helpStep]);
 
     const navToBackPage = useCallback(
-        () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY)),
+        () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP_DURATION)),
         [helpStep],
     );
 
