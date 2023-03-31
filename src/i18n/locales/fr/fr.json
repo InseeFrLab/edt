@@ -7,6 +7,7 @@
             "close": "Fermer",
             "cancel": "Annuler",
             "ignore": "Ignorer",
+            "skip": "Passer",
             "complete": "Completer",
             "validate": "Valider",
             "add": "Ajouter",
@@ -70,6 +71,7 @@
             "greatest-activity-day-alt": "Alt pour greatest activity day",
             "worst-activity-day-alt": "Alt pour worst activity day",
             "submit-alt": "Alt pour submit",
+            "install-alt": "Alt pour install",
             "info": {
                 "info-alt": "Alt pour info"
             },
@@ -93,6 +95,12 @@
         }
     },
     "page": {
+        "install": {
+            "title": "Ajoutez à l'écran d'accueil",
+            "subtitle": "Accédez et complétez facilement votre enquête.",
+            "info": "Cette application peut être installée sur votre appareil. Veuillez vous référer au fonctionnement de votre navigateur internet afin de procéder à l'installation.",
+            "continue": "J'ai compris"
+        },
         "home": {
             "welcome": "Bienvenue sur la PWA Carnet EDT",
             "navigation": {

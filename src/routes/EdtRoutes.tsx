@@ -25,6 +25,7 @@ import EndSurveyPage from "pages/end-survey/EndSurvey";
 import ErrorPage from "pages/error/Error";
 import HelpPage from "pages/help/Help";
 import HomePage from "pages/home/Home";
+import InstallPage from "pages/install/Install";
 import NotFoundPage from "pages/not-found/NotFound";
 import WhoAreYouPage from "pages/who-are-you/WhoAreYou";
 import KindOfWeekPage from "pages/work-time/kind-of-week/KindOfWeek";
@@ -39,6 +40,7 @@ const EdtRoutes = (): JSX.Element => {
             <Routes>
                 <Route path="*" element={<NotFoundPage />} />
                 <Route path="/" element={<HomePage />} />
+                <Route path={EdtRoutesNameEnum.INSTALL} element={<InstallPage />} />
                 <Route path={EdtRoutesNameEnum.HELP} element={<HelpPage />} />
                 <Route path={EdtRoutesNameEnum.ERROR} element={<ErrorPage />} />
                 <Route path={EdtRoutesNameEnum.ACTIVITY} element={<ActivityPage />}>

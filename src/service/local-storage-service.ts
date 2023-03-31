@@ -5,4 +5,8 @@ const getLocalStorageValue = (idSurvey: string, localStorageVariable: LocalStora
     return surveyLocalStorage[localStorageVariable] ?? undefined;
 };
 
-export { getLocalStorageValue };
+const getFlatLocalStorageValue = (localStorageVariable: LocalStorageVariableEnum) => {
+    return localStorage.getItem(localStorageVariable);
+};
+
+export { getLocalStorageValue, getFlatLocalStorageValue };
