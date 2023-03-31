@@ -60,13 +60,12 @@ const ActivityOrRoutePlannerPage = () => {
         undefined,
     );
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
-    const [showHelp, setShowHelp] = React.useState(false);
 
     setEnviro(context, useNavigate(), callbackHolder);
     const isItDesktop = isDesktop();
 
     let contextIteration = 0;
-    let { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(
+    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(
         t,
         context.idSurvey,
         context.source,
