@@ -1,4 +1,5 @@
 export enum EdtRoutesNameEnum {
+    INSTALL = "install",
     HELP = "help",
     ERROR = "error/:code",
     ACTIVITY = "activity/:idSurvey",

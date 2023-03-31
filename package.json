@@ -69,7 +69,7 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts --max_old_space_size=4096 build",
-        "build:staging": "env-cmd -f stag.env react-scripts --max_old_space_size=4096 build",
+        "build:staging": "env-cmd -f .env.staging react-scripts --max_old_space_size=4096 build",
         "build:production": "env-cmd -f .env.production react-scripts --max_old_space_size=4096 build",
         "start-rewired": "react-app-rewired start",
         "test": "react-scripts test",

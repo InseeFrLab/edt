@@ -1,3 +1,4 @@
 export enum LocalStorageVariableEnum {
     IS_EDITED_SUMMARY = "IS_EDITED_SUMMARY",
+    HAS_SEEN_INSTALL_SCREEN = "HAS_SEEN_INSTALL_SCREEN",
 }

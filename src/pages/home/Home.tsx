@@ -10,12 +10,15 @@ import DayCard from "components/edt/DayCard/DayCard";
 import WeekCard from "components/edt/WeekCard/WeekCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { useAuth } from "oidc-react";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { getFlatLocalStorageValue } from "service/local-storage-service";
+import { lunaticDatabase } from "service/lunatic-database";
 import {
     getNavigatePath,
     getParameterizedNavigatePath,
@@ -37,6 +40,10 @@ const HomePage = () => {
     const auth = useAuth();
     const [isAlertDisplayed, setIsAlertDisplayed] = React.useState<boolean>(false);
 
+    const hasSeenInstallScreenString = getFlatLocalStorageValue(
+        LocalStorageVariableEnum.HAS_SEEN_INSTALL_SCREEN,
+    );
+
     const alertProps = {
         isAlertDisplayed: isAlertDisplayed,
         onCompleteCallBack: useCallback(() => disconnect(), []),
@@ -50,6 +57,15 @@ const HomePage = () => {
         icon: disconnectIcon,
         errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
     };
+
+    useEffect(() => {
+        if (
+            hasSeenInstallScreenString !== "true" &&
+            !window.matchMedia("(display-mode: standalone)").matches
+        ) {
+            navigate(EdtRoutesNameEnum.INSTALL);
+        }
+    }, []);
 
     const navWorkTime = useCallback(
         (idSurvey: string) => () =>
@@ -67,6 +83,7 @@ const HomePage = () => {
         auth.userManager.clearStaleState();
         auth.userManager.signoutRedirectCallback().then(() => {
             localStorage.clear();
+            lunaticDatabase.clear();
             window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
             auth.userManager.clearStaleState();
         });
