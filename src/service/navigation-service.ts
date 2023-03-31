@@ -8,7 +8,7 @@ import { NavigateFunction, To } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentLoopPage, getLoopInitialPage } from "service/loop-service";
 import { getCurrentPage, getData, getValue, saveData, setValue } from "service/survey-service";
-import { getLastPageStep, getLastStep } from "./stepper.service";
+import { getLastPageStep } from "./stepper.service";
 
 let _context: OrchestratorContext;
 let _navigate: NavigateFunction;
@@ -205,8 +205,8 @@ const closeFormularieAndNav = (route: string) => {
  * we need to make the call twice to be able to retrieve the current state of the database
  */
 const validate = (): Promise<void | LunaticData> => {
-    return saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
-        return saveData(_context.idSurvey, _callbackHolder.getData());
+    return saveData(_context.idSurvey, _callbackHolder.getData(), true).then(() => {
+        return saveData(_context.idSurvey, _callbackHolder.getData(), true);
     });
 };
 
