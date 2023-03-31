@@ -234,10 +234,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const renderActivityOrRoute = () => {
         return (
             <Box
-                className={cx(
-                    classes.mainCardBox,
-                    helpStep == 2 ? classes.activityCardHelpBox : classes.activityCardBox,
-                )}
+                className={cx(classes.mainCardBox, classes.activityCardBox)}
                 onClick={onClick}
                 aria-labelledby={labelledBy}
                 aria-describedby={describedBy}

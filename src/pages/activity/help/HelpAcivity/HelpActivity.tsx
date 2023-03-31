@@ -376,7 +376,6 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         padding: "1rem",
         backgroundColor: "#707070",
         color: theme.variables.white,
-        borderStyle: "dashed",
     },
     stepHelpOne: {
         width: "13rem",

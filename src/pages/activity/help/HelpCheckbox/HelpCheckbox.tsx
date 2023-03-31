@@ -209,7 +209,6 @@ const useStyles = makeStylesEdt({ "name": { HelpCheckbox } })(theme => ({
         padding: "1rem",
         backgroundColor: "#707070",
         color: theme.variables.white,
-        borderStyle: "dashed",
     },
     stepHelpOne: {
         width: "24rem",

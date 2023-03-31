@@ -299,7 +299,6 @@ const useStyles = makeStylesEdt({ "name": { HelpSubCategoryActivity } })(theme =
         padding: "1rem",
         backgroundColor: "#707070",
         color: theme.variables.white,
-        borderStyle: "dashed",
     },
     stepHelpOne: {
         width: "18rem",
