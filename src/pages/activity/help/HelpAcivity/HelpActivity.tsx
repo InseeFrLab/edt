@@ -18,6 +18,7 @@ import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import {
+    getNavigatePath,
     navFullPath,
     navToActivityRoutePlanner,
     navToHelp,
@@ -25,14 +26,15 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
-import { isDesktop } from "service/responsive";
+import { isDesktop, isMobile, isTablet } from "service/responsive";
 import { mockActivitiesRoutesOrGaps } from "service/survey-activity-service";
 import { v4 as uuidv4 } from "uuid";
 
 const HelpActivity = () => {
     const context: OrchestratorContext = useOutletContext();
-    const { classes, cx } = useStyles();
+    const navigate = useNavigate();
     const { t } = useTranslation();
+
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
     const [addActivityOrRouteFromGap, setAddActivityOrRouteFromGap] = React.useState(false);
@@ -41,9 +43,14 @@ const HelpActivity = () => {
     const [helpStep, setHelpStep] = React.useState(1);
 
     setEnviro(context, useNavigate(), callbackHolder);
-    const isItDesktop = isDesktop();
 
-    let activitiesRoutesOrGaps = mockActivitiesRoutesOrGaps();
+    const isItDesktop = isDesktop();
+    const isItTablet = isTablet();
+    const isItMobile = isMobile();
+
+    const { classes, cx } = useStyles();
+
+    const activitiesRoutesOrGaps = mockActivitiesRoutesOrGaps();
     const surveyDate = "2023-03-29";
 
     const onOpenAddActivityOrRoute = useCallback(
@@ -86,15 +93,18 @@ const HelpActivity = () => {
         boldTitle: formateDateToFrenchFormat(generateDateFromStringInput(surveyDate), getLanguage()),
     };
 
+    const navToNextPage = useCallback(
+        () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP_MAIN_ACTIVITY_CATEGORY)),
+        [],
+    );
+
     const nextHelpStep = useCallback(() => {
-        setHelpStep(helpStep + 1);
+        helpStep < 3 ? setHelpStep(helpStep + 1) : navToNextPage();
     }, [helpStep]);
 
     const previousHelpStep = useCallback(() => {
         setHelpStep(helpStep > 1 ? helpStep - 1 : 1);
     }, [helpStep]);
-
-    console.log(helpStep);
 
     const renderHelp = () => {
         return (
@@ -110,7 +120,7 @@ const HelpActivity = () => {
                                 {t("common.navigation.previous")}
                             </Button>
                         )}
-                        {helpStep < 3 && (
+                        {
                             <Button
                                 className={classes.buttonHelpBox}
                                 variant="outlined"
@@ -118,7 +128,7 @@ const HelpActivity = () => {
                             >
                                 {t("common.navigation.next")}
                             </Button>
-                        )}
+                        }
                     </Box>
                     <Box>
                         <Button
@@ -129,13 +139,13 @@ const HelpActivity = () => {
                             {t("common.navigation.skip")}
                         </Button>
                     </Box>
-                    {renderHelpStepOne()}
+                    {renderHelpStep()}
                 </Box>
             </Modal>
         );
     };
 
-    const renderHelpStepOne = () => {
+    const renderHelpStep = () => {
         return (
             <>
                 {helpStep == 1 && (
@@ -150,6 +160,8 @@ const HelpActivity = () => {
                             classes.stepHelpBox,
                             classes.stepHelpTwo,
                             isItDesktop ? classes.stepHelpTwoDesktop : "",
+                            isItTablet ? classes.stepHelpTwoTablet : "",
+                            isItMobile ? classes.stepHelpTwoMobile : "",
                         )}
                     >
                         {t("component.help.help-page-1.help-step-2")}
@@ -278,17 +290,6 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         alignItems: "flex-start",
         overflow: "auto",
     },
-    outletBoxDesktop: {
-        flexGrow: "12",
-        display: "flex",
-        height: "100%",
-        width: "100%",
-    },
-    outletBoxMobileTablet: {
-        flexGrow: "1",
-        display: "flex",
-        height: "100%",
-    },
     innerContentBox: {
         border: "1px solid transparent",
         borderRadius: "20px",
@@ -364,11 +365,12 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         },
     },
     stepHelpBox: {
-        color: theme.palette.secondary.main,
         fontWeight: "bold",
-        backgroundColor: theme.variables.white,
         borderRadius: "1rem",
         padding: "1rem",
+        backgroundColor: "#707070",
+        color: theme.variables.white,
+        borderStyle: "dashed",
     },
     stepHelpOne: {
         width: "13rem",
@@ -381,6 +383,14 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
     },
     stepHelpTwoDesktop: {
         marginTop: "16.5rem",
+    },
+    stepHelpTwoTablet: {
+        marginTop: "16.5rem",
+        marginLeft: "19rem",
+    },
+    stepHelpTwoMobile: {
+        marginTop: "8.5rem",
+        marginLeft: "0rem",
     },
     stepHelpThree: {
         width: "13rem",

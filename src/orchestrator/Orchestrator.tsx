@@ -23,7 +23,7 @@ export const callbackHolder: { getData(): LunaticData; getErrors(): { [key: stri
 };
 
 export type OrchestratorProps = {
-    source: LunaticModel | undefined;
+    source?: LunaticModel | undefined;
     data?: object;
     cbHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } };
     page: string;

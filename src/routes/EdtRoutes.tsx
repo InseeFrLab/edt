@@ -16,6 +16,8 @@ import EditActivityInformationPage from "pages/activity/edit-activity-informatio
 import ExceptionalDayPage from "pages/activity/exceptional-day/ExceptionalDay";
 import GreatestActivityDayPage from "pages/activity/greatest-activity-day/GreatestActivityDay";
 import HelpActivityPage from "pages/activity/help/HelpAcivity/HelpActivity";
+import HelpCategoryActivityPage from "pages/activity/help/HelpMainActivity/HelpCategoryActivity";
+import HelpSubCategoryActivityPage from "pages/activity/help/HelpMainActivity/HelpSubCategoryActivity";
 import KindOfDayPage from "pages/activity/kind-of-day/KindOfDay";
 import PhoneTimePage from "pages/activity/phone-time/PhoneTime";
 import TravelTimePage from "pages/activity/travel-time/TravelTime";
@@ -42,6 +44,15 @@ const EdtRoutes = (): JSX.Element => {
                 <Route path="/" element={<HomePage />} />
                 <Route path={EdtRoutesNameEnum.HELP} element={<HelpPage />} />
                 <Route path={EdtRoutesNameEnum.HELP_ACTIVITY} element={<HelpActivityPage />} />
+                <Route
+                    path={EdtRoutesNameEnum.HELP_MAIN_ACTIVITY_CATEGORY}
+                    element={<HelpCategoryActivityPage />}
+                />
+                <Route
+                    path={EdtRoutesNameEnum.HELP_MAIN_ACTIVITY_SUB_CATEGORY}
+                    element={<HelpSubCategoryActivityPage />}
+                />
+
                 <Route path={EdtRoutesNameEnum.ERROR} element={<ErrorPage />} />
                 <Route path={EdtRoutesNameEnum.ACTIVITY} element={<ActivityPage />}>
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />
