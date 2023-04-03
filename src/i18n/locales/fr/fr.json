@@ -72,6 +72,10 @@
             "worst-activity-day-alt": "Alt pour worst activity day",
             "submit-alt": "Alt pour submit",
             "install-alt": "Alt pour install",
+            "reviewer-alt": "Alt pour reviewer",
+            "mui-icon": {
+                "close": "Alt pour close"
+            },
             "info": {
                 "info-alt": "Alt pour info"
             },
@@ -100,6 +104,14 @@
             "subtitle": "Accédez et complétez facilement votre enquête.",
             "info": "Cette application peut être installée sur votre appareil. Veuillez vous référer au fonctionnement de votre navigateur internet afin de procéder à l'installation.",
             "continue": "J'ai compris"
+        },
+        "reviewer-home": {
+            "welcome": "Bienvenue dans votre espace enquêteur.",
+            "reviewer": "ENQUÊTEUR",
+            "navigation": {
+                "surveys": "Accéder aux enquêtes",
+                "demo": "Démonstration"
+            }
         },
         "home": {
             "welcome": "Bienvenue sur la PWA Carnet EDT",

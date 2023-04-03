@@ -1,9 +1,9 @@
 import ActivityPage from "pages/activity/Activity";
+import ActivityOrRoutePlannerPage from "pages/activity/activity-or-route-planner/ActivityOrRoutePlanner";
 import ActivityDurationPage from "pages/activity/activity-or-route-planner/activity-duration/ActivityDuration";
 import ActivityLocationPage from "pages/activity/activity-or-route-planner/activity/activity-location/ActivityLocation";
 import MainActivityGoalPage from "pages/activity/activity-or-route-planner/activity/main-activity-goal/MainActivityGoal";
 import MainActivityPage from "pages/activity/activity-or-route-planner/activity/main-activity/MainActivity";
-import ActivityOrRoutePlannerPage from "pages/activity/activity-or-route-planner/ActivityOrRoutePlanner";
 import MeanOfTransportPage from "pages/activity/activity-or-route-planner/route/mean-of-transport/MeanOfTransport";
 import RoutePage from "pages/activity/activity-or-route-planner/route/route/Route";
 import SecondaryActivitySelectionPage from "pages/activity/activity-or-route-planner/secondary-activity-selection/SecondaryActivitySelection";
@@ -24,13 +24,14 @@ import EditGlobalInformationPage from "pages/edit-global-information/EditGlobalI
 import EndSurveyPage from "pages/end-survey/EndSurvey";
 import ErrorPage from "pages/error/Error";
 import HelpPage from "pages/help/Help";
+import HomeReviewerPage from "pages/home-reviewer/HomeReviewer";
 import HomePage from "pages/home/Home";
 import InstallPage from "pages/install/Install";
 import NotFoundPage from "pages/not-found/NotFound";
 import WhoAreYouPage from "pages/who-are-you/WhoAreYou";
+import WorkTimePage from "pages/work-time/WorkTime";
 import KindOfWeekPage from "pages/work-time/kind-of-week/KindOfWeek";
 import WeeklyPlannerPage from "pages/work-time/weekly-planner/WeeklyPlanner";
-import WorkTimePage from "pages/work-time/WorkTime";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { EdtRoutesNameEnum } from "./EdtRoutesMapping";
 
@@ -40,6 +41,7 @@ const EdtRoutes = (): JSX.Element => {
             <Routes>
                 <Route path="*" element={<NotFoundPage />} />
                 <Route path="/" element={<HomePage />} />
+                <Route path={EdtRoutesNameEnum.REVIEWER_HOME} element={<HomeReviewerPage />} />
                 <Route path={EdtRoutesNameEnum.INSTALL} element={<InstallPage />} />
                 <Route path={EdtRoutesNameEnum.HELP} element={<HelpPage />} />
                 <Route path={EdtRoutesNameEnum.ERROR} element={<ErrorPage />} />
