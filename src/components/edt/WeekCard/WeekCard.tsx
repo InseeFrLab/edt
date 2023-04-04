@@ -1,9 +1,8 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import Box from "@mui/material/Box";
+import calendarMonth from "assets/illustration/mui-icon/calendar-month.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
-import { getWeeklyPlannerScore } from "service/survey-activity-service";
+import { useTranslation } from "react-i18next";
 interface WeekCardProps {
     labelledBy: string;
     describedBy: string;
@@ -15,8 +14,9 @@ interface WeekCardProps {
 }
 
 const WeekCard = (props: WeekCardProps) => {
-    const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey, isClose } = props;
+    const { labelledBy, describedBy, onClick, firstName, surveyDate, isClose } = props;
     const { classes, cx } = useStyles();
+    const { t } = useTranslation();
     return (
         <FlexCenter>
             <Box
@@ -27,21 +27,17 @@ const WeekCard = (props: WeekCardProps) => {
             >
                 <Box className={classes.leftBox}>
                     <Box className={cx(classes.iconBox, isClose ? classes.closeIconBox : "")}>
-                        <CalendarMonthOutlinedIcon />
+                        <img
+                            src={calendarMonth}
+                            alt={t("accessibility.asset.mui-icon.calendar-month")}
+                        />
                     </Box>
                     <Box>
                         <Box>{surveyDate}</Box>
                         <Box>{firstName}</Box>
                     </Box>
                 </Box>
-                <Box className={classes.scoreBox}>
-                    <PourcentProgress
-                        labelledBy={""}
-                        describedBy={""}
-                        progress={getWeeklyPlannerScore(idSurvey)}
-                        isClose={isClose}
-                    />
-                </Box>
+                <Box className={classes.scoreBox}></Box>
             </Box>
         </FlexCenter>
     );

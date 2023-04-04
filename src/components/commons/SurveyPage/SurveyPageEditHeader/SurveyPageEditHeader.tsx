@@ -1,7 +1,7 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Box, Button, Divider, Popover, Typography } from "@mui/material";
+import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
+import moreHorizontal from "assets/illustration/mui-icon/more-horizontal.svg";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -35,14 +35,24 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
                 <Box className={classes.leftPartBox}>
                     <Button
                         variant="outlined"
-                        startIcon={<ArrowBackIosNewIcon />}
+                        startIcon={
+                            <img
+                                src={arrowBackIos}
+                                alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                            />
+                        }
                         onClick={onNavigateBack}
                         aria-label={t("common.navigation.previous")}
                     ></Button>
                     <Typography className={classes.infoText}>{firstNamePrefix + firstName}</Typography>
                 </Box>
                 <Box>
-                    <MoreHorizIcon className={classes.actionIcon} onClick={onEditSurvey}></MoreHorizIcon>
+                    <img
+                        src={moreHorizontal}
+                        alt={t("accessibility.asset.mui-icon.more-horizontal")}
+                        className={classes.actionIcon}
+                        onClick={onEditSurvey}
+                    />
                     <Popover
                         id={id}
                         open={openPopOver}

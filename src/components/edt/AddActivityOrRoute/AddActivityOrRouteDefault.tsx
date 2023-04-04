@@ -1,7 +1,7 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import CloseIcon from "@mui/icons-material/Close";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Button, Divider } from "@mui/material";
+import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import close from "assets/illustration/mui-icon/close.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { useTranslation } from "react-i18next";
 
@@ -40,7 +40,10 @@ const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
                         <p>{t("component.add-activity-or-route.activity-description")}</p>
                     </Box>
                     <Box className={classes.navIconBox}>
-                        <NavigateNextIcon />
+                        <img
+                            src={arrowForwardIos}
+                            alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                        />
                     </Box>
                 </Box>
                 <Divider light />
@@ -53,14 +56,17 @@ const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
                         <p>{t("component.add-activity-or-route.route-description")}</p>
                     </Box>
                     <Box className={classes.navIconBox}>
-                        <NavigateNextIcon />
+                        <img
+                            src={arrowForwardIos}
+                            alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                        />
                     </Box>
                 </Box>
                 <FlexCenter>
                     <Button className={classes.closeButton} onClick={handleClose}>
                         <Box>
                             <Box>
-                                <CloseIcon />
+                                <img src={close} alt={t("accessibility.asset.mui-icon.close")} />
                             </Box>
                             <Box>{t("common.navigation.close")}</Box>
                         </Box>
@@ -112,6 +118,7 @@ const useStyles = makeStylesEdt({ "name": { AddActivityOrRouteDefault } })(theme
     closeButton: {
         marginTop: "2rem",
         fontSize: "14px",
+        color: theme.palette.text.primary,
     },
 }));
 

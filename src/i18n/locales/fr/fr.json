@@ -74,7 +74,29 @@
             "install-alt": "Alt pour install",
             "reviewer-alt": "Alt pour reviewer",
             "mui-icon": {
-                "close": "Alt pour close"
+                "close": "Alt pour close",
+                "more-horizontal": "Alt pour more-horizontal",
+                "done": "Alt pour more-horizontal",
+                "arrow-forward-ios": "Alt pour arrow-forward-ios",
+                "arrow-forward": "Alt pour arrow-forward",
+                "arrow-back-ios": "Alt pour arrow-back-ios",
+                "add-circle": "Alt pour add-circle",
+                "add": "Alt pour add",
+                "calendar-month": "Alt pour calendar-month",
+                "event": "Alt pour event",
+                "expand-less": "Alt pour expand-less",
+                "expand-more": "Alt pour expand-more",
+                "help": "Alt pour help",
+                "home": "Alt pour home",
+                "phone-android": "Alt pour phone-android",
+                "power-settings": "Alt pour power-settings",
+                "remove-circle": "Alt pour remove-circle",
+                "replay": "Alt pour replay",
+                "send": "Alt pour send",
+                "visibility": "Alt pour visibility",
+                "work": "Alt pour work",
+                "search": "Alt pour search",
+                "extension": "Alt pour extension"
             },
             "info": {
                 "info-alt": "Alt pour info"

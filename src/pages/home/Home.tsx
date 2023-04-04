@@ -1,9 +1,9 @@
 import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import HelpIcon from "@mui/icons-material/Help";
-import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { Box, Button } from "@mui/material";
 import disconnectIcon from "assets/illustration/disconnect.svg";
 import logo from "assets/illustration/logo.png";
+import help from "assets/illustration/mui-icon/help.svg";
+import powerSettings from "assets/illustration/mui-icon/power-settings.svg";
 import reminder_note from "assets/illustration/reminder-note.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import DayCard from "components/edt/DayCard/DayCard";
@@ -121,7 +121,7 @@ const HomePage = () => {
                 <Box className={classes.helpBox}>
                     <Button
                         color="secondary"
-                        startIcon={<HelpIcon />}
+                        startIcon={<img src={help} alt={t("accessibility.asset.mui-icon.help")} />}
                         onClick={useCallback(
                             () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP)),
                             [],
@@ -131,7 +131,12 @@ const HomePage = () => {
                     </Button>
                     <Button
                         color="secondary"
-                        startIcon={<PowerSettingsNewIcon />}
+                        startIcon={
+                            <img
+                                src={powerSettings}
+                                alt={t("accessibility.asset.mui-icon.power-settings")}
+                            />
+                        }
                         onClick={onDisconnect}
                     >
                         {t("page.home.navigation.logout")}

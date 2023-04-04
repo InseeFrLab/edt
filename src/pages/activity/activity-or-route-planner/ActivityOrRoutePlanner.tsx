@@ -7,11 +7,11 @@ import {
     makeStylesEdt,
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
-import CloseIcon from "@mui/icons-material/Close";
 import { Box, Divider, IconButton, Snackbar, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
 import InfoIcon from "assets/illustration/info.svg";
+import close from "assets/illustration/mui-icon/close.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
@@ -273,7 +273,7 @@ const ActivityOrRoutePlannerPage = () => {
     const snackbarAction = (
         <React.Fragment>
             <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
-                <CloseIcon fontSize="small" />
+                <img src={close} alt={t("accessibility.asset.mui-icon.close")} />
             </IconButton>
         </React.Fragment>
     );

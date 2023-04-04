@@ -1,7 +1,7 @@
 import { Info, InfoProps, makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import SendIcon from "@mui/icons-material/Send";
 import { Box, Button, Typography } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
+import sendIcon from "assets/illustration/mui-icon/send.svg";
 import submit_icon from "assets/illustration/submit.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
@@ -128,7 +128,7 @@ const EndSurveyPage = () => {
                         className={classes.sendButton}
                         variant="contained"
                         onClick={remoteSaveSurveyAndGoBackHome}
-                        endIcon={<SendIcon />}
+                        endIcon={<img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />}
                     >
                         {t("common.navigation.send")}
                     </Button>
@@ -138,7 +138,7 @@ const EndSurveyPage = () => {
                         className={classes.sendButton}
                         variant="contained"
                         onClick={remoteSaveSurveyAndGoBackHome}
-                        endIcon={<SendIcon />}
+                        endIcon={<img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />}
                         disabled={true}
                     >
                         {t("common.navigation.send")}
