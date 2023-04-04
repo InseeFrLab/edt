@@ -1,12 +1,39 @@
-import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import {
+    ActivitySelecterSpecificProps,
+    Alert,
+    AutoCompleteActiviteOption,
+    important,
+    makeStylesEdt,
+} from "@inseefrlab/lunatic-edt";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Button, Modal } from "@mui/material";
+import catIcon100 from "assets/illustration/activity-categories/1.svg";
+import catIcon200 from "assets/illustration/activity-categories/2.svg";
+import catIcon300 from "assets/illustration/activity-categories/3.svg";
+import catIcon400 from "assets/illustration/activity-categories/4.svg";
+import catIcon440 from "assets/illustration/activity-categories/5.svg";
+import catIcon500 from "assets/illustration/activity-categories/6.svg";
+import catIcon650 from "assets/illustration/activity-categories/7.svg";
+import catIcon600 from "assets/illustration/activity-categories/8.svg";
+import errorIcon from "assets/illustration/error/activity.svg";
+import add from "assets/illustration/mui-icon/add.svg";
+import chevronRight from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import extension from "assets/illustration/mui-icon/extension.svg";
+import search from "assets/illustration/mui-icon/search.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
+import { SEPARATOR_DEFAUT } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import React, { useCallback } from "react";
+import { LoopEnum } from "enumerations/LoopEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
+import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
@@ -17,29 +44,6 @@ import {
     onNext,
     onPrevious,
 } from "service/navigation-service";
-import {
-    ActivitySelecterSpecificProps,
-    Alert,
-    AutoCompleteActiviteOption,
-} from "@inseefrlab/lunatic-edt";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import catIcon100 from "assets/illustration/activity-categories/1.svg";
-import catIcon200 from "assets/illustration/activity-categories/2.svg";
-import catIcon300 from "assets/illustration/activity-categories/3.svg";
-import catIcon400 from "assets/illustration/activity-categories/4.svg";
-import catIcon440 from "assets/illustration/activity-categories/5.svg";
-import catIcon500 from "assets/illustration/activity-categories/6.svg";
-import catIcon650 from "assets/illustration/activity-categories/7.svg";
-import catIcon600 from "assets/illustration/activity-categories/8.svg";
-import errorIcon from "assets/illustration/error/activity.svg";
-import { SEPARATOR_DEFAUT } from "constants/constants";
-import { LoopEnum } from "enumerations/LoopEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { useState } from "react";
-import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { addToAutocompleteActivityReferentiel, getData, getSource } from "service/survey-service";
 
@@ -120,6 +124,14 @@ const HelpCategoryActivity = () => {
         widthGlobal: true,
         separatorSuggester: process.env.REACT_APP_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
         helpStep: helpStep,
+        chevronRightIcon: chevronRight,
+        chevronRightIconAlt: t("accessibility.asset.mui-icon.arrow-right-ios"),
+        searchIcon: search,
+        searchIconAlt: t("accessibility.asset.mui-icon.search"),
+        extensionIcon: extension,
+        extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
+        addIcon: add,
+        addIconAlt: t("accessibility.asset.mui-icon.add"),
     };
 
     const navToActivityRouteHome = useCallback(() => {
