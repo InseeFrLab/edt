@@ -1,8 +1,9 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import { AppBar, Box, Divider, Tab, Tabs, Typography } from "@mui/material";
 import PersonSunIcon from "assets/illustration/card/person-sun.svg";
+import calendarMonth from "assets/illustration/mui-icon/calendar-month.svg";
+import expandLess from "assets/illustration/mui-icon/expand-less.svg";
+import expandMore from "assets/illustration/mui-icon/expand-more.svg";
 import { TabData } from "interface/component/Component";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -59,7 +60,13 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         if (isActivitySurvey) {
             return <img src={PersonSunIcon} alt={t("accessibility.asset.card.person-sun-alt")} />;
         } else {
-            return <CalendarMonthOutlinedIcon className={classes.icon} />;
+            return (
+                <img
+                    src={calendarMonth}
+                    alt={t("accessibility.asset.mui-icon.calendar-month")}
+                    className={classes.icon}
+                />
+            );
         }
     };
 
@@ -100,7 +107,11 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                             .map((tabData, index) => getTab(tabData, index))}
                     </Tabs>
                     <Box className={classes.actionBox} onClick={handleToggle}>
-                        {isOpen ? <ExpandLess /> : <ExpandMore />}
+                        {isOpen ? (
+                            <img src={expandLess} alt={t("accessibility.asset.mui-icon.expand-less")} />
+                        ) : (
+                            <img src={expandMore} alt={t("accessibility.asset.mui-icon.expand-more")} />
+                        )}
                     </Box>
                 </Box>
 

@@ -1,7 +1,9 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Button } from "@mui/material";
+import add from "assets/illustration/mui-icon/add.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { useTranslation } from "react-i18next";
 import { isDesktop } from "service/responsive";
 
 interface ActivityButtonsProps {
@@ -16,6 +18,7 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
     const { onClickFinish, onClickAdd, finishLabel, addLabel, helpStep } = props;
     const { classes, cx } = useStyles();
     const isItDesktop = isDesktop();
+    const { t } = useTranslation();
     return (
         <>
             {!isItDesktop && <Box className={classes.gap}></Box>}
@@ -46,7 +49,7 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
                         helpStep == 1 ? classes.helpAddButton : "",
                     )}
                 >
-                    <AddIcon />
+                    <img src={add} alt={t("accessibility.asset.mui-icon.add")} />
                     {addLabel}
                 </Button>
             </FlexCenter>

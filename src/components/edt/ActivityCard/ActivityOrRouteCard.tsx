@@ -1,5 +1,4 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Box, Button, Divider, Popover, Typography } from "@mui/material";
 import activityErrorIconSvg from "assets/illustration/error/activity.svg";
 import locationErrorIconSvg from "assets/illustration/error/location.svg";
@@ -7,6 +6,7 @@ import meanOfTransportErrorIconSvg from "assets/illustration/error/mean-of-trans
 import peopleErrorIconSvg from "assets/illustration/error/people.svg";
 import routeErrorIconSvg from "assets/illustration/error/route.svg";
 import screenErrorIconSvg from "assets/illustration/error/screen.svg";
+import moreHorizontal from "assets/illustration/mui-icon/more-horizontal.svg";
 import { InsideAlertTypes } from "enumerations/InsideAlertTypesEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import React, { useCallback } from "react";
@@ -265,11 +265,13 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                 </Box>
                 {onEdit && onDelete && (
                     <Box className={classes.editBox}>
-                        <MoreHorizIcon
+                        <img
+                            src={moreHorizontal}
+                            alt={t("accessibility.asset.mui-icon.more-horizontal")}
                             className={classes.actionIcon}
                             onClick={onEditCard}
                             aria-label="editCardToggle"
-                        ></MoreHorizIcon>
+                        />
                         <Popover
                             id={id}
                             open={openPopOver}

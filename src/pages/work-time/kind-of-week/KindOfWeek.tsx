@@ -1,11 +1,12 @@
 import { Alert, CheckboxOneSpecificProps } from "@inseefrlab/lunatic-edt";
 import calendarWeek from "assets/illustration/kind-of-week-categories/calendar-week.svg";
 import kindOfWeek from "assets/illustration/kind-of-week.svg";
+import extension from "assets/illustration/mui-icon/extension.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -44,6 +45,8 @@ const KindOfWeekPage = () => {
         onSelectValue: () => {
             validate().then(() => saveAndNav(routeEnd));
         },
+        extensionIcon: extension,
+        extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
     };
 
     const alertLabels = {

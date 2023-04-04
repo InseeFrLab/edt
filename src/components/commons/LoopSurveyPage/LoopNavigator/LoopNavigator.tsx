@@ -1,10 +1,11 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import DoneIcon from "@mui/icons-material/Done";
 import { Box, Button } from "@mui/material";
+import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
+import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import done from "assets/illustration/mui-icon/done.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { isDesktop } from "service/responsive";
 
 interface LoopNavigatorProps {
@@ -19,6 +20,7 @@ interface LoopNavigatorProps {
 const LoopNavigator = (props: LoopNavigatorProps) => {
     const { onNext, onPrevious, onValidate, nextLabel, previousLabel, validateLabel } = props;
     const { classes, cx } = useStyles();
+    const { t } = useTranslation();
     const hasTwoButtons = (onPrevious && onNext) || (onPrevious && onValidate);
     const isItDesktop = isDesktop();
 
@@ -48,7 +50,12 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                     {onPrevious && (
                         <Button
                             variant="outlined"
-                            startIcon={<ArrowBackIosIcon />}
+                            startIcon={
+                                <img
+                                    src={arrowBackIos}
+                                    alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                                />
+                            }
                             onClick={backClick}
                             className={cx(
                                 classes.navButton,
@@ -61,7 +68,12 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                     {onNext && !onValidate && (
                         <Button
                             variant="outlined"
-                            endIcon={<ArrowForwardIosIcon />}
+                            endIcon={
+                                <img
+                                    src={arrowForwardIos}
+                                    alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                />
+                            }
                             onClick={nextClick}
                             className={cx(
                                 classes.navButton,
@@ -74,7 +86,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                     {onValidate && (
                         <Button
                             variant="outlined"
-                            endIcon={<DoneIcon />}
+                            endIcon={<img src={done} alt={t("accessibility.asset.mui-icon.done")} />}
                             onClick={onValidate}
                             className={cx(
                                 classes.navButton,

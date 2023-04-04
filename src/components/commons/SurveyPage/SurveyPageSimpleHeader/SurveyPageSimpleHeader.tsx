@@ -1,6 +1,7 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import CloseIcon from "@mui/icons-material/Close";
 import { Box } from "@mui/material";
+import close from "assets/illustration/mui-icon/close.svg";
+import { useTranslation } from "react-i18next";
 
 interface SurveyPageSimpleHeaderProps {
     onNavigateBack(): void;
@@ -11,11 +12,18 @@ interface SurveyPageSimpleHeaderProps {
 const SurveyPageSimpleHeader = (props: SurveyPageSimpleHeaderProps) => {
     const { simpleHeaderLabel, onNavigateBack, backgroundWhite } = props;
     const { classes, cx } = useStyles();
+    const { t } = useTranslation();
+
     return (
         <Box className={cx(classes.headerBox, backgroundWhite ? classes.headerWhiteBox : "")}>
             <Box>{simpleHeaderLabel}</Box>
             <Box>
-                <CloseIcon className={classes.actionIcon} onClick={onNavigateBack} />
+                <img
+                    src={close}
+                    alt={t("accessibility.asset.mui-icon.close")}
+                    className={classes.actionIcon}
+                    onClick={onNavigateBack}
+                />
             </Box>
         </Box>
     );

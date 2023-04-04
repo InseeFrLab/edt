@@ -1,7 +1,7 @@
 import { Alert, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
-import CloseIcon from "@mui/icons-material/Close";
 import { IconButton, Snackbar } from "@mui/material";
 import errorIcon from "assets/illustration/error/activity.svg";
+import close from "assets/illustration/mui-icon/close.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
@@ -172,7 +172,7 @@ const ActivityDurationPage = () => {
     const snackbarAction = (
         <Fragment>
             <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
-                <CloseIcon fontSize="small" />
+                <img src={close} alt={t("accessibility.asset.mui-icon.close")} />
             </IconButton>
         </Fragment>
     );

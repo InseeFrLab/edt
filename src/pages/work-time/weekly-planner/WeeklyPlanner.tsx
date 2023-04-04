@@ -1,5 +1,6 @@
 import { WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
 import InfoIcon from "assets/illustration/info.svg";
+import expandMore from "assets/illustration/mui-icon/expand-more.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -56,6 +57,8 @@ const WeeklyPlannerPage = () => {
         },
         saveAll: save,
         language: getLanguage(),
+        moreIcon: expandMore,
+        moreIconAlt: t("accessibility.asset.mui-icon.more"),
     };
 
     const validateAndNav = (): void => {

@@ -1,8 +1,8 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import HomeIcon from "@mui/icons-material/Home";
-import ReplayIcon from "@mui/icons-material/Replay";
 import { Box, Button, Typography } from "@mui/material";
 import defaultErrorIcon from "assets/illustration/error/error.svg";
+import home from "assets/illustration/mui-icon/home.svg";
+import replay from "assets/illustration/mui-icon/replay.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
@@ -47,7 +47,7 @@ const ErrorPage = (props: ErrorPageProps) => {
             return (
                 <Button
                     variant="contained"
-                    startIcon={<ReplayIcon />}
+                    startIcon={<img src={replay} alt={t("accessibility.asset.mui-icon.replay")} />}
                     onClick={useCallback(() => retryInitialize(), [])}
                 >
                     {t("common.navigation.retry")}
@@ -57,7 +57,7 @@ const ErrorPage = (props: ErrorPageProps) => {
             return (
                 <Button
                     variant="contained"
-                    startIcon={<HomeIcon />}
+                    startIcon={<img src={home} alt={t("accessibility.asset.mui-icon.home")} />}
                     onClick={useCallback(() => navToHome, [])}
                 >
                     {t("common.navigation.back-to-home")}

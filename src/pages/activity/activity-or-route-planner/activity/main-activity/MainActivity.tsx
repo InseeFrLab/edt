@@ -34,6 +34,10 @@ import catIcon500 from "assets/illustration/activity-categories/6.svg";
 import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
+import add from "assets/illustration/mui-icon/add.svg";
+import chevronRight from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import extension from "assets/illustration/mui-icon/extension.svg";
+import search from "assets/illustration/mui-icon/search.svg";
 import { SEPARATOR_DEFAUT } from "constants/constants";
 import { LoopEnum } from "enumerations/LoopEnum";
 import React, { useCallback, useState } from "react";
@@ -136,6 +140,14 @@ const MainActivityPage = () => {
         },
         widthGlobal: true,
         separatorSuggester: process.env.REACT_APP_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
+        chevronRightIcon: chevronRight,
+        chevronRightIconAlt: t("accessibility.asset.mui-icon.arrow-right-ios"),
+        searchIcon: search,
+        searchIconAlt: t("accessibility.asset.mui-icon.search"),
+        extensionIcon: extension,
+        extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
+        addIcon: add,
+        addIconAlt: t("accessibility.asset.mui-icon.add"),
     };
 
     return (

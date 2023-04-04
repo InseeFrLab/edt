@@ -215,8 +215,8 @@ const closeFormularieAndNav = (route: string) => {
  * we need to make the call twice to be able to retrieve the current state of the database
  */
 const validate = (): Promise<void | LunaticData> => {
-    return saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
-        return saveData(_context.idSurvey, _callbackHolder.getData());
+    return saveData(_context.idSurvey, _callbackHolder.getData(), true).then(() => {
+        return saveData(_context.idSurvey, _callbackHolder.getData(), true);
     });
 };
 
