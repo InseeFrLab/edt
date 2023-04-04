@@ -394,6 +394,18 @@
             "componentRef": "activityselecter_mainactivity"
         },
         {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "ACTIVITY_SELECTER_HISTORY",
+            "componentRef": "activityselecter_mainactivity"
+        },
+        {
             "variableType": "CALCULATED",
             "expression": "true",
             "name": "FILTER_RESULT_INPUTTEXT",
@@ -566,7 +578,8 @@
                 "WITHSCREEN",
                 "ISROUTE",
                 "ISCOMPLETED",
-                "INPUT_SUGGESTER"
+                "INPUT_SUGGESTER",
+                "ACTIVITY_SELECTER_HISTORY"
             ],
             "loopDependencies": [],
             "iterations": { "value": "1", "type": "VTL" },
@@ -622,7 +635,8 @@
                         "MAINACTIVITY_SUGGESTERID",
                         "MAINACTIVITY_LABEL",
                         "MAINACTIVITY_ISFULLYCOMPLETED",
-                        "INPUT_SUGGESTER"
+                        "INPUT_SUGGESTER",
+                        "ACTIVITY_SELECTER_HISTORY"
                     ],
                     "responses": [
                         {
@@ -648,6 +662,11 @@
                         {
                             "response": {
                                 "name": "INPUT_SUGGESTER"
+                            }
+                        },
+                        {
+                            "response": {
+                                "name": "ACTIVITY_SELECTER_HISTORY"
                             }
                         }
                     ],
