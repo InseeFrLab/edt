@@ -22,7 +22,6 @@ import { useNavigate } from "react-router-dom";
 import { getFlatLocalStorageValue } from "service/local-storage-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import {
-    getIdSurveyContext,
     getNavigatePath,
     navToActivityOrPlannerOrSummary,
     navToWeeklyPlannerOrClose,
@@ -81,6 +80,7 @@ const HomePage = () => {
                 data: data,
                 idSurvey: idSurvey,
                 surveyRootPage: EdtRoutesNameEnum.WORK_TIME,
+                global: false,
             };
             setEnviro(context, navigate, callbackHolder);
 
@@ -121,9 +121,9 @@ const HomePage = () => {
                 data: data,
                 idSurvey: idSurvey,
                 surveyRootPage: EdtRoutesNameEnum.ACTIVITY,
+                global: false,
             };
             setEnviro(context, navigate, callbackHolder);
-            console.log(getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS));
             const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
             if (firstName != null) {
                 navToActivityOrPlannerOrSummary(
@@ -144,6 +144,20 @@ const HomePage = () => {
         return surveyIsClosed;
     };
 
+    const navToHelp = useCallback(() => {
+        const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
+        let data = getData(idSurvey || "");
+        let context: OrchestratorContext = {
+            source: source,
+            data: data,
+            idSurvey: idSurvey,
+            surveyRootPage: EdtRoutesNameEnum.WORK_TIME,
+            global: true,
+        };
+        setEnviro(context, navigate, callbackHolder);
+        navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
+    }, []);
+
     return (
         <>
             <FlexCenter>
@@ -158,14 +172,7 @@ const HomePage = () => {
                     />
                 </Box>
                 <Box className={classes.helpBox}>
-                    <Button
-                        color="secondary"
-                        startIcon={<HelpIcon />}
-                        onClick={useCallback(
-                            () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY)),
-                            [],
-                        )}
-                    >
+                    <Button color="secondary" startIcon={<HelpIcon />} onClick={navToHelp}>
                         {t("page.home.navigation.link-help-label")}
                     </Button>
                     <Button

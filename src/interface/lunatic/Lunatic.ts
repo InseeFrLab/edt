@@ -95,6 +95,7 @@ export interface OrchestratorContext {
     surveyRootPage: EdtRoutesNameEnum;
     isRoute?: boolean;
     activityOrRoute?: ActivityRouteOrGap;
+    global?: boolean;
 }
 
 export interface LoopData {

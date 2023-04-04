@@ -1,4 +1,4 @@
-import { makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
+import { important, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -11,11 +11,10 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router";
+import { useNavigate } from "react-router";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
@@ -29,14 +28,13 @@ import { getData, getSource } from "service/survey-service";
 const HelpDuration = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const context: OrchestratorContext = useOutletContext();
 
     const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
     const stepData = getStepData(currentPage);
 
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
-    let data = getData(idSurvey || "");
+    const data = getData(idSurvey || "");
 
     const { classes, cx } = useStyles();
 
@@ -167,18 +165,21 @@ const useStyles = makeStylesEdt({ "name": { HelpDuration } })(theme => ({
         marginBottom: "1rem",
         marginRight: "1rem",
         width: "10rem",
+        "&:hover": {
+            color: theme.variables.white,
+            borderColor: important(theme.variables.white),
+        },
     },
     buttonHelpBox: {
         backgroundColor: "#2c2e33",
         "&:hover": {
             backgroundColor: "#2c2e33",
-            color: theme.variables.white,
         },
     },
     buttonSkipBox: {
+        backgroundColor: "#707070",
         "&:hover": {
-            color: theme.palette.secondary.main,
-            backgroundColor: theme.variables.white,
+            backgroundColor: "#707070",
         },
     },
     stepHelpBox: {

@@ -1,6 +1,7 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Button, Modal } from "@mui/material";
 import childIcon from "assets/illustration/with-someone-categories/child.svg";
 import coupleIcon from "assets/illustration/with-someone-categories/couple.svg";
@@ -13,16 +14,17 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
     getIdSurveyContext,
     getNavigatePath,
+    isActivityPage,
+    isPageGlobal,
     navToActivityRouteOrHome,
     onClose,
     onNext,
@@ -31,7 +33,6 @@ import {
 import { getData, getSource } from "service/survey-service";
 
 const HelpCheckbox = () => {
-    const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
@@ -40,8 +41,7 @@ const HelpCheckbox = () => {
     const stepData = getStepData(currentPage);
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
-
-    let data = getData(idSurvey || "");
+    const data = getData(idSurvey || "");
 
     const [helpStep, setHelpStep] = React.useState(1);
 
@@ -56,6 +56,10 @@ const HelpCheckbox = () => {
 
     const previousHelpStep = useCallback(() => {
         helpStep > 1 ? setHelpStep(helpStep - 1) : navToBackPage();
+    }, [helpStep]);
+
+    const nextHelpStep = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.HELP_WORK_TIME));
     }, [helpStep]);
 
     const renderHelp = () => {
@@ -73,6 +77,16 @@ const HelpCheckbox = () => {
                                 {t("common.navigation.previous")}
                             </Button>
                         }
+                        {isPageGlobal() && !isActivityPage() && (
+                            <Button
+                                className={cx(classes.buttonBox, classes.buttonHelpBox)}
+                                variant="outlined"
+                                onClick={nextHelpStep}
+                                endIcon={<ArrowForwardIosIcon />}
+                            >
+                                {t("common.navigation.next")}
+                            </Button>
+                        )}
                     </Box>
                     <Box>
                         <Button
@@ -185,18 +199,21 @@ const useStyles = makeStylesEdt({ "name": { HelpCheckbox } })(theme => ({
         marginBottom: "1rem",
         marginRight: "1rem",
         width: "10rem",
+        "&:hover": {
+            color: theme.variables.white,
+            borderColor: important(theme.variables.white),
+        },
     },
     buttonHelpBox: {
         backgroundColor: "#2c2e33",
         "&:hover": {
             backgroundColor: "#2c2e33",
-            color: theme.variables.white,
         },
     },
     buttonSkipBox: {
+        backgroundColor: "#707070",
         "&:hover": {
-            color: theme.palette.secondary.main,
-            backgroundColor: theme.variables.white,
+            backgroundColor: "#707070",
         },
     },
     stepHelpBox: {

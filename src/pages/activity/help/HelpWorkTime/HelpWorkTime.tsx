@@ -1,4 +1,4 @@
-import { makeStylesEdt, WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
+import { important, makeStylesEdt, WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Button, Modal } from "@mui/material";
@@ -8,14 +8,15 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
     getIdSurveyContext,
+    getNavigatePath,
     getOrchestratorPage,
+    isPageGlobal,
     navToHelp,
     navToHome,
     navToWeeklyPlannerOrHome,
@@ -31,20 +32,18 @@ import {
 } from "service/survey-service";
 
 const HelpWorkTime = () => {
-    const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
-    const { classes, cx } = useStyles();
     const { t } = useTranslation();
+    const { classes, cx } = useStyles();
 
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
     const [displayedDayHeader, setDisplayedDayHeader] = React.useState<string>("");
-    const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
-
     const [helpStep, setHelpStep] = React.useState(1);
-    const idSurvey = getIdSurveyContext(SurveysIdsEnum.WORK_TIME_SURVEYS_IDS);
 
+    const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
+    const idSurvey = getIdSurveyContext(SurveysIdsEnum.WORK_TIME_SURVEYS_IDS);
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
-    let data = getData(idSurvey || "");
+    const data = getData(idSurvey || "");
 
     const navToWeeklyPlannerHome = useCallback(() => {
         navToWeeklyPlannerOrHome();
@@ -75,14 +74,23 @@ const HelpWorkTime = () => {
         helpStep: helpStep,
     };
 
-    const navToBackPage = useCallback(() => navToHome(), [helpStep]);
+    const navToBackPage = useCallback(
+        () =>
+            isPageGlobal() ? navigate(getNavigatePath(EdtRoutesNameEnum.HELP_CHECKBOX)) : navToHome(),
+        [helpStep],
+    );
+
+    const navToNextPage = useCallback(
+        () => (isPageGlobal() ? navToHome() : navToWeeklyPlannerOrHome()),
+        [helpStep],
+    );
 
     const previousHelpStep = useCallback(() => {
         helpStep > 1 ? setHelpStep(helpStep - 1) : navToBackPage();
     }, [helpStep]);
 
     const nextHelpStep = useCallback(() => {
-        helpStep < 4 ? setHelpStep(helpStep + 1) : navToHome();
+        helpStep < 4 ? setHelpStep(helpStep + 1) : navToNextPage();
     }, [helpStep]);
 
     const renderHelp = () => {
@@ -201,18 +209,21 @@ const useStyles = makeStylesEdt({ "name": { HelpWorkTime } })(theme => ({
         marginBottom: "1rem",
         marginRight: "1rem",
         width: "10rem",
+        "&:hover": {
+            color: theme.variables.white,
+            borderColor: important(theme.variables.white),
+        },
     },
     buttonHelpBox: {
         backgroundColor: "#2c2e33",
         "&:hover": {
             backgroundColor: "#2c2e33",
-            color: theme.variables.white,
         },
     },
     buttonSkipBox: {
+        backgroundColor: "#707070",
         "&:hover": {
-            color: theme.palette.secondary.main,
-            backgroundColor: theme.variables.white,
+            backgroundColor: "#707070",
         },
     },
     stepHelpBox: {

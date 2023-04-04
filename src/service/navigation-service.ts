@@ -18,7 +18,7 @@ import {
     setValue,
     surveysIds,
 } from "service/survey-service";
-import { getLastPageStep, getLastStep } from "./stepper.service";
+import { getLastPageStep } from "./stepper.service";
 
 let _context: OrchestratorContext;
 let _navigate: NavigateFunction;
@@ -348,7 +348,6 @@ const navFullPath = (route: EdtRoutesNameEnum, parentPage?: EdtRoutesNameEnum): 
 
 const navToActivityRouteOrHome = () => {
     const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
-    console.log(_context.idSurvey);
     const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
     if (firstName == null) {
         navToActivityOrPlannerOrSummary(
@@ -364,7 +363,6 @@ const navToActivityRouteOrHome = () => {
 
 const navToWeeklyPlannerOrHome = () => {
     const idSurvey = getIdSurveyContext(SurveysIdsEnum.WORK_TIME_SURVEYS_IDS);
-
     const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
     if (firstName == null) {
         navToWeeklyPlannerOrClose(idSurvey, _navigate, getSource(SourcesEnum.WORK_TIME_SURVEY));
@@ -375,6 +373,14 @@ const navToWeeklyPlannerOrHome = () => {
 
 const getIdSurveyContext = (typeSurvey: SurveysIdsEnum) => {
     return _context ? _context.idSurvey : surveysIds[typeSurvey][0];
+};
+
+const isPageGlobal = () => {
+    return _context ? _context.global : false;
+};
+
+const isActivityPage = () => {
+    return _context ? _context.surveyRootPage == EdtRoutesNameEnum.ACTIVITY : false;
 };
 
 const saveAndNavFullPath = (route: EdtRoutesNameEnum) => {
@@ -522,4 +528,6 @@ export {
     validateAndNextLoopStep,
     validateAndNextStep,
     getIdSurveyContext,
+    isPageGlobal,
+    isActivityPage,
 };

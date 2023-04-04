@@ -1,6 +1,7 @@
 import {
     formateDateToFrenchFormat,
     generateDateFromStringInput,
+    important,
     InfoProps,
     makeStylesEdt,
     TooltipInfo,
@@ -15,14 +16,10 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
-    getIdSurveyContext,
     getNavigatePath,
     navFullPath,
     navToActivityRouteOrHome,
@@ -32,11 +29,9 @@ import {
 import { getLanguage } from "service/referentiel-service";
 import { isDesktop, isMobile, isTablet } from "service/responsive";
 import { mockActivitiesRoutesOrGaps } from "service/survey-activity-service";
-import { getData, getSource } from "service/survey-service";
 import { v4 as uuidv4 } from "uuid";
 
 const HelpActivity = () => {
-    const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -50,10 +45,6 @@ const HelpActivity = () => {
     const isItDesktop = isDesktop();
     const isItTablet = isTablet();
     const isItMobile = isMobile();
-
-    const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
-    const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
-    let data = getData(idSurvey || "");
 
     const { classes, cx } = useStyles();
 
@@ -361,17 +352,20 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         "&:hover": {
             backgroundColor: "#2c2e33",
             color: theme.variables.white,
+            borderColor: important(theme.variables.white),
         },
     },
     buttonSkipBox: {
         color: theme.variables.white,
+        backgroundColor: "#707070",
         borderColor: "transparent",
         marginBottom: "1rem",
         marginRight: "1rem",
         width: "10rem",
         "&:hover": {
-            color: theme.palette.secondary.main,
-            backgroundColor: theme.variables.white,
+            color: theme.variables.white,
+            backgroundColor: "#707070",
+            borderColor: important(theme.variables.white),
         },
     },
     stepHelpBox: {

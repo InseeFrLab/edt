@@ -1,13 +1,12 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
@@ -18,7 +17,6 @@ import {
     onNext,
     onPrevious,
 } from "service/navigation-service";
-
 import {
     ActivitySelecterSpecificProps,
     Alert,
@@ -46,7 +44,6 @@ import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-serv
 import { addToAutocompleteActivityReferentiel, getData, getSource } from "service/survey-service";
 
 const HelpCategoryActivity = () => {
-    const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
@@ -55,7 +52,7 @@ const HelpCategoryActivity = () => {
     const stepData = getStepData(currentPage);
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
-    let data = getData(idSurvey || "");
+    const data = getData(idSurvey || "");
 
     const [helpStep, setHelpStep] = React.useState(1);
 
@@ -274,18 +271,21 @@ const useStyles = makeStylesEdt({ "name": { HelpCategoryActivity } })(theme => (
         marginBottom: "1rem",
         marginRight: "1rem",
         width: "10rem",
+        "&:hover": {
+            color: theme.variables.white,
+            borderColor: important(theme.variables.white),
+        },
     },
     buttonHelpBox: {
         backgroundColor: "#2c2e33",
         "&:hover": {
             backgroundColor: "#2c2e33",
-            color: theme.variables.white,
         },
     },
     buttonSkipBox: {
+        backgroundColor: "#707070",
         "&:hover": {
-            color: theme.palette.secondary.main,
-            backgroundColor: theme.variables.white,
+            backgroundColor: "#707070",
         },
     },
     stepHelpBox: {
