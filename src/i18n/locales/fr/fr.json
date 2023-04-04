@@ -318,22 +318,28 @@
         },
         "help": {
             "help-page-1": {
-                "help-step-1": "1 - Cliquez ici pour ajouter une nouvelle activité ou un trajet",
-                "help-step-2": "2 - Lorsqu'une plage horaire est vide entre deux activités, cliquez ici pour la compléter",
-                "help-step-3": "3 - Une fois toutes les activities de votre journée remplies clôturez la journée"
+                "help-step-1": "1. Cliquez ici pour ajouter une nouvelle activité ou un trajet",
+                "help-step-2": "2. Lorsqu'une plage horaire est vide entre deux activités, cliquez ici pour la compléter",
+                "help-step-3": "3. Une fois toutes les activities de votre journée remplies clôturez la journée"
             },
             "help-page-2": {
                 "help-step-1": "Sélectionnez l’horaire à laquelle vous commencez et vous terminez votre activité / trajet. Puis cliquez sur « OK »"
             },
             "help-page-3": {
-                "help-step-1": "1 - Recherchez votre activité par catégorie",
-                "help-step-2": "2 - Si vous ne trouvez pas de catégorie correspondante, cherchez votre activité en la saisissant manuellement"
+                "help-step-1": "1. Recherchez votre activité par catégorie",
+                "help-step-2": "2. Si vous ne trouvez pas de catégorie correspondante, cherchez votre activité en la saisissant manuellement"
             },
             "help-page-4": {
                 "help-step-1": "Après avoir choisi la catégorie, sélectionnez l'activité exacte"
             },
             "help-page-5": {
                 "help-step-1": "Le cas échéant, renseignez qui vous tient compagnie lors de votre activité / trajet. Vous pouvez en renseigner plusieurs."
+            },
+            "help-page-6": {
+                "help-step-1": "1. Cliquez sur les cartouches correspondantes aux plages horaires où vous avez travaillé. Indiquez votre temps de travail réel et le travail éventuel que vous rapportez à la maison.",
+                "help-step-2": "2. De 3h à 4h vous avez travaillez",
+                "help-step-3": "3. De 4h à 5h vous n'avez pas travaillez",
+                "help-step-4": "4. Si vous n’avez pas travaillez sur l’intégralité de l’heure, déployez la cartouche en cliquant sur la flèche à gauche. Puis, sélectionnez les quarts d’heures où vous avez travaillez."
             }
         }
     },

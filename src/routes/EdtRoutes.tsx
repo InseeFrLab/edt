@@ -15,6 +15,7 @@ import ActivitySummaryPage from "pages/activity/activity-summary/ActivitySummary
 import EditActivityInformationPage from "pages/activity/edit-activity-information/EditActivityInformation";
 import ExceptionalDayPage from "pages/activity/exceptional-day/ExceptionalDay";
 import GreatestActivityDayPage from "pages/activity/greatest-activity-day/GreatestActivityDay";
+import HelpWorkTimePage from "pages/activity/help/HelpWorkTime/HelpWorkTime";
 import HelpActivityPage from "pages/activity/help/HelpAcivity/HelpActivity";
 import HelpDurationPage from "pages/activity/help/HelpDuration/HelpDuration";
 import HelpCheckboxPage from "pages/activity/help/HelpCheckbox/HelpCheckbox";
@@ -58,6 +59,7 @@ const EdtRoutes = (): JSX.Element => {
                     element={<HelpSubCategoryActivityPage />}
                 />
                 <Route path={EdtRoutesNameEnum.HELP_CHECKBOX} element={<HelpCheckboxPage />} />
+                <Route path={EdtRoutesNameEnum.HELP_WORK_TIME} element={<HelpWorkTimePage />} />
 
                 <Route path={EdtRoutesNameEnum.ERROR} element={<ErrorPage />} />
                 <Route path={EdtRoutesNameEnum.ACTIVITY} element={<ActivityPage />}>

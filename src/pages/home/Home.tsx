@@ -13,19 +13,23 @@ import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
+import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { useAuth } from "oidc-react";
+import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getFlatLocalStorageValue } from "service/local-storage-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import {
+    getIdSurveyContext,
     getNavigatePath,
-    getParameterizedNavigatePath,
     navToActivityOrPlannerOrSummary,
     navToWeeklyPlannerOrClose,
+    setEnviro,
 } from "service/navigation-service";
 import {
+    getData,
     getPrintedFirstName,
     getPrintedSurveyDate,
     getSource,
@@ -39,6 +43,7 @@ const HomePage = () => {
     const { classes } = useStyles();
     const auth = useAuth();
     const [isAlertDisplayed, setIsAlertDisplayed] = React.useState<boolean>(false);
+    const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
 
     const hasSeenInstallScreenString = getFlatLocalStorageValue(
         LocalStorageVariableEnum.HAS_SEEN_INSTALL_SCREEN,
@@ -68,8 +73,27 @@ const HomePage = () => {
     }, []);
 
     const navWorkTime = useCallback(
-        (idSurvey: string) => () =>
-            navToWeeklyPlannerOrClose(idSurvey, navigate, getSource(SourcesEnum.WORK_TIME_SURVEY)),
+        (idSurvey: string) => () => {
+            const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
+            let data = getData(idSurvey || "");
+            let context: OrchestratorContext = {
+                source: source,
+                data: data,
+                idSurvey: idSurvey,
+                surveyRootPage: EdtRoutesNameEnum.WORK_TIME,
+            };
+            setEnviro(context, navigate, callbackHolder);
+
+            if (firstName != null) {
+                return navToWeeklyPlannerOrClose(
+                    idSurvey,
+                    navigate,
+                    getSource(SourcesEnum.WORK_TIME_SURVEY),
+                );
+            } else {
+                return navigate(EdtRoutesNameEnum.HELP_WORK_TIME);
+            }
+        },
         [],
     );
 
@@ -91,12 +115,26 @@ const HomePage = () => {
 
     const navActivity = useCallback(
         (idSurvey: string) => () => {
-            navToActivityOrPlannerOrSummary(
-                idSurvey,
-                getSource(SourcesEnum.ACTIVITY_SURVEY).maxPage,
-                navigate,
-                getSource(SourcesEnum.ACTIVITY_SURVEY),
-            );
+            let data = getData(idSurvey || "");
+            let context: OrchestratorContext = {
+                source: source,
+                data: data,
+                idSurvey: idSurvey,
+                surveyRootPage: EdtRoutesNameEnum.ACTIVITY,
+            };
+            setEnviro(context, navigate, callbackHolder);
+            console.log(getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS));
+            const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
+            if (firstName != null) {
+                navToActivityOrPlannerOrSummary(
+                    idSurvey,
+                    getSource(SourcesEnum.ACTIVITY_SURVEY).maxPage,
+                    navigate,
+                    getSource(SourcesEnum.ACTIVITY_SURVEY),
+                );
+            } else {
+                return navigate(EdtRoutesNameEnum.HELP_ACTIVITY);
+            }
         },
         [],
     );

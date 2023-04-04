@@ -15,22 +15,24 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import {
+    getIdSurveyContext,
     getNavigatePath,
     navFullPath,
+    navToActivityRouteOrHome,
     navToActivityRoutePlanner,
     navToHelp,
-    navToHome,
-    setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { isDesktop, isMobile, isTablet } from "service/responsive";
 import { mockActivitiesRoutesOrGaps } from "service/survey-activity-service";
+import { getData, getSource } from "service/survey-service";
 import { v4 as uuidv4 } from "uuid";
 
 const HelpActivity = () => {
@@ -45,11 +47,13 @@ const HelpActivity = () => {
     const [gapEndTime, setGapEndTime] = React.useState<string>();
     const [helpStep, setHelpStep] = React.useState(1);
 
-    setEnviro(context, useNavigate(), callbackHolder);
-
     const isItDesktop = isDesktop();
     const isItTablet = isTablet();
     const isItMobile = isMobile();
+
+    const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
+    const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
+    let data = getData(idSurvey || "");
 
     const { classes, cx } = useStyles();
 
@@ -82,7 +86,7 @@ const HelpActivity = () => {
     }, []);
 
     const navToActivityRouteHome = useCallback(() => {
-        navToHome();
+        navToActivityRouteOrHome();
     }, []);
 
     const infoLabels: InfoProps = {

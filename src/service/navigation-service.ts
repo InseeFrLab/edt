@@ -1,13 +1,23 @@
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import { SetStateAction } from "react";
 import { NavigateFunction, To } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentLoopPage, getLoopInitialPage } from "service/loop-service";
-import { getCurrentPage, getData, getValue, saveData, setValue } from "service/survey-service";
+import {
+    getCurrentPage,
+    getData,
+    getSource,
+    getValue,
+    saveData,
+    setValue,
+    surveysIds,
+} from "service/survey-service";
 import { getLastPageStep, getLastStep } from "./stepper.service";
 
 let _context: OrchestratorContext;
@@ -336,6 +346,37 @@ const navFullPath = (route: EdtRoutesNameEnum, parentPage?: EdtRoutesNameEnum): 
     _navigate(getFullNavigatePath(route, parentPage));
 };
 
+const navToActivityRouteOrHome = () => {
+    const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
+    console.log(_context.idSurvey);
+    const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
+    if (firstName == null) {
+        navToActivityOrPlannerOrSummary(
+            idSurvey,
+            getSource(SourcesEnum.ACTIVITY_SURVEY).maxPage,
+            _navigate,
+            getSource(SourcesEnum.ACTIVITY_SURVEY),
+        );
+    } else {
+        navToHome();
+    }
+};
+
+const navToWeeklyPlannerOrHome = () => {
+    const idSurvey = getIdSurveyContext(SurveysIdsEnum.WORK_TIME_SURVEYS_IDS);
+
+    const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
+    if (firstName == null) {
+        navToWeeklyPlannerOrClose(idSurvey, _navigate, getSource(SourcesEnum.WORK_TIME_SURVEY));
+    } else {
+        navToHome();
+    }
+};
+
+const getIdSurveyContext = (typeSurvey: SurveysIdsEnum) => {
+    return _context ? _context.idSurvey : surveysIds[typeSurvey][0];
+};
+
 const saveAndNavFullPath = (route: EdtRoutesNameEnum) => {
     saveAndNav(getFullNavigatePath(route));
 };
@@ -461,6 +502,8 @@ export {
     navToActivityOrPlannerOrSummary,
     navToWeeklyPlannerOrClose,
     navFullPath,
+    navToActivityRouteOrHome,
+    navToWeeklyPlannerOrHome,
     saveAndNav,
     saveAndNavFullPath,
     saveAndNextStep,
@@ -478,4 +521,5 @@ export {
     validate,
     validateAndNextLoopStep,
     validateAndNextStep,
+    getIdSurveyContext,
 };

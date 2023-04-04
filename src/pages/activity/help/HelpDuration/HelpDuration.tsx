@@ -18,22 +18,24 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
-import { getNavigatePath, navToHome, setEnviro } from "service/navigation-service";
+import {
+    getIdSurveyContext,
+    getNavigatePath,
+    navToActivityRouteOrHome,
+} from "service/navigation-service";
 import { getActivitiesOrRoutes } from "service/survey-activity-service";
-import { getData, getSource, surveysIds } from "service/survey-service";
+import { getData, getSource } from "service/survey-service";
 
 const HelpDuration = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
 
-    setEnviro(context, useNavigate(), callbackHolder);
-
     const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
     const stepData = getStepData(currentPage);
 
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
-    const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
+    const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
     let data = getData(idSurvey || "");
 
     const { classes, cx } = useStyles();
@@ -55,7 +57,7 @@ const HelpDuration = () => {
     };
 
     const navToActivityRouteHome = useCallback(() => {
-        navToHome();
+        navToActivityRouteOrHome();
     }, []);
 
     const nextHelpStep = useCallback(() => {
