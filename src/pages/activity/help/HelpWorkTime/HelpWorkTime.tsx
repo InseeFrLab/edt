@@ -1,8 +1,9 @@
 import { important, makeStylesEdt, WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Button, Modal } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
+import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
+import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import expandMore from "assets/illustration/mui-icon/expand-more.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -72,6 +73,8 @@ const HelpWorkTime = () => {
         saveAll: () => saveData(idSurvey, data),
         language: getLanguage(),
         helpStep: helpStep,
+        moreIcon: expandMore,
+        moreIconAlt: t("accessibility.asset.mui-icon.more"),
     };
 
     const navToBackPage = useCallback(
@@ -103,7 +106,12 @@ const HelpWorkTime = () => {
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
                                 onClick={previousHelpStep}
-                                startIcon={<ArrowBackIosIcon />}
+                                startIcon={
+                                    <img
+                                        src={arrowBackIos}
+                                        alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                                    />
+                                }
                             >
                                 {t("common.navigation.previous")}
                             </Button>
@@ -113,7 +121,12 @@ const HelpWorkTime = () => {
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
                                 onClick={nextHelpStep}
-                                endIcon={<ArrowForwardIosIcon />}
+                                endIcon={
+                                    <img
+                                        src={arrowForwardIos}
+                                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                    />
+                                }
                             >
                                 {t("common.navigation.next")}
                             </Button>
@@ -124,7 +137,12 @@ const HelpWorkTime = () => {
                             className={cx(classes.buttonBox, classes.buttonSkipBox)}
                             variant="outlined"
                             onClick={navToWeeklyPlannerHome}
-                            endIcon={<ArrowForwardIosIcon />}
+                            endIcon={
+                                <img
+                                    src={arrowForwardIos}
+                                    alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                />
+                            }
                         >
                             {t("common.navigation.skip")}
                         </Button>

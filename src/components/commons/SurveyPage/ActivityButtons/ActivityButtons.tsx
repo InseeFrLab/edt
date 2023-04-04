@@ -1,5 +1,4 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import AddIcon from "@mui/icons-material/Add";
 import { Box, Button } from "@mui/material";
 import add from "assets/illustration/mui-icon/add.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";

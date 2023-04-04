@@ -3,7 +3,7 @@ import { Box, Button, Modal } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -23,9 +23,6 @@ import {
     Alert,
     AutoCompleteActiviteOption,
 } from "@inseefrlab/lunatic-edt";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import catIcon100 from "assets/illustration/activity-categories/1.svg";
 import catIcon200 from "assets/illustration/activity-categories/2.svg";
 import catIcon300 from "assets/illustration/activity-categories/3.svg";
@@ -35,6 +32,15 @@ import catIcon500 from "assets/illustration/activity-categories/6.svg";
 import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
+import add from "assets/illustration/mui-icon/add.svg";
+import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
+import {
+    default as arrowForwardIos,
+    default as chevronRight,
+} from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
+import extension from "assets/illustration/mui-icon/extension.svg";
+import search from "assets/illustration/mui-icon/search.svg";
 import { SEPARATOR_DEFAUT } from "constants/constants";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
@@ -43,7 +49,6 @@ import { useState } from "react";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { addToAutocompleteActivityReferentiel, getData, getSource } from "service/survey-service";
-
 const HelpSubCategoryActivity = () => {
     const navigate = useNavigate();
     const { classes, cx } = useStyles();
@@ -121,6 +126,14 @@ const HelpSubCategoryActivity = () => {
         widthGlobal: true,
         separatorSuggester: process.env.REACT_APP_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
         helpStep: 3,
+        chevronRightIcon: chevronRight,
+        chevronRightIconAlt: t("accessibility.asset.mui-icon.arrow-right-ios"),
+        searchIcon: search,
+        searchIconAlt: t("accessibility.asset.mui-icon.search"),
+        extensionIcon: extension,
+        extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
+        addIcon: add,
+        addIconAlt: t("accessibility.asset.mui-icon.add"),
     };
 
     const navToActivityRouteHome = useCallback(() => {
@@ -156,7 +169,12 @@ const HelpSubCategoryActivity = () => {
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
                                 onClick={previousHelpStep}
-                                startIcon={<ArrowBackIosIcon />}
+                                startIcon={
+                                    <img
+                                        src={arrowBackIos}
+                                        alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                                    />
+                                }
                             >
                                 {t("common.navigation.previous")}
                             </Button>
@@ -166,7 +184,12 @@ const HelpSubCategoryActivity = () => {
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
                                 onClick={nextHelpStep}
-                                endIcon={<ArrowForwardIosIcon />}
+                                endIcon={
+                                    <img
+                                        src={arrowForwardIos}
+                                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                    />
+                                }
                             >
                                 {t("common.navigation.next")}
                             </Button>
@@ -177,7 +200,12 @@ const HelpSubCategoryActivity = () => {
                             className={cx(classes.buttonBox, classes.buttonSkipBox)}
                             variant="outlined"
                             onClick={navToActivityRouteHome}
-                            endIcon={<ArrowForwardIcon />}
+                            endIcon={
+                                <img
+                                    src={arrowForward}
+                                    alt={t("accessibility.asset.mui-icon.arrow-forward")}
+                                />
+                            }
                         >
                             {t("common.navigation.skip")}
                         </Button>

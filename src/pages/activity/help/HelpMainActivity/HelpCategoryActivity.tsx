@@ -5,9 +5,6 @@ import {
     important,
     makeStylesEdt,
 } from "@inseefrlab/lunatic-edt";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Button, Modal } from "@mui/material";
 import catIcon100 from "assets/illustration/activity-categories/1.svg";
 import catIcon200 from "assets/illustration/activity-categories/2.svg";
@@ -19,7 +16,12 @@ import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
 import add from "assets/illustration/mui-icon/add.svg";
-import chevronRight from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
+import {
+    default as arrowForwardIos,
+    default as chevronRight,
+} from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
 import extension from "assets/illustration/mui-icon/extension.svg";
 import search from "assets/illustration/mui-icon/search.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -166,7 +168,12 @@ const HelpCategoryActivity = () => {
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
                                 onClick={previousHelpStep}
-                                startIcon={<ArrowBackIosIcon />}
+                                startIcon={
+                                    <img
+                                        src={arrowBackIos}
+                                        alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                                    />
+                                }
                             >
                                 {t("common.navigation.previous")}
                             </Button>
@@ -176,7 +183,12 @@ const HelpCategoryActivity = () => {
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
                                 onClick={nextHelpStep}
-                                endIcon={<ArrowForwardIosIcon />}
+                                endIcon={
+                                    <img
+                                        src={arrowForwardIos}
+                                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                    />
+                                }
                             >
                                 {t("common.navigation.next")}
                             </Button>
@@ -187,7 +199,12 @@ const HelpCategoryActivity = () => {
                             className={cx(classes.buttonBox, classes.buttonSkipBox)}
                             variant="outlined"
                             onClick={navToActivityRouteHome}
-                            endIcon={<ArrowForwardIcon />}
+                            endIcon={
+                                <img
+                                    src={arrowForward}
+                                    alt={t("accessibility.asset.mui-icon.arrow-forward")}
+                                />
+                            }
                         >
                             {t("common.navigation.skip")}
                         </Button>

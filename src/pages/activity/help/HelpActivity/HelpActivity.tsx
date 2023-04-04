@@ -6,11 +6,11 @@ import {
     makeStylesEdt,
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
+import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
+import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
@@ -114,7 +114,12 @@ const HelpActivity = () => {
                                 className={classes.buttonHelpBox}
                                 variant="outlined"
                                 onClick={previousHelpStep}
-                                startIcon={<ArrowBackIosIcon />}
+                                startIcon={
+                                    <img
+                                        src={arrowBackIos}
+                                        alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                                    />
+                                }
                             >
                                 {t("common.navigation.previous")}
                             </Button>
@@ -124,7 +129,12 @@ const HelpActivity = () => {
                                 className={classes.buttonHelpBox}
                                 variant="outlined"
                                 onClick={nextHelpStep}
-                                endIcon={<ArrowForwardIosIcon />}
+                                endIcon={
+                                    <img
+                                        src={arrowForwardIos}
+                                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                    />
+                                }
                             >
                                 {t("common.navigation.next")}
                             </Button>
@@ -135,7 +145,12 @@ const HelpActivity = () => {
                             className={classes.buttonSkipBox}
                             variant="outlined"
                             onClick={navToActivityRouteHome}
-                            endIcon={<ArrowForwardIcon />}
+                            endIcon={
+                                <img
+                                    src={arrowForward}
+                                    alt={t("accessibility.asset.mui-icon.arrow-forward")}
+                                />
+                            }
                         >
                             {t("common.navigation.skip")}
                         </Button>

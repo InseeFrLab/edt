@@ -1,9 +1,9 @@
 import { important, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Button, Modal } from "@mui/material";
 import imageHelp from "assets/illustration/hourpicker.svg";
+import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
+import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
@@ -24,7 +24,6 @@ import {
 } from "service/navigation-service";
 import { getActivitiesOrRoutes } from "service/survey-activity-service";
 import { getData, getSource } from "service/survey-service";
-
 const HelpDuration = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -76,7 +75,12 @@ const HelpDuration = () => {
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
                                 onClick={previousHelpStep}
-                                startIcon={<ArrowBackIosIcon />}
+                                startIcon={
+                                    <img
+                                        src={arrowBackIos}
+                                        alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                                    />
+                                }
                             >
                                 {t("common.navigation.previous")}
                             </Button>
@@ -86,7 +90,12 @@ const HelpDuration = () => {
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
                                 onClick={nextHelpStep}
-                                endIcon={<ArrowForwardIosIcon />}
+                                endIcon={
+                                    <img
+                                        src={arrowForwardIos}
+                                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                    />
+                                }
                             >
                                 {t("common.navigation.next")}
                             </Button>
@@ -97,7 +106,12 @@ const HelpDuration = () => {
                             className={cx(classes.buttonBox, classes.buttonSkipBox)}
                             variant="outlined"
                             onClick={navToActivityRouteHome}
-                            endIcon={<ArrowForwardIcon />}
+                            endIcon={
+                                <img
+                                    src={arrowForward}
+                                    alt={t("accessibility.asset.mui-icon.arrow-forward")}
+                                />
+                            }
                         >
                             {t("common.navigation.skip")}
                         </Button>

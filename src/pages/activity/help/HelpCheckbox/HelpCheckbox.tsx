@@ -1,8 +1,8 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, Button, Modal } from "@mui/material";
+import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
+import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
 import childIcon from "assets/illustration/with-someone-categories/child.svg";
 import coupleIcon from "assets/illustration/with-someone-categories/couple.svg";
 import otherKnownIcon from "assets/illustration/with-someone-categories/other-known.svg";
@@ -14,7 +14,7 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -72,7 +72,12 @@ const HelpCheckbox = () => {
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
                                 onClick={previousHelpStep}
-                                startIcon={<ArrowBackIosIcon />}
+                                startIcon={
+                                    <img
+                                        src={arrowBackIos}
+                                        alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                                    />
+                                }
                             >
                                 {t("common.navigation.previous")}
                             </Button>
@@ -82,7 +87,12 @@ const HelpCheckbox = () => {
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
                                 onClick={nextHelpStep}
-                                endIcon={<ArrowForwardIosIcon />}
+                                endIcon={
+                                    <img
+                                        src={arrowForwardIos}
+                                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                    />
+                                }
                             >
                                 {t("common.navigation.next")}
                             </Button>
@@ -93,7 +103,12 @@ const HelpCheckbox = () => {
                             className={cx(classes.buttonBox, classes.buttonSkipBox)}
                             variant="outlined"
                             onClick={navToActivityRouteHome}
-                            endIcon={<ArrowForwardIcon />}
+                            endIcon={
+                                <img
+                                    src={arrowForward}
+                                    alt={t("accessibility.asset.mui-icon.arrow-forward")}
+                                />
+                            }
                         >
                             {t("common.navigation.skip")}
                         </Button>
