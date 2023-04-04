@@ -37,6 +37,7 @@ import {
     remotePutSurveyData,
 } from "./api-service";
 import { getScore } from "./survey-activity-service";
+import activitySurvey from "activity-survey.json";
 
 const datas = new Map<string, LunaticData>();
 let referentielsData: ReferentielData;
@@ -279,7 +280,7 @@ const getReferentiel = (refName: ReferentielsEnum) => {
 };
 
 const getSource = (refName: SourcesEnum) => {
-    return sourcesData[refName];
+    return refName == SourcesEnum.ACTIVITY_SURVEY ? activitySurvey : sourcesData[refName];
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
