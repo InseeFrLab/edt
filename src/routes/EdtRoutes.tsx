@@ -15,12 +15,12 @@ import ActivitySummaryPage from "pages/activity/activity-summary/ActivitySummary
 import EditActivityInformationPage from "pages/activity/edit-activity-information/EditActivityInformation";
 import ExceptionalDayPage from "pages/activity/exceptional-day/ExceptionalDay";
 import GreatestActivityDayPage from "pages/activity/greatest-activity-day/GreatestActivityDay";
-import HelpWorkTimePage from "pages/activity/help/HelpWorkTime/HelpWorkTime";
-import HelpActivityPage from "pages/activity/help/HelpAcivity/HelpActivity";
-import HelpDurationPage from "pages/activity/help/HelpDuration/HelpDuration";
+import HelpActivityPage from "pages/activity/help/HelpActivity/HelpActivity";
 import HelpCheckboxPage from "pages/activity/help/HelpCheckbox/HelpCheckbox";
+import HelpDurationPage from "pages/activity/help/HelpDuration/HelpDuration";
 import HelpCategoryActivityPage from "pages/activity/help/HelpMainActivity/HelpCategoryActivity";
 import HelpSubCategoryActivityPage from "pages/activity/help/HelpMainActivity/HelpSubCategoryActivity";
+import HelpWorkTimePage from "pages/activity/help/HelpWorkTime/HelpWorkTime";
 import KindOfDayPage from "pages/activity/kind-of-day/KindOfDay";
 import PhoneTimePage from "pages/activity/phone-time/PhoneTime";
 import TravelTimePage from "pages/activity/travel-time/TravelTime";
