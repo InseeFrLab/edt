@@ -280,7 +280,7 @@ const getReferentiel = (refName: ReferentielsEnum) => {
 };
 
 const getSource = (refName: SourcesEnum) => {
-    return refName == SourcesEnum.ACTIVITY_SURVEY ? activitySurvey : sourcesData[refName];
+    return sourcesData[refName];
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
