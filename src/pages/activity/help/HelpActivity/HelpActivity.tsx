@@ -371,7 +371,7 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         marginTop: "0.5rem",
     },
     contentHelpBox: {
-        height: "100%",
+        height: "100vh",
         display: "flex",
         alignItems: "end",
         marginBottom: "4.5rem",
