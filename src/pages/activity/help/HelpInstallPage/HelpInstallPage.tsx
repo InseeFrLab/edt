@@ -2,19 +2,20 @@ import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button } from "@mui/material";
 import install from "assets/illustration/install.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { getNavigatePath } from "service/navigation-service";
 
-const InstallPage = () => {
+const HelpInstallPage = () => {
     const { classes } = useStyles();
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const understood = useCallback(() => {
-        localStorage.setItem(LocalStorageVariableEnum.HAS_SEEN_INSTALL_SCREEN, "true");
-        navigate("/");
+    const navToHelp = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
     }, []);
 
     return (
@@ -29,8 +30,8 @@ const InstallPage = () => {
             </Box>
             <Box className={classes.actionsBox}>
                 <Box className={classes.actionBox}>
-                    <Button className={classes.button} variant="contained" onClick={understood}>
-                        {t("page.install.continue")}
+                    <Button className={classes.button} variant="contained" onClick={navToHelp}>
+                        {t("common.navigation.next")}
                     </Button>
                 </Box>
             </Box>
@@ -38,7 +39,7 @@ const InstallPage = () => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { InstallPage } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { HelpInstallPage } })(theme => ({
     installBox: { padding: "1rem" },
     illustrationBox: {},
     textBox: { textAlign: "center" },
@@ -47,4 +48,4 @@ const useStyles = makeStylesEdt({ "name": { InstallPage } })(theme => ({
     button: { width: "100%", backgroundColor: theme.palette.text.primary },
 }));
 
-export default InstallPage;
+export default HelpInstallPage;

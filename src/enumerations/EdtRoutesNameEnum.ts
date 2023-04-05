@@ -31,6 +31,7 @@ export enum EdtRoutesNameEnum {
     PHONE_TIME = "phone-time",
     END_SURVEY = "end-survey",
     ACTIVITY_SUMMARY = "activity-summary",
+    HELP_INSTALL = "help-install",
     HELP_ACTIVITY = "help-activity",
     HELP_DURATION = "help-duration",
     HELP_MAIN_ACTIVITY_CATEGORY = "help-main-activity-category",

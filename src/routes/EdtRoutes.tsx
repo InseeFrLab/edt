@@ -15,6 +15,7 @@ import ActivitySummaryPage from "pages/activity/activity-summary/ActivitySummary
 import EditActivityInformationPage from "pages/activity/edit-activity-information/EditActivityInformation";
 import ExceptionalDayPage from "pages/activity/exceptional-day/ExceptionalDay";
 import GreatestActivityDayPage from "pages/activity/greatest-activity-day/GreatestActivityDay";
+import HelpInstallPage from "pages/activity/help/HelpInstallPage/HelpInstallPage";
 import HelpActivityPage from "pages/activity/help/HelpActivity/HelpActivity";
 import HelpCheckboxPage from "pages/activity/help/HelpCheckbox/HelpCheckbox";
 import HelpDurationPage from "pages/activity/help/HelpDuration/HelpDuration";
@@ -32,7 +33,7 @@ import ErrorPage from "pages/error/Error";
 import HelpPage from "pages/help/Help";
 import HomeReviewerPage from "pages/home-reviewer/HomeReviewer";
 import HomePage from "pages/home/Home";
-import InstallPage from "pages/install/Install";
+import InstallPage from "pages/activity/help/HelpInstallPage/HelpInstallPage";
 import NotFoundPage from "pages/not-found/NotFound";
 import WhoAreYouPage from "pages/who-are-you/WhoAreYou";
 import WorkTimePage from "pages/work-time/WorkTime";
@@ -50,6 +51,7 @@ const EdtRoutes = (): JSX.Element => {
                 <Route path={EdtRoutesNameEnum.REVIEWER_HOME} element={<HomeReviewerPage />} />
                 <Route path={EdtRoutesNameEnum.INSTALL} element={<InstallPage />} />
                 <Route path={EdtRoutesNameEnum.HELP} element={<HelpPage />} />
+                <Route path={EdtRoutesNameEnum.HELP_INSTALL} element={<HelpInstallPage />} />
                 <Route path={EdtRoutesNameEnum.HELP_ACTIVITY} element={<HelpActivityPage />} />
                 <Route path={EdtRoutesNameEnum.HELP_DURATION} element={<HelpDurationPage />} />
                 <Route

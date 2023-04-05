@@ -140,7 +140,7 @@ const HomePage = () => {
             global: true,
         };
         setEnviro(context, navigate, callbackHolder);
-        navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
+        navigate(getNavigatePath(EdtRoutesNameEnum.HELP_INSTALL));
     }, []);
 
     return (

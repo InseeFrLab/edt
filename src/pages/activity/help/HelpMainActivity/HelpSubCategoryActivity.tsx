@@ -32,7 +32,8 @@ import catIcon500 from "assets/illustration/activity-categories/6.svg";
 import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
-import add from "assets/illustration/mui-icon/add.svg";
+import addLightBlue from "assets/illustration/mui-icon/add-light-blue.svg";
+import addWhite from "assets/illustration/mui-icon/add.svg";
 import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
 import {
     default as arrowForwardIos,
@@ -132,7 +133,8 @@ const HelpSubCategoryActivity = () => {
         searchIconAlt: t("accessibility.asset.mui-icon.search"),
         extensionIcon: extension,
         extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
-        addIcon: add,
+        addLightBlueIcon: addLightBlue,
+        addWhiteIcon: addWhite,
         addIconAlt: t("accessibility.asset.mui-icon.add"),
     };
 
