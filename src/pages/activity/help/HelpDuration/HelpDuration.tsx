@@ -22,8 +22,8 @@ import {
     getNavigatePath,
     navToActivityRouteOrHome,
 } from "service/navigation-service";
-import { getActivitiesOrRoutes } from "service/survey-activity-service";
-import { getData, getSource } from "service/survey-service";
+import { getActivitiesOrRoutes, mockData } from "service/survey-activity-service";
+import { getSource } from "service/survey-service";
 const HelpDuration = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -33,7 +33,7 @@ const HelpDuration = () => {
 
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
-    const data = getData(idSurvey || "");
+    const data = mockData();
 
     const { classes, cx } = useStyles();
 

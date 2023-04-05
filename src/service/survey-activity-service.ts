@@ -11,6 +11,7 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { TFunction, useTranslation } from "react-i18next";
@@ -26,7 +27,7 @@ import {
     getAutoCompleteRef,
     getLanguage,
 } from "service/referentiel-service";
-import { getData, getValue, saveData } from "service/survey-service";
+import { getData, getValue, saveData, surveysIds } from "service/survey-service";
 
 const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
     const mainActivityId = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_ID, i) as string;
@@ -543,6 +544,23 @@ const mockActivitiesRoutesOrGaps = () => {
     return activitiesRoutesOrGaps;
 };
 
+const mockData = () => {
+    const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
+    let dataAct = Object.assign({}, getData(idSurvey || ""));
+
+    if (dataAct != null && dataAct.COLLECTED) {
+        if (dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_ID])
+            dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_ID].COLLECTED = null;
+        if (dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED])
+            dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED].COLLECTED = null;
+        if (dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_LABEL])
+            dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_LABEL].COLLECTED = null;
+        if (dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_SUGGESTERID])
+            dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_SUGGESTERID].COLLECTED = null;
+    }
+    return dataAct;
+};
+
 export {
     getActivitiesOrRoutes,
     getActivitesSelectedLabel,
@@ -555,4 +573,5 @@ export {
     getWeeklyPlannerScore,
     deleteActivity,
     mockActivitiesRoutesOrGaps,
+    mockData,
 };

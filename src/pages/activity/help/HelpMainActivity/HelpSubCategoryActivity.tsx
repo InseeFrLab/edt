@@ -3,14 +3,13 @@ import { Box, Button, Modal } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
+import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
-    getIdSurveyContext,
     getNavigatePath,
     navToActivityRouteOrHome,
     onClose,
@@ -45,11 +44,11 @@ import search from "assets/illustration/mui-icon/search.svg";
 import { SEPARATOR_DEFAUT } from "constants/constants";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { useState } from "react";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
-import { addToAutocompleteActivityReferentiel, getData, getSource } from "service/survey-service";
+import { mockData } from "service/survey-activity-service";
+import { addToAutocompleteActivityReferentiel, getSource } from "service/survey-service";
 const HelpSubCategoryActivity = () => {
     const navigate = useNavigate();
     const { classes, cx } = useStyles();
@@ -58,8 +57,7 @@ const HelpSubCategoryActivity = () => {
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY;
     const stepData = getStepData(currentPage);
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
-    const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
-    const data = getData(idSurvey || "");
+    const data = mockData();
 
     const [helpStep, setHelpStep] = React.useState(3);
 

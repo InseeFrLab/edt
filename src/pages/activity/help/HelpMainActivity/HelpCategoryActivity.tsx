@@ -31,8 +31,7 @@ import { SEPARATOR_DEFAUT } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
+import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -40,7 +39,6 @@ import { getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
-    getIdSurveyContext,
     getNavigatePath,
     navToActivityRouteOrHome,
     onClose,
@@ -48,7 +46,8 @@ import {
     onPrevious,
 } from "service/navigation-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
-import { addToAutocompleteActivityReferentiel, getData, getSource } from "service/survey-service";
+import { mockData } from "service/survey-activity-service";
+import { addToAutocompleteActivityReferentiel, getSource } from "service/survey-service";
 
 const HelpCategoryActivity = () => {
     const navigate = useNavigate();
@@ -58,9 +57,7 @@ const HelpCategoryActivity = () => {
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY;
     const stepData = getStepData(currentPage);
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
-    const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
-    const data = getData(idSurvey || "");
-
+    const data = mockData();
     const [helpStep, setHelpStep] = React.useState(1);
 
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
