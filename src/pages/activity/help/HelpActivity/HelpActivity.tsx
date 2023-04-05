@@ -155,7 +155,15 @@ const HelpActivity = () => {
                             {t("common.navigation.skip")}
                         </Button>
                     </Box>
-                    {renderHelpStep()}
+                    <Box
+                        className={
+                            isItDesktop && helpStep == 2
+                                ? classes.contentHelpBoxDesktop
+                                : classes.contentHelpBox
+                        }
+                    >
+                        {renderHelpStep()}
+                    </Box>
                 </Box>
             </Modal>
         );
@@ -165,27 +173,32 @@ const HelpActivity = () => {
         return (
             <>
                 {helpStep == 1 && (
-                    <Box id="help-step-1" className={cx(classes.stepHelpBox, classes.stepHelpOne)}>
-                        {t("component.help.help-page-1.help-step-1")}
+                    <Box id="help-step-1" className={cx(classes.stepHelpOne)}>
+                        <Box className={classes.stepHelpBox}>
+                            {t("component.help.help-page-1.help-step-1")}
+                        </Box>
                     </Box>
                 )}
                 {helpStep == 2 && (
                     <Box
                         id="help-step-2"
                         className={cx(
-                            classes.stepHelpBox,
                             classes.stepHelpTwo,
                             isItDesktop ? classes.stepHelpTwoDesktop : "",
-                            isItTablet ? classes.stepHelpTwoTablet : "",
-                            isItMobile && !isItTablet ? classes.stepHelpTwoMobile : "",
+                            isItTablet && !isItMobile ? classes.stepHelpTwoTablet : "",
+                            isItMobile ? classes.stepHelpTwoMobile : "",
                         )}
                     >
-                        {t("component.help.help-page-1.help-step-2")}
+                        <Box className={classes.stepHelpBox}>
+                            {t("component.help.help-page-1.help-step-2")}
+                        </Box>
                     </Box>
                 )}
                 {helpStep == 3 && (
-                    <Box id="help-step-3" className={cx(classes.stepHelpBox, classes.stepHelpThree)}>
-                        {t("component.help.help-page-1.help-step-3")}
+                    <Box id="help-step-3" className={cx(classes.stepHelpThree)}>
+                        <Box className={cx(classes.stepHelpBox)}>
+                            {t("component.help.help-page-1.help-step-3")}
+                        </Box>
                     </Box>
                 )}
             </>
@@ -357,6 +370,19 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         height: "100vh",
         marginTop: "0.5rem",
     },
+    contentHelpBox: {
+        height: "100%",
+        display: "flex",
+        alignItems: "end",
+        marginBottom: "4.5rem",
+    },
+    contentHelpBoxDesktop: {
+        height: "100%",
+        display: "flex",
+        alignItems: "start",
+        marginBottom: "4.5rem",
+        width: "315px",
+    },
     buttonHelpBox: {
         backgroundColor: "#2c2e33",
         color: theme.variables.white,
@@ -392,28 +418,31 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
     },
     stepHelpOne: {
         width: "13rem",
-        marginLeft: "14rem",
-        marginTop: "25.5rem",
+        marginLeft: "13rem",
     },
-    stepHelpTwo: {
-        width: "20rem",
-        marginTop: "8.5rem",
-    },
+    stepHelpTwo: {},
     stepHelpTwoDesktop: {
+        width: "50vw",
         marginTop: "16.5rem",
     },
     stepHelpTwoTablet: {
+        width: "50vw",
         marginTop: "16.5rem",
-        marginLeft: "19rem",
+        marginLeft: "13rem",
+        height: "100%",
+        paddingTop: "44%",
+        paddingLeft: "17%",
     },
     stepHelpTwoMobile: {
-        marginTop: "8.5rem",
+        width: "78vw",
+        paddingTop: "48%",
+        height: "100%",
         marginLeft: "0rem",
     },
     stepHelpThree: {
         width: "13rem",
         marginLeft: "-10rem",
-        marginTop: "24rem",
+        //marginTop: "24rem",
     },
 }));
 

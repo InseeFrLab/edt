@@ -210,7 +210,7 @@ const HelpSubCategoryActivity = () => {
                             {t("common.navigation.skip")}
                         </Button>
                     </Box>
-                    {renderHelpStep()}
+                    <Box className={classes.contentHelpBox}>{renderHelpStep()}</Box>
                 </Box>
             </Modal>
         );
@@ -220,8 +220,10 @@ const HelpSubCategoryActivity = () => {
         return (
             <>
                 {
-                    <Box id="help-step-1" className={cx(classes.stepHelpBox, classes.stepHelpOne)}>
-                        {t("component.help.help-page-4.help-step-1")}
+                    <Box id="help-step-1" className={cx(classes.stepHelpOne)}>
+                        <Box className={cx(classes.stepHelpBox)}>
+                            {t("component.help.help-page-4.help-step-1")}
+                        </Box>
                     </Box>
                 }
             </>
@@ -322,7 +324,12 @@ const useStyles = makeStylesEdt({ "name": { HelpSubCategoryActivity } })(theme =
     },
     stepHelpOne: {
         width: "18rem",
-        marginTop: "16rem",
+    },
+    contentHelpBox: {
+        height: "100%",
+        display: "flex",
+        alignItems: "start",
+        marginTop: "7rem",
     },
 }));
 
