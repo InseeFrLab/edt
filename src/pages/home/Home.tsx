@@ -4,6 +4,7 @@ import disconnectIcon from "assets/illustration/disconnect.svg";
 import logo from "assets/illustration/logo.png";
 import help from "assets/illustration/mui-icon/help.svg";
 import powerSettings from "assets/illustration/mui-icon/power-settings.svg";
+import removeCircle from "assets/illustration/mui-icon/remove-circle.svg";
 import reminder_note from "assets/illustration/reminder-note.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import DayCard from "components/edt/DayCard/DayCard";
@@ -13,12 +14,14 @@ import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
+import { SurveyData } from "interface/entity/Api";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { useAuth } from "oidc-react";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { remotePutSurveyData } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import {
     getNavigatePath,
@@ -56,6 +59,22 @@ const HomePage = () => {
         icon: disconnectIcon,
         errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
     };
+
+    const resetDataAndReload = useCallback(() => {
+        const promises: any[] = [];
+        surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
+            const surveyData: SurveyData = {
+                stateData: { state: null, date: 0, currentPage: 1 },
+                data: {},
+            };
+            promises.push(remotePutSurveyData(idSurvey, surveyData));
+        });
+        Promise.all(promises).then(() => {
+            lunaticDatabase.clear().then(() => {
+                window.location.reload();
+            });
+        });
+    }, []);
 
     const navWorkTime = useCallback(
         (idSurvey: string) => () => {
@@ -164,6 +183,20 @@ const HomePage = () => {
                     />
                 </Box>
                 <Box className={classes.helpBox}>
+                    {process.env.NODE_ENV !== "production" && (
+                        <Button
+                            color="primary"
+                            startIcon={
+                                <img
+                                    src={removeCircle}
+                                    alt={t("accessibility.asset.mui-icon.remove-circle")}
+                                />
+                            }
+                            onClick={resetDataAndReload}
+                        >
+                            {t("page.home.navigation.reset-data")}
+                        </Button>
+                    )}
                     <Button
                         color="secondary"
                         startIcon={<img src={help} alt={t("accessibility.asset.mui-icon.help")} />}
@@ -171,6 +204,7 @@ const HomePage = () => {
                     >
                         {t("page.home.navigation.link-help-label")}
                     </Button>
+
                     <Button
                         color="secondary"
                         startIcon={
