@@ -10,6 +10,7 @@ import DayCard from "components/edt/DayCard/DayCard";
 import WeekCard from "components/edt/WeekCard/WeekCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
@@ -60,6 +61,9 @@ const HomePage = () => {
         (idSurvey: string) => () => {
             const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
             let data = getData(idSurvey || "");
+
+            localStorage.setItem(LocalStorageVariableEnum.IS_GLOBAL, "false");
+
             let context: OrchestratorContext = {
                 source: source,
                 data: data,
@@ -108,6 +112,8 @@ const HomePage = () => {
                 surveyRootPage: EdtRoutesNameEnum.ACTIVITY,
                 global: false,
             };
+            localStorage.setItem(LocalStorageVariableEnum.IS_GLOBAL, "false");
+
             setEnviro(context, navigate, callbackHolder);
             const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
             if (firstName != null) {
@@ -139,6 +145,7 @@ const HomePage = () => {
             surveyRootPage: EdtRoutesNameEnum.WORK_TIME,
             global: true,
         };
+        localStorage.setItem(LocalStorageVariableEnum.IS_GLOBAL, "true");
         setEnviro(context, navigate, callbackHolder);
         navigate(getNavigatePath(EdtRoutesNameEnum.HELP_INSTALL));
     }, []);

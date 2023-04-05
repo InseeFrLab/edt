@@ -139,7 +139,7 @@ const HelpCategoryActivity = () => {
     };
 
     const navToActivityRouteHome = useCallback(() => {
-        navToActivityRouteOrHome();
+        navToActivityRouteOrHome(navigate);
     }, []);
 
     const navToNextPage = useCallback(() => {

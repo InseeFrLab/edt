@@ -46,7 +46,7 @@ const HelpCheckbox = () => {
     const [helpStep, setHelpStep] = React.useState(1);
 
     const navToActivityRouteHome = useCallback(() => {
-        navToActivityRouteOrHome();
+        navToActivityRouteOrHome(navigate);
     }, []);
 
     const navToBackPage = useCallback(

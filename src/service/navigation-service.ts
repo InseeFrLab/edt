@@ -1,5 +1,6 @@
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
@@ -346,28 +347,28 @@ const navFullPath = (route: EdtRoutesNameEnum, parentPage?: EdtRoutesNameEnum): 
     _navigate(getFullNavigatePath(route, parentPage));
 };
 
-const navToActivityRouteOrHome = () => {
+const navToActivityRouteOrHome = (navigate: any) => {
     const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
     const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
     if (firstName == null) {
         navToActivityOrPlannerOrSummary(
             idSurvey,
             getSource(SourcesEnum.ACTIVITY_SURVEY).maxPage,
-            _navigate,
+            navigate,
             getSource(SourcesEnum.ACTIVITY_SURVEY),
         );
     } else {
-        navToHome();
+        navigate("/");
     }
 };
 
-const navToWeeklyPlannerOrHome = () => {
+const navToWeeklyPlannerOrHome = (navigate: any) => {
     const idSurvey = getIdSurveyContext(SurveysIdsEnum.WORK_TIME_SURVEYS_IDS);
     const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
     if (firstName == null) {
-        navToWeeklyPlannerOrClose(idSurvey, _navigate, getSource(SourcesEnum.WORK_TIME_SURVEY));
+        navToWeeklyPlannerOrClose(idSurvey, navigate, getSource(SourcesEnum.WORK_TIME_SURVEY));
     } else {
-        navToHome();
+        navigate("/");
     }
 };
 
@@ -376,7 +377,8 @@ const getIdSurveyContext = (typeSurvey: SurveysIdsEnum) => {
 };
 
 const isPageGlobal = () => {
-    return _context ? _context.global : false;
+    const isGlobal = localStorage.getItem(LocalStorageVariableEnum.IS_GLOBAL);
+    return _context ? _context.global : isGlobal != null && isGlobal == "true" ? true : false;
 };
 
 const isActivityPage = () => {

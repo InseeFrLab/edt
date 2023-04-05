@@ -47,7 +47,7 @@ const HelpWorkTime = () => {
     const data = getData(idSurvey || "");
 
     const navToWeeklyPlannerHome = useCallback(() => {
-        navToWeeklyPlannerOrHome();
+        navToWeeklyPlannerOrHome(navigate);
     }, []);
 
     const specificProps: WeeklyPlannerSpecificProps = {
@@ -84,7 +84,7 @@ const HelpWorkTime = () => {
     );
 
     const navToNextPage = useCallback(
-        () => (isPageGlobal() ? navToHome() : navToWeeklyPlannerOrHome()),
+        () => (isPageGlobal() ? navigate("/") : navToWeeklyPlannerOrHome(navigate)),
         [helpStep],
     );
 

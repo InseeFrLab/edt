@@ -54,7 +54,7 @@ const HelpDuration = () => {
     };
 
     const navToActivityRouteHome = useCallback(() => {
-        navToActivityRouteOrHome();
+        navToActivityRouteOrHome(navigate);
     }, []);
 
     const nextHelpStep = useCallback(() => {

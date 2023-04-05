@@ -3,7 +3,6 @@ import { Box, Button } from "@mui/material";
 import install from "assets/illustration/install.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";

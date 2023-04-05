@@ -77,7 +77,7 @@ const HelpActivity = () => {
     }, []);
 
     const navToActivityRouteHome = useCallback(() => {
-        navToActivityRouteOrHome();
+        navToActivityRouteOrHome(navigate);
     }, []);
 
     const infoLabels: InfoProps = {
