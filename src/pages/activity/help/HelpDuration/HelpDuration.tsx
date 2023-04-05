@@ -1,8 +1,8 @@
 import { important, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
 import imageHelp from "assets/illustration/hourpicker.svg";
-import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
-import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
+import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
 import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";

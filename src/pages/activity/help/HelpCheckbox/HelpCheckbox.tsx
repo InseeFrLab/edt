@@ -1,7 +1,7 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
-import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
-import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
+import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
 import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
 import childIcon from "assets/illustration/with-someone-categories/child.svg";
 import coupleIcon from "assets/illustration/with-someone-categories/couple.svg";

@@ -8,8 +8,8 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
-import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
-import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
+import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
 import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
