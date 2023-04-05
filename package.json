@@ -1,13 +1,13 @@
 {
     "name": "edt",
-    "version": "3.2",
-    "dateVersion": "27/03/2023",
+    "version": "3.3",
+    "dateVersion": "05/04/2023",
     "licence": "MIT",
     "dependencies": {
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",
         "@inseefr/lunatic": "2.0.7-v2",
-        "@inseefrlab/lunatic-edt": "^0.8.1",
+        "@inseefrlab/lunatic-edt": "^0.8.2",
         "@mui/material": "^5.10.7",
         "@react-pdf/renderer": "2.1.2",
         "axios": "^1.2.2",
