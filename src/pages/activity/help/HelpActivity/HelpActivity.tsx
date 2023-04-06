@@ -318,7 +318,8 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         flexGrow: "1",
         display: "flex",
         alignItems: "flex-start",
-        overflow: "auto",
+        overflow: "hidden",
+        height: "100vh",
     },
     innerContentBox: {
         border: "1px solid transparent",
@@ -350,7 +351,7 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
     },
     innerSurveyPageBox: {
         flexGrow: "1",
-        height: "90vh",
+        height: "100vh",
         display: "flex",
     },
     fullHeight: {
