@@ -30,7 +30,7 @@ import { getLanguage } from "service/referentiel-service";
 import { isDesktop, isMobile, isTablet } from "service/responsive";
 import { mockActivitiesRoutesOrGaps } from "service/survey-activity-service";
 import { v4 as uuidv4 } from "uuid";
-import { isMobile as isMobileNav } from "react-device-detect";
+import { isMobile as isMobileNav, isBrowser } from "react-device-detect";
 
 const HelpActivity = () => {
     const navigate = useNavigate();
@@ -105,68 +105,66 @@ const HelpActivity = () => {
         setHelpStep(helpStep > 1 ? helpStep - 1 : 1);
     }, [helpStep]);
 
+    const getClassNameHelp = () => {
+        if (isItDesktop && helpStep == 2) return classes.contentHelpBoxDesktop;
+        else if (isMobileNav && isBrowser) return classes.contentHelpBoxMobile;
+        else return classes.contentHelpBox;
+    };
+
     const renderHelp = () => {
         return (
             <Modal disableEnforceFocus open={true}>
                 <Box className={classes.rootHelp}>
-                    <Box className={classes.headerHelpBox}>
-                        {helpStep > 1 && (
+                    <Box>
+                        <Box className={classes.headerHelpBox}>
+                            {helpStep > 1 && (
+                                <Button
+                                    className={classes.buttonHelpBox}
+                                    variant="outlined"
+                                    onClick={previousHelpStep}
+                                    startIcon={
+                                        <img
+                                            src={arrowBackIos}
+                                            alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                                        />
+                                    }
+                                >
+                                    {t("common.navigation.previous")}
+                                </Button>
+                            )}
+                            {
+                                <Button
+                                    className={classes.buttonHelpBox}
+                                    variant="outlined"
+                                    onClick={nextHelpStep}
+                                    endIcon={
+                                        <img
+                                            src={arrowForwardIos}
+                                            alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                        />
+                                    }
+                                >
+                                    {t("common.navigation.next")}
+                                </Button>
+                            }
+                        </Box>
+                        <Box>
                             <Button
-                                className={classes.buttonHelpBox}
+                                className={classes.buttonSkipBox}
                                 variant="outlined"
-                                onClick={previousHelpStep}
-                                startIcon={
-                                    <img
-                                        src={arrowBackIos}
-                                        alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
-                                    />
-                                }
-                            >
-                                {t("common.navigation.previous")}
-                            </Button>
-                        )}
-                        {
-                            <Button
-                                className={classes.buttonHelpBox}
-                                variant="outlined"
-                                onClick={nextHelpStep}
+                                onClick={navToActivityRouteHome}
                                 endIcon={
                                     <img
-                                        src={arrowForwardIos}
-                                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                        src={arrowForward}
+                                        alt={t("accessibility.asset.mui-icon.arrow-forward")}
                                     />
                                 }
                             >
-                                {t("common.navigation.next")}
+                                {t("common.navigation.skip")}
                             </Button>
-                        }
+                        </Box>
                     </Box>
-                    <Box>
-                        <Button
-                            className={classes.buttonSkipBox}
-                            variant="outlined"
-                            onClick={navToActivityRouteHome}
-                            endIcon={
-                                <img
-                                    src={arrowForward}
-                                    alt={t("accessibility.asset.mui-icon.arrow-forward")}
-                                />
-                            }
-                        >
-                            {t("common.navigation.skip")}
-                        </Button>
-                    </Box>
-                    <Box
-                        className={
-                            isItDesktop && helpStep == 2
-                                ? classes.contentHelpBoxDesktop
-                                : isMobileNav
-                                ? classes.contentHelpBoxMobile
-                                : classes.contentHelpBox
-                        }
-                    >
-                        {renderHelpStep()}
-                    </Box>
+                    <Box className={getClassNameHelp()}>{renderHelpStep()}</Box>
                 </Box>
             </Modal>
         );
@@ -370,8 +368,9 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        height: "100vh",
+        height: "100%",
         marginTop: "0.5rem",
+        justifyContent: "space-between",
     },
     contentHelpBox: {
         height: "78vh",
@@ -381,11 +380,11 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         marginBottom: "4.5rem",
     },
     contentHelpBoxMobile: {
-        height: "78vh",
-        maxHeight: "78vh",
+        height: "60vh",
+        maxHeight: "60vh",
         display: "flex",
         alignItems: "end",
-        marginBottom: "7.5rem",
+        marginBottom: "4.5rem",
     },
     contentHelpBoxDesktop: {
         height: "100%",
