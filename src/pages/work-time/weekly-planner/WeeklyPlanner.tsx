@@ -1,6 +1,10 @@
 import { WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
 import InfoIcon from "assets/illustration/info.svg";
+import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";
+import expandLess from "assets/illustration/mui-icon/expand-less.svg";
+import expandMoreWhite from "assets/illustration/mui-icon/expand-more-white.svg";
 import expandMore from "assets/illustration/mui-icon/expand-more.svg";
+import work from "assets/illustration/mui-icon/work-full.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -59,6 +63,14 @@ const WeeklyPlannerPage = () => {
         language: getLanguage(),
         moreIcon: expandMore,
         moreIconAlt: t("accessibility.asset.mui-icon.more"),
+        expandLessIcon: expandLess,
+        expandLessIconAlt: t("accessibility.asset.mui-icon.expand-less"),
+        expandMoreIcon: expandMore,
+        expandMoreIconAlt: t("accessibility.asset.mui-icon.expand-more"),
+        expandLessWhiteIcon: expandLessWhite,
+        expandMoreWhiteIcon: expandMoreWhite,
+        workIcon: work,
+        workIconAlt: t("accessibility.asset.mui-icon.work"),
     };
 
     const validateAndNav = (): void => {

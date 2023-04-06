@@ -3,7 +3,12 @@ import { Box, Button, Modal } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
 import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
 import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
+import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
+import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";
+import expandLess from "assets/illustration/mui-icon/expand-less.svg";
+import expandMoreWhite from "assets/illustration/mui-icon/expand-more-white.svg";
 import expandMore from "assets/illustration/mui-icon/expand-more.svg";
+import work from "assets/illustration/mui-icon/work-full.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -74,7 +79,15 @@ const HelpWorkTime = () => {
         language: getLanguage(),
         helpStep: helpStep,
         moreIcon: expandMore,
-        moreIconAlt: t("accessibility.asset.mui-icon.more"),
+        moreIconAlt: t("accessibility.asset.mui-icon.expand-more"),
+        expandLessIcon: expandLess,
+        expandLessIconAlt: t("accessibility.asset.mui-icon.expand-less"),
+        expandMoreIcon: expandMore,
+        expandMoreIconAlt: t("accessibility.asset.mui-icon.expand-more"),
+        expandLessWhiteIcon: expandLessWhite,
+        expandMoreWhiteIcon: expandMoreWhite,
+        workIcon: work,
+        workIconAlt: t("accessibility.asset.mui-icon.work"),
     };
 
     const navToBackPage = useCallback(
@@ -139,8 +152,8 @@ const HelpWorkTime = () => {
                             onClick={navToWeeklyPlannerHome}
                             endIcon={
                                 <img
-                                    src={arrowForwardIos}
-                                    alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                    src={arrowForward}
+                                    alt={t("accessibility.asset.mui-icon.arrow-forward")}
                                 />
                             }
                         >

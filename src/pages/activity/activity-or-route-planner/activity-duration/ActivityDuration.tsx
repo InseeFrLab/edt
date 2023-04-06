@@ -2,6 +2,7 @@ import { Alert, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunat
 import { IconButton, Snackbar } from "@mui/material";
 import errorIcon from "assets/illustration/error/activity.svg";
 import close from "assets/illustration/mui-icon/close.svg";
+import arrowDown from "assets/illustration/mui-icon/expand-more.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
@@ -60,6 +61,8 @@ const ActivityDurationPage = () => {
             FORMAT_TIME: FORMAT_TIME,
             MINUTE_LABEL: MINUTE_LABEL,
         },
+        arrowDownIcon: arrowDown,
+        arrowDownIconAlt: t("accessibility.asset.mui-icon.expand-more"),
     };
 
     let startTimeDay: Dayjs;
