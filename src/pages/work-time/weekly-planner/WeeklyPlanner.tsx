@@ -4,6 +4,7 @@ import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg"
 import expandLess from "assets/illustration/mui-icon/expand-less.svg";
 import expandMoreWhite from "assets/illustration/mui-icon/expand-more-white.svg";
 import expandMore from "assets/illustration/mui-icon/expand-more.svg";
+import moreHorizontal from "assets/illustration/mui-icon/more-horizontal.svg";
 import work from "assets/illustration/mui-icon/work-full.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
@@ -61,8 +62,8 @@ const WeeklyPlannerPage = () => {
         },
         saveAll: save,
         language: getLanguage(),
-        moreIcon: expandMore,
-        moreIconAlt: t("accessibility.asset.mui-icon.more"),
+        moreIcon: moreHorizontal,
+        moreIconAlt: t("accessibility.asset.mui-icon.more-horizontal"),
         expandLessIcon: expandLess,
         expandLessIconAlt: t("accessibility.asset.mui-icon.expand-less"),
         expandMoreIcon: expandMore,
