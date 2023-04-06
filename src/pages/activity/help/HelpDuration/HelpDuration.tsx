@@ -4,6 +4,7 @@ import imageHelp from "assets/illustration/hourpicker.svg";
 import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
 import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
 import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
+import arrowDown from "assets/illustration/mui-icon/expand-more.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
@@ -51,6 +52,8 @@ const HelpDuration = () => {
         },
         helpStep: 1,
         helpImage: imageHelp,
+        arrowDownIcon: arrowDown,
+        arrowDownIconAlt: t("accessibility.asset.mui-icon.expand-more"),
     };
 
     const navToActivityRouteHome = useCallback(() => {

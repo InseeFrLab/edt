@@ -20,15 +20,15 @@ import {
     LunaticModel,
     LunaticModelComponent,
     LunaticModelVariable,
-    ReferentielData,
     REFERENTIELS_ID,
-    SourceData,
+    ReferentielData,
     SOURCES_MODELS,
-    SurveysIds,
     SURVEYS_IDS,
+    SourceData,
+    SurveysIds,
 } from "interface/lunatic/Lunatic";
 import { lunaticDatabase } from "service/lunatic-database";
-import { getCurrentPageSource, LABEL_WORK_TIME_SURVEY } from "service/orchestrator-service";
+import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrator-service";
 import {
     fetchReferentiels,
     fetchSurveysSourcesByIds,
@@ -37,7 +37,6 @@ import {
     remotePutSurveyData,
 } from "./api-service";
 import { getScore } from "./survey-activity-service";
-import activitySurvey from "activity-survey.json";
 
 const datas = new Map<string, LunaticData>();
 let referentielsData: ReferentielData;
