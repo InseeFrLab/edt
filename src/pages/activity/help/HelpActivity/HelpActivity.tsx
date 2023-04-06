@@ -30,6 +30,7 @@ import { getLanguage } from "service/referentiel-service";
 import { isDesktop, isMobile, isTablet } from "service/responsive";
 import { mockActivitiesRoutesOrGaps } from "service/survey-activity-service";
 import { v4 as uuidv4 } from "uuid";
+import { isMobile as isMobile2 } from "react-device-detect";
 
 const HelpActivity = () => {
     const navigate = useNavigate();
@@ -152,13 +153,15 @@ const HelpActivity = () => {
                                 />
                             }
                         >
-                            {t("common.navigation.skip")}
+                            {t("common.navigation.skip") + (isMobile2 ? "+mobile" : "")}
                         </Button>
                     </Box>
                     <Box
                         className={
                             isItDesktop && helpStep == 2
                                 ? classes.contentHelpBoxDesktop
+                                : isMobile2
+                                ? classes.contentHelpBoxMobile
                                 : classes.contentHelpBox
                         }
                     >
@@ -371,8 +374,15 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         marginTop: "0.5rem",
     },
     contentHelpBox: {
-        height: "75vh",
-        maxHeight: "75vh",
+        height: "78vh",
+        maxHeight: "78vh",
+        display: "flex",
+        alignItems: "end",
+        marginBottom: "4.5rem",
+    },
+    contentHelpBoxMobile: {
+        height: "50vh",
+        maxHeight: "50vh",
         display: "flex",
         alignItems: "end",
         marginBottom: "4.5rem",
