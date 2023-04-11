@@ -213,7 +213,7 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
         marginBottom: "1rem",
     },
     actionContentBox: {
-        height: "10vh"
+        height: "11vh"
     },
     sendButton: {
         padding: "0.5rem 2rem",
