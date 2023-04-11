@@ -25,7 +25,7 @@ import {
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from "service/survey-service";
-import { isMobile, isBrowser, browserName } from "react-device-detect";
+import { isMobile, isBrowser, isMobileOnly, isAndroid } from "react-device-detect";
 
 const EndSurveyPage = () => {
     const { classes, cx } = useStyles();
@@ -137,7 +137,7 @@ const EndSurveyPage = () => {
                                     <img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />
                                 }
                             >
-                                {t("common.navigation.send")} {isMobile && isBrowser ? "mobile-browser" : (isMobile ? browserName : "desktop")}
+                                {t("common.navigation.send")} {isMobile && isBrowser ? "mobile-browser" : (isBrowser + " " + isMobileOnly + " " + isAndroid )}
                             </Button>
                         </Online>
                         <Offline>
@@ -187,7 +187,7 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        height: "70vh",
+        height: "90vh",
     },
     endContentBoxMobile: {
         height: "60vh"
