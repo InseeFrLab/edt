@@ -101,6 +101,8 @@ const EndSurveyPage = () => {
         );
     }
 
+    const isNavMobile = !isPwa() && isMobile;
+
     return (
         <SurveyPage
             srcIcon={submit_icon}
@@ -110,7 +112,7 @@ const EndSurveyPage = () => {
             onPrevious={onPrevious}
             simpleHeader={true}
         >
-            <Box className={cx(classes.endContentBox, !isPwa() && isMobile ? classes.endContentBoxMobile : "")}>
+            <Box className={cx(classes.endContentBox, isNavMobile ? classes.endContentBoxMobile : "")}>
                 <Box>
                     <Box className={classes.contentBox}>
                         <h3>
@@ -132,12 +134,11 @@ const EndSurveyPage = () => {
                         </Offline>
                     </FlexCenter>
                 </Box>
-                <Box className={classes.actionContentBox}>
-                    <FlexCenter className={!isPwa() && isMobile ? classes.actionBoxMobile : classes.actionBox}>
-                        <Box>{ isPwa() && isMobile ? "mobile-pwa" : (isMobile ? "mobile" : "desktop" ) }</Box>
+                <Box className={isNavMobile ? classes.actionContentBox : ""}>
+                    <FlexCenter className={isNavMobile ? classes.actionBoxMobile : classes.actionBox}>
                         <Online>
                             <Button
-                                className={cx(isMobile && !isPwa() ? classes.actionBoxMobile : classes.sendButton)}
+                                className={cx(isNavMobile ? classes.actionBoxMobile : classes.sendButton)}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
@@ -149,7 +150,7 @@ const EndSurveyPage = () => {
                         </Online>
                         <Offline>
                             <Button
-                                className={cx(isMobile && !isPwa() ? classes.actionBoxMobile : classes.sendButton)}
+                                className={cx(isNavMobile ? classes.actionBoxMobile : classes.sendButton)}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
