@@ -125,7 +125,7 @@ const EndSurveyPage = () => {
                         </Offline>
                     </FlexCenter>
                 </Box>
-                <Box>
+                <Box className={classes.actionContentBox}>
                     <FlexCenter className={classes.actionBox}>
                         <Online>
                             <Button
@@ -196,6 +196,9 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
     },
     actionBox: {
         marginBottom: "1rem",
+    },
+    actionContentBox: {
+        height: "10vh"
     },
     sendButton: {
         padding: "0.5rem 2rem",
