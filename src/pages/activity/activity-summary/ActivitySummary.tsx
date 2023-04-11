@@ -28,11 +28,11 @@ import { getLoopSize, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
     getOrchestratorPage,
-    navToActivityRoutePlanner,
+    navToActivityOrPlannerOrSummary,
     navToEditActivity,
     navToHelp,
     navToHome,
-    setEnviro,
+    setEnviro
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { getUserActivitiesCharacteristics, getUserActivitiesSummary } from "service/summary-service";
@@ -132,7 +132,7 @@ const ActivitySummaryPage = () => {
             setIsSummaryEdited(true);
             deleteActivity(idSurvey, source, iteration);
             activitiesRoutesOrGaps.splice(iteration);
-            navToActivityRoutePlanner();
+            navToActivityOrPlannerOrSummary(idSurvey, source.maxPage, navigate, source);
         },
         [],
     );
