@@ -25,7 +25,7 @@ import {
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from "service/survey-service";
-import { isMobile, isBrowser, isMobileOnly, isAndroid } from "react-device-detect";
+import { isMobile } from "react-device-detect";
 
 const EndSurveyPage = () => {
     const { classes, cx } = useStyles();
@@ -94,14 +94,13 @@ const EndSurveyPage = () => {
             setIsModalDisplayed(true);
         }
     };
-
-    const isPWA = window.matchMedia('(display-mode: fullscreen)').matches;
-    const isInStandaloneMode = () => (window.matchMedia('(display-mode: standalone)').matches) || document.referrer.includes('android-app://');
-    function isPwa2() {
+    
+    function isPwa() {
         return ["fullscreen", "standalone", "minimal-ui"].some(
             (displayMode) => window.matchMedia('(display-mode: ' + displayMode + ')').matches
         );
     }
+
     return (
         <SurveyPage
             srcIcon={submit_icon}
@@ -134,7 +133,7 @@ const EndSurveyPage = () => {
                     </FlexCenter>
                 </Box>
                 <Box className={classes.actionContentBox}>
-                    <FlexCenter className={isMobile && isBrowser ? classes.actionBoxMobile : classes.actionBox}>
+                    <FlexCenter className={!isPwa() ? classes.actionBoxMobile : classes.actionBox}>
                         <Online>
                             <Button
                                 className={cx(classes.sendButton)}
@@ -144,8 +143,7 @@ const EndSurveyPage = () => {
                                     <img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />
                                 }
                             >
-                                {t("common.navigation.send")} {isMobile && isBrowser ? "mobile-browser" : 
-                                    (isPWA + " " + isInStandaloneMode() + " " + isPwa2()) }
+                                {t("common.navigation.send")}
                             </Button>
                         </Online>
                         <Offline>
