@@ -133,10 +133,11 @@ const EndSurveyPage = () => {
                     </FlexCenter>
                 </Box>
                 <Box className={classes.actionContentBox}>
-                    <FlexCenter className={!isPwa() ? classes.actionBoxMobile : classes.actionBox}>
+                    <FlexCenter className={!isPwa() && isMobile ? classes.actionBoxMobile : classes.actionBox}>
+                        <Box>{ isPwa() && isMobile ? "mobile-pwa" : (isMobile ? "mobile" : "desktop" ) }</Box>
                         <Online>
                             <Button
-                                className={cx(classes.sendButton)}
+                                className={cx(isMobile && !isPwa() ? classes.actionBoxMobile : classes.sendButton)}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
@@ -148,7 +149,7 @@ const EndSurveyPage = () => {
                         </Online>
                         <Offline>
                             <Button
-                                className={cx(classes.sendButton)}
+                                className={cx(isMobile && !isPwa() ? classes.actionBoxMobile : classes.sendButton)}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
