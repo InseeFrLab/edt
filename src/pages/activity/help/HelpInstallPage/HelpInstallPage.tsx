@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Paper, Typography } from "@mui/material";
-import install from "assets/illustration/install.svg";
+import install from "assets/illustration/mui-icon/download.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { useCallback } from "react";
