@@ -148,7 +148,7 @@ const HelpActivity = () => {
                                 </Button>
                             }
                         </Box>
-                        <Box>
+                        <Box className={classes.centerBox}>
                             <Button
                                 className={classes.buttonSkipBox}
                                 variant="outlined"
@@ -453,8 +453,10 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
     stepHelpThree: {
         width: "13rem",
         marginLeft: "-10rem",
-        //marginTop: "24rem",
     },
+    centerBox: {
+        textAlign: "center"
+    }
 }));
 
 export default HelpActivity;
