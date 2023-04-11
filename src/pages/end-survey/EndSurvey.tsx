@@ -103,55 +103,66 @@ const EndSurveyPage = () => {
             onPrevious={onPrevious}
             simpleHeader={true}
         >
-            <Box className={classes.contentBox}>
-                <h3>
-                    {isActivitySurvey
-                        ? t("page.end-survey.end-of-activity-survey")
-                        : t("page.end-survey.end-of-work-time-survey")}
-                </h3>
-                <Typography>{t("page.end-survey.end-explanation")}</Typography>
+            <Box className={classes.endContentBox}>
+                <Box>
+                    <Box className={classes.contentBox}>
+                        <h3>
+                            {isActivitySurvey
+                                ? t("page.end-survey.end-of-activity-survey")
+                                : t("page.end-survey.end-of-work-time-survey")}
+                        </h3>
+                        <Typography>{t("page.end-survey.end-explanation")}</Typography>
+                    </Box>
+
+                    <FlexCenter>
+                        <Online>
+                            <Info {...infoLabels} />
+                        </Online>
+                        <Offline>
+                            <Box className={classes.offline}>
+                                <Info isAlertInfo={true} {...infoLabels} />
+                            </Box>
+                        </Offline>
+                    </FlexCenter>
+                </Box>
+                <Box>
+                    <FlexCenter className={classes.actionBox}>
+                        <Online>
+                            <Button
+                                className={classes.sendButton}
+                                variant="contained"
+                                onClick={remoteSaveSurveyAndGoBackHome}
+                                endIcon={
+                                    <img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />
+                                }
+                            >
+                                {t("common.navigation.send")}
+                            </Button>
+                        </Online>
+                        <Offline>
+                            <Button
+                                className={classes.sendButton}
+                                variant="contained"
+                                onClick={remoteSaveSurveyAndGoBackHome}
+                                endIcon={
+                                    <img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />
+                                }
+                                disabled={true}
+                            >
+                                {t("common.navigation.send")}
+                            </Button>
+                        </Offline>
+                        {errorSubmit ? (
+                            <Typography className={classes.errorSubmit}>
+                                {t("common.error.error-submit-survey")}
+                            </Typography>
+                        ) : (
+                            <></>
+                        )}
+                    </FlexCenter>
+                </Box>
             </Box>
 
-            <FlexCenter>
-                <Online>
-                    <Info {...infoLabels} />
-                </Online>
-                <Offline>
-                    <Box className={classes.offline}>
-                        <Info isAlertInfo={true} {...infoLabels} />
-                    </Box>
-                </Offline>
-            </FlexCenter>
-            <FlexCenter className={classes.actionBox}>
-                <Online>
-                    <Button
-                        className={classes.sendButton}
-                        variant="contained"
-                        onClick={remoteSaveSurveyAndGoBackHome}
-                        endIcon={<img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />}
-                    >
-                        {t("common.navigation.send")}
-                    </Button>
-                </Online>
-                <Offline>
-                    <Button
-                        className={classes.sendButton}
-                        variant="contained"
-                        onClick={remoteSaveSurveyAndGoBackHome}
-                        endIcon={<img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />}
-                        disabled={true}
-                    >
-                        {t("common.navigation.send")}
-                    </Button>
-                </Offline>
-                {errorSubmit ? (
-                    <Typography className={classes.errorSubmit}>
-                        {t("common.error.error-submit-survey")}
-                    </Typography>
-                ) : (
-                    <></>
-                )}
-            </FlexCenter>
             <FlexCenter>
                 <FelicitationModal
                     isModalDisplayed={isModalDisplayed}
@@ -171,6 +182,12 @@ const EndSurveyPage = () => {
 };
 
 const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
+    endContentBox: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        height: "100vh",
+    },
     contentBox: {
         display: "flex",
         flexDirection: "column",
@@ -178,7 +195,7 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
         textAlign: "center",
     },
     actionBox: {
-        marginTop: "auto",
+        marginBottom: "2rem",
     },
     sendButton: {
         padding: "0.5rem 2rem",
