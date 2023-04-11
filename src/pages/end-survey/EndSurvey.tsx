@@ -186,7 +186,7 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        height: "70vh",
+        height: "60vh",
     },
     contentBox: {
         display: "flex",
