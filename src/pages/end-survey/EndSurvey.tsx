@@ -138,7 +138,7 @@ const EndSurveyPage = () => {
                     <FlexCenter className={isNavMobile ? classes.actionBoxMobile : classes.actionBox}>
                         <Online>
                             <Button
-                                className={cx(isNavMobile ? classes.actionBoxMobile : classes.sendButton)}
+                                className={cx(classes.sendButton)}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
@@ -150,7 +150,7 @@ const EndSurveyPage = () => {
                         </Online>
                         <Offline>
                             <Button
-                                className={cx(isNavMobile ? classes.actionBoxMobile : classes.sendButton)}
+                                className={cx(classes.sendButton)}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
@@ -207,10 +207,10 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
         textAlign: "center",
     },
     actionBox: {
-        marginBottom: "2rem",
+        marginBottom: "1rem",
     },
     actionBoxMobile: {
-        marginBottom: "3rem",
+        paddingBottom: "2rem",
     },
     actionContentBox: {
         height: "10vh"
