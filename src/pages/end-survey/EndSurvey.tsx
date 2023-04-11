@@ -25,7 +25,6 @@ import {
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from "service/survey-service";
-import { isMobile, isBrowser } from "react-device-detect";
 
 const EndSurveyPage = () => {
     const { classes, cx } = useStyles();
@@ -127,10 +126,10 @@ const EndSurveyPage = () => {
                     </FlexCenter>
                 </Box>
                 <Box>
-                    <FlexCenter className={isMobile && isBrowser ? classes.actionBoxMobile : classes.actionBox}>
+                    <FlexCenter className={classes.actionBox}>
                         <Online>
                             <Button
-                                className={cx(classes.sendButton, isMobile && isBrowser ? classes.actionBoxMobile : "")}
+                                className={cx(classes.sendButton)}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
@@ -142,7 +141,7 @@ const EndSurveyPage = () => {
                         </Online>
                         <Offline>
                             <Button
-                                className={cx(classes.sendButton, isMobile && isBrowser ? classes.actionBoxMobile : "")}
+                                className={cx(classes.sendButton)}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
@@ -187,7 +186,7 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        height: "80vh",
+        height: "70vh",
     },
     contentBox: {
         display: "flex",
@@ -196,10 +195,7 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
         textAlign: "center",
     },
     actionBox: {
-        marginBottom: "2rem",
-    },
-    actionBoxMobile: {
-        marginBottom: "6rem",
+        marginBottom: "1rem",
     },
     sendButton: {
         padding: "0.5rem 2rem",
