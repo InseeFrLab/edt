@@ -95,6 +95,13 @@ const EndSurveyPage = () => {
         }
     };
 
+    const isPWA = window.matchMedia('(display-mode: fullscreen)').matches;
+    const isInStandaloneMode = () => (window.matchMedia('(display-mode: standalone)').matches) || document.referrer.includes('android-app://');
+    function isPwa2() {
+        return ["fullscreen", "standalone", "minimal-ui"].some(
+            (displayMode) => window.matchMedia('(display-mode: ' + displayMode + ')').matches
+        );
+    }
     return (
         <SurveyPage
             srcIcon={submit_icon}
@@ -137,7 +144,8 @@ const EndSurveyPage = () => {
                                     <img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />
                                 }
                             >
-                                {t("common.navigation.send")} {isMobile && isBrowser ? "mobile-browser" : (isBrowser + " " + isMobileOnly + " " + isAndroid )}
+                                {t("common.navigation.send")} {isMobile && isBrowser ? "mobile-browser" : 
+                                    (isPWA + " " + isInStandaloneMode() + " " + isPwa2()) }
                             </Button>
                         </Online>
                         <Offline>
