@@ -28,7 +28,7 @@ import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from 
 import { isMobile, isBrowser } from "react-device-detect";
 
 const EndSurveyPage = () => {
-    const { classes } = useStyles();
+    const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
@@ -130,7 +130,7 @@ const EndSurveyPage = () => {
                     <FlexCenter className={isMobile && isBrowser ? classes.actionBoxMobile : classes.actionBox}>
                         <Online>
                             <Button
-                                className={classes.sendButton}
+                                className={cx(classes.sendButton, isMobile && isBrowser ? classes.actionBoxMobile : "")}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
@@ -142,7 +142,7 @@ const EndSurveyPage = () => {
                         </Online>
                         <Offline>
                             <Button
-                                className={classes.sendButton}
+                                className={cx(classes.sendButton, isMobile && isBrowser ? classes.actionBoxMobile : "")}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
@@ -187,7 +187,7 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        height: "100vh",
+        height: "90vh",
     },
     contentBox: {
         display: "flex",
