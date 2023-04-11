@@ -110,7 +110,7 @@ const EndSurveyPage = () => {
             onPrevious={onPrevious}
             simpleHeader={true}
         >
-            <Box className={cx(classes.endContentBox, isMobile ? classes.endContentBoxMobile : "")}>
+            <Box className={cx(classes.endContentBox, !isPwa() && isMobile ? classes.endContentBoxMobile : "")}>
                 <Box>
                     <Box className={classes.contentBox}>
                         <h3>
