@@ -72,7 +72,6 @@
             "greatest-activity-day-alt": "Alt pour greatest activity day",
             "worst-activity-day-alt": "Alt pour worst activity day",
             "submit-alt": "Alt pour submit",
-            "install-alt": "Alt pour install",
             "reviewer-alt": "Alt pour reviewer",
             "mui-icon": {
                 "close": "Alt pour close",
@@ -97,7 +96,8 @@
                 "visibility": "Alt pour visibility",
                 "work": "Alt pour work",
                 "search": "Alt pour search",
-                "extension": "Alt pour extension"
+                "extension": "Alt pour extension",
+                "download": "Alt pour download"
             },
             "info": {
                 "info-alt": "Alt pour info"

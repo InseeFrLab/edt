@@ -19,10 +19,10 @@ const HelpInstallPage = () => {
     }, []);
 
     return (
-        <Box> 
+        <Box>
             <Box className={classes.installBox}>
                 <FlexCenter className={classes.illustrationBox}>
-                    <img src={install} alt={t("accessibility.asset.install-alt")} />
+                    <img src={install} alt={t("accessibility.asset.mui-icon.download")} />
                 </FlexCenter>
                 <Box className={classes.textBox}>
                     <h2>{t("page.install.title")}</h2>
@@ -46,14 +46,13 @@ const HelpInstallPage = () => {
                 </Box>
             </Paper>
         </Box>
-        
     );
 };
 
 const useStyles = makeStylesEdt({ "name": { HelpInstallPage } })(theme => ({
-    installBox: { 
+    installBox: {
         padding: "1rem",
-        height: "90vh"
+        height: "90vh",
     },
     illustrationBox: {},
     textBox: { textAlign: "center" },
