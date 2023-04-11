@@ -207,10 +207,10 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
         textAlign: "center",
     },
     actionBox: {
-        marginBottom: "1.5rem",
+        marginBottom: "1rem",
     },
     actionBoxMobile: {
-        marginBottom: "2rem",
+        marginBottom: "1.5rem",
     },
     actionContentBox: {
         height: "10vh"
