@@ -27,6 +27,7 @@ const LoopSurveyPageHeader = (props: LoopSurveyPageHeaderProps) => {
                         onClick={onClose}
                     />
                 </Box>
+                {close}
             </Box>
             {children}
         </Box>

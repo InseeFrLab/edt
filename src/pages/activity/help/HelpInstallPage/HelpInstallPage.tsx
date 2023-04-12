@@ -8,9 +8,11 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
 import packageJson from "../../../../../package.json";
+import { isPwa } from "service/responsive";
+import { isMobile } from "react-device-detect";
 
 const HelpInstallPage = () => {
-    const { classes } = useStyles();
+    const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -18,8 +20,10 @@ const HelpInstallPage = () => {
         navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
     }, []);
 
+    const isNavMobile = !isPwa() && isMobile;
+
     return (
-        <Box>
+        <Box className={cx(classes.contentBox, isNavMobile ? classes.contentBoxMobile : "")}>
             <Box className={classes.installBox}>
                 <FlexCenter className={classes.illustrationBox}>
                     <img src={install} alt={t("accessibility.asset.mui-icon.download")} />
@@ -38,7 +42,12 @@ const HelpInstallPage = () => {
                 </Box>
             </Box>
             <br />
-            <Paper className={classes.footerBox} component="footer" square variant="outlined">
+            <Paper
+                className={cx(classes.footerBox, isNavMobile ? classes.footerBoxMobile : "")}
+                component="footer"
+                square
+                variant="outlined"
+            >
                 <Box>
                     <Typography variant="caption" color="initial">
                         <b>{t("common.version")}:</b> {packageJson.version} - {packageJson.dateVersion}
@@ -52,7 +61,15 @@ const HelpInstallPage = () => {
 const useStyles = makeStylesEdt({ "name": { HelpInstallPage } })(theme => ({
     installBox: {
         padding: "1rem",
-        height: "90vh",
+    },
+    contentBox: {
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+    },
+    contentBoxMobile: {
+        height: "95vh",
     },
     illustrationBox: {},
     textBox: { textAlign: "center" },
@@ -60,10 +77,12 @@ const useStyles = makeStylesEdt({ "name": { HelpInstallPage } })(theme => ({
     actionBox: { maxWidth: "300px", margin: "0.5rem 0", width: "90%" },
     button: { width: "100%", backgroundColor: theme.palette.text.primary },
     footerBox: {
-        height: "7vh",
         display: "flex",
-        alignItems: "center",
-        padding: "1rem",
+        alignItems: "baseline",
+        padding: "1rem 0rem 0rem 1rem",
+    },
+    footerBoxMobile: {
+        height: "10vh",
     },
 }));
 

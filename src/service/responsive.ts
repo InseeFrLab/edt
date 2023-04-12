@@ -17,10 +17,17 @@ const isDesktop = (): boolean => {
     return useMediaQuery({ query: "(min-width: " + destktopMinWidth + "px)" });
 };
 
+const isPwa = (): boolean => {
+    return ["fullscreen", "standalone", "minimal-ui"].some(
+        displayMode => window.matchMedia("(display-mode: " + displayMode + ")").matches,
+    );
+};
+
 export {
     isMobile,
     isTablet,
     isDesktop,
+    isPwa,
     mobileMaxWidth,
     tabletMinWidth,
     tabletMaxWidth,

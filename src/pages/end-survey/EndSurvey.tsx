@@ -26,6 +26,7 @@ import {
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from "service/survey-service";
 import { isMobile } from "react-device-detect";
+import { isPwa } from "service/responsive";
 
 const EndSurveyPage = () => {
     const { classes, cx } = useStyles();
@@ -94,12 +95,6 @@ const EndSurveyPage = () => {
             setIsModalDisplayed(true);
         }
     };
-    
-    function isPwa() {
-        return ["fullscreen", "standalone", "minimal-ui"].some(
-            (displayMode) => window.matchMedia('(display-mode: ' + displayMode + ')').matches
-        );
-    }
 
     const isNavMobile = !isPwa() && isMobile;
 
@@ -138,7 +133,9 @@ const EndSurveyPage = () => {
                     <FlexCenter className={isNavMobile ? classes.actionBoxMobile : classes.actionBox}>
                         <Online>
                             <Button
-                                className={cx(isNavMobile ? classes.actionBoxMobile : classes.sendButton)}
+                                className={cx(
+                                    isNavMobile ? classes.actionBoxMobile : classes.sendButton,
+                                )}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
@@ -150,7 +147,9 @@ const EndSurveyPage = () => {
                         </Online>
                         <Offline>
                             <Button
-                                className={cx(isNavMobile ? classes.actionBoxMobile : classes.sendButton)}
+                                className={cx(
+                                    isNavMobile ? classes.actionBoxMobile : classes.sendButton,
+                                )}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
@@ -198,7 +197,7 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
         height: "85vh",
     },
     endContentBoxMobile: {
-        height: "60vh"
+        height: "60vh",
     },
     contentBox: {
         display: "flex",
@@ -213,11 +212,11 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
         marginBottom: "1rem",
     },
     actionContentBox: {
-        height: "11vh"
+        height: "11vh",
     },
     sendButton: {
         padding: "0.5rem 2rem",
-        margin: "1rem"
+        margin: "1rem",
     },
     offline: {
         color: theme.palette.error.main + " !important",

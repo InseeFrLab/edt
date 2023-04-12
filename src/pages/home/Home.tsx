@@ -183,7 +183,7 @@ const HomePage = () => {
                     />
                 </Box>
                 <Box className={classes.helpBox}>
-                    {process.env.NODE_ENV !== "production" && (
+                    {process.env.REACT_APP_NODE_ENV !== "production" && (
                         <Button
                             color="primary"
                             startIcon={
