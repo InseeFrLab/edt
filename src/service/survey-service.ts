@@ -49,6 +49,8 @@ const toIgnoreForRoute = [
     FieldNameEnum.MAINACTIVITY_SUGGESTERID,
     FieldNameEnum.MAINACTIVITY_LABEL,
     FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED,
+    FieldNameEnum.INPUT_SUGGESTER,
+    FieldNameEnum.ACTIVITY_SELECTER_HISTORY,
     FieldNameEnum.GOAL,
 ];
 

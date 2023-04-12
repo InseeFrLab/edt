@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import install from "assets/illustration/mui-icon/download.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -79,10 +79,11 @@ const useStyles = makeStylesEdt({ "name": { HelpInstallPage } })(theme => ({
     footerBox: {
         display: "flex",
         alignItems: "baseline",
-        padding: "1rem 0rem 0rem 1rem",
+        padding: "1rem",
     },
     footerBoxMobile: {
-        height: "10vh",
+        height: "8vh",
+        padding: important("1rem 0rem 0rem 1rem"),
     },
 }));
 
