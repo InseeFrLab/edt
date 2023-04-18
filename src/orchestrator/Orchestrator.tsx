@@ -3,6 +3,7 @@ import * as lunaticEDT from "@inseefrlab/lunatic-edt";
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import React from "react";
 
@@ -33,10 +34,27 @@ export type OrchestratorProps = {
     overrideOptions?: any;
 };
 
+const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
+
+const renderLoading = () => {
+    return (
+        <FlexCenter>
+            <CircularProgress />
+        </FlexCenter>
+    );
+};
+
 export const OrchestratorForStories = (props: OrchestratorProps) => {
     const { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
         props;
     const { classes, cx } = useStyles();
+
+    /*const currentURL = localStorage.getItem(LocalStorageVariableEnum.CURRENT_URL);
+    if(currentURL == null || currentURL != window.location.href) {
+        console.log(currentURL);
+        console.log(window.location.href);
+        localStorage.setItem(LocalStorageVariableEnum.CURRENT_URL, window.location.href);
+    }*/
 
     const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
         initialPage:
@@ -44,6 +62,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
             (subPage === undefined ? "" : `.${subPage}`) +
             (iteration === undefined ? "" : `#${iteration + 1}`),
         activeControls: true,
+        onChange: onLogChange,
     });
 
     const components = getComponents();
@@ -52,43 +71,45 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     cbHolder.getData = getData;
     cbHolder.getErrors = getCurrentErrors;
 
-    return source && data ? (
-        <>
-            <Box className={classes.orchestratorBox}>
-                <div
-                    className={cx(
-                        "components",
-                        classes.styleOverride,
-                        window.innerWidth <= 667 && componentSpecificProps.widthGlobal
-                            ? classes.styleOverrideMobile
-                            : "",
-                    )}
-                >
-                    {components.map(function (component: any) {
-                        const { id, componentType, response, options, ...other } = component;
-                        const Component = lunatic[componentType];
-                        return (
-                            <div className="lunatic lunatic-component" key={`component-${id}`}>
-                                <Component
-                                    id={id}
-                                    response={response}
-                                    options={options ? options : overrideOptions}
-                                    {...other}
-                                    errors={currentErrors}
-                                    custom={edtComponents}
-                                    componentSpecificProps={componentSpecificProps}
-                                />
-                            </div>
-                        );
-                    })}
-                </div>
-            </Box>
-        </>
-    ) : (
-        <FlexCenter>
-            <CircularProgress />
-        </FlexCenter>
-    );
+    console.log("get Data");
+
+    const renderComponent = () => {
+        return (
+            <>
+                <Box className={classes.orchestratorBox}>
+                    <div
+                        className={cx(
+                            "components",
+                            classes.styleOverride,
+                            window.innerWidth <= 667 && componentSpecificProps.widthGlobal
+                                ? classes.styleOverrideMobile
+                                : "",
+                        )}
+                    >
+                        {components.map(function (component: any) {
+                            const { id, componentType, response, options, ...other } = component;
+                            const Component = lunatic[componentType];
+                            return (
+                                <div className="lunatic lunatic-component" key={`component-${id}`}>
+                                    <Component
+                                        id={id}
+                                        response={response}
+                                        options={options ? options : overrideOptions}
+                                        {...other}
+                                        errors={currentErrors}
+                                        custom={edtComponents}
+                                        componentSpecificProps={componentSpecificProps}
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
+                </Box>
+            </>
+        );
+    };
+
+    return source && data ? renderComponent() : renderLoading();
 };
 
 const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({

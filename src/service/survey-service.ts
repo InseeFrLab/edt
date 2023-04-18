@@ -37,6 +37,7 @@ import {
     remotePutSurveyData,
 } from "./api-service";
 import { getScore } from "./survey-activity-service";
+import React from "react";
 
 const datas = new Map<string, LunaticData>();
 let referentielsData: ReferentielData;
@@ -199,6 +200,24 @@ const getData = (idSurvey: string): LunaticData => {
     return datas.get(idSurvey) || {};
 };
 
+const dataIsChange = (idSurvey: string, data: LunaticData) => {
+    const currentData = datas.get(idSurvey);
+    const currentDataCollected = currentData && currentData.COLLECTED;
+    const dataCollected = data && data.COLLECTED;
+
+    if (dataCollected && currentDataCollected) {
+        const keys = Object.keys(dataCollected);
+        console.log(keys);
+        keys.forEach(key => {
+            if (dataCollected[key] != currentDataCollected[key]) {
+                console.log("isDifferent");
+                return true;
+            }
+        });
+    }
+    return false;
+};
+
 const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): Promise<LunaticData> => {
     data.lastLocalSaveDate = Date.now();
     if (!data.houseReference) {
@@ -215,13 +234,16 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                 stateData: getSurveyStateData(data, idSurvey),
                 data: data,
             };
-            remotePutSurveyData(idSurvey, surveyData).then(surveyData => {
-                data.lastRemoteSaveDate = surveyData.stateData?.date;
-                //set the last remote save date inside local database to be able to compare it later with remote data
-                lunaticDatabase.save(idSurvey, data).then(() => {
-                    datas.set(idSurvey, data);
+
+            if (dataIsChange(idSurvey, data)) {
+                remotePutSurveyData(idSurvey, surveyData).then(surveyData => {
+                    data.lastRemoteSaveDate = surveyData.stateData?.date;
+                    //set the last remote save date inside local database to be able to compare it later with remote data
+                    lunaticDatabase.save(idSurvey, data).then(() => {
+                        datas.set(idSurvey, data);
+                    });
                 });
-            });
+            }
         }
 
         return data;
