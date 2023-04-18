@@ -108,16 +108,17 @@ const HomePage = () => {
     const onDisconnect = useCallback(() => setIsAlertDisplayed(true), [isAlertDisplayed]);
 
     const disconnect = useCallback(() => {
-        auth.signOut();
         auth.userManager.signoutRedirect({
             id_token_hint: localStorage.getItem("id_token") || undefined,
         });
         auth.userManager.clearStaleState();
         auth.userManager.signoutRedirectCallback().then(() => {
-            localStorage.clear();
-            lunaticDatabase.clear();
-            window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
-            auth.userManager.clearStaleState();
+            setTimeout(() => {
+                localStorage.clear();
+                lunaticDatabase.clear();
+                window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
+                auth.userManager.clearStaleState();
+            }, 100);
         });
     }, []);
 
