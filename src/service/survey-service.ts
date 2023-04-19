@@ -37,7 +37,6 @@ import {
     remotePutSurveyData,
 } from "./api-service";
 import { getScore } from "./survey-activity-service";
-import React from "react";
 
 const datas = new Map<string, LunaticData>();
 let referentielsData: ReferentielData;
@@ -205,17 +204,26 @@ const dataIsChange = (idSurvey: string, data: LunaticData) => {
     const currentDataCollected = currentData && currentData.COLLECTED;
     const dataCollected = data && data.COLLECTED;
 
+    let isChange = false;
+
     if (dataCollected && currentDataCollected) {
         const keys = Object.keys(dataCollected);
-        console.log(keys);
         keys.forEach(key => {
-            if (dataCollected[key] != currentDataCollected[key]) {
-                console.log("isDifferent");
-                return true;
+            if (dataCollected[key].COLLECTED != currentDataCollected[key].COLLECTED) {
+                if (Array.isArray(dataCollected[key].COLLECTED)) {
+                    const currentDataCollectedArray = currentDataCollected[key].COLLECTED as string[];
+                    (dataCollected[key].COLLECTED as string[]).forEach((data, i) => {
+                        if (currentDataCollectedArray[i] != data) {
+                            isChange = true;
+                        }
+                    });
+                } else {
+                    isChange = true;
+                }
             }
         });
     }
-    return false;
+    return isChange;
 };
 
 const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): Promise<LunaticData> => {
@@ -226,16 +234,17 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
     }
 
     return lunaticDatabase.save(idSurvey, data).then(() => {
+        const isChange = dataIsChange(idSurvey, data);
         datas.set(idSurvey, data);
 
-        //We try to submit each time the local database is updated if the user is online
-        if (!localSaveOnly && navigator.onLine) {
-            const surveyData: SurveyData = {
-                stateData: getSurveyStateData(data, idSurvey),
-                data: data,
-            };
+        if (isChange) {
+            //We try to submit each time the local database is updated if the user is online
+            if (!localSaveOnly && navigator.onLine) {
+                const surveyData: SurveyData = {
+                    stateData: getSurveyStateData(data, idSurvey),
+                    data: data,
+                };
 
-            if (dataIsChange(idSurvey, data)) {
                 remotePutSurveyData(idSurvey, surveyData).then(surveyData => {
                     data.lastRemoteSaveDate = surveyData.stateData?.date;
                     //set the last remote save date inside local database to be able to compare it later with remote data
@@ -245,7 +254,6 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                 });
             }
         }
-
         return data;
     });
 };
