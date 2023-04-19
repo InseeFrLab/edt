@@ -180,9 +180,6 @@ const ActivityDurationPage = () => {
         </Fragment>
     );
 
-    console.log("activity duration");
-    //console.log(callbackHolder.getData());
-
     return (
         <LoopSurveyPage
             onNext={useCallback(() => onNext(), [snackbarText, lastEndTime, openSnackbar])}

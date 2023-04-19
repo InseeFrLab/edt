@@ -34,8 +34,6 @@ export type OrchestratorProps = {
     overrideOptions?: any;
 };
 
-const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
-
 const renderLoading = () => {
     return (
         <FlexCenter>
@@ -49,20 +47,12 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         props;
     const { classes, cx } = useStyles();
 
-    /*const currentURL = localStorage.getItem(LocalStorageVariableEnum.CURRENT_URL);
-    if(currentURL == null || currentURL != window.location.href) {
-        console.log(currentURL);
-        console.log(window.location.href);
-        localStorage.setItem(LocalStorageVariableEnum.CURRENT_URL, window.location.href);
-    }*/
-
     const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
         initialPage:
             page +
             (subPage === undefined ? "" : `.${subPage}`) +
             (iteration === undefined ? "" : `#${iteration + 1}`),
         activeControls: true,
-        onChange: onLogChange,
     });
 
     const components = getComponents();
@@ -70,8 +60,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
 
     cbHolder.getData = getData;
     cbHolder.getErrors = getCurrentErrors;
-
-    console.log("get Data");
 
     const renderComponent = () => {
         return (
