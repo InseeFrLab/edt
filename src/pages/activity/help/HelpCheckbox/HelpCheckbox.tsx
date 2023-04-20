@@ -13,7 +13,7 @@ import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -39,8 +39,6 @@ const HelpCheckbox = () => {
     const currentPage = EdtRoutesNameEnum.WITH_SOMEONE_SELECTION;
     const stepData = getStepData(currentPage);
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
-    /*const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
-    const data = getData(idSurvey || "");*/
     const data = mockData();
 
     const [helpStep, setHelpStep] = React.useState(1);
@@ -150,11 +148,26 @@ const HelpCheckbox = () => {
             console.log("");
         },
         optionsIcons: {
-            "1": coupleIcon,
-            "2": parentsIcon,
-            "3": childIcon,
-            "4": otherKnownIcon,
-            "5": otherIcon,
+            "1": {
+                icon: coupleIcon,
+                altIcon: t("accessibility.assets.with-someone.categories.couple-alt"),
+            },
+            "2": {
+                icon: parentsIcon,
+                altIcon: t("accessibility.assets.with-someone.categories.parents-alt"),
+            },
+            "3": {
+                icon: childIcon,
+                altIcon: t("accessibility.assets.with-someone.categories.child-alt"),
+            },
+            "4": {
+                icon: otherKnownIcon,
+                altIcon: t("accessibility.assets.with-someone.categories.other-know-alt"),
+            },
+            "5": {
+                icon: otherIcon,
+                altIcon: t("accessibility.assets.with-someone.categories.other-alt"),
+            },
         },
         displayStepper: false,
         helpStep: helpStep,

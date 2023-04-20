@@ -128,6 +128,65 @@
                 "secondary-activity-error-alt": "Alt pour secondary activity error icon",
                 "someone-error-alt": "Alt pour someone error icon",
                 "screen-error-alt": "Alt pour screen error icon"
+            },
+            "activities": {
+                "categories": {
+                    "cat-icon-100-alt": "Alt pour activity category 'temps personnel' ",
+                    "cat-icon-200-alt": "Alt pour activity category 'travail et études'",
+                    "cat-icon-300-alt": "Alt pour activity category 'taches domestiques'",
+                    "cat-icon-400-alt": "Alt pour activity category 'soins maux enfants ou aux adultes de son logement'",
+                    "cat-icon-440-alt": "Alt pour activity category 'aide non rémunérée à ses voisins, ses amis, bénévolat'",
+                    "cat-icon-500-alt": "Alt pour activity category 'interaction sociale'",
+                    "cat-icon-600-alt": "Alt pour activity category 'sorties'",
+                    "cat-icon-650-alt": "Alt pour activity category 'loisirs'"
+                }
+            },
+            "place": {
+                "categories": {
+                    "option1-alt": "Alt pour place category 'chez moi (y appartement étudiant si différent du domicile familial)'",
+                    "option2-alt": "Alt pour place category 'lieu de travail ou d'études'",
+                    "option3-alt": "Alt pour place category 'chez une autre personne (ami,voisin,famille...)'",
+                    "option4-alt": "Alt pour place category 'résidence secondaire, location de vacances'",
+                    "option5-alt": "Alt pour place category 'restaurant, café, bar'",
+                    "option6-alt": "Alt pour place category 'autre (comerces, loisirs, dans la rue...)'"
+                }
+            },
+            "mean-of-transport": {
+                "categories": {
+                    "option1-alt": "Alt pour mean of transport category 'à pied'",
+                    "option2-alt": "Alt pour mean of transport category 'vélo'",
+                    "option3-alt": "Alt pour mean of transport category 'deux roues motorisé'",
+                    "option4-alt": "Alt pour mean of transport category 'voiture privée'",
+                    "option5-alt": "Alt pour mean of transport category 'autre moyen privée'",
+                    "option6-alt": "Alt pour mean of transport category 'transports publics'"
+                }
+            },
+            "goal": {
+                "categories": {
+                    "home-alt": "Alt pour goal category 'home'",
+                    "work-alt": "Alt pour goal category 'work'",
+                    "help-alt": "Alt pour goal category 'help'",
+                    "solidarity-alt": "Alt pour goal category 'solidarity'"
+                }
+            },
+            "route": {
+                "categories": {
+                    "option1-alt": "Alt pour route category 'domicile - travail'",
+                    "option2-alt": "Alt pour route category 'domicile - lieu d'étude'",
+                    "option3-alt": "Alt pour route category 'liés aux enfants'",
+                    "option4-alt": "Alt pour route category 'liés au bénévolat'",
+                    "option5-alt": "Alt pour route category 'pour aider un autre ménage'",
+                    "option6-alt": "Alt pour route category 'autres trajets'"
+                }
+            },
+            "with-someone": {
+                "categories": {
+                    "couple-alt": "Alt pour with someone category 'votre conjoint'",
+                    "parents-alt": "Alt pour with someone category 'votre mère, votre père'",
+                    "child-alt": "Alt pour with someone category 'enfant du ménage'",
+                    "other-know-alt": "Alt pour with someone category 'autre personne du ménage'",
+                    "other-alt": "Alt pour with someone category 'autre personne que vous connaissez'"
+                }
             }
         }
     },
