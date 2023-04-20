@@ -6,6 +6,7 @@ import { getKindOfDayRef } from "service/referentiel-service";
 const KindOfDayPage = () => {
     const specifiquesProps = {
         icon: bagIcon,
+        altIconLabel: "accessibility.asset.kind-of-day-alt",
         referentiel: getKindOfDayRef(),
     };
 

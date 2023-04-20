@@ -1,9 +1,10 @@
+import extension from "assets/illustration/mui-icon/extension.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router";
@@ -55,12 +56,15 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         options: specifiquesProps?.options,
         defaultIcon: specifiquesProps?.defaultIcon,
         icon: specifiquesProps?.icon,
+        altIcon: t(specifiquesProps?.altIconLabel),
         language: getLanguage(),
         constants: {
             START_TIME_DAY: START_TIME_DAY,
             FORMAT_TIME: FORMAT_TIME,
             MINUTE_LABEL: MINUTE_LABEL,
         },
+        extensionIcon: extension,
+        extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
     };
 
     const surveyPageStepProps = {
