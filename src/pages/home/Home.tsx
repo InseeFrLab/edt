@@ -186,7 +186,7 @@ const HomePage = () => {
                 <Box className={classes.helpBox}>
                     {process.env.REACT_APP_NODE_ENV !== "production" && (
                         <Button
-                            color="primary"
+                            color="secondary"
                             startIcon={
                                 <img
                                     src={removeCircle}

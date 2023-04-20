@@ -396,6 +396,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
         zIndex: "1400",
         position: "relative",
         pointerEvents: "none",
+        backgroundColor: "#707070",
     },
     gapText: {
         color: theme.variables.alertActivity,
