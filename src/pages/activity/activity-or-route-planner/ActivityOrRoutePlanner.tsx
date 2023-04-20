@@ -10,7 +10,7 @@ import {
 import { Box, Divider, IconButton, Snackbar, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
-import InfoIcon from "assets/illustration/info.svg";
+import InfoIcon from "assets/illustration/mui-icon/info.svg";
 import close from "assets/illustration/mui-icon/close.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
