@@ -119,6 +119,15 @@
             },
             "card": {
                 "person-sun-alt": "Alt pour person-sun"
+            },
+            "insideAlerts": {
+                "activity-error-alt": "Alt pour activity error icon",
+                "route-error-alt": "Alt pour route error icon",
+                "place-error-alt": "Alt pour place error icon",
+                "mean-of-transport-error-alt": "Alt pour mean of transport error icon",
+                "secondary-activity-error-alt": "Alt pour secondary activity error icon",
+                "someone-error-alt": "Alt pour someone error icon",
+                "screen-error-alt": "Alt pour screen error icon"
             }
         }
     },

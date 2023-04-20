@@ -159,30 +159,37 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const insideAlertLabels = {
         [InsideAlertTypes.ACTIVITY]: {
             icon: activityErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.activity-error-alt"),
             label: t("page.activity-planner.no-activity"),
         },
         [InsideAlertTypes.ROUTE]: {
             icon: routeErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.route-error-alt"),
             label: t("page.activity-planner.no-route"),
         },
         [InsideAlertTypes.PLACE]: {
             icon: locationErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.place-error-alt"),
             label: t("page.activity-planner.no-place"),
         },
         [InsideAlertTypes.MEANOFTRANSPORT]: {
             icon: meanOfTransportErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.mean-of-transport-error-alt"),
             label: t("page.activity-planner.no-mean-of-transport"),
         },
         [InsideAlertTypes.SECONDARYACTIVITY]: {
             icon: activityErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.secondary-activity-error-alt"),
             label: t("page.activity-planner.no-secondary-activity"),
         },
         [InsideAlertTypes.WITHSOMEONE]: {
             icon: peopleErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.someone-error-alt"),
             label: t("page.activity-planner.no-with-someone"),
         },
         [InsideAlertTypes.SCREEN]: {
             icon: screenErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.screen-error-alt"),
             label: t("page.activity-planner.no-screen"),
         },
     };
@@ -217,7 +224,11 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const renderInsideAlert = (type: InsideAlertTypes) => {
         return (
             <Box className={classes.insideAlertBox}>
-                <img className={classes.insideAlertIcon} src={insideAlertLabels[type].icon}></img>
+                <img
+                    className={classes.insideAlertIcon}
+                    src={insideAlertLabels[type].icon}
+                    alt={insideAlertLabels[type].altIcon}
+                ></img>
                 <Typography className={classes.insideAlertText}>
                     {" "}
                     {insideAlertLabels[type].label}{" "}
