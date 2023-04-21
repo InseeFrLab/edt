@@ -5,8 +5,10 @@ import {
     getFrenchDayFromDate,
 } from "@inseefrlab/lunatic-edt";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
@@ -36,7 +38,9 @@ import {
     remoteGetSurveyData,
     remotePutSurveyData,
 } from "./api-service";
+import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getScore } from "./survey-activity-service";
+import { getUserRights } from "./user-service";
 
 const datas = new Map<string, LunaticData>();
 let referentielsData: ReferentielData;
@@ -65,7 +69,11 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     const promisesToWait: Promise<any>[] = [];
     return new Promise(resolve => {
         promisesToWait.push(initializeRefs());
-        promisesToWait.push(initializeSurveysIdsAndSources(setError));
+        if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
+            promisesToWait.push(initializeSurveysIdsAndSourcesDemo(setError));
+        } else {
+            promisesToWait.push(initializeSurveysIdsAndSources(setError));
+        }
         Promise.all(promisesToWait).then(() => {
             resolve(true);
         });
@@ -136,6 +144,41 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                     },
                 ),
             );
+        }
+        return Promise.all(promises);
+    });
+};
+
+const initializeSurveysIdsAndSourcesDemo = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
+    const promises: Promise<any>[] = [];
+    return lunaticDatabase.get(SURVEYS_IDS).then(data => {
+        if (!data) {
+            let activitySurveysIds: string[] = ["activitySurvey1", "activitySurvey2", "activitySurvey3"];
+            let workingTimeSurveysIds: string[] = ["workTimeSurvey1", "workTimeSurvey2"];
+            let distinctSources = [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY];
+            let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
+            const surveysIds: SurveysIds = {
+                [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+                [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
+                [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
+            };
+
+            const innerPromises: Promise<any>[] = [
+                saveSurveysIds(surveysIds),
+                initializeSurveysDatasCache(),
+                fetchSurveysSourcesByIds(distinctSources).then(sources => {
+                    saveSources(sources);
+                }),
+            ];
+            return Promise.all(innerPromises);
+        } else {
+            surveysIds = data as SurveysIds;
+            promises.push(
+                lunaticDatabase.get(SOURCES_MODELS).then(data => {
+                    sourcesData = data as SourceData;
+                }),
+            );
+            initializeSurveysDatasCache();
         }
         return Promise.all(promises);
     });
@@ -232,14 +275,14 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
         const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
         data.houseReference = idSurvey.replace(regexp, "");
     }
-
+    const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
     return lunaticDatabase.save(idSurvey, data).then(() => {
         const isChange = dataIsChange(idSurvey, data);
         datas.set(idSurvey, data);
 
         if (isChange) {
             //We try to submit each time the local database is updated if the user is online
-            if (!localSaveOnly && navigator.onLine) {
+            if (!isDemoMode && !localSaveOnly && navigator.onLine) {
                 const surveyData: SurveyData = {
                     stateData: getSurveyStateData(data, idSurvey),
                     data: data,

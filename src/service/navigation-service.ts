@@ -239,7 +239,7 @@ const navToRouteOrRouteNotSelection = (
 };
 
 const navToHome = (): void => {
-    _navigate("/");
+    _navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
 };
 
 const navToHelp = (): void => {

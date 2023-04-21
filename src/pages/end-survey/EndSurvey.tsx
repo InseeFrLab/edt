@@ -8,15 +8,18 @@ import FelicitationModal from "components/commons/Modal/FelicitationModal/Felici
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { SurveyData } from "interface/entity/Api";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction, useCallback, useState } from "react";
 import { Offline, Online } from "react-detect-offline";
+import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { remotePutSurveyData } from "service/api-service";
+import { getFlatLocalStorageValue } from "service/local-storage-service";
 import {
     getNavigatePath,
     getParameterizedNavigatePath,
@@ -24,9 +27,8 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
-import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from "service/survey-service";
-import { isMobile } from "react-device-detect";
 import { isPwa } from "service/responsive";
+import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from "service/survey-service";
 
 const EndSurveyPage = () => {
     const { classes, cx } = useStyles();
@@ -49,6 +51,7 @@ const EndSurveyPage = () => {
 
     const remoteSaveSurveyAndGoBackHome = useCallback(() => {
         const dataWithIsEnvoyed = setValue(context.idSurvey, FieldNameEnum.ISENVOYED, true);
+        const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
         const surveyData: SurveyData = {
             stateData: {
                 state: StateDataStateEnum.VALIDATED,
@@ -57,18 +60,22 @@ const EndSurveyPage = () => {
             },
             data: dataWithIsEnvoyed ?? callbackHolder.getData(),
         };
-        remotePutSurveyData(context.idSurvey, surveyData)
-            .then(surveyDataAnswer => {
-                surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
-                saveData(context.idSurvey, surveyData.data).then(() => {
-                    initializeSurveysDatasCache().finally(() => {
-                        setIsModalDisplayed(true);
+        if (!isDemoMode) {
+            remotePutSurveyData(context.idSurvey, surveyData)
+                .then(surveyDataAnswer => {
+                    surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
+                    saveData(context.idSurvey, surveyData.data).then(() => {
+                        initializeSurveysDatasCache().finally(() => {
+                            setIsModalDisplayed(true);
+                        });
                     });
+                })
+                .catch(() => {
+                    setErrorSubmit(true);
                 });
-            })
-            .catch(() => {
-                setErrorSubmit(true);
-            });
+        } else {
+            setIsModalDisplayed(true);
+        }
     }, []);
 
     const onPrevious = useCallback(() => {

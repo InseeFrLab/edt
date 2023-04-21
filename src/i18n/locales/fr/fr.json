@@ -7,7 +7,6 @@
             "close": "Fermer",
             "cancel": "Annuler",
             "ignore": "Ignorer",
-            "skip": "Passer",
             "complete": "Completer",
             "validate": "Valider",
             "add": "Ajouter",
@@ -130,7 +129,7 @@
             "continue": "J'ai compris"
         },
         "reviewer-home": {
-            "welcome": "Bienvenue dans votre espace enquêteur.",
+            "welcome": "Bienvenue dans votre espace",
             "reviewer": "ENQUÊTEUR",
             "navigation": {
                 "surveys": "Accéder aux enquêtes",

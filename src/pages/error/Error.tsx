@@ -116,12 +116,12 @@ const ErrorPage = (props: ErrorPageProps) => {
         });
         auth.userManager.clearStaleState();
         auth.userManager.signoutRedirectCallback().then(() => {
+            localStorage.clear();
+            lunaticDatabase.clear();
             setTimeout(() => {
-                localStorage.clear();
-                lunaticDatabase.clear();
                 window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
                 auth.userManager.clearStaleState();
-            }, 100);
+            }, 200);
         });
     }, []);
 
