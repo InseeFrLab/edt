@@ -38,21 +38,23 @@ const HomeReviewerPage = () => {
         errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
     };
 
-    const onDisconnect = useCallback(() => setIsAlertDisplayed(true), [isAlertDisplayed]);
+    const onDisconnect = useCallback(() => {
+        setIsAlertDisplayed(true);
+    }, [isAlertDisplayed]);
 
     const disconnect = useCallback(() => {
         auth.userManager.signoutRedirect({
             id_token_hint: localStorage.getItem("id_token") || undefined,
         });
-        auth.userManager.clearStaleState();
-        auth.userManager.signoutRedirectCallback().then(() => {
-            localStorage.clear();
-            lunaticDatabase.clear();
-            setTimeout(() => {
-                window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
-                auth.userManager.clearStaleState();
-            }, 200);
-        });
+        auth.userManager
+            .clearStaleState()
+            .then(() => auth.userManager.signoutRedirectCallback())
+            .then(() => {
+                localStorage.clear();
+                return lunaticDatabase.clear();
+            })
+            .then(() => auth.userManager.clearStaleState())
+            .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
     }, []);
 
     const navToSurveysView = useCallback(() => {
