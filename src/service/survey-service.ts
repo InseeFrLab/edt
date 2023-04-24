@@ -153,8 +153,8 @@ const initializeSurveysIdsAndSourcesDemo = (setError: (error: ErrorCodeEnum) => 
     const promises: Promise<any>[] = [];
     return lunaticDatabase.get(SURVEYS_IDS).then(data => {
         if (!data) {
-            let activitySurveysIds: string[] = ["activitySurvey1", "activitySurvey2", "activitySurvey3"];
-            let workingTimeSurveysIds: string[] = ["workTimeSurvey1", "workTimeSurvey2"];
+            let activitySurveysIds: string[] = ["activitySurvey1", "activitySurvey2"];
+            let workingTimeSurveysIds: string[] = ["workTimeSurvey1"];
             let distinctSources = [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY];
             let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
             const surveysIds: SurveysIds = {

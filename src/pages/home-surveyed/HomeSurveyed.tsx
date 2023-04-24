@@ -22,6 +22,7 @@ import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { remotePutSurveyData } from "service/api-service";
+import { getFlatLocalStorageValue } from "service/local-storage-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import {
     getNavigatePath,
@@ -35,6 +36,7 @@ import {
     getPrintedSurveyDate,
     getSource,
     getValue,
+    saveData,
     surveysIds,
 } from "service/survey-service";
 
@@ -45,6 +47,7 @@ const HomeSurveyedPage = () => {
     const auth = useAuth();
     const [isAlertDisplayed, setIsAlertDisplayed] = React.useState<boolean>(false);
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
+    const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
 
     const alertProps = {
         isAlertDisplayed: isAlertDisplayed,
@@ -76,6 +79,13 @@ const HomeSurveyedPage = () => {
         });
     }, []);
 
+    const resetDemoDataAndReload = useCallback(() => {
+        surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
+            saveData(idSurvey, {});
+        });
+        window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
+    }, []);
+
     const navWorkTime = useCallback(
         (idSurvey: string) => () => {
             const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
@@ -99,7 +109,7 @@ const HomeSurveyedPage = () => {
                     getSource(SourcesEnum.WORK_TIME_SURVEY),
                 );
             } else {
-                return navigate(EdtRoutesNameEnum.HELP_WORK_TIME);
+                return navigate(getNavigatePath(EdtRoutesNameEnum.HELP_WORK_TIME));
             }
         },
         [],
@@ -186,7 +196,7 @@ const HomeSurveyedPage = () => {
                     />
                 </Box>
                 <Box className={classes.helpBox}>
-                    {process.env.REACT_APP_NODE_ENV !== "production" && (
+                    {process.env.REACT_APP_NODE_ENV !== "production" && !isDemoMode && (
                         <Button
                             color="primary"
                             startIcon={
@@ -198,6 +208,20 @@ const HomeSurveyedPage = () => {
                             onClick={resetDataAndReload}
                         >
                             {t("page.home.navigation.reset-data")}
+                        </Button>
+                    )}
+                    {isDemoMode && (
+                        <Button
+                            color="primary"
+                            startIcon={
+                                <img
+                                    src={removeCircle}
+                                    alt={t("accessibility.asset.mui-icon.remove-circle")}
+                                />
+                            }
+                            onClick={resetDemoDataAndReload}
+                        >
+                            {t("page.home.navigation.reset-data-demo")}
                         </Button>
                     )}
                     <Button

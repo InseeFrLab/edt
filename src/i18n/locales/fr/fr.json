@@ -140,6 +140,7 @@
             "welcome": "Bienvenue sur la PWA Carnet EDT",
             "navigation": {
                 "reset-data": "Effacer les données",
+                "reset-data-demo": "Effacer les données de démonstration",
                 "link-help-label": "Aide",
                 "logout": "Déconnexion"
             },
