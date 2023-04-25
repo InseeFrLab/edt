@@ -390,7 +390,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
         maxHeight: "25px",
     },
     insideAlertText: {
-        fontSize: "10px",
+        fontSize: "12px",
         color: theme.variables.alertActivity,
     },
     gapBox: {

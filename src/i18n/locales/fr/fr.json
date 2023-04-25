@@ -119,7 +119,8 @@
                 "step-with-screen-alt": "Alt pour step-with-screen"
             },
             "card": {
-                "person-sun-alt": "Alt pour person-sun"
+                "person-sun-alt": "Alt pour person-sun",
+                "person-sun-close-alt": "Alt pour person-sun lors activité est clore"
             },
             "insideAlerts": {
                 "activity-error-alt": "Alt pour activity error icon",

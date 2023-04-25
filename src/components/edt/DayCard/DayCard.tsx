@@ -35,7 +35,11 @@ const DayCard = (props: DayCardProps) => {
                     <Box className={cx(classes.iconBox, isClose ? classes.closeIconBox : "")}>
                         <img
                             src={isClose ? PersonSunCloseIcon : PersonSunIcon}
-                            alt={t("accessibility.asset.card.person-sun-alt")}
+                            alt={
+                                isClose
+                                    ? t("accessibility.asset.card.person-sun-close-alt")
+                                    : t("accessibility.asset.card.person-sun-alt")
+                            }
                         />
                     </Box>
                     <Box>

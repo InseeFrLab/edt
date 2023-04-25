@@ -21,6 +21,7 @@ const DaySummary = (props: DaySummaryProps) => {
     };
     const titleLabels = {
         boldTitle: t("component.day-summary.title"),
+        typeTitle: "h2",
     };
 
     const getCardSummary = (timeLabel: string | undefined, label: string) => {

@@ -335,6 +335,7 @@ const ActivityOrRoutePlannerPage = () => {
 
     const titleLabels = {
         boldTitle: formateDateToFrenchFormat(generateDateFromStringInput(surveyDate), getLanguage()),
+        typeTitle: "h1",
     };
 
     return (
@@ -406,10 +407,14 @@ const ActivityOrRoutePlannerPage = () => {
                                                             {t("page.activity-planner.activity-for-day")}
                                                         </Typography>
                                                         <Typography className={classes.date}>
-                                                            {formateDateToFrenchFormat(
-                                                                generateDateFromStringInput(surveyDate),
-                                                                getLanguage(),
-                                                            )}
+                                                            <h1>
+                                                                {formateDateToFrenchFormat(
+                                                                    generateDateFromStringInput(
+                                                                        surveyDate,
+                                                                    ),
+                                                                    getLanguage(),
+                                                                )}
+                                                            </h1>
                                                         </Typography>
                                                     </>
                                                 )}
