@@ -43,15 +43,18 @@ const HomeReviewerPage = () => {
     }, [isAlertDisplayed]);
 
     const disconnect = useCallback(() => {
-        auth.userManager.signoutRedirect({
-            id_token_hint: localStorage.getItem("id_token") || undefined,
-        });
-        auth.userManager
-            .clearStaleState()
+        window.localStorage.clear();
+        lunaticDatabase
+            .clear()
+            .then(() =>
+                auth.userManager.signoutRedirect({
+                    id_token_hint: localStorage.getItem("id_token") || undefined,
+                }),
+            )
+            .then(() => auth.userManager.clearStaleState())
             .then(() => auth.userManager.signoutRedirectCallback())
             .then(() => {
-                localStorage.clear();
-                return lunaticDatabase.clear();
+                sessionStorage.clear();
             })
             .then(() => auth.userManager.clearStaleState())
             .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));

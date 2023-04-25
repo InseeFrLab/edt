@@ -70,8 +70,10 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     return new Promise(resolve => {
         promisesToWait.push(initializeRefs());
         if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
+            console.log("initializing review mode");
             promisesToWait.push(initializeSurveysIdsAndSourcesDemo(setError));
         } else {
+            console.log("initializing surveyed mode");
             promisesToWait.push(initializeSurveysIdsAndSources(setError));
         }
         Promise.all(promisesToWait).then(() => {
@@ -150,38 +152,24 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
 };
 
 const initializeSurveysIdsAndSourcesDemo = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
-    const promises: Promise<any>[] = [];
-    return lunaticDatabase.get(SURVEYS_IDS).then(data => {
-        if (!data) {
-            let activitySurveysIds: string[] = ["activitySurvey1", "activitySurvey2"];
-            let workingTimeSurveysIds: string[] = ["workTimeSurvey1"];
-            let distinctSources = [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY];
-            let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
-            const surveysIds: SurveysIds = {
-                [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
-                [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
-                [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
-            };
+    let activitySurveysIds: string[] = ["activitySurvey1", "activitySurvey2"];
+    let workingTimeSurveysIds: string[] = ["workTimeSurvey1"];
+    let distinctSources = [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY];
+    let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
+    const surveysIds: SurveysIds = {
+        [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+        [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
+        [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
+    };
 
-            const innerPromises: Promise<any>[] = [
-                saveSurveysIds(surveysIds),
-                initializeSurveysDatasCache(),
-                fetchSurveysSourcesByIds(distinctSources).then(sources => {
-                    saveSources(sources);
-                }),
-            ];
-            return Promise.all(innerPromises);
-        } else {
-            surveysIds = data as SurveysIds;
-            promises.push(
-                lunaticDatabase.get(SOURCES_MODELS).then(data => {
-                    sourcesData = data as SourceData;
-                }),
-            );
-            initializeSurveysDatasCache();
-        }
-        return Promise.all(promises);
-    });
+    const innerPromises: Promise<any>[] = [
+        saveSurveysIds(surveysIds),
+        initializeSurveysDatasCache(),
+        fetchSurveysSourcesByIds(distinctSources).then(sources => {
+            saveSources(sources);
+        }),
+    ];
+    return Promise.all(innerPromises);
 };
 
 const getRemoteSavedSurveysDatas = (
