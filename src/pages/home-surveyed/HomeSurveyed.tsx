@@ -3,6 +3,7 @@ import { Box, Button } from "@mui/material";
 import disconnectIcon from "assets/illustration/disconnect.svg";
 import logo from "assets/illustration/logo.png";
 import help from "assets/illustration/mui-icon/help.svg";
+import home from "assets/illustration/mui-icon/home.svg";
 import powerSettings from "assets/illustration/mui-icon/power-settings.svg";
 import removeCircle from "assets/illustration/mui-icon/remove-circle.svg";
 import reminder_note from "assets/illustration/reminder-note.svg";
@@ -102,7 +103,7 @@ const HomeSurveyedPage = () => {
             };
             setEnviro(context, navigate, callbackHolder);
 
-            if (firstName != null) {
+            if (firstName != null || isDemoMode) {
                 return navToWeeklyPlannerOrClose(
                     idSurvey,
                     navigate,
@@ -151,7 +152,7 @@ const HomeSurveyedPage = () => {
 
             setEnviro(context, navigate, callbackHolder);
             const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
-            if (firstName != null) {
+            if (firstName != null || isDemoMode) {
                 navToActivityOrPlannerOrSummary(
                     idSurvey,
                     getSource(SourcesEnum.ACTIVITY_SURVEY).maxPage,
@@ -185,19 +186,32 @@ const HomeSurveyedPage = () => {
         navigate(getNavigatePath(EdtRoutesNameEnum.HELP_INSTALL));
     }, []);
 
+    const navToReviewerHome = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_HOME));
+    }, []);
+
     return (
         <>
             <FlexCenter>
                 <Alert {...alertProps} />
             </FlexCenter>
             <Box className={classes.headerBox}>
-                <Box className={classes.logoBox}>
-                    <img
-                        className={classes.logoImg}
-                        src={logo}
-                        alt={t("accessibility.asset.logo-alt")}
-                    />
-                </Box>
+                {isDemoMode ? (
+                    <Box className={classes.reviewerButtonBox}>
+                        <Button color="primary" variant="contained" onClick={navToReviewerHome}>
+                            <img src={home} alt={t("accessibility.asset.mui-icon.home")} />
+                        </Button>
+                    </Box>
+                ) : (
+                    <Box className={classes.logoBox}>
+                        <img
+                            className={classes.logoImg}
+                            src={logo}
+                            alt={t("accessibility.asset.logo-alt")}
+                        />
+                    </Box>
+                )}
+
                 <Box className={classes.helpBox}>
                     {process.env.REACT_APP_NODE_ENV !== "production" && !isDemoMode && (
                         <Button
@@ -293,6 +307,7 @@ const useStyles = makeStylesEdt({ "name": { NavButton: HomeSurveyedPage } })(() 
         paddingLeft: "1rem",
         paddingTop: "0.5rem",
     },
+    reviewerButtonBox: { paddingLeft: "1rem", paddingTop: "0.5rem" },
     logoImg: {
         width: "40px",
     },

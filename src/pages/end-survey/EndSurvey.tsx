@@ -41,6 +41,7 @@ const EndSurveyPage = () => {
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
     const [errorSubmit, setErrorSubmit] = useState<boolean>(false);
     const isActivitySurvey = getCurrentSurveyRootPage() === EdtRoutesNameEnum.ACTIVITY ? true : false;
+    const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
 
     const infoLabels: InfoProps = {
         boldText: t("page.end-survey.online-tooltip-text"),
@@ -51,7 +52,6 @@ const EndSurveyPage = () => {
 
     const remoteSaveSurveyAndGoBackHome = useCallback(() => {
         const dataWithIsEnvoyed = setValue(context.idSurvey, FieldNameEnum.ISENVOYED, true);
-        const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
         const surveyData: SurveyData = {
             stateData: {
                 state: StateDataStateEnum.VALIDATED,
@@ -162,7 +162,7 @@ const EndSurveyPage = () => {
                                 endIcon={
                                     <img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />
                                 }
-                                disabled={true}
+                                disabled={isDemoMode ? false : true}
                             >
                                 {t("common.navigation.send")}
                             </Button>
