@@ -11,10 +11,11 @@ interface WeekCardProps {
     surveyDate: string;
     idSurvey: string;
     isClose: boolean;
+    tabIndex: number;
 }
 
 const WeekCard = (props: WeekCardProps) => {
-    const { labelledBy, describedBy, onClick, firstName, surveyDate, isClose } = props;
+    const { labelledBy, describedBy, onClick, firstName, surveyDate, isClose, tabIndex } = props;
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     return (
@@ -24,6 +25,7 @@ const WeekCard = (props: WeekCardProps) => {
                 aria-describedby={describedBy}
                 className={cx(classes.weekCardBox, isClose ? classes.closeCardBox : "")}
                 onClick={onClick}
+                tabIndex={tabIndex}
             >
                 <Box className={classes.leftBox}>
                     <Box className={cx(classes.iconBox, isClose ? classes.closeIconBox : "")}>

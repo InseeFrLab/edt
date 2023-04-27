@@ -225,7 +225,7 @@ const HomePage = () => {
                 <FlexCenter className={classes.spacing}>
                     <img src={reminder_note} alt={t("accessibility.asset.reminder-notes-alt")} />
                 </FlexCenter>
-                {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map(idSurvey => (
+                {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) => (
                     <DayCard
                         key={idSurvey + "-dayCard"}
                         labelledBy={""}
@@ -235,10 +235,11 @@ const HomePage = () => {
                         surveyDate={getPrintedSurveyDate(idSurvey)}
                         idSurvey={idSurvey}
                         isClose={formClose(idSurvey)}
+                        tabIndex={index + 1}
                     />
                 ))}
 
-                {surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].map(idSurvey => (
+                {surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].map((idSurvey, index) => (
                     <WeekCard
                         key={idSurvey + "-weekCard"}
                         labelledBy={""}
@@ -248,6 +249,7 @@ const HomePage = () => {
                         surveyDate={getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME)}
                         idSurvey={idSurvey}
                         isClose={formClose(idSurvey)}
+                        tabIndex={surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].length + index + 1}
                     />
                 ))}
             </Box>

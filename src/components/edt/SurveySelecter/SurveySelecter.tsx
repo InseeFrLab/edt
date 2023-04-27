@@ -28,7 +28,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         isDefaultOpen = false,
         maxTabsPerRow,
     } = props;
-    const { classes } = useStyles();
+    const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const [valueRowOne, setValueRowOne] = React.useState<number | false>(
         selectedTab < maxTabsPerRow ? selectedTab : false,
@@ -37,6 +37,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         selectedTab >= maxTabsPerRow ? selectedTab - maxTabsPerRow : false,
     );
     const [isOpen, setIsOpen] = React.useState(isDefaultOpen);
+    const [focused, setFocused] = React.useState(false);
 
     const handleChangeRowOne = useCallback(
         (_event: React.ChangeEvent<{}>, newValue: number) => {
@@ -74,8 +75,10 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         return (
             <Tab
                 key={"tab-" + index}
-                className={classes.tab}
+                className={cx(classes.tab, focused ? classes.tabFocused : "")}
                 icon={getTabIcon(tabData.isActivitySurvey)}
+                tabIndex={index}
+                onFocus={useCallback(() => setFocused(true), [])}
                 label={
                     <Box>
                         <Typography className={classes.alignText}>
@@ -92,6 +95,8 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         setIsOpen(isOpen => !isOpen);
     }, []);
 
+    const tabsDataFiltred = tabsData.filter((_, index) => index < maxTabsPerRow);
+
     return (
         <Box id={id}>
             <AppBar className={classes.surveySelecterAppBar} position="static">
@@ -102,9 +107,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                         className={classes.tabsBox}
                         aria-label={ariaLabel}
                     >
-                        {tabsData
-                            .filter((_, index) => index < maxTabsPerRow)
-                            .map((tabData, index) => getTab(tabData, index))}
+                        {tabsDataFiltred.map((tabData, index) => getTab(tabData, index))}
                     </Tabs>
                     <Box className={classes.actionBox} onClick={handleToggle}>
                         {isOpen ? (
@@ -124,7 +127,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                     >
                         {tabsData
                             .filter((_, index) => index >= maxTabsPerRow)
-                            .map((tabData, index) => getTab(tabData, index))}
+                            .map((tabData, index) => getTab(tabData, tabsDataFiltred.length + index))}
                     </Tabs>
                 )}
                 <Divider light />
@@ -150,6 +153,7 @@ const useStyles = makeStylesEdt({ "name": { SurveySelecter } })(theme => ({
         flexDirection: "row",
         "& .MuiTab-iconWrapper": { marginRight: "0.5rem" },
     },
+    tabFocused: {},
     notVisibleSelectedTab: {
         backgroundColor: "red",
 
