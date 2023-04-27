@@ -7,7 +7,6 @@
             "close": "Fermer",
             "cancel": "Annuler",
             "ignore": "Ignorer",
-            "skip": "Passer",
             "complete": "Completer",
             "validate": "Valider",
             "add": "Ajouter",
@@ -200,7 +199,7 @@
             "continue": "J'ai compris"
         },
         "reviewer-home": {
-            "welcome": "Bienvenue dans votre espace enquêteur.",
+            "welcome": "Bienvenue dans votre espace",
             "reviewer": "ENQUÊTEUR",
             "navigation": {
                 "surveys": "Accéder aux enquêtes",
@@ -211,6 +210,7 @@
             "welcome": "Bienvenue sur la PWA Carnet EDT",
             "navigation": {
                 "reset-data": "Effacer les données",
+                "reset-data-demo": "Effacer les données de démonstration",
                 "link-help-label": "Aide",
                 "logout": "Déconnexion"
             },

@@ -15,10 +15,13 @@ import ActivitySummaryPage from "pages/activity/activity-summary/ActivitySummary
 import EditActivityInformationPage from "pages/activity/edit-activity-information/EditActivityInformation";
 import ExceptionalDayPage from "pages/activity/exceptional-day/ExceptionalDay";
 import GreatestActivityDayPage from "pages/activity/greatest-activity-day/GreatestActivityDay";
-import HelpInstallPage from "pages/activity/help/HelpInstallPage/HelpInstallPage";
 import HelpActivityPage from "pages/activity/help/HelpActivity/HelpActivity";
 import HelpCheckboxPage from "pages/activity/help/HelpCheckbox/HelpCheckbox";
 import HelpDurationPage from "pages/activity/help/HelpDuration/HelpDuration";
+import {
+    default as HelpInstallPage,
+    default as InstallPage,
+} from "pages/activity/help/HelpInstallPage/HelpInstallPage";
 import HelpCategoryActivityPage from "pages/activity/help/HelpMainActivity/HelpCategoryActivity";
 import HelpSubCategoryActivityPage from "pages/activity/help/HelpMainActivity/HelpSubCategoryActivity";
 import HelpWorkTimePage from "pages/activity/help/HelpWorkTime/HelpWorkTime";
@@ -32,8 +35,8 @@ import EndSurveyPage from "pages/end-survey/EndSurvey";
 import ErrorPage from "pages/error/Error";
 import HelpPage from "pages/help/Help";
 import HomeReviewerPage from "pages/home-reviewer/HomeReviewer";
+import HomeSurveyedPage from "pages/home-surveyed/HomeSurveyed";
 import HomePage from "pages/home/Home";
-import InstallPage from "pages/activity/help/HelpInstallPage/HelpInstallPage";
 import NotFoundPage from "pages/not-found/NotFound";
 import WhoAreYouPage from "pages/who-are-you/WhoAreYou";
 import WorkTimePage from "pages/work-time/WorkTime";
@@ -49,6 +52,7 @@ const EdtRoutes = (): JSX.Element => {
                 <Route path="*" element={<NotFoundPage />} />
                 <Route path="/" element={<HomePage />} />
                 <Route path={EdtRoutesNameEnum.REVIEWER_HOME} element={<HomeReviewerPage />} />
+                <Route path={EdtRoutesNameEnum.SURVEYED_HOME} element={<HomeSurveyedPage />} />
                 <Route path={EdtRoutesNameEnum.INSTALL} element={<InstallPage />} />
                 <Route path={EdtRoutesNameEnum.HELP} element={<HelpPage />} />
                 <Route path={EdtRoutesNameEnum.HELP_INSTALL} element={<HelpInstallPage />} />
