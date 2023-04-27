@@ -215,7 +215,7 @@ const HomeSurveyedPage = () => {
                 <Box className={classes.helpBox}>
                     {process.env.REACT_APP_NODE_ENV !== "production" && !isDemoMode && (
                         <Button
-                            color="primary"
+                            color="secondary"
                             startIcon={
                                 <img
                                     src={removeCircle}

@@ -116,6 +116,7 @@ const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
             backgroundColor: "transparent",
             marginBottom: "1rem",
             fontSize: "20px",
+            display: important("none"),
         },
         "& .field-container": {
             margin: "1rem 0",

@@ -90,6 +90,7 @@ const HelpActivity = () => {
 
     const titleLabels = {
         boldTitle: formateDateToFrenchFormat(generateDateFromStringInput(surveyDate), getLanguage()),
+        typeTitle: "h1",
     };
 
     const navToNextPage = useCallback(
@@ -455,8 +456,8 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         marginLeft: "-10rem",
     },
     centerBox: {
-        textAlign: "center"
-    }
+        textAlign: "center",
+    },
 }));
 
 export default HelpActivity;
