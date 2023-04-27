@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EdtRoutes } from "routes/EdtRoutes";
 import { getDatas, initializeDatas } from "service/survey-service";
-import { setUserToken } from "service/user-service";
+import { setUser, setUserToken } from "service/user-service";
 
 const App = () => {
     const { t } = useTranslation();
@@ -21,6 +21,7 @@ const App = () => {
     useEffect(() => {
         if (auth.userData?.access_token && getDatas().size === 0 && error === undefined) {
             setUserToken(auth.userData?.access_token);
+            setUser(auth.userData);
             //keeps user token up to date after session renewal
             auth.userManager.events.addUserLoaded(() => {
                 auth.userManager.getUser().then(user => {

@@ -235,11 +235,11 @@ const navToRouteOrRouteNotSelection = (
         } else {
             _navigate(routeNotSelection as To);
         }
-    } else _navigate(route ? route : "/");
+    } else _navigate(route ? route : getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
 };
 
 const navToHome = (): void => {
-    _navigate("/");
+    _navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
 };
 
 const navToHelp = (): void => {
