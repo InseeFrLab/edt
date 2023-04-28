@@ -9,7 +9,7 @@
 // service worker, and the Workbox build step will be skipped.
 
 import { clientsClaim } from "workbox-core";
-import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
+import { createHandlerBoundToURL, precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { NetworkFirst } from "workbox-strategies";
 
@@ -76,3 +76,82 @@ self.addEventListener("message", event => {
 });
 
 // Any other custom service worker logic can go here.
+
+function matchInString(regExp: RegExp, string: string) {
+    let m;
+    while ((m = regExp.exec(string)) !== null) {
+        if (m.index === regExp.lastIndex) regExp.lastIndex++;
+        return m;
+    }
+    return null;
+}
+
+function SVGPromise(event: any) {
+    // we create the Promise object that will get returned
+    let promise = new Promise(function (resolve, reject) {
+        // retrieve from cache the master svg file
+        let r = new Request("assets/svg/svg-built.svg");
+        caches
+            .match(r)
+            .then(function (response: any) {
+                return response.text();
+            })
+            .then(function (svgMaster) {
+                // master file was successfully retrieved from cache
+                // svgMaster is the text content of the file
+                // extract the name of the file from the request
+                // i.e. http://www.domain.com/folder/assets/file.svg to file.svg
+                let id = matchInString(RegExp("/.*/(.*)/gmi"), event?.request?.url || "")?.[1];
+
+                // try to extract the svg tag with the id attribute with the name
+                let regExp = new RegExp('(<svg id="' + id + '".*</svg>)', "gi");
+                let res = matchInString(regExp, svgMaster);
+
+                if (res) {
+                    // we found it, we can return the node as am SVG file
+                    // check what happens in SVGPromise.then
+                    let code = res[0];
+                    let svgResponse = new Response(code, {
+                        headers: { "Content-Type": "image/svg+xml" },
+                    });
+                    resolve(svgResponse);
+                } else {
+                    // we didn't find it, the promise is rejected
+                    // check what happens in the SVGPromise.catch
+                    reject(id + " is not on master");
+                }
+            });
+    });
+    return promise;
+}
+
+//use of master svg file to avoid svg lazyloading and allow offline icons access
+self.addEventListener("install", function (event: any) {
+    event.waitUntil(
+        caches.open("v1").then(function (cache) {
+            return cache.addAll(["index.html", "assets/illustration/svg-built.svg"]);
+        }),
+    );
+});
+
+// to fetch svg from cached svg-built.svg file
+self.addEventListener("fetch", function (event: any) {
+    // the request URL is to a file with SVG extension
+    if (/.svg$/.test(event.request.url)) {
+        console.log("Trying to fetch an SVG: ", event.request.url);
+        // we'll respond the fetch request with the fullfilment of the SVGPromise
+        event.respondWith(
+            SVGPromise(event)
+                .then(function (r) {
+                    // successfully retrieved the SVG file from master file in cache
+                    return r;
+                })
+                .catch(function (e) {
+                    // couldn't find the file in the master file
+                    console.log("ERROR: ", e);
+                    // fetch from server normally
+                    return fetch(event.request.url);
+                }),
+        );
+    }
+});
