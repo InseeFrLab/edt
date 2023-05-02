@@ -222,7 +222,7 @@ const ActivitySummaryPage = () => {
                                 context.source,
                                 activity.iteration ?? 0,
                             )}
-                            tabIndex={index + 1}
+                            tabIndex={index + 51}
                         />
                     </FlexCenter>
                 ))}

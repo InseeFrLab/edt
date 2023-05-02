@@ -410,7 +410,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                             {t("page.activity-planner.activity-for-day")}
                                                         </Typography>
                                                         <Typography className={classes.date}>
-                                                            <h1>
+                                                            <h1 className={classes.h1}>
                                                                 {formateDateToFrenchFormat(
                                                                     generateDateFromStringInput(
                                                                         surveyDate,
@@ -461,7 +461,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                                 context.source,
                                                                 activity.iteration ?? 0,
                                                             )}
-                                                            tabIndex={index + 1}
+                                                            tabIndex={index + 51}
                                                         />
                                                     </FlexCenter>
                                                 ))}
@@ -598,6 +598,12 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
     },
     noActivityInfo: {
         marginTop: "1rem",
+    },
+    h1: {
+        fontSize: "18px",
+        margin: 0,
+        lineHeight: "1.5rem",
+        fontWeight: "bold",
     },
 }));
 

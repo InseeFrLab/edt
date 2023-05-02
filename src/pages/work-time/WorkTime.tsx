@@ -70,6 +70,7 @@ const WorkTimePage = () => {
                     onChangeSelected={handleTabSelecterChange}
                     isDefaultOpen={selectedTab >= maxTabsPerRow}
                     maxTabsPerRow={maxTabsPerRow}
+                    maxTabIndex={200}
                 />
             </Default>
             <Outlet

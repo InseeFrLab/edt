@@ -16,6 +16,7 @@ interface SurveySelecterProps {
     onChangeSelected(tabData: TabData): void;
     maxTabsPerRow: number;
     isDefaultOpen?: boolean;
+    maxTabIndex?: number;
 }
 
 const SurveySelecter = (props: SurveySelecterProps) => {
@@ -27,6 +28,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         selectedTab,
         isDefaultOpen = false,
         maxTabsPerRow,
+        maxTabIndex = 20,
     } = props;
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
@@ -97,6 +99,8 @@ const SurveySelecter = (props: SurveySelecterProps) => {
 
     const tabsDataFiltred = tabsData.filter((_, index) => index < maxTabsPerRow);
 
+    console.log(localStorage.getItem("maxIndex"));
+
     return (
         <Box id={id}>
             <AppBar className={classes.surveySelecterAppBar} position="static">
@@ -107,7 +111,9 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                         className={classes.tabsBox}
                         aria-label={ariaLabel}
                     >
-                        {tabsDataFiltred.map((tabData, index) => getTab(tabData, index))}
+                        {tabsDataFiltred.map((tabData, index) =>
+                            getTab(tabData, maxTabIndex + index + 1),
+                        )}
                     </Tabs>
                     <Box className={classes.actionBox} onClick={handleToggle}>
                         {isOpen ? (
@@ -127,7 +133,9 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                     >
                         {tabsData
                             .filter((_, index) => index >= maxTabsPerRow)
-                            .map((tabData, index) => getTab(tabData, tabsDataFiltred.length + index))}
+                            .map((tabData, index) =>
+                                getTab(tabData, maxTabIndex + tabsDataFiltred.length + index + 1),
+                            )}
                     </Tabs>
                 )}
                 <Divider light />

@@ -15,12 +15,12 @@ const RoutePage = () => {
 
     const specifiquesProps = {
         optionsIcons: {
-            "1": { icon: option1, altIcon: t("accessibility.assets.route.categories.option1-alt") },
-            "2": { icon: option2, altIcon: t("accessibility.assets.route.categories.option1-alt") },
-            "3": { icon: option3, altIcon: t("accessibility.assets.route.categories.option1-alt") },
-            "4": { icon: option4, altIcon: t("accessibility.assets.route.categories.option1-alt") },
-            "5": { icon: option5, altIcon: t("accessibility.assets.route.categories.option1-alt") },
-            "6": { icon: option6, altIcon: t("accessibility.assets.route.categories.option1-alt") },
+            "1": { icon: option1, altIcon: t("accessibility.asset.route.categories.option1-alt") },
+            "2": { icon: option2, altIcon: t("accessibility.asset.route.categories.option1-alt") },
+            "3": { icon: option3, altIcon: t("accessibility.asset.route.categories.option1-alt") },
+            "4": { icon: option4, altIcon: t("accessibility.asset.route.categories.option1-alt") },
+            "5": { icon: option5, altIcon: t("accessibility.asset.route.categories.option1-alt") },
+            "6": { icon: option6, altIcon: t("accessibility.asset.route.categories.option1-alt") },
         },
         referentiel: getRouteRef(),
     };
