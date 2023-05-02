@@ -209,7 +209,7 @@ const ActivitySummaryPage = () => {
                 </Box>
             </FlexCenter>
             <Box className={classes.activityCardsContainer}>
-                {activitiesRoutesOrGaps.map(activity => (
+                {activitiesRoutesOrGaps.map((activity, index) => (
                     <FlexCenter key={uuidv4()}>
                         <ActivityOrRouteCard
                             labelledBy={""}
@@ -222,6 +222,7 @@ const ActivitySummaryPage = () => {
                                 context.source,
                                 activity.iteration ?? 0,
                             )}
+                            tabIndex={index + 51}
                         />
                     </FlexCenter>
                 ))}

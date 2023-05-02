@@ -30,7 +30,7 @@ const AddActivityOrRouteStepper = (props: AddActivityOrRouteStepperStepperProps)
     return (
         <Box className={classes.stepper}>
             <Box className={classes.progressBox}>
-                <LinearProgress variant="determinate" value={progress} />
+                <LinearProgress variant="determinate" value={progress} aria-label="linear-progressbar" />
             </Box>
             <Box className={classes.stepBox}>
                 <Box>

@@ -6,6 +6,7 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
 import { useTranslation } from "react-i18next";
 import { getScore } from "service/survey-activity-service";
+import { useCallback } from "react";
 
 interface DayCardProps {
     labelledBy: string;
@@ -15,13 +16,18 @@ interface DayCardProps {
     surveyDate: string;
     idSurvey: string;
     isClose: boolean;
+    tabIndex: number;
 }
 
 const DayCard = (props: DayCardProps) => {
-    const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey, isClose } = props;
+    const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey, isClose, tabIndex } =
+        props;
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const progressActivity = getScore(idSurvey, t);
+    const onFocus = useCallback(() => {
+        console.log("focus card" + idSurvey);
+    }, []);
 
     return (
         <FlexCenter>
@@ -30,6 +36,8 @@ const DayCard = (props: DayCardProps) => {
                 aria-describedby={describedBy}
                 className={cx(classes.dayCardBox, isClose ? classes.closeCardBox : "")}
                 onClick={onClick}
+                onFocus={onFocus}
+                tabIndex={tabIndex}
             >
                 <Box className={classes.leftBox}>
                     <Box className={cx(classes.iconBox, isClose ? classes.closeIconBox : "")}>
