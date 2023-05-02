@@ -1,6 +1,6 @@
 {
     "name": "edt",
-    "version": "3.4.5",
+    "version": "3.4.6",
     "dateVersion": "02/05/2023",
     "licence": "MIT",
     "dependencies": {
@@ -9,6 +9,7 @@
         "@inseefr/lunatic": "2.0.7-v2",
         "@inseefrlab/lunatic-edt": "^0.9.1",
         "@mui/material": "^5.10.7",
+        "@mui/styles": "^5.12.0",
         "@react-pdf/renderer": "2.1.2",
         "axios": "^1.2.2",
         "dexie": "^3.2.2",
