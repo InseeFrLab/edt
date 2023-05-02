@@ -47,6 +47,8 @@ const EndSurveyPage = () => {
         boldText: t("page.end-survey.online-tooltip-text"),
         infoIcon: InfoIcon,
         infoIconAlt: t("accessibility.asset.info.info-alt"),
+        infoIconTooltip: InfoIcon,
+        infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
         border: true,
     };
 

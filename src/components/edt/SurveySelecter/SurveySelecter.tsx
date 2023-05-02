@@ -99,8 +99,6 @@ const SurveySelecter = (props: SurveySelecterProps) => {
 
     const tabsDataFiltred = tabsData.filter((_, index) => index < maxTabsPerRow);
 
-    console.log(localStorage.getItem("maxIndex"));
-
     return (
         <Box id={id}>
             <AppBar className={classes.surveySelecterAppBar} position="static">

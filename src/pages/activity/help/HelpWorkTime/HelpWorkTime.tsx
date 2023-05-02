@@ -8,6 +8,7 @@ import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg"
 import expandLess from "assets/illustration/mui-icon/expand-less.svg";
 import expandMoreWhite from "assets/illustration/mui-icon/expand-more-white.svg";
 import expandMore from "assets/illustration/mui-icon/expand-more.svg";
+import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import work from "assets/illustration/mui-icon/work-full.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
@@ -72,6 +73,8 @@ const HelpWorkTime = () => {
                 boldText: t("page.weekly-planner.info-bold"),
                 infoIconAlt: t("accessibility.asset.info.info-alt"),
                 infoIcon: InfoIcon,
+                infoIconTooltip: InfoTooltipIcon,
+                infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
                 border: true,
             },
         },

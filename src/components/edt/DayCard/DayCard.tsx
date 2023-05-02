@@ -25,9 +25,6 @@ const DayCard = (props: DayCardProps) => {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const progressActivity = getScore(idSurvey, t);
-    const onFocus = useCallback(() => {
-        console.log("focus card" + idSurvey);
-    }, []);
 
     return (
         <FlexCenter>
@@ -36,7 +33,6 @@ const DayCard = (props: DayCardProps) => {
                 aria-describedby={describedBy}
                 className={cx(classes.dayCardBox, isClose ? classes.closeCardBox : "")}
                 onClick={onClick}
-                onFocus={onFocus}
                 tabIndex={tabIndex}
             >
                 <Box className={classes.leftBox}>
