@@ -215,7 +215,7 @@ const HomeSurveyedPage = () => {
                 <Box className={classes.helpBox}>
                     {process.env.REACT_APP_NODE_ENV !== "production" && !isDemoMode && (
                         <Button
-                            color="primary"
+                            color="secondary"
                             startIcon={
                                 <img
                                     src={removeCircle}
@@ -268,7 +268,7 @@ const HomeSurveyedPage = () => {
                 <FlexCenter className={classes.spacing}>
                     <img src={reminder_note} alt={t("accessibility.asset.reminder-notes-alt")} />
                 </FlexCenter>
-                {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map(idSurvey => (
+                {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) => (
                     <DayCard
                         key={idSurvey + "-dayCard"}
                         labelledBy={""}
@@ -278,10 +278,11 @@ const HomeSurveyedPage = () => {
                         surveyDate={getPrintedSurveyDate(idSurvey)}
                         idSurvey={idSurvey}
                         isClose={formClose(idSurvey)}
+                        tabIndex={index + 1}
                     />
                 ))}
 
-                {surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].map(idSurvey => (
+                {surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].map((idSurvey, index) => (
                     <WeekCard
                         key={idSurvey + "-weekCard"}
                         labelledBy={""}
@@ -291,6 +292,7 @@ const HomeSurveyedPage = () => {
                         surveyDate={getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME)}
                         idSurvey={idSurvey}
                         isClose={formClose(idSurvey)}
+                        tabIndex={index + 1}
                     />
                 ))}
             </Box>

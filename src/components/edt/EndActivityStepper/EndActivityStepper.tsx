@@ -25,6 +25,7 @@ const EndActivityStepper = (props: EndActivityStepperProps) => {
                         color="primary"
                         variant="determinate"
                         value={progress}
+                        aria-label="circular-progressbar"
                     ></CircularProgress>
                     <Box className={classes.labelProgressBox}>
                         <Typography className={classes.textStepNumber}>

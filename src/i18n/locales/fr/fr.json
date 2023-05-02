@@ -20,7 +20,7 @@
             "alert": {
                 "ignore": "Ignorer",
                 "complete": "Compléter",
-                "alt-icon": "alt pour icon no result"
+                "alt-icon": "Illustration pièce de puzzle"
             },
             "skip": "Passer"
         },
@@ -59,65 +59,126 @@
             }
         },
         "asset": {
-            "logo-alt": "Alt pour logo",
-            "reminder-notes-alt": "Alt pour reminder-note",
-            "who-are-you-alt": "Alt pour who-are-you",
-            "day-of-survey-alt": "Alt pour day-of-survey",
-            "yellow-plus-alt": "Alt pour yellow-plus",
-            "activity-alt": "Alt pour activity",
-            "route-alt": "Alt pour route",
-            "empty-activity-alt": "Alt pour empty-activity",
+            "logo-alt": "Logo INSEE",
+            "reminder-notes-alt": "Illustration d’accueil",
+            "who-are-you-alt": "Illustration de personnalisation d’un carnet ou d’un semainier",
+            "day-of-survey-alt": "Illustration date de l’enquête",
+            "yellow-plus-alt": "Illustration ajout d’une activité ou d’un trajet",
+            "activity-alt": "Illustration ajout d’une activité",
+            "route-alt": "Illustration ajout d’un trajet",
+            "empty-activity-alt": "Illustration aucune Activité renseignée",
             "kind-of-week-alt": "Alt pour kind of week",
-            "exceptional-day-alt": "Alt pour exceptional day",
-            "greatest-activity-day-alt": "Alt pour greatest activity day",
-            "worst-activity-day-alt": "Alt pour worst activity day",
-            "submit-alt": "Alt pour submit",
+            "exceptional-day-alt": "Illustration d’une journée exceptionnelle",
+            "greatest-activity-day-alt": "Illustration activité agréable",
+            "worst-activity-day-alt": "Illustration activité moins ou pas agréable",
+            "submit-alt": "Illustration envoie d’une enquête",
             "reviewer-alt": "Alt pour reviewer",
+            "kind-of-day-alt": "Alt pour kind of day",
             "mui-icon": {
-                "close": "Alt pour close",
-                "more-horizontal": "Alt pour more-horizontal",
+                "close": "Bouton Fermer",
+                "more-horizontal": "Bouton Plus d’options",
                 "done": "Alt pour more-horizontal",
-                "arrow-forward-ios": "Alt pour arrow-forward-ios",
-                "arrow-forward": "Alt pour arrow-forward",
-                "arrow-back-ios": "Alt pour arrow-back-ios",
-                "add-circle": "Alt pour add-circle",
-                "add": "Alt pour add",
-                "calendar-month": "Alt pour calendar-month",
-                "event": "Alt pour event",
-                "expand-less": "Alt pour expand-less",
-                "expand-more": "Alt pour expand-more",
-                "help": "Alt pour help",
+                "arrow-forward-ios": "Bouton Suivant ou sélectionner",
+                "arrow-forward": "Bouton passer",
+                "arrow-back-ios": "Bouton Précédent / retour",
+                "add-circle": "Icône activité agréable",
+                "add": "Bouton Ajouter",
+                "calendar-month": "Icône calendrier",
+                "event": "Icône journée",
+                "expand-less": "Bouton passer",
+                "expand-more": "Bouton Pour déplier",
+                "help": "Bouton d’aide",
                 "home": "Alt pour home",
-                "phone-android": "Alt pour phone-android",
-                "power-settings": "Alt pour power-settings",
-                "remove-circle": "Alt pour remove-circle",
+                "phone-android": "Icône téléphone",
+                "power-settings": "Bouton de déconnexion",
+                "remove-circle": "Icône activité moins agréable",
                 "replay": "Alt pour replay",
-                "send": "Alt pour send",
+                "send": "Icône envoyer",
                 "visibility": "Alt pour visibility",
-                "work": "Alt pour work",
-                "search": "Alt pour search",
-                "extension": "Alt pour extension",
+                "work": "Icone Type de journée",
+                "commute": "Icône trajet",
+                "search": "Icone de Recherche",
+                "extension": "Icône Autre personne qui ménage",
                 "download": "Alt pour download"
             },
             "info": {
-                "info-alt": "Alt pour info"
+                "info-alt": "Icône information"
             },
             "error": {
                 "default": "Erreur générique",
-                "location-error-alt": "Alt pour position"
+                "location-error-alt": "Icône lieu ou trajet non renseigné"
             },
             "stepper": {
-                "step-activity-duration-alt": "Alt pour step-activity-duration",
-                "step-main-activity-alt": "Alt pour step-main-activity",
-                "step-route-alt": "Alt pour step-route",
-                "step-mean-of-transport-alt": "Alt pour step-mean-of-transport",
-                "step-secondary-activity-alt": "Alt pour step-secondary-activity",
-                "step-activity-location-alt": "Alt pour step-location",
-                "step-with-someone-alt": "Alt pour step-with-someone",
-                "step-with-screen-alt": "Alt pour step-with-screen"
+                "step-activity-duration-alt": "Illustration étape durée",
+                "step-main-activity-alt": "Illustration étape activité principale",
+                "step-route-alt": "Illustration étape type de trajet",
+                "step-mean-of-transport-alt": "Illustration étape moyen de transport",
+                "step-secondary-activity-alt": "Illustration étape activité secondaire",
+                "step-activity-location-alt": "Illustration étape lieu",
+                "step-with-someone-alt": "Illustration étape compagnie",
+                "step-with-screen-alt": "Illustration étape écran"
             },
             "card": {
-                "person-sun-alt": "Alt pour person-sun"
+                "person-sun-alt": "Icône d’une journée enquêtée",
+                "person-sun-close-alt": "Icône d’une journée enquêtée clore"
+            },
+            "insideAlerts": {
+                "activity-error-alt": "Icône activité non renseignée",
+                "route-error-alt": "Icône lieu ou trajet non renseigné",
+                "place-error-alt": "Icône lieu ou trajet non renseigné",
+                "mean-of-transport-error-alt": "Icône moyen de transport non renseigné",
+                "secondary-activity-error-alt": "Icône activité non renseignée",
+                "someone-error-alt": "Icône compagnie non renseignée",
+                "screen-error-alt": "Icône écran non renseigné"
+            },
+            "activities": {
+                "categories": {
+                    "cat-icon-100-alt": "Illustration catégorie temps personnel",
+                    "cat-icon-200-alt": "Illustration catégorie travail et études",
+                    "cat-icon-300-alt": "Illustration catégorie tâches domestiques",
+                    "cat-icon-400-alt": "Illustration catégorie soins aux enfants ou aux adultes de son logement",
+                    "cat-icon-440-alt": "Illustration catégorie aide non rémunérée à ses voisins, ses amis, bénévolat",
+                    "cat-icon-500-alt": "Illustration catégorie interaction sociale",
+                    "cat-icon-600-alt": "Illustration catégorie sorties",
+                    "cat-icon-650-alt": "Illustration catégorie interaction sociale"
+                }
+            },
+            "place": {
+                "categories": {
+                    "option1-alt": "Illustration chez soi",
+                    "option2-alt": "Illustration lieu de travail ou d’étude",
+                    "option3-alt": "Illustration autre lieu",
+                    "option4-alt": "Illustration résidence secondaire, location de vacances",
+                    "option5-alt": "Illustration restaurant, café, bar",
+                    "option6-alt": "Illustration chez une autre personne"
+                }
+            },
+            "goal": {
+                "categories": {
+                    "home-alt": "Illustration catégorie temps personnel",
+                    "work-alt": "Illustration catégorie travail et études",
+                    "help-alt": "Alt pour goal category 'help'",
+                    "solidarity-alt": "AltAlt pour goal category 'work' pour goal category 'solidarity'"
+                }
+            },
+            "route": {
+                "categories": {
+                    "option1-alt": "Illustration Trajet domicile-travail",
+                    "option2-alt": "Illustration Trajet domicile-lieu d’études",
+                    "option3-alt": "Illustration Trajets liés aux enfants",
+                    "option4-alt": "Illustration Trajets lié au bénévolat",
+                    "option5-alt": "Illustration Trajets pour aider un autre ménage",
+                    "option6-alt": "Illustration Autres trajets"
+                }
+            },
+            "with-someone": {
+                "categories": {
+                    "couple-alt": "Icône Conjoint",
+                    "parents-alt": "Icône Mère, père",
+                    "child-alt": "Icône Conjoint",
+                    "other-know-alt": "Icône Autre personne qui ménage",
+                    "other-alt": "Icône Autre connaissance"
+                }
             }
         }
     },
@@ -202,7 +263,7 @@
             "alert-cancel": "Annuler",
             "alert-complete": "Reprendre",
             "alert-closed": "Clôturer",
-            "alt-alert-icon": "alt pour icon no result"
+            "alt-alert-icon": "Illustration pièce de puzzle"
         },
         "kind-of-week": {
             "simple-header-label": "CARACTÉRISTIQUES DE LA SEMAINE"
@@ -289,7 +350,7 @@
             "clickable-list-not-found-label": "Aucun résultat trouvé",
             "clickable-list-not-found-comment": "Vous pourrez l'ajouter en cliquant sur le bouton ci-dessous, ou le bouton + ci-dessus",
             "clickable-list-add-activity-button": "Ajouter l'activité",
-            "clickable-list-icon-no-result-alt": "alt pour icon no result",
+            "clickable-list-icon-no-result-alt": "Illustration pièce de puzzle",
             "clickable-list-not-search-label": "Affinez votre recherche en saisissant au moins 4 caractères",
             "other-button": "Autre ?",
             "save-button": "Sauvegarder"
@@ -326,7 +387,7 @@
                 "title": "Félicitations !",
                 "end-content": "Merci pour votre participation.",
                 "button": "Revenir à l’accueil",
-                "alt-icon": "alt pour icon modal felicitations activity",
+                "alt-icon": "Illustration enquête envoyée",
                 "survey-content": "Vous avez complété votre semainier.",
                 "activity-content": "Vous avez complété votre 1ère journée."
             }

@@ -10,6 +10,7 @@ import {
 import { Box, Divider, IconButton, Snackbar, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
+import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import InfoIcon from "assets/illustration/info.svg";
 import close from "assets/illustration/mui-icon/close.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -330,11 +331,14 @@ const ActivityOrRoutePlannerPage = () => {
         boldText: t("page.activity-planner.info"),
         infoIcon: InfoIcon,
         infoIconAlt: t("accessibility.asset.info.info-alt"),
+        infoIconTooltip: InfoTooltipIcon,
+        infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
         border: true,
     };
 
     const titleLabels = {
         boldTitle: formateDateToFrenchFormat(generateDateFromStringInput(surveyDate), getLanguage()),
+        typeTitle: "h1",
     };
 
     return (
@@ -406,10 +410,14 @@ const ActivityOrRoutePlannerPage = () => {
                                                             {t("page.activity-planner.activity-for-day")}
                                                         </Typography>
                                                         <Typography className={classes.date}>
-                                                            {formateDateToFrenchFormat(
-                                                                generateDateFromStringInput(surveyDate),
-                                                                getLanguage(),
-                                                            )}
+                                                            <h1 className={classes.h1}>
+                                                                {formateDateToFrenchFormat(
+                                                                    generateDateFromStringInput(
+                                                                        surveyDate,
+                                                                    ),
+                                                                    getLanguage(),
+                                                                )}
+                                                            </h1>
                                                         </Typography>
                                                     </>
                                                 )}
@@ -433,7 +441,7 @@ const ActivityOrRoutePlannerPage = () => {
                                             </>
                                         ) : (
                                             <Box className={classes.activityCardsContainer}>
-                                                {activitiesRoutesOrGaps.map(activity => (
+                                                {activitiesRoutesOrGaps.map((activity, index) => (
                                                     <FlexCenter key={uuidv4()}>
                                                         <ActivityOrRouteCard
                                                             labelledBy={""}
@@ -453,6 +461,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                                 context.source,
                                                                 activity.iteration ?? 0,
                                                             )}
+                                                            tabIndex={index + 51}
                                                         />
                                                     </FlexCenter>
                                                 ))}
@@ -589,6 +598,12 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
     },
     noActivityInfo: {
         marginTop: "1rem",
+    },
+    h1: {
+        fontSize: "18px",
+        margin: 0,
+        lineHeight: "1.5rem",
+        fontWeight: "bold",
     },
 }));
 

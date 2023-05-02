@@ -32,7 +32,7 @@ import {
     navToEditActivity,
     navToHelp,
     navToHome,
-    setEnviro
+    setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { getUserActivitiesCharacteristics, getUserActivitiesSummary } from "service/summary-service";
@@ -52,7 +52,7 @@ const ActivitySummaryPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
     setEnviro(context, useNavigate(), callbackHolder);
-    const { classes } = useStyles();
+    const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const [score, setScore] = React.useState<number | undefined>(undefined);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
@@ -200,16 +200,16 @@ const ActivitySummaryPage = () => {
                     <Typography className={classes.label}>
                         {t("page.activity-planner.activity-for-day")}
                     </Typography>
-                    <Typography className={classes.date}>
+                    <h1 className={cx(classes.date, classes.h1)}>
                         {formateDateToFrenchFormat(
                             generateDateFromStringInput(surveyDate),
                             getLanguage(),
                         )}
-                    </Typography>
+                    </h1>
                 </Box>
             </FlexCenter>
             <Box className={classes.activityCardsContainer}>
-                {activitiesRoutesOrGaps.map(activity => (
+                {activitiesRoutesOrGaps.map((activity, index) => (
                     <FlexCenter key={uuidv4()}>
                         <ActivityOrRouteCard
                             labelledBy={""}
@@ -222,6 +222,7 @@ const ActivitySummaryPage = () => {
                                 context.source,
                                 activity.iteration ?? 0,
                             )}
+                            tabIndex={index + 51}
                         />
                     </FlexCenter>
                 ))}
@@ -328,6 +329,12 @@ const useStyles = makeStylesEdt({ "name": { ActivitySummaryPage } })(theme => ({
         textDecoration: "none",
         color: theme.variables.white,
         padding: "6px 6px",
+    },
+    h1: {
+        fontSize: "18px",
+        margin: 0,
+        lineHeight: "1.5rem",
+        fontWeight: "bold",
     },
 }));
 

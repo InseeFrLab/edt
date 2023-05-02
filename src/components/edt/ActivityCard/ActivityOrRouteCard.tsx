@@ -23,6 +23,7 @@ interface ActivityOrRouteCardProps {
     onEdit?(): void;
     onDelete?(): void;
     helpStep?: number;
+    tabIndex?: number;
 }
 
 const renderMeanOfTransport = (
@@ -152,37 +153,53 @@ const renderWithScreen = (
 };
 
 const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
-    const { labelledBy, describedBy, onClick, onClickGap, activityOrRoute, onEdit, onDelete, helpStep } =
-        props;
+    const {
+        labelledBy,
+        describedBy,
+        onClick,
+        onClickGap,
+        activityOrRoute,
+        onEdit,
+        onDelete,
+        helpStep,
+        tabIndex,
+    } = props;
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
     const insideAlertLabels = {
         [InsideAlertTypes.ACTIVITY]: {
             icon: activityErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.activity-error-alt"),
             label: t("page.activity-planner.no-activity"),
         },
         [InsideAlertTypes.ROUTE]: {
             icon: routeErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.route-error-alt"),
             label: t("page.activity-planner.no-route"),
         },
         [InsideAlertTypes.PLACE]: {
             icon: locationErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.place-error-alt"),
             label: t("page.activity-planner.no-place"),
         },
         [InsideAlertTypes.MEANOFTRANSPORT]: {
             icon: meanOfTransportErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.mean-of-transport-error-alt"),
             label: t("page.activity-planner.no-mean-of-transport"),
         },
         [InsideAlertTypes.SECONDARYACTIVITY]: {
             icon: activityErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.secondary-activity-error-alt"),
             label: t("page.activity-planner.no-secondary-activity"),
         },
         [InsideAlertTypes.WITHSOMEONE]: {
             icon: peopleErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.someone-error-alt"),
             label: t("page.activity-planner.no-with-someone"),
         },
         [InsideAlertTypes.SCREEN]: {
             icon: screenErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.screen-error-alt"),
             label: t("page.activity-planner.no-screen"),
         },
     };
@@ -217,7 +234,11 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const renderInsideAlert = (type: InsideAlertTypes) => {
         return (
             <Box className={classes.insideAlertBox}>
-                <img className={classes.insideAlertIcon} src={insideAlertLabels[type].icon}></img>
+                <img
+                    className={classes.insideAlertIcon}
+                    src={insideAlertLabels[type].icon}
+                    alt={insideAlertLabels[type].altIcon}
+                ></img>
                 <Typography className={classes.insideAlertText}>
                     {" "}
                     {insideAlertLabels[type].label}{" "}
@@ -231,13 +252,14 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         setAnchorEl(e.currentTarget as HTMLButtonElement);
     }, []);
 
-    const renderActivityOrRoute = () => {
+    const renderActivityOrRoute = (index?: number) => {
         return (
             <Box
                 className={cx(classes.mainCardBox, classes.activityCardBox)}
                 onClick={onClick}
                 aria-labelledby={labelledBy}
                 aria-describedby={describedBy}
+                tabIndex={index}
             >
                 <Box className={classes.timeBox}>
                     <Box className={classes.hour}>{activityOrRoute.startTime}</Box>
@@ -332,7 +354,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         );
     };
 
-    return activityOrRoute.isGap ? renderGap() : renderActivityOrRoute();
+    return activityOrRoute.isGap ? renderGap() : renderActivityOrRoute(tabIndex);
 };
 
 const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
@@ -379,7 +401,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
         maxHeight: "25px",
     },
     insideAlertText: {
-        fontSize: "10px",
+        fontSize: "12px",
         color: theme.variables.alertActivity,
     },
     gapBox: {
@@ -396,6 +418,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
         zIndex: "1400",
         position: "relative",
         pointerEvents: "none",
+        backgroundColor: "#707070",
     },
     gapText: {
         color: theme.variables.alertActivity,

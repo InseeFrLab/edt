@@ -1,5 +1,6 @@
 import { WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
 import InfoIcon from "assets/illustration/info.svg";
+import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";
 import expandLess from "assets/illustration/mui-icon/expand-less.svg";
 import expandMoreWhite from "assets/illustration/mui-icon/expand-more-white.svg";
@@ -58,6 +59,8 @@ const WeeklyPlannerPage = () => {
                 infoIconAlt: t("accessibility.asset.info.info-alt"),
                 infoIcon: InfoIcon,
                 border: true,
+                infoIconTooltip: InfoTooltipIcon,
+                infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
             },
         },
         saveAll: save,

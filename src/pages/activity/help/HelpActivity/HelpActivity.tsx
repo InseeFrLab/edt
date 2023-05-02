@@ -8,6 +8,7 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
+import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
 import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
 import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
@@ -86,10 +87,13 @@ const HelpActivity = () => {
         infoIcon: InfoIcon,
         infoIconAlt: t("accessibility.asset.info.info-alt"),
         border: true,
+        infoIconTooltip: InfoTooltipIcon,
+        infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
     };
 
     const titleLabels = {
         boldTitle: formateDateToFrenchFormat(generateDateFromStringInput(surveyDate), getLanguage()),
+        typeTitle: "h1",
     };
 
     const navToNextPage = useCallback(
@@ -455,8 +459,8 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         marginLeft: "-10rem",
     },
     centerBox: {
-        textAlign: "center"
-    }
+        textAlign: "center",
+    },
 }));
 
 export default HelpActivity;
