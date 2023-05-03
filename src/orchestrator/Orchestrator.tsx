@@ -3,7 +3,6 @@ import * as lunaticEDT from "@inseefrlab/lunatic-edt";
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import React from "react";
 

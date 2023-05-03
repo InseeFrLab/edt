@@ -9,7 +9,7 @@
 // service worker, and the Workbox build step will be skipped.
 
 import { clientsClaim } from "workbox-core";
-import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
+import { createHandlerBoundToURL, precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { NetworkFirst } from "workbox-strategies";
 
@@ -76,3 +76,30 @@ self.addEventListener("message", event => {
 });
 
 // Any other custom service worker logic can go here.
+self.addEventListener("install", function (event) {
+    event.waitUntil(
+        caches.open("v1").then(function (cache) {
+            return cache.addAll([
+                "index.html",
+                "assets/illustration/who-are-you.svg",
+                "assets/illustration/reviewer.svg",
+                "assets/illustration/reminder-note.svg",
+                "assets/illustration/kind-of-week.svg",
+                "assets/illustration/activity.svg",
+                "assets/illustration/day-of-survey.svg",
+                "assets/illustration/disconnect.svg",
+                "assets/illustration/empty-activity.svg",
+                "assets/illustration/exceptional-day.svg",
+                "assets/illustration/felicitations.svg",
+                "assets/illustration/greatest-activity-day.svg",
+                "assets/illustration/hourpicker.svg",
+                "assets/illustration/info-alert.svg",
+                "assets/illustration/info.svg",
+                "assets/illustration/yellow-plus.svg",
+                "assets/illustration/worst-activity-day.svg",
+                "assets/illustration/submit.svg",
+                "assets/illustration/route.svg",
+            ]);
+        }),
+    );
+});
