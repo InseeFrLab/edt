@@ -73,14 +73,13 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         }
     };
 
-    const getTab = (tabData: TabData, index: number) => {
+    const getTab = (tabData: TabData, index: number, tabIndex: number) => {
         return (
             <Tab
                 key={"tab-" + index}
                 className={cx(classes.tab, focused ? classes.tabFocused : "")}
                 icon={getTabIcon(tabData.isActivitySurvey)}
-                tabIndex={index}
-                onFocus={useCallback(() => setFocused(true), [])}
+                tabIndex={tabIndex}
                 label={
                     <Box>
                         <Typography className={classes.alignText}>
@@ -110,7 +109,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                         aria-label={ariaLabel}
                     >
                         {tabsDataFiltred.map((tabData, index) =>
-                            getTab(tabData, maxTabIndex + index + 1),
+                            getTab(tabData, index, maxTabIndex + index + 1),
                         )}
                     </Tabs>
                     <Box className={classes.actionBox} onClick={handleToggle}>
@@ -132,7 +131,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                         {tabsData
                             .filter((_, index) => index >= maxTabsPerRow)
                             .map((tabData, index) =>
-                                getTab(tabData, maxTabIndex + tabsDataFiltred.length + index + 1),
+                                getTab(tabData, index, tabsDataFiltred.length + maxTabIndex + index + 1),
                             )}
                     </Tabs>
                 )}
