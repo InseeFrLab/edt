@@ -1,3 +1,5 @@
+import { theme } from "@inseefrlab/lunatic-edt";
+import { CssBaseline, StyledEngineProvider, ThemeProvider } from "@mui/material";
 import { AuthProvider } from "oidc-react";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -21,7 +23,12 @@ const oidcConfig = {
 root.render(
     <AuthProvider {...oidcConfig}>
         <React.StrictMode>
-            <App />
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={theme}>
+                    <CssBaseline enableColorScheme />
+                    <App />
+                </ThemeProvider>
+            </StyledEngineProvider>
         </React.StrictMode>
     </AuthProvider>,
 );

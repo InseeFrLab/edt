@@ -1,5 +1,3 @@
-import { theme } from "@inseefrlab/lunatic-edt";
-import { CssBaseline, ThemeProvider } from "@mui/material";
 import "App.scss";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
@@ -36,19 +34,16 @@ const App = () => {
 
     return (
         <>
-            <ThemeProvider theme={theme}>
-                <CssBaseline enableColorScheme />
-                {initialized && !error ? (
-                    <EdtRoutes />
-                ) : !error ? (
-                    <LoadingFull
-                        message={t("page.home.loading.message")}
-                        thanking={t("page.home.loading.thanking")}
-                    />
-                ) : (
-                    <ErrorPage errorCode={error} atInit={true} />
-                )}
-            </ThemeProvider>
+            {initialized && !error ? (
+                <EdtRoutes />
+            ) : !error ? (
+                <LoadingFull
+                    message={t("page.home.loading.message")}
+                    thanking={t("page.home.loading.thanking")}
+                />
+            ) : (
+                <ErrorPage errorCode={error} atInit={true} />
+            )}
         </>
     );
 };
