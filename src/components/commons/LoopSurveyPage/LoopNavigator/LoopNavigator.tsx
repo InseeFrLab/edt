@@ -6,7 +6,8 @@ import done from "assets/illustration/mui-icon/done.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { isDesktop } from "service/responsive";
+import { isDesktop, isPwa } from "service/responsive";
+import { isIOS } from "react-device-detect";
 
 interface LoopNavigatorProps {
     onNext?(event?: React.MouseEvent): void;
@@ -44,6 +45,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                 className={cx(
                     classes.validateButtonBox,
                     isItDesktop ? "" : classes.validateButtonBoxMobileTablet,
+                    isPwa() && isIOS ? classes.buttonBoxPwa : "",
                 )}
             >
                 <>
@@ -115,6 +117,9 @@ const useStyles = makeStylesEdt({ "name": { LoopNavigator } })(theme => ({
         position: "fixed",
         bottom: "0",
         left: "0",
+    },
+    buttonBoxPwa: {
+        marginBottom: "1rem",
     },
     navButton: {
         borderRadius: "0",
