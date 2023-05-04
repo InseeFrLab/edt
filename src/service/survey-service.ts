@@ -503,7 +503,7 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
         const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
 
         const splittedDate = savedSurveyDate.split("-");
-        return label + " - " + capitalizedDayName + " " + [splittedDate[2], splittedDate[1]].join("/");
+        return capitalizedDayName + " " + [splittedDate[2], splittedDate[1]].join("/");
     } else {
         return label + " 1";
     }
