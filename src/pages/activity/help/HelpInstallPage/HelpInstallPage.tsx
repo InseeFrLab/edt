@@ -6,10 +6,11 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { getNavigatePath } from "service/navigation-service";
+import { getNavigatePath, navToHome } from "service/navigation-service";
 import packageJson from "../../../../../package.json";
 import { isPwa } from "service/responsive";
 import { isMobile } from "react-device-detect";
+import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 
 const HelpInstallPage = () => {
     const { classes, cx } = useStyles();
@@ -25,6 +26,10 @@ const HelpInstallPage = () => {
     return (
         <Box className={cx(classes.contentBox, isNavMobile ? classes.contentBoxMobile : "")}>
             <Box className={classes.installBox}>
+                <SurveyPageSimpleHeader
+                    onNavigateBack={useCallback(() => navToHome(), [])}
+                    backgroundWhite={false}
+                />
                 <FlexCenter className={classes.illustrationBox}>
                     <img src={install} alt={t("accessibility.asset.mui-icon.download")} />
                 </FlexCenter>
