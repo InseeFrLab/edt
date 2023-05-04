@@ -81,7 +81,7 @@
         "format": "npm run _format -- --write",
         "format:check": "npm run _format -- --list-different",
         "prepare": "husky install",
-        "serve-build": "npm run build && npx serve -s ./build -l 8000",
+        "serve-build": "npm run build && npx serve -s build",
         "start-with-lib": "concurrently \"yarn start-rewired\"  \"cd ./node_modules/@inseefrlab/lunatic-edt && tsc-watch\""
     },
     "eslintConfig": {
