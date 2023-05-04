@@ -1,5 +1,6 @@
 import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Typography } from "@mui/material";
+import activitySurveySource from "activity-survey.json";
 import disconnectIcon from "assets/illustration/disconnect.svg";
 import defaultErrorIcon from "assets/illustration/error/error.svg";
 import help from "assets/illustration/mui-icon/help-white.svg";
@@ -11,7 +12,6 @@ import PageIcon from "components/commons/PageIcon/PageIcon";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { useAuth } from "oidc-react";
@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getNavigatePath, setEnviro } from "service/navigation-service";
-import { getData, getSource, surveysIds } from "service/survey-service";
+import { getData, surveysIds } from "service/survey-service";
 
 export type ErrorPageProps = {
     errorCode?: ErrorCodeEnum;
@@ -35,7 +35,7 @@ const ErrorPage = (props: ErrorPageProps) => {
     const auth = useAuth();
     const [isAlertDisplayed, setIsAlertDisplayed] = React.useState<boolean>(false);
     const onDisconnect = useCallback(() => setIsAlertDisplayed(true), [isAlertDisplayed]);
-    const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
+    const source = activitySurveySource;
 
     const alertProps = {
         isAlertDisplayed: isAlertDisplayed,
