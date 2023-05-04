@@ -2,7 +2,7 @@ import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { isIOS } from "react-device-detect";
-import { isDesktop, isPwa } from "service/responsive";
+import { isDesktop } from "service/responsive";
 
 interface ValidateButtonProps {
     onClick(): void;
@@ -17,9 +17,7 @@ const ValidateButton = (props: ValidateButtonProps) => {
 
     return (
         <>
-            {!isItDesktop && (
-                <Box className={cx(classes.gap, isPwa() && isIOS ? classes.buttonBoxPwa : "")}></Box>
-            )}
+            {!isItDesktop && <Box className={cx(classes.gap, isIOS ? classes.buttonBoxPwa : "")}></Box>}
             <FlexCenter
                 className={cx(
                     disabled ? classes.invalidButtonBox : classes.validateButtonBox,

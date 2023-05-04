@@ -4,7 +4,7 @@ import add from "assets/illustration/mui-icon/add.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { isDesktop, isPwa } from "service/responsive";
+import { isDesktop } from "service/responsive";
 
 interface ActivityButtonsProps {
     onClickFinish(): void;
@@ -26,7 +26,7 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
                 className={cx(
                     classes.ButtonsBox,
                     isItDesktop ? "" : classes.ButtonsBoxMobileTablet,
-                    isPwa() && isIOS ? classes.buttonBoxPwa : "",
+                    isIOS ? classes.buttonBoxPwa : "",
                 )}
             >
                 <>

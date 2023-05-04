@@ -5,9 +5,9 @@ import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg"
 import done from "assets/illustration/mui-icon/done.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { isDesktop, isPwa } from "service/responsive";
 import { isIOS } from "react-device-detect";
+import { useTranslation } from "react-i18next";
+import { isDesktop } from "service/responsive";
 
 interface LoopNavigatorProps {
     onNext?(event?: React.MouseEvent): void;
@@ -45,7 +45,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                 className={cx(
                     classes.validateButtonBox,
                     isItDesktop ? "" : classes.validateButtonBoxMobileTablet,
-                    isPwa() && isIOS ? classes.buttonBoxPwa : "",
+                    isIOS ? classes.buttonBoxPwa : "",
                 )}
             >
                 <>
