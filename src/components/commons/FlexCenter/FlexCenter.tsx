@@ -11,7 +11,7 @@ const FlexCenter = (props: FlexCenterProps) => {
     return <Box className={cx(className, classes.box)}>{children}</Box>;
 };
 
-const useStyles = makeStyles<{}>()(_theme => ({
+const useStyles = makeStyles<{}>()(() => ({
     box: {
         display: "flex",
         justifyContent: "center",

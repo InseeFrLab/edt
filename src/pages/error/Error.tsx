@@ -67,10 +67,19 @@ const ErrorPage = (props: ErrorPageProps) => {
     }, []);
 
     const getErrorText = (errorCode: ErrorCodeEnum | undefined): string => {
-        if (errorCode === ErrorCodeEnum.NO_RIGHTS) {
-            return t("common.error.error-no-rights");
-        } else {
-            return t("common.error.error-default");
+        switch (errorCode) {
+            case ErrorCodeEnum.NO_RIGHTS:
+                return t("common.error.error-no-rights");
+            case ErrorCodeEnum.UNREACHABLE_SOURCE:
+                return t("common.error.error-get-surveys-sources");
+            case ErrorCodeEnum.UNREACHABLE_SURVEYS_ASSIGNMENTS:
+                return t("common.error.error-get-surveys-assignments");
+            case ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS:
+                return t("common.error.error-get-surveys-data");
+            case ErrorCodeEnum.UNREACHABLE_NOMENCLATURES:
+                return t("common.error.error-nomenclatures");
+            default:
+                return t("common.error.error-default");
         }
     };
 

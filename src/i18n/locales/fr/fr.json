@@ -33,6 +33,10 @@
             "error-default-title": "OUPS...",
             "error-default": "Une erreur s'est produite...",
             "error-no-rights": "Il semblerait que vous n'avez pas les droits d'accès nécessaires pour répondre au(x) questionnaire(s). Veuillez contacter votre enquêteur référent.",
+            "error-nomenclatures": "Il semblerait qu'une erreur s'est produite lors de la récupération des nomenclatures. Veuillez contacter votre enquêteur référent.",
+            "error-get-surveys-sources": "Il semblerait qu'une erreur s'est produite lors de la récupération des sources des questionnaires. Veuillez contacter votre enquêteur référent.",
+            "error-get-surveys-data": "Il semblerait qu'une erreur s'est produite lors de la récupération des données de questionnaires. Veuillez contacter votre enquêteur référent.",
+            "error-get-surveys-assignments": "Il semblerait qu'une erreur s'est produite lors de la récupération des identifiants de questionnaires associés à votre identifiant. Veuillez contacter votre enquêteur référent.",
             "error-location": {
                 "message": "Aucun lieu n'a été renseigné"
             },
