@@ -31,6 +31,7 @@ const GreatestActivityDayPage = () => {
             errorIcon={greatestActivityDay}
             errorAltIcon={"accessibility.asset.greatest-activity-day-alt"}
             specifiquesProps={specifiquesProps}
+            withBottomPadding={true}
         />
     );
 };

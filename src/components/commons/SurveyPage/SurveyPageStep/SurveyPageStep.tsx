@@ -1,3 +1,4 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import extension from "assets/illustration/mui-icon/extension.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
@@ -30,6 +31,7 @@ export interface SurveyPageStepProps {
     errorAltIcon?: string;
     specifiquesProps?: any;
     disableButton?: boolean;
+    withBottomPadding?: boolean;
 }
 
 const SurveyPageStep = (props: SurveyPageStepProps) => {
@@ -42,11 +44,13 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         errorAltIcon,
         specifiquesProps,
         disableButton,
+        withBottomPadding = false,
     } = props;
 
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
+    const { classes } = useStyles();
 
     const stepData = getStepData(currentPage);
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
@@ -135,7 +139,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 
     return (
         <SurveyPage {...surveyPageProps}>
-            <FlexCenter>
+            <FlexCenter className={withBottomPadding ? classes.bottomPadding : ""}>
                 <FelicitationModal
                     isModalDisplayed={isModalDisplayed}
                     onCompleteCallBack={useCallback(
@@ -149,5 +153,11 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         </SurveyPage>
     );
 };
+
+const useStyles = makeStylesEdt({ "name": { SurveyPageStep } })(() => ({
+    bottomPadding: {
+        paddingBottom: "6rem",
+    },
+}));
 
 export default SurveyPageStep;

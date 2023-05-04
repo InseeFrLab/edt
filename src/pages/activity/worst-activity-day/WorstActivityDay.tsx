@@ -31,6 +31,7 @@ const WorstActivityDayPage = () => {
             errorIcon={worstActivityDay}
             errorAltIcon={"accessibility.asset.worst-activity-day-alt"}
             specifiquesProps={specifiquesProps}
+            withBottomPadding={true}
         />
     );
 };
