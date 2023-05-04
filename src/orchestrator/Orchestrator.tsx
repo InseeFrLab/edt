@@ -107,9 +107,9 @@ const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
             display: "none",
         },
         "& label": {
-            backgroundColor: "transparent",
-            marginBottom: "1rem",
-            fontSize: "20px",
+            backgroundColor: "transparent !important",
+            marginBottom: "1rem !important",
+            fontSize: "20px !important",
         },
         "& legend": {
             backgroundColor: "transparent",
