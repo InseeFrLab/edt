@@ -60,7 +60,13 @@ export const fetchReferentiels = (
                 });
                 resolve(refs);
             })
-            .catch(() => setError(ErrorCodeEnum.UNREACHABLE_NOMENCLATURES));
+            .catch(err => {
+                if (err.response.status === 403) {
+                    setError(ErrorCodeEnum.NO_RIGHTS);
+                } else {
+                    setError(ErrorCodeEnum.UNREACHABLE_NOMENCLATURES);
+                }
+            });
     });
 };
 
@@ -72,8 +78,12 @@ const fetchUserSurveysInfo = (setError: (error: ErrorCodeEnum) => void): Promise
                 const data: UserSurveys[] = response.data;
                 resolve(data);
             })
-            .catch(() => {
-                setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_ASSIGNMENTS);
+            .catch(err => {
+                if (err.response.status === 403) {
+                    setError(ErrorCodeEnum.NO_RIGHTS);
+                } else {
+                    setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_ASSIGNMENTS);
+                }
             });
     });
 };
@@ -98,8 +108,12 @@ const fetchSurveysSourcesByIds = (
                 });
                 resolve(sources as SourceData);
             })
-            .catch(() => {
-                setError(ErrorCodeEnum.UNREACHABLE_SOURCE);
+            .catch(err => {
+                if (err.response.status === 403) {
+                    setError(ErrorCodeEnum.NO_RIGHTS);
+                } else {
+                    setError(ErrorCodeEnum.UNREACHABLE_SOURCE);
+                }
             });
     });
 };
@@ -125,8 +139,9 @@ const remoteGetSurveyData = (
                 resolve(response.data);
             })
             .catch(err => {
-                if (err.response.status === 403) setError(ErrorCodeEnum.NO_RIGHTS);
-                else {
+                if (err.response.status === 403) {
+                    setError(ErrorCodeEnum.NO_RIGHTS);
+                } else {
                     setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
                 }
             });
