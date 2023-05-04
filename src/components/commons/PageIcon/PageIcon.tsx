@@ -4,13 +4,14 @@ import { makeStyles } from "tss-react/mui";
 interface PageIconProps {
     srcIcon: string;
     altIcon: string;
+    withMargin?: boolean;
 }
 
 const PageIcon = (props: PageIconProps) => {
-    const { srcIcon, altIcon } = props;
+    const { srcIcon, altIcon, withMargin = true } = props;
     const { classes } = useStyles();
     return (
-        <FlexCenter className={classes.spacing}>
+        <FlexCenter className={withMargin ? classes.spacing : ""}>
             <img src={srcIcon} alt={altIcon} />
         </FlexCenter>
     );

@@ -68,7 +68,7 @@ const toIgnoreForActivity = [
 const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<boolean> => {
     const promisesToWait: Promise<any>[] = [];
     return new Promise(resolve => {
-        promisesToWait.push(initializeRefs());
+        promisesToWait.push(initializeRefs(setError));
         if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
             console.log("initializing review mode");
             promisesToWait.push(initializeSurveysIdsAndSourcesDemo(setError));
@@ -82,10 +82,10 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     });
 };
 
-const initializeRefs = () => {
+const initializeRefs = (setError: (error: ErrorCodeEnum) => void) => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
         if (!refData) {
-            return fetchReferentiels().then(refs => {
+            return fetchReferentiels(setError).then(refs => {
                 saveReferentiels(refs);
             });
         } else {
@@ -125,7 +125,7 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                             return initializeSurveysDatasCache();
                         }),
                         saveSurveysIds(surveysIds),
-                        fetchSurveysSourcesByIds(distinctSources).then(sources => {
+                        fetchSurveysSourcesByIds(distinctSources, setError).then(sources => {
                             saveSources(sources);
                         }),
                     ];
@@ -165,7 +165,7 @@ const initializeSurveysIdsAndSourcesDemo = (setError: (error: ErrorCodeEnum) => 
     const innerPromises: Promise<any>[] = [
         saveSurveysIds(surveysIds),
         initializeSurveysDatasCache(),
-        fetchSurveysSourcesByIds(distinctSources).then(sources => {
+        fetchSurveysSourcesByIds(distinctSources, setError).then(sources => {
             saveSources(sources);
         }),
     ];

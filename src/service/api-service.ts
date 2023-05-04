@@ -27,7 +27,9 @@ const fetchReferentiel = (auth: AuthContextProps, idReferentiel: ReferentielsEnu
     );
 };
 
-export const fetchReferentiels = (): Promise<ReferentielData> => {
+export const fetchReferentiels = (
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<ReferentielData> => {
     let refs: ReferentielData = {
         [ReferentielsEnum.ACTIVITYNOMENCLATURE]: [],
         [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: [],
@@ -57,7 +59,8 @@ export const fetchReferentiels = (): Promise<ReferentielData> => {
                     refs[key as ReferentielsEnum] = res[index].data;
                 });
                 resolve(refs);
-            });
+            })
+            .catch(() => setError(ErrorCodeEnum.UNREACHABLE_NOMENCLATURES));
     });
 };
 
@@ -69,13 +72,16 @@ const fetchUserSurveysInfo = (setError: (error: ErrorCodeEnum) => void): Promise
                 const data: UserSurveys[] = response.data;
                 resolve(data);
             })
-            .catch(err => {
-                if (err.response.status === 403) setError(ErrorCodeEnum.NO_RIGHTS);
+            .catch(() => {
+                setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_ASSIGNMENTS);
             });
     });
 };
 
-const fetchSurveysSourcesByIds = (sourcesIds: string[]): Promise<SourceData> => {
+const fetchSurveysSourcesByIds = (
+    sourcesIds: string[],
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<SourceData> => {
     let sources: any = {};
     let sourcesEndPoints: string[] = [];
     sourcesIds.map(sourceId => sourcesEndPoints.push("api/questionnaire/" + sourceId));
@@ -91,6 +97,9 @@ const fetchSurveysSourcesByIds = (sourcesIds: string[]): Promise<SourceData> => 
                     sources[idSource] = res[index].data.value;
                 });
                 resolve(sources as SourceData);
+            })
+            .catch(() => {
+                setError(ErrorCodeEnum.UNREACHABLE_SOURCE);
             });
     });
 };
@@ -117,6 +126,9 @@ const remoteGetSurveyData = (
             })
             .catch(err => {
                 if (err.response.status === 403) setError(ErrorCodeEnum.NO_RIGHTS);
+                else {
+                    setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
+                }
             });
     });
 };

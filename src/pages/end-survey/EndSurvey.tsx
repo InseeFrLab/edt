@@ -5,6 +5,7 @@ import sendIcon from "assets/illustration/mui-icon/send.svg";
 import submit_icon from "assets/illustration/submit.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
+import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
@@ -13,8 +14,7 @@ import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { SurveyData } from "interface/entity/Api";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
-import { SetStateAction, useCallback, useState } from "react";
-import { Offline, Online } from "react-detect-offline";
+import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -42,6 +42,24 @@ const EndSurveyPage = () => {
     const [errorSubmit, setErrorSubmit] = useState<boolean>(false);
     const isActivitySurvey = getCurrentSurveyRootPage() === EdtRoutesNameEnum.ACTIVITY ? true : false;
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+    // Online state
+    const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+    useEffect(() => {
+        // Update network status
+        const handleStatusChange = () => {
+            setIsOnline(navigator.onLine);
+        };
+        // Listen to the online status
+        window.addEventListener("online", handleStatusChange);
+        // Listen to the offline status
+        window.addEventListener("offline", handleStatusChange);
+        // Specify how to clean up after this effect for performance improvment
+        return () => {
+            window.removeEventListener("online", handleStatusChange);
+            window.removeEventListener("offline", handleStatusChange);
+        };
+    }, [isOnline]);
 
     const infoLabels: InfoProps = {
         boldText: t("page.end-survey.online-tooltip-text"),
@@ -109,13 +127,16 @@ const EndSurveyPage = () => {
 
     return (
         <SurveyPage
-            srcIcon={submit_icon}
-            altIcon={t("accessibility.asset.submit-alt")}
             onNavigateBack={navToHome}
             displayStepper={true}
             onPrevious={onPrevious}
             simpleHeader={true}
         >
+            <PageIcon
+                withMargin={false}
+                srcIcon={submit_icon}
+                altIcon={t("accessibility.asset.submit-alt")}
+            />
             <Box className={cx(classes.endContentBox, isNavMobile ? classes.endContentBoxMobile : "")}>
                 <Box>
                     <Box className={classes.contentBox}>
@@ -128,23 +149,20 @@ const EndSurveyPage = () => {
                     </Box>
 
                     <FlexCenter>
-                        <Online>
+                        {isOnline ? (
                             <Info {...infoLabels} />
-                        </Online>
-                        <Offline>
+                        ) : (
                             <Box className={classes.offline}>
                                 <Info isAlertInfo={true} {...infoLabels} />
                             </Box>
-                        </Offline>
+                        )}
                     </FlexCenter>
                 </Box>
-                <Box className={isNavMobile ? classes.actionContentBox : ""}>
-                    <FlexCenter className={isNavMobile ? classes.actionBoxMobile : classes.actionBox}>
-                        <Online>
+                <Box>
+                    <FlexCenter className={classes.actionBox}>
+                        {isOnline ? (
                             <Button
-                                className={cx(
-                                    isNavMobile ? classes.actionBoxMobile : classes.sendButton,
-                                )}
+                                className={cx(isNavMobile ? classes.actionBox : classes.sendButton)}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
@@ -153,12 +171,9 @@ const EndSurveyPage = () => {
                             >
                                 {t("common.navigation.send")}
                             </Button>
-                        </Online>
-                        <Offline>
+                        ) : (
                             <Button
-                                className={cx(
-                                    isNavMobile ? classes.actionBoxMobile : classes.sendButton,
-                                )}
+                                className={cx(isNavMobile ? classes.actionBox : classes.sendButton)}
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
@@ -168,7 +183,7 @@ const EndSurveyPage = () => {
                             >
                                 {t("common.navigation.send")}
                             </Button>
-                        </Offline>
+                        )}
                         {errorSubmit ? (
                             <Typography className={classes.errorSubmit}>
                                 {t("common.error.error-submit-survey")}
@@ -202,7 +217,6 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
     endContentBox: {
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
         height: "85vh",
     },
     endContentBoxMobile: {
@@ -215,13 +229,8 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
         textAlign: "center",
     },
     actionBox: {
+        marginTop: "1rem",
         marginBottom: "1rem",
-    },
-    actionBoxMobile: {
-        marginBottom: "1rem",
-    },
-    actionContentBox: {
-        height: "11vh",
     },
     sendButton: {
         padding: "0.5rem 2rem",
@@ -232,6 +241,9 @@ const useStyles = makeStylesEdt({ "name": { EndSurveyPage } })(theme => ({
     },
     errorSubmit: {
         color: theme.palette.error.main,
+    },
+    pageIcon: {
+        margin: "0",
     },
 }));
 
