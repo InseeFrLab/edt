@@ -2,8 +2,9 @@ import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button } from "@mui/material";
 import add from "assets/illustration/mui-icon/add.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { isDesktop } from "service/responsive";
+import { isDesktop, isPwa } from "service/responsive";
 
 interface ActivityButtonsProps {
     onClickFinish(): void;
@@ -22,7 +23,11 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
         <>
             {!isItDesktop && <Box className={classes.gap}></Box>}
             <FlexCenter
-                className={cx(classes.ButtonsBox, isItDesktop ? "" : classes.ButtonsBoxMobileTablet)}
+                className={cx(
+                    classes.ButtonsBox,
+                    isItDesktop ? "" : classes.ButtonsBoxMobileTablet,
+                    isPwa() && isIOS ? classes.buttonBoxPwa : "",
+                )}
             >
                 <>
                     {!addLabel && (
@@ -94,6 +99,9 @@ const useStyles = makeStylesEdt({ "name": { ActivityButtons } })(theme => ({
     helpCloseButton: {
         borderColor: important(theme.palette.secondary.main),
         backgroundColor: important(theme.variables.white),
+    },
+    buttonBoxPwa: {
+        marginBottom: "1rem",
     },
 }));
 

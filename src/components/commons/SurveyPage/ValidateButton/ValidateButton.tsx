@@ -1,7 +1,8 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { isDesktop } from "service/responsive";
+import { isIOS } from "react-device-detect";
+import { isDesktop, isPwa } from "service/responsive";
 
 interface ValidateButtonProps {
     onClick(): void;
@@ -16,7 +17,9 @@ const ValidateButton = (props: ValidateButtonProps) => {
 
     return (
         <>
-            {!isItDesktop && <Box className={classes.gap}></Box>}
+            {!isItDesktop && (
+                <Box className={cx(classes.gap, isPwa() && isIOS ? classes.buttonBoxPwa : "")}></Box>
+            )}
             <FlexCenter
                 className={cx(
                     disabled ? classes.invalidButtonBox : classes.validateButtonBox,
@@ -67,6 +70,9 @@ const useStyles = makeStylesEdt({ "name": { NavButton: ValidateButton } })(theme
         width: "80%",
         maxWidth: "18rem",
         margin: "1rem 0",
+    },
+    buttonBoxPwa: {
+        marginBottom: "1rem",
     },
 }));
 
