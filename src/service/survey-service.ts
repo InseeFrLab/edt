@@ -239,12 +239,12 @@ const dataIsChange = (idSurvey: string, data: LunaticData) => {
 
     if (dataCollected && currentDataCollected) {
         const keys = Object.keys(dataCollected);
-        keys.forEach(key => {
+        keys?.forEach(key => {
             if (dataCollected[key].COLLECTED != currentDataCollected[key].COLLECTED) {
                 if (Array.isArray(dataCollected[key].COLLECTED)) {
                     const currentDataCollectedArray = currentDataCollected[key].COLLECTED as string[];
-                    (dataCollected[key].COLLECTED as string[]).forEach((data, i) => {
-                        if (currentDataCollectedArray[i] != data) {
+                    (dataCollected[key]?.COLLECTED as string[])?.forEach((data, i) => {
+                        if (currentDataCollectedArray == null || currentDataCollectedArray[i] != data) {
                             isChange = true;
                         }
                     });
