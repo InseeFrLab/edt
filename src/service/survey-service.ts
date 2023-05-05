@@ -70,10 +70,8 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     return new Promise(resolve => {
         promisesToWait.push(initializeRefs(setError));
         if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
-            console.log("initializing review mode");
             promisesToWait.push(initializeSurveysIdsAndSourcesDemo(setError));
         } else {
-            console.log("initializing surveyed mode");
             promisesToWait.push(initializeSurveysIdsAndSources(setError));
         }
         Promise.all(promisesToWait).then(() => {
