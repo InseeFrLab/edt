@@ -276,13 +276,17 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                     data: data,
                 };
 
-                remotePutSurveyData(idSurvey, surveyData).then(surveyData => {
-                    data.lastRemoteSaveDate = surveyData.stateData?.date;
-                    //set the last remote save date inside local database to be able to compare it later with remote data
-                    lunaticDatabase.save(idSurvey, data).then(() => {
-                        datas.set(idSurvey, data);
+                remotePutSurveyData(idSurvey, surveyData)
+                    .then(surveyData => {
+                        data.lastRemoteSaveDate = surveyData.stateData?.date;
+                        //set the last remote save date inside local database to be able to compare it later with remote data
+                        lunaticDatabase.save(idSurvey, data).then(() => {
+                            datas.set(idSurvey, data);
+                        });
+                    })
+                    .catch(() => {
+                        //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
                     });
-                });
             }
         }
         return data;

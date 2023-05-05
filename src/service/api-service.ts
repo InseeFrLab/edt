@@ -139,7 +139,7 @@ const remoteGetSurveyData = (
                 resolve(response.data);
             })
             .catch(err => {
-                if (err.response.status === 403) {
+                if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
                 } else {
                     setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
