@@ -180,7 +180,7 @@ const useStyles = makeStylesEdt({ "name": { NavButton: SurveyPage } })(theme => 
         flexGrow: "1",
         display: "flex",
         flexDirection: "column",
-        maxHeight: "100%",
+        maxHeight: "100vh",
         height: "100%",
         overflow: "hidden !important",
     },
