@@ -25,7 +25,7 @@ const WorkTimePage = () => {
     let data = getData(idSurvey || "");
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const navigate = useNavigate();
-    if (idSurvey && !surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].find(id => id === idSurvey)) {
+    if (idSurvey && !surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]?.find(id => id === idSurvey)) {
         navToHome();
     }
     const surveyRootPage = getCurrentSurveyRootPage();

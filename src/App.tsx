@@ -17,7 +17,7 @@ const App = () => {
     const auth = useAuth();
 
     useEffect(() => {
-        if (auth.userData?.access_token && getDatas().size === 0 && error === undefined) {
+        if (auth?.userData?.access_token && getDatas().size === 0 && error === undefined) {
             setUserToken(auth.userData?.access_token);
             setUser(auth.userData);
             //keeps user token up to date after session renewal

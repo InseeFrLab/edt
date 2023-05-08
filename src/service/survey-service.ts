@@ -136,7 +136,9 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
             surveysIds = data as SurveysIds;
             promises.push(
                 lunaticDatabase.get(SOURCES_MODELS).then(data => {
-                    sourcesData = data as SourceData;
+                    if (sourcesData == undefined) {
+                        sourcesData = data as SourceData;
+                    }
                 }),
             );
             promises.push(
@@ -321,7 +323,9 @@ const saveReferentiels = (data: ReferentielData): Promise<ReferentielData> => {
 
 const saveSources = (data: SourceData): Promise<SourceData> => {
     return lunaticDatabase.save(SOURCES_MODELS, data).then(() => {
-        sourcesData = data;
+        if (sourcesData == undefined) {
+            sourcesData = data;
+        }
         return data;
     });
 };
@@ -355,7 +359,7 @@ const getReferentiel = (refName: ReferentielsEnum) => {
 };
 
 const getSource = (refName: SourcesEnum) => {
-    return sourcesData[refName];
+    return sourcesData && sourcesData[refName];
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {

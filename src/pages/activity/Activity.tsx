@@ -26,7 +26,7 @@ const ActivityPage = () => {
     let data = getData(idSurvey || "");
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const navigate = useNavigate();
-    if (idSurvey && !surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].find(id => id === idSurvey)) {
+    if (idSurvey && !surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]?.find(id => id === idSurvey)) {
         navToHome();
     }
     const context: OrchestratorContext = useOutletContext();
