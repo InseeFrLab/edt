@@ -43,6 +43,8 @@ import { getScore } from "./survey-activity-service";
 import { getUserRights } from "./user-service";
 
 const datas = new Map<string, LunaticData>();
+const oldDatas = new Map<string, LunaticData>();
+
 let referentielsData: ReferentielData;
 let sourcesData: SourceData;
 let surveysIds: SurveysIds;
@@ -211,6 +213,7 @@ const initializeSurveysDatasCache = (): Promise<any> => {
                         );
                         data.houseReference = idSurvey.replace(regexp, "");
                         datas.set(idSurvey, data || {});
+                        oldDatas.set(idSurvey, data || {});
                     }
                     return data;
                 }),
@@ -229,7 +232,7 @@ const getData = (idSurvey: string): LunaticData => {
 };
 
 const dataIsChange = (idSurvey: string, data: LunaticData) => {
-    const currentData = datas.get(idSurvey);
+    const currentData = oldDatas.get(idSurvey);
     const currentDataCollected = currentData && currentData.COLLECTED;
     const dataCollected = data && data.COLLECTED;
 
@@ -241,11 +244,15 @@ const dataIsChange = (idSurvey: string, data: LunaticData) => {
             if (dataCollected[key].COLLECTED != currentDataCollected[key].COLLECTED) {
                 if (Array.isArray(dataCollected[key].COLLECTED)) {
                     const currentDataCollectedArray = currentDataCollected[key].COLLECTED as string[];
-                    (dataCollected[key]?.COLLECTED as string[])?.forEach((data, i) => {
+                    const dataCollectedArray = dataCollected[key].COLLECTED as string[];
+                    dataCollectedArray?.forEach((data, i) => {
                         if (currentDataCollectedArray == null || currentDataCollectedArray[i] != data) {
                             isChange = true;
                         }
                     });
+                    if (dataCollectedArray.length != currentDataCollectedArray.length) {
+                        isChange = true;
+                    }
                 } else {
                     isChange = true;
                 }
@@ -255,17 +262,21 @@ const dataIsChange = (idSurvey: string, data: LunaticData) => {
     return isChange;
 };
 
-const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): Promise<LunaticData> => {
+const saveData = (
+    idSurvey: string,
+    data: LunaticData,
+    localSaveOnly = false,
+    sendRequest?: boolean,
+): Promise<LunaticData> => {
     data.lastLocalSaveDate = Date.now();
     if (!data.houseReference) {
         const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
         data.houseReference = idSurvey.replace(regexp, "");
     }
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+    const isChange = dataIsChange(idSurvey, data) || sendRequest;
     return lunaticDatabase.save(idSurvey, data).then(() => {
-        const isChange = dataIsChange(idSurvey, data);
         datas.set(idSurvey, data);
-
         if (isChange) {
             //We try to submit each time the local database is updated if the user is online
             if (!isDemoMode && !localSaveOnly && navigator.onLine) {
@@ -273,13 +284,13 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                     stateData: getSurveyStateData(data, idSurvey),
                     data: data,
                 };
-
                 remotePutSurveyData(idSurvey, surveyData)
                     .then(surveyData => {
                         data.lastRemoteSaveDate = surveyData.stateData?.date;
                         //set the last remote save date inside local database to be able to compare it later with remote data
                         lunaticDatabase.save(idSurvey, data).then(() => {
                             datas.set(idSurvey, data);
+                            oldDatas.set(idSurvey, data);
                         });
                     })
                     .catch(() => {

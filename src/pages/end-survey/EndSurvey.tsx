@@ -84,7 +84,7 @@ const EndSurveyPage = () => {
             remotePutSurveyData(context.idSurvey, surveyData)
                 .then(surveyDataAnswer => {
                     surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
-                    saveData(context.idSurvey, surveyData.data).then(() => {
+                    saveData(context.idSurvey, surveyData.data, false, true).then(() => {
                         initializeSurveysDatasCache().finally(() => {
                             setIsModalDisplayed(true);
                         });
