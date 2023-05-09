@@ -187,12 +187,17 @@ const getRemoteSavedSurveysDatas = (
                 );
                 remoteSurveyData.data.houseReference = surveyId.replace(regexp, "");
                 return lunaticDatabase.get(surveyId).then(localSurveyData => {
+                    console.log("localSurveyData :");
+                    console.log(localSurveyData);
+                    console.log("remoteSurveyData :");
+                    console.log(remoteSurveyData);
                     if (
                         remoteSurveyData.stateData?.date &&
                         remoteSurveyData.stateData?.date > 0 &&
                         (localSurveyData === undefined ||
-                            (localSurveyData.lastRemoteSaveDate ?? 0) < remoteSurveyData.stateData.date)
+                            (localSurveyData.lastLocalSaveDate ?? 0) < remoteSurveyData.stateData.date)
                     ) {
+                        console.log("erase local with remote");
                         return lunaticDatabase.save(surveyId, remoteSurveyData.data);
                     }
                 });
