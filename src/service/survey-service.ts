@@ -296,6 +296,8 @@ const saveData = (
                         });
                     })
                     .catch(err => {
+                        console.log("Error catch");
+                        console.log(err);
                         if (err.response?.status === 401) {
                             //To go back to auth
                             window.location.reload();
