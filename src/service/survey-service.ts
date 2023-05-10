@@ -187,17 +187,12 @@ const getRemoteSavedSurveysDatas = (
                 );
                 remoteSurveyData.data.houseReference = surveyId.replace(regexp, "");
                 return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                    console.log("localSurveyData :");
-                    console.log(localSurveyData);
-                    console.log("remoteSurveyData :");
-                    console.log(remoteSurveyData);
                     if (
                         remoteSurveyData.stateData?.date &&
                         remoteSurveyData.stateData?.date > 0 &&
                         (localSurveyData === undefined ||
                             (localSurveyData.lastLocalSaveDate ?? 0) < remoteSurveyData.stateData.date)
                     ) {
-                        console.log("erase local with remote");
                         return lunaticDatabase.save(surveyId, remoteSurveyData.data);
                     }
                 });
@@ -300,7 +295,11 @@ const saveData = (
                             oldDatas.set(idSurvey, data);
                         });
                     })
-                    .catch(() => {
+                    .catch(err => {
+                        if (err.response?.status === 401) {
+                            //To go back to auth
+                            window.location.reload();
+                        }
                         //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
                     });
             }
