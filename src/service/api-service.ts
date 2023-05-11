@@ -5,7 +5,7 @@ import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SurveyData, UserSurveys } from "interface/entity/Api";
 import { ReferentielData, SourceData } from "interface/lunatic/Lunatic";
 import { AuthContextProps } from "oidc-react";
-import { getUserToken } from "./user-service";
+import { getAuth, getUserToken } from "./user-service";
 
 const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
 const stromaeBackOfficeApiBaseUrl = process.env.REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL;
@@ -132,6 +132,16 @@ const fetchSurveysSourcesByIds = (
 };
 
 const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<SurveyData> => {
+    //Temporar check on token validity to avoid 401 error, if not valid, reload page
+    //#
+    const now = new Date();
+    const tokenExpiresAt = getAuth().userData?.expires_at;
+    // * 1000 because tokenExpiresAt is in seconds and now.getTime() in milliseconds
+    if (tokenExpiresAt * 1000 < now.getTime()) {
+        window.location.reload();
+        return Promise.reject();
+    }
+    //#
     return new Promise(resolve => {
         axios
             .put(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader())

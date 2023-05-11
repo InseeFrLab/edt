@@ -1,11 +1,20 @@
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
-import { User } from "oidc-react";
+import { AuthContextProps, User } from "oidc-react";
 
 let user: any;
 let userToken: string;
+let auth: AuthContextProps;
 
 export const setUser = (loggedUser: User | null): void => {
     user = loggedUser;
+};
+
+export const setAuth = (authContext: AuthContextProps): void => {
+    auth = authContext;
+};
+
+export const getAuth = (): any => {
+    return auth;
 };
 
 export const getUserToken = (): string => {

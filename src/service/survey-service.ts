@@ -295,13 +295,7 @@ const saveData = (
                             oldDatas.set(idSurvey, data);
                         });
                     })
-                    .catch(err => {
-                        console.log("Error catch");
-                        console.log(err);
-                        if (err.response?.status === 401) {
-                            //To go back to auth
-                            window.location.reload();
-                        }
+                    .catch(_ => {
                         //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
                     });
             }
