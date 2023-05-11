@@ -27,6 +27,13 @@ const App = () => {
                     setUserToken(user?.access_token || "");
                 });
             });
+
+            auth.userManager.events.addUserLoaded(() => {
+                console.log("user loaded");
+                auth.userManager.getUser().then(user => {
+                    setUserToken(user?.access_token || "");
+                });
+            });
             initializeDatas(setError).then(() => {
                 setInitialized(true);
             });

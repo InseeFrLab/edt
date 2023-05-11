@@ -295,7 +295,7 @@ const saveData = (
                             oldDatas.set(idSurvey, data);
                         });
                     })
-                    .catch(_ => {
+                    .catch(() => {
                         //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
                     });
             }
@@ -528,7 +528,7 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
 
 //Return date with full french format dd/MM/YYYY
 const getFullFrenchDate = (surveyDate: string): string => {
-    const splittedDate = surveyDate.split("-");
+    const splittedDate = surveyDate?.split("-");
     return [splittedDate[2], splittedDate[1], splittedDate[0]].join("/");
 };
 
