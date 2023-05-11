@@ -28,12 +28,22 @@ const App = () => {
                 });
             });
 
-            auth.userManager.events.addUserLoaded(() => {
-                console.log("user loaded");
-                auth.userManager.getUser().then(user => {
-                    setUserToken(user?.access_token || "");
-                });
+            auth.userManager.events.addSilentRenewError(() => {
+                if (navigator.onLine) {
+                    auth.userManager
+                        .signoutRedirect({
+                            id_token_hint: localStorage.getItem("id_token") || undefined,
+                        })
+                        .then(() => auth.userManager.clearStaleState())
+                        .then(() => auth.userManager.signoutRedirectCallback())
+                        .then(() => {
+                            sessionStorage.clear();
+                        })
+                        .then(() => auth.userManager.clearStaleState())
+                        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
+                }
             });
+
             initializeDatas(setError).then(() => {
                 setInitialized(true);
             });

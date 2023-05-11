@@ -13,7 +13,7 @@ export const setAuth = (authContext: AuthContextProps): void => {
     auth = authContext;
 };
 
-export const getAuth = (): any => {
+export const getAuth = (): AuthContextProps => {
     return auth;
 };
 

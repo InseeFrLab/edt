@@ -4,7 +4,7 @@ import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SurveyData, UserSurveys } from "interface/entity/Api";
 import { ReferentielData, SourceData } from "interface/lunatic/Lunatic";
-import { AuthContextProps } from "oidc-react";
+import { AuthContextProps, User } from "oidc-react";
 import { getAuth, getUserToken } from "./user-service";
 import jwt, { JwtPayload } from "jwt-decode";
 
@@ -24,10 +24,10 @@ axios.interceptors.response.use(
     },
 );
 
-const getHeader = () => {
+const getHeader = (userToken?: string) => {
     return {
         headers: {
-            "Authorization": "Bearer " + getUserToken(),
+            "Authorization": "Bearer " + (userToken ?? getUserToken()),
             "Access-Control-Allow-Origin": "*",
             "Content-type": "application/json",
         },
@@ -140,17 +140,46 @@ const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<Survey
 
     // * 1000 because tokenExpiresAt is in seconds and now.getTime() in milliseconds
     if (!tokenExpiresAt || tokenExpiresAt * 1000 < now.getTime()) {
-        window.location.reload();
-        return Promise.reject();
-    }
-    //#
-    return new Promise(resolve => {
-        axios
-            .put(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader())
-            .then(() => {
-                resolve(data);
+        let auth = getAuth();
+        return auth.userManager
+            .signinSilent()
+            .then((user: User | null) => {
+                return new Promise<SurveyData>(resolve => {
+                    axios
+                        .put(
+                            stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
+                            data,
+                            getHeader(user?.access_token),
+                        )
+                        .then(() => {
+                            resolve(data);
+                        });
+                });
+            })
+            .catch(() => {
+                auth.userManager
+                    .signoutRedirect({
+                        id_token_hint: localStorage.getItem("id_token") || undefined,
+                    })
+                    .then(() => auth.userManager.clearStaleState())
+                    .then(() => auth.userManager.signoutRedirectCallback())
+                    .then(() => {
+                        sessionStorage.clear();
+                    })
+                    .then(() => auth.userManager.clearStaleState())
+                    .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
+
+                return Promise.reject();
             });
-    });
+    } else {
+        return new Promise(resolve => {
+            axios
+                .put(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader())
+                .then(() => {
+                    resolve(data);
+                });
+        });
+    }
 };
 
 const remoteGetSurveyData = (
