@@ -50,6 +50,9 @@ const ActivityPage = () => {
         if (idSurvey && source) {
             navToActivityOrPlannerOrSummary(idSurvey, source.maxPage, navigate, source);
         } else {
+            console.error(
+                `activity - une erreur s'est produit à la recuperation du questionnaire : ${source?.label} de l'utilisateur: ${idSurvey} `,
+            );
             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON));
         }
     }, []);

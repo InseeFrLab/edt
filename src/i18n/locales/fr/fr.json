@@ -41,7 +41,8 @@
                 "message": "Aucun lieu n'a été renseigné"
             },
             "error-submit-survey": "Une erreur s'est produite lors de l'envoie de votre questionnaire à l'insee. Veuillez réessayer plus tard.",
-            "error-user-info": "Identifiant utilisateur : "
+            "error-user-info": "Identifiant utilisateur : ",
+            "error-common": "Une erreur s'est produit à la recuperation des questionnaires"
         },
         "user": {
             "person": "PERSONNE"

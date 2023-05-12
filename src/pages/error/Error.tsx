@@ -78,6 +78,8 @@ const ErrorPage = (props: ErrorPageProps) => {
                 return t("common.error.error-get-surveys-data");
             case ErrorCodeEnum.UNREACHABLE_NOMENCLATURES:
                 return t("common.error.error-nomenclatures");
+            case ErrorCodeEnum.COMMON:
+                return t("common.error.error-common");
             default:
                 return t("common.error.error-default");
         }

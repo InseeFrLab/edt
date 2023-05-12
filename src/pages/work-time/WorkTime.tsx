@@ -45,6 +45,9 @@ const WorkTimePage = () => {
         if (idSurvey && source) {
             navToWeeklyPlannerOrClose(idSurvey, navigate, source);
         } else {
+            console.error(
+                `worktime - une erreur s'est produit à la recuperation du questionnaire : ${source?.label} de l'utilisateur: ${idSurvey} `,
+            );
             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON));
         }
     }, []);

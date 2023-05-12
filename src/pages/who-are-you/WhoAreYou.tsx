@@ -1,6 +1,7 @@
 import who_are_you from "assets/illustration/who-are-you.svg";
 import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
@@ -16,7 +17,10 @@ const WhoAreYouPage = () => {
     const keydownChange = () => {
         const componentId = getComponentId(FieldNameEnum.FIRSTNAME, context.source);
         if (componentId == null) {
-            navToErrorPage();
+            navToErrorPage(
+                ErrorCodeEnum.COMMON,
+                `une erreur s'est produit lors la recuperation du firstname de la source ${context?.source?.label}`,
+            );
         } else {
             setDisabledButton(
                 callbackHolder.getErrors() == undefined ||

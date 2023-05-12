@@ -64,9 +64,15 @@ const getLoopParameterizedNavigatePath = (
                 getParameterizedNavigatePath(page, iteration.toString())
             );
         } else {
+            console.error(
+                `une erreur s'est produit à la recuperation du page parent ${pageOrchestrator.parentPage} sur orchestator`,
+            );
             return getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON);
         }
     } else {
+        console.error(
+            `une erreur s'est produit à la recuperation de la page  ${loopPage} sur orchestator`,
+        );
         return getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON);
     }
 };
@@ -83,6 +89,9 @@ const getFullNavigatePath = (page: EdtRoutesNameEnum, parentPage?: EdtRoutesName
     } else if (targetPage) {
         return getNavigatePath(page);
     } else {
+        console.error(
+            `une erreur s'est produit à la recuperation du page target : ${page} avec page parent : ${parentPage}`,
+        );
         return getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON);
     }
 };
@@ -104,6 +113,9 @@ const getPathOfPage = (
     } else if (page) {
         return getParameterizedNavigatePath(rootPage, idSurvey) + getNavigatePath(page);
     } else {
+        console.error(
+            `une erreur s'est produit - aucune page recuperer avec id questionnaire ${idSurvey} avec page root ${rootPage}`,
+        );
         return getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON);
     }
 };
@@ -246,7 +258,8 @@ const navToHelp = (): void => {
     _navigate(getNavigatePath(EdtRoutesNameEnum.HELP_INSTALL));
 };
 
-const navToErrorPage = (errorCode?: ErrorCodeEnum): void => {
+const navToErrorPage = (errorCode?: ErrorCodeEnum, errorLog?: string): void => {
+    console.error(errorLog);
     if (errorCode) {
         _navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, errorCode));
     } else {
