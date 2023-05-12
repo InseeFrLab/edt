@@ -39,7 +39,6 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         selectedTab >= maxTabsPerRow ? selectedTab - maxTabsPerRow : false,
     );
     const [isOpen, setIsOpen] = React.useState(isDefaultOpen);
-    const [focused, setFocused] = React.useState(false);
 
     const handleChangeRowOne = useCallback(
         (_event: React.ChangeEvent<{}>, newValue: number) => {
@@ -77,7 +76,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         return (
             <Tab
                 key={"tab-" + index}
-                className={cx(classes.tab, focused ? classes.tabFocused : "")}
+                className={cx(classes.tab)}
                 icon={getTabIcon(tabData.isActivitySurvey)}
                 tabIndex={tabIndex}
                 label={
@@ -158,7 +157,6 @@ const useStyles = makeStylesEdt({ "name": { SurveySelecter } })(theme => ({
         flexDirection: "row",
         "& .MuiTab-iconWrapper": { marginRight: "0.5rem" },
     },
-    tabFocused: {},
     notVisibleSelectedTab: {
         backgroundColor: "red",
 
