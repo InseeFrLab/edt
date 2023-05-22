@@ -39,6 +39,7 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
                                 helpStep == 3 ? classes.helpButton : "",
                                 helpStep == 3 ? classes.helpCloseButton : "",
                             )}
+                            id="clore-button"
                         >
                             {finishLabel}
                         </Button>
@@ -52,6 +53,7 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
                         helpStep == 1 ? classes.helpButton : "",
                         helpStep == 1 ? classes.helpAddButton : "",
                     )}
+                    id="add-button"
                 >
                     <img src={add} alt={t("accessibility.asset.mui-icon.add")} />
                     {addLabel}

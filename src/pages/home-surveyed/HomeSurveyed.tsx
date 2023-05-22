@@ -258,6 +258,7 @@ const HomeSurveyedPage = () => {
                             />
                         }
                         onClick={onDisconnect}
+                        id={"button-logout"}
                     >
                         {t("page.home.navigation.logout")}
                     </Button>

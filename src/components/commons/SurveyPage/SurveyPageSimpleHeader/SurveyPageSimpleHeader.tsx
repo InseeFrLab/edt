@@ -23,6 +23,7 @@ const SurveyPageSimpleHeader = (props: SurveyPageSimpleHeaderProps) => {
                     alt={t("accessibility.asset.mui-icon.close")}
                     className={classes.actionIcon}
                     onClick={onNavigateBack}
+                    id="close-button"
                 />
             </Box>
         </Box>
