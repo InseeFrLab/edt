@@ -21,13 +21,8 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
     const { t } = useTranslation();
     return (
         <>
-            {!isItDesktop && <Box className={classes.gap}></Box>}
             <FlexCenter
-                className={cx(
-                    classes.ButtonsBox,
-                    isItDesktop ? "" : classes.ButtonsBoxMobileTablet,
-                    isIOS && isMobile ? classes.buttonBoxPwa : "",
-                )}
+                className={cx(classes.ButtonsBox, isIOS && isMobile ? classes.buttonBoxPwa : "")}
             >
                 <>
                     {!addLabel && (
