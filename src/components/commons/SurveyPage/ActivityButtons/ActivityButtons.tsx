@@ -2,7 +2,7 @@ import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button } from "@mui/material";
 import add from "assets/illustration/mui-icon/add.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { isIOS } from "react-device-detect";
+import { isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { isDesktop } from "service/responsive";
 
@@ -26,7 +26,7 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
                 className={cx(
                     classes.ButtonsBox,
                     isItDesktop ? "" : classes.ButtonsBoxMobileTablet,
-                    isIOS ? classes.buttonBoxPwa : "",
+                    isIOS && isMobile ? classes.buttonBoxPwa : "",
                 )}
             >
                 <>
@@ -103,7 +103,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityButtons } })(theme => ({
         backgroundColor: important(theme.variables.white),
     },
     buttonBoxPwa: {
-        marginBottom: "1rem",
+        height: "4.5rem",
     },
 }));
 

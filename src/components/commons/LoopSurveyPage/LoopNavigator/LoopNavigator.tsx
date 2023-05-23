@@ -5,7 +5,7 @@ import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg"
 import done from "assets/illustration/mui-icon/done.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { useCallback } from "react";
-import { isIOS } from "react-device-detect";
+import { isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { isDesktop } from "service/responsive";
 
@@ -45,7 +45,6 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                 className={cx(
                     classes.validateButtonBox,
                     isItDesktop ? "" : classes.validateButtonBoxMobileTablet,
-                    isIOS ? classes.buttonBoxPwa : "",
                 )}
             >
                 <>
@@ -62,6 +61,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                             className={cx(
                                 classes.navButton,
                                 hasTwoButtons ? classes.navButtons : classes.singleNavButton,
+                                isIOS && isMobile ? classes.buttonBoxPwa : "",
                             )}
                             id="previous-button"
                         >
@@ -81,6 +81,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                             className={cx(
                                 classes.navButton,
                                 hasTwoButtons ? classes.navButtons : classes.singleNavButton,
+                                isIOS && isMobile ? classes.buttonBoxPwa : "",
                             )}
                             id="next-button"
                         >
@@ -95,6 +96,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                             className={cx(
                                 classes.navButton,
                                 hasTwoButtons ? classes.navButtons : classes.singleNavButton,
+                                isIOS && isMobile ? classes.buttonBoxPwa : "",
                             )}
                             id="validate-button"
                         >
@@ -122,11 +124,11 @@ const useStyles = makeStylesEdt({ "name": { LoopNavigator } })(theme => ({
         left: "0",
     },
     buttonBoxPwa: {
-        marginBottom: "1rem",
+        height: "4.5rem",
     },
     navButton: {
         borderRadius: "0",
-        padding: "1rem",
+        height: "3.75rem",
     },
     navButtons: {
         width: "50%",
