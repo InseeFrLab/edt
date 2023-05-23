@@ -28,10 +28,10 @@ import {
     navToHelp,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
-import { isDesktop, isMobile, isTablet } from "service/responsive";
+import { isDesktop, isMobile, isPwa, isTablet } from "service/responsive";
 import { mockActivitiesRoutesOrGaps } from "service/survey-activity-service";
 import { v4 as uuidv4 } from "uuid";
-import { isMobile as isMobileNav, isBrowser } from "react-device-detect";
+import { isMobile as isMobileNav, isBrowser, isIOS } from "react-device-detect";
 
 const HelpActivity = () => {
     const navigate = useNavigate();
@@ -210,10 +210,12 @@ const HelpActivity = () => {
         );
     };
 
+    const heightClass = isPwa() ? classes.fullHeight : classes.fullHeightNav;
+
     return (
-        <Box>
+        <Box className={classes.root}>
             {renderHelp()}
-            <Box className={classes.surveyPageBox}>
+            <Box className={!isPwa() && isIOS ? classes.surveyPageBoxTablet : classes.surveyPageBox}>
                 {(isItDesktop || !isSubchildDisplayed) && (
                     <Box className={classes.innerSurveyPageBox}>
                         <SurveyPage
@@ -240,14 +242,14 @@ const HelpActivity = () => {
                                 className={
                                     isItDesktop && isSubchildDisplayed
                                         ? classes.outerContentBox
-                                        : classes.fullHeight
+                                        : heightClass
                                 }
                             >
                                 <Box
                                     className={
                                         isItDesktop && isSubchildDisplayed
                                             ? classes.innerContentBox
-                                            : classes.fullHeight
+                                            : heightClass
                                     }
                                 >
                                     <Box className={classes.innerContentScroll}>
@@ -306,6 +308,11 @@ const HelpActivity = () => {
 };
 
 const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
+    root: {
+        height: important("100vh"),
+        maxHeight: important("100vh"),
+        display: important("flex"),
+    },
     infoBox: {
         width: "350px",
         padding: "1rem 0.25rem 0.5rem 2rem",
@@ -319,6 +326,13 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         fontWeight: "bold",
     },
     surveyPageBox: {
+        flexGrow: "1",
+        display: "flex",
+        alignItems: "flex-start",
+        overflow: "hidden",
+        height: "100vh",
+    },
+    surveyPageBoxTablet: {
         flexGrow: "1",
         display: "flex",
         alignItems: "flex-start",
@@ -355,7 +369,7 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
     },
     innerSurveyPageBox: {
         flexGrow: "1",
-        height: "100vh",
+        height: "100%",
         display: "flex",
     },
     fullHeight: {
@@ -364,7 +378,11 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         justifyContent: "center",
         flexGrow: "1",
     },
-
+    fullHeightNav: {
+        display: "flex",
+        justifyContent: "center",
+        flexGrow: "1",
+    },
     headerHelpBox: {
         display: "flex",
     },

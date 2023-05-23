@@ -17,7 +17,6 @@ interface ActivityButtonsProps {
 const ActivityButtons = (props: ActivityButtonsProps) => {
     const { onClickFinish, onClickAdd, finishLabel, addLabel, helpStep } = props;
     const { classes, cx } = useStyles();
-    const isItDesktop = isDesktop();
     const { t } = useTranslation();
     return (
         <>

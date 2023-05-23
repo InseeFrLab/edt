@@ -40,7 +40,7 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
-import { isDesktop } from "service/responsive";
+import { isDesktop, isPwa } from "service/responsive";
 import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
 import { getPrintedFirstName, getSurveyDate, saveData, setValue } from "service/survey-service";
 import { v4 as uuidv4 } from "uuid";
@@ -341,6 +341,8 @@ const ActivityOrRoutePlannerPage = () => {
         typeTitle: "h1",
     };
 
+    const heightClass = isPwa() ? classes.fullHeight : classes.fullHeightNav;
+
     return (
         <>
             <Box className={classes.surveyPageBox}>
@@ -369,14 +371,14 @@ const ActivityOrRoutePlannerPage = () => {
                                 className={
                                     isItDesktop && isSubchildDisplayed
                                         ? classes.outerContentBox
-                                        : classes.fullHeight
+                                        : heightClass
                                 }
                             >
                                 <Box
                                     className={
                                         isItDesktop && isSubchildDisplayed
                                             ? classes.innerContentBox
-                                            : classes.fullHeight
+                                            : heightClass
                                     }
                                 >
                                     <Box className={classes.innerContentScroll}>
@@ -592,6 +594,11 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
     },
     fullHeight: {
         height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        flexGrow: "1",
+    },
+    fullHeightNav: {
         display: "flex",
         justifyContent: "center",
         flexGrow: "1",

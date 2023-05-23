@@ -124,7 +124,7 @@ const useStyles = makeStylesEdt({ "name": { LoopNavigator } })(theme => ({
         left: "0",
     },
     buttonBoxPwa: {
-        height: "4.5rem",
+        height: "3.75rem",
     },
     navButton: {
         borderRadius: "0",
