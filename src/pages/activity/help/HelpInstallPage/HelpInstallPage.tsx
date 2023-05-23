@@ -25,40 +25,42 @@ const HelpInstallPage = () => {
 
     return (
         <Box className={cx(classes.contentBox, isNavMobile ? classes.contentBoxMobile : "")}>
-            <Box className={classes.installBox}>
-                <SurveyPageSimpleHeader
-                    onNavigateBack={useCallback(() => navToHome(), [])}
-                    backgroundWhite={false}
-                />
-                <FlexCenter className={classes.illustrationBox}>
-                    <img src={install} alt={t("accessibility.asset.mui-icon.download")} />
-                </FlexCenter>
-                <Box className={classes.textBox}>
-                    <h2>{t("page.install.title")}</h2>
-                    <p>{t("page.install.subtitle")}</p>
-                    <p>{t("page.install.info")}</p>
-                </Box>
-                <Box className={classes.actionsBox}>
-                    <Box className={classes.actionBox}>
-                        <Button className={classes.button} variant="contained" onClick={navToHelp}>
-                            {t("common.navigation.next")}
-                        </Button>
+            <Box className={classes.innerContentBox}>
+                <Box className={classes.installBox}>
+                    <SurveyPageSimpleHeader
+                        onNavigateBack={useCallback(() => navToHome(), [])}
+                        backgroundWhite={false}
+                    />
+                    <FlexCenter className={classes.illustrationBox}>
+                        <img src={install} alt={t("accessibility.asset.mui-icon.download")} />
+                    </FlexCenter>
+                    <Box className={classes.textBox}>
+                        <h2>{t("page.install.title")}</h2>
+                        <p>{t("page.install.subtitle")}</p>
+                        <p>{t("page.install.info")}</p>
+                    </Box>
+                    <Box className={classes.actionsBox}>
+                        <Box className={classes.actionBox}>
+                            <Button className={classes.button} variant="contained" onClick={navToHelp}>
+                                {t("common.navigation.next")}
+                            </Button>
+                        </Box>
                     </Box>
                 </Box>
+                <Paper
+                    className={cx(classes.footerBox, isNavMobile ? classes.footerBoxMobile : "")}
+                    component="footer"
+                    square
+                    variant="outlined"
+                >
+                    <Box>
+                        <Typography variant="caption" color="initial">
+                            <b>{t("common.version")}:</b> {packageJson.version} -{" "}
+                            {packageJson.dateVersion}
+                        </Typography>
+                    </Box>
+                </Paper>
             </Box>
-            <br />
-            <Paper
-                className={cx(classes.footerBox, isNavMobile ? classes.footerBoxMobile : "")}
-                component="footer"
-                square
-                variant="outlined"
-            >
-                <Box>
-                    <Typography variant="caption" color="initial">
-                        <b>{t("common.version")}:</b> {packageJson.version} - {packageJson.dateVersion}
-                    </Typography>
-                </Box>
-            </Paper>
         </Box>
     );
 };
@@ -69,12 +71,15 @@ const useStyles = makeStylesEdt({ "name": { HelpInstallPage } })(theme => ({
     },
     contentBox: {
         height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
     },
     contentBoxMobile: {
         height: "95vh",
+    },
+    innerContentBox: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        height: "100%",
     },
     illustrationBox: {},
     textBox: { textAlign: "center" },
