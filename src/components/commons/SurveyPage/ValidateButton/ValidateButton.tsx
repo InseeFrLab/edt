@@ -17,14 +17,7 @@ const ValidateButton = (props: ValidateButtonProps) => {
 
     return (
         <>
-            {!isItDesktop && <Box className={cx(classes.gap, isIOS ? classes.buttonBoxPwa : "")}></Box>}
-            <FlexCenter
-                className={cx(
-                    disabled ? classes.invalidButtonBox : classes.validateButtonBox,
-                    !isItDesktop && disabled ? classes.invalidButtonBoxMobileTablet : "",
-                    !isItDesktop && !disabled ? classes.validateButtonBoxMobileTablet : "",
-                )}
-            >
+            <FlexCenter className={cx(disabled ? classes.invalidButtonBox : classes.validateButtonBox)}>
                 <Button
                     id={"validateButton"}
                     variant="contained"
@@ -45,11 +38,6 @@ const useStyles = makeStylesEdt({ "name": { NavButton: ValidateButton } })(theme
         width: "100%",
         backgroundColor: theme.variables.white,
     },
-    validateButtonBoxMobileTablet: {
-        position: "fixed",
-        left: "0",
-        bottom: "0",
-    },
     validateButton: {
         width: "80%",
         maxWidth: "18rem",
@@ -58,11 +46,6 @@ const useStyles = makeStylesEdt({ "name": { NavButton: ValidateButton } })(theme
     invalidButtonBox: {
         width: "100%",
         backgroundColor: theme.variables.white,
-    },
-    invalidButtonBoxMobileTablet: {
-        position: "fixed",
-        bottom: "0",
-        left: "0",
     },
     invalidButton: {
         width: "80%",
