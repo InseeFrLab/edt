@@ -33,6 +33,7 @@ const DayCard = (props: DayCardProps) => {
                 className={cx(classes.dayCardBox, isClose ? classes.closeCardBox : "")}
                 onClick={onClick}
                 tabIndex={tabIndex}
+                id={"dayCard-" + tabIndex}
             >
                 <Box className={classes.leftBox}>
                     <Box className={cx(classes.iconBox, isClose ? classes.closeIconBox : "")}>
@@ -46,8 +47,8 @@ const DayCard = (props: DayCardProps) => {
                         />
                     </Box>
                     <Box>
-                        <Box>{surveyDate}</Box>
-                        <Box>{firstName}</Box>
+                        <Box id="surveyDate-text">{surveyDate}</Box>
+                        <Box id="firstName-text">{firstName}</Box>
                     </Box>
                 </Box>
                 <Box className={cx(classes.scoreBox)}>

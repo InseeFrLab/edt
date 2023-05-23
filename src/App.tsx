@@ -1,6 +1,7 @@
 import "App.scss";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
+import "i18n/i18n";
 import { useAuth } from "oidc-react";
 import ErrorPage from "pages/error/Error";
 import { useEffect, useState } from "react";

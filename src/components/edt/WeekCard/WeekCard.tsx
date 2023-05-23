@@ -26,6 +26,7 @@ const WeekCard = (props: WeekCardProps) => {
                 className={cx(classes.weekCardBox, isClose ? classes.closeCardBox : "")}
                 onClick={onClick}
                 tabIndex={tabIndex}
+                id={"weekCard-" + tabIndex}
             >
                 <Box className={classes.leftBox}>
                     <Box className={cx(classes.iconBox, isClose ? classes.closeIconBox : "")}>
@@ -35,8 +36,8 @@ const WeekCard = (props: WeekCardProps) => {
                         />
                     </Box>
                     <Box>
-                        <Box>{surveyDate}</Box>
-                        <Box>{firstName}</Box>
+                        <Box id="surveyDate-text">{surveyDate}</Box>
+                        <Box id="firstName-text">{firstName}</Box>
                     </Box>
                 </Box>
                 <Box className={classes.scoreBox}></Box>

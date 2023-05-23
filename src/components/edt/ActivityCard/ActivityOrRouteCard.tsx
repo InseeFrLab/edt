@@ -260,6 +260,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                 aria-labelledby={labelledBy}
                 aria-describedby={describedBy}
                 tabIndex={index}
+                id={"activityOrRouteCard-" + index}
             >
                 <Box className={classes.timeBox}>
                     <Box className={classes.hour}>{activityOrRoute.startTime}</Box>

@@ -8,8 +8,8 @@ import { AuthContextProps, User } from "oidc-react";
 import { getAuth, getUserToken } from "./user-service";
 import jwt, { JwtPayload } from "jwt-decode";
 
-const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
-const stromaeBackOfficeApiBaseUrl = process.env.REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL;
+export const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
+export const stromaeBackOfficeApiBaseUrl = process.env.REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL;
 
 axios.interceptors.response.use(
     response => {
@@ -24,7 +24,7 @@ axios.interceptors.response.use(
     },
 );
 
-const getHeader = (userToken?: string) => {
+export const getHeader = (userToken?: string) => {
     return {
         headers: {
             "Authorization": "Bearer " + (userToken ?? getUserToken()),

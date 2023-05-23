@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import App from "App.tsx";
+import App from "App";
 
 jest.mock("oidc-react", () => ({
     useAuth: () => {
@@ -25,6 +25,16 @@ jest.mock("react-i18next", () => ({
                     }),
             },
         };
+    },
+    withTranslation: () => (Component: any) => {
+        Component.defaultProps = { ...Component.defaultProps, t: () => "" };
+        return Component;
+    },
+    initReactI18next: {
+        type: "3rdParty",
+        init: () => {
+            console.log("");
+        },
     },
 }));
 

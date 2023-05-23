@@ -63,6 +63,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                                 classes.navButton,
                                 hasTwoButtons ? classes.navButtons : classes.singleNavButton,
                             )}
+                            id="previous-button"
                         >
                             <Box className={classes.label}>{previousLabel}</Box>
                         </Button>
@@ -81,6 +82,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                                 classes.navButton,
                                 hasTwoButtons ? classes.navButtons : classes.singleNavButton,
                             )}
+                            id="next-button"
                         >
                             <Box className={classes.label}>{nextLabel}</Box>
                         </Button>
@@ -94,6 +96,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                                 classes.navButton,
                                 hasTwoButtons ? classes.navButtons : classes.singleNavButton,
                             )}
+                            id="validate-button"
                         >
                             <Box className={classes.label}>{validateLabel}</Box>
                         </Button>

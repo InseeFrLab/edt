@@ -5,7 +5,7 @@
     "coverageDirectory": "coverage",
     "coverageReporters": ["lcov"],
     "moduleFileExtensions": ["js", "jsx", "ts", "tsx", "json", "node"],
-    "modulePathIgnorePatterns": ["<rootDir>/dist/", "node_modules"],
+    "modulePathIgnorePatterns": ["<rootDir>/dist/", "node_modules", "<rootDir>/e2e/dist/"],
     "modulePaths": ["<rootDir>/src"],
     "transform": {
         "\\.[jt]sx?$": "babel-jest",
@@ -20,7 +20,8 @@
         "\\.(css|less|scss|sass|png|img)$": "identity-obj-proxy",
         "^react-markdown$": "<rootDir>/node_modules/react-markdown/react-markdown.min.js",
         "^@inseefr/lunatic$": "<rootDir>/node_modules/@inseefr/lunatic",
-        "axios": "axios/dist/node/axios.cjs"
+        "axios": "axios/dist/node/axios.cjs",
+        "^@mui/material$": "<rootDir>/node_modules/@mui/material"
     },
     "transformIgnorePatterns": ["node_modules/(?!(axios)/)", "<rootDir>/node_modules/"],
     "setupFiles": ["fake-indexeddb/auto"]

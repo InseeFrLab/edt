@@ -168,6 +168,7 @@ const EndSurveyPage = () => {
                                 endIcon={
                                     <img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />
                                 }
+                                id="send-button"
                             >
                                 {t("common.navigation.send")}
                             </Button>
@@ -180,6 +181,7 @@ const EndSurveyPage = () => {
                                     <img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />
                                 }
                                 disabled={isDemoMode ? false : true}
+                                id="send-button"
                             >
                                 {t("common.navigation.send")}
                             </Button>
