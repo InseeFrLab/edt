@@ -338,6 +338,7 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         alignItems: "flex-start",
         overflow: "hidden",
         height: "100vh",
+        maxHeight: "94vh",
     },
     innerContentBox: {
         border: "1px solid transparent",

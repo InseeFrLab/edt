@@ -44,6 +44,7 @@ import { isDesktop, isPwa } from "service/responsive";
 import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
 import { getPrintedFirstName, getSurveyDate, saveData, setValue } from "service/survey-service";
 import { v4 as uuidv4 } from "uuid";
+import { isIOS } from "react-device-detect";
 
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
@@ -345,7 +346,12 @@ const ActivityOrRoutePlannerPage = () => {
 
     return (
         <>
-            <Box className={classes.surveyPageBox}>
+            <Box
+                className={cx(
+                    classes.surveyPageBox,
+                    !isPwa() && isIOS ? classes.surveyPageBoxTablet : "",
+                )}
+            >
                 {(isItDesktop || !isSubchildDisplayed) && (
                     <Box className={classes.innerSurveyPageBox}>
                         <SurveyPage
@@ -547,6 +553,11 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
         display: "flex",
         alignItems: "flex-start",
         overflow: "auto",
+        height: "100%",
+    },
+    surveyPageBoxTablet: {
+        height: "100%",
+        maxHeight: "87vh",
     },
     outletBoxDesktop: {
         flexGrow: "12",

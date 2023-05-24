@@ -255,7 +255,7 @@ const HelpSubCategoryActivity = () => {
     };
 
     return (
-        <Box>
+        <Box className={classes.root}>
             {renderHelp()}
             <LoopSurveyPage
                 onNext={useCallback(
@@ -305,6 +305,10 @@ const HelpSubCategoryActivity = () => {
 };
 
 const useStyles = makeStylesEdt({ "name": { HelpSubCategoryActivity } })(theme => ({
+    root: {
+        height: "100vh",
+        maxHeight: "100vh",
+    },
     headerHelpBox: {
         display: "flex",
     },

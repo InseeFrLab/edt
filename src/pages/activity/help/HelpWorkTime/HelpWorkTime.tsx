@@ -197,7 +197,7 @@ const HelpWorkTime = () => {
     };
 
     return (
-        <Box>
+        <Box className={classes.root}>
             {renderHelp()}
             <SurveyPage
                 validate={useCallback(() => console.log(""), [])}
@@ -226,6 +226,10 @@ const HelpWorkTime = () => {
 };
 
 const useStyles = makeStylesEdt({ "name": { HelpWorkTime } })(theme => ({
+    root: {
+        height: "100vh",
+        maxHeight: "100vh",
+    },
     headerHelpBox: {
         display: "flex",
     },

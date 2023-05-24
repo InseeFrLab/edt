@@ -174,7 +174,7 @@ const HelpCheckbox = () => {
     };
 
     return (
-        <Box>
+        <Box className={classes.root}>
             {renderHelp()}
             <LoopSurveyPage
                 onNext={useCallback(
@@ -210,6 +210,10 @@ const HelpCheckbox = () => {
 };
 
 const useStyles = makeStylesEdt({ "name": { HelpCheckbox } })(theme => ({
+    root: {
+        height: "100vh",
+        maxHeight: "100vh",
+    },
     headerHelpBox: {
         display: "flex",
     },

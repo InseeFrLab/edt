@@ -21,6 +21,9 @@ import { getLanguage } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import SurveyPage from "../SurveyPage";
+import { isIOS, isAndroid, isDesktop } from "react-device-detect";
+import { isPwa } from "service/responsive";
+import { Box } from "@mui/material";
 
 export interface SurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
@@ -50,7 +53,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
-    const { classes } = useStyles();
+    const { classes, cx } = useStyles();
 
     const stepData = getStepData(currentPage);
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
@@ -138,25 +141,34 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const surveyPageProps = isStep ? surveyPageStepProps : surveyPageNotStepProps;
 
     return (
-        <SurveyPage {...surveyPageProps}>
-            <FlexCenter className={withBottomPadding ? classes.bottomPadding : ""}>
-                <FelicitationModal
-                    isModalDisplayed={isModalDisplayed}
-                    onCompleteCallBack={useCallback(
-                        () => validateAndNav(true, setIsModalDisplayed),
-                        [isModalDisplayed],
-                    )}
-                    content={t("component.modal-edt.modal-felicitation.activity-content")}
-                />
-                <OrchestratorForStories {...orchestratorProps} />
-            </FlexCenter>
-        </SurveyPage>
+        <Box className={cx(!isPwa() && isIOS ? classes.pageMobileTablet : classes.pageDesktop)}>
+            <SurveyPage {...surveyPageProps}>
+                <FlexCenter className={withBottomPadding ? classes.bottomPadding : ""}>
+                    <FelicitationModal
+                        isModalDisplayed={isModalDisplayed}
+                        onCompleteCallBack={useCallback(
+                            () => validateAndNav(true, setIsModalDisplayed),
+                            [isModalDisplayed],
+                        )}
+                        content={t("component.modal-edt.modal-felicitation.activity-content")}
+                    />
+                    <OrchestratorForStories {...orchestratorProps} />
+                </FlexCenter>
+            </SurveyPage>
+        </Box>
     );
 };
 
 const useStyles = makeStylesEdt({ "name": { SurveyPageStep } })(() => ({
     bottomPadding: {
         paddingBottom: "6rem",
+    },
+    pageDesktop: {
+        height: "100%",
+    },
+    pageMobileTablet: {
+        height: "100%",
+        maxHeight: "87vh",
     },
 }));
 

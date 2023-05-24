@@ -19,6 +19,10 @@ import {
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isTablet } from "service/responsive";
 import { getData, getSource, getTabsData, surveysIds } from "service/survey-service";
+import { isIOS, isAndroid, isDesktop } from "react-device-detect";
+import { isPwa } from "service/responsive";
+import { Box } from "@mui/material";
+import { makeStylesEdt, WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
 
 const WorkTimePage = () => {
     let { idSurvey } = useParams();
@@ -35,6 +39,8 @@ const WorkTimePage = () => {
     const maxTabsPerRow = isTablet() ? 3 : 4;
 
     const context: OrchestratorContext = useOutletContext();
+    const { classes, cx } = useStyles();
+
     setEnviro(context, useNavigate(), callbackHolder);
 
     useEffect(() => {
@@ -60,7 +66,7 @@ const WorkTimePage = () => {
     }, []);
 
     return (
-        <>
+        <Box className={cx(!isPwa() && isIOS ? classes.pageMobileTablet : classes.pageMobileTablet)}>
             <Default>
                 <SurveySelecter
                     id={t("accessibility.component.survey-selecter.id")}
@@ -81,8 +87,18 @@ const WorkTimePage = () => {
                     surveyRootPage: surveyRootPage,
                 }}
             />
-        </>
+        </Box>
     );
 };
+
+const useStyles = makeStylesEdt({ "name": { WorkTimePage } })(() => ({
+    pageDesktop: {
+        height: "100%",
+    },
+    pageMobileTablet: {
+        height: "100%",
+        maxHeight: "87vh",
+    },
+}));
 
 export default WorkTimePage;
