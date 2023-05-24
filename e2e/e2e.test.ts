@@ -3,9 +3,6 @@ import { getUserToken } from "./../src/service/user-service";
 import puppeteer from "puppeteer";
 import userSurveyInfo from "./mocks/userSurveyInfo.json";
 import userData from "./mocks/userData.json";
-import activitySurveySource from "./mocks/activitySurveySource.json";
-import workTimeSurveySource from "./mocks/workTimeSurveySource.json";
-import { SourcesEnum } from "../src/enumerations/SourcesEnum";
 
 jest.mock("axios");
 
@@ -47,7 +44,7 @@ describe("App.ts", () => {
         browser = await puppeteer.launch({
             headless: false,
             product: "chrome",
-            executablePath: "node_modules/chromium/lib/chromium/chrome-win/chrome.exe",
+            executablePath: process.env.REACT_APP_CHROMIUM_PATH,
             devtools: true,
         });
         page = await browser.newPage();
@@ -67,7 +64,7 @@ describe("App.ts", () => {
     });
 
     it("redirect to keycloak when user connect", async () => {
-        await page.goto("http://localhost:3000");
+        await page.goto(urlHost);
         await page.waitForSelector("#username");
 
         await page.$eval("#username", el => (el.value = ""));
