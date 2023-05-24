@@ -371,11 +371,12 @@ const getTotalTimeOfActivities = (idSurvey: string, t: TFunction<"translation", 
         }
     }
     if (activitiesRoutesOrGaps.length == 0) return 0;
-    else return totalTimeActivities - totalTimeGap;
+    else return totalTimeActivities;
 };
 
 const getScore = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
     const totalHourActivities = getTotalTimeOfActivities(idSurvey, t) / 60;
+    console.log(getTotalTimeOfActivities(idSurvey, t));
     const percentage = (totalHourActivities / 24) * 100;
     return totalHourActivities > 0 ? Math.trunc(percentage) : 0;
 };
