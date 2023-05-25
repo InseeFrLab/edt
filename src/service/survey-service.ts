@@ -44,6 +44,8 @@ import { getUserRights } from "./user-service";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
+const NUM_MAX_ACTIVITY_SURVEYS = process.env.REACT_APP_NUM_ACTIVITY_SURVEYS ?? 6;
+const NUM_MAX_WORKTIME_SURVEYS = process.env.REACT_APP_NUM_WORKTIME_SURVEYS ?? 2;
 
 let referentielsData: ReferentielData;
 let sourcesData: SourceData;
@@ -153,9 +155,27 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
     });
 };
 
+const initializeActivitySurveysIds = () => {
+    let activitySurveysIds: string[] = [];
+    for (let i = 1; i <= NUM_MAX_ACTIVITY_SURVEYS; i++) {
+        activitySurveysIds.push("activitySurvey" + i);
+    }
+    return activitySurveysIds;
+};
+
+const initializeWorkTimeSurveysIds = () => {
+    let workTimeSurveysIds: string[] = [];
+
+    for (let i = 1; i <= NUM_MAX_WORKTIME_SURVEYS; i++) {
+        workTimeSurveysIds.push("workTimeSurvey" + i);
+    }
+    return workTimeSurveysIds;
+};
+
 const initializeSurveysIdsAndSourcesDemo = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
-    let activitySurveysIds: string[] = ["activitySurvey1", "activitySurvey2"];
-    let workingTimeSurveysIds: string[] = ["workTimeSurvey1"];
+    let activitySurveysIds: string[] = initializeActivitySurveysIds();
+    let workingTimeSurveysIds: string[] = initializeWorkTimeSurveysIds();
+
     let distinctSources = [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY];
     let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
     const surveysIds: SurveysIds = {
