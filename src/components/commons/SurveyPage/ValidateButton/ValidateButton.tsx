@@ -1,8 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { isIOS } from "react-device-detect";
-import { isDesktop } from "service/responsive";
 
 interface ValidateButtonProps {
     onClick(): void;
@@ -13,7 +11,6 @@ interface ValidateButtonProps {
 const ValidateButton = (props: ValidateButtonProps) => {
     const { text, onClick, disabled } = props;
     const { classes, cx } = useStyles();
-    const isItDesktop = isDesktop();
 
     return (
         <>

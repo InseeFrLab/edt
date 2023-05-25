@@ -1,10 +1,9 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import add from "assets/illustration/mui-icon/add.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { isDesktop } from "service/responsive";
 
 interface ActivityButtonsProps {
     onClickFinish(): void;

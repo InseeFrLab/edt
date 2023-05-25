@@ -1,3 +1,5 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { Box } from "@mui/material";
 import { Default } from "components/commons/Responsive/Responsive";
 import SurveySelecter from "components/edt/SurveySelecter/SurveySelecter";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -8,6 +10,7 @@ import { TabData } from "interface/component/Component";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import { useCallback, useEffect } from "react";
+import { isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import {
@@ -17,12 +20,8 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
-import { isTablet } from "service/responsive";
+import { isPwa, isTablet } from "service/responsive";
 import { getData, getSource, getTabsData, surveysIds } from "service/survey-service";
-import { isIOS, isAndroid, isDesktop } from "react-device-detect";
-import { isPwa } from "service/responsive";
-import { Box } from "@mui/material";
-import { makeStylesEdt, WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
 
 const WorkTimePage = () => {
     let { idSurvey } = useParams();

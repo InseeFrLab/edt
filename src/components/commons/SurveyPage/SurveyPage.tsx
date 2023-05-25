@@ -14,8 +14,6 @@ import { useTranslation } from "react-i18next";
 import { getLastCompletedStep } from "service/navigation-service";
 import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
 import { getScore } from "service/survey-activity-service";
-import { isIOS, isAndroid, isDesktop } from "react-device-detect";
-import { isPwa } from "service/responsive";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;

@@ -1,4 +1,5 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { Box } from "@mui/material";
 import extension from "assets/illustration/mui-icon/extension.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
@@ -7,6 +8,7 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction, useCallback, useState } from "react";
+import { isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router";
 import {
@@ -18,12 +20,10 @@ import {
     validateAndNextStep,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
+import { isPwa } from "service/responsive";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import SurveyPage from "../SurveyPage";
-import { isIOS, isAndroid, isDesktop } from "react-device-detect";
-import { isPwa } from "service/responsive";
-import { Box } from "@mui/material";
 
 export interface SurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;

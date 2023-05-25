@@ -360,13 +360,10 @@ const getLabelFromTime = (hours: number, minutes: number) => {
 
 const getTotalTimeOfActivities = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
     const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey);
-    let totalTimeGap = 0;
     let totalTimeActivities = 0;
 
     for (let activityRouteOrGap of activitiesRoutesOrGaps) {
-        if (activityRouteOrGap.isGap) {
-            totalTimeGap += getActivityOrRouteDuration(activityRouteOrGap, MINUTE_LABEL);
-        } else {
+        if (!activityRouteOrGap.isGap) {
             totalTimeActivities += getActivityOrRouteDuration(activityRouteOrGap, MINUTE_LABEL);
         }
     }
@@ -376,7 +373,6 @@ const getTotalTimeOfActivities = (idSurvey: string, t: TFunction<"translation", 
 
 const getScore = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
     const totalHourActivities = getTotalTimeOfActivities(idSurvey, t) / 60;
-    console.log(getTotalTimeOfActivities(idSurvey, t));
     const percentage = (totalHourActivities / 24) * 100;
     return totalHourActivities > 0 ? Math.trunc(percentage) : 0;
 };
