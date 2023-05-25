@@ -108,7 +108,9 @@ const HelpCheckbox = () => {
                                 />
                             }
                         >
-                            {t("common.navigation.skip")}
+                            {isPageGlobal() && !isActivityPage()
+                                ? t("common.navigation.skip")
+                                : t("common.navigation.skip-final")}
                         </Button>
                     </Box>
                     {renderHelpStep()}

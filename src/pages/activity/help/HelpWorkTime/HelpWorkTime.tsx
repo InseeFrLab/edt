@@ -112,6 +112,8 @@ const HelpWorkTime = () => {
         helpStep < 4 ? setHelpStep(helpStep + 1) : navToNextPage();
     }, [helpStep]);
 
+    const helpPageGlobal = localStorage.getItem("IS_GLOBAL");
+
     const renderHelp = () => {
         return (
             <Modal disableEnforceFocus open={true}>
@@ -160,7 +162,9 @@ const HelpWorkTime = () => {
                                 />
                             }
                         >
-                            {t("common.navigation.skip")}
+                            {helpPageGlobal && helpStep == 4
+                                ? t("common.navigation.skip-final")
+                                : t("common.navigation.skip")}
                         </Button>
                     </Box>
                     {renderHelpStep()}
