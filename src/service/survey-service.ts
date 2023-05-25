@@ -15,7 +15,7 @@ import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { t } from "i18next";
 import { TabData } from "interface/component/Component";
-import { StateData, SurveyData } from "interface/entity/Api";
+import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
 import {
     Collected,
     LunaticData,
@@ -44,12 +44,16 @@ import { getUserRights } from "./user-service";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
+
 const NUM_MAX_ACTIVITY_SURVEYS = process.env.REACT_APP_NUM_ACTIVITY_SURVEYS ?? 6;
 const NUM_MAX_WORKTIME_SURVEYS = process.env.REACT_APP_NUM_WORKTIME_SURVEYS ?? 2;
 
 let referentielsData: ReferentielData;
 let sourcesData: SourceData;
 let surveysIds: SurveysIds;
+let userDatasActivity: UserSurveys[] = [];
+let userDatasWorkTime: UserSurveys[] = [];
+let userDatas: UserSurveys[] = [];
 
 const toIgnoreForRoute = [
     FieldNameEnum.PLACE,
@@ -106,15 +110,24 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                         new Set(userSurveyData.map(surveyData => surveyData.questionnaireModelId)),
                     );
                     let activitySurveysIds: string[] = [];
+                    let userSurveyDataActivity: UserSurveys[] = [];
                     let workingTimeSurveysIds: string[] = [];
+                    let userSurveyDataWorkTime: UserSurveys[] = [];
                     userSurveyData.forEach(surveyData => {
                         if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
                             activitySurveysIds.push(surveyData.surveyUnitId);
+                            userSurveyDataActivity.push(surveyData);
+                            userDatas.push(surveyData);
                         }
                         if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
                             workingTimeSurveysIds.push(surveyData.surveyUnitId);
+                            userSurveyDataWorkTime.push(surveyData);
+                            userDatas.push(surveyData);
                         }
                     });
+                    userDatasActivity = userSurveyDataActivity;
+                    userDatasWorkTime = userSurveyDataWorkTime;
+
                     let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
                     const surveysIds: SurveysIds = {
                         [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
@@ -131,6 +144,7 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                             saveSources(sources);
                         }),
                     ];
+
                     return Promise.all(innerPromises);
                 }),
             );
@@ -155,26 +169,43 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
     });
 };
 
-const initializeActivitySurveysIds = () => {
-    let activitySurveysIds: string[] = [];
-    for (let i = 1; i <= NUM_MAX_ACTIVITY_SURVEYS; i++) {
-        activitySurveysIds.push("activitySurvey" + i);
-    }
-    return activitySurveysIds;
-};
-
-const initializeWorkTimeSurveysIds = () => {
-    let workTimeSurveysIds: string[] = [];
-
-    for (let i = 1; i <= NUM_MAX_WORKTIME_SURVEYS; i++) {
-        workTimeSurveysIds.push("workTimeSurvey" + i);
-    }
-    return workTimeSurveysIds;
-};
-
 const initializeSurveysIdsAndSourcesDemo = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
-    let activitySurveysIds: string[] = initializeActivitySurveysIds();
-    let workingTimeSurveysIds: string[] = initializeWorkTimeSurveysIds();
+    let activitySurveysIds: string[] = [];
+    userDatasActivity = [];
+    let numInterviewer = 0;
+    for (let i = 1; i <= Number(NUM_MAX_ACTIVITY_SURVEYS); i++) {
+        if (i % 2 != 0) {
+            numInterviewer += 1;
+        }
+        const userSurvey: UserSurveys = {
+            interviewerId: "interviewer" + numInterviewer,
+            surveyUnitId: "activitySurvey" + i,
+            questionnaireModelId: SourcesEnum.ACTIVITY_SURVEY,
+            campaignId: "",
+            id: i,
+            reviewerId: "",
+        };
+        activitySurveysIds.push("activitySurvey" + i);
+        userDatasActivity.push(userSurvey);
+        userDatas.push(userSurvey);
+    }
+    numInterviewer = 0;
+    let workingTimeSurveysIds: string[] = [];
+    userDatasWorkTime = [];
+
+    for (let i = 1; i <= Number(NUM_MAX_WORKTIME_SURVEYS); i++) {
+        const userSurvey: UserSurveys = {
+            interviewerId: "interviewer" + i,
+            surveyUnitId: "workTimeSurvey" + i,
+            questionnaireModelId: SourcesEnum.WORK_TIME_SURVEY,
+            campaignId: "",
+            id: i,
+            reviewerId: "",
+        };
+        workingTimeSurveysIds.push("workTimeSurvey" + i);
+        userDatasWorkTime.push(userSurvey);
+        userDatas.push(userSurvey);
+    }
 
     let distinctSources = [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY];
     let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
@@ -355,6 +386,14 @@ const saveSurveysIds = (data: SurveysIds): Promise<SurveysIds> => {
         surveysIds = data;
         return data;
     });
+};
+
+const getUserDatasActivity = () => {
+    return userDatasActivity;
+};
+
+const getUserDatasWorkTime = () => {
+    return userDatasWorkTime;
 };
 
 const addToSecondaryActivityReferentiel = (
@@ -542,7 +581,19 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
         const splittedDate = savedSurveyDate.split("-");
         return capitalizedDayName + " " + [splittedDate[2], splittedDate[1]].join("/");
     } else {
-        return label + " 1";
+        const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+        if (isDemoMode) {
+            const dataUserSurvey = userDatas.filter(data => data.surveyUnitId == idSurvey)[0];
+            const indexInterviewerId = userDatas
+                .filter(
+                    data =>
+                        data.interviewerId == dataUserSurvey?.interviewerId &&
+                        data.questionnaireModelId == dataUserSurvey?.questionnaireModelId,
+                )
+                .map(data => data.surveyUnitId)
+                .indexOf(idSurvey);
+            return label + " " + (indexInterviewerId + 1);
+        } else return label + " 1";
     }
 };
 
@@ -553,11 +604,17 @@ const getFullFrenchDate = (surveyDate: string): string => {
 };
 
 const getPersonNumber = (idSurvey: string) => {
+    const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+
     const index =
         surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey) !== -1
             ? surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey)
             : surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].indexOf(idSurvey);
-    return index + 1;
+
+    const interviewerId = userDatas.filter(data => data.surveyUnitId == idSurvey)[0]?.interviewerId;
+    const indexDemo = interviewerId?.split("interviewer")[1];
+
+    return isDemoMode ? indexDemo : index + 1;
 };
 
 export {
@@ -586,4 +643,6 @@ export {
     addToSecondaryActivityReferentiel,
     addToAutocompleteActivityReferentiel,
     initializeSurveysDatasCache,
+    getUserDatasActivity,
+    getUserDatasWorkTime,
 };

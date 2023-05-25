@@ -39,6 +39,8 @@ import {
     getValue,
     saveData,
     surveysIds,
+    getUserDatasActivity,
+    getUserDatasWorkTime,
 } from "service/survey-service";
 
 const HomeSurveyedPage = () => {
@@ -190,6 +192,87 @@ const HomeSurveyedPage = () => {
         navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_HOME));
     }, []);
 
+    const getIdSurveyActivity = (interviewer: string, numActivity: number) => {
+        return getUserDatasActivity().filter(data => data.interviewerId == interviewer)[numActivity]
+            ?.surveyUnitId;
+    };
+
+    const getIdSurveyWorkTime = (interviewer: string) => {
+        return getUserDatasWorkTime().filter(data => data.interviewerId == interviewer)[0]?.surveyUnitId;
+    };
+
+    const renderActivityCard = (activitySurveyId: string, index: number) => {
+        return (
+            <>
+                <DayCard
+                    key={activitySurveyId + "-dayCard"}
+                    labelledBy={""}
+                    describedBy={""}
+                    onClick={navActivity(activitySurveyId)}
+                    firstName={getPrintedFirstName(activitySurveyId)}
+                    surveyDate={getPrintedSurveyDate(activitySurveyId)}
+                    idSurvey={activitySurveyId}
+                    isClose={formClose(activitySurveyId)}
+                    tabIndex={index}
+                />
+            </>
+        );
+    };
+
+    const renderWorkTimeCard = (workTimeSurvey: string, index: number) => {
+        return (
+            <>
+                <WeekCard
+                    key={workTimeSurvey + "-weekCard"}
+                    labelledBy={""}
+                    describedBy={""}
+                    onClick={navWorkTime(workTimeSurvey)}
+                    firstName={getPrintedFirstName(workTimeSurvey)}
+                    surveyDate={getPrintedSurveyDate(workTimeSurvey, EdtRoutesNameEnum.WORK_TIME)}
+                    idSurvey={workTimeSurvey}
+                    isClose={formClose(workTimeSurvey)}
+                    tabIndex={index + 1}
+                />
+            </>
+        );
+    };
+
+    const renderHomeReviewer = () => {
+        const interviewers = getUserDatasActivity().map(data => data.interviewerId);
+        const interviewersUniques = interviewers.filter(
+            (value, index, self) => self.indexOf(value) === index,
+        );
+
+        return (
+            <>
+                {interviewersUniques.map((interviewer, index) => (
+                    <>
+                        {getIdSurveyActivity(interviewer, 0) &&
+                            renderActivityCard(getIdSurveyActivity(interviewer, 0), index * 2)}
+                        {getIdSurveyActivity(interviewer, 1) &&
+                            renderActivityCard(getIdSurveyActivity(interviewer, 1), index * 2 + 1)}
+                        {getIdSurveyWorkTime(interviewer) &&
+                            renderWorkTimeCard(getIdSurveyWorkTime(interviewer), index * 2 + 2)}
+                    </>
+                ))}
+            </>
+        );
+    };
+
+    const renderHomeInterviewer = () => {
+        return (
+            <>
+                {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) =>
+                    renderActivityCard(idSurvey, index + 1),
+                )}
+
+                {surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].map((idSurvey, index) =>
+                    renderWorkTimeCard(idSurvey, index + 1),
+                )}
+            </>
+        );
+    };
+
     return (
         <>
             <FlexCenter>
@@ -269,33 +352,8 @@ const HomeSurveyedPage = () => {
                 <FlexCenter className={classes.spacing}>
                     <img src={reminder_note} alt={t("accessibility.asset.reminder-notes-alt")} />
                 </FlexCenter>
-                {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) => (
-                    <DayCard
-                        key={idSurvey + "-dayCard"}
-                        labelledBy={""}
-                        describedBy={""}
-                        onClick={navActivity(idSurvey)}
-                        firstName={getPrintedFirstName(idSurvey)}
-                        surveyDate={getPrintedSurveyDate(idSurvey)}
-                        idSurvey={idSurvey}
-                        isClose={formClose(idSurvey)}
-                        tabIndex={index + 1}
-                    />
-                ))}
 
-                {surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].map((idSurvey, index) => (
-                    <WeekCard
-                        key={idSurvey + "-weekCard"}
-                        labelledBy={""}
-                        describedBy={""}
-                        onClick={navWorkTime(idSurvey)}
-                        firstName={getPrintedFirstName(idSurvey)}
-                        surveyDate={getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME)}
-                        idSurvey={idSurvey}
-                        isClose={formClose(idSurvey)}
-                        tabIndex={index + 1}
-                    />
-                ))}
+                {isDemoMode ? renderHomeReviewer() : renderHomeInterviewer()}
             </Box>
         </>
     );
