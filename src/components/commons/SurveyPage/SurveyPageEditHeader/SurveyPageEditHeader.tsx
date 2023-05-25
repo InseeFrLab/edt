@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider, Popover, Typography } from "@mui/material";
 import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
 import moreHorizontal from "assets/illustration/mui-icon/more-horizontal.svg";
@@ -43,6 +43,7 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
                         }
                         onClick={onNavigateBack}
                         aria-label={t("common.navigation.previous")}
+                        className={classes.startIcon}
                     ></Button>
                     <Typography className={classes.infoText}>{firstNamePrefix + firstName}</Typography>
                 </Box>
@@ -93,6 +94,13 @@ const useStyles = makeStylesEdt({ "name": { SurveyPageEditHeader } })(theme => (
     leftPartBox: {
         display: "flex",
         alignItems: "center",
+    },
+    startIcon: {
+        "& .MuiButton-startIcon": {
+            marginLeft: important("0px"),
+            marginRight: important("0px"),
+            width: important("10px"),
+        },
     },
     infoText: {
         marginLeft: "2rem",

@@ -38,6 +38,7 @@ import HomeReviewerPage from "pages/home-reviewer/HomeReviewer";
 import HomeSurveyedPage from "pages/home-surveyed/HomeSurveyed";
 import HomePage from "pages/home/Home";
 import NotFoundPage from "pages/not-found/NotFound";
+import SurveysOverviewPage from "pages/surveys-overview/SurveysOverview";
 import WhoAreYouPage from "pages/who-are-you/WhoAreYou";
 import WorkTimePage from "pages/work-time/WorkTime";
 import KindOfWeekPage from "pages/work-time/kind-of-week/KindOfWeek";
@@ -52,6 +53,10 @@ const EdtRoutes = (): JSX.Element => {
                 <Route path="*" element={<NotFoundPage />} />
                 <Route path="/" element={<HomePage />} />
                 <Route path={EdtRoutesNameEnum.REVIEWER_HOME} element={<HomeReviewerPage />} />
+                <Route
+                    path={EdtRoutesNameEnum.REVIEWER_SURVEYS_OVERVIEW}
+                    element={<SurveysOverviewPage />}
+                />
                 <Route path={EdtRoutesNameEnum.SURVEYED_HOME} element={<HomeSurveyedPage />} />
                 <Route path={EdtRoutesNameEnum.INSTALL} element={<InstallPage />} />
                 <Route path={EdtRoutesNameEnum.HELP} element={<HelpPage />} />
