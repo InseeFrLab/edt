@@ -40,7 +40,8 @@ import {
     saveData,
     surveysIds,
     getUserDatasActivity,
-    getUserDatasWorkTime,
+    getIdSurveyActivity,
+    getIdSurveyWorkTime,
 } from "service/survey-service";
 
 const HomeSurveyedPage = () => {
@@ -191,15 +192,6 @@ const HomeSurveyedPage = () => {
     const navToReviewerHome = useCallback(() => {
         navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_HOME));
     }, []);
-
-    const getIdSurveyActivity = (interviewer: string, numActivity: number) => {
-        return getUserDatasActivity().filter(data => data.interviewerId == interviewer)[numActivity]
-            ?.surveyUnitId;
-    };
-
-    const getIdSurveyWorkTime = (interviewer: string) => {
-        return getUserDatasWorkTime().filter(data => data.interviewerId == interviewer)[0]?.surveyUnitId;
-    };
 
     const renderActivityCard = (activitySurveyId: string, index: number) => {
         return (

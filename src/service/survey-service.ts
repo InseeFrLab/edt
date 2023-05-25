@@ -541,30 +541,71 @@ const getPrintedFirstName = (idSurvey: string): string => {
     return getFirstName(idSurvey) || t("common.user.person") + " " + getPersonNumber(idSurvey);
 };
 
-const getTabsData = (t: any): TabData[] => {
+const getIdSurveyActivity = (interviewer: string, numActivity: number): string => {
+    return getUserDatasActivity().filter(data => data.interviewerId == interviewer)[numActivity]
+        ?.surveyUnitId;
+};
+
+const getIdSurveyWorkTime = (interviewer: string) => {
+    return getUserDatasWorkTime().filter(data => data.interviewerId == interviewer)[0]?.surveyUnitId;
+};
+
+const createTabData = (idSurvey: string, t: any, isActivitySurvey: boolean) => {
+    let tabData: TabData = {
+        idSurvey: idSurvey,
+        surveyDateLabel: getPrintedSurveyDate(
+            idSurvey,
+            isActivitySurvey ? EdtRoutesNameEnum.ACTIVITY : EdtRoutesNameEnum.WORK_TIME,
+        ),
+        firstNameLabel: getPrintedFirstName(idSurvey),
+        score: getScore(idSurvey, t),
+        isActivitySurvey: isActivitySurvey,
+    };
+    return tabData;
+};
+
+const getTabsDataReviewer = (t: any) => {
+    let tabsData: TabData[] = [];
+
+    const interviewers = getUserDatasActivity().map(data => data.interviewerId);
+    const interviewersUniques = interviewers.filter(
+        (value, index, self) => self.indexOf(value) === index,
+    );
+
+    interviewersUniques.forEach(interviewer => {
+        let tabData1 = createTabData(getIdSurveyActivity(interviewer, 0), t, true);
+        tabsData.push(tabData1);
+        const tabData2 = createTabData(getIdSurveyActivity(interviewer, 1), t, true);
+        tabsData.push(tabData2);
+        if (getIdSurveyWorkTime(interviewer)) {
+            const tabData3 = createTabData(getIdSurveyWorkTime(interviewer), t, false);
+            tabsData.push(tabData3);
+        }
+    });
+
+    return tabsData;
+};
+
+const getTabsDataInterviewer = (t: any) => {
     let tabsData: TabData[] = [];
 
     surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].forEach(idSurvey => {
-        let tabData: TabData = {
-            idSurvey: idSurvey,
-            surveyDateLabel: getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.ACTIVITY),
-            firstNameLabel: getPrintedFirstName(idSurvey),
-            score: getScore(idSurvey, t),
-            isActivitySurvey: true,
-        };
+        const tabData = createTabData(idSurvey, t, true);
         tabsData.push(tabData);
     });
     surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].forEach(idSurvey => {
-        let tabData: TabData = {
-            idSurvey: idSurvey,
-            surveyDateLabel: getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME),
-            firstNameLabel: getPrintedFirstName(idSurvey),
-            score: getScore(idSurvey, t),
-            isActivitySurvey: false,
-        };
+        const tabData = createTabData(idSurvey, t, false);
         tabsData.push(tabData);
     });
     return tabsData;
+};
+
+const getTabsData = (t: any): TabData[] => {
+    if (isDemoMode()) {
+        return getTabsDataReviewer(t);
+    } else {
+        return getTabsDataInterviewer(t);
+    }
 };
 
 // return survey date in french format (day x - dd/mm) if exist or default value
@@ -604,7 +645,7 @@ const getFullFrenchDate = (surveyDate: string): string => {
 };
 
 const getPersonNumber = (idSurvey: string) => {
-    const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+    //const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
 
     const index =
         surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey) !== -1
@@ -614,7 +655,11 @@ const getPersonNumber = (idSurvey: string) => {
     const interviewerId = userDatas.filter(data => data.surveyUnitId == idSurvey)[0]?.interviewerId;
     const indexDemo = interviewerId?.split("interviewer")[1];
 
-    return isDemoMode ? indexDemo : index + 1;
+    return isDemoMode() ? indexDemo : index + 1;
+};
+
+const isDemoMode = () => {
+    return getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
 };
 
 export {
@@ -645,4 +690,7 @@ export {
     initializeSurveysDatasCache,
     getUserDatasActivity,
     getUserDatasWorkTime,
+    isDemoMode,
+    getIdSurveyActivity,
+    getIdSurveyWorkTime,
 };

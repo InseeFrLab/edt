@@ -65,7 +65,7 @@ const WorkTimePage = () => {
     }, []);
 
     return (
-        <Box className={cx(!isPwa() && isIOS ? classes.pageMobileTablet : classes.pageMobileTablet)}>
+        <Box className={cx(!isPwa() && isIOS ? classes.pageMobileTablet : classes.pageDesktop)}>
             <Default>
                 <SurveySelecter
                     id={t("accessibility.component.survey-selecter.id")}
