@@ -132,6 +132,17 @@ const fetchSurveysSourcesByIds = (
     });
 };
 
+const fetchReviewerSurveysAssignments = (): Promise<any> => {
+    return new Promise(resolve => {
+        axios
+            .get(edtOrganisationApiBaseUrl + "api/survey-assigment/reviewer/my-surveys", getHeader())
+            .then(response => {
+                console.log(response);
+                resolve(response);
+            });
+    });
+};
+
 const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<SurveyData> => {
     //Temporar check on token validity to avoid 401 error, if not valid, reload page
     //#
@@ -208,4 +219,5 @@ export {
     fetchSurveysSourcesByIds,
     remotePutSurveyData,
     remoteGetSurveyData,
+    fetchReviewerSurveysAssignments,
 };

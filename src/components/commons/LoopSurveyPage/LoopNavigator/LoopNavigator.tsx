@@ -45,6 +45,7 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
                 className={cx(
                     classes.validateButtonBox,
                     isItDesktop ? "" : classes.validateButtonBoxMobileTablet,
+                    isIOS ? classes.buttonBoxPwa : "",
                 )}
             >
                 <>

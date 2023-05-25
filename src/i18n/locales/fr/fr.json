@@ -79,6 +79,7 @@
             "submit-alt": "Illustration envoie d’une enquête",
             "reviewer-alt": "Alt pour reviewer",
             "kind-of-day-alt": "Alt pour kind of day",
+            "stats-alt": "Illustration pour liste des enquêtes",
             "mui-icon": {
                 "close": "Bouton Fermer",
                 "more-horizontal": "Bouton Plus d’options",
@@ -104,7 +105,8 @@
                 "commute": "Icône trajet",
                 "search": "Icone de Recherche",
                 "extension": "Icône Autre personne qui ménage",
-                "download": "Alt pour download"
+                "download": "Icone téléchargement",
+                "person-white": "Icone personne"
             },
             "info": {
                 "info-alt": "Icône information"
@@ -193,6 +195,18 @@
             "subtitle": "Accédez et complétez facilement votre enquête.",
             "info": "Cette application peut être installée sur votre appareil. Veuillez vous référer au fonctionnement de votre navigateur internet afin de procéder à l'installation.",
             "continue": "J'ai compris"
+        },
+        "surveys-overview": {
+            "title": "Enquête Emploi du Temps",
+            "search-placeholder": "Rechercher par nom ou identifiant",
+            "filter-label": "Masquer les ménages terminés",
+            "household-static-label": "Ménage",
+            "started-survey-label": "Carnet commencé",
+            "starteds-survey-label": "Carnets commencés",
+            "closed-survey-label": "Carnet clôturé",
+            "closeds-survey-label": "Carnets clôturés",
+            "validated-survey-label": "Carnet validé",
+            "validateds-survey-label": "Carnets validés"
         },
         "reviewer-home": {
             "welcome": "Bienvenue dans votre espace",

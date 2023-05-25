@@ -13,7 +13,7 @@ import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum"
 import { useAuth } from "oidc-react";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getNavigatePath } from "service/navigation-service";
 import { initializeSurveysDatasCache } from "service/survey-service";
@@ -60,8 +60,8 @@ const HomeReviewerPage = () => {
             .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
     }, []);
 
-    const navToSurveysView = useCallback(() => {
-        //TODO : nav to new view
+    const navToSurveysOverview = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_SURVEYS_OVERVIEW));
     }, []);
 
     const navToDemonstration = useCallback(() => {
@@ -119,7 +119,7 @@ const HomeReviewerPage = () => {
                                 alt={t("accessibility.asset.mui-icon.arrow-forward")}
                             />
                         }
-                        onClick={navToSurveysView}
+                        onClick={navToSurveysOverview}
                     >
                         {t("page.reviewer-home.navigation.surveys")}
                     </Button>
@@ -135,6 +135,7 @@ const HomeReviewerPage = () => {
                     </Button>
                 </Box>
             </FlexCenter>
+            <Outlet />
         </Box>
     );
 };
