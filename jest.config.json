@@ -1,0 +1,28 @@
+{
+    "bail": 1,
+    "verbose": true,
+    "collectCoverageFrom": ["src/**/*.{tsx}", "!**/node_modules/**"],
+    "coverageDirectory": "coverage",
+    "coverageReporters": ["lcov"],
+    "moduleFileExtensions": ["js", "jsx", "ts", "tsx", "json", "node"],
+    "modulePathIgnorePatterns": ["<rootDir>/dist/", "node_modules", "<rootDir>/e2e/dist/"],
+    "modulePaths": ["<rootDir>/src"],
+    "transform": {
+        "\\.[jt]sx?$": "babel-jest",
+        "^.+\\.scss$": "jest-scss-transform",
+        "[/\\\\]node_modules[/\\\\].+\\.(css|less|scss)$": "jest-scss-transform",
+        "^.+\\.(js|jsx|mjs|tsx|ts)$": "babel-jest",
+        "^.+\\.svg$": "jest-svg-transformer"
+    },
+    "moduleNameMapper": {
+        "^@/(.*)$": "<rootDir>/src/$1",
+        "^.+\\.module\\.(css|sass|scss)$": "<rootDir>/config/CSSStub.js",
+        "\\.(css|less|scss|sass|png|img)$": "identity-obj-proxy",
+        "^react-markdown$": "<rootDir>/node_modules/react-markdown/react-markdown.min.js",
+        "^@inseefr/lunatic$": "<rootDir>/node_modules/@inseefr/lunatic",
+        "axios": "axios/dist/node/axios.cjs",
+        "^@mui/material$": "<rootDir>/node_modules/@mui/material"
+    },
+    "transformIgnorePatterns": ["node_modules/(?!(axios)/)", "<rootDir>/node_modules/"],
+    "setupFiles": ["fake-indexeddb/auto"]
+}

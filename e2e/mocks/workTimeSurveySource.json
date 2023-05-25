@@ -1,0 +1,263 @@
+{
+    "label": "WorkTime",
+    "maxPage": "4",
+    "variables": [
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "FIRSTNAME",
+            "componentRef": "inputtext_firstName"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "SURVEYDATE",
+            "componentRef": "datepicker_surveyDate"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "WEEKLYPLANNER",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "WEEKTYPE",
+            "componentRef": "checkboxone_weektype"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "ISCLOSED",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "ISENVOYED",
+            "componentRef": ""
+        },
+        {
+            "variableType": "CALCULATED",
+            "expression": "true",
+            "name": "FILTER_RESULT_INPUTTEXT",
+            "inFilter": "false"
+        },
+        {
+            "variableType": "CALCULATED",
+            "expression": "true",
+            "name": "FILTER_RESULT_DATEPICKER",
+            "inFilter": "false"
+        }
+    ],
+    "components": [
+        {
+            "componentType": "Sequence",
+            "hierarchy": {
+                "sequence": { "id": "sequence_1", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "sequence_1",
+            "page": "1",
+            "label": ""
+        },
+        {
+            "componentType": "Input",
+            "bindingDependencies": ["FIRSTNAME"],
+            "response": { "name": "FIRSTNAME" },
+            "hierarchy": {
+                "sequence": { "id": "sequence_1", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "inputtext_firstName",
+            "page": "1",
+            "label": "\"Qui êtes-vous ?\"",
+            "placeholder": "Prénom",
+            "mandatory": true,
+            "maxLength": 100,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" La valeur doit être remplie.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(FIRSTNAME)) and length(FIRSTNAME) >= 1"
+                    },
+                    "id": "kze792d8-formatBorneInfSup"
+                }
+            ]
+        },
+        {
+            "componentType": "Datepicker",
+            "bindingDependencies": ["SURVEYDATE"],
+            "min": "1900-01-01",
+            "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
+            "dateFormat": "YYYY-MM-DD",
+            "response": { "name": "SURVEYDATE" },
+            "hierarchy": {
+                "sequence": { "id": "sequence_1", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "datepicker_surveyDate",
+            "page": "2",
+            "label": "\"Quel est le premier jour de votre semaine ?\"",
+            "mandatory": false,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" La valeur doit être remplie.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(SURVEYDATE)) and length(SURVEYDATE) >= 1"
+                    },
+                    "id": "kze792d8-inputSurveyDate"
+                }
+            ]
+        },
+        {
+            "componentType": "WeeklyPlanner",
+            "bindingDependencies": ["WEEKLYPLANNER", "ISCLOSED"],
+            "response": {
+                "name": "WEEKLYPLANNER"
+            },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
+            "id": "weeklyplanner_value",
+            "page": "3",
+            "mandatory": false,
+            "title": "Planning de votre semaine",
+            "workSumLabel": "Durée totale travaillée : ",
+            "presentButtonLabel": "Continuer",
+            "futureButtonLabel": "Commencer"
+        },
+        {
+            "componentType": "CheckboxOneEdt",
+            "bindingDependencies": ["WEEKTYPE"],
+            "response": { "name": "WEEKTYPE" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "checkboxone_weektype",
+            "page": "4",
+            "label": "\"De quel type de semaine s’agissait-il ?\"",
+            "mandatory": false
+        },
+        {
+            "componentType": "Input",
+            "bindingDependencies": ["FIRSTNAME"],
+            "response": { "name": "FIRSTNAME" },
+            "hierarchy": {
+                "sequence": { "id": "sequence_1", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "inputtext_firstName2",
+            "page": "5",
+            "label": "\"Vos informations : \"",
+            "placeholder": "Prénom",
+            "mandatory": true,
+            "maxLength": 100,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" Le prénom doit être saisi.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(FIRSTNAME)) and length(FIRSTNAME) >= 1"
+                    },
+                    "id": "kze792d8-formatBornInfSup2"
+                }
+            ]
+        },
+        {
+            "componentType": "Datepicker",
+            "bindingDependencies": ["SURVEYDATE"],
+            "min": "1900-01-01",
+            "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
+            "dateFormat": "YYYY-MM-DD",
+            "response": { "name": "SURVEYDATE" },
+            "hierarchy": {
+                "sequence": { "id": "sequence_1", "page": "1" }
+            },
+            "conditionFilter": { "value": "true" },
+            "id": "datepicker_surveyDate2",
+            "page": "5",
+            "label": "\"Le premier jour de votre semaine : \"",
+            "mandatory": false,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" La date doit être saisie.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(SURVEYDATE)) and length(SURVEYDATE) >= 1"
+                    },
+                    "id": "kze792d8-inputSurveyDate2"
+                }
+            ]
+        }
+    ]
+}

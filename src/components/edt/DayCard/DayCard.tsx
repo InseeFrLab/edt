@@ -1,7 +1,7 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import Box from "@mui/material/Box";
-import PersonSunIcon from "assets/illustration/card/person-sun.svg";
 import PersonSunCloseIcon from "assets/illustration/card/person-sun-close.svg";
+import PersonSunIcon from "assets/illustration/card/person-sun.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
 import { useTranslation } from "react-i18next";
@@ -15,10 +15,12 @@ interface DayCardProps {
     surveyDate: string;
     idSurvey: string;
     isClose: boolean;
+    tabIndex: number;
 }
 
 const DayCard = (props: DayCardProps) => {
-    const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey, isClose } = props;
+    const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey, isClose, tabIndex } =
+        props;
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const progressActivity = getScore(idSurvey, t);
@@ -30,17 +32,23 @@ const DayCard = (props: DayCardProps) => {
                 aria-describedby={describedBy}
                 className={cx(classes.dayCardBox, isClose ? classes.closeCardBox : "")}
                 onClick={onClick}
+                tabIndex={tabIndex}
+                id={"dayCard-" + tabIndex}
             >
                 <Box className={classes.leftBox}>
                     <Box className={cx(classes.iconBox, isClose ? classes.closeIconBox : "")}>
                         <img
                             src={isClose ? PersonSunCloseIcon : PersonSunIcon}
-                            alt={t("accessibility.asset.card.person-sun-alt")}
+                            alt={
+                                isClose
+                                    ? t("accessibility.asset.card.person-sun-close-alt")
+                                    : t("accessibility.asset.card.person-sun-alt")
+                            }
                         />
                     </Box>
                     <Box>
-                        <Box>{surveyDate}</Box>
-                        <Box>{firstName}</Box>
+                        <Box id="surveyDate-text">{surveyDate}</Box>
+                        <Box id="firstName-text">{firstName}</Box>
                     </Box>
                 </Box>
                 <Box className={cx(classes.scoreBox)}>

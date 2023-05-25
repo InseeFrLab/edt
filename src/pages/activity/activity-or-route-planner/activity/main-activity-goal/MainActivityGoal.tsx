@@ -7,9 +7,12 @@ import solidarity from "assets/illustration/goals/solidarity.svg";
 import work from "assets/illustration/goals/work.svg";
 
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
+import { useTranslation } from "react-i18next";
 import { getActivityGoalRef } from "service/referentiel-service";
 
 const MainActivityGoalPage = () => {
+    const { t } = useTranslation();
+
     const getIcon = (iconName: string): string => {
         switch (iconName) {
             case "home": {
@@ -31,10 +34,13 @@ const MainActivityGoalPage = () => {
     };
 
     const referentiel = getActivityGoalRef();
-    const optionsIcons: { [key: string]: string } = {};
+    const optionsIcons: { [key: string]: { icon: string; altIcon: string } } = {};
 
     referentiel.forEach(option => {
-        optionsIcons[option.value] = getIcon(option?.iconName || "");
+        optionsIcons[option.value] = {
+            icon: getIcon(option?.iconName || ""),
+            altIcon: t("accessibility.assets.goal.categories." + option.iconName + "-alt"),
+        };
     });
 
     const specifiquesProps = {

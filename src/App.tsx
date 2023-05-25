@@ -1,5 +1,3 @@
-import { theme } from "@inseefrlab/lunatic-edt";
-import { CssBaseline, ThemeProvider } from "@mui/material";
 import "App.scss";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
@@ -10,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EdtRoutes } from "routes/EdtRoutes";
 import { getDatas, initializeDatas } from "service/survey-service";
-import { setUser, setUserToken } from "service/user-service";
+import { setAuth, setUser, setUserToken } from "service/user-service";
 
 const App = () => {
     const { t } = useTranslation();
@@ -19,15 +17,33 @@ const App = () => {
     const auth = useAuth();
 
     useEffect(() => {
-        if (auth.userData?.access_token && getDatas().size === 0 && error === undefined) {
+        if (auth?.userData?.access_token && getDatas().size === 0 && error === undefined) {
             setUserToken(auth.userData?.access_token);
             setUser(auth.userData);
+            setAuth(auth);
             //keeps user token up to date after session renewal
             auth.userManager.events.addUserLoaded(() => {
                 auth.userManager.getUser().then(user => {
                     setUserToken(user?.access_token || "");
                 });
             });
+
+            auth.userManager.events.addSilentRenewError(() => {
+                if (navigator.onLine) {
+                    auth.userManager
+                        .signoutRedirect({
+                            id_token_hint: localStorage.getItem("id_token") || undefined,
+                        })
+                        .then(() => auth.userManager.clearStaleState())
+                        .then(() => auth.userManager.signoutRedirectCallback())
+                        .then(() => {
+                            sessionStorage.clear();
+                        })
+                        .then(() => auth.userManager.clearStaleState())
+                        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
+                }
+            });
+
             initializeDatas(setError).then(() => {
                 setInitialized(true);
             });
@@ -36,19 +52,16 @@ const App = () => {
 
     return (
         <>
-            <ThemeProvider theme={theme}>
-                <CssBaseline enableColorScheme />
-                {initialized && !error ? (
-                    <EdtRoutes />
-                ) : !error ? (
-                    <LoadingFull
-                        message={t("page.home.loading.message")}
-                        thanking={t("page.home.loading.thanking")}
-                    />
-                ) : (
-                    <ErrorPage errorCode={error} atInit={true} />
-                )}
-            </ThemeProvider>
+            {initialized && !error ? (
+                <EdtRoutes />
+            ) : !error ? (
+                <LoadingFull
+                    message={t("page.home.loading.message")}
+                    thanking={t("page.home.loading.thanking")}
+                />
+            ) : (
+                <ErrorPage errorCode={error} atInit={true} />
+            )}
         </>
     );
 };

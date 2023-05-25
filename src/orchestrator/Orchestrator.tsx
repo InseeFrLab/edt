@@ -3,7 +3,6 @@ import * as lunaticEDT from "@inseefrlab/lunatic-edt";
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import React from "react";
 
@@ -108,14 +107,15 @@ const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
             display: "none",
         },
         "& label": {
-            backgroundColor: "transparent",
-            marginBottom: "1rem",
-            fontSize: "20px",
+            backgroundColor: "transparent !important",
+            marginBottom: "1rem !important",
+            fontSize: "20px !important",
         },
         "& legend": {
             backgroundColor: "transparent",
             marginBottom: "1rem",
             fontSize: "20px",
+            display: important("none"),
         },
         "& .field-container": {
             margin: "1rem 0",

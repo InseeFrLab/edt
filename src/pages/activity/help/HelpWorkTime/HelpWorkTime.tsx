@@ -8,6 +8,7 @@ import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg"
 import expandLess from "assets/illustration/mui-icon/expand-less.svg";
 import expandMoreWhite from "assets/illustration/mui-icon/expand-more-white.svg";
 import expandMore from "assets/illustration/mui-icon/expand-more.svg";
+import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import work from "assets/illustration/mui-icon/work-full.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
@@ -72,6 +73,8 @@ const HelpWorkTime = () => {
                 boldText: t("page.weekly-planner.info-bold"),
                 infoIconAlt: t("accessibility.asset.info.info-alt"),
                 infoIcon: InfoIcon,
+                infoIconTooltip: InfoTooltipIcon,
+                infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
                 border: true,
             },
         },
@@ -108,6 +111,8 @@ const HelpWorkTime = () => {
     const nextHelpStep = useCallback(() => {
         helpStep < 4 ? setHelpStep(helpStep + 1) : navToNextPage();
     }, [helpStep]);
+
+    const helpPageGlobal = localStorage.getItem("IS_GLOBAL");
 
     const renderHelp = () => {
         return (
@@ -157,7 +162,9 @@ const HelpWorkTime = () => {
                                 />
                             }
                         >
-                            {t("common.navigation.skip")}
+                            {helpPageGlobal && helpStep == 4
+                                ? t("common.navigation.skip-final")
+                                : t("common.navigation.skip")}
                         </Button>
                     </Box>
                     {renderHelpStep()}
@@ -194,7 +201,7 @@ const HelpWorkTime = () => {
     };
 
     return (
-        <Box>
+        <Box className={classes.root}>
             {renderHelp()}
             <SurveyPage
                 validate={useCallback(() => console.log(""), [])}
@@ -223,6 +230,10 @@ const HelpWorkTime = () => {
 };
 
 const useStyles = makeStylesEdt({ "name": { HelpWorkTime } })(theme => ({
+    root: {
+        height: "100vh",
+        maxHeight: "100vh",
+    },
     headerHelpBox: {
         display: "flex",
     },

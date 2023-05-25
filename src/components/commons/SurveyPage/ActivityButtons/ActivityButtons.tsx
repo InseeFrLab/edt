@@ -1,9 +1,9 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import add from "assets/illustration/mui-icon/add.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { isDesktop } from "service/responsive";
 
 interface ActivityButtonsProps {
     onClickFinish(): void;
@@ -16,13 +16,11 @@ interface ActivityButtonsProps {
 const ActivityButtons = (props: ActivityButtonsProps) => {
     const { onClickFinish, onClickAdd, finishLabel, addLabel, helpStep } = props;
     const { classes, cx } = useStyles();
-    const isItDesktop = isDesktop();
     const { t } = useTranslation();
     return (
         <>
-            {!isItDesktop && <Box className={classes.gap}></Box>}
             <FlexCenter
-                className={cx(classes.ButtonsBox, isItDesktop ? "" : classes.ButtonsBoxMobileTablet)}
+                className={cx(classes.ButtonsBox, isIOS && isMobile ? classes.buttonBoxPwa : "")}
             >
                 <>
                     {!addLabel && (
@@ -34,6 +32,7 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
                                 helpStep == 3 ? classes.helpButton : "",
                                 helpStep == 3 ? classes.helpCloseButton : "",
                             )}
+                            id="clore-button"
                         >
                             {finishLabel}
                         </Button>
@@ -47,6 +46,7 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
                         helpStep == 1 ? classes.helpButton : "",
                         helpStep == 1 ? classes.helpAddButton : "",
                     )}
+                    id="add-button"
                 >
                     <img src={add} alt={t("accessibility.asset.mui-icon.add")} />
                     {addLabel}
@@ -94,6 +94,9 @@ const useStyles = makeStylesEdt({ "name": { ActivityButtons } })(theme => ({
     helpCloseButton: {
         borderColor: important(theme.palette.secondary.main),
         backgroundColor: important(theme.variables.white),
+    },
+    buttonBoxPwa: {
+        height: "4.5rem",
     },
 }));
 

@@ -8,6 +8,7 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
+import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
 import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
 import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
@@ -27,10 +28,10 @@ import {
     navToHelp,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
-import { isDesktop, isMobile, isTablet } from "service/responsive";
+import { isDesktop, isMobile, isPwa, isTablet } from "service/responsive";
 import { mockActivitiesRoutesOrGaps } from "service/survey-activity-service";
 import { v4 as uuidv4 } from "uuid";
-import { isMobile as isMobileNav, isBrowser } from "react-device-detect";
+import { isMobile as isMobileNav, isBrowser, isIOS } from "react-device-detect";
 
 const HelpActivity = () => {
     const navigate = useNavigate();
@@ -86,10 +87,13 @@ const HelpActivity = () => {
         infoIcon: InfoIcon,
         infoIconAlt: t("accessibility.asset.info.info-alt"),
         border: true,
+        infoIconTooltip: InfoTooltipIcon,
+        infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
     };
 
     const titleLabels = {
         boldTitle: formateDateToFrenchFormat(generateDateFromStringInput(surveyDate), getLanguage()),
+        typeTitle: "h1",
     };
 
     const navToNextPage = useCallback(
@@ -206,10 +210,12 @@ const HelpActivity = () => {
         );
     };
 
+    const heightClass = isPwa() ? classes.fullHeight : classes.fullHeightNav;
+
     return (
-        <Box>
+        <Box className={classes.root}>
             {renderHelp()}
-            <Box className={classes.surveyPageBox}>
+            <Box className={!isPwa() && isIOS ? classes.surveyPageBoxTablet : classes.surveyPageBox}>
                 {(isItDesktop || !isSubchildDisplayed) && (
                     <Box className={classes.innerSurveyPageBox}>
                         <SurveyPage
@@ -236,14 +242,14 @@ const HelpActivity = () => {
                                 className={
                                     isItDesktop && isSubchildDisplayed
                                         ? classes.outerContentBox
-                                        : classes.fullHeight
+                                        : heightClass
                                 }
                             >
                                 <Box
                                     className={
                                         isItDesktop && isSubchildDisplayed
                                             ? classes.innerContentBox
-                                            : classes.fullHeight
+                                            : heightClass
                                     }
                                 >
                                     <Box className={classes.innerContentScroll}>
@@ -302,6 +308,11 @@ const HelpActivity = () => {
 };
 
 const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
+    root: {
+        height: important("100vh"),
+        maxHeight: important("100vh"),
+        display: important("flex"),
+    },
     infoBox: {
         width: "350px",
         padding: "1rem 0.25rem 0.5rem 2rem",
@@ -320,6 +331,14 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         alignItems: "flex-start",
         overflow: "hidden",
         height: "100vh",
+    },
+    surveyPageBoxTablet: {
+        flexGrow: "1",
+        display: "flex",
+        alignItems: "flex-start",
+        overflow: "hidden",
+        height: "100vh",
+        maxHeight: "94vh",
     },
     innerContentBox: {
         border: "1px solid transparent",
@@ -351,7 +370,7 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
     },
     innerSurveyPageBox: {
         flexGrow: "1",
-        height: "100vh",
+        height: "100%",
         display: "flex",
     },
     fullHeight: {
@@ -360,7 +379,11 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         justifyContent: "center",
         flexGrow: "1",
     },
-
+    fullHeightNav: {
+        display: "flex",
+        justifyContent: "center",
+        flexGrow: "1",
+    },
     headerHelpBox: {
         display: "flex",
     },
@@ -455,8 +478,8 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         marginLeft: "-10rem",
     },
     centerBox: {
-        textAlign: "center"
-    }
+        textAlign: "center",
+    },
 }));
 
 export default HelpActivity;

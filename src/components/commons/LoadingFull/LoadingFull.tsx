@@ -1,9 +1,9 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { CircularProgress } from "@mui/material";
 import reminder_note from "assets/illustration/reminder-note.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import { useTranslation } from "react-i18next";
+import { makeStyles } from "tss-react/mui";
 
 interface LoadingFullProps {
     message: string;
@@ -13,7 +13,7 @@ interface LoadingFullProps {
 const LoadingFull = (props: LoadingFullProps) => {
     const { message, thanking } = props;
     const { t } = useTranslation();
-    const { classes } = useStyles();
+    const { classes } = useStyles({});
 
     return (
         <>
@@ -34,7 +34,7 @@ const LoadingFull = (props: LoadingFullProps) => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { LoadingFull } })({
+const useStyles = makeStyles<{}>()(() => ({
     loading: {
         width: "117px !important",
         height: "117px !important",
@@ -43,6 +43,6 @@ const useStyles = makeStylesEdt({ "name": { LoadingFull } })({
         width: "100%",
         textAlign: "center",
     },
-});
+}));
 
 export default LoadingFull;

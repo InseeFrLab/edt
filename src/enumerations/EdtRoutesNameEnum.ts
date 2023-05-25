@@ -1,6 +1,7 @@
 export enum EdtRoutesNameEnum {
     INSTALL = "install",
     REVIEWER_HOME = "reviewer-home",
+    REVIEWER_SURVEYS_OVERVIEW = "surveys-overview",
     SURVEYED_HOME = "surveyed-home",
     HELP = "help",
     ERROR = "error/:code",

@@ -243,7 +243,7 @@ const navToHome = (): void => {
 };
 
 const navToHelp = (): void => {
-    _navigate(getNavigatePath(EdtRoutesNameEnum.HELP));
+    _navigate(getNavigatePath(EdtRoutesNameEnum.HELP_INSTALL));
 };
 
 const navToErrorPage = (errorCode?: ErrorCodeEnum): void => {

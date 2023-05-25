@@ -93,6 +93,7 @@ const HomeReviewerPage = () => {
                         />
                     }
                     onClick={onDisconnect}
+                    id={"button-logout"}
                 >
                     {t("page.home.navigation.logout")}
                 </Button>

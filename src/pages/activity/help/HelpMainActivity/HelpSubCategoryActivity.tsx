@@ -69,14 +69,38 @@ const HelpSubCategoryActivity = () => {
 
     const specificProps: ActivitySelecterSpecificProps = {
         categoriesIcons: {
-            "100": catIcon100,
-            "200": catIcon200,
-            "300": catIcon300,
-            "400": catIcon400,
-            "440": catIcon440,
-            "500": catIcon500,
-            "650": catIcon650,
-            "600": catIcon600,
+            "100": {
+                icon: catIcon100,
+                altIcon: t("accessibility.asset.activities.categories.cat-icon-100-alt"),
+            },
+            "200": {
+                icon: catIcon200,
+                altIcon: t("accessibility.asset.activities.categories.cat-icon-200-alt"),
+            },
+            "300": {
+                icon: catIcon300,
+                altIcon: t("accessibility.asset.activities.categories.cat-icon-300-alt"),
+            },
+            "400": {
+                icon: catIcon400,
+                altIcon: t("accessibility.asset.activities.categories.cat-icon-400-alt"),
+            },
+            "440": {
+                icon: catIcon440,
+                altIcon: t("accessibility.asset.activities.categories.cat-icon-440-alt"),
+            },
+            "500": {
+                icon: catIcon500,
+                altIcon: t("accessibility.asset.activities.categories.cat-icon-500-alt"),
+            },
+            "650": {
+                icon: catIcon600,
+                altIcon: t("accessibility.asset.activities.categories.cat-icon-600-alt"),
+            },
+            "600": {
+                icon: catIcon650,
+                altIcon: t("accessibility.asset.activities.categories.cat-icon-650-alt"),
+            },
         },
         clickableListIconNoResult: errorIcon,
         activitesAutoCompleteRef: getAutoCompleteRef(),
@@ -231,7 +255,7 @@ const HelpSubCategoryActivity = () => {
     };
 
     return (
-        <Box>
+        <Box className={classes.root}>
             {renderHelp()}
             <LoopSurveyPage
                 onNext={useCallback(
@@ -281,6 +305,10 @@ const HelpSubCategoryActivity = () => {
 };
 
 const useStyles = makeStylesEdt({ "name": { HelpSubCategoryActivity } })(theme => ({
+    root: {
+        height: "100vh",
+        maxHeight: "100vh",
+    },
     headerHelpBox: {
         display: "flex",
     },

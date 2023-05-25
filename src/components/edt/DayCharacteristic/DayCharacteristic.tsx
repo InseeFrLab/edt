@@ -18,7 +18,7 @@ interface DayCharacteristicsProps {
 
 const DayCharacteristics = (props: DayCharacteristicsProps) => {
     const { userActivitiesCharacteristics, onEdit } = props;
-    const { classes } = useStyles();
+    const { classes, cx } = useStyles();
     const { t } = useTranslation();
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
@@ -46,7 +46,9 @@ const DayCharacteristics = (props: DayCharacteristicsProps) => {
     return (
         <Box className={classes.dayCharacteristicBox}>
             <Box className={classes.headerRow}>
-                <h3 className={classes.title}>{t("component.day-characteristic.title")}</h3>
+                <h2 className={cx(classes.title, classes.h2)}>
+                    {t("component.day-characteristic.title")}
+                </h2>
                 <Box className={classes.editBox}>
                     <img
                         src={moreHorizontal}
@@ -178,6 +180,12 @@ const useStyles = makeStylesEdt({ "name": { DayCharacteristics } })(theme => ({
     },
     title: {
         marginTop: 0,
+    },
+    h2: {
+        fontSize: "18px",
+        margin: 0,
+        lineHeight: "1.5rem",
+        fontWeight: "bold",
     },
 }));
 

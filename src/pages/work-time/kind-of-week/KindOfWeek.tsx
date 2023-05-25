@@ -42,6 +42,7 @@ const KindOfWeekPage = () => {
 
     const specificProps: CheckboxOneSpecificProps = {
         icon: calendarWeek,
+        altIcon: t("accessibility.asset.kind-of-week-alt"),
         onSelectValue: () => {
             validate().then(() => saveAndNav(routeEnd));
         },

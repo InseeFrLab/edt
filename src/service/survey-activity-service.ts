@@ -360,18 +360,15 @@ const getLabelFromTime = (hours: number, minutes: number) => {
 
 const getTotalTimeOfActivities = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
     const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey);
-    let totalTimeGap = 0;
     let totalTimeActivities = 0;
 
     for (let activityRouteOrGap of activitiesRoutesOrGaps) {
-        if (activityRouteOrGap.isGap) {
-            totalTimeGap += getActivityOrRouteDuration(activityRouteOrGap, MINUTE_LABEL);
-        } else {
+        if (!activityRouteOrGap.isGap) {
             totalTimeActivities += getActivityOrRouteDuration(activityRouteOrGap, MINUTE_LABEL);
         }
     }
     if (activitiesRoutesOrGaps.length == 0) return 0;
-    else return totalTimeActivities - totalTimeGap;
+    else return totalTimeActivities;
 };
 
 const getScore = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
@@ -490,7 +487,7 @@ const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: numbe
                 }
             }
         });
-        saveData(idSurvey, data);
+        saveData(idSurvey, data, false, true);
     }
 };
 

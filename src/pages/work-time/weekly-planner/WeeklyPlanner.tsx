@@ -1,5 +1,6 @@
 import { WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
 import InfoIcon from "assets/illustration/info.svg";
+import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";
 import expandLess from "assets/illustration/mui-icon/expand-less.svg";
 import expandMoreWhite from "assets/illustration/mui-icon/expand-more-white.svg";
@@ -29,6 +30,7 @@ import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-ser
 const WeeklyPlannerPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { t } = useTranslation();
+
     setEnviro(context, useNavigate(), callbackHolder);
 
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
@@ -58,6 +60,8 @@ const WeeklyPlannerPage = () => {
                 infoIconAlt: t("accessibility.asset.info.info-alt"),
                 infoIcon: InfoIcon,
                 border: true,
+                infoIconTooltip: InfoTooltipIcon,
+                infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
             },
         },
         saveAll: save,
@@ -88,28 +92,30 @@ const WeeklyPlannerPage = () => {
     };
 
     return (
-        <SurveyPage
-            validate={useCallback(() => validateAndNav(), [displayDayOverview])}
-            onNavigateBack={useCallback(() => validateAndNav(), [displayDayOverview])}
-            onPrevious={useCallback(() => saveAndNav(), [])}
-            onEdit={useCallback(() => onEdit(), [])}
-            onHelp={navToHelp}
-            firstName={getPrintedFirstName(context.idSurvey)}
-            firstNamePrefix={t("component.survey-page-edit-header.week-of")}
-            simpleHeader={displayDayOverview}
-            simpleHeaderLabel={displayedDayHeader}
-            backgroundWhiteHeader={displayDayOverview}
-        >
-            <FlexCenter>
-                <OrchestratorForStories
-                    source={context.source}
-                    data={context.data}
-                    cbHolder={callbackHolder}
-                    page={getOrchestratorPage(currentPage)}
-                    componentSpecificProps={specificProps}
-                ></OrchestratorForStories>
-            </FlexCenter>
-        </SurveyPage>
+        <>
+            <SurveyPage
+                validate={useCallback(() => validateAndNav(), [displayDayOverview])}
+                onNavigateBack={useCallback(() => validateAndNav(), [displayDayOverview])}
+                onPrevious={useCallback(() => saveAndNav(), [])}
+                onEdit={useCallback(() => onEdit(), [])}
+                onHelp={navToHelp}
+                firstName={getPrintedFirstName(context.idSurvey)}
+                firstNamePrefix={t("component.survey-page-edit-header.week-of")}
+                simpleHeader={displayDayOverview}
+                simpleHeaderLabel={displayedDayHeader}
+                backgroundWhiteHeader={displayDayOverview}
+            >
+                <FlexCenter>
+                    <OrchestratorForStories
+                        source={context.source}
+                        data={context.data}
+                        cbHolder={callbackHolder}
+                        page={getOrchestratorPage(currentPage)}
+                        componentSpecificProps={specificProps}
+                    ></OrchestratorForStories>
+                </FlexCenter>
+            </SurveyPage>
+        </>
     );
 };
 

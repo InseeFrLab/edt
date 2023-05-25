@@ -16,6 +16,7 @@ interface SurveySelecterProps {
     onChangeSelected(tabData: TabData): void;
     maxTabsPerRow: number;
     isDefaultOpen?: boolean;
+    maxTabIndex?: number;
 }
 
 const SurveySelecter = (props: SurveySelecterProps) => {
@@ -27,8 +28,9 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         selectedTab,
         isDefaultOpen = false,
         maxTabsPerRow,
+        maxTabIndex = 20,
     } = props;
-    const { classes } = useStyles();
+    const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const [valueRowOne, setValueRowOne] = React.useState<number | false>(
         selectedTab < maxTabsPerRow ? selectedTab : false,
@@ -70,12 +72,13 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         }
     };
 
-    const getTab = (tabData: TabData, index: number) => {
+    const getTab = (tabData: TabData, index: number, tabIndex: number) => {
         return (
             <Tab
                 key={"tab-" + index}
-                className={classes.tab}
+                className={cx(classes.tab)}
                 icon={getTabIcon(tabData.isActivitySurvey)}
+                tabIndex={tabIndex}
                 label={
                     <Box>
                         <Typography className={classes.alignText}>
@@ -92,6 +95,8 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         setIsOpen(isOpen => !isOpen);
     }, []);
 
+    const tabsDataFiltred = tabsData.filter((_, index) => index < maxTabsPerRow);
+
     return (
         <Box id={id}>
             <AppBar className={classes.surveySelecterAppBar} position="static">
@@ -102,9 +107,9 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                         className={classes.tabsBox}
                         aria-label={ariaLabel}
                     >
-                        {tabsData
-                            .filter((_, index) => index < maxTabsPerRow)
-                            .map((tabData, index) => getTab(tabData, index))}
+                        {tabsDataFiltred.map((tabData, index) =>
+                            getTab(tabData, index, maxTabIndex + index + 1),
+                        )}
                     </Tabs>
                     <Box className={classes.actionBox} onClick={handleToggle}>
                         {isOpen ? (
@@ -124,7 +129,9 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                     >
                         {tabsData
                             .filter((_, index) => index >= maxTabsPerRow)
-                            .map((tabData, index) => getTab(tabData, index))}
+                            .map((tabData, index) =>
+                                getTab(tabData, index, tabsDataFiltred.length + maxTabIndex + index + 1),
+                            )}
                     </Tabs>
                 )}
                 <Divider light />

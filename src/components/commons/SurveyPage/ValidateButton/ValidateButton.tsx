@@ -1,7 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { isDesktop } from "service/responsive";
 
 interface ValidateButtonProps {
     onClick(): void;
@@ -12,18 +11,10 @@ interface ValidateButtonProps {
 const ValidateButton = (props: ValidateButtonProps) => {
     const { text, onClick, disabled } = props;
     const { classes, cx } = useStyles();
-    const isItDesktop = isDesktop();
 
     return (
         <>
-            {!isItDesktop && <Box className={classes.gap}></Box>}
-            <FlexCenter
-                className={cx(
-                    disabled ? classes.invalidButtonBox : classes.validateButtonBox,
-                    !isItDesktop && disabled ? classes.invalidButtonBoxMobileTablet : "",
-                    !isItDesktop && !disabled ? classes.validateButtonBoxMobileTablet : "",
-                )}
-            >
+            <FlexCenter className={cx(disabled ? classes.invalidButtonBox : classes.validateButtonBox)}>
                 <Button
                     id={"validateButton"}
                     variant="contained"
@@ -44,11 +35,6 @@ const useStyles = makeStylesEdt({ "name": { NavButton: ValidateButton } })(theme
         width: "100%",
         backgroundColor: theme.variables.white,
     },
-    validateButtonBoxMobileTablet: {
-        position: "fixed",
-        left: "0",
-        bottom: "0",
-    },
     validateButton: {
         width: "80%",
         maxWidth: "18rem",
@@ -58,15 +44,13 @@ const useStyles = makeStylesEdt({ "name": { NavButton: ValidateButton } })(theme
         width: "100%",
         backgroundColor: theme.variables.white,
     },
-    invalidButtonBoxMobileTablet: {
-        position: "fixed",
-        bottom: "0",
-        left: "0",
-    },
     invalidButton: {
         width: "80%",
         maxWidth: "18rem",
         margin: "1rem 0",
+    },
+    buttonBoxPwa: {
+        marginBottom: "1rem",
     },
 }));
 
