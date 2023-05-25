@@ -79,6 +79,7 @@
             "submit-alt": "Illustration envoie d’une enquête",
             "reviewer-alt": "Alt pour reviewer",
             "kind-of-day-alt": "Alt pour kind of day",
+            "stats-alt": "Illustration pour liste des enquêtes",
             "mui-icon": {
                 "close": "Bouton Fermer",
                 "more-horizontal": "Bouton Plus d’options",
@@ -200,9 +201,12 @@
             "search-placeholder": "Rechercher par nom ou identifiant",
             "filter-label": "Masquer les ménages terminés",
             "household-static-label": "Ménage",
-            "started-survey-label": "Carnet(s) commencé(s)",
-            "closed-survey-label": "Carnet(s) clôturé(s)",
-            "validated-survey-label": "Carnet(s) validé(s)"
+            "started-survey-label": "Carnet commencé",
+            "starteds-survey-label": "Carnets commencés",
+            "closed-survey-label": "Carnet clôturé",
+            "closeds-survey-label": "Carnets clôturés",
+            "validated-survey-label": "Carnet validé",
+            "validateds-survey-label": "Carnets validés"
         },
         "reviewer-home": {
             "welcome": "Bienvenue dans votre espace",

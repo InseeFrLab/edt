@@ -5,6 +5,7 @@ import arrowForwardIosGrey from "assets/illustration/mui-icon/arrow-forward-ios-
 import home from "assets/illustration/mui-icon/home.svg";
 import person from "assets/illustration/mui-icon/person-white.svg";
 import search from "assets/illustration/mui-icon/search.svg";
+import stats from "assets/illustration/stats.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import ReviewerPage from "components/commons/ReviewerPage/ReviewerPage";
 import HouseholdCard from "components/edt/HouseholdCard/HouseholdCard";
@@ -189,7 +190,10 @@ const SurveysOverviewPage = () => {
             homeIcon={home}
             homeIconAlt={t("accessibility.asset.mui-icon.home")}
         >
-            <Typography className={classes.label}>{t("page.surveys-overview.title")}</Typography>
+            <Box className={classes.title}>
+                <img src={stats} alt={t("accessibility.asset.stats-alt")} />
+                <Typography className={classes.label}>{t("page.surveys-overview.title")}</Typography>
+            </Box>
             <Box className={classes.searchBox}>
                 <OutlinedInput
                     onChange={onFilterSearchBox}
@@ -216,9 +220,21 @@ const SurveysOverviewPage = () => {
                         iconPersonAlt={t("accessibility.asset.mui-icon.person")}
                         iconArrow={arrowForwardIosGrey}
                         iconArrowAlt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
-                        startedSurveyLabel={t("page.surveys-overview.started-survey-label")}
-                        closedSurveyLabel={t("page.surveys-overview.closed-survey-label")}
-                        validatedSurveyLabel={t("page.surveys-overview.validated-survey-label")}
+                        startedSurveyLabel={
+                            dataHousehold?.surveys?.startedSurveysAmount > 1
+                                ? t("page.surveys-overview.starteds-survey-label")
+                                : t("page.surveys-overview.started-survey-label")
+                        }
+                        closedSurveyLabel={
+                            dataHousehold?.surveys?.closedSurveysAmount > 1
+                                ? t("page.surveys-overview.closeds-survey-label")
+                                : t("page.surveys-overview.closed-survey-label")
+                        }
+                        validatedSurveyLabel={
+                            dataHousehold?.surveys?.validatedSurveysAmount > 1
+                                ? t("page.surveys-overview.validateds-survey-label")
+                                : t("page.surveys-overview.validated-survey-label")
+                        }
                         onClick={onClickHouseholdCard}
                         dataHousehold={dataHousehold}
                     />
@@ -237,7 +253,12 @@ const useStyles = makeStylesEdt({ "name": { SurveysOverviewPage } })(theme => ({
         flexDirection: "column",
     },
     label: {
-        fontSize: "14px",
+        fontSize: "18px",
+        fontWeight: "bold",
+        marginLeft: "0.5rem",
+    },
+    title: {
+        display: "flex",
         marginBottom: "2rem",
     },
     searchBox: {
@@ -259,14 +280,9 @@ const useStyles = makeStylesEdt({ "name": { SurveysOverviewPage } })(theme => ({
             paddingTop: ".5rem",
             paddingBottom: ".5rem",
         },
+        backgroundColor: theme.variables.white,
     },
     searchResultBox: {
-        // marginTop: "1rem",
-        // overflow: "hidden auto",
-        // height: "100%",
-        // display: "flex",
-        // flexDirection: "column",
-
         marginTop: "1rem",
         paddingBottom: "6rem",
         height: "100%",
