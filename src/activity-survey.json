@@ -150,6 +150,18 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
+            "name": "SECONDARYACTIVITY_LABEL",
+            "componentRef": "checkboxone_secondaryactivity"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
             "name": "PLACE",
             "componentRef": "input_place"
         },
@@ -703,7 +715,7 @@
                 {
                     "componentType": "CheckboxOneEdt",
                     "bindingDependencies": ["MEANOFTRANSPORT"],
-                    "response": { "name": "MEANOFTRANSPORT" },
+                    "responses": [{ "name": "MEANOFTRANSPORT" }],
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -738,7 +750,10 @@
                 {
                     "componentType": "CheckboxOneEdt",
                     "bindingDependencies": ["SECONDARYACTIVITY"],
-                    "response": { "name": "SECONDARYACTIVITY" },
+                    "responses": [
+                        { "name": "SECONDARYACTIVITY" },
+                        { "name": "SECONDARYACTIVITY_LABEL" }
+                    ],
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -885,7 +900,7 @@
         {
             "componentType": "CheckboxOneEdt",
             "bindingDependencies": ["GREATESTACTIVITYDAY"],
-            "response": { "name": "GREATESTACTIVITYDAY" },
+            "responses": [{ "name": "GREATESTACTIVITYDAY" }],
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
@@ -902,7 +917,7 @@
         {
             "componentType": "CheckboxOneEdt",
             "bindingDependencies": ["WORSTACTIVITYDAY"],
-            "response": { "name": "WORSTACTIVITYDAY" },
+            "responses": [{ "name": "WORSTACTIVITYDAY" }],
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
@@ -919,7 +934,7 @@
         {
             "componentType": "CheckboxOneEdt",
             "bindingDependencies": ["KINDOFDAY"],
-            "response": { "name": "KINDOFDAY" },
+            "responses": [{ "name": "KINDOFDAY" }],
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",

@@ -89,11 +89,30 @@ const checkForSecondaryActivity = (idSurvey: string, i: number, activityOrRoute:
             activityOrRoute.secondaryActivity = {
                 activityCode: secondaryActivityValue,
                 activityLabel: activityOrRoute.isRoute
-                    ? findRouteSecondaryActivityInRef(secondaryActivityValue)?.label
-                    : findActivitySecondaryActivityInRef(secondaryActivityValue)?.label,
+                    ? getActivitySecondary(idSurvey, i, secondaryActivityValue)
+                    : getRouteActivitySecondary(idSurvey, i, secondaryActivityValue),
             };
         }
     }
+};
+
+const getActivitySecondary = (idSurvey: string, i: number, secondaryActivityValue: string) => {
+    const newSecondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY_LABEL, i) as
+        | string
+        | undefined;
+    const activtySecondaryInRef = findActivitySecondaryActivityInRef(secondaryActivityValue);
+    console.log(newSecondaryActivityValue);
+    return activtySecondaryInRef != null ? activtySecondaryInRef?.label : newSecondaryActivityValue;
+};
+
+const getRouteActivitySecondary = (idSurvey: string, i: number, secondaryActivityValue: string) => {
+    const newSecondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY_LABEL, i) as
+        | string
+        | undefined;
+    const routeActivtySecondaryInRef = findRouteSecondaryActivityInRef(secondaryActivityValue);
+    return routeActivtySecondaryInRef != null
+        ? routeActivtySecondaryInRef?.label
+        : newSecondaryActivityValue;
 };
 
 const createRoute = (

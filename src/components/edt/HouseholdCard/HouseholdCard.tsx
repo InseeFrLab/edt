@@ -185,7 +185,7 @@ const useStyles = makeStylesEdt({ "name": { HouseholdCard } })(theme => ({
     rowBox: {
         display: "flex",
         alignItems: "flex-start",
-        minWidth: "90px",
+        minWidth: "110px",
         alignSelf: "end",
     },
     rowValidBox: {
