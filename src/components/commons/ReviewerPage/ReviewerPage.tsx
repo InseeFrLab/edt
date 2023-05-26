@@ -44,7 +44,7 @@ const useStyles = makeStylesEdt({ "name": { ReviewerPage } })(theme => ({
     contentBox: {
         height: "100%",
         overflow: "hidden",
-        padding: "1rem 2rem 1rem 2rem",
+        padding: "2rem 3rem 1rem 3rem",
         display: "flex",
         flexDirection: "column",
     },

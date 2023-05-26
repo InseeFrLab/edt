@@ -259,7 +259,7 @@ const useStyles = makeStylesEdt({ "name": { SurveysOverviewPage } })(theme => ({
     },
     title: {
         display: "flex",
-        marginBottom: "2rem",
+        marginBottom: "3rem",
     },
     searchBox: {
         display: "flex",

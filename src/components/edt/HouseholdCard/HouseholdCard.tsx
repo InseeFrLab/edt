@@ -56,9 +56,8 @@ const HouseholdCard = (props: HouseholdCardProps) => {
     const hasValidated = dataHousehold.surveys.validatedSurveysAmount >= 1;
 
     const hasSeparator =
-        dataHousehold.surveys.startedSurveysAmount >= 1 &&
-        (dataHousehold.surveys.closedSurveysAmount >= 1 ||
-            dataHousehold.surveys.validatedSurveysAmount >= 1);
+        dataHousehold.surveys.closedSurveysAmount >= 1 ||
+        dataHousehold.surveys.validatedSurveysAmount >= 1;
 
     return (
         <Box className={classes.familyCardBox} onClick={onClick}>
@@ -81,35 +80,39 @@ const HouseholdCard = (props: HouseholdCardProps) => {
                         </>
                     )}
                 </Box>
+            </Box>
 
+            <Box className={classes.separatorBox}>
                 {hasSeparator ? (
                     <Divider className={classes.separator} orientation="vertical" flexItem />
                 ) : (
                     <Box className={classes.emptyBox} />
                 )}
-                <Box>
-                    <Box className={classes.rowBox}>
-                        {hasClosed && (
-                            <>
-                                <Typography className={classes.amount}>
-                                    {dataHousehold.surveys.closedSurveysAmount}
-                                </Typography>
-                                <Typography className={classes.label}>{closedSurveyLabel}</Typography>
-                            </>
-                        )}
-                    </Box>
-                    <Box className={classes.rowBox}>
-                        {hasValidated && (
-                            <>
-                                <Typography className={classes.amount}>
-                                    {dataHousehold.surveys.validatedSurveysAmount}
-                                </Typography>
-                                <Typography className={classes.label}>{validatedSurveyLabel}</Typography>
-                            </>
-                        )}
-                    </Box>
+            </Box>
+
+            <Box className={classes.dataValidBox}>
+                <Box className={classes.rowValidBox}>
+                    {hasClosed && (
+                        <>
+                            <Typography className={classes.amount}>
+                                {dataHousehold.surveys.closedSurveysAmount}
+                            </Typography>
+                            <Typography className={classes.label}>{closedSurveyLabel}</Typography>
+                        </>
+                    )}
+                </Box>
+                <Box className={classes.rowValidBox}>
+                    {hasValidated && (
+                        <>
+                            <Typography className={classes.amount}>
+                                {dataHousehold.surveys.validatedSurveysAmount}
+                            </Typography>
+                            <Typography className={classes.label}>{validatedSurveyLabel}</Typography>
+                        </>
+                    )}
                 </Box>
             </Box>
+
             <Box className={classes.dateBox}>
                 <Typography>{dataHousehold.surveyDate}</Typography>
             </Box>
@@ -145,6 +148,7 @@ const useStyles = makeStylesEdt({ "name": { HouseholdCard } })(theme => ({
         minWidth: "90px",
         maxWidth: "120px",
         justifyContent: "center",
+        width: "10%",
     },
     orange: {
         backgroundColor: "#fc9f0a",
@@ -162,22 +166,39 @@ const useStyles = makeStylesEdt({ "name": { HouseholdCard } })(theme => ({
         margin: "0 1rem",
         padding: "0.5rem 0",
         minWidth: "115px",
+        width: "20%",
     },
     dataBox: {
         margin: "0 1rem",
         display: "flex",
         alignItems: "flex-start",
+        width: "20%",
+        flexDirection: "column",
+    },
+    dataValidBox: {
+        margin: "0 1rem",
+        display: "flex",
+        alignItems: "flex-start",
+        width: "20%",
+        flexDirection: "column",
     },
     rowBox: {
         display: "flex",
         alignItems: "flex-start",
-        minWidth: "192px",
+        minWidth: "90px",
+        alignSelf: "end",
+    },
+    rowValidBox: {
+        display: "flex",
+        alignItems: "flex-start",
+        minWidth: "90px",
     },
     emptyBox: {
         minWidth: "35px",
     },
     dateBox: {
         flexDirection: "row",
+        width: "15%",
     },
     arrowBox: {
         display: "flex",
@@ -198,6 +219,9 @@ const useStyles = makeStylesEdt({ "name": { HouseholdCard } })(theme => ({
         margin: "0 1rem",
         borderColor: theme.palette.primary.light,
         minHeight: "100%",
+    },
+    separatorBox: {
+        height: "3.5rem",
     },
 }));
 
