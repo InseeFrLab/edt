@@ -15,7 +15,7 @@ import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
-import { getListSurveysHousehold, initializeSurveysIdsModeReviewer } from "service/survey-service";
+import { getListSurveysHousehold, initializeSurveysIdsDataModeReviewer } from "service/survey-service";
 
 const SurveysOverviewPage = () => {
     const { classes } = useStyles();
@@ -32,7 +32,7 @@ const SurveysOverviewPage = () => {
     let [initialized, setInitialized] = React.useState(false);
 
     useEffect(() => {
-        initializeSurveysIdsModeReviewer().then(() => {
+        initializeSurveysIdsDataModeReviewer().then(() => {
             dataHouseholds = getListSurveysHousehold();
             setSearchResult(dataHouseholds);
             setInitialized(true);

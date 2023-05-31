@@ -8,6 +8,7 @@ import powerSettings from "assets/illustration/mui-icon/power-settings.svg";
 import removeCircle from "assets/illustration/mui-icon/remove-circle.svg";
 import reminder_note from "assets/illustration/reminder-note.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import DayCard from "components/edt/DayCard/DayCard";
 import WeekCard from "components/edt/WeekCard/WeekCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -41,6 +42,8 @@ import {
     getSource,
     getUserDatasActivity,
     getValue,
+    initializeSurveysDatasCache,
+    initializeSurveysIdsModeReviewer,
     saveData,
     surveysIds,
 } from "service/survey-service";
@@ -55,6 +58,8 @@ const HomeSurveyedPage = () => {
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
 
+    let [initialized, setInitialized] = React.useState(false);
+
     const alertProps = {
         isAlertDisplayed: isAlertDisplayed,
         onCompleteCallBack: useCallback(() => disconnect(), []),
@@ -68,6 +73,15 @@ const HomeSurveyedPage = () => {
         icon: disconnectIcon,
         errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
     };
+
+    React.useEffect(() => {
+        if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
+            initializeSurveysIdsModeReviewer();
+            initializeSurveysDatasCache().then(() => {
+                setInitialized(true);
+            });
+        }
+    }, []);
 
     const resetDataAndReload = useCallback(() => {
         const promises: any[] = [];
@@ -254,7 +268,7 @@ const HomeSurveyedPage = () => {
     };
 
     const renderHomeInterviewer = () => {
-        return (
+        return initialized ? (
             <>
                 {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) =>
                     renderActivityCard(idSurvey, index + 1),
@@ -263,6 +277,13 @@ const HomeSurveyedPage = () => {
                 {surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].map((idSurvey, index) =>
                     renderWorkTimeCard(idSurvey, index + 1),
                 )}
+            </>
+        ) : (
+            <>
+                <LoadingFull
+                    message={t("page.home.loading.message")}
+                    thanking={t("page.home.loading.thanking")}
+                />
             </>
         );
     };

@@ -63,9 +63,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
         dataHousehold.stats?.numHouseholdsValidated >= 1;
 
     const onClickHouseholdCard = useCallback(() => {
-        initializeHomeSurveys(idHousehold).then(() => {
-            navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
-        });
+        navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
     }, []);
 
     return (

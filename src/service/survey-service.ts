@@ -272,7 +272,7 @@ const initializeHomeSurveys = (idHousehold: string) => {
     });
 };
 
-const initializeSurveysIdsModeReviewer = (): Promise<any> => {
+const initializeSurveysIdsModeReviewer = () => {
     let activitySurveysIds: string[] = [];
     let workingTimeSurveysIds: string[] = [];
 
@@ -291,8 +291,13 @@ const initializeSurveysIdsModeReviewer = (): Promise<any> => {
         [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
     };
     surveysIds = innerSurveysIds;
-    return initializeSurveysIds(innerSurveysIds).then(() => {
-        return getRemoteSavedSurveysDatas(innerSurveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]).then(() => {
+};
+
+const initializeSurveysIdsDataModeReviewer = (): Promise<any> => {
+    initializeSurveysIdsModeReviewer();
+
+    return initializeSurveysIds(surveysIds).then(() => {
+        return getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]).then(() => {
             return initializeSurveysDatasCache();
         });
     });
@@ -849,5 +854,6 @@ export {
     getListSurveysHousehold,
     initializeSurveysIdsDemo,
     initializeSurveysIdsModeReviewer,
+    initializeSurveysIdsDataModeReviewer,
     initializeHomeSurveys,
 };
