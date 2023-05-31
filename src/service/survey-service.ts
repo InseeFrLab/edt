@@ -337,8 +337,8 @@ const dataIsChange = (idSurvey: string, data: LunaticData) => {
     if (dataCollected && currentDataCollected) {
         const keys = Object.keys(dataCollected);
         keys?.forEach(key => {
-            const data = dataCollected[key]?.COLLECTED;
-            const currentData = currentDataCollected[key]?.COLLECTED;
+            const data = dataCollected[key]?.COLLECTED ?? [];
+            const currentData = currentDataCollected[key]?.COLLECTED ?? [];
             if (data != currentData) {
                 if (Array.isArray(data)) {
                     const currentDataCollectedArray = currentData as string[];
