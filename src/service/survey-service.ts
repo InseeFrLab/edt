@@ -17,7 +17,7 @@ import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { t } from "i18next";
 import { TabData } from "interface/component/Component";
 import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
-import { Household } from "interface/entity/HouseHold";
+import { Household } from "interface/entity/Household";
 import { StatsHousehold } from "interface/entity/StatsHouseHold";
 import {
     Collected,
