@@ -216,6 +216,10 @@
                 "demo": "Démonstration"
             }
         },
+        "breadcrumbs-reviewer": {
+            "home": "LISTE DES ENQUÊTES",
+            "all-surveys": "tous"
+        },
         "home": {
             "welcome": "Bienvenue sur la PWA Carnet EDT",
             "navigation": {

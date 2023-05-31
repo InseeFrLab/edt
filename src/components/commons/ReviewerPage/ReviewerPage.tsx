@@ -1,6 +1,7 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import { Breadcrumbs, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { Box } from "@mui/system";
+import BreadcrumbsReviewer from "../BreadcrumbsReviewer/BreadcrumbsReviewer";
 
 interface ReviewerPageProps {
     onClickHome: () => void;
@@ -22,11 +23,10 @@ const ReviewerPage = (props: ReviewerPageProps) => {
                         <img src={homeIcon} alt={homeIconAlt} />
                     </Button>
                 </Box>
-                <Box>
-                    <Breadcrumbs separator="›" aria-label="breadcrumb">
-                        {/*breadcrumbs*/}
-                    </Breadcrumbs>
-                </Box>
+                <BreadcrumbsReviewer
+                    labelBreadcrumbPrincipal={"page.breadcrumbs-reviewer.home"}
+                    labelBreadcrumbSecondary={"page.breadcrumbs-reviewer.all-surveys"}
+                />
             </Box>
             <Box className={classes.contentBox}>{children}</Box>
         </Box>
