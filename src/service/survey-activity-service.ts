@@ -101,7 +101,6 @@ const getActivitySecondary = (idSurvey: string, i: number, secondaryActivityValu
         | string
         | undefined;
     const activtySecondaryInRef = findActivitySecondaryActivityInRef(secondaryActivityValue);
-    console.log(newSecondaryActivityValue);
     return activtySecondaryInRef != null ? activtySecondaryInRef?.label : newSecondaryActivityValue;
 };
 

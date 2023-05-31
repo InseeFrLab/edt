@@ -41,6 +41,7 @@ import {
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getScore } from "./survey-activity-service";
 import { getUserRights } from "./user-service";
+import { fetchReviewerSurveysAssignments } from "service/api-service";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -54,6 +55,7 @@ let surveysIds: SurveysIds;
 let userDatasActivity: UserSurveys[] = [];
 let userDatasWorkTime: UserSurveys[] = [];
 let userDatas: UserSurveys[] = [];
+let surveysData: UserSurveys[] = [];
 
 const toIgnoreForRoute = [
     FieldNameEnum.PLACE,
@@ -276,6 +278,47 @@ const initializeSurveysDatasCache = (): Promise<any> => {
     });
 };
 
+const initializeListSurveys = () => {
+    return fetchReviewerSurveysAssignments().then(data => {
+        surveysData = data.data;
+    });
+};
+
+const getListSurveys = () => {
+    return surveysData;
+};
+
+function groupBy<T>(arr: T[], fn: (item: T) => any) {
+    return arr.reduce<Record<string, T[]>>((prev, curr) => {
+        const groupKey = fn(curr);
+        const group = prev[groupKey] || [];
+        group.push(curr);
+        return { ...prev, [groupKey]: group };
+    }, {});
+}
+
+const getListSurveysHousehold = () => {
+    let grouped = groupBy(surveysData, surveyData => {
+        const length = surveyData.surveyUnitId.length - 1;
+        const group = surveyData.surveyUnitId.substring(0, length);
+        return group;
+    });
+    let mapped = Object.entries(grouped)
+        .map(([key, value]) => {
+            return {
+                idMenage: key,
+                userName: "",
+                surveys: value,
+                surveyDate: "",
+            };
+        })
+        .sort(
+            (houseHoldData1: any, houseHoldData2: any) =>
+                Number(houseHoldData1.idMenage) - Number(houseHoldData2.idMenage),
+        );
+    return mapped;
+};
+
 const getDatas = (): Map<string, LunaticData> => {
     return datas;
 };
@@ -294,10 +337,12 @@ const dataIsChange = (idSurvey: string, data: LunaticData) => {
     if (dataCollected && currentDataCollected) {
         const keys = Object.keys(dataCollected);
         keys?.forEach(key => {
-            if (dataCollected[key].COLLECTED != currentDataCollected[key].COLLECTED) {
-                if (Array.isArray(dataCollected[key].COLLECTED)) {
-                    const currentDataCollectedArray = currentDataCollected[key].COLLECTED as string[];
-                    const dataCollectedArray = dataCollected[key].COLLECTED as string[];
+            const data = dataCollected[key]?.COLLECTED;
+            const currentData = currentDataCollected[key]?.COLLECTED;
+            if (data != currentData) {
+                if (Array.isArray(data)) {
+                    const currentDataCollectedArray = currentData as string[];
+                    const dataCollectedArray = data as string[];
                     dataCollectedArray?.forEach((data, i) => {
                         if (currentDataCollectedArray == null || currentDataCollectedArray[i] != data) {
                             isChange = true;
@@ -693,4 +738,7 @@ export {
     isDemoMode,
     getIdSurveyActivity,
     getIdSurveyWorkTime,
+    initializeListSurveys,
+    getListSurveys,
+    getListSurveysHousehold,
 };
