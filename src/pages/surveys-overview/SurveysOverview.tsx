@@ -7,109 +7,40 @@ import person from "assets/illustration/mui-icon/person-white.svg";
 import search from "assets/illustration/mui-icon/search.svg";
 import stats from "assets/illustration/stats.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import ReviewerPage from "components/commons/ReviewerPage/ReviewerPage";
 import HouseholdCard from "components/edt/HouseholdCard/HouseholdCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import React from "react";
-import { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { fetchReviewerSurveysAssignments } from "service/api-service";
 import { getNavigatePath } from "service/navigation-service";
+import { getListSurveysHousehold, initializeSurveysIdsModeReviewer } from "service/survey-service";
 
 const SurveysOverviewPage = () => {
     const { classes } = useStyles();
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const dataHouseholds = [
-        {
-            idMenage: "11000550",
-            userName: "Leblois-Gardet",
-            surveys: { startedSurveysAmount: 1, closedSurveysAmount: 0, validatedSurveysAmount: 0 },
-            surveyDate: "07/03/23",
-        },
-        {
-            idMenage: "11000552",
-            userName: "Pignon",
-            surveys: { startedSurveysAmount: 0, closedSurveysAmount: 0, validatedSurveysAmount: 3 },
-            surveyDate: "08/05/23",
-        },
-        {
-            idMenage: "11000573",
-            userName: "Mallimard",
-            surveys: { startedSurveysAmount: 2, closedSurveysAmount: 0, validatedSurveysAmount: 0 },
-            surveyDate: "11/05/23",
-        },
-        {
-            idMenage: "11000553",
-            userName: "Gallimard",
-            surveys: { startedSurveysAmount: 2, closedSurveysAmount: 1, validatedSurveysAmount: 1 },
-            surveyDate: "01/05/23",
-        },
-        {
-            idMenage: "11000554",
-            userName: "Leblois-Gardon",
-            surveys: { startedSurveysAmount: 4, closedSurveysAmount: 1, validatedSurveysAmount: 0 },
-            surveyDate: "07/03/23",
-        },
-        {
-            idMenage: "11000557",
-            userName: "Pigbeef",
-            surveys: { startedSurveysAmount: 1, closedSurveysAmount: 1, validatedSurveysAmount: 1 },
-            surveyDate: "09/05/23",
-        },
-        {
-            idMenage: "11000551",
-            userName: "Blanchard",
-            surveys: { startedSurveysAmount: 1, closedSurveysAmount: 2, validatedSurveysAmount: 0 },
-            surveyDate: "04/04/23",
-        },
-        {
-            idMenage: "11000560",
-            userName: "Pinocchio",
-            surveys: { startedSurveysAmount: 0, closedSurveysAmount: 0, validatedSurveysAmount: 0 },
-            surveyDate: "19/06/23",
-        },
-
-        {
-            idMenage: "11000586",
-            userName: "Zarella",
-            surveys: { startedSurveysAmount: 0, closedSurveysAmount: 0, validatedSurveysAmount: 1 },
-            surveyDate: "07/11/23",
-        },
-        {
-            idMenage: "11000555",
-            userName: "Leblois-Garcon",
-            surveys: { startedSurveysAmount: 0, closedSurveysAmount: 0, validatedSurveysAmount: 5 },
-            surveyDate: "07/03/23",
-        },
-        {
-            idMenage: "11000556",
-            userName: "Pignaco",
-            surveys: { startedSurveysAmount: 1, closedSurveysAmount: 0, validatedSurveysAmount: 1 },
-            surveyDate: "08/05/23",
-        },
-    ].sort(
-        (houseHoldData1: any, houseHoldData2: any) =>
-            Number(houseHoldData1.idMenage) - Number(houseHoldData2.idMenage),
-    );
     const emptyArray: any[] = [];
+
+    let dataHouseholds = getListSurveysHousehold();
 
     let [isFilterValidatedSurvey, setIsFilterValidatedSurvey] = React.useState(false);
     let [searchResult, setSearchResult] = React.useState(dataHouseholds);
     let [filterValidatedResult, setFilterValidatedResult] = React.useState(emptyArray);
+    let [initialized, setInitialized] = React.useState(false);
 
     useEffect(() => {
-        fetchReviewerSurveysAssignments();
+        initializeSurveysIdsModeReviewer().then(() => {
+            dataHouseholds = getListSurveysHousehold();
+            setSearchResult(dataHouseholds);
+            setInitialized(true);
+        });
     }, []);
 
     const navToReviewerHome = useCallback(() => {
         navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_HOME));
-    }, []);
-
-    const onClickHouseholdCard = useCallback(() => {
-        console.log("Quand tu me cliques dessus, ça chatouille.");
     }, []);
 
     const isToFilter = (houseHoldData: any): boolean => {
@@ -124,24 +55,20 @@ const SurveysOverviewPage = () => {
         (event: any) => {
             let newSearchResult = dataHouseholds.filter(
                 houseHoldData =>
-                    houseHoldData.userName.toLowerCase().includes(event.target.value.toLowerCase()) ||
-                    houseHoldData.idMenage.includes(event.target.value),
+                    houseHoldData?.userName?.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    houseHoldData?.idHousehold?.includes(event.target.value),
             );
-            // console.log("avant filtre")
-            // console.log(newSearchResult);
 
             if (isFilterValidatedSurvey) {
                 newSearchResult = newSearchResult.filter(houseHoldData => !isToFilter(houseHoldData));
-                // console.log("après filtre")
-                // console.log(searchResult);
             }
             sortSearchResult(newSearchResult);
             setSearchResult(newSearchResult);
 
             let newFilterValidatedResult = dataHouseholds.filter(
                 houseHoldData =>
-                    (houseHoldData.userName.toLowerCase().includes(event.target.value.toLowerCase()) ||
-                        houseHoldData.idMenage.includes(event.target.value)) &&
+                    (houseHoldData?.userName?.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                        houseHoldData?.idHousehold?.includes(event.target.value)) &&
                     isToFilter(houseHoldData),
             );
             setFilterValidatedResult(newFilterValidatedResult);
@@ -176,14 +103,14 @@ const SurveysOverviewPage = () => {
         (houseHoldData: any) => {
             const newSearchResult = houseHoldData.sort(
                 (houseHoldData1: any, houseHoldData2: any) =>
-                    Number(houseHoldData1.idMenage) - Number(houseHoldData2.idMenage),
+                    Number(houseHoldData1.idHousehold) - Number(houseHoldData2.idHousehold),
             );
             setSearchResult(newSearchResult);
         },
         [searchResult],
     );
 
-    return (
+    return initialized ? (
         <ReviewerPage
             className={classes.reviewerPage}
             onClickHome={navToReviewerHome}
@@ -215,32 +142,39 @@ const SurveysOverviewPage = () => {
                 {searchResult.map((dataHousehold: any, index: number) => (
                     <HouseholdCard
                         key={"household-card-" + index}
+                        idHousehold={dataHousehold.idHousehold}
                         householdStaticLabel={t("page.surveys-overview.household-static-label")}
                         iconPerson={person}
                         iconPersonAlt={t("accessibility.asset.mui-icon.person")}
                         iconArrow={arrowForwardIosGrey}
                         iconArrowAlt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
                         startedSurveyLabel={
-                            dataHousehold?.surveys?.startedSurveysAmount > 1
+                            dataHousehold?.stats?.numHouseholdsInProgress > 1
                                 ? t("page.surveys-overview.starteds-survey-label")
                                 : t("page.surveys-overview.started-survey-label")
                         }
                         closedSurveyLabel={
-                            dataHousehold?.surveys?.closedSurveysAmount > 1
+                            dataHousehold?.stats?.numHouseholdsClosed > 1
                                 ? t("page.surveys-overview.closeds-survey-label")
                                 : t("page.surveys-overview.closed-survey-label")
                         }
                         validatedSurveyLabel={
-                            dataHousehold?.surveys?.validatedSurveysAmount > 1
+                            dataHousehold?.stats?.numHouseholdsValidated > 1
                                 ? t("page.surveys-overview.validateds-survey-label")
                                 : t("page.surveys-overview.validated-survey-label")
                         }
-                        onClick={onClickHouseholdCard}
                         dataHousehold={dataHousehold}
                     />
                 ))}
             </FlexCenter>
         </ReviewerPage>
+    ) : (
+        <>
+            <LoadingFull
+                message={t("page.home.loading.message")}
+                thanking={t("page.home.loading.thanking")}
+            />
+        </>
     );
 };
 

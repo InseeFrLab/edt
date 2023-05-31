@@ -11,6 +11,7 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import DayCard from "components/edt/DayCard/DayCard";
 import WeekCard from "components/edt/WeekCard/WeekCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
@@ -33,16 +34,17 @@ import {
 } from "service/navigation-service";
 import {
     getData,
+    getIdSurveyActivity,
+    getIdSurveyWorkTime,
     getPrintedFirstName,
     getPrintedSurveyDate,
     getSource,
+    getUserDatasActivity,
     getValue,
     saveData,
     surveysIds,
-    getUserDatasActivity,
-    getIdSurveyActivity,
-    getIdSurveyWorkTime,
 } from "service/survey-service";
+import { getUserRights } from "service/user-service";
 
 const HomeSurveyedPage = () => {
     const { t } = useTranslation();
@@ -229,7 +231,7 @@ const HomeSurveyedPage = () => {
         );
     };
 
-    const renderHomeReviewer = () => {
+    const renderHomeDemo = () => {
         const interviewers = getUserDatasActivity().map(data => data.interviewerId);
         const interviewersUniques = interviewers.filter(
             (value, index, self) => self.indexOf(value) === index,
@@ -263,6 +265,26 @@ const HomeSurveyedPage = () => {
                 )}
             </>
         );
+    };
+
+    const renderHomeReviewer = () => {
+        return (
+            <>
+                {surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].map((idSurvey, index) =>
+                    surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].includes(idSurvey)
+                        ? renderActivityCard(idSurvey, index + 1)
+                        : renderWorkTimeCard(idSurvey, index + 1),
+                )}
+            </>
+        );
+    };
+
+    const renderHome = () => {
+        if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
+            return renderHomeReviewer();
+        } else {
+            return renderHomeInterviewer();
+        }
     };
 
     return (
@@ -345,7 +367,7 @@ const HomeSurveyedPage = () => {
                     <img src={reminder_note} alt={t("accessibility.asset.reminder-notes-alt")} />
                 </FlexCenter>
 
-                {isDemoMode ? renderHomeReviewer() : renderHomeInterviewer()}
+                {isDemoMode ? renderHomeDemo() : renderHomeInterviewer()}
             </Box>
         </>
     );

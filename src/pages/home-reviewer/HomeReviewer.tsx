@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate } from "react-router-dom";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getNavigatePath } from "service/navigation-service";
-import { initializeSurveysDatasCache } from "service/survey-service";
+import { initializeSurveysIdsDemo } from "service/survey-service";
 
 const HomeReviewerPage = () => {
     const { classes } = useStyles();
@@ -61,12 +61,13 @@ const HomeReviewerPage = () => {
     }, []);
 
     const navToSurveysOverview = useCallback(() => {
+        localStorage.setItem(LocalStorageVariableEnum.IS_DEMO_MODE, "false");
         navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_SURVEYS_OVERVIEW));
     }, []);
 
     const navToDemonstration = useCallback(() => {
         localStorage.setItem(LocalStorageVariableEnum.IS_DEMO_MODE, "true");
-        initializeSurveysDatasCache().then(() => {
+        initializeSurveysIdsDemo().finally(() => {
             navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
         });
     }, []);

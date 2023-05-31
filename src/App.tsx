@@ -1,5 +1,6 @@
 import "App.scss";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
+import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import "i18n/i18n";
 import { useAuth } from "oidc-react";
@@ -7,8 +8,8 @@ import ErrorPage from "pages/error/Error";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EdtRoutes } from "routes/EdtRoutes";
-import { getDatas, initializeDatas } from "service/survey-service";
-import { setAuth, setUser, setUserToken } from "service/user-service";
+import { getDatas, initializeDatas, initializeListSurveys } from "service/survey-service";
+import { getUserRights, setAuth, setUser, setUserToken } from "service/user-service";
 
 const App = () => {
     const { t } = useTranslation();
@@ -47,6 +48,12 @@ const App = () => {
             initializeDatas(setError).then(() => {
                 setInitialized(true);
             });
+
+            if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
+                initializeListSurveys().then(() => {
+                    setInitialized(true);
+                });
+            }
         }
     }, [auth]);
 

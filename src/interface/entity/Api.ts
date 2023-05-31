@@ -8,6 +8,7 @@ export interface UserSurveys {
     questionnaireModelId: string;
     reviewerId: string;
     surveyUnitId: string;
+    nameHousehold?: string;
 }
 
 export interface SurveyData {

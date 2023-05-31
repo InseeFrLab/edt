@@ -12,10 +12,13 @@ import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum"
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
+import { StateHouseholdEnum } from "enumerations/StateHouseholdEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { t } from "i18next";
 import { TabData } from "interface/component/Component";
 import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
+import { Household } from "interface/entity/HouseHold";
+import { StatsHousehold } from "interface/entity/StatsHouseHold";
 import {
     Collected,
     LunaticData,
@@ -29,6 +32,7 @@ import {
     SourceData,
     SurveysIds,
 } from "interface/lunatic/Lunatic";
+import { fetchReviewerSurveysAssignments } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrator-service";
 import {
@@ -41,7 +45,6 @@ import {
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getScore } from "./survey-activity-service";
 import { getUserRights } from "./user-service";
-import { fetchReviewerSurveysAssignments } from "service/api-service";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -80,7 +83,7 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     return new Promise(resolve => {
         promisesToWait.push(initializeRefs(setError));
         if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
-            promisesToWait.push(initializeSurveysIdsAndSourcesDemo(setError));
+            promisesToWait.push(initializeSources(setError));
         } else {
             promisesToWait.push(initializeSurveysIdsAndSources(setError));
         }
@@ -136,7 +139,6 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                         [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
                         [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
                     };
-
                     const innerPromises: Promise<any>[] = [
                         getRemoteSavedSurveysDatas(allSurveysIds, setError).then(() => {
                             return initializeSurveysDatasCache();
@@ -171,9 +173,15 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
     });
 };
 
-const initializeSurveysIdsAndSourcesDemo = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
+const initializeSources = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
+    let distinctSources = [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY];
+    return fetchSurveysSourcesByIds(distinctSources, setError).then(sources => {
+        saveSources(sources);
+    });
+};
+
+const activitySurveyDemo = () => {
     let activitySurveysIds: string[] = [];
-    userDatasActivity = [];
     let numInterviewer = 0;
     for (let i = 1; i <= Number(NUM_MAX_ACTIVITY_SURVEYS); i++) {
         if (i % 2 != 0) {
@@ -191,7 +199,10 @@ const initializeSurveysIdsAndSourcesDemo = (setError: (error: ErrorCodeEnum) => 
         userDatasActivity.push(userSurvey);
         userDatas.push(userSurvey);
     }
-    numInterviewer = 0;
+    return activitySurveysIds;
+};
+
+const workTimeSurveyDemo = () => {
     let workingTimeSurveysIds: string[] = [];
     userDatasWorkTime = [];
 
@@ -208,28 +219,88 @@ const initializeSurveysIdsAndSourcesDemo = (setError: (error: ErrorCodeEnum) => 
         userDatasWorkTime.push(userSurvey);
         userDatas.push(userSurvey);
     }
+    return workingTimeSurveysIds;
+};
 
-    let distinctSources = [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY];
-    let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
-    const surveysIds: SurveysIds = {
-        [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
-        [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
-        [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
-    };
-
+const initializeSurveysIds = (innerSurveysIds: SurveysIds) => {
     const innerPromises: Promise<any>[] = [
-        saveSurveysIds(surveysIds),
+        saveSurveysIds(innerSurveysIds),
         initializeSurveysDatasCache(),
-        fetchSurveysSourcesByIds(distinctSources, setError).then(sources => {
-            saveSources(sources);
-        }),
     ];
     return Promise.all(innerPromises);
 };
 
+const initializeSurveysIdsDemo = (): Promise<any> => {
+    userDatasActivity = [];
+    let activitySurveysIds = activitySurveyDemo();
+    let workingTimeSurveysIds = workTimeSurveyDemo();
+
+    let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
+    const innerSurveysIds: SurveysIds = {
+        [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+        [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
+        [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
+    };
+    surveysIds = innerSurveysIds;
+    return initializeSurveysIds(surveysIds);
+};
+
+const initializeHomeSurveys = (idHousehold: string) => {
+    userDatas = [];
+    userDatasWorkTime = [];
+    userDatasActivity = [];
+    return new Promise(resolve => {
+        userDatas =
+            getListSurveysHousehold().filter(household => household.idHousehold == idHousehold)[0]
+                .surveys ?? [];
+        userDatas.forEach(userSurvey => {
+            if (userSurvey.questionnaireModelId == SourcesEnum.WORK_TIME_SURVEY) {
+                userDatasWorkTime.push(userSurvey);
+            } else {
+                userDatasActivity.push(userSurvey);
+            }
+        });
+
+        let allSurveysIds = userDatas.map(data => data.surveyUnitId);
+        const innerSurveysIds: SurveysIds = {
+            [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+            [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: userDatasActivity.map(data => data.surveyUnitId),
+            [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: userDatasWorkTime.map(data => data.surveyUnitId),
+        };
+        surveysIds = innerSurveysIds;
+        resolve(true);
+    });
+};
+
+const initializeSurveysIdsModeReviewer = (): Promise<any> => {
+    let activitySurveysIds: string[] = [];
+    let workingTimeSurveysIds: string[] = [];
+
+    surveysData.forEach(userSurvey => {
+        if (userSurvey.questionnaireModelId != SourcesEnum.WORK_TIME_SURVEY) {
+            activitySurveysIds.push(userSurvey.surveyUnitId);
+        } else {
+            workingTimeSurveysIds.push(userSurvey.surveyUnitId);
+        }
+    });
+
+    let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
+    const innerSurveysIds: SurveysIds = {
+        [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+        [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
+        [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
+    };
+    surveysIds = innerSurveysIds;
+    return initializeSurveysIds(innerSurveysIds).then(() => {
+        return getRemoteSavedSurveysDatas(innerSurveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]).then(() => {
+            return initializeSurveysDatasCache();
+        });
+    });
+};
+
 const getRemoteSavedSurveysDatas = (
     surveysIds: string[],
-    setError: (error: ErrorCodeEnum) => void,
+    setError?: (error: ErrorCodeEnum) => void,
 ): Promise<any> => {
     const promises: Promise<any>[] = [];
     surveysIds.forEach(surveyId => {
@@ -297,7 +368,7 @@ function groupBy<T>(arr: T[], fn: (item: T) => any) {
     }, {});
 }
 
-const getListSurveysHousehold = () => {
+const getListSurveysHousehold = (): Household[] => {
     let grouped = groupBy(surveysData, surveyData => {
         const length = surveyData.surveyUnitId.length - 1;
         const group = surveyData.surveyUnitId.substring(0, length);
@@ -306,15 +377,16 @@ const getListSurveysHousehold = () => {
     let mapped = Object.entries(grouped)
         .map(([key, value]) => {
             return {
-                idMenage: key,
-                userName: "",
+                idHousehold: key,
+                userName: value[0]?.nameHousehold ?? "",
                 surveys: value,
                 surveyDate: "",
+                stats: getStatsHousehold(value),
             };
         })
         .sort(
             (houseHoldData1: any, houseHoldData2: any) =>
-                Number(houseHoldData1.idMenage) - Number(houseHoldData2.idMenage),
+                Number(houseHoldData1.idHousehold) - Number(houseHoldData2.idHousehold),
         );
     return mapped;
 };
@@ -669,9 +741,9 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
     } else {
         const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
         if (isDemoMode) {
-            const dataUserSurvey = userDatas.filter(data => data.surveyUnitId == idSurvey)[0];
+            const dataUserSurvey = userDatas?.filter(data => data.surveyUnitId == idSurvey)[0];
             const indexInterviewerId = userDatas
-                .filter(
+                ?.filter(
                     data =>
                         data.interviewerId == dataUserSurvey?.interviewerId &&
                         data.questionnaireModelId == dataUserSurvey?.questionnaireModelId,
@@ -690,14 +762,12 @@ const getFullFrenchDate = (surveyDate: string): string => {
 };
 
 const getPersonNumber = (idSurvey: string) => {
-    //const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
-
     const index =
         surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey) !== -1
             ? surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey)
             : surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].indexOf(idSurvey);
 
-    const interviewerId = userDatas.filter(data => data.surveyUnitId == idSurvey)[0]?.interviewerId;
+    const interviewerId = userDatas?.filter(data => data.surveyUnitId == idSurvey)[0]?.interviewerId;
     const indexDemo = interviewerId?.split("interviewer")[1];
 
     return isDemoMode() ? indexDemo : index + 1;
@@ -705,6 +775,42 @@ const getPersonNumber = (idSurvey: string) => {
 
 const isDemoMode = () => {
     return getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+};
+
+const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
+    const surveysIdsHousehold = surveys.map(survey => survey.surveyUnitId);
+    let stats = null;
+    let state = StateHouseholdEnum.IN_PROGRESS;
+    let numHouseholds = 0,
+        numHouseholdsInProgress = 0,
+        numHouseholdsClosed = 0,
+        numHouseholdsValidated = 0;
+
+    surveysIdsHousehold.forEach(idSurvey => {
+        const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
+        const isClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
+        if (isValidated) {
+            numHouseholdsValidated++;
+        } else if (isClosed) {
+            numHouseholdsClosed++;
+        } else {
+            numHouseholdsInProgress++;
+        }
+        numHouseholds++;
+    });
+
+    if (numHouseholds == numHouseholdsValidated) state = StateHouseholdEnum.VALIDATED;
+    else if (numHouseholdsClosed > 0) state = StateHouseholdEnum.CLOSED;
+    else state = StateHouseholdEnum.IN_PROGRESS;
+
+    stats = {
+        numHouseholds: numHouseholds,
+        numHouseholdsInProgress: numHouseholdsInProgress,
+        numHouseholdsClosed: numHouseholdsClosed,
+        numHouseholdsValidated: numHouseholdsValidated,
+        state: state,
+    };
+    return stats;
 };
 
 export {
@@ -741,4 +847,7 @@ export {
     initializeListSurveys,
     getListSurveys,
     getListSurveysHousehold,
+    initializeSurveysIdsDemo,
+    initializeSurveysIdsModeReviewer,
+    initializeHomeSurveys,
 };

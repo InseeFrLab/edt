@@ -4,9 +4,9 @@ import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SurveyData, UserSurveys } from "interface/entity/Api";
 import { ReferentielData, SourceData } from "interface/lunatic/Lunatic";
+import jwt, { JwtPayload } from "jwt-decode";
 import { AuthContextProps, User } from "oidc-react";
 import { getAuth, getUserToken } from "./user-service";
-import jwt, { JwtPayload } from "jwt-decode";
 
 export const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
 export const stromaeBackOfficeApiBaseUrl = process.env.REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL;
@@ -137,7 +137,6 @@ const fetchReviewerSurveysAssignments = (): Promise<any> => {
         axios
             .get(edtOrganisationApiBaseUrl + "api/survey-assigment/reviewer/my-surveys", getHeader())
             .then(response => {
-                console.log(response);
                 resolve(response);
             });
     });
@@ -195,7 +194,7 @@ const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<Survey
 
 const remoteGetSurveyData = (
     idSurvey: string,
-    setError: (error: ErrorCodeEnum) => void,
+    setError?: (error: ErrorCodeEnum) => void,
 ): Promise<SurveyData> => {
     return new Promise(resolve => {
         axios
@@ -205,9 +204,9 @@ const remoteGetSurveyData = (
             })
             .catch(err => {
                 if (err.response?.status === 403) {
-                    setError(ErrorCodeEnum.NO_RIGHTS);
+                    setError && setError(ErrorCodeEnum.NO_RIGHTS);
                 } else {
-                    setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
+                    setError && setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
                 }
             });
     });

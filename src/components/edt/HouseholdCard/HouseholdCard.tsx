@@ -1,7 +1,13 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Divider, Typography } from "@mui/material";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { getNavigatePath } from "service/navigation-service";
+import { initializeHomeSurveys } from "service/survey-service";
 
 interface HouseholdCardProps {
+    idHousehold: string;
     iconPerson: string;
     iconPersonAlt: string;
     iconArrow: string;
@@ -11,11 +17,12 @@ interface HouseholdCardProps {
     closedSurveyLabel: string;
     validatedSurveyLabel: string;
     dataHousehold: any;
-    onClick: () => void;
+    onClick?: () => void;
 }
 
 const HouseholdCard = (props: HouseholdCardProps) => {
     const {
+        idHousehold,
         iconPerson,
         iconPersonAlt,
         iconArrow,
@@ -25,21 +32,18 @@ const HouseholdCard = (props: HouseholdCardProps) => {
         closedSurveyLabel,
         validatedSurveyLabel,
         dataHousehold,
-        onClick,
     } = props;
     const { classes, cx } = useStyles();
+    const navigate = useNavigate();
 
     const getType = (): string => {
         if (
-            dataHousehold.surveys.startedSurveysAmount == 0 &&
-            dataHousehold.surveys.closedSurveysAmount == 0 &&
-            dataHousehold.surveys.validatedSurveysAmount >= 1
+            dataHousehold.stats?.numHouseholdsInProgress == 0 &&
+            dataHousehold.stats?.numHouseholdsClosed == 0 &&
+            dataHousehold.stats?.numHouseholdsValidated == dataHousehold.stats?.numHouseholds
         ) {
             return classes.gray;
-        } else if (
-            dataHousehold.surveys.closedSurveysAmount >= 1 ||
-            dataHousehold.surveys.validatedSurveysAmount >= 1
-        ) {
+        } else if (dataHousehold.stats?.numHouseholdsClosed >= 1) {
             return classes.green;
         } else {
             return classes.orange;
@@ -47,26 +51,31 @@ const HouseholdCard = (props: HouseholdCardProps) => {
     };
 
     const hasStarted =
-        dataHousehold.surveys.startedSurveysAmount >= 1 ||
-        (dataHousehold.surveys.closedSurveysAmount == 0 &&
-            dataHousehold.surveys.validatedSurveysAmount == 0);
+        dataHousehold.stats?.numHouseholdsInProgress >= 1 ||
+        (dataHousehold.stats?.numHouseholdsClosed == 0 &&
+            dataHousehold.stats?.numHouseholdsValidated == 0);
 
-    const hasClosed = dataHousehold.surveys.closedSurveysAmount >= 1;
-
-    const hasValidated = dataHousehold.surveys.validatedSurveysAmount >= 1;
+    const hasClosed = dataHousehold.stats?.numHouseholdsClosed >= 1;
+    const hasValidated = dataHousehold.stats?.numHouseholdsValidated >= 1;
 
     const hasSeparator =
-        dataHousehold.surveys.closedSurveysAmount >= 1 ||
-        dataHousehold.surveys.validatedSurveysAmount >= 1;
+        dataHousehold.stats?.numHouseholdsClosed >= 1 ||
+        dataHousehold.stats?.numHouseholdsValidated >= 1;
+
+    const onClickHouseholdCard = useCallback(() => {
+        initializeHomeSurveys(idHousehold).then(() => {
+            navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
+        });
+    }, []);
 
     return (
-        <Box className={classes.familyCardBox} onClick={onClick}>
+        <Box className={classes.familyCardBox} onClick={onClickHouseholdCard}>
             <Box className={cx(classes.iconBox, getType())}>
                 <img src={iconPerson} alt={iconPersonAlt} />
             </Box>
             <Box className={classes.identityBox}>
                 <Typography className={classes.label}>{householdStaticLabel}</Typography>
-                <Typography className={classes.labelBold}>{dataHousehold.idMenage}</Typography>
+                <Typography className={classes.labelBold}>{dataHousehold.idHousehold}</Typography>
                 <Typography className={classes.labelBold}>{dataHousehold.userName}</Typography>
             </Box>
             <Box className={classes.dataBox}>
@@ -74,7 +83,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
                     {hasStarted && (
                         <>
                             <Typography className={classes.amount}>
-                                {dataHousehold.surveys.startedSurveysAmount}
+                                {dataHousehold.stats?.numHouseholdsInProgress}
                             </Typography>
                             <Typography className={classes.label}>{startedSurveyLabel}</Typography>
                         </>
@@ -95,7 +104,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
                     {hasClosed && (
                         <>
                             <Typography className={classes.amount}>
-                                {dataHousehold.surveys.closedSurveysAmount}
+                                {dataHousehold.stats?.numHouseholdsClosed}
                             </Typography>
                             <Typography className={classes.label}>{closedSurveyLabel}</Typography>
                         </>
@@ -105,7 +114,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
                     {hasValidated && (
                         <>
                             <Typography className={classes.amount}>
-                                {dataHousehold.surveys.validatedSurveysAmount}
+                                {dataHousehold.stats?.numHouseholdsValidated}
                             </Typography>
                             <Typography className={classes.label}>{validatedSurveyLabel}</Typography>
                         </>
