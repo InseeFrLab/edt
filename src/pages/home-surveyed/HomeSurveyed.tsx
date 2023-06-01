@@ -7,6 +7,7 @@ import home from "assets/illustration/mui-icon/home.svg";
 import powerSettings from "assets/illustration/mui-icon/power-settings.svg";
 import removeCircle from "assets/illustration/mui-icon/remove-circle.svg";
 import reminder_note from "assets/illustration/reminder-note.svg";
+import BreadcrumbsReviewer from "components/commons/BreadcrumbsReviewer/BreadcrumbsReviewer";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import DayCard from "components/edt/DayCard/DayCard";
@@ -46,6 +47,7 @@ import {
     initializeSurveysIdsModeReviewer,
     saveData,
     surveysIds,
+    initializeHomeSurveys,
 } from "service/survey-service";
 import { getUserRights } from "service/user-service";
 
@@ -57,6 +59,7 @@ const HomeSurveyedPage = () => {
     const [isAlertDisplayed, setIsAlertDisplayed] = React.useState<boolean>(false);
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+    const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
 
     let [initialized, setInitialized] = React.useState(false);
 
@@ -73,15 +76,6 @@ const HomeSurveyedPage = () => {
         icon: disconnectIcon,
         errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
     };
-
-    React.useEffect(() => {
-        if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
-            initializeSurveysIdsModeReviewer();
-            initializeSurveysDatasCache().then(() => {
-                setInitialized(true);
-            });
-        }
-    }, []);
 
     const resetDataAndReload = useCallback(() => {
         const promises: any[] = [];
@@ -282,15 +276,14 @@ const HomeSurveyedPage = () => {
     };
 
     const renderHomeReviewer = () => {
-        /*return (
-            <>
-                {surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].map((idSurvey, index) =>
-                    surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].includes(idSurvey)
-                        ? renderActivityCard(idSurvey, index + 1)
-                        : renderWorkTimeCard(idSurvey, index + 1),
-                )}
-            </>
-        );*/
+        if (isReviewer) {
+            const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
+            initializeHomeSurveys(idHousehold ?? "").then(() => {
+                initializeSurveysDatasCache().then(() => {
+                    setInitialized(true);
+                });
+            });
+        }
         return initialized ? (
             <>
                 {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) =>
@@ -325,11 +318,15 @@ const HomeSurveyedPage = () => {
                 <Alert {...alertProps} />
             </FlexCenter>
             <Box className={classes.headerBox}>
-                {isDemoMode ? (
+                {isReviewer ? (
                     <Box className={classes.reviewerButtonBox}>
                         <Button color="primary" variant="contained" onClick={navToReviewerHome}>
                             <img src={home} alt={t("accessibility.asset.mui-icon.home")} />
                         </Button>
+                        <BreadcrumbsReviewer
+                            labelBreadcrumbPrincipal={"page.breadcrumbs-reviewer.home"}
+                            labelBreadcrumbSecondary={"page.breadcrumbs-reviewer.all-surveys"}
+                        />
                     </Box>
                 ) : (
                     <Box className={classes.logoBox}>
@@ -414,7 +411,12 @@ const useStyles = makeStylesEdt({ "name": { NavButton: HomeSurveyedPage } })(() 
         paddingLeft: "1rem",
         paddingTop: "0.5rem",
     },
-    reviewerButtonBox: { paddingLeft: "1rem", paddingTop: "0.5rem" },
+    reviewerButtonBox: {
+        paddingLeft: "1rem",
+        paddingTop: "0.5rem",
+        display: "flex",
+        alignItems: "center",
+    },
     logoImg: {
         width: "40px",
     },

@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
 import { initializeHomeSurveys } from "service/survey-service";
+import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 
 interface HouseholdCardProps {
     idHousehold: string;
@@ -63,6 +64,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
         dataHousehold.stats?.numHouseholdsValidated >= 1;
 
     const onClickHouseholdCard = useCallback(() => {
+        localStorage.setItem(LocalStorageVariableEnum.ID_HOUSEHOLD, idHousehold);
         navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
     }, []);
 
