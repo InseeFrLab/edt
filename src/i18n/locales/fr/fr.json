@@ -218,7 +218,8 @@
         },
         "breadcrumbs-reviewer": {
             "home": "LISTE DES ENQUÊTES",
-            "all-surveys": "tous"
+            "all-surveys": "tous",
+            "survey": "Ménage"
         },
         "home": {
             "welcome": "Bienvenue sur la PWA Carnet EDT",

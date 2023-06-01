@@ -60,6 +60,7 @@ const HomeSurveyedPage = () => {
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
     const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
+    const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
 
     let [initialized, setInitialized] = React.useState(false);
 
@@ -277,7 +278,6 @@ const HomeSurveyedPage = () => {
 
     const renderHomeReviewer = () => {
         if (isReviewer) {
-            const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
             initializeHomeSurveys(idHousehold ?? "").then(() => {
                 initializeSurveysDatasCache().then(() => {
                     setInitialized(true);
@@ -324,8 +324,10 @@ const HomeSurveyedPage = () => {
                             <img src={home} alt={t("accessibility.asset.mui-icon.home")} />
                         </Button>
                         <BreadcrumbsReviewer
-                            labelBreadcrumbPrincipal={"page.breadcrumbs-reviewer.home"}
-                            labelBreadcrumbSecondary={"page.breadcrumbs-reviewer.all-surveys"}
+                            labelBreadcrumbPrincipal={t("page.breadcrumbs-reviewer.home")}
+                            labelBreadcrumbSecondary={
+                                t("page.breadcrumbs-reviewer.survey") + " " + idHousehold
+                            }
                         />
                     </Box>
                 ) : (

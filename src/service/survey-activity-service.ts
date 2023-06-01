@@ -88,7 +88,7 @@ const checkForSecondaryActivity = (idSurvey: string, i: number, activityOrRoute:
         if (secondaryActivityValue) {
             activityOrRoute.secondaryActivity = {
                 activityCode: secondaryActivityValue,
-                activityLabel: activityOrRoute.isRoute
+                activityLabel: !activityOrRoute.isRoute
                     ? getActivitySecondary(idSurvey, i, secondaryActivityValue)
                     : getRouteActivitySecondary(idSurvey, i, secondaryActivityValue),
             };

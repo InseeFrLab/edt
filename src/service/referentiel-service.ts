@@ -75,11 +75,11 @@ export const findActivityInNomenclatureReferentielById = (
 };
 
 export const findActivitySecondaryActivityInRef = (id: string): CheckboxOneCustomOption | undefined => {
-    return getActivitySecondaryActivityRef().find(a => a.value === id);
+    return getActivitySecondaryActivityRef().find(a => a.value == id);
 };
 
 export const findRouteSecondaryActivityInRef = (id: string): CheckboxOneCustomOption | undefined => {
-    return getRouteSecondaryActivityRef().find(a => a.value === id);
+    return getRouteSecondaryActivityRef().find(a => a.value == id);
 };
 
 export const findPlaceInRef = (id: string): CheckboxOneCustomOption | undefined => {
