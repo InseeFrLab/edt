@@ -268,6 +268,29 @@ const HomeSurveyedPage = () => {
     };
 
     const renderHomeInterviewer = () => {
+        return (
+            <>
+                {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) =>
+                    renderActivityCard(idSurvey, index + 1),
+                )}
+
+                {surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].map((idSurvey, index) =>
+                    renderWorkTimeCard(idSurvey, index + 1),
+                )}
+            </>
+        );
+    };
+
+    const renderHomeReviewer = () => {
+        /*return (
+            <>
+                {surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].map((idSurvey, index) =>
+                    surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].includes(idSurvey)
+                        ? renderActivityCard(idSurvey, index + 1)
+                        : renderWorkTimeCard(idSurvey, index + 1),
+                )}
+            </>
+        );*/
         return initialized ? (
             <>
                 {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) =>
@@ -284,18 +307,6 @@ const HomeSurveyedPage = () => {
                     message={t("page.home.loading.message")}
                     thanking={t("page.home.loading.thanking")}
                 />
-            </>
-        );
-    };
-
-    const renderHomeReviewer = () => {
-        return (
-            <>
-                {surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].map((idSurvey, index) =>
-                    surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].includes(idSurvey)
-                        ? renderActivityCard(idSurvey, index + 1)
-                        : renderWorkTimeCard(idSurvey, index + 1),
-                )}
             </>
         );
     };
@@ -388,7 +399,7 @@ const HomeSurveyedPage = () => {
                     <img src={reminder_note} alt={t("accessibility.asset.reminder-notes-alt")} />
                 </FlexCenter>
 
-                {isDemoMode ? renderHomeDemo() : renderHomeInterviewer()}
+                {isDemoMode ? renderHomeDemo() : renderHome()}
             </Box>
         </>
     );
