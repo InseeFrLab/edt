@@ -1792,10 +1792,10 @@
   dependencies:
     antlr4 "4.8.0"
 
-"@inseefrlab/lunatic-edt@^0.9.2":
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/@inseefrlab/lunatic-edt/-/lunatic-edt-0.9.2.tgz#6441d61e0899b73bf67d33341bb136b6adcdf0d6"
-  integrity sha512-mHC0oicOEcSGHnHHxSobpK9C4QsnlGl+R1+WizBvqR1LH1B+iBIw/YHUIgnX06RNG34zAUI9KbwShnoBp6v+YQ==
+"@inseefrlab/lunatic-edt@^0.9.3":
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/@inseefrlab/lunatic-edt/-/lunatic-edt-0.9.3.tgz#2d069ecb788e8b91f02a6297891028061b26bf07"
+  integrity sha512-qsBV+GKIvRAlhCqXFMeBHykq7NwdeUtPT+nTQ7crw1CWSz4uqesG0MPZKcM+FPxggIa3jBMOgcWZ/R7MwjEP+w==
   dependencies:
     "@date-io/dayjs" "^2.16.0"
     "@emotion/react" "^11.10.4"
@@ -2333,7 +2333,7 @@
     "@babel/runtime" "^7.20.13"
     "@react-pdf/fns" "2.0.1"
     "@react-pdf/image" "^2.2.1"
-    "@react-pdf/pdfkit" "^2.4.0"
+    "@react-pdf/pdfkit" "^3.0.2"
     "@react-pdf/primitives" "^3.0.0"
     "@react-pdf/stylesheet" "^4.1.4"
     "@react-pdf/textkit" "^4.2.0"
@@ -2343,7 +2343,7 @@
     emoji-regex "^8.0.0"
     queue "^6.0.1"
 
-"@react-pdf/pdfkit@2.4.0", "@react-pdf/pdfkit@^2.2.0":
+"@react-pdf/pdfkit@2.4.0", "@react-pdf/pdfkit@^2.2.0", "@react-pdf/pdfkit@^2.4.0":
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@react-pdf/pdfkit/-/pdfkit-2.4.0.tgz#3ae1a8c33ed4a3185c524bae5242252054d8aa91"
   integrity sha512-a8ad/o1CIPpL1oppwSk2d1QCjSAJau0s4SqQNew0U7jlP5Knx4Yck5iK6zLfezvCmSCGq+U8eBTvzLN00jbffg==

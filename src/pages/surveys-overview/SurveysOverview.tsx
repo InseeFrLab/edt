@@ -1,7 +1,8 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import { Checkbox, InputAdornment, OutlinedInput, Typography } from "@mui/material";
+import { Checkbox, InputAdornment, OutlinedInput, Typography, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import arrowForwardIosGrey from "assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
+import refresh from "assets/illustration/mui-icon/refresh-white.svg";
 import home from "assets/illustration/mui-icon/home.svg";
 import person from "assets/illustration/mui-icon/person-white.svg";
 import search from "assets/illustration/mui-icon/search.svg";
@@ -15,7 +16,12 @@ import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
-import { getListSurveysHousehold, initializeSurveysIdsDataModeReviewer } from "service/survey-service";
+import {
+    getListSurveysHousehold,
+    initializeSurveysIdsDataModeReviewer,
+    initializeListSurveys,
+    refreshSurveyData,
+} from "service/survey-service";
 
 const SurveysOverviewPage = () => {
     const { classes } = useStyles();
@@ -31,16 +37,29 @@ const SurveysOverviewPage = () => {
     let [filterValidatedResult, setFilterValidatedResult] = React.useState(emptyArray);
     let [initialized, setInitialized] = React.useState(false);
 
+    const initHouseholds = () => {
+        dataHouseholds = getListSurveysHousehold();
+        setSearchResult(dataHouseholds);
+        setInitialized(true);
+    };
+
     useEffect(() => {
         initializeSurveysIdsDataModeReviewer().then(() => {
-            dataHouseholds = getListSurveysHousehold();
-            setSearchResult(dataHouseholds);
-            setInitialized(true);
+            initHouseholds();
         });
     }, []);
 
     const navToReviewerHome = useCallback(() => {
         navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_HOME));
+    }, []);
+
+    const refreshHouseholds = useCallback(() => {
+        setInitialized(false);
+        initializeListSurveys().then(() => {
+            refreshSurveyData().then(() => {
+                initHouseholds();
+            });
+        });
     }, []);
 
     const isToFilter = (houseHoldData: any): boolean => {
@@ -122,19 +141,36 @@ const SurveysOverviewPage = () => {
                 <Typography className={classes.label}>{t("page.surveys-overview.title")}</Typography>
             </Box>
             <Box className={classes.searchBox}>
-                <OutlinedInput
-                    onChange={onFilterSearchBox}
-                    className={classes.searchInput}
-                    placeholder={t("page.surveys-overview.search-placeholder")}
-                    endAdornment={
-                        <InputAdornment position="end">
-                            <img src={search} alt={t("accessibility.asset.mui-icon.search")} />
-                        </InputAdornment>
-                    }
-                ></OutlinedInput>
-                <Box className={classes.filterBox}>
-                    <Checkbox onChange={onFilterValidatedSurveyChange} />
-                    {t("page.surveys-overview.filter-label")}
+                <Box className={classes.innerSearchBox}>
+                    <OutlinedInput
+                        onChange={onFilterSearchBox}
+                        className={classes.searchInput}
+                        placeholder={t("page.surveys-overview.search-placeholder")}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <img src={search} alt={t("accessibility.asset.mui-icon.search")} />
+                            </InputAdornment>
+                        }
+                    ></OutlinedInput>
+                    <Box className={classes.filterBox}>
+                        <Checkbox onChange={onFilterValidatedSurveyChange} />
+                        {t("page.surveys-overview.filter-label")}
+                    </Box>
+                </Box>
+
+                <Box>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={refreshHouseholds}
+                        aria-label={"refresh"}
+                        startIcon={<img src={refresh} alt={t("accessibility.asset.mui-icon.refresh")} />}
+                        disabled={!navigator.onLine}
+                    >
+                        <Box className={classes.labelButton}>
+                            {t("page.surveys-overview.refresh-button")}
+                        </Box>
+                    </Button>
                 </Box>
             </Box>
 
@@ -197,6 +233,10 @@ const useStyles = makeStylesEdt({ "name": { SurveysOverviewPage } })(theme => ({
     },
     searchBox: {
         display: "flex",
+        justifyContent: "space-between",
+    },
+    innerSearchBox: {
+        display: "flex",
     },
     filterBox: {
         display: "flex",
@@ -226,6 +266,13 @@ const useStyles = makeStylesEdt({ "name": { SurveysOverviewPage } })(theme => ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start !important",
+    },
+    buttonBox: {
+        borderRadius: "0",
+        height: "3.75rem",
+    },
+    labelButton: {
+        fontSize: "18px",
     },
 }));
 

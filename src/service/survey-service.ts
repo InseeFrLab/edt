@@ -45,6 +45,7 @@ import {
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getScore } from "./survey-activity-service";
 import { getUserRights } from "./user-service";
+import { groupBy, objectEquals } from "utils/utils";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -293,13 +294,20 @@ const initializeSurveysIdsModeReviewer = () => {
     surveysIds = innerSurveysIds;
 };
 
+const refreshSurveyData = (): Promise<any> => {
+    return getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]).then(() => {
+        return initializeSurveysDatasCache();
+    });
+};
+
 const initializeSurveysIdsDataModeReviewer = (): Promise<any> => {
     initializeSurveysIdsModeReviewer();
-
     return initializeSurveysIds(surveysIds).then(() => {
-        return getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]).then(() => {
+        if (Object.keys(datas).length == 0 && navigator.onLine) {
+            refreshSurveyData();
+        } else {
             return initializeSurveysDatasCache();
-        });
+        }
     });
 };
 
@@ -315,6 +323,7 @@ const getRemoteSavedSurveysDatas = (
                     process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "",
                 );
                 remoteSurveyData.data.houseReference = surveyId.replace(regexp, "");
+                const isChange = dataIsChange(surveyId, remoteSurveyData.data);
                 return lunaticDatabase.get(surveyId).then(localSurveyData => {
                     if (
                         remoteSurveyData.stateData?.date &&
@@ -364,15 +373,6 @@ const getListSurveys = () => {
     return surveysData;
 };
 
-function groupBy<T>(arr: T[], fn: (item: T) => any) {
-    return arr.reduce<Record<string, T[]>>((prev, curr) => {
-        const groupKey = fn(curr);
-        const group = prev[groupKey] || [];
-        group.push(curr);
-        return { ...prev, [groupKey]: group };
-    }, {});
-}
-
 const getListSurveysHousehold = (): Household[] => {
     let grouped = groupBy(surveysData, surveyData => {
         const length = surveyData.surveyUnitId.length - 1;
@@ -421,7 +421,15 @@ const dataIsChange = (idSurvey: string, data: LunaticData) => {
                     const currentDataCollectedArray = currentData as string[];
                     const dataCollectedArray = data as string[];
                     dataCollectedArray?.forEach((data, i) => {
-                        if (currentDataCollectedArray == null || currentDataCollectedArray[i] != data) {
+                        if (
+                            typeof data === "object" &&
+                            !objectEquals(currentDataCollectedArray[i], data)
+                        ) {
+                            isChange = true;
+                        } else if (
+                            typeof data != "object" &&
+                            (currentDataCollectedArray == null || currentDataCollectedArray[i] != data)
+                        ) {
                             isChange = true;
                         }
                     });
@@ -856,4 +864,5 @@ export {
     initializeSurveysIdsModeReviewer,
     initializeSurveysIdsDataModeReviewer,
     initializeHomeSurveys,
+    refreshSurveyData,
 };

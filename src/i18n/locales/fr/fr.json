@@ -106,7 +106,8 @@
                 "search": "Icone de Recherche",
                 "extension": "Icône Autre personne qui ménage",
                 "download": "Icone téléchargement",
-                "person-white": "Icone personne"
+                "person-white": "Icone personne",
+                "refresh": "Icone rafraichir"
             },
             "info": {
                 "info-alt": "Icône information"
@@ -206,7 +207,8 @@
             "closed-survey-label": "Carnet clôturé",
             "closeds-survey-label": "Carnets clôturés",
             "validated-survey-label": "Carnet validé",
-            "validateds-survey-label": "Carnets validés"
+            "validateds-survey-label": "Carnets validés",
+            "refresh-button": "Actualiser la liste"
         },
         "reviewer-home": {
             "welcome": "Bienvenue dans votre espace",
