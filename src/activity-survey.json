@@ -715,7 +715,7 @@
                 {
                     "componentType": "CheckboxOneEdt",
                     "bindingDependencies": ["MEANOFTRANSPORT"],
-                    "responses": [{ "name": "MEANOFTRANSPORT" }],
+                    "response": { "name": "MEANOFTRANSPORT" },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -749,11 +749,8 @@
                 },
                 {
                     "componentType": "CheckboxOneEdt",
-                    "bindingDependencies": ["SECONDARYACTIVITY"],
-                    "responses": [
-                        { "name": "SECONDARYACTIVITY" },
-                        { "name": "SECONDARYACTIVITY_LABEL" }
-                    ],
+                    "bindingDependencies": ["SECONDARYACTIVITY", "SECONDARYACTIVITY_LABEL"],
+                    "response": { "name": "SECONDARYACTIVITY" },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -900,7 +897,7 @@
         {
             "componentType": "CheckboxOneEdt",
             "bindingDependencies": ["GREATESTACTIVITYDAY"],
-            "responses": [{ "name": "GREATESTACTIVITYDAY" }],
+            "response": { "name": "GREATESTACTIVITYDAY" },
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
@@ -917,7 +914,7 @@
         {
             "componentType": "CheckboxOneEdt",
             "bindingDependencies": ["WORSTACTIVITYDAY"],
-            "responses": [{ "name": "WORSTACTIVITYDAY" }],
+            "responses": { "name": "WORSTACTIVITYDAY" },
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
@@ -934,7 +931,7 @@
         {
             "componentType": "CheckboxOneEdt",
             "bindingDependencies": ["KINDOFDAY"],
-            "responses": [{ "name": "KINDOFDAY" }],
+            "responses": { "name": "KINDOFDAY" },
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
