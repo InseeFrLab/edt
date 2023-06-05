@@ -44,7 +44,7 @@ import {
     getUserDatasActivity,
     getValue,
     initializeSurveysDatasCache,
-    initializeSurveysIdsModeReviewer,
+    initializeSurveysIdsDemo,
     saveData,
     surveysIds,
     initializeHomeSurveys,
@@ -241,12 +241,20 @@ const HomeSurveyedPage = () => {
     };
 
     const renderHomeDemo = () => {
-        const interviewers = getUserDatasActivity().map(data => data.interviewerId);
-        const interviewersUniques = interviewers.filter(
-            (value, index, self) => self.indexOf(value) === index,
-        );
+        let interviewers = getUserDatasActivity().map(data => data.interviewerId);
+        let interviewersUniques = interviewers;
 
-        return (
+        initializeSurveysIdsDemo().then(() => {
+            initializeSurveysDatasCache().then(() => {
+                interviewers = getUserDatasActivity().map(data => data.interviewerId);
+                interviewersUniques = interviewers.filter(
+                    (value, index, self) => self.indexOf(value) === index,
+                );
+                setInitialized(true);
+            });
+        });
+
+        return initialized ? (
             <>
                 {interviewersUniques.map((interviewer, index) => (
                     <>
@@ -258,6 +266,13 @@ const HomeSurveyedPage = () => {
                             renderWorkTimeCard(getIdSurveyWorkTime(interviewer), index * 2 + 2)}
                     </>
                 ))}
+            </>
+        ) : (
+            <>
+                <LoadingFull
+                    message={t("page.home.loading.message")}
+                    thanking={t("page.home.loading.thanking")}
+                />
             </>
         );
     };

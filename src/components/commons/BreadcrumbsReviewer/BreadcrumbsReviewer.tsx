@@ -4,10 +4,12 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import React, { useCallback } from "react";
+import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { getNavigatePath } from "service/navigation-service";
 import { useNavigate } from "react-router-dom";
+import { getFlatLocalStorageValue } from "service/local-storage-service";
+import { getNavigatePath } from "service/navigation-service";
 
 interface BreadcrumbsReviewerProps {
     labelBreadcrumbPrincipal: string;
@@ -21,6 +23,8 @@ const BreadcrumbsReviewer = (props: BreadcrumbsReviewerProps) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
+    const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+
     const navigateHome = useCallback(() => {
         return navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_SURVEYS_OVERVIEW));
     }, []);
@@ -33,12 +37,14 @@ const BreadcrumbsReviewer = (props: BreadcrumbsReviewerProps) => {
             onClick={navigateHome}
             className={classes.breadcrumb}
         >
-            {t(labelBreadcrumbPrincipal)}
+            {isDemoMode ? t("page.breadcrumbs-reviewer.demostration") : t(labelBreadcrumbPrincipal)}
         </Link>,
         <Typography key="2" color="text.primary" className={classes.breadcrumbFinal}>
             {t(labelBreadcrumbSecondary)}
         </Typography>,
     ];
+
+    if (isDemoMode) breadcrumbs.pop();
 
     return (
         <Box className={classes.breadcrumbBox}>
