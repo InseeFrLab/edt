@@ -259,8 +259,8 @@ const initializeHomeSurveys = (idHousehold: string) => {
     userDatasActivity = [];
     return new Promise(resolve => {
         userDatas =
-            getListSurveysHousehold().filter(household => household.idHousehold == idHousehold)[0]
-                .surveys ?? [];
+            getListSurveysHousehold().find(household => household.idHousehold == idHousehold)?.surveys ??
+            [];
         userDatas.forEach(userSurvey => {
             if (userSurvey.questionnaireModelId == SourcesEnum.WORK_TIME_SURVEY) {
                 userDatasWorkTime.push(userSurvey);
@@ -269,15 +269,27 @@ const initializeHomeSurveys = (idHousehold: string) => {
             }
         });
 
-        let allSurveysIds = userDatas.map(data => data.surveyUnitId);
-        const innerSurveysIds: SurveysIds = {
-            [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
-            [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: userDatasActivity.map(data => data.surveyUnitId),
-            [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: userDatasWorkTime.map(data => data.surveyUnitId),
-        };
-        surveysIds = innerSurveysIds;
+        setSurveysIdsReviewers();
         resolve(true);
     });
+};
+
+const getSurveysIdsForHousehold = (idHousehold: string) => {
+    return (
+        getListSurveysHousehold()
+            .find(household => household.idHousehold == idHousehold)
+            ?.surveys?.map(survey => survey.surveyUnitId) || []
+    );
+};
+
+const setSurveysIdsReviewers = () => {
+    let allSurveysIds = userDatas.map(data => data.surveyUnitId);
+    const innerSurveysIds: SurveysIds = {
+        [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+        [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: userDatasActivity.map(data => data.surveyUnitId),
+        [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: userDatasWorkTime.map(data => data.surveyUnitId),
+    };
+    surveysIds = innerSurveysIds;
 };
 
 const initializeSurveysIdsModeReviewer = () => {
@@ -410,7 +422,21 @@ const getDatas = (): Map<string, LunaticData> => {
 };
 
 const getData = (idSurvey: string): LunaticData => {
-    return datas.get(idSurvey) || {};
+    return datas.get(idSurvey) || createDataEmpty(idSurvey);
+};
+
+const createDataEmpty = (idSurvey: string): LunaticData => {
+    const length = idSurvey.length - 1;
+    const householdId = idSurvey.substring(0, length);
+
+    return {
+        COLLECTED: {},
+        CALCULATED: {},
+        EXTERNAL: {},
+        houseReference: householdId,
+        id: idSurvey,
+        lastLocalSaveDate: Date.now(),
+    };
 };
 
 const dataIsChange = (idSurvey: string, data: LunaticData) => {
@@ -742,7 +768,6 @@ const getTabsDataReviewer = (t: any) => {
 
 const getTabsDataInterviewer = (t: any) => {
     let tabsData: TabData[] = [];
-
     surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].forEach(idSurvey => {
         const tabData = createTabData(idSurvey, t, true);
         tabsData.push(tabData);
@@ -758,6 +783,7 @@ const getTabsData = (t: any): TabData[] => {
     if (isDemoMode()) {
         return getTabsDataReviewer(t);
     } else {
+        setSurveysIdsReviewers();
         return getTabsDataInterviewer(t);
     }
 };
@@ -853,6 +879,78 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
     return stats;
 };
 
+const lockAllSurveys = (idHousehold: string) => {
+    const idSurveys = getSurveysIdsForHousehold(idHousehold);
+    console.log(idSurveys);
+    const promisesToWait: Promise<any>[] = [];
+
+    idSurveys.forEach(idSurvey => {
+        const data = getData(idSurvey || "");
+        const value = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
+
+        if (value == null || (value != null && !value)) {
+            const variable: Collected = {
+                COLLECTED: true,
+                EDITED: true,
+                FORCED: null,
+                INPUTED: null,
+                PREVIOUS: null,
+            };
+
+            if (data.COLLECTED && data.COLLECTED[FieldNameEnum.ISLOCKED]) {
+                data.COLLECTED[FieldNameEnum.ISLOCKED] = variable;
+                datas.set(idSurvey, data || {});
+                promisesToWait.push(saveData(idSurvey, data));
+            } else if (data.COLLECTED) {
+                data.COLLECTED.ISLOCKED = variable;
+                datas.set(idSurvey, data || {});
+                promisesToWait.push(saveData(idSurvey, data));
+            }
+        }
+    });
+
+    return new Promise(resolve => {
+        Promise.all(promisesToWait).then(() => {
+            resolve(true);
+        });
+    });
+};
+
+const validateAllEmptySurveys = (idHousehold: string) => {
+    const idSurveys = getSurveysIdsForHousehold(idHousehold);
+    console.log(idSurveys);
+    const promisesToWait: Promise<any>[] = [];
+
+    idSurveys.forEach(idSurvey => {
+        const data = getData(idSurvey || "");
+        const value = getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string;
+        if (value == null || value.length == 0) {
+            const variable: Collected = {
+                COLLECTED: true,
+                EDITED: true,
+                FORCED: null,
+                INPUTED: null,
+                PREVIOUS: null,
+            };
+            if (data.COLLECTED && data.COLLECTED[FieldNameEnum.ISVALIDATED]) {
+                data.COLLECTED[FieldNameEnum.ISVALIDATED] = variable;
+                datas.set(idSurvey, data || {});
+                promisesToWait.push(saveData(idSurvey, data));
+            } else if (data.COLLECTED) {
+                data.COLLECTED.ISVALIDATED = variable;
+                datas.set(idSurvey, data || {});
+                promisesToWait.push(saveData(idSurvey, data));
+            }
+        }
+    });
+
+    return new Promise(resolve => {
+        Promise.all(promisesToWait).then(() => {
+            resolve(true);
+        });
+    });
+};
+
 export {
     getData,
     getDatas,
@@ -892,4 +990,6 @@ export {
     initializeSurveysIdsDataModeReviewer,
     initializeHomeSurveys,
     refreshSurveyData,
+    lockAllSurveys,
+    validateAllEmptySurveys,
 };

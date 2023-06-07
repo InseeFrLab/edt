@@ -5,9 +5,10 @@ import PersonSunIcon from "assets/illustration/card/person-sun.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
 import { useTranslation } from "react-i18next";
-import { getScore, getActivitiesOrRoutes } from "service/survey-activity-service";
+import { getScore, getActivitiesOrRoutes, getStatutSurvey } from "service/survey-activity-service";
 import { getQualityScore } from "service/summary-service";
 import { isReviewer } from "service/user-service";
+import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
 
 interface DayCardProps {
     labelledBy: string;
@@ -29,6 +30,7 @@ const DayCard = (props: DayCardProps) => {
     const modeReviewer = isReviewer();
     const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
     const qualityScore = getQualityScore(activitiesRoutesOrGaps, overlaps, t);
+    const stateSurvey = getStatutSurvey(idSurvey);
 
     return (
         <FlexCenter>
@@ -74,7 +76,18 @@ const DayCard = (props: DayCardProps) => {
                         isClose={isClose}
                     />
                 </Box>
-                {modeReviewer && <Box className={classes.statusBox}>Déjà validé</Box>}
+                {modeReviewer &&
+                    (stateSurvey == StateSurveyEnum.INIT ? (
+                        <Box className={classes.statusInitBox}>
+                            {t("page.reviewer-home.status-survey.init")}
+                        </Box>
+                    ) : (
+                        <Box className={classes.statusBox}>
+                            {stateSurvey == StateSurveyEnum.VALIDATED
+                                ? t("page.reviewer-home.status-survey.validated")
+                                : t("page.reviewer-home.status-survey.locked")}
+                        </Box>
+                    ))}
             </Box>
         </FlexCenter>
     );
@@ -131,6 +144,13 @@ const useStyles = makeStylesEdt({ "name": { DayCard } })(theme => ({
     statusBox: {
         color: theme.palette.secondary.main,
         border: "2px solid " + theme.palette.secondary.main,
+        padding: "0.5rem",
+        borderRadius: "10px",
+    },
+    statusInitBox: {
+        color: theme.variables.white,
+        backgroundColor: theme.palette.primary.main,
+        border: "2px solid " + theme.palette.primary.main,
         padding: "0.5rem",
         borderRadius: "10px",
     },

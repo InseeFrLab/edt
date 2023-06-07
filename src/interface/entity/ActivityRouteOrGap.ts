@@ -1,3 +1,5 @@
+import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
+
 export interface ActivityRouteOrGap {
     isRoute?: boolean;
     startTime?: string;
@@ -15,6 +17,7 @@ export interface ActivityRouteOrGap {
     withScreen?: boolean;
     isGap?: boolean;
     iteration?: number;
+    state?: StateSurveyEnum;
 }
 
 export interface Activity {

@@ -12,6 +12,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
+import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
 import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { TFunction, useTranslation } from "react-i18next";
@@ -159,6 +160,17 @@ const convertStringToBoolean = (value: string | undefined) => {
     return value == "true" ? true : value == "false" ? false : undefined;
 };
 
+const getStatutSurvey = (idSurvey: string) => {
+    const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
+    const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
+
+    if (isValidated != null && isValidated) {
+        return StateSurveyEnum.VALIDATED;
+    } else if (isLocked != null && isLocked) {
+        return StateSurveyEnum.LOCKED;
+    } else return StateSurveyEnum.INIT;
+};
+
 const createActivitiesOrRoutes = (
     idSurvey: string,
     source: LunaticModel,
@@ -207,6 +219,7 @@ const createActivitiesOrRoutes = (
             getValue(idSurvey, FieldNameEnum.WITHSCREEN, i) as string | undefined,
         );
 
+        activityOrRoute.state = getStatutSurvey(idSurvey);
         activitiesRoutes.push(activityOrRoute);
     }
 
@@ -589,4 +602,5 @@ export {
     deleteActivity,
     mockActivitiesRoutesOrGaps,
     mockData,
+    getStatutSurvey,
 };

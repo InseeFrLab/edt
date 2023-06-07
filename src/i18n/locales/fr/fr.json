@@ -214,6 +214,12 @@
         "reviewer-home": {
             "welcome": "Bienvenue dans votre espace",
             "reviewer": "ENQUÊTEUR",
+            "validate-all-empties-surveys": "Valider les carnets vides",
+            "status-survey": {
+                "locked": "Verrouillé",
+                "validated": "Déjà validé",
+                "init": "Examiner"
+            },
             "navigation": {
                 "surveys": "Accéder aux enquêtes",
                 "demo": "Démonstration"
@@ -262,7 +268,8 @@
             "start-alert": "Les heures des activités de : ",
             "and": " et ",
             "end-alert": " se chevauchent.",
-            "info": "Indiquez vos différentes occupations de la journée. Par défaut, votre première activité débute à 4h du matin."
+            "info": "Indiquez vos différentes occupations de la journée. Par défaut, votre première activité débute à 4h du matin.",
+            "lock": "Verrouiller le carnet"
         },
         "secondary-activity": {
             "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",

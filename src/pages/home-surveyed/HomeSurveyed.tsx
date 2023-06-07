@@ -6,6 +6,7 @@ import help from "assets/illustration/mui-icon/help.svg";
 import home from "assets/illustration/mui-icon/home.svg";
 import powerSettings from "assets/illustration/mui-icon/power-settings.svg";
 import removeCircle from "assets/illustration/mui-icon/remove-circle.svg";
+import lock from "assets/illustration/mui-icon/lock.svg";
 import reminder_note from "assets/illustration/reminder-note.svg";
 import BreadcrumbsReviewer from "components/commons/BreadcrumbsReviewer/BreadcrumbsReviewer";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -50,6 +51,8 @@ import {
     surveysIds,
     initializeHomeSurveys,
     isDemoMode,
+    lockAllSurveys,
+    validateAllEmptySurveys,
 } from "service/survey-service";
 import { getUserRights } from "service/user-service";
 
@@ -305,7 +308,21 @@ const HomeSurveyedPage = () => {
     };
 
     const navBack = useCallback(() => {
-        navToHomeReviewer();
+        navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_SURVEYS_OVERVIEW));
+    }, []);
+
+    const lockSurveys = useCallback(() => {
+        lockAllSurveys(idHousehold ?? "").then(() => {
+            setInitialized(true);
+            window.location.reload();
+        });
+    }, []);
+
+    const validateSurveys = useCallback(() => {
+        validateAllEmptySurveys(idHousehold ?? "").then(() => {
+            setInitialized(true);
+            window.location.reload();
+        });
     }, []);
 
     const renderHomeReviewer = () => {
@@ -338,6 +355,16 @@ const HomeSurveyedPage = () => {
                             id="return-button"
                         >
                             <Box className={classes.label}>{t("common.navigation.back")}</Box>
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={validateSurveys}
+                            className={classes.navButton}
+                        >
+                            {t("page.reviewer-home.validate-all-empties-surveys")}
+                        </Button>
+                        <Button variant="contained" onClick={lockSurveys} className={classes.navButton}>
+                            <img src={lock} alt={t("accessibility.asset.mui-icon.padlock")} />
                         </Button>
                     </FlexCenter>
                 </Box>
