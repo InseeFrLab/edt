@@ -40,4 +40,5 @@ export const enum FieldNameEnum {
     ISROUTE = "ISROUTE",
     ISCOMPLETED = "ISCOMPLETED",
     ISVALIDATED = "ISVALIDATED",
+    ISLOCKED = "ISLOCKED",
 }

@@ -37,6 +37,7 @@ export interface LunaticData {
     EXTERNAL?: any;
     CALCULATED?: any;
     COLLECTED?: { [key: string]: Collected | MultiCollected }; // TOFIX : good var type with collected array
+    EDITED?: { [key: string]: Collected | MultiCollected };
 }
 
 export interface ReferentielData extends LunaticData {
