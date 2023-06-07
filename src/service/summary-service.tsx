@@ -144,7 +144,7 @@ const getActivitiesTimeWithScreenLabel = (activitiesOrRoutes: ActivityRouteOrGap
 };
 
 const getAllTime = (listToSum: number[]) => {
-    return listToSum.reduce((a, b) => a + b, 0);
+    return listToSum?.reduce((a, b) => a + b, 0);
 };
 
 /**
