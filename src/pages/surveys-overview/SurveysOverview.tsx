@@ -79,7 +79,7 @@ const SurveysOverviewPage = () => {
             );
 
             if (isFilterValidatedSurvey) {
-                newSearchResult = newSearchResult.filter(houseHoldData => !isToFilter(houseHoldData));
+                newSearchResult = newSearchResult?.filter(houseHoldData => !isToFilter(houseHoldData));
             }
             sortSearchResult(newSearchResult);
             setSearchResult(newSearchResult);
@@ -100,18 +100,18 @@ const SurveysOverviewPage = () => {
         setIsFilterValidatedSurvey(isFilterValidatedSurvey);
 
         if (isFilterValidatedSurvey) {
-            const newSearchResult = searchResult.filter(
+            const newSearchResult = searchResult?.filter(
                 (houseHoldData: any) => !isToFilter(houseHoldData),
             );
             sortSearchResult(newSearchResult);
             setSearchResult(newSearchResult);
 
-            const newFilterValidatedResult = searchResult.filter((houseHoldData: any) =>
+            const newFilterValidatedResult = searchResult?.filter((houseHoldData: any) =>
                 isToFilter(houseHoldData),
             );
             setFilterValidatedResult(newFilterValidatedResult);
         } else {
-            const newSearchResult = searchResult.concat(filterValidatedResult);
+            const newSearchResult = searchResult?.concat(filterValidatedResult);
             sortSearchResult(newSearchResult);
             setSearchResult(newSearchResult);
             onFilterSearchBox;
@@ -175,7 +175,7 @@ const SurveysOverviewPage = () => {
             </Box>
 
             <FlexCenter className={classes.searchResultBox}>
-                {searchResult.map((dataHousehold: any, index: number) => (
+                {searchResult?.map((dataHousehold: any, index: number) => (
                     <HouseholdCard
                         key={"household-card-" + index}
                         idHousehold={dataHousehold.idHousehold}

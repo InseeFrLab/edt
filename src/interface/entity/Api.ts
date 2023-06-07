@@ -17,6 +17,7 @@ export interface SurveyData {
 }
 
 export interface StateData {
+    idStateData?: number;
     state: StateDataStateEnum | null;
     date: number;
     currentPage: number;

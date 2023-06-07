@@ -2,11 +2,11 @@ import { NomenclatureActivityOption } from "@inseefrlab/lunatic-edt";
 import axios from "axios";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
-import { SurveyData, UserSurveys } from "interface/entity/Api";
-import { ReferentielData, SourceData } from "interface/lunatic/Lunatic";
+import { SurveyData, UserSurveys, StateData } from "interface/entity/Api";
+import { ReferentielData, SourceData, LunaticData } from "interface/lunatic/Lunatic";
 import jwt, { JwtPayload } from "jwt-decode";
 import { AuthContextProps, User } from "oidc-react";
-import { getAuth, getUserToken } from "./user-service";
+import { getAuth, getUserToken, isReviewer } from "./user-service";
 
 export const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
 export const stromaeBackOfficeApiBaseUrl = process.env.REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL;
@@ -137,7 +137,21 @@ const fetchReviewerSurveysAssignments = (): Promise<any> => {
         axios
             .get(edtOrganisationApiBaseUrl + "api/survey-assigment/reviewer/my-surveys", getHeader())
             .then(response => {
-                resolve(response);
+                resolve(response.data);
+            });
+    });
+};
+
+const requestPutSurveyData = (
+    idSurvey: string,
+    data: SurveyData,
+    token?: string,
+): Promise<SurveyData> => {
+    return new Promise<SurveyData>(resolve => {
+        axios
+            .put(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader(token))
+            .then(() => {
+                resolve(data);
             });
     });
 };
@@ -147,49 +161,118 @@ const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<Survey
     //#
     const now = new Date();
     const tokenExpiresAt = jwt<JwtPayload>(getUserToken() ?? "").exp;
-
     // * 1000 because tokenExpiresAt is in seconds and now.getTime() in milliseconds
     if (!tokenExpiresAt || tokenExpiresAt * 1000 < now.getTime()) {
         let auth = getAuth();
         return auth.userManager
             .signinSilent()
             .then((user: User | null) => {
-                return new Promise<SurveyData>(resolve => {
-                    axios
-                        .put(
-                            stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
-                            data,
-                            getHeader(user?.access_token),
-                        )
-                        .then(() => {
-                            resolve(data);
-                        });
-                });
+                return requestPutSurveyData(idSurvey, data, user?.access_token);
             })
             .catch(() => {
-                auth.userManager
-                    .signoutRedirect({
-                        id_token_hint: localStorage.getItem("id_token") || undefined,
-                    })
-                    .then(() => auth.userManager.clearStaleState())
-                    .then(() => auth.userManager.signoutRedirectCallback())
-                    .then(() => {
-                        sessionStorage.clear();
-                    })
-                    .then(() => auth.userManager.clearStaleState())
-                    .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
-
-                return Promise.reject();
+                return logout();
             });
     } else {
-        return new Promise(resolve => {
-            axios
-                .put(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader())
-                .then(() => {
-                    resolve(data);
-                });
-        });
+        return requestPutSurveyData(idSurvey, data);
     }
+};
+
+const remotePutSurveyDataReviewer = (
+    idSurvey: string,
+    stateData: StateData,
+    data: LunaticData,
+): Promise<SurveyData> => {
+    //Temporar check on token validity to avoid 401 error, if not valid, reload page
+    //#
+    const now = new Date();
+    const tokenExpiresAt = jwt<JwtPayload>(getUserToken() ?? "").exp;
+    // * 1000 because tokenExpiresAt is in seconds and now.getTime() in milliseconds
+    if (!tokenExpiresAt || tokenExpiresAt * 1000 < now.getTime()) {
+        let auth = getAuth();
+        return auth.userManager
+            .signinSilent()
+            .then((user: User | null) => {
+                return requestPutSurveyDataReviewer(idSurvey, data, stateData, user?.access_token);
+            })
+            .catch(() => {
+                return logout();
+            });
+    } else {
+        return requestPutSurveyDataReviewer(idSurvey, data, stateData);
+    }
+};
+
+const requestPutDataReviewer = (
+    idSurvey: string,
+    data: LunaticData,
+    token?: string,
+): Promise<LunaticData> => {
+    return new Promise<LunaticData>(resolve => {
+        axios
+            .put(
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
+                data,
+                getHeader(token),
+            )
+            .then(() => {
+                resolve(data);
+            });
+    });
+};
+
+const requestPutStateReviewer = (
+    idSurvey: string,
+    data: StateData,
+    token?: string,
+): Promise<StateData> => {
+    return new Promise<StateData>(resolve => {
+        axios
+            .put(
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
+                data,
+                getHeader(token),
+            )
+            .then(() => {
+                resolve(data);
+            });
+    });
+};
+
+const requestPutSurveyDataReviewer = (
+    idSurvey: string,
+    data: LunaticData,
+    stateData: StateData,
+    token?: string,
+): Promise<SurveyData> => {
+    const promises = requestPutDataReviewer(idSurvey, data, token).then(() => {
+        return requestPutStateReviewer(idSurvey, stateData, token).then(() => {
+            return new Promise<SurveyData>(resolve => {
+                const surveyData: SurveyData = {
+                    stateData: stateData,
+                    data: data,
+                };
+                resolve(surveyData);
+            });
+        });
+    });
+    return promises;
+};
+
+const logout = () => {
+    let auth = getAuth();
+    auth.userManager
+        .signoutRedirect({
+            id_token_hint: localStorage.getItem("id_token") || undefined,
+        })
+        .then(() => auth.userManager.clearStaleState())
+        .then(() => auth.userManager.signoutRedirectCallback())
+        .then(() => {
+            sessionStorage.clear();
+        })
+        .then(() => auth.userManager.clearStaleState())
+        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
+
+    return Promise.reject(null);
 };
 
 const remoteGetSurveyData = (
@@ -212,11 +295,79 @@ const remoteGetSurveyData = (
     });
 };
 
+const requestGetDataReviewer = (idSurvey: string): Promise<LunaticData> => {
+    return new Promise<LunaticData>(resolve => {
+        axios
+            .get(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data", getHeader())
+            .then(response => {
+                if (response.data?.data != null) {
+                    resolve(response.data.data);
+                } else {
+                    resolve(response.data);
+                }
+            });
+    });
+};
+
+const requestGetStateReviewer = (idSurvey: string): Promise<StateData> => {
+    return new Promise<StateData>(resolve => {
+        axios
+            .get(
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
+                getHeader(),
+            )
+            .then(response => {
+                resolve(response.data);
+            });
+    });
+};
+
+const requestGetSurveyDataReviewer = (idSurvey: string): Promise<SurveyData> => {
+    return requestGetDataReviewer(idSurvey).then(data => {
+        return requestGetStateReviewer(idSurvey).then(stateData => {
+            return new Promise(resolve => {
+                /*const surveyData: SurveyData = {
+                    stateData: {
+                        state: null,
+                        date: 0,
+                        currentPage: 0
+                    },
+                    data: data,
+                };*/
+                const surveyData: SurveyData = {
+                    stateData: stateData,
+                    data: data,
+                };
+                resolve(surveyData);
+            });
+        });
+    });
+};
+
+const remoteGetSurveyDataReviewer = (
+    idSurvey: string,
+    setError?: (error: ErrorCodeEnum) => void,
+): Promise<SurveyData> => {
+    const isReviewerMode = isReviewer();
+    if (!isReviewerMode) setError && setError(ErrorCodeEnum.NO_RIGHTS);
+
+    return requestGetSurveyDataReviewer(idSurvey).catch(err => {
+        if (err.response?.status === 403) {
+            setError && setError(ErrorCodeEnum.NO_RIGHTS);
+        } else {
+            setError && setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
+        }
+        return Promise.reject(null);
+    });
+};
+
 export {
     fetchReferentiel,
     fetchUserSurveysInfo,
     fetchSurveysSourcesByIds,
     remotePutSurveyData,
+    remotePutSurveyDataReviewer,
     remoteGetSurveyData,
+    remoteGetSurveyDataReviewer,
     fetchReviewerSurveysAssignments,
 };
