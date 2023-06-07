@@ -242,6 +242,14 @@ const HomeSurveyedPage = () => {
         );
     };
 
+    const renderReminderNote = () => {
+        return (
+            <FlexCenter className={classes.spacing}>
+                <img src={reminder_note} alt={t("accessibility.asset.reminder-notes-alt")} />
+            </FlexCenter>
+        );
+    };
+
     const renderHomeDemo = () => {
         let interviewers = getUserDatasActivity().map(data => data.interviewerId);
         let interviewersUniques = interviewers;
@@ -258,6 +266,7 @@ const HomeSurveyedPage = () => {
 
         return initialized ? (
             <>
+                {renderReminderNote()}
                 {interviewersUniques.map((interviewer, index) => (
                     <>
                         {getIdSurveyActivity(interviewer, 0) &&
@@ -282,6 +291,8 @@ const HomeSurveyedPage = () => {
     const renderHomeInterviewer = () => {
         return (
             <>
+                {renderReminderNote()}
+
                 {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) =>
                     renderActivityCard(idSurvey, index + 1),
                 )}
@@ -298,7 +309,6 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const renderHomeReviewer = () => {
-        console.log("renderHomeReviewer");
         if (isReviewer) {
             initializeHomeSurveys(idHousehold ?? "").then(() => {
                 initializeSurveysDatasCache().then(() => {
@@ -308,6 +318,8 @@ const HomeSurveyedPage = () => {
         }
         return initialized ? (
             <>
+                {renderReminderNote()}
+
                 <Box>
                     {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) =>
                         renderActivityCard(idSurvey, index + 1),
@@ -326,10 +338,6 @@ const HomeSurveyedPage = () => {
                             id="return-button"
                         >
                             <Box className={classes.label}>{t("common.navigation.back")}</Box>
-                        </Button>
-
-                        <Button variant="contained" onClick={navBack} className={classes.navButton}>
-                            Valider les carnets vides
                         </Button>
                     </FlexCenter>
                 </Box>
@@ -433,13 +441,7 @@ const HomeSurveyedPage = () => {
                 </Box>
             </Box>
 
-            <Box className={classes.cardsBox}>
-                <FlexCenter className={classes.spacing}>
-                    <img src={reminder_note} alt={t("accessibility.asset.reminder-notes-alt")} />
-                </FlexCenter>
-
-                {isDemo ? renderHomeDemo() : renderHome()}
-            </Box>
+            <Box className={classes.cardsBox}>{isDemo ? renderHomeDemo() : renderHome()}</Box>
         </>
     );
 };
