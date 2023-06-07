@@ -5,7 +5,9 @@ import PersonSunIcon from "assets/illustration/card/person-sun.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
 import { useTranslation } from "react-i18next";
-import { getScore } from "service/survey-activity-service";
+import { getScore, getActivitiesOrRoutes } from "service/survey-activity-service";
+import { getQualityScore } from "service/summary-service";
+import { isReviewer } from "service/user-service";
 
 interface DayCardProps {
     labelledBy: string;
@@ -24,6 +26,9 @@ const DayCard = (props: DayCardProps) => {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const progressActivity = getScore(idSurvey, t);
+    const modeReviewer = isReviewer();
+    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
+    const qualityScore = getQualityScore(activitiesRoutesOrGaps, overlaps, t);
 
     return (
         <FlexCenter>
@@ -51,6 +56,16 @@ const DayCard = (props: DayCardProps) => {
                         <Box id="firstName-text">{firstName}</Box>
                     </Box>
                 </Box>
+                {modeReviewer && (
+                    <Box className={classes.qualityScoreBox}>
+                        <Box id="group-text" className={classes.qualityScoreText}>
+                            {t("page.activity-summary.quality-score.label")}
+                        </Box>
+                        <Box id="group-score" className={classes.qualityScore}>
+                            {qualityScore}
+                        </Box>
+                    </Box>
+                )}
                 <Box className={cx(classes.scoreBox)}>
                     <PourcentProgress
                         labelledBy={""}
@@ -59,6 +74,7 @@ const DayCard = (props: DayCardProps) => {
                         isClose={isClose}
                     />
                 </Box>
+                {modeReviewer && <Box className={classes.statusBox}>Déjà validé</Box>}
             </Box>
         </FlexCenter>
     );
@@ -88,6 +104,8 @@ const useStyles = makeStylesEdt({ "name": { DayCard } })(theme => ({
     leftBox: {
         display: "flex",
         alignItems: "center",
+        maxWidth: "35%",
+        width: "35%",
     },
     iconBox: {
         marginRight: "1rem",
@@ -97,6 +115,24 @@ const useStyles = makeStylesEdt({ "name": { DayCard } })(theme => ({
     },
     scoreBox: {
         color: theme.palette.secondary.main,
+        width: "7%",
+    },
+    qualityScoreBox: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    qualityScoreText: {
+        color: theme.palette.secondary.main,
+    },
+    qualityScore: {
+        fontWeight: "bold",
+    },
+    statusBox: {
+        color: theme.palette.secondary.main,
+        border: "2px solid " + theme.palette.secondary.main,
+        padding: "0.5rem",
+        borderRadius: "10px",
     },
 }));
 

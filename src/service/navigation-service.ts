@@ -242,6 +242,10 @@ const navToHome = (): void => {
     _navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
 };
 
+const navToHomeReviewer = () => {
+    _navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_SURVEYS_OVERVIEW));
+};
+
 const navToHelp = (): void => {
     _navigate(getNavigatePath(EdtRoutesNameEnum.HELP_INSTALL));
 };
@@ -532,4 +536,5 @@ export {
     getIdSurveyContext,
     isPageGlobal,
     isActivityPage,
+    navToHomeReviewer,
 };

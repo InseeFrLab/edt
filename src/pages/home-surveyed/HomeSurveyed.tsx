@@ -33,6 +33,7 @@ import {
     navToActivityOrPlannerOrSummary,
     navToWeeklyPlannerOrClose,
     setEnviro,
+    navToHomeReviewer,
 } from "service/navigation-service";
 import {
     getData,
@@ -48,6 +49,7 @@ import {
     saveData,
     surveysIds,
     initializeHomeSurveys,
+    isDemoMode,
 } from "service/survey-service";
 import { getUserRights } from "service/user-service";
 
@@ -58,7 +60,7 @@ const HomeSurveyedPage = () => {
     const auth = useAuth();
     const [isAlertDisplayed, setIsAlertDisplayed] = React.useState<boolean>(false);
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
-    const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+    const isDemo = isDemoMode();
     const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
     const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
 
@@ -117,7 +119,7 @@ const HomeSurveyedPage = () => {
             };
             setEnviro(context, navigate, callbackHolder);
 
-            if (firstName != null || isDemoMode) {
+            if (firstName != null || isDemo) {
                 return navToWeeklyPlannerOrClose(
                     idSurvey,
                     navigate,
@@ -166,7 +168,7 @@ const HomeSurveyedPage = () => {
 
             setEnviro(context, navigate, callbackHolder);
             const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
-            if (firstName != null || isDemoMode) {
+            if (firstName != null || isDemo) {
                 navToActivityOrPlannerOrSummary(
                     idSurvey,
                     getSource(SourcesEnum.ACTIVITY_SURVEY).maxPage,
@@ -291,7 +293,12 @@ const HomeSurveyedPage = () => {
         );
     };
 
+    const navBack = useCallback(() => {
+        navToHomeReviewer();
+    }, []);
+
     const renderHomeReviewer = () => {
+        console.log("renderHomeReviewer");
         if (isReviewer) {
             initializeHomeSurveys(idHousehold ?? "").then(() => {
                 initializeSurveysDatasCache().then(() => {
@@ -301,13 +308,31 @@ const HomeSurveyedPage = () => {
         }
         return initialized ? (
             <>
-                {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) =>
-                    renderActivityCard(idSurvey, index + 1),
-                )}
+                <Box>
+                    {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) =>
+                        renderActivityCard(idSurvey, index + 1),
+                    )}
 
-                {surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].map((idSurvey, index) =>
-                    renderWorkTimeCard(idSurvey, index + 1),
-                )}
+                    {surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].map((idSurvey, index) =>
+                        renderWorkTimeCard(idSurvey, index + 1),
+                    )}
+                </Box>
+                <Box className={classes.navButtonsBox}>
+                    <FlexCenter className={classes.innerButtonsBox}>
+                        <Button
+                            variant="outlined"
+                            onClick={navBack}
+                            className={classes.navButton}
+                            id="return-button"
+                        >
+                            <Box className={classes.label}>{t("common.navigation.back")}</Box>
+                        </Button>
+
+                        <Button variant="contained" onClick={navBack} className={classes.navButton}>
+                            Valider les carnets vides
+                        </Button>
+                    </FlexCenter>
+                </Box>
             </>
         ) : (
             <>
@@ -356,7 +381,7 @@ const HomeSurveyedPage = () => {
                 )}
 
                 <Box className={classes.helpBox}>
-                    {process.env.REACT_APP_NODE_ENV !== "production" && !isDemoMode && (
+                    {process.env.REACT_APP_NODE_ENV !== "production" && !isDemo && (
                         <Button
                             color="secondary"
                             startIcon={
@@ -370,7 +395,7 @@ const HomeSurveyedPage = () => {
                             {t("page.home.navigation.reset-data")}
                         </Button>
                     )}
-                    {isDemoMode && (
+                    {isDemo && (
                         <Button
                             color="primary"
                             startIcon={
@@ -413,13 +438,13 @@ const HomeSurveyedPage = () => {
                     <img src={reminder_note} alt={t("accessibility.asset.reminder-notes-alt")} />
                 </FlexCenter>
 
-                {isDemoMode ? renderHomeDemo() : renderHome()}
+                {isDemo ? renderHomeDemo() : renderHome()}
             </Box>
         </>
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { NavButton: HomeSurveyedPage } })(() => ({
+const useStyles = makeStylesEdt({ "name": { NavButton: HomeSurveyedPage } })(theme => ({
     cardsBox: {
         overflowY: "auto",
         paddingBottom: "6rem",
@@ -447,6 +472,25 @@ const useStyles = makeStylesEdt({ "name": { NavButton: HomeSurveyedPage } })(() 
     },
     spacing: {
         margin: "1rem",
+    },
+    label: {
+        color: theme.palette.secondary.main,
+    },
+    navButton: {
+        borderRadius: "8px",
+        border: "2px solid",
+        borderColor: theme.palette.primary.main,
+    },
+    navButtonsBox: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: "3rem",
+    },
+    innerButtonsBox: {
+        width: "32%",
+        justifyContent: "space-between !important",
+        display: "flex",
     },
 }));
 

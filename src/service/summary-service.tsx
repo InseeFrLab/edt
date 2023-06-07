@@ -99,7 +99,10 @@ const getUserActivitiesCharacteristics = (
         isExceptionalDay: getValue(idSurvey, FieldNameEnum.EXCEPTIONALDAY) as boolean,
         routeTimeLabel: transformTimeInLabel(idSurvey, FieldNameEnum.TRAVELTIME), //(getValue(idSurvey, FieldNameEnum.TRAVELTIME) as string)?.replace(":", "h"),
         phoneTimeLabel: transformTimeInLabel(idSurvey, FieldNameEnum.PHONETIME), //(getValue(idSurvey, FieldNameEnum.PHONETIME) as string)?.replace(":", "h"),
-        userMarkLabel: getQualityScore(activitiesRoutesOrGaps, overlaps, t),
+        userMarkLabel:
+            t("page.activity-summary.quality-score.label") +
+            " " +
+            getQualityScore(activitiesRoutesOrGaps, overlaps, t),
     };
     return activitiesCharacteristics;
 };
@@ -250,7 +253,7 @@ const getQualityScore = (
         ? POINTS_REMOVE.POINTS_REMOVE_MISSING_SOMEONE
         : 0;
 
-    return groupWithNote(MAX_SCORE - substractPoint, t);
+    return groupScore(MAX_SCORE - substractPoint, t);
 };
 
 /**
@@ -361,7 +364,7 @@ const missingVariablesGoal = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => {
  * @param note
  * @returns quality score (A,B,C,D)
  */
-const groupWithNote = (note: number, t: TFunction<"translation", undefined>) => {
+const groupScore = (note: number, t: TFunction<"translation", undefined>) => {
     let group = "";
     if (note < 6) {
         group = t("page.activity-summary.quality-score.type-4");
@@ -372,7 +375,16 @@ const groupWithNote = (note: number, t: TFunction<"translation", undefined>) => 
     } else {
         group = t("page.activity-summary.quality-score.type-1");
     }
-    return t("page.activity-summary.quality-score.label") + " " + group;
+    return group;
 };
 
-export { getUserActivitiesSummary, getUserActivitiesCharacteristics };
+/**
+ * Quality score according to the score obtained
+ * @param note
+ * @returns quality score (A,B,C,D)
+ */
+const groupWithNote = (note: number, t: TFunction<"translation", undefined>) => {
+    return t("page.activity-summary.quality-score.label") + " " + groupScore(note, t);
+};
+
+export { getUserActivitiesSummary, getUserActivitiesCharacteristics, getQualityScore };

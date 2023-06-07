@@ -3,6 +3,10 @@ import Box from "@mui/material/Box";
 import calendarMonth from "assets/illustration/mui-icon/calendar-month.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { useTranslation } from "react-i18next";
+import { getActivitiesOrRoutes } from "service/survey-activity-service";
+import { getQualityScore } from "service/summary-service";
+import { isReviewer } from "service/user-service";
+
 interface WeekCardProps {
     labelledBy: string;
     describedBy: string;
@@ -15,9 +19,14 @@ interface WeekCardProps {
 }
 
 const WeekCard = (props: WeekCardProps) => {
-    const { labelledBy, describedBy, onClick, firstName, surveyDate, isClose, tabIndex } = props;
+    const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey, isClose, tabIndex } =
+        props;
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
+    const modeReviewer = isReviewer();
+    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
+    const qualityScore = getQualityScore(activitiesRoutesOrGaps, overlaps, t);
+
     return (
         <FlexCenter>
             <Box
@@ -40,7 +49,18 @@ const WeekCard = (props: WeekCardProps) => {
                         <Box id="firstName-text">{firstName}</Box>
                     </Box>
                 </Box>
+                {modeReviewer && (
+                    <Box className={classes.qualityScoreBox}>
+                        <Box id="group-text" className={classes.qualityScoreText}>
+                            {t("page.activity-summary.quality-score.label")}
+                        </Box>
+                        <Box id="group-score" className={classes.qualityScore}>
+                            {qualityScore}
+                        </Box>
+                    </Box>
+                )}
                 <Box className={classes.scoreBox}></Box>
+                {modeReviewer && <Box className={classes.statusBox}>Déjà validé</Box>}
             </Box>
         </FlexCenter>
     );
@@ -70,6 +90,8 @@ const useStyles = makeStylesEdt({ "name": { WeekCard } })(theme => ({
     leftBox: {
         display: "flex",
         alignItems: "center",
+        maxWidth: "35%",
+        width: "35%",
     },
     iconBox: {
         marginRight: "1rem",
@@ -80,6 +102,24 @@ const useStyles = makeStylesEdt({ "name": { WeekCard } })(theme => ({
     },
     scoreBox: {
         color: theme.palette.secondary.main,
+        width: "7%",
+    },
+    qualityScoreBox: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    qualityScoreText: {
+        color: theme.palette.secondary.main,
+    },
+    qualityScore: {
+        fontWeight: "bold",
+    },
+    statusBox: {
+        color: theme.palette.secondary.main,
+        border: "2px solid " + theme.palette.secondary.main,
+        padding: "0.5rem",
+        borderRadius: "10px",
     },
 }));
 

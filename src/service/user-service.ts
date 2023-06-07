@@ -34,3 +34,5 @@ export const getUserRights = (): EdtUserRightsEnum => {
         return EdtUserRightsEnum.NO_RIGHTS;
     }
 };
+
+export const isReviewer = (): boolean => getUserRights() === EdtUserRightsEnum.REVIEWER;

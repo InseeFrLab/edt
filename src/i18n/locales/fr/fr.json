@@ -23,7 +23,8 @@
                 "alt-icon": "Illustration pièce de puzzle"
             },
             "skip": "Passer",
-            "skip-final": "Fin"
+            "skip-final": "Fin",
+            "back": "Retour"
         },
         "stepper": {
             "step": "Étape",
