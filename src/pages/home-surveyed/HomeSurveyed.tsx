@@ -255,7 +255,9 @@ const HomeSurveyedPage = () => {
 
     const renderHomeDemo = () => {
         let interviewers = getUserDatasActivity().map(data => data.interviewerId);
-        let interviewersUniques = interviewers;
+        let interviewersUniques = interviewers.filter(
+            (value, index, self) => self.indexOf(value) === index,
+        );
 
         initializeSurveysIdsDemo().then(() => {
             initializeSurveysDatasCache().then(() => {
