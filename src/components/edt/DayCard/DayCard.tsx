@@ -4,11 +4,12 @@ import PersonSunCloseIcon from "assets/illustration/card/person-sun-close.svg";
 import PersonSunIcon from "assets/illustration/card/person-sun.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
-import { useTranslation } from "react-i18next";
-import { getScore, getActivitiesOrRoutes, getStatutSurvey } from "service/survey-activity-service";
-import { getQualityScore } from "service/summary-service";
-import { isReviewer } from "service/user-service";
 import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
+import { useTranslation } from "react-i18next";
+import { getQualityScore } from "service/summary-service";
+import { getActivitiesOrRoutes, getScore, getStatutSurvey } from "service/survey-activity-service";
+import { isDemoMode } from "service/survey-service";
+import { isReviewer } from "service/user-service";
 
 interface DayCardProps {
     labelledBy: string;
@@ -27,7 +28,7 @@ const DayCard = (props: DayCardProps) => {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const progressActivity = getScore(idSurvey, t);
-    const modeReviewer = isReviewer();
+    const modeReviewer = isReviewer() && !isDemoMode();
     const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
     const qualityScore = getQualityScore(activitiesRoutesOrGaps, overlaps, t);
     const stateSurvey = getStatutSurvey(idSurvey);
