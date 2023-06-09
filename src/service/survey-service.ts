@@ -48,8 +48,6 @@ import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
 import { groupBy, objectEquals } from "utils/utils";
-import activitySurveySource from "activity-survey.json";
-import workTimeSource from "work-time-survey.json";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -598,7 +596,7 @@ const getReferentiel = (refName: ReferentielsEnum) => {
 };
 
 const getSource = (refName: SourcesEnum) => {
-    return refName == SourcesEnum.ACTIVITY_SURVEY ? activitySurveySource : workTimeSource; //sourcesData && sourcesData[refName];
+    return sourcesData && sourcesData[refName];
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {

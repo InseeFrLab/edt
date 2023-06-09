@@ -938,7 +938,7 @@
         {
             "componentType": "CheckboxOneEdt",
             "bindingDependencies": ["WORSTACTIVITYDAY"],
-            "responses": { "name": "WORSTACTIVITYDAY" },
+            "response": { "name": "WORSTACTIVITYDAY" },
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
@@ -955,7 +955,7 @@
         {
             "componentType": "CheckboxOneEdt",
             "bindingDependencies": ["KINDOFDAY"],
-            "responses": { "name": "KINDOFDAY" },
+            "response": { "name": "KINDOFDAY" },
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
