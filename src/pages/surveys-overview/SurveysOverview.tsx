@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { makeStylesEdt, important } from "@inseefrlab/lunatic-edt";
 import { Checkbox, InputAdornment, OutlinedInput, Typography, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import arrowForwardIosGrey from "assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
@@ -22,13 +22,15 @@ import {
     initializeListSurveys,
     refreshSurveyData,
 } from "service/survey-service";
+import { isMobile } from "service/responsive";
 
 const SurveysOverviewPage = () => {
-    const { classes } = useStyles();
+    const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const navigate = useNavigate();
 
     const emptyArray: any[] = [];
+    const isItMobile = isMobile();
 
     let dataHouseholds = getListSurveysHousehold();
 
@@ -136,12 +138,17 @@ const SurveysOverviewPage = () => {
             homeIcon={home}
             homeIconAlt={t("accessibility.asset.mui-icon.home")}
         >
-            <Box className={classes.title}>
+            <Box className={cx(classes.title, isItMobile ? classes.titleMobile : "")}>
                 <img src={stats} alt={t("accessibility.asset.stats-alt")} />
                 <Typography className={classes.label}>{t("page.surveys-overview.title")}</Typography>
             </Box>
             <Box className={classes.searchBox}>
-                <Box className={classes.innerSearchBox}>
+                <Box
+                    className={cx(
+                        classes.innerSearchBox,
+                        isItMobile ? classes.innerSearchMobileBox : "",
+                    )}
+                >
                     <OutlinedInput
                         onChange={onFilterSearchBox}
                         className={classes.searchInput}
@@ -152,13 +159,13 @@ const SurveysOverviewPage = () => {
                             </InputAdornment>
                         }
                     ></OutlinedInput>
-                    <Box className={classes.filterBox}>
+                    <Box className={cx(classes.filterBox)}>
                         <Checkbox onChange={onFilterValidatedSurveyChange} />
                         {t("page.surveys-overview.filter-label")}
                     </Box>
                 </Box>
 
-                <Box>
+                <Box className={cx(classes.refreshBox, isItMobile ? classes.refreshMobileBox : "")}>
                     <Button
                         color="primary"
                         variant="contained"
@@ -229,14 +236,24 @@ const useStyles = makeStylesEdt({ "name": { SurveysOverviewPage } })(theme => ({
     },
     title: {
         display: "flex",
-        marginBottom: "3rem",
+        marginBottom: "2rem",
+    },
+    titleMobile: {
+        marginBottom: important("0rem"),
     },
     searchBox: {
         display: "flex",
         justifyContent: "space-between",
+        flexWrap: "wrap",
     },
     innerSearchBox: {
         display: "flex",
+        flexWrap: "wrap",
+        width: "80%",
+        justifyContent: "flex-start",
+    },
+    innerSearchMobileBox: {
+        width: important("100%"),
     },
     filterBox: {
         display: "flex",
@@ -244,17 +261,19 @@ const useStyles = makeStylesEdt({ "name": { SurveysOverviewPage } })(theme => ({
         backgroundColor: theme.variables.white,
         borderRadius: "10px",
         paddingRight: "1.5rem",
-        paddingLeft: ".5rem",
-        marginLeft: "1.5rem",
+        marginTop: "1rem",
     },
     searchInput: {
-        minWidth: "340px",
         borderRadius: "50px",
         "& .MuiInputBase-input": {
             paddingTop: ".5rem",
             paddingBottom: ".5rem",
         },
         backgroundColor: theme.variables.white,
+        width: "100%",
+        marginTop: "1rem",
+        maxWidth: "340px",
+        marginRight: "1rem",
     },
     searchResultBox: {
         marginTop: "1rem",
@@ -273,6 +292,12 @@ const useStyles = makeStylesEdt({ "name": { SurveysOverviewPage } })(theme => ({
     },
     labelButton: {
         fontSize: "18px",
+    },
+    refreshBox: {
+        marginTop: "1rem",
+    },
+    refreshMobileBox: {
+        width: "100%",
     },
 }));
 

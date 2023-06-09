@@ -59,7 +59,7 @@ import { getUserRights } from "service/user-service";
 const HomeSurveyedPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { classes } = useStyles();
+    const { classes, cx } = useStyles();
     const auth = useAuth();
     const [isAlertDisplayed, setIsAlertDisplayed] = React.useState<boolean>(false);
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
@@ -353,7 +353,7 @@ const HomeSurveyedPage = () => {
                         <Button
                             variant="outlined"
                             onClick={navBack}
-                            className={classes.navButton}
+                            className={cx(classes.navButton, classes.navBackButton)}
                             id="return-button"
                         >
                             <Box className={classes.label}>{t("common.navigation.back")}</Box>
@@ -361,11 +361,16 @@ const HomeSurveyedPage = () => {
                         <Button
                             variant="contained"
                             onClick={validateSurveys}
-                            className={classes.navButton}
+                            className={cx(classes.navButton, classes.validAllSurveysButton)}
                         >
                             {t("page.reviewer-home.validate-all-empties-surveys")}
                         </Button>
-                        <Button variant="contained" onClick={lockSurveys} className={classes.navButton}>
+                        <Button
+                            variant="contained"
+                            onClick={lockSurveys}
+                            className={cx(classes.navButton)}
+                            disabled={!navigator.onLine}
+                        >
                             <img src={lock} alt={t("accessibility.asset.mui-icon.padlock")} />
                         </Button>
                     </FlexCenter>
@@ -511,17 +516,29 @@ const useStyles = makeStylesEdt({ "name": { NavButton: HomeSurveyedPage } })(the
         borderRadius: "8px",
         border: "2px solid",
         borderColor: theme.palette.primary.main,
+        marginRight: "1rem",
     },
     navButtonsBox: {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         marginTop: "3rem",
+        width: "100%",
     },
     innerButtonsBox: {
-        width: "32%",
-        justifyContent: "space-between !important",
+        width: "90%",
         display: "flex",
+    },
+    navBackButton: {
+        width: "15%",
+        minWidth: "100px",
+    },
+    validAllSurveysButton: {
+        width: "30%",
+        minWidth: "130px",
+    },
+    lockAllSurveysButton: {
+        minWidth: "45px",
     },
 }));
 

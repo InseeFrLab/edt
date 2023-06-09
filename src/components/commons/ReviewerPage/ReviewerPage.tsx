@@ -2,6 +2,7 @@ import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 import BreadcrumbsReviewer from "../BreadcrumbsReviewer/BreadcrumbsReviewer";
+import { isMobile } from "service/responsive";
 
 interface ReviewerPageProps {
     onClickHome: () => void;
@@ -14,6 +15,7 @@ interface ReviewerPageProps {
 const ReviewerPage = (props: ReviewerPageProps) => {
     const { onClickHome, homeIcon, homeIconAlt, children, className } = props;
     const { classes, cx } = useStyles();
+    const isItMobile = isMobile();
 
     return (
         <Box className={cx(classes.reviewerPageBox, className)}>
@@ -28,7 +30,9 @@ const ReviewerPage = (props: ReviewerPageProps) => {
                     labelBreadcrumbSecondary={"page.breadcrumbs-reviewer.all-surveys"}
                 />
             </Box>
-            <Box className={classes.contentBox}>{children}</Box>
+            <Box className={cx(classes.contentBox, isItMobile ? classes.contentBoxMobile : "")}>
+                {children}
+            </Box>
         </Box>
     );
 };
@@ -45,6 +49,13 @@ const useStyles = makeStylesEdt({ "name": { ReviewerPage } })(theme => ({
         height: "100%",
         overflow: "hidden",
         padding: "2rem 3rem 1rem 3rem",
+        display: "flex",
+        flexDirection: "column",
+    },
+    contentBoxMobile: {
+        height: "100%",
+        overflow: "hidden",
+        padding: "2rem 2rem 1rem 2rem",
         display: "flex",
         flexDirection: "column",
     },

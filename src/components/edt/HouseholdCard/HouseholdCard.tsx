@@ -1,11 +1,11 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Divider, Typography } from "@mui/material";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
-import { initializeHomeSurveys } from "service/survey-service";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
+import { isMobile } from "service/responsive";
 
 interface HouseholdCardProps {
     idHousehold: string;
@@ -63,71 +63,156 @@ const HouseholdCard = (props: HouseholdCardProps) => {
         dataHousehold.stats?.numHouseholdsClosed >= 1 ||
         dataHousehold.stats?.numHouseholdsValidated >= 1;
 
+    const isItMobile = isMobile();
+
     const onClickHouseholdCard = useCallback(() => {
         localStorage.setItem(LocalStorageVariableEnum.ID_HOUSEHOLD, idHousehold);
         navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
     }, []);
 
+    const renderCard = () => {
+        return (
+            <>
+                <Box className={cx(classes.iconBox, getType())}>
+                    <img src={iconPerson} alt={iconPersonAlt} />
+                </Box>
+                <Box className={classes.identityBox}>
+                    <Typography className={classes.label}>{householdStaticLabel}</Typography>
+                    <Typography className={classes.labelBold}>{dataHousehold.idHousehold}</Typography>
+                    <Typography className={classes.labelBold}>{dataHousehold.userName}</Typography>
+                </Box>
+                <Box className={classes.dataBox}>
+                    <Box className={classes.rowBox}>
+                        {hasStarted && (
+                            <>
+                                <Typography className={classes.amount}>
+                                    {dataHousehold.stats?.numHouseholdsInProgress}
+                                </Typography>
+                                <Typography className={classes.label}>{startedSurveyLabel}</Typography>
+                            </>
+                        )}
+                    </Box>
+                </Box>
+                <Box className={classes.separatorBox}>
+                    {hasSeparator ? (
+                        <Divider className={classes.separator} orientation="vertical" flexItem />
+                    ) : (
+                        <Box className={classes.emptyBox} />
+                    )}
+                </Box>
+                <Box className={classes.dataValidBox}>
+                    <Box className={classes.rowValidBox}>
+                        {hasClosed && (
+                            <>
+                                <Typography className={classes.amount}>
+                                    {dataHousehold.stats?.numHouseholdsClosed}
+                                </Typography>
+                                <Typography className={classes.label}>{closedSurveyLabel}</Typography>
+                            </>
+                        )}
+                    </Box>
+
+                    <Box className={classes.rowValidBox}>
+                        {hasValidated && (
+                            <>
+                                <Typography className={classes.amount}>
+                                    {dataHousehold.stats?.numHouseholdsValidated}
+                                </Typography>
+                                <Typography className={classes.label}>{validatedSurveyLabel}</Typography>
+                            </>
+                        )}
+                    </Box>
+                </Box>
+
+                <Box className={classes.dateBox}>
+                    <Typography>{dataHousehold.surveyDate}</Typography>
+                </Box>
+                <Box className={classes.arrowBox}>
+                    <img src={iconArrow} alt={iconArrowAlt} />
+                </Box>
+            </>
+        );
+    };
+
+    const renderCardMobile = () => {
+        return (
+            <>
+                <Box className={classes.cardMobileBox}>
+                    <Box className={classes.personBoxMobile}>
+                        <Box
+                            className={cx(
+                                classes.iconBox,
+                                getType(),
+                                isItMobile ? classes.iconBoxMobile : "",
+                            )}
+                        >
+                            <img src={iconPerson} alt={iconPersonAlt} />
+                        </Box>
+                        <Box className={classes.identityBox}>
+                            <Typography className={classes.label}>{householdStaticLabel}</Typography>
+                            <Typography className={classes.labelBold}>
+                                {dataHousehold.idHousehold}
+                            </Typography>
+                            <Typography className={classes.labelBold}>
+                                {dataHousehold.userName}
+                            </Typography>
+                        </Box>
+                    </Box>
+                    <Box>
+                        <Box className={classes.rowBox}>
+                            {hasStarted && (
+                                <>
+                                    <Typography className={classes.amount}>
+                                        {dataHousehold.stats?.numHouseholdsInProgress}
+                                    </Typography>
+                                    <Typography className={classes.label}>
+                                        {startedSurveyLabel}
+                                    </Typography>
+                                </>
+                            )}
+                        </Box>
+                        <Box className={classes.rowValidBox}>
+                            {hasClosed && (
+                                <>
+                                    <Typography className={classes.amount}>
+                                        {dataHousehold.stats?.numHouseholdsClosed}
+                                    </Typography>
+                                    <Typography className={classes.label}>
+                                        {closedSurveyLabel}
+                                    </Typography>
+                                </>
+                            )}
+                        </Box>
+                        <Box className={classes.rowValidBox}>
+                            {hasValidated && (
+                                <>
+                                    <Typography className={classes.amount}>
+                                        {dataHousehold.stats?.numHouseholdsValidated}
+                                    </Typography>
+                                    <Typography className={classes.label}>
+                                        {validatedSurveyLabel}
+                                    </Typography>
+                                </>
+                            )}
+                        </Box>
+                    </Box>
+                    <Box className={classes.dateBox}>
+                        <Typography>{dataHousehold.surveyDate}</Typography>
+                    </Box>
+                </Box>
+                <Box className={classes.arrowBox}>
+                    <img src={iconArrow} alt={iconArrowAlt} />
+                </Box>
+            </>
+        );
+    };
+
     return (
-        <Box className={classes.familyCardBox} onClick={onClickHouseholdCard}>
-            <Box className={cx(classes.iconBox, getType())}>
-                <img src={iconPerson} alt={iconPersonAlt} />
-            </Box>
-            <Box className={classes.identityBox}>
-                <Typography className={classes.label}>{householdStaticLabel}</Typography>
-                <Typography className={classes.labelBold}>{dataHousehold.idHousehold}</Typography>
-                <Typography className={classes.labelBold}>{dataHousehold.userName}</Typography>
-            </Box>
-            <Box className={classes.dataBox}>
-                <Box className={classes.rowBox}>
-                    {hasStarted && (
-                        <>
-                            <Typography className={classes.amount}>
-                                {dataHousehold.stats?.numHouseholdsInProgress}
-                            </Typography>
-                            <Typography className={classes.label}>{startedSurveyLabel}</Typography>
-                        </>
-                    )}
-                </Box>
-            </Box>
-
-            <Box className={classes.separatorBox}>
-                {hasSeparator ? (
-                    <Divider className={classes.separator} orientation="vertical" flexItem />
-                ) : (
-                    <Box className={classes.emptyBox} />
-                )}
-            </Box>
-
-            <Box className={classes.dataValidBox}>
-                <Box className={classes.rowValidBox}>
-                    {hasClosed && (
-                        <>
-                            <Typography className={classes.amount}>
-                                {dataHousehold.stats?.numHouseholdsClosed}
-                            </Typography>
-                            <Typography className={classes.label}>{closedSurveyLabel}</Typography>
-                        </>
-                    )}
-                </Box>
-                <Box className={classes.rowValidBox}>
-                    {hasValidated && (
-                        <>
-                            <Typography className={classes.amount}>
-                                {dataHousehold.stats?.numHouseholdsValidated}
-                            </Typography>
-                            <Typography className={classes.label}>{validatedSurveyLabel}</Typography>
-                        </>
-                    )}
-                </Box>
-            </Box>
-
-            <Box className={classes.dateBox}>
-                <Typography>{dataHousehold.surveyDate}</Typography>
-            </Box>
-            <Box className={classes.arrowBox}>
-                <img src={iconArrow} alt={iconArrowAlt} />
-            </Box>
+        <Box
+            className={cx(isItMobile ? classes.familyCardBoxMobile : classes.familyCardBox)}
+            onClick={onClickHouseholdCard}
+        >
+            {isItMobile ? renderCardMobile() : renderCard()}
         </Box>
     );
 };
@@ -145,6 +230,26 @@ const useStyles = makeStylesEdt({ "name": { HouseholdCard } })(theme => ({
         paddingRight: "1rem",
         minHeight: "100px",
     },
+    familyCardBoxMobile: {
+        width: "100%",
+        borderRadius: "4px 10px 10px 4px",
+        display: "flex",
+        alignItems: "center",
+        backgroundColor: theme.variables.white,
+        color: theme.palette.primary.light,
+        marginTop: "1rem",
+        cursor: "pointer",
+        paddingRight: "1rem",
+        height: "210px",
+    },
+    cardMobileBox: {
+        display: "flex",
+        flexDirection: "column",
+        padding: "1rem",
+    },
+    personBoxMobile: {
+        display: "flex",
+    },
     iconBox: {
         border: "1px solid",
         borderRadius: "4px 20px 20px 4px",
@@ -158,6 +263,12 @@ const useStyles = makeStylesEdt({ "name": { HouseholdCard } })(theme => ({
         maxWidth: "120px",
         justifyContent: "center",
         width: "10%",
+    },
+    iconBoxMobile: {
+        height: important("70px"),
+        minWidth: important("70px"),
+        maxWidth: important("70px"),
+        padding: important("0"),
     },
     orange: {
         backgroundColor: "#fc9f0a",
@@ -223,6 +334,7 @@ const useStyles = makeStylesEdt({ "name": { HouseholdCard } })(theme => ({
     labelBold: {
         color: theme.palette.primary.dark,
         fontWeight: "bold",
+        overflowWrap: "anywhere",
     },
     separator: {
         margin: "0 1rem",
