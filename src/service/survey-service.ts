@@ -813,7 +813,11 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
                 )
                 .map(data => data.surveyUnitId)
                 .indexOf(idSurvey);
-            return label + " " + (indexInterviewerId + 1);
+            if (surveyParentPage == EdtRoutesNameEnum.WORK_TIME) {
+                return label;
+            } else {
+                return label + " " + (indexInterviewerId + 1);
+            }
         } else return label + " 1";
     }
 };
