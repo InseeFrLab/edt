@@ -574,6 +574,10 @@ const getUserDatasWorkTime = () => {
     return userDatasWorkTime;
 };
 
+const getUserDatas = () => {
+    return userDatas;
+};
+
 const addToSecondaryActivityReferentiel = (
     referentiel: ReferentielsEnum.ACTIVITYSECONDARYACTIVITY | ReferentielsEnum.ROUTESECONDARYACTIVITY,
     newItem: CheckboxOneCustomOption,
@@ -833,9 +837,14 @@ const getPersonNumber = (idSurvey: string) => {
             : surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].indexOf(idSurvey);
 
     const interviewerId = userDatas?.filter(data => data.surveyUnitId == idSurvey)[0]?.interviewerId;
-    const indexDemo = interviewerId?.split("interviewer")[1];
-
-    return isDemoMode() ? indexDemo : index + 1;
+    let indexDemo = interviewerId?.split("interviewer")[1];
+    if (indexDemo == null) {
+        const numInterviewers = userDatas
+            ?.map(data => data.interviewerId)
+            ?.filter((value, index, self) => self.indexOf(value) === index);
+        indexDemo = (numInterviewers?.indexOf(interviewerId) + 1 ?? 1).toString();
+    }
+    return isDemoMode() || isReviewer() ? indexDemo : index + 1;
 };
 
 const isDemoMode = () => {
@@ -850,7 +859,6 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
         numHouseholdsInProgress = 0,
         numHouseholdsClosed = 0,
         numHouseholdsValidated = 0;
-
     surveysIdsHousehold.forEach(idSurvey => {
         const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
         const isClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
@@ -981,6 +989,7 @@ export {
     initializeSurveysDatasCache,
     getUserDatasActivity,
     getUserDatasWorkTime,
+    getUserDatas,
     isDemoMode,
     getIdSurveyActivity,
     getIdSurveyWorkTime,

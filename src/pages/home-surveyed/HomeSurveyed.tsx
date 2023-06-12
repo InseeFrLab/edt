@@ -26,15 +26,13 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { remotePutSurveyData } from "service/api-service";
-import { getFlatLocalStorageValue } from "service/local-storage-service";
+import { remotePutSurveyData, remotePutSurveyDataReviewer } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import {
     getNavigatePath,
     navToActivityOrPlannerOrSummary,
     navToWeeklyPlannerOrClose,
     setEnviro,
-    navToHomeReviewer,
 } from "service/navigation-service";
 import {
     getData,
@@ -44,6 +42,7 @@ import {
     getPrintedSurveyDate,
     getSource,
     getUserDatasActivity,
+    getUserDatas,
     getValue,
     initializeSurveysDatasCache,
     initializeSurveysIdsDemo,
@@ -86,10 +85,12 @@ const HomeSurveyedPage = () => {
     const resetDataAndReload = useCallback(() => {
         const promises: any[] = [];
         surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
+            const stateData = { state: null, date: 0, currentPage: 1 };
             const surveyData: SurveyData = {
-                stateData: { state: null, date: 0, currentPage: 1 },
+                stateData: stateData,
                 data: {},
             };
+            //promises.push(isReviewer ? remotePutSurveyDataReviewer(idSurvey, stateData, {}) : remotePutSurveyData(idSurvey, surveyData));
             promises.push(remotePutSurveyData(idSurvey, surveyData));
         });
         Promise.all(promises).then(() => {
@@ -328,6 +329,8 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const renderHomeReviewer = () => {
+        let userDatas = getUserDatas();
+
         if (isReviewer) {
             initializeHomeSurveys(idHousehold ?? "").then(() => {
                 initializeSurveysDatasCache().then(() => {
@@ -335,17 +338,16 @@ const HomeSurveyedPage = () => {
                 });
             });
         }
+        userDatas = userDatas.sort((u1, u2) => u1.interviewerId.localeCompare(u2.interviewerId));
         return initialized ? (
             <>
                 {renderReminderNote()}
 
                 <Box>
-                    {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) =>
-                        renderActivityCard(idSurvey, index + 1),
-                    )}
-
-                    {surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].map((idSurvey, index) =>
-                        renderWorkTimeCard(idSurvey, index + 1),
+                    {userDatas.map((data, index) =>
+                        data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
+                            ? renderActivityCard(data.surveyUnitId, index + 1)
+                            : renderWorkTimeCard(data.surveyUnitId, index + 1),
                     )}
                 </Box>
                 <Box className={classes.navButtonsBox}>
