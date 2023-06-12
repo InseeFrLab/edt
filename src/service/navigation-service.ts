@@ -416,6 +416,19 @@ const saveAndNextStep = (rootPage: EdtRoutesNameEnum, currentPage: EdtRoutesName
     );
 };
 
+const getLoopPageOrActivityPlanner = (page: EdtRoutesNameEnum, loop: LoopEnum, iteration: number) => {
+    if (page == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER) {
+        return getCurrentNavigatePath(
+            _context.idSurvey,
+            EdtRoutesNameEnum.ACTIVITY,
+            getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            _context.source,
+        );
+    } else {
+        return getLoopParameterizedNavigatePath(page, loop, iteration);
+    }
+};
+
 const saveAndLoopNavigate = (
     page: EdtRoutesNameEnum,
     loop: LoopEnum,
@@ -423,13 +436,9 @@ const saveAndLoopNavigate = (
     value?: FieldNameEnum,
     routeNotSelection?: EdtRoutesNameEnum,
 ) => {
-    const pathRoute = getLoopParameterizedNavigatePath(page, loop, iteration);
+    const pathRoute = getLoopPageOrActivityPlanner(page, loop, iteration);
     if (value && routeNotSelection) {
-        const pathRouteNotSelection = getLoopParameterizedNavigatePath(
-            routeNotSelection,
-            loop,
-            iteration,
-        );
+        const pathRouteNotSelection = getLoopPageOrActivityPlanner(routeNotSelection, loop, iteration);
         saveAndNav(pathRoute, value, pathRouteNotSelection, iteration);
     } else saveAndNav(pathRoute);
 };
