@@ -420,12 +420,12 @@ const getDatas = (): Map<string, LunaticData> => {
 };
 
 const getData = (idSurvey: string): LunaticData => {
-    return datas.get(idSurvey) || createDataEmpty(idSurvey);
+    return datas.get(idSurvey) || createDataEmpty(idSurvey ?? "");
 };
 
 const createDataEmpty = (idSurvey: string): LunaticData => {
     const length = idSurvey.length - 1;
-    const householdId = idSurvey.substring(0, length);
+    const householdId = ""; //idSurvey.substring(0, length);
 
     return {
         COLLECTED: {},
@@ -790,6 +790,40 @@ const getTabsData = (t: any): TabData[] => {
     }
 };
 
+const getNumSurveyDateReviewer = (
+    label: string,
+    idSurvey: string,
+    surveyParentPage?: EdtRoutesNameEnum,
+) => {
+    let index = 0;
+    if (isDemoMode()) {
+        const dataUserSurvey = userDatas?.filter(data => data.surveyUnitId == idSurvey)[0];
+        const indexInterviewerId = userDatas
+            ?.filter(
+                data =>
+                    data.interviewerId == dataUserSurvey?.interviewerId &&
+                    data.questionnaireModelId == dataUserSurvey?.questionnaireModelId,
+            )
+            .map(data => data.surveyUnitId)
+            .indexOf(idSurvey);
+        index = indexInterviewerId + 1;
+    } else {
+        const surveyMap = isReviewer() ? userDatasMap() : nameSurveyMap();
+        const indexOfSurvey = surveyMap.find(user => user.data.surveyUnitId == idSurvey)?.num;
+        index =
+            surveyMap
+                .filter(user => user.num == indexOfSurvey)
+                .map(user => user.data.surveyUnitId)
+                .indexOf(idSurvey) + 1;
+    }
+
+    if (surveyParentPage == EdtRoutesNameEnum.WORK_TIME) {
+        return label;
+    } else {
+        return label + " " + index;
+    }
+};
+
 // return survey date in french format (day x - dd/mm) if exist or default value
 const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesNameEnum): string => {
     const savedSurveyDate = getSurveyDate(idSurvey);
@@ -804,23 +838,7 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
         const splittedDate = savedSurveyDate.split("-");
         return capitalizedDayName + " " + [splittedDate[2], splittedDate[1]].join("/");
     } else {
-        const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
-        if (isDemoMode) {
-            const dataUserSurvey = userDatas?.filter(data => data.surveyUnitId == idSurvey)[0];
-            const indexInterviewerId = userDatas
-                ?.filter(
-                    data =>
-                        data.interviewerId == dataUserSurvey?.interviewerId &&
-                        data.questionnaireModelId == dataUserSurvey?.questionnaireModelId,
-                )
-                .map(data => data.surveyUnitId)
-                .indexOf(idSurvey);
-            if (surveyParentPage == EdtRoutesNameEnum.WORK_TIME) {
-                return label;
-            } else {
-                return label + " " + (indexInterviewerId + 1);
-            }
-        } else return label + " 1";
+        return getNumSurveyDateReviewer(label, idSurvey, surveyParentPage);
     }
 };
 
@@ -830,21 +848,85 @@ const getFullFrenchDate = (surveyDate: string): string => {
     return [splittedDate[2], splittedDate[1], splittedDate[0]].join("/");
 };
 
-const getPersonNumber = (idSurvey: string) => {
-    const index =
-        surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey) !== -1
-            ? surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey)
-            : surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].indexOf(idSurvey);
+const createNameSurveyMap = (idSurveys: string[]) => {
+    let numInterviewer = 0;
 
+    return idSurveys
+        .map((idSurvey, index) => {
+            const firstName = getFirstName(idSurvey);
+            if (index % 2 == 0 && index != 0) {
+                numInterviewer += 1;
+            }
+            const isActivity = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey) >= 0;
+            const userData: UserSurveys = {
+                surveyUnitId: idSurvey,
+                questionnaireModelId: isActivity
+                    ? SourcesEnum.ACTIVITY_SURVEY
+                    : SourcesEnum.WORK_TIME_SURVEY,
+                id: 0,
+                campaignId: "",
+                interviewerId: "",
+                reviewerId: "",
+            };
+            const indexData = isActivity ? numInterviewer + 1 : index + 1;
+            const name = firstName ?? (isActivity ? "zzzz " + indexData : "zzzzz " + indexData);
+            const data = {
+                data: userData,
+                firstName: name,
+                num: indexData,
+            };
+            return data;
+        })
+        .sort((u1, u2) => u1.firstName.localeCompare(u2.firstName));
+};
+
+const nameSurveyMap = () => {
+    const userActivityMap = createNameSurveyMap(surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]);
+    const userWeeklyPlannerMap = createNameSurveyMap(surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]);
+    const userMap = userActivityMap.concat(userWeeklyPlannerMap);
+    return userMap;
+};
+
+const createUserDataMap = (usersurvey: UserSurveys[]) => {
+    let numInterviewer = 0;
+    return usersurvey
+        .map((data, index) => {
+            const firstName = getFirstName(data.surveyUnitId);
+            if (index % 2 == 0 && index != 0) {
+                numInterviewer += 1;
+            }
+            return data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
+                ? {
+                      data: data,
+                      firstName: firstName != null ? firstName : "zzzz " + (numInterviewer + 1),
+                      num: numInterviewer + 1,
+                  }
+                : {
+                      data: data,
+                      firstName: firstName != null ? firstName : "zzzzz " + index + 1,
+                      num: index + 1,
+                  };
+        })
+        .sort((u1, u2) => u1.firstName.localeCompare(u2.firstName));
+};
+
+/**
+ * map of name of survey and data of survey
+ */
+const userDatasMap = () => {
+    const userActivityMap = createUserDataMap(userDatasActivity);
+    const userWeeklyPlannerMap = createUserDataMap(userDatasWorkTime);
+    const userMap = userActivityMap.concat(userWeeklyPlannerMap);
+    return userMap;
+};
+
+const getPersonNumber = (idSurvey: string) => {
     const interviewerId = userDatas?.filter(data => data.surveyUnitId == idSurvey)[0]?.interviewerId;
     let indexDemo = interviewerId?.split("interviewer")[1];
-    if (indexDemo == null) {
-        const numInterviewers = userDatas
-            ?.map(data => data.interviewerId)
-            ?.filter((value, index, self) => self.indexOf(value) === index);
-        indexDemo = (numInterviewers?.indexOf(interviewerId) + 1 ?? 1).toString();
-    }
-    return isDemoMode() || isReviewer() ? indexDemo : index + 1;
+
+    const surveyMap = isReviewer() ? userDatasMap() : nameSurveyMap();
+    indexDemo = (surveyMap?.find(user => user.data.surveyUnitId == idSurvey)?.num ?? 1).toString();
+    return indexDemo;
 };
 
 const isDemoMode = () => {
@@ -893,7 +975,6 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
 
 const lockAllSurveys = (idHousehold: string) => {
     const idSurveys = getSurveysIdsForHousehold(idHousehold);
-    console.log(idSurveys);
     const promisesToWait: Promise<any>[] = [];
 
     idSurveys.forEach(idSurvey => {
@@ -930,7 +1011,6 @@ const lockAllSurveys = (idHousehold: string) => {
 
 const validateAllEmptySurveys = (idHousehold: string) => {
     const idSurveys = getSurveysIdsForHousehold(idHousehold);
-    console.log(idSurveys);
     const promisesToWait: Promise<any>[] = [];
 
     idSurveys.forEach(idSurvey => {
@@ -1005,4 +1085,6 @@ export {
     refreshSurveyData,
     lockAllSurveys,
     validateAllEmptySurveys,
+    userDatasMap,
+    nameSurveyMap,
 };

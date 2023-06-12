@@ -42,7 +42,7 @@ import {
     getPrintedSurveyDate,
     getSource,
     getUserDatasActivity,
-    getUserDatas,
+    userDatasMap,
     getValue,
     initializeSurveysDatasCache,
     initializeSurveysIdsDemo,
@@ -52,6 +52,7 @@ import {
     isDemoMode,
     lockAllSurveys,
     validateAllEmptySurveys,
+    nameSurveyMap,
 } from "service/survey-service";
 import { getUserRights } from "service/user-service";
 
@@ -153,6 +154,7 @@ const HomeSurveyedPage = () => {
             .then(() => auth.userManager.signoutRedirectCallback())
             .then(() => {
                 sessionStorage.clear();
+                localStorage.clear();
             })
             .then(() => auth.userManager.clearStaleState())
             .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
@@ -295,16 +297,15 @@ const HomeSurveyedPage = () => {
     };
 
     const renderHomeInterviewer = () => {
+        let userDatas = nameSurveyMap();
         return (
             <>
                 {renderReminderNote()}
 
-                {surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].map((idSurvey, index) =>
-                    renderActivityCard(idSurvey, index + 1),
-                )}
-
-                {surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].map((idSurvey, index) =>
-                    renderWorkTimeCard(idSurvey, index + 1),
+                {userDatas.map((data, index) =>
+                    data.data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
+                        ? renderActivityCard(data.data.surveyUnitId, index + 1)
+                        : renderWorkTimeCard(data.data.surveyUnitId, index + 1),
                 )}
             </>
         );
@@ -329,7 +330,7 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const renderHomeReviewer = () => {
-        let userDatas = getUserDatas();
+        let userDatas = userDatasMap();
 
         if (isReviewer) {
             initializeHomeSurveys(idHousehold ?? "").then(() => {
@@ -338,16 +339,16 @@ const HomeSurveyedPage = () => {
                 });
             });
         }
-        userDatas = userDatas.sort((u1, u2) => u1.interviewerId.localeCompare(u2.interviewerId));
+
         return initialized ? (
             <>
                 {renderReminderNote()}
 
                 <Box>
                     {userDatas.map((data, index) =>
-                        data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
-                            ? renderActivityCard(data.surveyUnitId, index + 1)
-                            : renderWorkTimeCard(data.surveyUnitId, index + 1),
+                        data.data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
+                            ? renderActivityCard(data.data.surveyUnitId, index + 1)
+                            : renderWorkTimeCard(data.data.surveyUnitId, index + 1),
                     )}
                 </Box>
                 <Box className={classes.navButtonsBox}>
