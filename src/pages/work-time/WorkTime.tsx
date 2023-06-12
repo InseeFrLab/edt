@@ -50,6 +50,9 @@ const WorkTimePage = () => {
         if (idSurvey && source) {
             navToWeeklyPlannerOrClose(idSurvey, navigate, source);
         } else {
+            console.error(
+                `Semanier - Erreur recuperation du idSurvey: ${idSurvey} et source: ${source}`,
+            );
             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON));
         }
     }, []);

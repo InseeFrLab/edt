@@ -67,6 +67,7 @@ const ErrorPage = (props: ErrorPageProps) => {
     }, []);
 
     const getErrorText = (errorCode: ErrorCodeEnum | undefined): string => {
+        console.error(`Type d'erreur: ${errorCode}`);
         switch (errorCode) {
             case ErrorCodeEnum.NO_RIGHTS:
                 return t("common.error.error-no-rights");
@@ -78,6 +79,8 @@ const ErrorPage = (props: ErrorPageProps) => {
                 return t("common.error.error-get-surveys-data");
             case ErrorCodeEnum.UNREACHABLE_NOMENCLATURES:
                 return t("common.error.error-nomenclatures");
+            case ErrorCodeEnum.COMMON:
+                return t("common.error.error-default");
             default:
                 return t("common.error.error-default");
         }
