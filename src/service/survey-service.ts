@@ -877,7 +877,7 @@ const createNameSurveyMap = (idSurveys: string[]) => {
             };
             return data;
         })
-        .sort((u1, u2) => u1.firstName.localeCompare(u2.firstName));
+        .sort((u1, u2) => u1.data.surveyUnitId.localeCompare(u2.data.surveyUnitId));
 };
 
 const nameSurveyMap = () => {
@@ -907,7 +907,7 @@ const createUserDataMap = (usersurvey: UserSurveys[]) => {
                       num: index + 1,
                   };
         })
-        .sort((u1, u2) => u1.firstName.localeCompare(u2.firstName));
+        .sort((u1, u2) => u1.data.surveyUnitId.localeCompare(u2.data.surveyUnitId));
 };
 
 /**

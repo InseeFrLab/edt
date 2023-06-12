@@ -268,6 +268,7 @@ const logout = () => {
         .then(() => auth.userManager.signoutRedirectCallback())
         .then(() => {
             sessionStorage.clear();
+            localStorage.clear();
         })
         .then(() => auth.userManager.clearStaleState())
         .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));

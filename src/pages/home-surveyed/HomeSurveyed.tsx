@@ -216,7 +216,6 @@ const HomeSurveyedPage = () => {
         return (
             <>
                 <DayCard
-                    key={activitySurveyId + "-dayCard"}
                     labelledBy={""}
                     describedBy={""}
                     onClick={navActivity(activitySurveyId)}
@@ -234,7 +233,6 @@ const HomeSurveyedPage = () => {
         return (
             <>
                 <WeekCard
-                    key={workTimeSurvey + "-weekCard"}
                     labelledBy={""}
                     describedBy={""}
                     onClick={navWorkTime(workTimeSurvey)}
