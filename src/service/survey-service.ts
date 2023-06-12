@@ -852,7 +852,9 @@ const isDemoMode = () => {
 };
 
 const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
-    const surveysIdsHousehold = surveys.map(survey => survey.surveyUnitId);
+    const surveysIdsHousehold = surveys
+        .filter(survey => survey.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY)
+        .map(survey => survey.surveyUnitId);
     let stats = null;
     let state = StateHouseholdEnum.IN_PROGRESS;
     let numHouseholds = 0,
