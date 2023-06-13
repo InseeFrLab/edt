@@ -285,7 +285,7 @@ const useStyles = makeStylesEdt({ "name": { HouseholdCard } })(theme => ({
     identityBox: {
         margin: "0 1rem",
         padding: "0.5rem 0",
-        minWidth: "115px",
+        minWidth: "100px",
         width: "20%",
     },
     dataBox: {
@@ -294,6 +294,7 @@ const useStyles = makeStylesEdt({ "name": { HouseholdCard } })(theme => ({
         alignItems: "flex-start",
         width: "20%",
         flexDirection: "column",
+        minWidth: "87px",
     },
     dataValidBox: {
         margin: "0 1rem",

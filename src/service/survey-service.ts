@@ -4,6 +4,7 @@ import {
     generateDateFromStringInput,
     getFrenchDayFromDate,
 } from "@inseefrlab/lunatic-edt";
+import dayjs from "dayjs";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
@@ -35,6 +36,7 @@ import {
 import { fetchReviewerSurveysAssignments } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrator-service";
+import { groupBy, objectEquals } from "utils/utils";
 import {
     fetchReferentiels,
     fetchSurveysSourcesByIds,
@@ -47,7 +49,6 @@ import {
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
-import { groupBy, objectEquals } from "utils/utils";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -392,6 +393,19 @@ const getListSurveys = () => {
     return surveysData;
 };
 
+const getSurveyDataHousehold = (surveys: UserSurveys[]) => {
+    const activitiesSurveys = surveys
+        .filter(survey => survey.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY)
+        .map(survey => survey.surveyUnitId);
+    const workTimeSurveys = surveys
+        .filter(survey => survey.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY)
+        .map(survey => survey.surveyUnitId);
+
+    const firstSurvey = getOrderedSurveys(activitiesSurveys, workTimeSurveys)[0];
+    const firstSurveyDate = getValue(firstSurvey.data.surveyUnitId, FieldNameEnum.SURVEYDATE) as string;
+    return dayjs(generateDateFromStringInput(firstSurveyDate ?? "")).format("DD/MM/YYYY");
+};
+
 const getListSurveysHousehold = (): Household[] => {
     let grouped = groupBy(surveysData, surveyData => {
         const length = surveyData.surveyUnitId.length - 1;
@@ -404,7 +418,7 @@ const getListSurveysHousehold = (): Household[] => {
                 idHousehold: key,
                 userName: value[0]?.nameHousehold ?? "",
                 surveys: value,
-                surveyDate: "",
+                surveyDate: getSurveyDataHousehold(value),
                 stats: getStatsHousehold(value),
             };
         })
@@ -856,7 +870,9 @@ const createNameSurveyMap = (idSurveys: string[]) => {
             if (index % 2 == 0 && index != 0) {
                 numInterviewer += 1;
             }
-            const isActivity = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey) >= 0;
+            const isActivity =
+                surveysIds != null &&
+                surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey) >= 0;
             const userData: UserSurveys = {
                 surveyUnitId: idSurvey,
                 questionnaireModelId: isActivity
@@ -880,8 +896,15 @@ const createNameSurveyMap = (idSurveys: string[]) => {
 };
 
 const nameSurveyMap = () => {
-    const userActivityMap = createNameSurveyMap(surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]);
-    const userWeeklyPlannerMap = createNameSurveyMap(surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]);
+    return getOrderedSurveys(
+        surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS],
+        surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS],
+    );
+};
+
+const getOrderedSurveys = (activitiesIds: string[], workTimeIds: string[]) => {
+    const userActivityMap = createNameSurveyMap(activitiesIds);
+    const userWeeklyPlannerMap = createNameSurveyMap(workTimeIds);
     const userMap = userActivityMap.concat(userWeeklyPlannerMap).sort((u1, u2) => {
         if (u1.num == u2.num) return u1.firstName.localeCompare(u2.firstName);
         else return u1.num > u2.num ? 1 : -1;
