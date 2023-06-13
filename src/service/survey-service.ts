@@ -853,7 +853,6 @@ const createNameSurveyMap = (idSurveys: string[]) => {
 
     return idSurveys
         .map((idSurvey, index) => {
-            const firstName = getFirstName(idSurvey);
             if (index % 2 == 0 && index != 0) {
                 numInterviewer += 1;
             }
@@ -869,7 +868,7 @@ const createNameSurveyMap = (idSurveys: string[]) => {
                 reviewerId: "",
             };
             const indexData = isActivity ? numInterviewer + 1 : index + 1;
-            const name = firstName ?? (isActivity ? "zzzz " + indexData : "zzzzz " + indexData);
+            const name = isActivity ? "zzzz " + indexData : "zzzzz " + indexData;
             const data = {
                 data: userData,
                 firstName: name,
@@ -883,7 +882,10 @@ const createNameSurveyMap = (idSurveys: string[]) => {
 const nameSurveyMap = () => {
     const userActivityMap = createNameSurveyMap(surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]);
     const userWeeklyPlannerMap = createNameSurveyMap(surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]);
-    const userMap = userActivityMap.concat(userWeeklyPlannerMap);
+    const userMap = userActivityMap.concat(userWeeklyPlannerMap).sort((u1, u2) => {
+        if (u1.num == u2.num) return u1.firstName.localeCompare(u2.firstName);
+        else return u1.num > u2.num ? 1 : -1;
+    });
     return userMap;
 };
 
@@ -891,19 +893,18 @@ const createUserDataMap = (usersurvey: UserSurveys[]) => {
     let numInterviewer = 0;
     return usersurvey
         .map((data, index) => {
-            const firstName = getFirstName(data.surveyUnitId);
             if (index % 2 == 0 && index != 0) {
                 numInterviewer += 1;
             }
             return data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
                 ? {
                       data: data,
-                      firstName: firstName != null ? firstName : "zzzz " + (numInterviewer + 1),
+                      firstName: "zzzz " + (numInterviewer + 1),
                       num: numInterviewer + 1,
                   }
                 : {
                       data: data,
-                      firstName: firstName != null ? firstName : "zzzzz " + index + 1,
+                      firstName: "zzzzz " + index + 1,
                       num: index + 1,
                   };
         })
@@ -916,7 +917,11 @@ const createUserDataMap = (usersurvey: UserSurveys[]) => {
 const userDatasMap = () => {
     const userActivityMap = createUserDataMap(userDatasActivity);
     const userWeeklyPlannerMap = createUserDataMap(userDatasWorkTime);
-    const userMap = userActivityMap.concat(userWeeklyPlannerMap);
+    const userMap = userActivityMap.concat(userWeeklyPlannerMap).sort((u1, u2) => {
+        if (u1.num == u2.num) return u1.firstName.localeCompare(u2.firstName);
+        else return u1.num > u2.num ? 1 : -1;
+    });
+
     return userMap;
 };
 
