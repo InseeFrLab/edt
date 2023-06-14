@@ -98,14 +98,7 @@ const SurveyPage = (props: SurveyPageProps) => {
     };
 
     return (
-        <Box
-            className={cx(
-                classes.page,
-                className,
-                //helpStep && isIOS ? classes.pageHelp : "",
-                //!isPwa() && isIOS && !helpStep ? classes.pageMobileTablet : classes.pageDesktop,
-            )}
-        >
+        <Box className={cx(classes.page, className)}>
             {!simpleHeader && firstName && surveyDate && onNavigateBack && (
                 <SurveyPageHeader
                     surveyDate={surveyDate}
@@ -189,17 +182,6 @@ const useStyles = makeStylesEdt({ "name": { NavButton: SurveyPage } })(theme => 
         flexDirection: "column",
         overflow: "hidden !important",
         height: "100%",
-    },
-    pageDesktop: {
-        height: "100%",
-    },
-    pageMobileTablet: {
-        height: "100%",
-        maxHeight: "87vh",
-    },
-    pageHelp: {
-        height: "100%",
-        maxHeight: "94vh",
     },
     content: {
         flexGrow: "1",
