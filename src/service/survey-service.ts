@@ -961,6 +961,21 @@ const isDemoMode = () => {
     return getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
 };
 
+const surveyValidated = (idSurvey: string) => {
+    const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
+    return isValidated != null && isValidated;
+};
+
+const surveyClosed = (idSurvey: string) => {
+    const isClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
+    return isClosed != null && isClosed;
+};
+
+const surveyStarted = (idSurvey: string) => {
+    const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string;
+    return firstName != null && firstName.length > 0;
+};
+
 const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
     const surveysIdsHousehold = surveys
         .filter(survey => survey.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY)
@@ -972,8 +987,10 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
         numHouseholdsClosed = 0,
         numHouseholdsValidated = 0;
     surveysIdsHousehold.forEach(idSurvey => {
-        const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
-        const isClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
+        const isValidated = surveyValidated(idSurvey);
+        const isClosed = surveyClosed(idSurvey);
+        const isStarted = surveyStarted(idSurvey);
+
         if (isValidated) {
             numHouseholdsValidated++;
         }
@@ -981,7 +998,7 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
             numHouseholdsClosed++;
         }
 
-        if (!isValidated && !isClosed) {
+        if (!isValidated && !isClosed && isStarted) {
             numHouseholdsInProgress++;
         }
         numHouseholds++;
