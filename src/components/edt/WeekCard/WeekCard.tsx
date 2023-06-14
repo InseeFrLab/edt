@@ -77,16 +77,6 @@ const WeekCard = (props: WeekCardProps) => {
                             : classes.scoreBox
                     }
                 >
-                    {modeReviewer && (
-                        <Box className={classes.qualityScoreBox}>
-                            <Box id="group-text" className={classes.qualityScoreText}>
-                                {t("page.activity-summary.quality-score.label")}
-                            </Box>
-                            <Box id="group-score" className={classes.qualityScore}>
-                                {qualityScore}
-                            </Box>
-                        </Box>
-                    )}
                     <Box
                         className={cx(
                             classes.progressBox,
