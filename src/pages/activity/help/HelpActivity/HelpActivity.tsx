@@ -215,7 +215,7 @@ const HelpActivity = () => {
     return (
         <Box className={classes.root}>
             {renderHelp()}
-            <Box className={!isPwa() && isIOS ? classes.surveyPageBoxTablet : classes.surveyPageBox}>
+            <Box className={!isPwa() ? classes.surveyPageBoxTablet : classes.surveyPageBox}>
                 {(isItDesktop || !isSubchildDisplayed) && (
                     <Box className={classes.innerSurveyPageBox}>
                         <SurveyPage
@@ -331,6 +331,7 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         alignItems: "flex-start",
         overflow: "hidden",
         height: "100vh",
+        maxHeight: "100vh",
     },
     surveyPageBoxTablet: {
         flexGrow: "1",

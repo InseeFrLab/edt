@@ -346,12 +346,7 @@ const ActivityOrRoutePlannerPage = () => {
 
     return (
         <>
-            <Box
-                className={cx(
-                    classes.surveyPageBox,
-                    !isPwa() && isIOS ? classes.surveyPageBoxTablet : "",
-                )}
-            >
+            <Box className={cx(classes.surveyPageBox, !isPwa() ? classes.surveyPageBoxTablet : "")}>
                 {(isItDesktop || !isSubchildDisplayed) && (
                     <Box className={classes.innerSurveyPageBox}>
                         <SurveyPage
@@ -553,11 +548,12 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(them
         display: "flex",
         alignItems: "flex-start",
         overflow: "auto",
-        height: "100%",
+        height: "100vh",
+        maxHeight: "100vh",
     },
     surveyPageBoxTablet: {
-        height: "100%",
-        maxHeight: "87vh",
+        height: "100vh",
+        maxHeight: "94vh",
     },
     outletBoxDesktop: {
         flexGrow: "12",

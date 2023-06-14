@@ -141,7 +141,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const surveyPageProps = isStep ? surveyPageStepProps : surveyPageNotStepProps;
 
     return (
-        <Box className={cx(!isPwa() && isIOS ? classes.pageMobileTablet : classes.pageDesktop)}>
+        <Box className={cx(!isPwa() ? classes.pageMobileTablet : classes.pageDesktop)}>
             <SurveyPage {...surveyPageProps}>
                 <FlexCenter className={withBottomPadding ? classes.bottomPadding : ""}>
                     <FelicitationModal
@@ -168,7 +168,7 @@ const useStyles = makeStylesEdt({ "name": { SurveyPageStep } })(() => ({
     },
     pageMobileTablet: {
         height: "100%",
-        maxHeight: "87vh",
+        maxHeight: "94vh",
     },
 }));
 
