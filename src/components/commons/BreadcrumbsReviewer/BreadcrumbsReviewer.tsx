@@ -55,7 +55,7 @@ const BreadcrumbsReviewer = (props: BreadcrumbsReviewerProps) => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { BreadcrumbsReviewer } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { BreadcrumbsReviewer } })(() => ({
     breadcrumb: {
         fontSize: "18px",
     },

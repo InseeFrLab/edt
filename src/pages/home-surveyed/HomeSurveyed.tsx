@@ -26,7 +26,7 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { remotePutSurveyData, remotePutSurveyDataReviewer } from "service/api-service";
+import { remotePutSurveyData } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import {
     getNavigatePath,

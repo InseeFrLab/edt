@@ -378,13 +378,4 @@ const groupScore = (note: number, t: TFunction<"translation", undefined>) => {
     return group;
 };
 
-/**
- * Quality score according to the score obtained
- * @param note
- * @returns quality score (A,B,C,D)
- */
-const groupWithNote = (note: number, t: TFunction<"translation", undefined>) => {
-    return t("page.activity-summary.quality-score.label") + " " + groupScore(note, t);
-};
-
 export { getUserActivitiesSummary, getUserActivitiesCharacteristics, getQualityScore };

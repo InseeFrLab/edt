@@ -4,8 +4,7 @@ import calendarMonth from "assets/illustration/mui-icon/calendar-month.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
 import { useTranslation } from "react-i18next";
-import { getQualityScore } from "service/summary-service";
-import { getActivitiesOrRoutes, getStatutSurvey } from "service/survey-activity-service";
+import { getStatutSurvey } from "service/survey-activity-service";
 import { isDemoMode } from "service/survey-service";
 import { isReviewer } from "service/user-service";
 import { isMobile } from "service/responsive";
@@ -27,19 +26,19 @@ const WeekCard = (props: WeekCardProps) => {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const modeReviewer = isReviewer() && !isDemoMode();
-    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
-    const qualityScore = getQualityScore(activitiesRoutesOrGaps, overlaps, t);
     const stateSurvey = getStatutSurvey(idSurvey);
     const isItMobile = isMobile();
 
+    const getLeftBoxClassInterviewer = () => {
+        return isItMobile ? classes.leftBoxMobile : classes.leftBox;
+    };
+
+    const getLeftBoxClassReviewer = () => {
+        return isItMobile ? classes.leftReviewerBoxMobile : classes.leftReviewerBox;
+    };
+
     const getLeftBoxClass = () => {
-        return modeReviewer
-            ? isItMobile
-                ? classes.leftReviewerBoxMobile
-                : classes.leftReviewerBox
-            : isItMobile
-            ? classes.leftBoxMobile
-            : classes.leftBox;
+        return modeReviewer ? getLeftBoxClassReviewer() : getLeftBoxClassInterviewer();
     };
 
     return (
@@ -180,17 +179,6 @@ const useStyles = makeStylesEdt({ "name": { WeekCard } })(theme => ({
     },
     progressBoxReviewerMobile: {
         width: "42%",
-    },
-    qualityScoreBox: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-    },
-    qualityScoreText: {
-        color: theme.palette.secondary.main,
-    },
-    qualityScore: {
-        fontWeight: "bold",
     },
     statusProgressBox: {
         color: theme.palette.secondary.main,
