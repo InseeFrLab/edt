@@ -42,7 +42,13 @@ import {
 import { getLanguage } from "service/referentiel-service";
 import { isDesktop, isPwa } from "service/responsive";
 import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
-import { getPrintedFirstName, getSurveyDate, saveData, setValue } from "service/survey-service";
+import {
+    getPrintedFirstName,
+    getSurveyDate,
+    getSurveyRights,
+    saveData,
+    setValue,
+} from "service/survey-service";
 import { v4 as uuidv4 } from "uuid";
 import { isIOS } from "react-device-detect";
 
@@ -515,6 +521,7 @@ const ActivityOrRoutePlannerPage = () => {
                             surveyRootPage: context.surveyRootPage,
                             isRoute: isRoute,
                             activityOrRoute: activityOrRoute,
+                            rightsSurvey: getSurveyRights(context.idSurvey ?? ""),
                         }}
                     />
                 </Box>

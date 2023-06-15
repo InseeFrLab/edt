@@ -43,9 +43,9 @@ const ActivityPage = () => {
     const maxTabsPerRow = isTablet() ? 3 : 4;
 
     useEffect(() => {
-        window.onpopstate = () => {
+        /*window.onpopstate = () => {
             navigate("/");
-        };
+        };*/
 
         if (idSurvey && source) {
             navToActivityOrPlannerOrSummary(idSurvey, source.maxPage, navigate, source);
@@ -58,6 +58,7 @@ const ActivityPage = () => {
     }, []);
 
     const handleTabSelecterChange = useCallback((tabData: TabData) => {
+        console.log("handleTabSelecterChange");
         if (tabData.isActivitySurvey) {
             idSurvey = tabData.idSurvey;
             data = getData(idSurvey);
@@ -87,7 +88,7 @@ const ActivityPage = () => {
                     data: data,
                     idSurvey: idSurvey,
                     surveyRootPage: surveyRootPage,
-                    rights: getSurveyRights(idSurvey ?? ""),
+                    rightsSurvey: getSurveyRights(idSurvey ?? ""),
                 }}
             />
         </>

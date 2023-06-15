@@ -71,6 +71,14 @@ const EndSurveyPage = () => {
         border: true,
     };
 
+    const saveDataAndInit = useCallback((surveyData: SurveyData) => {
+        saveData(context.idSurvey, surveyData.data, false).then(() => {
+            initializeSurveysDatasCache().finally(() => {
+                setIsModalDisplayed(true);
+            });
+        });
+    }, []);
+
     const remoteSaveSurveyAndGoBackHome = useCallback(() => {
         const dataWithIsEnvoyed = setValue(context.idSurvey, FieldNameEnum.ISENVOYED, true);
         const stateData: StateData = {
@@ -88,11 +96,7 @@ const EndSurveyPage = () => {
             remotePutSurveyData(context.idSurvey, surveyData)
                 .then(surveyDataAnswer => {
                     surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
-                    saveData(context.idSurvey, surveyData.data, false, true).then(() => {
-                        initializeSurveysDatasCache().finally(() => {
-                            setIsModalDisplayed(true);
-                        });
-                    });
+                    saveDataAndInit(surveyData);
                 })
                 .catch(() => {
                     setErrorSubmit(true);
@@ -101,22 +105,13 @@ const EndSurveyPage = () => {
             remotePutSurveyDataReviewer(context.idSurvey, stateData, surveyData.data)
                 .then(surveyDataAnswer => {
                     surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
-                    saveData(context.idSurvey, surveyData.data, false, true).then(() => {
-                        initializeSurveysDatasCache().finally(() => {
-                            setIsModalDisplayed(true);
-                        });
-                    });
+                    saveDataAndInit(surveyData);
                 })
                 .catch(() => {
                     setErrorSubmit(true);
                 });
         } else {
-            saveData(context.idSurvey, surveyData.data, false, true).then(() => {
-                initializeSurveysDatasCache().finally(() => {
-                    setIsModalDisplayed(true);
-                });
-            });
-            //setIsModalDisplayed(true);
+            saveDataAndInit(surveyData);
         }
     }, []);
 

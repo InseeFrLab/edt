@@ -95,7 +95,7 @@ export interface OrchestratorContext {
     data: LunaticData;
     idSurvey: string;
     surveyRootPage: EdtRoutesNameEnum;
-    rights: EdtSurveyRightsEnum;
+    rightsSurvey: EdtSurveyRightsEnum;
     isRoute?: boolean;
     activityOrRoute?: ActivityRouteOrGap;
     global?: boolean;

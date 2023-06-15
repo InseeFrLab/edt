@@ -43,10 +43,6 @@ const WorkTimePage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
 
     useEffect(() => {
-        window.onpopstate = () => {
-            navigate("/");
-        };
-
         if (idSurvey && source) {
             navToWeeklyPlannerOrClose(idSurvey, navigate, source);
         } else {
@@ -87,7 +83,7 @@ const WorkTimePage = () => {
                     data: data,
                     idSurvey: idSurvey,
                     surveyRootPage: surveyRootPage,
-                    rights: getSurveyRights(idSurvey ?? ""),
+                    rightsSurvey: getSurveyRights(idSurvey ?? ""),
                 }}
             />
         </Box>
