@@ -19,7 +19,7 @@ import {
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isTablet } from "service/responsive";
-import { getData, getSource, getTabsData, surveysIds } from "service/survey-service";
+import { getData, getSource, getTabsData, surveysIds, getSurveyRights } from "service/survey-service";
 
 const ActivityPage = () => {
     let { idSurvey } = useParams();
@@ -87,6 +87,7 @@ const ActivityPage = () => {
                     data: data,
                     idSurvey: idSurvey,
                     surveyRootPage: surveyRootPage,
+                    rights: getSurveyRights(idSurvey ?? ""),
                 }}
             />
         </>

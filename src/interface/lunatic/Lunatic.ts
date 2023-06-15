@@ -4,6 +4,7 @@ import {
     NomenclatureActivityOption,
 } from "@inseefrlab/lunatic-edt";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
@@ -94,6 +95,7 @@ export interface OrchestratorContext {
     data: LunaticData;
     idSurvey: string;
     surveyRootPage: EdtRoutesNameEnum;
+    rights: EdtSurveyRightsEnum;
     isRoute?: boolean;
     activityOrRoute?: ActivityRouteOrGap;
     global?: boolean;

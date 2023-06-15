@@ -21,7 +21,7 @@ import {
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isPwa, isTablet } from "service/responsive";
-import { getData, getSource, getTabsData, surveysIds } from "service/survey-service";
+import { getData, getSource, getTabsData, surveysIds, getSurveyRights } from "service/survey-service";
 
 const WorkTimePage = () => {
     let { idSurvey } = useParams();
@@ -87,6 +87,7 @@ const WorkTimePage = () => {
                     data: data,
                     idSurvey: idSurvey,
                     surveyRootPage: surveyRootPage,
+                    rights: getSurveyRights(idSurvey ?? ""),
                 }}
             />
         </Box>

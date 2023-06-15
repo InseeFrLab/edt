@@ -49,6 +49,7 @@ import {
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
+import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -961,6 +962,11 @@ const isDemoMode = () => {
     return getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
 };
 
+const surveyLocked = (idSurvey: string) => {
+    const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
+    return isLocked != null && isLocked;
+};
+
 const surveyValidated = (idSurvey: string) => {
     const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
     return isValidated != null && isValidated;
@@ -1088,6 +1094,26 @@ const validateAllEmptySurveys = (idHousehold: string) => {
     });
 };
 
+const getSurveyRights = (idSurvey: string) => {
+    const isReviewerMode = isReviewer();
+    const isValidated = surveyValidated(idSurvey);
+    const isLocked = surveyLocked(idSurvey);
+
+    let rights: EdtSurveyRightsEnum = isReviewerMode
+        ? EdtSurveyRightsEnum.WRITE_REVIEWER
+        : EdtSurveyRightsEnum.WRITE_INTERVIEWER;
+
+    if (isReviewerMode) {
+        rights = isValidated ? EdtSurveyRightsEnum.READ_REVIEWER : EdtSurveyRightsEnum.WRITE_REVIEWER;
+    } else {
+        rights =
+            isValidated || isLocked
+                ? EdtSurveyRightsEnum.READ_INTERVIEWER
+                : EdtSurveyRightsEnum.WRITE_INTERVIEWER;
+    }
+    return rights;
+};
+
 export {
     getData,
     getDatas,
@@ -1132,4 +1158,5 @@ export {
     validateAllEmptySurveys,
     userDatasMap,
     nameSurveyMap,
+    getSurveyRights,
 };
