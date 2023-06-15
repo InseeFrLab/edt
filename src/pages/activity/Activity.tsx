@@ -26,13 +26,7 @@ const ActivityPage = () => {
     let data = getData(idSurvey || "");
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const navigate = useNavigate();
-    if (
-        idSurvey &&
-        surveysIds &&
-        !surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]?.find(id => id === idSurvey)
-    ) {
-        navToHome();
-    }
+
     const context: OrchestratorContext = useOutletContext();
 
     setEnviro(context, useNavigate(), callbackHolder);
@@ -47,7 +41,13 @@ const ActivityPage = () => {
             navigate("/");
         };*/
 
-        if (idSurvey && source) {
+        if (
+            idSurvey &&
+            surveysIds &&
+            !surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]?.find(id => id === idSurvey)
+        ) {
+            navToHome();
+        } else if (idSurvey && source) {
             navToActivityOrPlannerOrSummary(idSurvey, source.maxPage, navigate, source);
         } else {
             console.error(

@@ -204,7 +204,7 @@ const HomeSurveyedPage = () => {
 
     const renderActivityCard = (activitySurveyId: string, index: number) => {
         return (
-            <>
+            <Box key={"dayCard-" + index}>
                 <DayCard
                     labelledBy={""}
                     describedBy={""}
@@ -215,13 +215,13 @@ const HomeSurveyedPage = () => {
                     isClose={formClose(activitySurveyId)}
                     tabIndex={index}
                 />
-            </>
+            </Box>
         );
     };
 
     const renderWorkTimeCard = (workTimeSurvey: string, index: number) => {
         return (
-            <>
+            <Box key={"weekCard-" + index}>
                 <WeekCard
                     labelledBy={""}
                     describedBy={""}
@@ -232,7 +232,7 @@ const HomeSurveyedPage = () => {
                     isClose={formClose(workTimeSurvey)}
                     tabIndex={index + 1}
                 />
-            </>
+            </Box>
         );
     };
 

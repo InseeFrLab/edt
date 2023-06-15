@@ -46,7 +46,7 @@ const DayCard = (props: DayCardProps) => {
     };
 
     return (
-        <FlexCenter>
+        <FlexCenter key={"dayCard-flx" + tabIndex}>
             <Box
                 aria-labelledby={labelledBy}
                 aria-describedby={describedBy}

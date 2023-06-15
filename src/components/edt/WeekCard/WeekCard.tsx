@@ -43,7 +43,7 @@ const WeekCard = (props: WeekCardProps) => {
     };
 
     return (
-        <FlexCenter>
+        <FlexCenter key={"weekCard-flex-" + tabIndex}>
             <Box
                 aria-labelledby={labelledBy}
                 aria-describedby={describedBy}
