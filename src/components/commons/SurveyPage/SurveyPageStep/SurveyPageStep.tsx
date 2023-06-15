@@ -23,6 +23,7 @@ import { isPwa } from "service/responsive";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import SurveyPage from "../SurveyPage";
+import { isIOS } from "react-device-detect";
 
 export interface SurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
@@ -52,7 +53,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
-    const { classes, cx } = useStyles();
+    const { classes, cx } = useStyles({ "isMobile": !isPwa(), "isIOS": isIOS });
 
     const stepData = getStepData(currentPage);
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
@@ -158,17 +159,19 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { SurveyPageStep } })(() => ({
-    bottomPadding: {
-        paddingBottom: "6rem",
-    },
-    pageDesktop: {
-        height: "100%",
-    },
-    pageMobileTablet: {
-        height: "100%",
-        maxHeight: "94vh",
-    },
-}));
+const useStyles = makeStylesEdt<{ isMobile: boolean; isIOS: boolean }>({ "name": { SurveyPageStep } })(
+    (theme, { isMobile, isIOS }) => ({
+        bottomPadding: {
+            paddingBottom: "6rem",
+        },
+        pageDesktop: {
+            height: "100%",
+        },
+        pageMobileTablet: {
+            height: "100%",
+            maxHeight: isIOS ? "87vh" : "94vh",
+        },
+    }),
+);
 
 export default SurveyPageStep;

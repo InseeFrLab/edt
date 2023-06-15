@@ -44,13 +44,13 @@ import { isDesktop, isPwa } from "service/responsive";
 import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
 import { getPrintedFirstName, getSurveyDate, saveData, setValue } from "service/survey-service";
 import { v4 as uuidv4 } from "uuid";
-import { isMobile } from "react-device-detect";
+import { isMobile, isIOS } from "react-device-detect";
 
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const context: OrchestratorContext = useOutletContext();
-    const { classes, cx } = useStyles();
+    const { classes, cx } = useStyles({ "isIOS": isIOS });
     const { t } = useTranslation();
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
@@ -528,102 +528,104 @@ const ActivityOrRoutePlannerPage = () => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { ActivityOrRoutePlannerPage } })(theme => ({
-    snackbar: {
-        bottom: "90px !important",
-        "& .MuiSnackbarContent-root": {
-            backgroundColor: theme.palette.error.light,
-            color: theme.variables.alertActivity,
+const useStyles = makeStylesEdt<{ isIOS: boolean }>({ "name": { ActivityOrRoutePlannerPage } })(
+    (theme, { isIOS }) => ({
+        snackbar: {
+            bottom: "90px !important",
+            "& .MuiSnackbarContent-root": {
+                backgroundColor: theme.palette.error.light,
+                color: theme.variables.alertActivity,
+            },
         },
-    },
-    infoBox: {
-        width: "350px",
-        padding: "1rem 0.25rem 0.5rem 2rem",
-        marginBottom: "1rem",
-    },
-    label: {
-        fontSize: "14px",
-    },
-    date: {
-        fontSize: "18px",
-        fontWeight: "bold",
-    },
-    surveyPageBox: {
-        flexGrow: "1",
-        display: "flex",
-        alignItems: "flex-start",
-        overflow: "auto",
-        height: "100vh",
-        maxHeight: "100vh",
-    },
-    surveyPageBoxTablet: {
-        height: "100vh",
-        maxHeight: "94vh",
-    },
-    outletBoxDesktop: {
-        flexGrow: "12",
-        display: "flex",
-        height: "100%",
-        width: "100%",
-    },
-    outletBoxMobileTablet: {
-        flexGrow: "1",
-        display: "flex",
-        height: "100%",
-    },
-    innerContentBox: {
-        border: "1px solid transparent",
-        borderRadius: "20px",
-        backgroundColor: theme.palette.background.default,
-        flexGrow: "1",
-        display: "flex",
-        padding: "1rem 0",
-    },
-    activityCardsContainer: {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(300px, max-content))",
-        gridGap: "1rem",
-        justifyContent: "center",
-        padding: "initial",
-        marginBottom: "6rem",
-    },
-    innerContentScroll: {
-        overflowY: "auto",
-        flexGrow: "1",
-        paddingBottom: "1rem",
-    },
-    outerContentBox: {
-        padding: "0.5rem",
-        flexGrow: "1",
-        display: "flex",
-        backgroundColor: theme.variables.white,
-        height: "100%",
-    },
-    innerSurveyPageBox: {
-        flexGrow: "1",
-        height: "100%",
-        display: "flex",
-    },
-    fullHeight: {
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        flexGrow: "1",
-    },
-    fullHeightNav: {
-        display: "flex",
-        justifyContent: "center",
-        flexGrow: "1",
-    },
-    noActivityInfo: {
-        marginTop: "1rem",
-    },
-    h1: {
-        fontSize: "18px",
-        margin: 0,
-        lineHeight: "1.5rem",
-        fontWeight: "bold",
-    },
-}));
+        infoBox: {
+            width: "350px",
+            padding: "1rem 0.25rem 0.5rem 2rem",
+            marginBottom: "1rem",
+        },
+        label: {
+            fontSize: "14px",
+        },
+        date: {
+            fontSize: "18px",
+            fontWeight: "bold",
+        },
+        surveyPageBox: {
+            flexGrow: "1",
+            display: "flex",
+            alignItems: "flex-start",
+            overflow: "auto",
+            height: "100vh",
+            maxHeight: "100vh",
+        },
+        surveyPageBoxTablet: {
+            height: "100vh",
+            maxHeight: isIOS ? "87vh" : "94vh",
+        },
+        outletBoxDesktop: {
+            flexGrow: "12",
+            display: "flex",
+            height: "100%",
+            width: "100%",
+        },
+        outletBoxMobileTablet: {
+            flexGrow: "1",
+            display: "flex",
+            height: "100%",
+        },
+        innerContentBox: {
+            border: "1px solid transparent",
+            borderRadius: "20px",
+            backgroundColor: theme.palette.background.default,
+            flexGrow: "1",
+            display: "flex",
+            padding: "1rem 0",
+        },
+        activityCardsContainer: {
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, max-content))",
+            gridGap: "1rem",
+            justifyContent: "center",
+            padding: "initial",
+            marginBottom: "6rem",
+        },
+        innerContentScroll: {
+            overflowY: "auto",
+            flexGrow: "1",
+            paddingBottom: "1rem",
+        },
+        outerContentBox: {
+            padding: "0.5rem",
+            flexGrow: "1",
+            display: "flex",
+            backgroundColor: theme.variables.white,
+            height: "100%",
+        },
+        innerSurveyPageBox: {
+            flexGrow: "1",
+            height: "100%",
+            display: "flex",
+        },
+        fullHeight: {
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            flexGrow: "1",
+        },
+        fullHeightNav: {
+            display: "flex",
+            justifyContent: "center",
+            flexGrow: "1",
+        },
+        noActivityInfo: {
+            marginTop: "1rem",
+        },
+        h1: {
+            fontSize: "18px",
+            margin: 0,
+            lineHeight: "1.5rem",
+            fontWeight: "bold",
+        },
+    }),
+);
 
 export default ActivityOrRoutePlannerPage;
