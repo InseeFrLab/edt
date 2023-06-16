@@ -12,10 +12,11 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
+import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
@@ -24,7 +25,7 @@ import {
     navToActivityRouteOrHome,
 } from "service/navigation-service";
 import { getActivitiesOrRoutes, mockData } from "service/survey-activity-service";
-import { getSource } from "service/survey-service";
+import { getData, getSource } from "service/survey-service";
 const HelpDuration = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -137,6 +138,8 @@ const HelpDuration = () => {
         );
     };
 
+    const context: OrchestratorContext = useOutletContext();
+
     return (
         <>
             {renderHelp()}
@@ -157,6 +160,8 @@ const HelpDuration = () => {
                         subPage={getLoopPageSubpage(currentPage)}
                         iteration={0}
                         componentSpecificProps={specificProps}
+                        idSurvey={context.idSurvey}
+                        dataSurvey={getData(context.idSurvey)}
                     ></OrchestratorForStories>
                 </FlexCenter>
             </LoopSurveyPage>

@@ -15,7 +15,7 @@ import { getLoopInitialPage, skipBackPage, skipNextPage } from "service/loop-ser
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import { onClose, onNext, onPrevious, setEnviro, validate } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
-import { getValue } from "service/survey-service";
+import { getData, getValue } from "service/survey-service";
 import LoopSurveyPage from "../LoopSurveyPage";
 import { surveyReadOnly } from "service/survey-activity-service";
 
@@ -87,20 +87,17 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         labels: getLabels(labelOfPage),
         errorIcon: errorIcon,
         onSelectValue: () => {
-            if (modifiable) {
-                specifiquesProps?.onSelectValue ??
-                    validate().then(() => {
-                        skipNextPage(
-                            context.idSurvey,
-                            context.source,
-                            currentIteration,
-                            currentPage,
-                            fieldConditionNext,
-                            nextRoute,
-                            isRoute,
-                        );
-                    });
-            }
+            validate().then(() => {
+                skipNextPage(
+                    context.idSurvey,
+                    context.source,
+                    currentIteration,
+                    currentPage,
+                    fieldConditionNext,
+                    nextRoute,
+                    isRoute,
+                );
+            });
         },
         language: getLanguage(),
         constants: {
@@ -153,6 +150,8 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         iteration: currentIteration,
         overrideOptions: specifiquesProps?.referentiel,
         componentSpecificProps: { ...specifiquesPropsOrchestrator },
+        idSurvey: context.idSurvey,
+        dataSurvey: getData(context.idSurvey),
     };
 
     return (

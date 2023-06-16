@@ -47,7 +47,7 @@ import {
 } from "service/navigation-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { mockData } from "service/survey-activity-service";
-import { addToAutocompleteActivityReferentiel, getSource } from "service/survey-service";
+import { addToAutocompleteActivityReferentiel, getData, getSource } from "service/survey-service";
 
 const HelpCategoryActivity = () => {
     const navigate = useNavigate();
@@ -255,6 +255,8 @@ const HelpCategoryActivity = () => {
         );
     };
 
+    const context: OrchestratorContext = useOutletContext();
+
     return (
         <Box className={classes.root}>
             {renderHelp()}
@@ -298,6 +300,8 @@ const HelpCategoryActivity = () => {
                         subPage={getLoopPageSubpage(currentPage)}
                         iteration={0}
                         componentSpecificProps={specificProps}
+                        idSurvey={context.idSurvey}
+                        dataSurvey={getData(context.idSurvey)}
                     ></OrchestratorForStories>
                 </FlexCenter>
             </LoopSurveyPage>

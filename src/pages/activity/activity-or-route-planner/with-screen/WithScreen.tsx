@@ -26,7 +26,7 @@ import {
     setEnviro,
     validate,
 } from "service/navigation-service";
-import { getValue } from "service/survey-service";
+import { getData, getValue } from "service/survey-service";
 
 const WithScreenPage = () => {
     const { t } = useTranslation();
@@ -129,6 +129,8 @@ const WithScreenPage = () => {
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                     componentSpecificProps={specificProps}
+                    idSurvey={context.idSurvey}
+                    dataSurvey={getData(context.idSurvey)}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>

@@ -701,11 +701,14 @@ const getComponentsOfVariable = (
 };
 
 const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
+    let valueEdited = datas.get(idSurvey)?.COLLECTED?.[variableName]?.EDITED;
+    let valueCollected = datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+
     if (iteration != null) {
-        let value = datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+        let value = valueEdited && valueEdited[iteration] != null ? valueEdited : valueCollected;
         return Array.isArray(value) ? value[iteration] : null;
     } else {
-        return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+        return valueEdited ?? valueCollected;
     }
 };
 
@@ -715,17 +718,22 @@ const setValue = (
     value: string | boolean | null,
     iteration?: number,
 ) => {
+    const isReviewerMode = isReviewer();
     const dataAct = datas.get(idSurvey);
     if (dataAct && dataAct.COLLECTED && dataAct.COLLECTED[variableName]) {
         if (iteration != null && value != null) {
-            const dataAsArray = dataAct.COLLECTED[variableName].COLLECTED;
+            const dataAsArray = isReviewerMode
+                ? dataAct.COLLECTED[variableName].EDITED
+                : dataAct.COLLECTED[variableName].COLLECTED;
             if (dataAsArray && Array.isArray(dataAsArray)) {
                 dataAsArray[iteration] = value;
             }
         } else {
+            const valueCollected = dataAct.COLLECTED[variableName].COLLECTED as string | boolean;
+
             const variable: Collected = {
-                COLLECTED: value,
-                EDITED: null,
+                COLLECTED: isReviewerMode ? valueCollected : value,
+                EDITED: isReviewerMode ? value : dataAct.COLLECTED[variableName].EDITED,
                 FORCED: null,
                 INPUTED: null,
                 PREVIOUS: null,
@@ -733,7 +741,7 @@ const setValue = (
             dataAct.COLLECTED[variableName] = variable;
         }
     }
-    datas.set(idSurvey, dataAct || {});
+    datas.set(idSurvey, dataAct ?? {});
     return dataAct;
 };
 

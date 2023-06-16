@@ -3,8 +3,12 @@ import * as lunaticEDT from "@inseefrlab/lunatic-edt";
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import React from "react";
+import { useOutletContext } from "react-router";
+import { getData as getSurveyData } from "service/survey-service";
+import { isReviewer } from "service/user-service";
 
 const { ...edtComponents } = lunaticEDT;
 
@@ -24,13 +28,15 @@ export const callbackHolder: { getData(): LunaticData; getErrors(): { [key: stri
 
 export type OrchestratorProps = {
     source?: LunaticModel | undefined;
-    data?: object;
+    data?: LunaticData;
     cbHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } };
     page: string;
     subPage?: string;
     iteration?: number;
     componentSpecificProps?: any;
     overrideOptions?: any;
+    idSurvey: string;
+    dataSurvey: LunaticData;
 };
 
 const renderLoading = () => {
@@ -42,8 +48,17 @@ const renderLoading = () => {
 };
 
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    const { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
-        props;
+    const {
+        source,
+        data,
+        cbHolder,
+        page,
+        subPage,
+        iteration,
+        componentSpecificProps,
+        overrideOptions,
+        idSurvey,
+    } = props;
     const { classes, cx } = useStyles();
 
     const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
@@ -57,7 +72,26 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     const components = getComponents();
     const currentErrors = getCurrentErrors();
 
-    cbHolder.getData = getData;
+    const getDataReviewer = () => {
+        const callbackholder = getData();
+        const dataCollected = Object.assign({}, callbackholder.COLLECTED);
+        if (callbackholder && dataCollected) {
+            for (let prop in FieldNameEnum as any) {
+                const dataOfField = dataCollected[prop];
+                const collected = dataOfField?.COLLECTED;
+                if (collected) {
+                    console.log(collected);
+                    dataOfField.EDITED = collected;
+                    dataOfField.COLLECTED = data?.COLLECTED?.[prop]?.COLLECTED;
+                }
+            }
+        }
+        callbackholder.COLLECTED = dataCollected;
+        console.log(dataCollected);
+        return callbackholder;
+    };
+
+    cbHolder.getData = isReviewer() ? getDataReviewer : getData;
     cbHolder.getErrors = getCurrentErrors;
 
     const renderComponent = () => {

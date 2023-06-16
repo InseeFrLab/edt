@@ -21,7 +21,7 @@ import {
 import { getLanguage } from "service/referentiel-service";
 import { isPwa } from "service/responsive";
 import { getStepData } from "service/stepper.service";
-import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
+import { getData, getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import SurveyPage from "../SurveyPage";
 import { isIOS } from "react-device-detect";
 import { surveyReadOnly } from "service/survey-activity-service";
@@ -131,6 +131,8 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         page: getOrchestratorPage(currentPage, context.surveyRootPage),
         overrideOptions: specifiquesProps?.referentiel,
         componentSpecificProps: componentLunaticProps,
+        idSurvey: context.idSurvey,
+        dataSurvey: getData(context.idSurvey),
     };
 
     const validateAndNav = (

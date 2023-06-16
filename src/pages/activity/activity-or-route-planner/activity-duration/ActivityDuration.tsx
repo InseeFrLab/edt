@@ -27,7 +27,7 @@ import {
 } from "service/navigation-service";
 import { isDesktop } from "service/responsive";
 import { getActivitiesOrRoutes, surveyReadOnly } from "service/survey-activity-service";
-import { getValue, saveData } from "service/survey-service";
+import { getData, getValue, saveData } from "service/survey-service";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
@@ -222,6 +222,8 @@ const ActivityDurationPage = () => {
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                     componentSpecificProps={specificProps}
+                    idSurvey={context.idSurvey}
+                    dataSurvey={getData(context.idSurvey)}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>

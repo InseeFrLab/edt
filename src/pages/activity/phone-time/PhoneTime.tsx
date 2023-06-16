@@ -19,6 +19,7 @@ import {
 import { getLanguage } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
 import { surveyReadOnly } from "service/survey-activity-service";
+import { getData } from "service/survey-service";
 
 const PhoneTimePage = () => {
     const currentPage = EdtRoutesNameEnum.PHONE_TIME;
@@ -51,7 +52,6 @@ const PhoneTimePage = () => {
         currentStepNumber: stepData.stepNumber,
         currentStepLabel: stepData.stepLabel,
         backgroundWhiteHeader: true,
-        modifiable: !surveyReadOnly(context.rightsSurvey),
     };
 
     const componentLunaticProps: any = {
@@ -62,6 +62,7 @@ const PhoneTimePage = () => {
             FORMAT_TIME: FORMAT_TIME,
             MINUTE_LABEL: MINUTE_LABEL,
         },
+        modifiable: !surveyReadOnly(context.rightsSurvey),
     };
 
     const orchestratorProps = {
@@ -70,6 +71,8 @@ const PhoneTimePage = () => {
         cbHolder: callbackHolder,
         page: getOrchestratorPage(currentPage, context.surveyRootPage),
         componentSpecificProps: componentLunaticProps,
+        idSurvey: context.idSurvey,
+        dataSurvey: getData(context.idSurvey),
     };
 
     return (

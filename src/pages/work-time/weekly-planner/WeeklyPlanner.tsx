@@ -25,7 +25,7 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
-import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
+import { getData, getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 import { surveyReadOnly } from "service/survey-activity-service";
 
 const WeeklyPlannerPage = () => {
@@ -115,6 +115,8 @@ const WeeklyPlannerPage = () => {
                         cbHolder={callbackHolder}
                         page={getOrchestratorPage(currentPage)}
                         componentSpecificProps={specificProps}
+                        idSurvey={context.idSurvey}
+                        dataSurvey={getData(context.idSurvey)}
                     ></OrchestratorForStories>
                 </FlexCenter>
             </SurveyPage>
