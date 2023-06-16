@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getNavigatePath, setEnviro } from "service/navigation-service";
-import { getData, surveysIds } from "service/survey-service";
+import { getData, getSurveyRights, surveysIds } from "service/survey-service";
 
 export type ErrorPageProps = {
     errorCode?: ErrorCodeEnum;
@@ -147,6 +147,7 @@ const ErrorPage = (props: ErrorPageProps) => {
                 idSurvey: idSurvey,
                 surveyRootPage: EdtRoutesNameEnum.WORK_TIME,
                 global: true,
+                rightsSurvey: getSurveyRights(idSurvey ?? ""),
             };
             localStorage.setItem(LocalStorageVariableEnum.IS_GLOBAL, "true");
             setEnviro(context, navigate, callbackHolder);

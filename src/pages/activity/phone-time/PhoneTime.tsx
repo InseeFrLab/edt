@@ -51,7 +51,6 @@ const PhoneTimePage = () => {
         currentStepNumber: stepData.stepNumber,
         currentStepLabel: stepData.stepLabel,
         backgroundWhiteHeader: true,
-        modifiable: !surveyReadOnly(context.rightsSurvey),
     };
 
     const componentLunaticProps: any = {
@@ -62,6 +61,7 @@ const PhoneTimePage = () => {
             FORMAT_TIME: FORMAT_TIME,
             MINUTE_LABEL: MINUTE_LABEL,
         },
+        modifiable: !surveyReadOnly(context.rightsSurvey),
     };
 
     const orchestratorProps = {

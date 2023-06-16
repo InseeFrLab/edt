@@ -1040,6 +1040,33 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
     return stats;
 };
 
+const lockSurvey = (idSurvey: string) => {
+    const promisesToWait: Promise<any>[] = [];
+    const data = getData(idSurvey || "");
+    const isLocked = surveyLocked(idSurvey);
+    const variable: Collected = {
+        COLLECTED: !isLocked,
+        EDITED: !isLocked,
+        FORCED: null,
+        INPUTED: null,
+        PREVIOUS: null,
+    };
+
+    if (data.COLLECTED && data.COLLECTED[FieldNameEnum.ISLOCKED]) {
+        data.COLLECTED[FieldNameEnum.ISLOCKED] = variable;
+        promisesToWait.push(saveData(idSurvey, data));
+    } else if (data.COLLECTED) {
+        data.COLLECTED.ISLOCKED = variable;
+        promisesToWait.push(saveData(idSurvey, data));
+    }
+
+    return new Promise(resolve => {
+        Promise.all(promisesToWait).then(() => {
+            resolve(!isLocked);
+        });
+    });
+};
+
 const lockAllSurveys = (idHousehold: string) => {
     const idSurveys = getSurveysIdsForHousehold(idHousehold);
     const promisesToWait: Promise<any>[] = [];
@@ -1064,6 +1091,33 @@ const lockAllSurveys = (idHousehold: string) => {
             }
         }
     });
+
+    return new Promise(resolve => {
+        Promise.all(promisesToWait).then(() => {
+            resolve(true);
+        });
+    });
+};
+
+const validateSurvey = (idSurvey: string) => {
+    const promisesToWait: Promise<any>[] = [];
+    const data = getData(idSurvey || "");
+
+    const variable: Collected = {
+        COLLECTED: true,
+        EDITED: true,
+        FORCED: null,
+        INPUTED: null,
+        PREVIOUS: null,
+    };
+
+    if (data.COLLECTED && data.COLLECTED[FieldNameEnum.ISVALIDATED]) {
+        data.COLLECTED[FieldNameEnum.ISVALIDATED] = variable;
+        promisesToWait.push(saveData(idSurvey, data));
+    } else if (data.COLLECTED) {
+        data.COLLECTED.ISVALIDATED = variable;
+        promisesToWait.push(saveData(idSurvey, data));
+    }
 
     return new Promise(resolve => {
         Promise.all(promisesToWait).then(() => {
@@ -1171,4 +1225,8 @@ export {
     userDatasMap,
     nameSurveyMap,
     getSurveyRights,
+    surveyLocked,
+    surveyValidated,
+    lockSurvey,
+    validateSurvey,
 };
