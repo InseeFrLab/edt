@@ -36,7 +36,12 @@ import {
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { getUserActivitiesCharacteristics, getUserActivitiesSummary } from "service/summary-service";
-import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
+import {
+    deleteActivity,
+    getActivitiesOrRoutes,
+    getScore,
+    surveyReadOnly,
+} from "service/survey-activity-service";
 import {
     getFullFrenchDate,
     getPrintedFirstName,
@@ -79,6 +84,7 @@ const ActivitySummaryPage = () => {
         userActivitiesSummary: userActivitiesSummary,
         userActivitiesCharacteristics: userActivitiesCharacteristics,
     };
+    const modifiable = !surveyReadOnly(context.rightsSurvey);
 
     useEffect(() => {
         setScore(getScore(context.idSurvey, t));
@@ -194,6 +200,7 @@ const ActivitySummaryPage = () => {
             activityProgressBar={true}
             idSurvey={context.idSurvey}
             score={score}
+            modifiable={modifiable}
         >
             <FlexCenter>
                 <Box className={classes.infoBox}>
@@ -223,12 +230,13 @@ const ActivitySummaryPage = () => {
                                 activity.iteration ?? 0,
                             )}
                             tabIndex={index + 51}
+                            modifiable={modifiable}
                         />
                     </FlexCenter>
                 ))}
             </Box>
             <FlexCenter className={classes.addActivityOrRouteButtonBox}>
-                <Button variant="contained" onClick={onOpenAddActivityOrRoute}>
+                <Button variant="contained" onClick={onOpenAddActivityOrRoute} disabled={!modifiable}>
                     {t("page.activity-summary.add-activity-or-route")}
                 </Button>
             </FlexCenter>
@@ -252,6 +260,7 @@ const ActivitySummaryPage = () => {
                 <DayCharacteristics
                     userActivitiesCharacteristics={userActivitiesCharacteristics}
                     onEdit={onEditCharacteristics}
+                    modifiable={modifiable}
                 />
                 <DaySummary userActivitiesSummary={userActivitiesSummary} />
             </Box>

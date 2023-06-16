@@ -170,7 +170,8 @@ const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<Survey
                 return requestPutSurveyData(idSurvey, data, user?.access_token);
             })
             .catch(() => {
-                return logout();
+                logout();
+                return Promise.reject(null);
             });
     } else {
         return requestPutSurveyData(idSurvey, data);
@@ -195,7 +196,8 @@ const remotePutSurveyDataReviewer = (
                 return requestPutSurveyDataReviewer(idSurvey, data, stateData, user?.access_token);
             })
             .catch(() => {
-                return logout();
+                logout();
+                return Promise.reject(null);
             });
     } else {
         return requestPutSurveyDataReviewer(idSurvey, data, stateData);
@@ -272,8 +274,6 @@ const logout = () => {
         })
         .then(() => auth.userManager.clearStaleState())
         .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
-
-    return Promise.reject(null);
 };
 
 const remoteGetSurveyData = (
@@ -327,14 +327,6 @@ const requestGetSurveyDataReviewer = (idSurvey: string): Promise<SurveyData> => 
     return requestGetDataReviewer(idSurvey).then(data => {
         return requestGetStateReviewer(idSurvey).then(stateData => {
             return new Promise(resolve => {
-                /*const surveyData: SurveyData = {
-                    stateData: {
-                        state: null,
-                        date: 0,
-                        currentPage: 0
-                    },
-                    data: data,
-                };*/
                 const surveyData: SurveyData = {
                     stateData: stateData,
                     data: data,
@@ -371,4 +363,5 @@ export {
     remoteGetSurveyData,
     remoteGetSurveyDataReviewer,
     fetchReviewerSurveysAssignments,
+    logout,
 };

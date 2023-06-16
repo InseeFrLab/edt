@@ -28,6 +28,7 @@ import {
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isPwa } from "service/responsive";
+import { surveyReadOnly } from "service/survey-activity-service";
 import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from "service/survey-service";
 import { isReviewer } from "service/user-service";
 
@@ -72,7 +73,7 @@ const EndSurveyPage = () => {
     };
 
     const saveDataAndInit = useCallback((surveyData: SurveyData) => {
-        saveData(context.idSurvey, surveyData.data, false).then(() => {
+        saveData(context.idSurvey, surveyData.data).then(() => {
             initializeSurveysDatasCache().finally(() => {
                 setIsModalDisplayed(true);
             });
@@ -186,6 +187,7 @@ const EndSurveyPage = () => {
                                     <img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />
                                 }
                                 id="send-button"
+                                disabled={surveyReadOnly(context.rightsSurvey)}
                             >
                                 {t("common.navigation.send")}
                             </Button>

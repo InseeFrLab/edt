@@ -20,6 +20,7 @@ import {
     surveysIds,
 } from "service/survey-service";
 import { getLastPageStep } from "./stepper.service";
+import { surveyReadOnly } from "./survey-activity-service";
 
 let _context: OrchestratorContext;
 let _navigate: NavigateFunction;
@@ -223,7 +224,7 @@ const closeFormularieAndNav = (route: string) => {
  */
 const validate = (): Promise<void | LunaticData> => {
     return saveData(_context.idSurvey, _callbackHolder.getData(), true).then(() => {
-        return saveData(_context.idSurvey, _callbackHolder.getData(), true);
+        return saveData(_context.idSurvey, _callbackHolder.getData(), false);
     });
 };
 
@@ -494,21 +495,23 @@ const onPrevious = (e: React.MouseEvent | undefined, setBackClickEvent: any) => 
 };
 
 const onClose = (forceQuit: boolean, setIsAlertDisplayed: any, iteration?: number) => {
+    const hasRights = !surveyReadOnly(_context.rightsSurvey);
     const isCloture = getValue(_context.idSurvey, FieldNameEnum.ISCLOSED) as boolean;
-    validateWithAlertAndNav(
-        forceQuit,
-        setIsAlertDisplayed,
-        iteration,
-        isCloture
-            ? getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, _context.idSurvey) +
-                  getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)
-            : getCurrentNavigatePath(
-                  _context.idSurvey,
-                  EdtRoutesNameEnum.ACTIVITY,
-                  getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                  _context.source,
-              ),
-    );
+    const pathNav = isCloture
+        ? getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, _context.idSurvey) +
+          getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)
+        : getCurrentNavigatePath(
+              _context.idSurvey,
+              EdtRoutesNameEnum.ACTIVITY,
+              getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+              _context.source,
+          );
+
+    if (hasRights) {
+        validateWithAlertAndNav(forceQuit, setIsAlertDisplayed, iteration, pathNav);
+    } else {
+        _navigate(pathNav);
+    }
 };
 
 export {

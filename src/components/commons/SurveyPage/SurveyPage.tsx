@@ -44,6 +44,7 @@ interface SurveyPageProps {
     idSurvey?: string;
     score?: number;
     helpStep?: number;
+    modifiable?: boolean;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -76,6 +77,7 @@ const SurveyPage = (props: SurveyPageProps) => {
         idSurvey,
         score,
         helpStep,
+        modifiable = true,
     } = props;
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
@@ -98,14 +100,7 @@ const SurveyPage = (props: SurveyPageProps) => {
     };
 
     return (
-        <Box
-            className={cx(
-                classes.page,
-                className,
-                //helpStep && isIOS ? classes.pageHelp : "",
-                //!isPwa() && isIOS && !helpStep ? classes.pageMobileTablet : classes.pageDesktop,
-            )}
-        >
+        <Box className={cx(classes.page, className)}>
             {!simpleHeader && firstName && surveyDate && onNavigateBack && (
                 <SurveyPageHeader
                     surveyDate={surveyDate}
@@ -120,6 +115,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                     onNavigateBack={onPrevious}
                     onEdit={onEdit}
                     onHelp={onHelp}
+                    modifiable={modifiable}
                 />
             )}
             {simpleHeader && onNavigateBack && (
@@ -163,7 +159,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                     <ValidateButton
                         onClick={validate}
                         text={t("common.navigation.validate")}
-                        disabled={disableNav}
+                        disabled={modifiable ? disableNav : true}
                     />
                 </FlexCenter>
             )}
@@ -175,6 +171,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                         finishLabel={finishLabel}
                         addLabel={addLabel}
                         helpStep={helpStep}
+                        modifiable={modifiable}
                     />
                 </FlexCenter>
             )}

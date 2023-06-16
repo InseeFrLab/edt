@@ -14,10 +14,11 @@ import { useTranslation } from "react-i18next";
 interface DayCharacteristicsProps {
     userActivitiesCharacteristics?: UserActivitiesCharacteristics;
     onEdit?(): void;
+    modifiable?: boolean;
 }
 
 const DayCharacteristics = (props: DayCharacteristicsProps) => {
-    const { userActivitiesCharacteristics, onEdit } = props;
+    const { userActivitiesCharacteristics, onEdit, modifiable = true } = props;
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
 
@@ -49,30 +50,32 @@ const DayCharacteristics = (props: DayCharacteristicsProps) => {
                 <h2 className={cx(classes.title, classes.h2)}>
                     {t("component.day-characteristic.title")}
                 </h2>
-                <Box className={classes.editBox}>
-                    <img
-                        src={moreHorizontal}
-                        alt={t("accessibility.asset.mui-icon.more-horizontal")}
-                        className={classes.actionIcon}
-                        onClick={onEditCard}
-                        aria-label="editCardToggle"
-                    />
-                    <Popover
-                        id={id}
-                        open={openPopOver}
-                        anchorEl={anchorEl}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "left",
-                        }}
-                        className={classes.popOver}
-                    >
-                        <Typography onClick={onEditIn} className={classes.clickableText}>
-                            {t("common.navigation.edit")}
-                        </Typography>
-                    </Popover>
-                </Box>
+                {onEdit && modifiable && (
+                    <Box className={classes.editBox}>
+                        <img
+                            src={moreHorizontal}
+                            alt={t("accessibility.asset.mui-icon.more-horizontal")}
+                            className={classes.actionIcon}
+                            onClick={onEditCard}
+                            aria-label="editCardToggle"
+                        />
+                        <Popover
+                            id={id}
+                            open={openPopOver}
+                            anchorEl={anchorEl}
+                            onClose={handleClose}
+                            anchorOrigin={{
+                                vertical: "bottom",
+                                horizontal: "left",
+                            }}
+                            className={classes.popOver}
+                        >
+                            <Typography onClick={onEditIn} className={classes.clickableText}>
+                                {t("common.navigation.edit")}
+                            </Typography>
+                        </Popover>
+                    </Box>
+                )}
             </Box>
             <Box className={classes.rowBox}>
                 <Box className={classes.iconBox}>

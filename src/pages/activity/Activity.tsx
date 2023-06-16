@@ -37,17 +37,10 @@ const ActivityPage = () => {
     const maxTabsPerRow = isTablet() ? 3 : 4;
 
     useEffect(() => {
-        /*window.onpopstate = () => {
+        window.onpopstate = () => {
             navigate("/");
-        };*/
-
-        if (
-            idSurvey &&
-            surveysIds &&
-            !surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]?.find(id => id === idSurvey)
-        ) {
-            navToHome();
-        } else if (idSurvey && source) {
+        };
+        if (idSurvey && source) {
             navToActivityOrPlannerOrSummary(idSurvey, source.maxPage, navigate, source);
         } else {
             console.error(

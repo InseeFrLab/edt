@@ -28,9 +28,7 @@ const WorkTimePage = () => {
     let data = getData(idSurvey || "");
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const navigate = useNavigate();
-    if (idSurvey && !surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]?.find(id => id === idSurvey)) {
-        navToHome();
-    }
+
     const surveyRootPage = getCurrentSurveyRootPage();
     const { t } = useTranslation();
     const tabsData = getTabsData(t);
@@ -63,6 +61,7 @@ const WorkTimePage = () => {
         }
     }, []);
 
+    console.log(getSurveyRights(idSurvey ?? ""));
     return (
         <Box className={cx(!isPwa() && isIOS ? classes.pageMobileTablet : classes.pageDesktop)}>
             <Default>

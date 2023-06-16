@@ -24,6 +24,7 @@ interface ActivityOrRouteCardProps {
     onDelete?(): void;
     helpStep?: number;
     tabIndex?: number;
+    modifiable?: boolean;
 }
 
 const renderMeanOfTransport = (
@@ -163,6 +164,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         onDelete,
         helpStep,
         tabIndex,
+        modifiable = true,
     } = props;
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
@@ -286,7 +288,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                     {renderWithSomeone(activityOrRoute, classes, renderInsideAlert, t)}
                     {renderWithScreen(activityOrRoute, classes, renderInsideAlert, t)}
                 </Box>
-                {onEdit && onDelete && (
+                {onEdit && onDelete && modifiable && (
                     <Box className={classes.editBox}>
                         <img
                             src={moreHorizontal}

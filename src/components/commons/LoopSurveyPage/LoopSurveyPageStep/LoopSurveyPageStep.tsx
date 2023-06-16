@@ -17,6 +17,7 @@ import { onClose, onNext, onPrevious, setEnviro, validate } from "service/naviga
 import { getLanguage } from "service/referentiel-service";
 import { getValue } from "service/survey-service";
 import LoopSurveyPage from "../LoopSurveyPage";
+import { surveyReadOnly } from "service/survey-activity-service";
 
 export interface LoopSurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
@@ -49,6 +50,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
     const currentIteration = paramIteration ? +paramIteration : 0;
     const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
     const stepData = getStepData(currentPage, isRoute);
+    const modifiable = !surveyReadOnly(context.rightsSurvey);
 
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
@@ -85,18 +87,20 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         labels: getLabels(labelOfPage),
         errorIcon: errorIcon,
         onSelectValue: () => {
-            specifiquesProps?.onSelectValue ??
-                validate().then(() => {
-                    skipNextPage(
-                        context.idSurvey,
-                        context.source,
-                        currentIteration,
-                        currentPage,
-                        fieldConditionNext,
-                        nextRoute,
-                        isRoute,
-                    );
-                });
+            if (modifiable) {
+                specifiquesProps?.onSelectValue ??
+                    validate().then(() => {
+                        skipNextPage(
+                            context.idSurvey,
+                            context.source,
+                            currentIteration,
+                            currentPage,
+                            fieldConditionNext,
+                            nextRoute,
+                            isRoute,
+                        );
+                    });
+            }
         },
         language: getLanguage(),
         constants: {
@@ -104,6 +108,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
             FORMAT_TIME: FORMAT_TIME,
             MINUTE_LABEL: MINUTE_LABEL,
         },
+        modifiable: modifiable,
     };
 
     const loopSurveyPageProps = {

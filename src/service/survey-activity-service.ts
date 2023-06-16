@@ -9,10 +9,11 @@ import activitySurveySource from "activity-survey.json";
 import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { TFunction, useTranslation } from "react-i18next";
@@ -518,7 +519,7 @@ const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: numbe
                 }
             }
         });
-        saveData(idSurvey, data, false);
+        saveData(idSurvey, data);
     }
 };
 
@@ -589,6 +590,12 @@ const mockData = () => {
     return dataAct;
 };
 
+const surveyReadOnly = (rightsSurvey: EdtSurveyRightsEnum): boolean => {
+    return [EdtSurveyRightsEnum.READ_INTERVIEWER, EdtSurveyRightsEnum.READ_REVIEWER].includes(
+        rightsSurvey,
+    );
+};
+
 export {
     getActivitiesOrRoutes,
     getActivitesSelectedLabel,
@@ -603,4 +610,5 @@ export {
     mockActivitiesRoutesOrGaps,
     mockData,
     getStatutSurvey,
+    surveyReadOnly,
 };

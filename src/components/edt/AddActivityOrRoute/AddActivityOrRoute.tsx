@@ -14,10 +14,19 @@ interface AddActivityOrRouteProps {
     onClickRoute(): void;
     handleClose(): void;
     open: boolean;
+    modifiable?: boolean;
 }
 
 const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
-    const { labelledBy, describedBy, onClickActivity, onClickRoute, open, handleClose } = props;
+    const {
+        labelledBy,
+        describedBy,
+        onClickActivity,
+        onClickRoute,
+        open,
+        handleClose,
+        modifiable = true,
+    } = props;
     const { classes } = useStyles();
     return (
         <>
@@ -43,6 +52,7 @@ const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
                                 iconTitle={yellow_plus}
                                 iconActivity={activity}
                                 iconRoute={route}
+                                modifiable={modifiable}
                             />
                         </Default>
                         <Mobile>
@@ -54,6 +64,7 @@ const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
                                 iconTitle={yellow_plus}
                                 iconActivity={activity}
                                 iconRoute={route}
+                                modifiable={modifiable}
                             />
                         </Mobile>
                     </>

@@ -7,11 +7,13 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React from "react";
 import { useOutletContext } from "react-router-dom";
 import { navToErrorPage } from "service/navigation-service";
+import { surveyReadOnly } from "service/survey-activity-service";
 import { getComponentId } from "service/survey-service";
 
 const WhoAreYouPage = () => {
     const context: OrchestratorContext = useOutletContext();
     let [disabledButton, setDisabledButton] = React.useState<boolean>(true);
+    const modifiable = !surveyReadOnly(context.rightsSurvey);
 
     const keydownChange = () => {
         const componentId = getComponentId(FieldNameEnum.FIRSTNAME, context.source);
@@ -48,7 +50,7 @@ const WhoAreYouPage = () => {
                 errorIcon={who_are_you}
                 errorAltIcon={"accessibility.asset.who-are-you-alt"}
                 isStep={false}
-                disableButton={disabledButton}
+                disableButton={modifiable ? disabledButton : true}
             />
         </>
     );

@@ -383,8 +383,7 @@ const initializeSurveysDatasCache = (): Promise<any> => {
                         );
                         data.houseReference = idSurvey.replace(regexp, "");
                         datas.set(idSurvey, data || {});
-                        Object.assign({}, getData(idSurvey || ""));
-                        oldDatas.set(idSurvey, data || {});
+                        oldDatas.set(idSurvey, {});
                         initData = true;
                     }
                     return data;
@@ -498,12 +497,10 @@ const dataIsChange = (idSurvey: string, data: LunaticData) => {
                 } else {
                     isChange = true;
                 }
-            } else {
-                isChange = false;
             }
         });
     } else {
-        isChange = currentData?.COLLECTED != data.COLLECTED;
+        isChange = true;
     }
     return isChange;
 };

@@ -8,7 +8,6 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction, useCallback, useState } from "react";
-import { isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router";
 import {
@@ -24,6 +23,7 @@ import { isPwa } from "service/responsive";
 import { getStepData } from "service/stepper.service";
 import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import SurveyPage from "../SurveyPage";
+import { surveyReadOnly } from "service/survey-activity-service";
 
 export interface SurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
@@ -56,6 +56,8 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const { classes, cx } = useStyles();
 
     const stepData = getStepData(currentPage);
+    const modifiable = !surveyReadOnly(context.rightsSurvey);
+
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
 
     const componentLunaticProps: any = {
@@ -72,6 +74,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         },
         extensionIcon: extension,
         extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
+        modifiable: modifiable,
     };
 
     const surveyPageStepProps = {
@@ -99,6 +102,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         currentStepLabel: stepData.stepLabel,
         backgroundWhiteHeader: true,
         disableNav: disableButton,
+        modifiable: modifiable,
     };
 
     const surveyPageNotStepProps = {
@@ -116,6 +120,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         firstName: getPrintedFirstName(context.idSurvey),
         surveyDate: getPrintedSurveyDate(context.idSurvey, context.surveyRootPage),
         disableNav: disableButton,
+        modifiable: modifiable,
     };
 
     const orchestratorProps = {
