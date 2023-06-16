@@ -26,7 +26,7 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { isDesktop } from "service/responsive";
-import { getActivitiesOrRoutes } from "service/survey-activity-service";
+import { getActivitiesOrRoutes, surveyReadOnly } from "service/survey-activity-service";
 import { getValue, saveData } from "service/survey-service";
 
 const ActivityDurationPage = () => {
@@ -63,6 +63,7 @@ const ActivityDurationPage = () => {
         },
         arrowDownIcon: arrowDown,
         arrowDownIconAlt: t("accessibility.asset.mui-icon.expand-more"),
+        modifiable: !surveyReadOnly(context.rightsSurvey),
     };
 
     let startTimeDay: Dayjs;

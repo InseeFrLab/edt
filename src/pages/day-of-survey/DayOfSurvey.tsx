@@ -7,11 +7,13 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React from "react";
 import { useOutletContext } from "react-router-dom";
 import { navToErrorPage } from "service/navigation-service";
+import { surveyReadOnly } from "service/survey-activity-service";
 import { getComponentId } from "service/survey-service";
 
 const DayOfSurveyPage = () => {
     const context: OrchestratorContext = useOutletContext();
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
+    const modifiable = !surveyReadOnly(context.rightsSurvey);
 
     const keydownChange = () => {
         const componentId = getComponentId(FieldNameEnum.SURVEYDATE, context.source);
@@ -49,7 +51,7 @@ const DayOfSurveyPage = () => {
                 errorIcon={day_of_survey}
                 errorAltIcon={"accessibility.asset.day-of-survey-alt"}
                 isStep={false}
-                disableButton={disabledButton}
+                disableButton={modifiable ? disabledButton : true}
             />
         </>
     );

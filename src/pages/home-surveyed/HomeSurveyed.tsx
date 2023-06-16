@@ -26,7 +26,7 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { remotePutSurveyData } from "service/api-service";
+import { remotePutSurveyData, logout } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import {
     getNavigatePath,
@@ -53,6 +53,7 @@ import {
     lockAllSurveys,
     validateAllEmptySurveys,
     nameSurveyMap,
+    getSurveyRights,
 } from "service/survey-service";
 import { getUserRights } from "service/user-service";
 
@@ -121,6 +122,7 @@ const HomeSurveyedPage = () => {
                 idSurvey: idSurvey,
                 surveyRootPage: EdtRoutesNameEnum.WORK_TIME,
                 global: false,
+                rightsSurvey: getSurveyRights(idSurvey ?? ""),
             };
             setEnviro(context, navigate, callbackHolder);
 
@@ -143,21 +145,7 @@ const HomeSurveyedPage = () => {
 
     const disconnect = useCallback(() => {
         window.localStorage.clear();
-        lunaticDatabase
-            .clear()
-            .then(() =>
-                auth.userManager.signoutRedirect({
-                    id_token_hint: localStorage.getItem("id_token") || undefined,
-                }),
-            )
-            .then(() => auth.userManager.clearStaleState())
-            .then(() => auth.userManager.signoutRedirectCallback())
-            .then(() => {
-                sessionStorage.clear();
-                localStorage.clear();
-            })
-            .then(() => auth.userManager.clearStaleState())
-            .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
+        lunaticDatabase.clear().then(() => logout());
     }, []);
 
     const navActivity = useCallback(
@@ -169,6 +157,7 @@ const HomeSurveyedPage = () => {
                 idSurvey: idSurvey,
                 surveyRootPage: EdtRoutesNameEnum.ACTIVITY,
                 global: false,
+                rightsSurvey: getSurveyRights(idSurvey ?? ""),
             };
             localStorage.setItem(LocalStorageVariableEnum.IS_GLOBAL, "false");
 
@@ -202,6 +191,7 @@ const HomeSurveyedPage = () => {
             idSurvey: idSurvey,
             surveyRootPage: EdtRoutesNameEnum.WORK_TIME,
             global: true,
+            rightsSurvey: getSurveyRights(idSurvey ?? ""),
         };
         localStorage.setItem(LocalStorageVariableEnum.IS_GLOBAL, "true");
         setEnviro(context, navigate, callbackHolder);
@@ -214,7 +204,7 @@ const HomeSurveyedPage = () => {
 
     const renderActivityCard = (activitySurveyId: string, index: number) => {
         return (
-            <>
+            <Box key={"dayCard-" + index}>
                 <DayCard
                     labelledBy={""}
                     describedBy={""}
@@ -225,13 +215,13 @@ const HomeSurveyedPage = () => {
                     isClose={formClose(activitySurveyId)}
                     tabIndex={index}
                 />
-            </>
+            </Box>
         );
     };
 
     const renderWorkTimeCard = (workTimeSurvey: string, index: number) => {
         return (
-            <>
+            <Box key={"weekCard-" + index}>
                 <WeekCard
                     labelledBy={""}
                     describedBy={""}
@@ -242,7 +232,7 @@ const HomeSurveyedPage = () => {
                     isClose={formClose(workTimeSurvey)}
                     tabIndex={index + 1}
                 />
-            </>
+            </Box>
         );
     };
 

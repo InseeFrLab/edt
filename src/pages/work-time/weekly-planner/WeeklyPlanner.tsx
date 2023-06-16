@@ -26,6 +26,7 @@ import {
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
+import { surveyReadOnly } from "service/survey-activity-service";
 
 const WeeklyPlannerPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -76,8 +77,9 @@ const WeeklyPlannerPage = () => {
         expandMoreWhiteIcon: expandMoreWhite,
         workIcon: work,
         workIconAlt: t("accessibility.asset.mui-icon.work"),
+        modifiable: !surveyReadOnly(context.rightsSurvey),
     };
-
+    console.log(context.rightsSurvey);
     const validateAndNav = (): void => {
         if (displayDayOverview) {
             save();
@@ -90,7 +92,7 @@ const WeeklyPlannerPage = () => {
     const onEdit = () => {
         navFullPath(EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.WORK_TIME);
     };
-
+    console.log(context.rightsSurvey);
     return (
         <>
             <SurveyPage
@@ -104,6 +106,7 @@ const WeeklyPlannerPage = () => {
                 simpleHeader={displayDayOverview}
                 simpleHeaderLabel={displayedDayHeader}
                 backgroundWhiteHeader={displayDayOverview}
+                modifiable={!surveyReadOnly(context.rightsSurvey)}
             >
                 <FlexCenter>
                     <OrchestratorForStories

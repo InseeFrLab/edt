@@ -11,10 +11,11 @@ interface SurveyPageEditHeaderProps {
     onNavigateBack(): void;
     onEdit?(): void;
     onHelp?(): void;
+    modifiable?: boolean;
 }
 
 const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
-    const { firstName, firstNamePrefix, onNavigateBack, onEdit, onHelp } = props;
+    const { firstName, firstNamePrefix, onNavigateBack, onEdit, onHelp, modifiable = true } = props;
     const { classes } = useStyles();
     const { t } = useTranslation();
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
@@ -65,7 +66,7 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
                         }}
                         className={classes.popOver}
                     >
-                        {onEdit && (
+                        {onEdit && modifiable && (
                             <Typography onClick={onEdit} className={classes.clickableText}>
                                 {t("common.navigation.edit")}
                             </Typography>

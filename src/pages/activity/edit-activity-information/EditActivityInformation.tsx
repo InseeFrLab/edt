@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { loopActivityRouteStepperData, loopActivityStepperData } from "service/loop-stepper-service";
 import { getLoopParameterizedNavigatePath, navFullPath } from "service/navigation-service";
+import { surveyReadOnly } from "service/survey-activity-service";
 
 const EditActivityInformationPage = () => {
     const { t } = useTranslation();
@@ -42,6 +43,7 @@ const EditActivityInformationPage = () => {
             simpleHeaderLabel={t("page.edit-activity-information.header")}
             simpleHeader={true}
             backgroundWhiteHeader={false}
+            modifiable={!surveyReadOnly(context.rightsSurvey)}
         >
             <FlexCenter>
                 <ActivityOrRouteCard

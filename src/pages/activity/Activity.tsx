@@ -19,20 +19,14 @@ import {
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isTablet } from "service/responsive";
-import { getData, getSource, getTabsData, surveysIds } from "service/survey-service";
+import { getData, getSource, getTabsData, surveysIds, getSurveyRights } from "service/survey-service";
 
 const ActivityPage = () => {
     let { idSurvey } = useParams();
     let data = getData(idSurvey || "");
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const navigate = useNavigate();
-    if (
-        idSurvey &&
-        surveysIds &&
-        !surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]?.find(id => id === idSurvey)
-    ) {
-        navToHome();
-    }
+
     const context: OrchestratorContext = useOutletContext();
 
     setEnviro(context, useNavigate(), callbackHolder);
@@ -46,7 +40,6 @@ const ActivityPage = () => {
         window.onpopstate = () => {
             navigate("/");
         };
-
         if (idSurvey && source) {
             navToActivityOrPlannerOrSummary(idSurvey, source.maxPage, navigate, source);
         } else {
@@ -58,6 +51,7 @@ const ActivityPage = () => {
     }, []);
 
     const handleTabSelecterChange = useCallback((tabData: TabData) => {
+        console.log("handleTabSelecterChange");
         if (tabData.isActivitySurvey) {
             idSurvey = tabData.idSurvey;
             data = getData(idSurvey);
@@ -87,6 +81,7 @@ const ActivityPage = () => {
                     data: data,
                     idSurvey: idSurvey,
                     surveyRootPage: surveyRootPage,
+                    rightsSurvey: getSurveyRights(idSurvey ?? ""),
                 }}
             />
         </>

@@ -41,8 +41,19 @@ import {
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { isDesktop, isPwa } from "service/responsive";
-import { deleteActivity, getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
-import { getPrintedFirstName, getSurveyDate, saveData, setValue } from "service/survey-service";
+import {
+    deleteActivity,
+    getActivitiesOrRoutes,
+    getScore,
+    surveyReadOnly,
+} from "service/survey-activity-service";
+import {
+    getPrintedFirstName,
+    getSurveyDate,
+    getSurveyRights,
+    saveData,
+    setValue,
+} from "service/survey-service";
 import { v4 as uuidv4 } from "uuid";
 import { isMobile, isIOS } from "react-device-detect";
 
@@ -74,6 +85,8 @@ const ActivityOrRoutePlannerPage = () => {
     );
     const [snackbarText, setSnackbarText] = React.useState<string | undefined>(undefined);
     const surveyDate = getSurveyDate(context.idSurvey) || "";
+    const modifiable = !surveyReadOnly(context.rightsSurvey);
+
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const [skip, setSkip] = useState<boolean>(false);
     const [score, setScore] = React.useState<number | undefined>(undefined);
@@ -372,6 +385,7 @@ const ActivityOrRoutePlannerPage = () => {
                             activityProgressBar={true}
                             idSurvey={context.idSurvey}
                             score={score}
+                            modifiable={modifiable}
                         >
                             <Box
                                 className={
@@ -470,6 +484,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                                 activity.iteration ?? 0,
                                                             )}
                                                             tabIndex={index + 51}
+                                                            modifiable={modifiable}
                                                         />
                                                     </FlexCenter>
                                                 ))}
@@ -520,6 +535,7 @@ const ActivityOrRoutePlannerPage = () => {
                             surveyRootPage: context.surveyRootPage,
                             isRoute: isRoute,
                             activityOrRoute: activityOrRoute,
+                            rightsSurvey: getSurveyRights(context.idSurvey ?? ""),
                         }}
                     />
                 </Box>

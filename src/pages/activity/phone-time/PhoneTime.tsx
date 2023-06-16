@@ -18,6 +18,7 @@ import {
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
+import { surveyReadOnly } from "service/survey-activity-service";
 
 const PhoneTimePage = () => {
     const currentPage = EdtRoutesNameEnum.PHONE_TIME;
@@ -50,6 +51,7 @@ const PhoneTimePage = () => {
         currentStepNumber: stepData.stepNumber,
         currentStepLabel: stepData.stepLabel,
         backgroundWhiteHeader: true,
+        modifiable: !surveyReadOnly(context.rightsSurvey),
     };
 
     const componentLunaticProps: any = {

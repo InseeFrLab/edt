@@ -37,7 +37,9 @@ import errorIcon from "assets/illustration/error/activity.svg";
 import addLightBlue from "assets/illustration/mui-icon/add-light-blue.svg";
 import addWhite from "assets/illustration/mui-icon/add.svg";
 import chevronRight from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import chevronRightDisabled from "assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
 import extension from "assets/illustration/mui-icon/extension.svg";
+import extensionDisabled from "assets/illustration/mui-icon/extension-grey.svg";
 import search from "assets/illustration/mui-icon/search.svg";
 import { SEPARATOR_DEFAUT } from "constants/constants";
 import { LoopEnum } from "enumerations/LoopEnum";
@@ -46,6 +48,7 @@ import { useTranslation } from "react-i18next";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { addToAutocompleteActivityReferentiel } from "service/survey-service";
+import { surveyReadOnly } from "service/survey-activity-service";
 
 const MainActivityPage = () => {
     const { t } = useTranslation();
@@ -56,6 +59,7 @@ const MainActivityPage = () => {
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
+    const modifiable = !surveyReadOnly(context.rightsSurvey);
 
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
@@ -165,15 +169,16 @@ const MainActivityPage = () => {
         },
         widthGlobal: true,
         separatorSuggester: process.env.REACT_APP_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
-        chevronRightIcon: chevronRight,
+        chevronRightIcon: modifiable ? chevronRight : chevronRightDisabled,
         chevronRightIconAlt: t("accessibility.asset.mui-icon.arrow-right-ios"),
         searchIcon: search,
         searchIconAlt: t("accessibility.asset.mui-icon.search"),
-        extensionIcon: extension,
+        extensionIcon: modifiable ? extension : extensionDisabled,
         extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
         addLightBlueIcon: addLightBlue,
         addWhiteIcon: addWhite,
         addIconAlt: t("accessibility.asset.mui-icon.add"),
+        modifiable: modifiable,
     };
 
     return (

@@ -13,11 +13,20 @@ interface AddActivityOrRouteMobileProps {
     iconTitle: string;
     iconActivity: string;
     iconRoute: string;
+    modifiable?: boolean;
 }
 
 const AddActivityOrRouteMobile = (props: AddActivityOrRouteMobileProps) => {
-    const { handleClose, onClickActivity, onClickRoute, className, iconTitle, iconActivity, iconRoute } =
-        props;
+    const {
+        handleClose,
+        onClickActivity,
+        onClickRoute,
+        className,
+        iconTitle,
+        iconActivity,
+        iconRoute,
+        modifiable = true,
+    } = props;
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
     return (

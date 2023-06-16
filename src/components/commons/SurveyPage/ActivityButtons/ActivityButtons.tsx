@@ -11,10 +11,11 @@ interface ActivityButtonsProps {
     finishLabel?: string;
     addLabel?: string;
     helpStep?: number;
+    modifiable?: boolean;
 }
 
 const ActivityButtons = (props: ActivityButtonsProps) => {
-    const { onClickFinish, onClickAdd, finishLabel, addLabel, helpStep } = props;
+    const { onClickFinish, onClickAdd, finishLabel, addLabel, helpStep, modifiable = true } = props;
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     return (
@@ -33,6 +34,7 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
                                 helpStep == 3 ? classes.helpCloseButton : "",
                             )}
                             id="clore-button"
+                            disabled={!modifiable}
                         >
                             {finishLabel}
                         </Button>
@@ -47,6 +49,7 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
                         helpStep == 1 ? classes.helpAddButton : "",
                     )}
                     id="add-button"
+                    disabled={!modifiable}
                 >
                     <img src={add} alt={t("accessibility.asset.mui-icon.add")} />
                     {addLabel}

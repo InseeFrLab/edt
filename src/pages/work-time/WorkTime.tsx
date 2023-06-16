@@ -21,16 +21,14 @@ import {
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isPwa, isTablet } from "service/responsive";
-import { getData, getSource, getTabsData, surveysIds } from "service/survey-service";
+import { getData, getSource, getTabsData, surveysIds, getSurveyRights } from "service/survey-service";
 
 const WorkTimePage = () => {
     let { idSurvey } = useParams();
     let data = getData(idSurvey || "");
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const navigate = useNavigate();
-    if (idSurvey && !surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]?.find(id => id === idSurvey)) {
-        navToHome();
-    }
+
     const surveyRootPage = getCurrentSurveyRootPage();
     const { t } = useTranslation();
     const tabsData = getTabsData(t);
@@ -43,10 +41,6 @@ const WorkTimePage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
 
     useEffect(() => {
-        window.onpopstate = () => {
-            navigate("/");
-        };
-
         if (idSurvey && source) {
             navToWeeklyPlannerOrClose(idSurvey, navigate, source);
         } else {
@@ -67,6 +61,7 @@ const WorkTimePage = () => {
         }
     }, []);
 
+    console.log(getSurveyRights(idSurvey ?? ""));
     return (
         <Box className={cx(!isPwa() && isIOS ? classes.pageMobileTablet : classes.pageDesktop)}>
             <Default>
@@ -87,6 +82,7 @@ const WorkTimePage = () => {
                     data: data,
                     idSurvey: idSurvey,
                     surveyRootPage: surveyRootPage,
+                    rightsSurvey: getSurveyRights(idSurvey ?? ""),
                 }}
             />
         </Box>
