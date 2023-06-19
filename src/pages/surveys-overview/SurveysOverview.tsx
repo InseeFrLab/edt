@@ -77,7 +77,7 @@ const SurveysOverviewPage = () => {
             let newSearchResult = dataHouseholds.filter(
                 houseHoldData =>
                     houseHoldData?.userName?.toLowerCase().includes(event.target.value.toLowerCase()) ||
-                    houseHoldData?.idHousehold?.includes(event.target.value),
+                    houseHoldData?.idHousehold?.toLowerCase().includes(event.target.value.toLowerCase()),
             );
 
             if (isFilterValidatedSurvey) {
@@ -131,6 +131,46 @@ const SurveysOverviewPage = () => {
         [searchResult],
     );
 
+    const renderHouseHold = useCallback(
+        (dataHousehold: any, index: number) => {
+            console.log(dataHousehold);
+            return (
+                <HouseholdCard
+                    key={"household-card-" + index}
+                    idHousehold={dataHousehold.idHousehold}
+                    householdStaticLabel={t("page.surveys-overview.household-static-label")}
+                    iconPerson={person}
+                    iconPersonAlt={t("accessibility.asset.mui-icon.person")}
+                    iconArrow={arrowForwardIosGrey}
+                    iconArrowAlt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                    startedSurveyLabel={
+                        dataHousehold?.stats?.numHouseholdsInProgress > 1
+                            ? t("page.surveys-overview.starteds-survey-label")
+                            : t("page.surveys-overview.started-survey-label")
+                    }
+                    closedSurveyLabel={
+                        dataHousehold?.stats?.numHouseholdsClosed > 1
+                            ? t("page.surveys-overview.closeds-survey-label")
+                            : t("page.surveys-overview.closed-survey-label")
+                    }
+                    validatedSurveyLabel={
+                        dataHousehold?.stats?.numHouseholdsValidated > 1
+                            ? t("page.surveys-overview.validateds-survey-label")
+                            : t("page.surveys-overview.validated-survey-label")
+                    }
+                    dataHousehold={dataHousehold}
+                />
+            );
+        },
+        [searchResult],
+    );
+
+    const renderResults = useCallback(() => {
+        return searchResult?.map((dataHousehold: any, index: number) =>
+            renderHouseHold(dataHousehold, index),
+        );
+    }, [searchResult]);
+
     return initialized ? (
         <ReviewerPage
             className={classes.reviewerPage}
@@ -181,35 +221,7 @@ const SurveysOverviewPage = () => {
                 </Box>
             </Box>
 
-            <FlexCenter className={classes.searchResultBox}>
-                {searchResult?.map((dataHousehold: any, index: number) => (
-                    <HouseholdCard
-                        key={"household-card-" + index}
-                        idHousehold={dataHousehold.idHousehold}
-                        householdStaticLabel={t("page.surveys-overview.household-static-label")}
-                        iconPerson={person}
-                        iconPersonAlt={t("accessibility.asset.mui-icon.person")}
-                        iconArrow={arrowForwardIosGrey}
-                        iconArrowAlt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
-                        startedSurveyLabel={
-                            dataHousehold?.stats?.numHouseholdsInProgress > 1
-                                ? t("page.surveys-overview.starteds-survey-label")
-                                : t("page.surveys-overview.started-survey-label")
-                        }
-                        closedSurveyLabel={
-                            dataHousehold?.stats?.numHouseholdsClosed > 1
-                                ? t("page.surveys-overview.closeds-survey-label")
-                                : t("page.surveys-overview.closed-survey-label")
-                        }
-                        validatedSurveyLabel={
-                            dataHousehold?.stats?.numHouseholdsValidated > 1
-                                ? t("page.surveys-overview.validateds-survey-label")
-                                : t("page.surveys-overview.validated-survey-label")
-                        }
-                        dataHousehold={dataHousehold}
-                    />
-                ))}
-            </FlexCenter>
+            <FlexCenter className={classes.searchResultBox}>{renderResults()}</FlexCenter>
         </ReviewerPage>
     ) : (
         <>

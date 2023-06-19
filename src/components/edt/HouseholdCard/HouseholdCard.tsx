@@ -68,7 +68,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
     const onClickHouseholdCard = useCallback(() => {
         localStorage.setItem(LocalStorageVariableEnum.ID_HOUSEHOLD, idHousehold);
         navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
-    }, []);
+    }, [idHousehold, navigate, props]);
 
     const renderCard = () => {
         return (
