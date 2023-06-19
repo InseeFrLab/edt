@@ -80,14 +80,15 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 const dataOfField = dataCollected[prop];
                 const collected = dataOfField?.COLLECTED;
                 if (collected) {
-                    console.log(collected);
                     dataOfField.EDITED = collected;
+                    dataOfField.COLLECTED = data?.COLLECTED?.[prop]?.COLLECTED;
+                } else if (dataOfField) {
+                    dataOfField.EDITED = data?.COLLECTED?.[prop]?.EDITED;
                     dataOfField.COLLECTED = data?.COLLECTED?.[prop]?.COLLECTED;
                 }
             }
         }
         callbackholder.COLLECTED = dataCollected;
-        console.log(dataCollected);
         return callbackholder;
     };
 
