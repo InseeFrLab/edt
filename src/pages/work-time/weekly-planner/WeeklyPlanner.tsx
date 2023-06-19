@@ -115,8 +115,6 @@ const WeeklyPlannerPage = () => {
                         cbHolder={callbackHolder}
                         page={getOrchestratorPage(currentPage)}
                         componentSpecificProps={specificProps}
-                        idSurvey={context.idSurvey}
-                        dataSurvey={getData(context.idSurvey)}
                     ></OrchestratorForStories>
                 </FlexCenter>
             </SurveyPage>

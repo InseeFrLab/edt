@@ -207,8 +207,6 @@ const HelpCheckbox = () => {
                         subPage={getLoopPageSubpage(currentPage)}
                         iteration={0}
                         componentSpecificProps={specificProps}
-                        idSurvey={context.idSurvey}
-                        dataSurvey={getData(context.idSurvey)}
                     ></OrchestratorForStories>
                 </FlexCenter>
             </LoopSurveyPage>

@@ -131,8 +131,6 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         page: getOrchestratorPage(currentPage, context.surveyRootPage),
         overrideOptions: specifiquesProps?.referentiel,
         componentSpecificProps: componentLunaticProps,
-        idSurvey: context.idSurvey,
-        dataSurvey: getData(context.idSurvey),
     };
 
     const validateAndNav = (
@@ -172,7 +170,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 };
 
 const useStyles = makeStylesEdt<{ isMobile: boolean; isIOS: boolean }>({ "name": { SurveyPageStep } })(
-    (theme, { isMobile, isIOS }) => ({
+    (theme, { isIOS }) => ({
         bottomPadding: {
             paddingBottom: "6rem",
         },

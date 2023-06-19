@@ -71,8 +71,6 @@ const PhoneTimePage = () => {
         cbHolder: callbackHolder,
         page: getOrchestratorPage(currentPage, context.surveyRootPage),
         componentSpecificProps: componentLunaticProps,
-        idSurvey: context.idSurvey,
-        dataSurvey: getData(context.idSurvey),
     };
 
     return (

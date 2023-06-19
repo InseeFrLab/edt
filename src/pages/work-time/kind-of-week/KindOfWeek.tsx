@@ -97,8 +97,6 @@ const KindOfWeekPage = () => {
                     page={getOrchestratorPage(currentPage)}
                     componentSpecificProps={specificProps}
                     overrideOptions={getKindOfWeekRef()}
-                    idSurvey={context.idSurvey}
-                    dataSurvey={getData(context.idSurvey)}
                 ></OrchestratorForStories>
             </FlexCenter>
         </SurveyPage>

@@ -4,10 +4,8 @@ import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
+import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import React from "react";
-import { useOutletContext } from "react-router";
-import { getData as getSurveyData } from "service/survey-service";
 import { isReviewer } from "service/user-service";
 
 const { ...edtComponents } = lunaticEDT;
@@ -35,8 +33,6 @@ export type OrchestratorProps = {
     iteration?: number;
     componentSpecificProps?: any;
     overrideOptions?: any;
-    idSurvey: string;
-    dataSurvey: LunaticData;
 };
 
 const renderLoading = () => {
@@ -48,17 +44,8 @@ const renderLoading = () => {
 };
 
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    const {
-        source,
-        data,
-        cbHolder,
-        page,
-        subPage,
-        iteration,
-        componentSpecificProps,
-        overrideOptions,
-        idSurvey,
-    } = props;
+    const { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
+        props;
     const { classes, cx } = useStyles();
 
     const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {

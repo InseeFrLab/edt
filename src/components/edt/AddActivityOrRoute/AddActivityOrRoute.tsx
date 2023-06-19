@@ -7,6 +7,7 @@ import { Default, Mobile } from "components/commons/Responsive/Responsive";
 import React from "react";
 import AddActivityOrRouteDefault from "./AddActivityOrRouteDefault";
 import AddActivityOrRouteMobile from "./AddActivityOrRouteMobile";
+
 interface AddActivityOrRouteProps {
     labelledBy: string;
     describedBy: string;
@@ -14,20 +15,13 @@ interface AddActivityOrRouteProps {
     onClickRoute(): void;
     handleClose(): void;
     open: boolean;
-    modifiable?: boolean;
 }
 
 const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
-    const {
-        labelledBy,
-        describedBy,
-        onClickActivity,
-        onClickRoute,
-        open,
-        handleClose,
-        modifiable = true,
-    } = props;
+    const { labelledBy, describedBy, onClickActivity, onClickRoute, open, handleClose } = props;
+
     const { classes } = useStyles();
+
     return (
         <>
             <Box
@@ -52,7 +46,6 @@ const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
                                 iconTitle={yellow_plus}
                                 iconActivity={activity}
                                 iconRoute={route}
-                                modifiable={modifiable}
                             />
                         </Default>
                         <Mobile>
@@ -64,7 +57,6 @@ const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
                                 iconTitle={yellow_plus}
                                 iconActivity={activity}
                                 iconRoute={route}
-                                modifiable={modifiable}
                             />
                         </Mobile>
                     </>
