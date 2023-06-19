@@ -7,7 +7,7 @@ import {
     makeStylesEdt,
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
-import { Box, Divider, IconButton, Snackbar, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Snackbar, Switch, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
 import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
@@ -49,19 +49,27 @@ import {
 } from "service/survey-activity-service";
 import {
     getPrintedFirstName,
+    getSource,
     getSurveyDate,
     getSurveyRights,
+    isDemoMode,
+    lockSurvey,
     saveData,
     setValue,
+    surveyLocked,
 } from "service/survey-service";
 import { v4 as uuidv4 } from "uuid";
-import { isMobile, isIOS } from "react-device-detect";
+import { isMobile, isIOS, isAndroid } from "react-device-detect";
+import { isReviewer } from "service/user-service";
+import { SourcesEnum } from "enumerations/SourcesEnum";
 
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const context: OrchestratorContext = useOutletContext();
-    const { classes, cx } = useStyles({ "isIOS": isIOS });
+    const source =
+        context?.source?.components != null ? context.source : getSource(SourcesEnum.ACTIVITY_SURVEY);
+
     const { t } = useTranslation();
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
@@ -78,24 +86,38 @@ const ActivityOrRoutePlannerPage = () => {
     const isItDesktop = isDesktop();
 
     let contextIteration = 0;
-    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(
-        t,
-        context.idSurvey,
-        context.source,
-    );
+    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, context.idSurvey, source);
     const [snackbarText, setSnackbarText] = React.useState<string | undefined>(undefined);
     const surveyDate = getSurveyDate(context.idSurvey) || "";
     const modifiable = !surveyReadOnly(context.rightsSurvey);
 
+    const { classes, cx } = useStyles({ "isIOS": isIOS, "modifiable": modifiable });
+
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const [skip, setSkip] = useState<boolean>(false);
     const [score, setScore] = React.useState<number | undefined>(undefined);
+
+    const [isAlertLockDisplayed, setIsAlertLockDisplayed] = useState<boolean>(false);
+    const [isLocked, setIsLocked] = useState<boolean>(surveyLocked(context.idSurvey));
 
     const alertLabels = {
         boldContent: t("page.alert-when-quit.activity-planner.alert-content-close-bold"),
         content: t("page.alert-when-quit.activity-planner.alert-content-close"),
         cancel: t("page.alert-when-quit.alert-cancel"),
         complete: t("page.alert-when-quit.alert-closed"),
+    };
+
+    const alertLockLabels = {
+        boldContent: isLocked
+            ? t("page.reviewer-home.lock-popup.boldContent-not-locked")
+            : t("page.reviewer-home.lock-popup.boldContent"),
+        content: isLocked
+            ? t("page.reviewer-home.lock-popup.content-not-locked")
+            : t("page.reviewer-home.lock-popup.content"),
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: isLocked
+            ? t("page.reviewer-home.not-lock-survey")
+            : t("page.reviewer-home.lock-survey"),
     };
 
     const isChildDisplayed = (path: string): boolean => {
@@ -107,7 +129,7 @@ const ActivityOrRoutePlannerPage = () => {
             location.pathname?.split("/")[3] == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER &&
             location.pathname?.split("/")[4] == null;
         if (isActivityPlanner) {
-            const act = getActivitiesOrRoutes(t, context.idSurvey, context.source);
+            const act = getActivitiesOrRoutes(t, context.idSurvey, source);
             if (act.overlaps.length > 0) {
                 setSnackbarText(
                     t("page.activity-planner.start-alert") +
@@ -126,7 +148,7 @@ const ActivityOrRoutePlannerPage = () => {
     useEffect(() => {
         //The loop have to have a default size in source but it's updated depending on the data array size
         setLoopSize(
-            context.source,
+            source,
             LoopEnum.ACTIVITY_OR_ROUTE,
             getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE),
         );
@@ -161,7 +183,7 @@ const ActivityOrRoutePlannerPage = () => {
                             EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
                             EdtRoutesNameEnum.ACTIVITY,
                         ),
-                        context.source,
+                        source,
                     ),
                 );
             });
@@ -172,7 +194,7 @@ const ActivityOrRoutePlannerPage = () => {
 
     const onAddActivityOrRoute = (isRouteBool: boolean) => {
         const loopSize = setLoopSize(
-            context.source,
+            source,
             LoopEnum.ACTIVITY_OR_ROUTE,
             getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
@@ -194,7 +216,7 @@ const ActivityOrRoutePlannerPage = () => {
         endTime: string | undefined,
     ) => {
         const loopSize = setLoopSize(
-            context.source,
+            source,
             LoopEnum.ACTIVITY_OR_ROUTE,
             getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
@@ -255,8 +277,8 @@ const ActivityOrRoutePlannerPage = () => {
             getCurrentNavigatePath(
                 context.idSurvey,
                 context.surveyRootPage,
-                context.source.maxPage,
-                context.source,
+                source.maxPage,
+                source,
                 LoopEnum.ACTIVITY_OR_ROUTE,
                 iteration,
             ),
@@ -357,12 +379,23 @@ const ActivityOrRoutePlannerPage = () => {
 
     const heightClass = isPwa() ? classes.fullHeight : classes.fullHeightNav;
 
+    const lock = useCallback(() => {
+        lockSurvey(context.idSurvey).then((locked: any) => {
+            setIsLocked(locked);
+            setIsAlertLockDisplayed(false);
+        });
+    }, []);
+
+    const lockActivity = useCallback(() => setIsAlertLockDisplayed(true), []);
+
+    const isReviewerMode = isReviewer() && !isDemoMode();
+
     return (
         <>
             <Box
                 className={cx(
                     classes.surveyPageBox,
-                    !isPwa() && isMobile ? classes.surveyPageBoxTablet : "",
+                    !isPwa() && isMobile && (isIOS || isAndroid) ? classes.surveyPageBoxTablet : "",
                 )}
             >
                 {(isItDesktop || !isSubchildDisplayed) && (
@@ -414,18 +447,71 @@ const ActivityOrRoutePlannerPage = () => {
                                                 icon={errorIcon}
                                                 errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
                                             ></Alert>
-                                            <Box className={classes.infoBox}>
-                                                {activitiesRoutesOrGaps.length !== 0 && (
-                                                    <>
-                                                        <Typography className={classes.label}>
-                                                            {t("page.activity-planner.activity-for-day")}
-                                                        </Typography>
-                                                        <TooltipInfo
-                                                            infoLabels={infoLabels}
-                                                            titleLabels={titleLabels}
-                                                        />
-                                                    </>
-                                                )}
+                                            <Box
+                                                className={
+                                                    isReviewerMode && activitiesRoutesOrGaps.length !== 0
+                                                        ? classes.infoReviewerBox
+                                                        : classes.infoBox
+                                                }
+                                            >
+                                                {activitiesRoutesOrGaps.length !== 0 &&
+                                                    (isReviewerMode ? (
+                                                        <Box className={classes.headerActivityLockBox}>
+                                                            <>
+                                                                <Alert
+                                                                    isAlertDisplayed={
+                                                                        isAlertLockDisplayed
+                                                                    }
+                                                                    onCompleteCallBack={lock}
+                                                                    onCancelCallBack={displayAlert(
+                                                                        setIsAlertLockDisplayed,
+                                                                        false,
+                                                                    )}
+                                                                    labels={alertLockLabels}
+                                                                    icon={errorIcon}
+                                                                    errorIconAlt={t(
+                                                                        "page.alert-when-quit.alt-alert-icon",
+                                                                    )}
+                                                                ></Alert>
+                                                            </>
+                                                            <Box className={classes.headerActivityBox}>
+                                                                <Typography className={classes.label}>
+                                                                    {t(
+                                                                        "page.activity-planner.activity-for-day",
+                                                                    )}
+                                                                </Typography>
+                                                                <TooltipInfo
+                                                                    infoLabels={infoLabels}
+                                                                    titleLabels={titleLabels}
+                                                                />
+                                                            </Box>
+                                                            <Box className={classes.headerLockBox}>
+                                                                <Typography
+                                                                    className={classes.labelLock}
+                                                                >
+                                                                    {t("page.reviewer-home.lock-survey")}
+                                                                </Typography>
+
+                                                                <Switch
+                                                                    checked={isLocked}
+                                                                    onChange={lockActivity}
+                                                                    disabled={!modifiable}
+                                                                />
+                                                            </Box>
+                                                        </Box>
+                                                    ) : (
+                                                        <>
+                                                            <Typography className={classes.label}>
+                                                                {t(
+                                                                    "page.activity-planner.activity-for-day",
+                                                                )}
+                                                            </Typography>
+                                                            <TooltipInfo
+                                                                infoLabels={infoLabels}
+                                                                titleLabels={titleLabels}
+                                                            />
+                                                        </>
+                                                    ))}
                                                 {activitiesRoutesOrGaps.length === 0 && (
                                                     <>
                                                         <Typography className={classes.label}>
@@ -480,7 +566,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                             )}
                                                             onDelete={onDeleteActivity(
                                                                 context.idSurvey,
-                                                                context.source,
+                                                                source,
                                                                 activity.iteration ?? 0,
                                                             )}
                                                             tabIndex={index + 51}
@@ -529,7 +615,7 @@ const ActivityOrRoutePlannerPage = () => {
                     {isItDesktop && isSubchildDisplayed && <Divider orientation="vertical" light />}
                     <Outlet
                         context={{
-                            source: context.source,
+                            source: source,
                             data: context.data,
                             idSurvey: context.idSurvey,
                             surveyRootPage: context.surveyRootPage,
@@ -544,104 +630,124 @@ const ActivityOrRoutePlannerPage = () => {
     );
 };
 
-const useStyles = makeStylesEdt<{ isIOS: boolean }>({ "name": { ActivityOrRoutePlannerPage } })(
-    (theme, { isIOS }) => ({
-        snackbar: {
-            bottom: "90px !important",
-            "& .MuiSnackbarContent-root": {
-                backgroundColor: theme.palette.error.light,
-                color: theme.variables.alertActivity,
-            },
+const useStyles = makeStylesEdt<{ isIOS: boolean; modifiable: boolean }>({
+    "name": { ActivityOrRoutePlannerPage },
+})((theme, { isIOS, modifiable }) => ({
+    snackbar: {
+        bottom: "90px !important",
+        "& .MuiSnackbarContent-root": {
+            backgroundColor: theme.palette.error.light,
+            color: theme.variables.alertActivity,
         },
-        infoBox: {
-            width: "350px",
-            padding: "1rem 0.25rem 0.5rem 2rem",
-            marginBottom: "1rem",
-        },
-        label: {
-            fontSize: "14px",
-        },
-        date: {
-            fontSize: "18px",
-            fontWeight: "bold",
-        },
-        surveyPageBox: {
-            flexGrow: "1",
-            display: "flex",
-            alignItems: "flex-start",
-            overflow: "auto",
-            height: "100vh",
-            maxHeight: "100vh",
-        },
-        surveyPageBoxTablet: {
-            height: "100vh",
-            maxHeight: isIOS ? "87vh" : "94vh",
-        },
-        outletBoxDesktop: {
-            flexGrow: "12",
-            display: "flex",
-            height: "100%",
-            width: "100%",
-        },
-        outletBoxMobileTablet: {
-            flexGrow: "1",
-            display: "flex",
-            height: "100%",
-        },
-        innerContentBox: {
-            border: "1px solid transparent",
-            borderRadius: "20px",
-            backgroundColor: theme.palette.background.default,
-            flexGrow: "1",
-            display: "flex",
-            padding: "1rem 0",
-        },
-        activityCardsContainer: {
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, max-content))",
-            gridGap: "1rem",
-            justifyContent: "center",
-            padding: "initial",
-            marginBottom: "6rem",
-        },
-        innerContentScroll: {
-            overflowY: "auto",
-            flexGrow: "1",
-            paddingBottom: "1rem",
-        },
-        outerContentBox: {
-            padding: "0.5rem",
-            flexGrow: "1",
-            display: "flex",
-            backgroundColor: theme.variables.white,
-            height: "100%",
-        },
-        innerSurveyPageBox: {
-            flexGrow: "1",
-            height: "100%",
-            display: "flex",
-        },
-        fullHeight: {
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            flexGrow: "1",
-        },
-        fullHeightNav: {
-            display: "flex",
-            justifyContent: "center",
-            flexGrow: "1",
-        },
-        noActivityInfo: {
-            marginTop: "1rem",
-        },
-        h1: {
-            fontSize: "18px",
-            margin: 0,
-            lineHeight: "1.5rem",
-            fontWeight: "bold",
-        },
-    }),
-);
+    },
+    infoBox: {
+        width: "350px",
+        padding: "1rem 0.25rem 0.5rem 2rem",
+        marginBottom: "1rem",
+    },
+    infoReviewerBox: {
+        width: "100%",
+        padding: "1rem 0.25rem 0.5rem 2rem",
+        marginBottom: "1rem",
+    },
+    label: {
+        fontSize: "14px",
+    },
+    labelLock: {
+        color: !modifiable ? "rgba(0, 0, 0, 0.38)" : "",
+    },
+    date: {
+        fontSize: "18px",
+        fontWeight: "bold",
+    },
+    surveyPageBox: {
+        flexGrow: "1",
+        display: "flex",
+        alignItems: "flex-start",
+        overflow: "auto",
+        height: "100vh",
+        maxHeight: "100vh",
+    },
+    surveyPageBoxTablet: {
+        height: "100vh",
+        maxHeight: isIOS ? "87vh" : "94vh",
+    },
+    outletBoxDesktop: {
+        flexGrow: "12",
+        display: "flex",
+        height: "100%",
+        width: "100%",
+    },
+    outletBoxMobileTablet: {
+        flexGrow: "1",
+        display: "flex",
+        height: "100%",
+    },
+    innerContentBox: {
+        border: "1px solid transparent",
+        borderRadius: "20px",
+        backgroundColor: theme.palette.background.default,
+        flexGrow: "1",
+        display: "flex",
+        padding: "1rem 0",
+    },
+    activityCardsContainer: {
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(300px, max-content))",
+        gridGap: "1rem",
+        justifyContent: "center",
+        padding: "initial",
+        marginBottom: "6rem",
+    },
+    innerContentScroll: {
+        overflowY: "auto",
+        flexGrow: "1",
+        paddingBottom: "1rem",
+    },
+    outerContentBox: {
+        padding: "0.5rem",
+        flexGrow: "1",
+        display: "flex",
+        backgroundColor: theme.variables.white,
+        height: "100%",
+    },
+    innerSurveyPageBox: {
+        flexGrow: "1",
+        height: "100%",
+        display: "flex",
+    },
+    fullHeight: {
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        flexGrow: "1",
+    },
+    fullHeightNav: {
+        display: "flex",
+        justifyContent: "center",
+        flexGrow: "1",
+    },
+    noActivityInfo: {
+        marginTop: "1rem",
+    },
+    h1: {
+        fontSize: "18px",
+        margin: 0,
+        lineHeight: "1.5rem",
+        fontWeight: "bold",
+    },
+    headerActivityLockBox: {
+        display: "flex",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+    },
+    headerActivityBox: {
+        flexDirection: "column",
+    },
+    headerLockBox: {
+        display: "flex",
+        alignItems: "center",
+    },
+}));
 
 export default ActivityOrRoutePlannerPage;

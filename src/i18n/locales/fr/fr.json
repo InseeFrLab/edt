@@ -215,6 +215,9 @@
             "welcome": "Bienvenue dans votre espace",
             "reviewer": "ENQUÊTEUR",
             "validate-all-empties-surveys": "Valider les carnets vides",
+            "validate-survey": "Valider le carnet",
+            "lock-survey": "Verrouiller le carnet",
+            "not-lock-survey": "Devérrouiller le carnet",
             "status-survey": {
                 "locked": "Verrouillé",
                 "validated": "Déjà validé",
@@ -223,6 +226,16 @@
             "navigation": {
                 "surveys": "Accéder aux enquêtes",
                 "demo": "Démonstration"
+            },
+            "lock-popup": {
+                "boldContent": "Êtes-vous sûr de vouloir verrouiller le carnet ?",
+                "boldContent-not-locked": "Êtes-vous sûr de vouloir déverrouiller le carnet ?",
+                "content": "En cochant cette option, l'enquêté ne pourra pas modifier le carnet.",
+                "content-not-locked": "En cochant cette option, l'enquêté pourra modifier le carnet."
+            },
+            "validate-popup": {
+                "boldContent": "Êtes-vous sûr de vouloir valider le carnet ?",
+                "content": "En cochant cette option, vous ne pourrez plus modifier le carnet."
             }
         },
         "breadcrumbs-reviewer": {

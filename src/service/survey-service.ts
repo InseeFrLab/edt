@@ -518,12 +518,12 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
         datas.set(idSurvey, data);
         if (isChange) {
             if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
-                return remotePutSurveyDataReviewer(idSurvey, getSurveyStateData(data, idSurvey), data)
+                remotePutSurveyDataReviewer(idSurvey, getSurveyStateData(data, idSurvey), data)
                     .then(surveyData => {
-                        return setLocalDatabase(surveyData, data, idSurvey);
+                        setLocalDatabase(surveyData, data, idSurvey);
                     })
                     .catch(() => {
-                        return Promise.reject({});
+                        //return Promise.reject({});
                         //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
                     });
             }
@@ -533,34 +533,27 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                     stateData: getSurveyStateData(data, idSurvey),
                     data: data,
                 };
-                return remotePutSurveyData(idSurvey, surveyData)
+                remotePutSurveyData(idSurvey, surveyData)
                     .then(surveyData => {
-                        return setLocalDatabase(surveyData, data, idSurvey);
+                        setLocalDatabase(surveyData, data, idSurvey);
                     })
                     .catch(() => {
-                        return Promise.reject();
+                        //return Promise.reject();
                         //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
                     });
-            } else {
-                return Promise.reject({});
             }
-        } else {
-            return new Promise(resolve => resolve(data));
         }
+        return data;
     });
 };
 
-const setLocalDatabase = (
-    surveyData: SurveyData,
-    data: LunaticData,
-    idSurvey: string,
-): Promise<LunaticData> => {
+const setLocalDatabase = (surveyData: SurveyData, data: LunaticData, idSurvey: string) => {
     data.lastRemoteSaveDate = surveyData.stateData?.date;
     //set the last remote save date inside local database to be able to compare it later with remote data
-    return lunaticDatabase.save(idSurvey, data).then(() => {
+    lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
         oldDatas.set(idSurvey, Object.assign({}, data));
-        return data;
+        //return data;
     });
 };
 
@@ -1048,6 +1041,33 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
     return stats;
 };
 
+const lockSurvey = (idSurvey: string) => {
+    const promisesToWait: Promise<any>[] = [];
+    const data = getData(idSurvey || "");
+    const isLocked = surveyLocked(idSurvey);
+    const variable: Collected = {
+        COLLECTED: !isLocked,
+        EDITED: !isLocked,
+        FORCED: null,
+        INPUTED: null,
+        PREVIOUS: null,
+    };
+
+    if (data.COLLECTED && data.COLLECTED[FieldNameEnum.ISLOCKED]) {
+        data.COLLECTED[FieldNameEnum.ISLOCKED] = variable;
+        promisesToWait.push(saveData(idSurvey, data));
+    } else if (data.COLLECTED) {
+        data.COLLECTED.ISLOCKED = variable;
+        promisesToWait.push(saveData(idSurvey, data));
+    }
+
+    return new Promise(resolve => {
+        Promise.all(promisesToWait).then(() => {
+            resolve(!isLocked);
+        });
+    });
+};
+
 const lockAllSurveys = (idHousehold: string) => {
     const idSurveys = getSurveysIdsForHousehold(idHousehold);
     const promisesToWait: Promise<any>[] = [];
@@ -1072,6 +1092,33 @@ const lockAllSurveys = (idHousehold: string) => {
             }
         }
     });
+
+    return new Promise(resolve => {
+        Promise.all(promisesToWait).then(() => {
+            resolve(true);
+        });
+    });
+};
+
+const validateSurvey = (idSurvey: string) => {
+    const promisesToWait: Promise<any>[] = [];
+    const data = getData(idSurvey || "");
+
+    const variable: Collected = {
+        COLLECTED: true,
+        EDITED: true,
+        FORCED: null,
+        INPUTED: null,
+        PREVIOUS: null,
+    };
+
+    if (data.COLLECTED && data.COLLECTED[FieldNameEnum.ISVALIDATED]) {
+        data.COLLECTED[FieldNameEnum.ISVALIDATED] = variable;
+        promisesToWait.push(saveData(idSurvey, data));
+    } else if (data.COLLECTED) {
+        data.COLLECTED.ISVALIDATED = variable;
+        promisesToWait.push(saveData(idSurvey, data));
+    }
 
     return new Promise(resolve => {
         Promise.all(promisesToWait).then(() => {
@@ -1179,4 +1226,8 @@ export {
     userDatasMap,
     nameSurveyMap,
     getSurveyRights,
+    surveyLocked,
+    surveyValidated,
+    lockSurvey,
+    validateSurvey,
 };

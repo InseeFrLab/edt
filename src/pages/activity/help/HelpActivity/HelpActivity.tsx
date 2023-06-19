@@ -31,7 +31,7 @@ import { getLanguage } from "service/referentiel-service";
 import { isDesktop, isMobile, isPwa, isTablet } from "service/responsive";
 import { mockActivitiesRoutesOrGaps } from "service/survey-activity-service";
 import { v4 as uuidv4 } from "uuid";
-import { isMobile as isMobileNav, isBrowser } from "react-device-detect";
+import { isMobile as isMobileNav, isBrowser, isIOS, isAndroid } from "react-device-detect";
 
 const HelpActivity = () => {
     const navigate = useNavigate();
@@ -216,7 +216,11 @@ const HelpActivity = () => {
         <Box className={classes.root}>
             {renderHelp()}
             <Box
-                className={!isPwa() && isMobileNav ? classes.surveyPageBoxTablet : classes.surveyPageBox}
+                className={
+                    !isPwa() && isMobileNav && (isIOS || isAndroid)
+                        ? classes.surveyPageBoxTablet
+                        : classes.surveyPageBox
+                }
             >
                 {(isItDesktop || !isSubchildDisplayed) && (
                     <Box className={classes.innerSurveyPageBox}>

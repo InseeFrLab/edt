@@ -1,12 +1,17 @@
 import {
+    Alert,
     formateDateToFrenchFormat,
     generateDateFromStringInput,
     Info,
+    InfoProps,
     makeStylesEdt,
+    TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Button, Divider, Switch, Typography } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import InfoAlertIcon from "assets/illustration/info-alert.svg";
+import downloadIcon from "assets/illustration/mui-icon/download.svg";
+import checkIcon from "assets/illustration/mui-icon/check.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
@@ -20,18 +25,20 @@ import { LoopEnum } from "enumerations/LoopEnum";
 import { ActivitiesSummaryExportData } from "interface/entity/ActivitiesSummary";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { getLocalStorageValue } from "service/local-storage-service";
 import { getLoopSize, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
+    getNavigatePath,
     getOrchestratorPage,
     navToActivityOrPlannerOrSummary,
     navToEditActivity,
     navToHelp,
     navToHome,
+    saveAndNav,
     setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
@@ -47,17 +54,26 @@ import {
     getPrintedFirstName,
     getSurveyDate,
     getValue,
+    isDemoMode,
+    lockSurvey,
     saveData,
     setValue,
+    surveyLocked,
+    surveyValidated,
+    validateSurvey,
 } from "service/survey-service";
+import { isReviewer } from "service/user-service";
 import ActivitiesSummaryExportTemplate from "template/summary-export/ActivitiesSummaryExportTemplate";
 import { v4 as uuidv4 } from "uuid";
+import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
+import InfoIcon from "assets/illustration/info.svg";
+import { default as errorIcon } from "assets/illustration/error/activity.svg";
 
 const ActivitySummaryPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
     setEnviro(context, useNavigate(), callbackHolder);
-    const { classes, cx } = useStyles();
+
     const { t } = useTranslation();
     const [score, setScore] = React.useState<number | undefined>(undefined);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
@@ -84,7 +100,9 @@ const ActivitySummaryPage = () => {
         userActivitiesSummary: userActivitiesSummary,
         userActivitiesCharacteristics: userActivitiesCharacteristics,
     };
+
     const modifiable = !surveyReadOnly(context.rightsSurvey);
+    const { classes, cx } = useStyles({ "modifiable": modifiable });
 
     useEffect(() => {
         setScore(getScore(context.idSurvey, t));
@@ -191,6 +209,77 @@ const ActivitySummaryPage = () => {
         );
     }, []);
 
+    const displayAlert = useCallback(
+        (setDisplayAlert: React.Dispatch<React.SetStateAction<boolean>>, display: boolean) => () =>
+            setDisplayAlert(display),
+        [],
+    );
+
+    const infoLabels: InfoProps = {
+        boldText: t("page.activity-planner.info"),
+        infoIcon: InfoIcon,
+        infoIconAlt: t("accessibility.asset.info.info-alt"),
+        infoIconTooltip: InfoTooltipIcon,
+        infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
+        border: true,
+    };
+
+    const titleLabels = {
+        boldTitle: formateDateToFrenchFormat(generateDateFromStringInput(surveyDate), getLanguage()),
+        typeTitle: "h1",
+    };
+
+    const [isAlertLockDisplayed, setIsAlertLockDisplayed] = useState<boolean>(false);
+    const [isAlertValidateDisplayed, setIsAlertValidateDisplayed] = useState<boolean>(false);
+    const [isValidated, setIsValidated] = useState<boolean>(surveyValidated(context.idSurvey));
+    const [isLocked, setIsLocked] = useState<boolean>(surveyLocked(context.idSurvey));
+
+    const alertLockLabels = {
+        boldContent: isLocked
+            ? t("page.reviewer-home.lock-popup.boldContent-not-locked")
+            : t("page.reviewer-home.lock-popup.boldContent"),
+        content: isLocked
+            ? t("page.reviewer-home.lock-popup.content-not-locked")
+            : t("page.reviewer-home.lock-popup.content"),
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: isLocked
+            ? t("page.reviewer-home.not-lock-survey")
+            : t("page.reviewer-home.lock-survey"),
+    };
+
+    const lock = useCallback(() => {
+        lockSurvey(context.idSurvey).then((locked: any) => {
+            setIsLocked(locked);
+            setIsAlertLockDisplayed(false);
+        });
+    }, []);
+
+    const lockActivity = useCallback(() => setIsAlertLockDisplayed(true), []);
+
+    const alertValidateLabels = {
+        boldContent: t("page.reviewer-home.validate-popup.boldContent"),
+        content: t("page.reviewer-home.validate-popup.content"),
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: t("page.reviewer-home.validate-survey"),
+    };
+
+    const validate = useCallback(() => {
+        validateSurvey(context.idSurvey).then(() => {
+            setIsAlertValidateDisplayed(false);
+            back();
+        });
+    }, []);
+
+    const openPopup = useCallback(() => {
+        setIsAlertValidateDisplayed(true);
+    }, []);
+
+    const back = useCallback(() => {
+        saveAndNav();
+    }, []);
+
+    const isReviewerMode = isReviewer() && !isDemoMode();
+
     return (
         <SurveyPage
             onPrevious={navToHome}
@@ -203,16 +292,67 @@ const ActivitySummaryPage = () => {
             modifiable={modifiable}
         >
             <FlexCenter>
-                <Box className={classes.infoBox}>
-                    <Typography className={classes.label}>
-                        {t("page.activity-planner.activity-for-day")}
-                    </Typography>
-                    <h1 className={cx(classes.date, classes.h1)}>
-                        {formateDateToFrenchFormat(
-                            generateDateFromStringInput(surveyDate),
-                            getLanguage(),
-                        )}
-                    </h1>
+                <Box
+                    className={
+                        isReviewerMode && activitiesRoutesOrGaps.length !== 0
+                            ? classes.infoReviewerBox
+                            : classes.infoBox
+                    }
+                >
+                    {activitiesRoutesOrGaps.length !== 0 &&
+                        (isReviewerMode ? (
+                            <Box className={classes.headerActivityLockBox}>
+                                <>
+                                    <Alert
+                                        isAlertDisplayed={isAlertLockDisplayed}
+                                        onCompleteCallBack={lock}
+                                        onCancelCallBack={displayAlert(setIsAlertLockDisplayed, false)}
+                                        labels={alertLockLabels}
+                                        icon={errorIcon}
+                                        errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                                    ></Alert>
+                                </>
+                                <Box className={classes.headerActivityBox}>
+                                    <Typography className={classes.label}>
+                                        {t("page.activity-planner.activity-for-day")}
+                                    </Typography>
+                                    <TooltipInfo infoLabels={infoLabels} titleLabels={titleLabels} />
+                                </Box>
+                                <Box className={classes.headerLockBox}>
+                                    <Typography className={classes.labelLock}>
+                                        {t("page.reviewer-home.lock-survey")}
+                                    </Typography>
+
+                                    <Switch
+                                        checked={isLocked}
+                                        onChange={lockActivity}
+                                        disabled={!modifiable}
+                                    />
+                                </Box>
+                            </Box>
+                        ) : (
+                            <>
+                                <Typography className={classes.label}>
+                                    {t("page.activity-planner.activity-for-day")}
+                                </Typography>
+                                <TooltipInfo infoLabels={infoLabels} titleLabels={titleLabels} />
+                            </>
+                        ))}
+                    {activitiesRoutesOrGaps.length === 0 && (
+                        <>
+                            <Typography className={classes.label}>
+                                {t("page.activity-planner.activity-for-day")}
+                            </Typography>
+                            <Typography className={classes.date}>
+                                <h1 className={classes.h1}>
+                                    {formateDateToFrenchFormat(
+                                        generateDateFromStringInput(surveyDate),
+                                        getLanguage(),
+                                    )}
+                                </h1>
+                            </Typography>
+                        </>
+                    )}
                 </Box>
             </FlexCenter>
             <Box className={classes.activityCardsContainer}>
@@ -265,22 +405,80 @@ const ActivitySummaryPage = () => {
                 <DaySummary userActivitiesSummary={userActivitiesSummary} />
             </Box>
             <FlexCenter className={classes.download}>
-                <Button variant="contained" className={classes.downloadButton}>
-                    <PDFDownloadLink
-                        className={classes.downloadLink}
-                        document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
-                        fileName={
-                            t("export.activities-summary.file-name") +
-                            getValue(context.idSurvey, FieldNameEnum.FIRSTNAME) +
-                            "_" +
-                            getValue(context.idSurvey, FieldNameEnum.SURVEYDATE) +
-                            ".pdf"
-                        }
-                    >
-                        {() => t("page.activity-summary.download-pdf")}
-                    </PDFDownloadLink>
-                </Button>
+                {isReviewerMode ? (
+                    <>
+                        <Alert
+                            isAlertDisplayed={isAlertValidateDisplayed}
+                            onCompleteCallBack={validate}
+                            onCancelCallBack={displayAlert(setIsAlertValidateDisplayed, false)}
+                            labels={alertValidateLabels}
+                            icon={errorIcon}
+                            errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                        ></Alert>
+                        <Button variant="outlined" onClick={back} className={classes.buttonNav}>
+                            {t("common.navigation.back")}
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            className={classes.buttonNav}
+                            startIcon={
+                                <img
+                                    src={downloadIcon}
+                                    alt={t("accessibility.asset.mui-icon.download")}
+                                    className={classes.midSizeButton}
+                                />
+                            }
+                        >
+                            <PDFDownloadLink
+                                className={classes.downloadLinkReviewer}
+                                document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
+                                fileName={
+                                    t("export.activities-summary.file-name") +
+                                    getValue(context.idSurvey, FieldNameEnum.FIRSTNAME) +
+                                    "_" +
+                                    getValue(context.idSurvey, FieldNameEnum.SURVEYDATE) +
+                                    ".pdf"
+                                }
+                            >
+                                {() => t("page.activity-summary.download-pdf")}
+                            </PDFDownloadLink>
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={openPopup}
+                            disabled={!modifiable}
+                            startIcon={
+                                <img
+                                    src={checkIcon}
+                                    alt={t("accessibility.asset.mui-icon.check")}
+                                    className={classes.midSizeButton}
+                                />
+                            }
+                        >
+                            {t("page.reviewer-home.validate-survey")}
+                        </Button>
+                    </>
+                ) : (
+                    <>
+                        <Button variant="contained" className={classes.downloadButton}>
+                            <PDFDownloadLink
+                                className={classes.downloadLink}
+                                document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
+                                fileName={
+                                    t("export.activities-summary.file-name") +
+                                    getValue(context.idSurvey, FieldNameEnum.FIRSTNAME) +
+                                    "_" +
+                                    getValue(context.idSurvey, FieldNameEnum.SURVEYDATE) +
+                                    ".pdf"
+                                }
+                            >
+                                {() => t("page.activity-summary.download-pdf")}
+                            </PDFDownloadLink>
+                        </Button>
+                    </>
+                )}
             </FlexCenter>
+
             <AddActivityOrRoute
                 labelledBy={""}
                 describedBy={""}
@@ -293,58 +491,91 @@ const ActivitySummaryPage = () => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { ActivitySummaryPage } })(theme => ({
-    infoBox: {
-        width: "350px",
-        padding: "1rem 0.25rem 0.5rem 1rem",
-        marginBottom: "1rem",
-    },
-    tooltipBox: {
-        color: theme.palette.error.main + " !important",
-    },
-    label: {
-        fontSize: "14px",
-    },
-    date: {
-        fontSize: "18px",
-        fontWeight: "bold",
-    },
-    addActivityOrRouteButtonBox: {
-        marginBottom: "1rem",
-    },
-    activityCardsContainer: {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(300px, max-content))",
-        gridGap: "1rem",
-        justifyContent: "center",
-        padding: "initial",
-        marginBottom: "1rem",
-    },
-    summaryBox: {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(300px, max-content))",
-        gridGap: "1rem",
-        justifyContent: "center",
-        padding: "initial",
-        marginBottom: "1rem",
-    },
-    download: {
-        marginBottom: "6rem",
-    },
-    downloadButton: {
-        padding: 0,
-    },
-    downloadLink: {
-        textDecoration: "none",
-        color: theme.variables.white,
-        padding: "6px 6px",
-    },
-    h1: {
-        fontSize: "18px",
-        margin: 0,
-        lineHeight: "1.5rem",
-        fontWeight: "bold",
-    },
-}));
+const useStyles = makeStylesEdt<{ modifiable: boolean }>({ "name": { ActivitySummaryPage } })(
+    (theme, { modifiable }) => ({
+        infoBox: {
+            width: "350px",
+            padding: "1rem 0.25rem 0.5rem 1rem",
+            marginBottom: "1rem",
+        },
+        infoReviewerBox: {
+            width: "100vh",
+            padding: "1rem 0.25rem 0.5rem 2rem",
+            marginBottom: "1rem",
+        },
+        tooltipBox: {
+            color: theme.palette.error.main + " !important",
+        },
+        label: {
+            fontSize: "14px",
+        },
+        labelLock: {
+            color: !modifiable ? "rgba(0, 0, 0, 0.38)" : "",
+        },
+        date: {
+            fontSize: "18px",
+            fontWeight: "bold",
+        },
+        addActivityOrRouteButtonBox: {
+            marginBottom: "1rem",
+        },
+        activityCardsContainer: {
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, max-content))",
+            gridGap: "1rem",
+            justifyContent: "center",
+            padding: "initial",
+            marginBottom: "1rem",
+        },
+        summaryBox: {
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, max-content))",
+            gridGap: "1rem",
+            justifyContent: "center",
+            padding: "initial",
+            marginBottom: "1rem",
+        },
+        download: {
+            marginBottom: "6rem",
+        },
+        downloadButton: {
+            padding: 0,
+        },
+        downloadLink: {
+            textDecoration: "none",
+            color: theme.variables.white,
+            padding: "6px 6px",
+        },
+        downloadLinkReviewer: {
+            textDecoration: "none",
+            color: theme.palette.primary.main,
+            padding: "6px 6px",
+        },
+        h1: {
+            fontSize: "18px",
+            margin: 0,
+            lineHeight: "1.5rem",
+            fontWeight: "bold",
+        },
+        headerActivityLockBox: {
+            display: "flex",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+        },
+        headerActivityBox: {
+            flexDirection: "column",
+        },
+        headerLockBox: {
+            display: "flex",
+            alignItems: "center",
+        },
+        buttonNav: {
+            marginRight: "1rem",
+        },
+        midSizeButton: {
+            height: "24px",
+        },
+    }),
+);
 
 export default ActivitySummaryPage;

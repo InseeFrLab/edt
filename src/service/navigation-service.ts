@@ -88,7 +88,6 @@ const getFullNavigatePath = (page: EdtRoutesNameEnum, parentPage?: EdtRoutesName
     } else if (targetPage) {
         return getNavigatePath(page);
     } else {
-        console.log("Error targetpage");
         return getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON);
     }
 };
@@ -110,7 +109,6 @@ const getPathOfPage = (
     } else if (page) {
         return getParameterizedNavigatePath(rootPage, idSurvey) + getNavigatePath(page);
     } else {
-        console.log("Error page");
         return getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON);
     }
 };

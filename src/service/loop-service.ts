@@ -655,7 +655,7 @@ const getLoopSize = (idSurvey: string, currentLoop: LoopEnum, sourceModel?: Luna
 
 const setLoopSize = (source: LunaticModel, currentLoop: LoopEnum, size: number): number => {
     const initialLoopPage = getLoopInitialPage(currentLoop);
-    const loop = source.components.find(composant => composant.page === initialLoopPage);
+    const loop = source?.components?.find(composant => composant.page === initialLoopPage);
     if (loop && loop.iterations) {
         loop.iterations.value = size.toString();
         return +loop.iterations.value;

@@ -79,7 +79,7 @@ const WeeklyPlannerPage = () => {
         workIconAlt: t("accessibility.asset.mui-icon.work"),
         modifiable: !surveyReadOnly(context.rightsSurvey),
     };
-    console.log(context.rightsSurvey);
+
     const validateAndNav = (): void => {
         if (displayDayOverview) {
             save();
@@ -92,7 +92,7 @@ const WeeklyPlannerPage = () => {
     const onEdit = () => {
         navFullPath(EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.WORK_TIME);
     };
-    console.log(context.rightsSurvey);
+
     return (
         <>
             <SurveyPage

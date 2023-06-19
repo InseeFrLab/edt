@@ -37,9 +37,6 @@ const ActivityPage = () => {
     const maxTabsPerRow = isTablet() ? 3 : 4;
 
     useEffect(() => {
-        window.onpopstate = () => {
-            navigate("/");
-        };
         if (idSurvey && source) {
             navToActivityOrPlannerOrSummary(idSurvey, source.maxPage, navigate, source);
         } else {
@@ -51,7 +48,6 @@ const ActivityPage = () => {
     }, []);
 
     const handleTabSelecterChange = useCallback((tabData: TabData) => {
-        console.log("handleTabSelecterChange");
         if (tabData.isActivitySurvey) {
             idSurvey = tabData.idSurvey;
             data = getData(idSurvey);
