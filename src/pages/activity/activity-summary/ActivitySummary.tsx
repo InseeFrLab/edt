@@ -32,6 +32,7 @@ import { getLocalStorageValue } from "service/local-storage-service";
 import { getLoopSize, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
+    getNavigatePath,
     getOrchestratorPage,
     navToActivityOrPlannerOrSummary,
     navToEditActivity,
@@ -53,6 +54,7 @@ import {
     getPrintedFirstName,
     getSurveyDate,
     getValue,
+    isDemoMode,
     lockSurvey,
     saveData,
     setValue,
@@ -264,6 +266,7 @@ const ActivitySummaryPage = () => {
     const validate = useCallback(() => {
         validateSurvey(context.idSurvey).then(() => {
             setIsAlertValidateDisplayed(false);
+            navBack();
         });
     }, []);
 
@@ -274,6 +277,12 @@ const ActivitySummaryPage = () => {
     const back = useCallback(() => {
         saveAndNav();
     }, []);
+
+    const navBack = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_SURVEYS_OVERVIEW));
+    }, []);
+
+    const isReviewerMode = isReviewer() && !isDemoMode();
 
     return (
         <SurveyPage
@@ -289,13 +298,13 @@ const ActivitySummaryPage = () => {
             <FlexCenter>
                 <Box
                     className={
-                        isReviewer() && activitiesRoutesOrGaps.length !== 0
+                        isReviewerMode && activitiesRoutesOrGaps.length !== 0
                             ? classes.infoReviewerBox
                             : classes.infoBox
                     }
                 >
                     {activitiesRoutesOrGaps.length !== 0 &&
-                        (isReviewer() ? (
+                        (isReviewerMode ? (
                             <Box className={classes.headerActivityLockBox}>
                                 <>
                                     <Alert
@@ -400,7 +409,7 @@ const ActivitySummaryPage = () => {
                 <DaySummary userActivitiesSummary={userActivitiesSummary} />
             </Box>
             <FlexCenter className={classes.download}>
-                {isReviewer() ? (
+                {isReviewerMode ? (
                     <>
                         <Alert
                             isAlertDisplayed={isAlertValidateDisplayed}

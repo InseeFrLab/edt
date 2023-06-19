@@ -52,6 +52,7 @@ import {
     getSource,
     getSurveyDate,
     getSurveyRights,
+    isDemoMode,
     lockSurvey,
     saveData,
     setValue,
@@ -387,6 +388,8 @@ const ActivityOrRoutePlannerPage = () => {
 
     const lockActivity = useCallback(() => setIsAlertLockDisplayed(true), []);
 
+    const isReviewerMode = isReviewer() && !isDemoMode();
+
     return (
         <>
             <Box
@@ -446,13 +449,13 @@ const ActivityOrRoutePlannerPage = () => {
                                             ></Alert>
                                             <Box
                                                 className={
-                                                    isReviewer() && activitiesRoutesOrGaps.length !== 0
+                                                    isReviewerMode && activitiesRoutesOrGaps.length !== 0
                                                         ? classes.infoReviewerBox
                                                         : classes.infoBox
                                                 }
                                             >
                                                 {activitiesRoutesOrGaps.length !== 0 &&
-                                                    (isReviewer() ? (
+                                                    (isReviewerMode ? (
                                                         <Box className={classes.headerActivityLockBox}>
                                                             <>
                                                                 <Alert
