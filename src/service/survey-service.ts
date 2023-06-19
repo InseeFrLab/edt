@@ -518,12 +518,12 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
         datas.set(idSurvey, data);
         if (isChange) {
             if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
-                return remotePutSurveyDataReviewer(idSurvey, getSurveyStateData(data, idSurvey), data)
+                remotePutSurveyDataReviewer(idSurvey, getSurveyStateData(data, idSurvey), data)
                     .then(surveyData => {
-                        return setLocalDatabase(surveyData, data, idSurvey);
+                        setLocalDatabase(surveyData, data, idSurvey);
                     })
                     .catch(() => {
-                        return Promise.reject({});
+                        //return Promise.reject({});
                         //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
                     });
             }
@@ -533,34 +533,27 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                     stateData: getSurveyStateData(data, idSurvey),
                     data: data,
                 };
-                return remotePutSurveyData(idSurvey, surveyData)
+                remotePutSurveyData(idSurvey, surveyData)
                     .then(surveyData => {
-                        return setLocalDatabase(surveyData, data, idSurvey);
+                        setLocalDatabase(surveyData, data, idSurvey);
                     })
                     .catch(() => {
-                        return Promise.reject();
+                        //return Promise.reject();
                         //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
                     });
-            } else {
-                return Promise.reject({});
             }
-        } else {
-            return new Promise(resolve => resolve(data));
         }
+        return data;
     });
 };
 
-const setLocalDatabase = (
-    surveyData: SurveyData,
-    data: LunaticData,
-    idSurvey: string,
-): Promise<LunaticData> => {
+const setLocalDatabase = (surveyData: SurveyData, data: LunaticData, idSurvey: string) => {
     data.lastRemoteSaveDate = surveyData.stateData?.date;
     //set the last remote save date inside local database to be able to compare it later with remote data
-    return lunaticDatabase.save(idSurvey, data).then(() => {
+    lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
         oldDatas.set(idSurvey, Object.assign({}, data));
-        return data;
+        //return data;
     });
 };
 
