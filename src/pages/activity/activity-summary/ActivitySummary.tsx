@@ -266,7 +266,7 @@ const ActivitySummaryPage = () => {
     const validate = useCallback(() => {
         validateSurvey(context.idSurvey).then(() => {
             setIsAlertValidateDisplayed(false);
-            navBack();
+            back();
         });
     }, []);
 
@@ -276,10 +276,6 @@ const ActivitySummaryPage = () => {
 
     const back = useCallback(() => {
         saveAndNav();
-    }, []);
-
-    const navBack = useCallback(() => {
-        navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_SURVEYS_OVERVIEW));
     }, []);
 
     const isReviewerMode = isReviewer() && !isDemoMode();

@@ -59,7 +59,6 @@ const WorkTimePage = () => {
         }
     }, []);
 
-    console.log(getSurveyRights(idSurvey ?? ""));
     return (
         <Box
             className={cx(

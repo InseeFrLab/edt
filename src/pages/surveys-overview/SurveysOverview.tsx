@@ -133,7 +133,6 @@ const SurveysOverviewPage = () => {
 
     const renderHouseHold = useCallback(
         (dataHousehold: any, index: number) => {
-            console.log(dataHousehold);
             return (
                 <HouseholdCard
                     key={"household-card-" + index}
