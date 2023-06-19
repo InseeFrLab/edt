@@ -5,23 +5,21 @@ import SurveySelecter from "components/edt/SurveySelecter/SurveySelecter";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { TabData } from "interface/component/Component";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import { useCallback, useEffect } from "react";
-import { isIOS } from "react-device-detect";
+import { isAndroid, isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import {
     getParameterizedNavigatePath,
-    navToHome,
     navToWeeklyPlannerOrClose,
     setEnviro,
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isPwa, isTablet } from "service/responsive";
-import { getData, getSource, getTabsData, surveysIds, getSurveyRights } from "service/survey-service";
+import { getData, getSource, getSurveyRights, getTabsData } from "service/survey-service";
 
 const WorkTimePage = () => {
     let { idSurvey } = useParams();
@@ -63,7 +61,11 @@ const WorkTimePage = () => {
 
     console.log(getSurveyRights(idSurvey ?? ""));
     return (
-        <Box className={cx(!isPwa() && isIOS ? classes.pageMobileTablet : classes.pageDesktop)}>
+        <Box
+            className={cx(
+                !isPwa() && (isIOS || isAndroid) ? classes.pageMobileTablet : classes.pageDesktop,
+            )}
+        >
             <Default>
                 <SurveySelecter
                     id={t("accessibility.component.survey-selecter.id")}

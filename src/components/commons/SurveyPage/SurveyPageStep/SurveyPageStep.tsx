@@ -8,6 +8,7 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction, useCallback, useState } from "react";
+import { isAndroid, isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router";
 import {
@@ -21,10 +22,9 @@ import {
 import { getLanguage } from "service/referentiel-service";
 import { isPwa } from "service/responsive";
 import { getStepData } from "service/stepper.service";
+import { surveyReadOnly } from "service/survey-activity-service";
 import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import SurveyPage from "../SurveyPage";
-import { isIOS } from "react-device-detect";
-import { surveyReadOnly } from "service/survey-activity-service";
 
 export interface SurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
@@ -147,7 +147,11 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const surveyPageProps = isStep ? surveyPageStepProps : surveyPageNotStepProps;
 
     return (
-        <Box className={cx(!isPwa() ? classes.pageMobileTablet : classes.pageDesktop)}>
+        <Box
+            className={cx(
+                !isPwa() && (isIOS || isAndroid) ? classes.pageMobileTablet : classes.pageDesktop,
+            )}
+        >
             <SurveyPage {...surveyPageProps}>
                 <FlexCenter className={withBottomPadding ? classes.bottomPadding : ""}>
                     <FelicitationModal
