@@ -266,7 +266,7 @@ const ActivitySummaryPage = () => {
     const validate = useCallback(() => {
         validateSurvey(context.idSurvey).then(() => {
             setIsAlertValidateDisplayed(false);
-            back();
+            navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
         });
     }, []);
 
