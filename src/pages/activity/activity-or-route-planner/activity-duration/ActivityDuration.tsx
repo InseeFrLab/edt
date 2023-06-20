@@ -27,7 +27,7 @@ import {
 } from "service/navigation-service";
 import { isDesktop } from "service/responsive";
 import { getActivitiesOrRoutes, surveyReadOnly } from "service/survey-activity-service";
-import { getValue, saveData } from "service/survey-service";
+import { getValue, getValueOfData, saveData } from "service/survey-service";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
@@ -38,7 +38,6 @@ const ActivityDurationPage = () => {
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
     const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
-
     const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
     const stepData = getStepData(currentPage, isRoute);
 
@@ -73,8 +72,8 @@ const ActivityDurationPage = () => {
         const data = callbackHolder.getData();
         let isAfter = false;
         if (data) {
-            const startTime = data.COLLECTED?.[FieldNameEnum.START_TIME]?.COLLECTED as string[];
-            const endTime = data.COLLECTED?.[FieldNameEnum.END_TIME]?.COLLECTED as string[];
+            const startTime = getValueOfData(data, FieldNameEnum.START_TIME) as string[];
+            const endTime = getValueOfData(data, FieldNameEnum.END_TIME) as string[];
 
             dayjs.extend(customParseFormat);
             if (startTime && endTime) {

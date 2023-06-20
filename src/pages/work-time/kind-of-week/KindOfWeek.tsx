@@ -22,7 +22,7 @@ import {
     validateWithAlertAndNav,
 } from "service/navigation-service";
 import { getKindOfWeekRef } from "service/referentiel-service";
-import { getPrintedFirstName } from "service/survey-service";
+import { getData, getPrintedFirstName } from "service/survey-service";
 
 const KindOfWeekPage = () => {
     const context: OrchestratorContext = useOutletContext();

@@ -8,7 +8,7 @@ import React from "react";
 import { useOutletContext } from "react-router-dom";
 import { navToErrorPage } from "service/navigation-service";
 import { surveyReadOnly } from "service/survey-activity-service";
-import { getComponentId } from "service/survey-service";
+import { getComponentId, getValueOfData } from "service/survey-service";
 
 const DayOfSurveyPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -20,7 +20,7 @@ const DayOfSurveyPage = () => {
         if (componentId == null) {
             navToErrorPage();
         } else {
-            const dataSurveyDate = callbackHolder.getData().COLLECTED?.SURVEYDATE.COLLECTED;
+            const dataSurveyDate = getValueOfData(callbackHolder.getData(), FieldNameEnum.SURVEYDATE);
             const errorData =
                 dataSurveyDate != null &&
                 (typeof dataSurveyDate == "string" ? dataSurveyDate.includes("Invalid") : false);

@@ -3,7 +3,6 @@ import SurveySelecter from "components/edt/SurveySelecter/SurveySelecter";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { TabData } from "interface/component/Component";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
@@ -13,13 +12,12 @@ import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-d
 import {
     getParameterizedNavigatePath,
     navToActivityOrPlannerOrSummary,
-    navToHome,
     navToWeeklyPlannerOrClose,
     setEnviro,
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isTablet } from "service/responsive";
-import { getData, getSource, getTabsData, surveysIds, getSurveyRights } from "service/survey-service";
+import { getData, getSource, getSurveyRights, getTabsData } from "service/survey-service";
 
 const ActivityPage = () => {
     let { idSurvey } = useParams();

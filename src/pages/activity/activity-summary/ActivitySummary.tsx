@@ -9,9 +9,12 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider, Switch, Typography } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import { default as errorIcon } from "assets/illustration/error/activity.svg";
 import InfoAlertIcon from "assets/illustration/info-alert.svg";
-import downloadIcon from "assets/illustration/mui-icon/download.svg";
+import InfoIcon from "assets/illustration/info.svg";
 import checkIcon from "assets/illustration/mui-icon/check.svg";
+import downloadIcon from "assets/illustration/mui-icon/download.svg";
+import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
@@ -59,15 +62,11 @@ import {
     saveData,
     setValue,
     surveyLocked,
-    surveyValidated,
     validateSurvey,
 } from "service/survey-service";
 import { isReviewer } from "service/user-service";
 import ActivitiesSummaryExportTemplate from "template/summary-export/ActivitiesSummaryExportTemplate";
 import { v4 as uuidv4 } from "uuid";
-import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
-import InfoIcon from "assets/illustration/info.svg";
-import { default as errorIcon } from "assets/illustration/error/activity.svg";
 
 const ActivitySummaryPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -102,7 +101,7 @@ const ActivitySummaryPage = () => {
     };
 
     const modifiable = !surveyReadOnly(context.rightsSurvey);
-    const { classes, cx } = useStyles({ "modifiable": modifiable });
+    const { classes } = useStyles({ "modifiable": modifiable });
 
     useEffect(() => {
         setScore(getScore(context.idSurvey, t));
@@ -231,7 +230,6 @@ const ActivitySummaryPage = () => {
 
     const [isAlertLockDisplayed, setIsAlertLockDisplayed] = useState<boolean>(false);
     const [isAlertValidateDisplayed, setIsAlertValidateDisplayed] = useState<boolean>(false);
-    const [isValidated, setIsValidated] = useState<boolean>(surveyValidated(context.idSurvey));
     const [isLocked, setIsLocked] = useState<boolean>(surveyLocked(context.idSurvey));
 
     const alertLockLabels = {

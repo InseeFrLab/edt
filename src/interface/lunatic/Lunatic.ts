@@ -24,7 +24,7 @@ export interface Collected {
 
 export interface MultiCollected {
     COLLECTED: string[] | boolean[] | null[] | { [key: string]: string }[];
-    EDITED: any;
+    EDITED: string[] | boolean[] | null[] | { [key: string]: string }[];
     FORCED: any;
     INPUTED: any;
     PREVIOUS: any;

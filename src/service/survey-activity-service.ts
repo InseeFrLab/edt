@@ -29,7 +29,7 @@ import {
     getAutoCompleteRef,
     getLanguage,
 } from "service/referentiel-service";
-import { getData, getValue, saveData, surveysIds } from "service/survey-service";
+import { getData, getValue, getValueOfData, saveData, surveysIds } from "service/survey-service";
 
 const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
     const mainActivityId = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_ID, i) as string;
@@ -512,7 +512,7 @@ const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: numbe
     const dataCollected = data.COLLECTED != null ? data.COLLECTED : null;
     if (dataCollected) {
         source.variables.forEach(variable => {
-            let value = dataCollected?.[variable.name]?.COLLECTED;
+            let value = getValueOfData(data, variable.name);
             if (Array.isArray(value)) {
                 if (value.length >= iteration + 1) {
                     value.splice(iteration, 1);

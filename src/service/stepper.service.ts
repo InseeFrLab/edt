@@ -2,7 +2,7 @@ import { t } from "i18next";
 import { LunaticData, LunaticModel, LunaticModelComponent } from "interface/lunatic/Lunatic";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 import { getCurrentPageSource } from "./orchestrator-service";
-import { getVariable } from "./survey-service";
+import { getValueOfData, getVariable } from "./survey-service";
 
 export interface StepData {
     page: EdtRoutesNameEnum;
@@ -80,7 +80,7 @@ const haveVariableNotFilled = (
     variables.forEach(v => {
         const variable = getVariable(source, v);
         if (variable) {
-            const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+            const value = getValueOfData(data, variable.name);
             if (value != null && !Array.isArray(value)) {
                 filled = false;
             } else filled = true;

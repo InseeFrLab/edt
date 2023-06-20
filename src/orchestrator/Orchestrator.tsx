@@ -3,8 +3,10 @@ import * as lunaticEDT from "@inseefrlab/lunatic-edt";
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import React from "react";
+import { isReviewer } from "service/user-service";
 
 const { ...edtComponents } = lunaticEDT;
 
@@ -24,7 +26,7 @@ export const callbackHolder: { getData(): LunaticData; getErrors(): { [key: stri
 
 export type OrchestratorProps = {
     source?: LunaticModel | undefined;
-    data?: object;
+    data?: LunaticData;
     cbHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } };
     page: string;
     subPage?: string;
@@ -57,7 +59,62 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     const components = getComponents();
     const currentErrors = getCurrentErrors();
 
-    cbHolder.getData = getData;
+    const getDataReviewer = () => {
+        const callbackholder = getData();
+        const dataCollected = Object.assign({}, callbackholder.COLLECTED);
+        const bindings: string[] = components.filter(
+            (component: any) => component.componentType != "Sequence",
+        )[0].bindingDependencies;
+        if (callbackholder && dataCollected) {
+            for (let prop in FieldNameEnum as any) {
+                const dataOfField = dataCollected[prop];
+                const collected = dataOfField?.COLLECTED;
+                const edited = dataOfField?.EDITED;
+                const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
+                const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
+                //if(prop == FieldNameEnum.START_TIME) console.log(collected, editedSaved);
+
+                if (bindings != null && bindings.includes(prop)) {
+                    if (collected) {
+                        if (collected && editedSaved) {
+                            for (let i = 0; i < collected.length; i++) {
+                                if (collected[i] == null) {
+                                    collected[i] = editedSaved[i];
+                                    //console.log(collected);
+                                }
+                            }
+                        }
+                        dataOfField.EDITED = collected;
+                        dataOfField.COLLECTED = collectedSaved;
+                    } else if (dataOfField) {
+                        dataOfField.EDITED = edited ?? editedSaved;
+                        dataOfField.COLLECTED = collectedSaved;
+                    }
+                } else if (dataOfField) {
+                    dataOfField.EDITED = editedSaved;
+                    dataOfField.COLLECTED = collectedSaved;
+                }
+            }
+        }
+        callbackholder.COLLECTED = dataCollected;
+        return callbackholder;
+    };
+
+    const getDataInterviewer = () => {
+        const callbackholder = getData();
+        const dataCollected = Object.assign({}, callbackholder.COLLECTED);
+
+        if (callbackholder && dataCollected) {
+            for (let prop in FieldNameEnum as any) {
+                const dataOfField = dataCollected[prop];
+                if (dataOfField) dataOfField.EDITED = data?.COLLECTED?.[prop]?.EDITED;
+            }
+        }
+        callbackholder.COLLECTED = dataCollected;
+        return callbackholder;
+    };
+
+    cbHolder.getData = isReviewer() ? getDataReviewer : getDataInterviewer;
     cbHolder.getErrors = getCurrentErrors;
 
     const renderComponent = () => {
@@ -74,7 +131,14 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                         )}
                     >
                         {components.map(function (component: any) {
-                            const { id, componentType, response, options, ...other } = component;
+                            const {
+                                id,
+                                componentType,
+                                response,
+                                bindingDependencies,
+                                options,
+                                ...other
+                            } = component;
                             const Component = lunatic[componentType];
                             return (
                                 <div className="lunatic lunatic-component" key={`component-${id}`}>
@@ -86,6 +150,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                         errors={currentErrors}
                                         custom={edtComponents}
                                         componentSpecificProps={componentSpecificProps}
+                                        //variables={getVariables(bindingDependencies)}
                                     />
                                 </div>
                             );

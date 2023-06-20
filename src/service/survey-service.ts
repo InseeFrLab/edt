@@ -4,12 +4,15 @@ import {
     generateDateFromStringInput,
     getFrenchDayFromDate,
 } from "@inseefrlab/lunatic-edt";
+import activitySurveySource from "activity-survey.json";
 import dayjs from "dayjs";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
+import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
@@ -37,6 +40,7 @@ import { fetchReviewerSurveysAssignments } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrator-service";
 import { groupBy, objectEquals } from "utils/utils";
+import workTimeSource from "work-time-survey.json";
 import {
     fetchReferentiels,
     fetchSurveysSourcesByIds,
@@ -49,7 +53,6 @@ import {
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
-import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -462,17 +465,17 @@ const createDataEmpty = (idSurvey: string): LunaticData => {
     };
 };
 
-const dataIsChange = (idSurvey: string, data: LunaticData) => {
-    const currentData = oldDatas.get(idSurvey);
-    const currentDataCollected = currentData && currentData.COLLECTED;
-    const dataCollected = data && data.COLLECTED;
+const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
+    const currentDataSurvey = oldDatas.get(idSurvey);
+    const currentDataCollected = currentDataSurvey && currentDataSurvey.COLLECTED;
+    const dataCollected = dataAct && dataAct.COLLECTED;
     let isChange = false;
 
     if (dataCollected && currentDataCollected) {
         const keys = Object.keys(dataCollected);
         keys?.forEach(key => {
-            const data = dataCollected[key]?.COLLECTED ?? [];
-            const currentData = currentDataCollected[key]?.COLLECTED ?? [];
+            const data = getValueOfData(dataAct, key) ?? [];
+            const currentData = getValueOfData(currentDataSurvey, key) ?? [];
 
             if (data != currentData) {
                 if (Array.isArray(data)) {
@@ -624,7 +627,11 @@ const getReferentiel = (refName: ReferentielsEnum) => {
 };
 
 const getSource = (refName: SourcesEnum) => {
-    return sourcesData && sourcesData[refName];
+    return sourcesData
+        ? sourcesData[refName]
+        : refName == SourcesEnum.ACTIVITY_SURVEY
+        ? activitySurveySource
+        : workTimeSource;
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
@@ -649,7 +656,7 @@ const getCurrentPage = (data: LunaticData | undefined, source?: LunaticModel): n
         i++;
     }
     if (currentPage == 0) {
-        const firstName = data.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED;
+        const firstName = getValueOfData(data, FieldNameEnum.FIRSTNAME);
         if (firstName) currentPage = Number(components[components.length - 2].page);
         if (source.label == LABEL_WORK_TIME_SURVEY) currentPage = 3;
     }
@@ -668,7 +675,7 @@ const haveVariableNotFilled = (
     variables.forEach(v => {
         const variable = getVariable(source, v);
         if (variable) {
-            const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+            const value = getValueOfData(data, variable.name);
             if (value != null && !Array.isArray(value)) {
                 filled = false;
             } else if (Array.isArray(value)) {
@@ -694,11 +701,16 @@ const getComponentsOfVariable = (
 };
 
 const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
+    const data = datas.get(idSurvey);
+    const valueEdited = data?.COLLECTED?.[variableName]?.EDITED;
+    const valueCollected = data?.COLLECTED?.[variableName]?.COLLECTED;
+    const modePersistenceEdited = getModePersistence(data) == ModePersistenceEnum.EDITED;
     if (iteration != null) {
-        let value = datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+        let value = valueCollected;
+        if (modePersistenceEdited && valueEdited && valueEdited[iteration] != null) value = valueEdited;
         return Array.isArray(value) ? value[iteration] : null;
     } else {
-        return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+        return modePersistenceEdited ? valueEdited ?? valueCollected : valueCollected;
     }
 };
 
@@ -709,16 +721,26 @@ const setValue = (
     iteration?: number,
 ) => {
     const dataAct = datas.get(idSurvey);
+    const modePersistenceEdited = getModePersistence(dataAct) == ModePersistenceEnum.EDITED;
     if (dataAct && dataAct.COLLECTED && dataAct.COLLECTED[variableName]) {
         if (iteration != null && value != null) {
-            const dataAsArray = dataAct.COLLECTED[variableName].COLLECTED;
+            let dataAsArray = modePersistenceEdited
+                ? dataAct.COLLECTED[variableName].EDITED
+                : dataAct.COLLECTED[variableName].COLLECTED;
             if (dataAsArray && Array.isArray(dataAsArray)) {
                 dataAsArray[iteration] = value;
+            } else {
+                dataAsArray = Array(iteration + 1);
+                dataAsArray[iteration] = value;
             }
+
+            if (modePersistenceEdited) dataAct.COLLECTED[variableName].EDITED = dataAsArray;
+            else dataAct.COLLECTED[variableName].COLLECTED = dataAsArray;
         } else {
+            const valueCollected = dataAct.COLLECTED[variableName].COLLECTED as string | boolean;
             const variable: Collected = {
-                COLLECTED: value,
-                EDITED: null,
+                COLLECTED: modePersistenceEdited ? valueCollected : value,
+                EDITED: modePersistenceEdited ? value : dataAct.COLLECTED[variableName].EDITED,
                 FORCED: null,
                 INPUTED: null,
                 PREVIOUS: null,
@@ -726,7 +748,7 @@ const setValue = (
             dataAct.COLLECTED[variableName] = variable;
         }
     }
-    datas.set(idSurvey, dataAct || {});
+    datas.set(idSurvey, dataAct ?? {});
     return dataAct;
 };
 
@@ -1173,53 +1195,88 @@ const getSurveyRights = (idSurvey: string) => {
     return rights;
 };
 
+const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum => {
+    const isReviewerMode = isReviewer();
+    const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED;
+    return isReviewerMode || isLocked ? ModePersistenceEnum.EDITED : ModePersistenceEnum.COLLECTED;
+};
+
+const getValueWithData = (
+    data: LunaticData | undefined,
+    variableName: string,
+): string | boolean | string[] | boolean[] | null[] | { [key: string]: string }[] | null | undefined => {
+    return data?.COLLECTED?.[variableName]?.COLLECTED;
+};
+
+const getValueOfData = (
+    data: LunaticData | undefined,
+    variableName: string,
+): string | boolean | string[] | boolean[] | null[] | { [key: string]: string }[] | null | undefined => {
+    const modePersistenceEdited = getModePersistence(data) == ModePersistenceEnum.EDITED;
+    const dataCollected = data && data.COLLECTED;
+    const dataSurvey = dataCollected?.[variableName];
+    const dataEdited = dataSurvey?.EDITED;
+    const dataCollect = dataSurvey?.COLLECTED;
+    if (dataCollected) {
+        if (modePersistenceEdited) {
+            return dataEdited ?? dataCollect;
+        } else {
+            return dataCollect;
+        }
+    }
+    return null;
+};
+
 export {
-    getData,
-    getDatas,
-    initializeDatas,
-    saveData,
-    getCurrentPage,
-    getLastName,
-    getFirstName,
-    getPrintedFirstName,
-    getSurveyDate,
-    getPrintedSurveyDate,
-    getFullFrenchDate,
-    getValue,
-    setValue,
-    getReferentiel,
-    getSource,
+    addToAutocompleteActivityReferentiel,
+    addToSecondaryActivityReferentiel,
     getComponentId,
     getComponentsOfVariable,
-    getVariable,
-    getTabsData,
-    surveysIds,
-    toIgnoreForRoute,
-    toIgnoreForActivity,
-    addToSecondaryActivityReferentiel,
-    addToAutocompleteActivityReferentiel,
-    initializeSurveysDatasCache,
-    getUserDatasActivity,
-    getUserDatasWorkTime,
-    getUserDatas,
-    isDemoMode,
+    getCurrentPage,
+    getData,
+    getDatas,
+    getFirstName,
+    getFullFrenchDate,
     getIdSurveyActivity,
     getIdSurveyWorkTime,
-    initializeListSurveys,
+    getLastName,
     getListSurveys,
     getListSurveysHousehold,
+    getModePersistence,
+    getPrintedFirstName,
+    getPrintedSurveyDate,
+    getReferentiel,
+    getSource,
+    getSurveyDate,
+    getSurveyRights,
+    getTabsData,
+    getUserDatas,
+    getUserDatasActivity,
+    getUserDatasWorkTime,
+    getValue,
+    getValueOfData,
+    getValueWithData,
+    getVariable,
+    initializeDatas,
+    initializeHomeSurveys,
+    initializeListSurveys,
+    initializeSurveysDatasCache,
+    initializeSurveysIdsDataModeReviewer,
     initializeSurveysIdsDemo,
     initializeSurveysIdsModeReviewer,
-    initializeSurveysIdsDataModeReviewer,
-    initializeHomeSurveys,
-    refreshSurveyData,
+    isDemoMode,
     lockAllSurveys,
-    validateAllEmptySurveys,
-    userDatasMap,
+    lockSurvey,
     nameSurveyMap,
-    getSurveyRights,
+    refreshSurveyData,
+    saveData,
+    setValue,
     surveyLocked,
     surveyValidated,
-    lockSurvey,
+    surveysIds,
+    toIgnoreForActivity,
+    toIgnoreForRoute,
+    userDatasMap,
+    validateAllEmptySurveys,
     validateSurvey,
 };

@@ -13,20 +13,11 @@ interface AddActivityOrRouteDefaultProps {
     iconTitle: string;
     iconActivity: string;
     iconRoute: string;
-    modifiable?: boolean;
 }
 
 const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
-    const {
-        handleClose,
-        onClickActivity,
-        onClickRoute,
-        className,
-        iconTitle,
-        iconActivity,
-        iconRoute,
-        modifiable = true,
-    } = props;
+    const { handleClose, onClickActivity, onClickRoute, className, iconTitle, iconActivity, iconRoute } =
+        props;
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
     return (

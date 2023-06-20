@@ -19,6 +19,7 @@ import {
 import { getLanguage } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
 import { surveyReadOnly } from "service/survey-activity-service";
+import { getData } from "service/survey-service";
 
 const PhoneTimePage = () => {
     const currentPage = EdtRoutesNameEnum.PHONE_TIME;

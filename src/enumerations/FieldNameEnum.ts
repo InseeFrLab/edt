@@ -1,4 +1,4 @@
-export const enum FieldNameEnum {
+export enum FieldNameEnum {
     LASTNAME = "LASTNAME",
     FIRSTNAME = "FIRSTNAME",
     SURVEYDATE = "SURVEYDATE",

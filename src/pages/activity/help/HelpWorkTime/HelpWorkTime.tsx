@@ -15,10 +15,11 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
+import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import {
     getIdSurveyContext,
     getNavigatePath,
@@ -199,6 +200,8 @@ const HelpWorkTime = () => {
             </>
         );
     };
+
+    const context: OrchestratorContext = useOutletContext();
 
     return (
         <Box className={classes.root}>
