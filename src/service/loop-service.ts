@@ -21,6 +21,7 @@ import {
     getData,
     getDatas,
     getValue,
+    getValueWithData,
     getVariable,
     saveData,
     setValue,
@@ -66,12 +67,12 @@ const getLoopInitialSequencePage = (loop: LoopEnum): string => {
 const LOOP_PAGES_CONDITIONALS = ["4.7", "4.10"];
 
 const getValueOfActivity = (data: LunaticData | undefined, iteration: number) => {
-    const activityCategory = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_ID]?.COLLECTED;
+    const activityCategory = getValueWithData(data, FieldNameEnum.MAINACTIVITY_ID);
     if (Array.isArray(activityCategory) && activityCategory[iteration] != null) {
         return activityCategory[iteration] as string;
     }
 
-    const activityAutoComplete = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_SUGGESTERID]?.COLLECTED;
+    const activityAutoComplete = getValueWithData(data, FieldNameEnum.MAINACTIVITY_SUGGESTERID);
     if (Array.isArray(activityAutoComplete) && activityAutoComplete[iteration] != null) {
         return (activityAutoComplete[iteration] as string).split("-")[0];
     }
@@ -123,7 +124,8 @@ const ignoreVariablesCondtionals = (
         component => component.page == component?.page?.split(".")[0] + "." + pageOfConditional,
     );
     const depConditional = componentConditional?.bindingDependencies?.[0];
-    const valueOfConditional = data?.COLLECTED?.[depConditional ?? ""]?.COLLECTED as string[];
+    const valueOfConditional = getValueWithData(data, depConditional ?? "") as string[];
+
     //is page of values of conditional = true
     if (isPageOfConditional) {
         const mustShowPageOfConditional =
@@ -134,7 +136,8 @@ const ignoreVariablesCondtionals = (
             const deps = component?.bindingDependencies; //values of composant
             //ignore all variables of composant if it's added one of dependencies of component
             deps?.forEach(dep => {
-                const value = data?.COLLECTED?.[dep ?? ""]?.COLLECTED;
+                const value = getValueWithData(data, dep ?? "");
+
                 if (Array.isArray(value) && value[iteration] != null) {
                     const conditional = value[iteration] as string | boolean;
                     if (!ignore) {
@@ -160,9 +163,8 @@ const ignoreDepsActivity = (
         (component?.bindingDependencies?.indexOf(variable?.name ?? "") ?? -1) >= 0;
     if (variableActivity) {
         let oneActivityIsAdded = false;
-        const activityCategory = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_ID]?.COLLECTED;
-        const isFullyCompleted =
-            data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED]?.COLLECTED;
+        const activityCategory = getValueWithData(data, FieldNameEnum.MAINACTIVITY_ID);
+        const isFullyCompleted = getValueWithData(data, FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED);
 
         if (
             Array.isArray(activityCategory) &&
@@ -174,13 +176,12 @@ const ignoreDepsActivity = (
             oneActivityIsAdded = true;
         }
 
-        const activityAutoComplete =
-            data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_SUGGESTERID]?.COLLECTED;
+        const activityAutoComplete = getValueWithData(data, FieldNameEnum.MAINACTIVITY_SUGGESTERID);
         if (Array.isArray(activityAutoComplete) && activityAutoComplete[iteration] != null) {
             oneActivityIsAdded = true;
         }
 
-        const newActivity = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_LABEL]?.COLLECTED;
+        const newActivity = getValueWithData(data, FieldNameEnum.MAINACTIVITY_LABEL);
         if (Array.isArray(newActivity) && newActivity[iteration] != null) {
             oneActivityIsAdded = true;
         }
@@ -247,7 +248,7 @@ const ignoreDepsOfCheckboxGroup = (
 ) => {
     let existOneDepAdded = false;
     component?.bindingDependencies?.forEach(dep => {
-        const value = data?.COLLECTED?.[dep ?? ""]?.COLLECTED;
+        const value = getValueWithData(data, dep ?? "");
         if (Array.isArray(value) && value[iteration] != null) {
             const conditional = value[iteration] as string | boolean;
             if (conditional) existOneDepAdded = true;
@@ -623,7 +624,7 @@ const getLoopSizeOfVariable = (
     currentLoopSize: number,
 ): number => {
     if (variable) {
-        const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+        const value = getValueWithData(data, variable.name);
         if (Array.isArray(value) && value[0] !== null) {
             return Math.max(currentLoopSize, value.length);
         } else return currentLoopSize;
@@ -677,7 +678,7 @@ const haveVariableNotFilled = (
     variables.forEach(v => {
         const variable = getVariable(source, v);
         if (!ignoreDeps(variable, loopComponents, component, data, iteration, isRoute) && variable) {
-            const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+            const value = getValueWithData(data, variable.name);
             if (Array.isArray(value) && value[iteration] != null) {
                 filled = false;
             } else {

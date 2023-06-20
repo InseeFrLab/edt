@@ -4,8 +4,10 @@ import {
     generateDateFromStringInput,
     getFrenchDayFromDate,
 } from "@inseefrlab/lunatic-edt";
+import activitySurveySource from "activity-survey.json";
 import dayjs from "dayjs";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
@@ -37,6 +39,7 @@ import { fetchReviewerSurveysAssignments } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrator-service";
 import { groupBy, objectEquals } from "utils/utils";
+import workTimeSource from "work-time-survey.json";
 import {
     fetchReferentiels,
     fetchSurveysSourcesByIds,
@@ -49,7 +52,6 @@ import {
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
-import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -361,6 +363,7 @@ const getRemoteSavedSurveysDatas = (
                         (localSurveyData === undefined ||
                             (localSurveyData.lastLocalSaveDate ?? 0) < remoteSurveyData.stateData.date)
                     ) {
+                        console.log(surveyData);
                         return lunaticDatabase.save(surveyId, surveyData);
                     }
                 });
@@ -462,17 +465,17 @@ const createDataEmpty = (idSurvey: string): LunaticData => {
     };
 };
 
-const dataIsChange = (idSurvey: string, data: LunaticData) => {
-    const currentData = oldDatas.get(idSurvey);
-    const currentDataCollected = currentData && currentData.COLLECTED;
-    const dataCollected = data && data.COLLECTED;
+const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
+    const currentDataSurvey = oldDatas.get(idSurvey);
+    const currentDataCollected = currentDataSurvey && currentDataSurvey.COLLECTED;
+    const dataCollected = dataAct && dataAct.COLLECTED;
     let isChange = false;
 
     if (dataCollected && currentDataCollected) {
         const keys = Object.keys(dataCollected);
         keys?.forEach(key => {
-            const data = dataCollected[key]?.COLLECTED ?? [];
-            const currentData = currentDataCollected[key]?.COLLECTED ?? [];
+            const data = getValueWithData(dataAct, key) ?? [];
+            const currentData = getValueWithData(currentDataSurvey, key) ?? [];
 
             if (data != currentData) {
                 if (Array.isArray(data)) {
@@ -624,7 +627,11 @@ const getReferentiel = (refName: ReferentielsEnum) => {
 };
 
 const getSource = (refName: SourcesEnum) => {
-    return sourcesData && sourcesData[refName];
+    return sourcesData
+        ? sourcesData[refName]
+        : refName == SourcesEnum.ACTIVITY_SURVEY
+        ? activitySurveySource
+        : workTimeSource;
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
@@ -649,7 +656,7 @@ const getCurrentPage = (data: LunaticData | undefined, source?: LunaticModel): n
         i++;
     }
     if (currentPage == 0) {
-        const firstName = data.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED;
+        const firstName = getValueOfData(data, FieldNameEnum.FIRSTNAME);
         if (firstName) currentPage = Number(components[components.length - 2].page);
         if (source.label == LABEL_WORK_TIME_SURVEY) currentPage = 3;
     }
@@ -668,7 +675,7 @@ const haveVariableNotFilled = (
     variables.forEach(v => {
         const variable = getVariable(source, v);
         if (variable) {
-            const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+            const value = getValueWithData(data, variable.name);
             if (value != null && !Array.isArray(value)) {
                 filled = false;
             } else if (Array.isArray(value)) {
@@ -1181,53 +1188,83 @@ const getSurveyRights = (idSurvey: string) => {
     return rights;
 };
 
+const getValueWithData = (
+    data: LunaticData | undefined,
+    variableName: string,
+): string | boolean | string[] | boolean[] | null[] | { [key: string]: string }[] | null | undefined => {
+    return data?.COLLECTED?.[variableName]?.COLLECTED;
+};
+
+const getValueOfData = (
+    data: LunaticData | undefined,
+    variableName: string,
+): string | boolean | string[] | boolean[] | null[] | { [key: string]: string }[] | null | undefined => {
+    const modePersistence = isReviewer();
+    const dataCollected = data && data.COLLECTED;
+    if (dataCollected) {
+        let dataSurvey = dataCollected[variableName];
+        const dataEdited = dataSurvey.EDITED;
+        const dataCollect = dataSurvey.COLLECTED;
+
+        if (modePersistence) {
+            console.log(dataEdited);
+            return dataEdited ?? dataCollect;
+        } else {
+            return dataCollect;
+        }
+    }
+    return null;
+};
+
 export {
-    getData,
-    getDatas,
-    initializeDatas,
-    saveData,
-    getCurrentPage,
-    getLastName,
-    getFirstName,
-    getPrintedFirstName,
-    getSurveyDate,
-    getPrintedSurveyDate,
-    getFullFrenchDate,
-    getValue,
-    setValue,
-    getReferentiel,
-    getSource,
+    addToAutocompleteActivityReferentiel,
+    addToSecondaryActivityReferentiel,
     getComponentId,
     getComponentsOfVariable,
-    getVariable,
-    getTabsData,
-    surveysIds,
-    toIgnoreForRoute,
-    toIgnoreForActivity,
-    addToSecondaryActivityReferentiel,
-    addToAutocompleteActivityReferentiel,
-    initializeSurveysDatasCache,
-    getUserDatasActivity,
-    getUserDatasWorkTime,
-    getUserDatas,
-    isDemoMode,
+    getCurrentPage,
+    getData,
+    getDatas,
+    getFirstName,
+    getFullFrenchDate,
     getIdSurveyActivity,
     getIdSurveyWorkTime,
-    initializeListSurveys,
+    getLastName,
     getListSurveys,
     getListSurveysHousehold,
+    getPrintedFirstName,
+    getPrintedSurveyDate,
+    getReferentiel,
+    getSource,
+    getSurveyDate,
+    getSurveyRights,
+    getTabsData,
+    getUserDatas,
+    getUserDatasActivity,
+    getUserDatasWorkTime,
+    getValue,
+    getVariable,
+    initializeDatas,
+    initializeHomeSurveys,
+    initializeListSurveys,
+    initializeSurveysDatasCache,
+    initializeSurveysIdsDataModeReviewer,
     initializeSurveysIdsDemo,
     initializeSurveysIdsModeReviewer,
-    initializeSurveysIdsDataModeReviewer,
-    initializeHomeSurveys,
-    refreshSurveyData,
+    isDemoMode,
     lockAllSurveys,
-    validateAllEmptySurveys,
-    userDatasMap,
+    lockSurvey,
     nameSurveyMap,
-    getSurveyRights,
+    refreshSurveyData,
+    saveData,
+    setValue,
     surveyLocked,
     surveyValidated,
-    lockSurvey,
+    surveysIds,
+    toIgnoreForActivity,
+    toIgnoreForRoute,
+    userDatasMap,
+    validateAllEmptySurveys,
     validateSurvey,
+    getValueOfData,
+    getValueWithData,
 };

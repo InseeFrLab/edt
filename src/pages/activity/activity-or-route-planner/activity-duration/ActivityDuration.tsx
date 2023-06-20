@@ -27,7 +27,7 @@ import {
 } from "service/navigation-service";
 import { isDesktop } from "service/responsive";
 import { getActivitiesOrRoutes, surveyReadOnly } from "service/survey-activity-service";
-import { getData, getValue, saveData } from "service/survey-service";
+import { getData, getValue, getValueWithData, saveData } from "service/survey-service";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
@@ -73,8 +73,8 @@ const ActivityDurationPage = () => {
         const data = callbackHolder.getData();
         let isAfter = false;
         if (data) {
-            const startTime = data.COLLECTED?.[FieldNameEnum.START_TIME]?.COLLECTED as string[];
-            const endTime = data.COLLECTED?.[FieldNameEnum.END_TIME]?.COLLECTED as string[];
+            const startTime = getValueWithData(data, FieldNameEnum.START_TIME) as string[];
+            const endTime = getValueWithData(data, FieldNameEnum.END_TIME) as string[];
 
             dayjs.extend(customParseFormat);
             if (startTime && endTime) {
