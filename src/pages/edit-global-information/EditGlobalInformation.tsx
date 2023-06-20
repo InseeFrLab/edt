@@ -6,7 +6,7 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React from "react";
 import { useOutletContext } from "react-router-dom";
-import { getComponentsOfVariable, getValueWithData } from "service/survey-service";
+import { getComponentsOfVariable, getValueOfData } from "service/survey-service";
 
 const EditGlobalInformationPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -20,7 +20,7 @@ const EditGlobalInformationPage = () => {
             : false;
 
         const componentDateId = getComponentsOfVariable(FieldNameEnum.SURVEYDATE, context.source)[1].id;
-        const dataSurveyDate = getValueWithData(callbackHolder.getData(), FieldNameEnum.SURVEYDATE);
+        const dataSurveyDate = getValueOfData(callbackHolder.getData(), FieldNameEnum.SURVEYDATE);
         const errorData =
             dataSurveyDate != null &&
             (typeof dataSurveyDate == "string" ? dataSurveyDate.includes("Invalid") : false);

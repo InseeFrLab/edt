@@ -12,6 +12,7 @@ import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
+import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
@@ -363,7 +364,6 @@ const getRemoteSavedSurveysDatas = (
                         (localSurveyData === undefined ||
                             (localSurveyData.lastLocalSaveDate ?? 0) < remoteSurveyData.stateData.date)
                     ) {
-                        console.log(surveyData);
                         return lunaticDatabase.save(surveyId, surveyData);
                     }
                 });
@@ -474,8 +474,8 @@ const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
     if (dataCollected && currentDataCollected) {
         const keys = Object.keys(dataCollected);
         keys?.forEach(key => {
-            const data = getValueWithData(dataAct, key) ?? [];
-            const currentData = getValueWithData(currentDataSurvey, key) ?? [];
+            const data = getValueOfData(dataAct, key) ?? [];
+            const currentData = getValueOfData(currentDataSurvey, key) ?? [];
 
             if (data != currentData) {
                 if (Array.isArray(data)) {
@@ -675,7 +675,7 @@ const haveVariableNotFilled = (
     variables.forEach(v => {
         const variable = getVariable(source, v);
         if (variable) {
-            const value = getValueWithData(data, variable.name);
+            const value = getValueOfData(data, variable.name);
             if (value != null && !Array.isArray(value)) {
                 filled = false;
             } else if (Array.isArray(value)) {
@@ -701,14 +701,16 @@ const getComponentsOfVariable = (
 };
 
 const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
-    let valueEdited = datas.get(idSurvey)?.COLLECTED?.[variableName]?.EDITED;
-    let valueCollected = datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
-
+    const data = datas.get(idSurvey);
+    const valueEdited = data?.COLLECTED?.[variableName]?.EDITED;
+    const valueCollected = data?.COLLECTED?.[variableName]?.COLLECTED;
+    const modePersistenceEdited = getModePersistence(data) == ModePersistenceEnum.EDITED;
     if (iteration != null) {
-        let value = valueEdited && valueEdited[iteration] != null ? valueEdited : valueCollected;
+        let value = valueCollected;
+        if (modePersistenceEdited && valueEdited && valueEdited[iteration] != null) value = valueEdited;
         return Array.isArray(value) ? value[iteration] : null;
     } else {
-        return valueEdited ?? valueCollected;
+        return modePersistenceEdited ? valueEdited ?? valueCollected : valueCollected;
     }
 };
 
@@ -718,22 +720,27 @@ const setValue = (
     value: string | boolean | null,
     iteration?: number,
 ) => {
-    const isReviewerMode = isReviewer();
     const dataAct = datas.get(idSurvey);
+    const modePersistenceEdited = getModePersistence(dataAct) == ModePersistenceEnum.EDITED;
     if (dataAct && dataAct.COLLECTED && dataAct.COLLECTED[variableName]) {
         if (iteration != null && value != null) {
-            const dataAsArray = isReviewerMode
+            let dataAsArray = modePersistenceEdited
                 ? dataAct.COLLECTED[variableName].EDITED
                 : dataAct.COLLECTED[variableName].COLLECTED;
             if (dataAsArray && Array.isArray(dataAsArray)) {
                 dataAsArray[iteration] = value;
+            } else {
+                dataAsArray = Array(iteration + 1);
+                dataAsArray[iteration] = value;
             }
+
+            if (modePersistenceEdited) dataAct.COLLECTED[variableName].EDITED = dataAsArray;
+            else dataAct.COLLECTED[variableName].COLLECTED = dataAsArray;
         } else {
             const valueCollected = dataAct.COLLECTED[variableName].COLLECTED as string | boolean;
-
             const variable: Collected = {
-                COLLECTED: isReviewerMode ? valueCollected : value,
-                EDITED: isReviewerMode ? value : dataAct.COLLECTED[variableName].EDITED,
+                COLLECTED: modePersistenceEdited ? valueCollected : value,
+                EDITED: modePersistenceEdited ? value : dataAct.COLLECTED[variableName].EDITED,
                 FORCED: null,
                 INPUTED: null,
                 PREVIOUS: null,
@@ -1188,6 +1195,12 @@ const getSurveyRights = (idSurvey: string) => {
     return rights;
 };
 
+const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum => {
+    const isReviewerMode = isReviewer();
+    const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED;
+    return isReviewerMode || isLocked ? ModePersistenceEnum.EDITED : ModePersistenceEnum.COLLECTED;
+};
+
 const getValueWithData = (
     data: LunaticData | undefined,
     variableName: string,
@@ -1199,15 +1212,13 @@ const getValueOfData = (
     data: LunaticData | undefined,
     variableName: string,
 ): string | boolean | string[] | boolean[] | null[] | { [key: string]: string }[] | null | undefined => {
-    const modePersistence = isReviewer();
+    const modePersistenceEdited = getModePersistence(data) == ModePersistenceEnum.EDITED;
     const dataCollected = data && data.COLLECTED;
+    const dataSurvey = dataCollected?.[variableName];
+    const dataEdited = dataSurvey?.EDITED;
+    const dataCollect = dataSurvey?.COLLECTED;
     if (dataCollected) {
-        let dataSurvey = dataCollected[variableName];
-        const dataEdited = dataSurvey.EDITED;
-        const dataCollect = dataSurvey.COLLECTED;
-
-        if (modePersistence) {
-            console.log(dataEdited);
+        if (modePersistenceEdited) {
             return dataEdited ?? dataCollect;
         } else {
             return dataCollect;
@@ -1231,6 +1242,7 @@ export {
     getLastName,
     getListSurveys,
     getListSurveysHousehold,
+    getModePersistence,
     getPrintedFirstName,
     getPrintedSurveyDate,
     getReferentiel,
@@ -1242,6 +1254,8 @@ export {
     getUserDatasActivity,
     getUserDatasWorkTime,
     getValue,
+    getValueOfData,
+    getValueWithData,
     getVariable,
     initializeDatas,
     initializeHomeSurveys,
@@ -1265,6 +1279,4 @@ export {
     userDatasMap,
     validateAllEmptySurveys,
     validateSurvey,
-    getValueOfData,
-    getValueWithData,
 };

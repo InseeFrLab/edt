@@ -10,9 +10,9 @@ import {
 import { Box, Divider, IconButton, Snackbar, Switch, Typography } from "@mui/material";
 import empty_activity from "assets/illustration/empty-activity.svg";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
-import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import InfoIcon from "assets/illustration/info.svg";
 import close from "assets/illustration/mui-icon/close.svg";
+import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
@@ -21,10 +21,12 @@ import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrR
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect, useState } from "react";
+import { isAndroid, isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { getLoopSize, setLoopSize } from "service/loop-service";
@@ -58,10 +60,8 @@ import {
     setValue,
     surveyLocked,
 } from "service/survey-service";
-import { v4 as uuidv4 } from "uuid";
-import { isMobile, isIOS, isAndroid } from "react-device-detect";
 import { isReviewer } from "service/user-service";
-import { SourcesEnum } from "enumerations/SourcesEnum";
+import { v4 as uuidv4 } from "uuid";
 
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
