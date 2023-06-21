@@ -8,7 +8,7 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React from "react";
 import { useOutletContext } from "react-router-dom";
-import { getComponentsOfVariable, getValueOfData, setValue } from "service/survey-service";
+import { getComponentsOfVariable, setValue } from "service/survey-service";
 
 const EditGlobalInformationPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -22,7 +22,8 @@ const EditGlobalInformationPage = () => {
             : false;
 
         dayjs.extend(customParseFormat);
-        const input = document.getElementsByClassName("MuiInputBase-input")[1].value;
+        const input = (document.getElementsByClassName("MuiInputBase-input")[1] as HTMLInputElement)
+            .value;
         const inputFormatted = dayjs(input, "DD/MM/YYYY").format("YYYY-MM-DD");
         const bdd = setValue(context.idSurvey, FieldNameEnum.SURVEYDATE, inputFormatted);
         if (bdd) context.data = bdd;

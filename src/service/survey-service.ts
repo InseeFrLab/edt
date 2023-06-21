@@ -1215,10 +1215,7 @@ const getSurveyRights = (idSurvey: string) => {
     if (isReviewerMode) {
         rights = EdtSurveyRightsEnum.WRITE_REVIEWER;
     } else {
-        rights =
-            isValidated || isLocked
-                ? EdtSurveyRightsEnum.READ_INTERVIEWER
-                : EdtSurveyRightsEnum.WRITE_INTERVIEWER;
+        rights = isLocked ? EdtSurveyRightsEnum.READ_INTERVIEWER : EdtSurveyRightsEnum.WRITE_INTERVIEWER;
     }
     return rights;
 };

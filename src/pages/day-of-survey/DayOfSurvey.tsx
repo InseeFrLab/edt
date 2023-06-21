@@ -23,7 +23,9 @@ const DayOfSurveyPage = () => {
             navToErrorPage();
         } else {
             dayjs.extend(customParseFormat);
-            const input = document.getElementsByClassName("MuiInputBase-input")?.[0]?.value;
+            const input = (
+                document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement
+            )?.value;
             const inputFormatted = dayjs(input, "DD/MM/YYYY").format("YYYY-MM-DD");
             const bdd = setValue(context.idSurvey, FieldNameEnum.SURVEYDATE, inputFormatted);
             if (bdd) context.data = bdd;

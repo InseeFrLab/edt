@@ -136,7 +136,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
             variableCollected = variableCollected ?? value?.[bindingDependency];
             const variable =
                 isReviewerMode || isLocked ? variableEdited ?? variableCollected : variableCollected;
-            console.log(value, variable);
             variables.set(bindingDependency, variable);
         });
         return variables;
