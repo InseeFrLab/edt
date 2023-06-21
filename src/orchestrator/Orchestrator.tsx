@@ -62,9 +62,9 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     const getDataReviewer = () => {
         const callbackholder = getData();
         const dataCollected = Object.assign({}, callbackholder.COLLECTED);
-        const bindings: string[] = components.filter(
+        const bindings: string[] = components?.filter(
             (component: any) => component.componentType != "Sequence",
-        )[0].bindingDependencies;
+        )[0]?.bindingDependencies;
         if (callbackholder && dataCollected) {
             for (let prop in FieldNameEnum as any) {
                 const dataOfField = dataCollected[prop];
@@ -72,7 +72,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 const edited = dataOfField?.EDITED;
                 const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
                 const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
-                //if(prop == FieldNameEnum.START_TIME) console.log(collected, editedSaved);
 
                 if (bindings != null && bindings.includes(prop)) {
                     if (collected) {
@@ -80,7 +79,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                             for (let i = 0; i < collected.length; i++) {
                                 if (collected[i] == null) {
                                     collected[i] = editedSaved[i];
-                                    //console.log(collected);
                                 }
                             }
                         }
@@ -150,7 +148,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                         errors={currentErrors}
                                         custom={edtComponents}
                                         componentSpecificProps={componentSpecificProps}
-                                        //variables={getVariables(bindingDependencies)}
                                     />
                                 </div>
                             );

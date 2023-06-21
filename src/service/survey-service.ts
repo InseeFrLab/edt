@@ -448,7 +448,24 @@ const getDatas = (): Map<string, LunaticData> => {
 };
 
 const getData = (idSurvey: string): LunaticData => {
-    return datas.get(idSurvey) || createDataEmpty(idSurvey ?? "");
+    return modifyIndividualCollected(idSurvey) || createDataEmpty(idSurvey ?? "");
+};
+
+const modifyIndividualCollected = (idSurvey: string) => {
+    const dataSurv = datas.get(idSurvey);
+    const dataOfSurvey = dataSurv && dataSurv.COLLECTED;
+    for (let prop in FieldNameEnum as any) {
+        const data = dataOfSurvey && dataOfSurvey[prop];
+        if (data && !Array.isArray(data.EDITED)) {
+            data.COLLECTED = datas.get(idSurvey)?.COLLECTED?.[prop].EDITED;
+        }
+    }
+    console.log(dataSurv);
+    return dataSurv;
+};
+
+const setData = (idSurvey: string, data: LunaticData) => {
+    datas.set(idSurvey, data);
 };
 
 const createDataEmpty = (idSurvey: string): LunaticData => {
@@ -891,7 +908,7 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
 //Return date with full french format dd/MM/YYYY
 const getFullFrenchDate = (surveyDate: string): string => {
     const splittedDate = surveyDate?.split("-");
-    return [splittedDate[2], splittedDate[1], splittedDate[0]].join("/");
+    return splittedDate?.length > 2 ? [splittedDate[2], splittedDate[1], splittedDate[0]].join("/") : "";
 };
 
 const createNameSurveyMap = (idSurveys: string[]) => {
@@ -1185,7 +1202,7 @@ const getSurveyRights = (idSurvey: string) => {
         : EdtSurveyRightsEnum.WRITE_INTERVIEWER;
 
     if (isReviewerMode) {
-        rights = isValidated ? EdtSurveyRightsEnum.READ_REVIEWER : EdtSurveyRightsEnum.WRITE_REVIEWER;
+        rights = EdtSurveyRightsEnum.WRITE_REVIEWER;
     } else {
         rights =
             isValidated || isLocked
@@ -1270,6 +1287,7 @@ export {
     nameSurveyMap,
     refreshSurveyData,
     saveData,
+    setData,
     setValue,
     surveyLocked,
     surveyValidated,
@@ -1278,5 +1296,6 @@ export {
     toIgnoreForRoute,
     userDatasMap,
     validateAllEmptySurveys,
-    validateSurvey,
+    validateSurvey
 };
+

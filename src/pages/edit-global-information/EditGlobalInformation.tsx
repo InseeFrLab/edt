@@ -1,12 +1,14 @@
 import who_are_you from "assets/illustration/who-are-you.svg";
 import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React from "react";
 import { useOutletContext } from "react-router-dom";
-import { getComponentsOfVariable, getValueOfData } from "service/survey-service";
+import { getComponentsOfVariable, getValueOfData, setValue } from "service/survey-service";
 
 const EditGlobalInformationPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -19,11 +21,17 @@ const EditGlobalInformationPage = () => {
               callbackHolder.getErrors()[componentNameId].length > 0
             : false;
 
+        dayjs.extend(customParseFormat);
+        const input = document.getElementsByClassName("MuiInputBase-input")[1].value;
+        const inputFormatted = dayjs(input, "DD/MM/YYYY").format("YYYY-MM-DD");
+        const bdd = setValue(context.idSurvey, FieldNameEnum.SURVEYDATE, inputFormatted);
+        if (bdd) context.data = bdd;
+
         const componentDateId = getComponentsOfVariable(FieldNameEnum.SURVEYDATE, context.source)[1].id;
-        const dataSurveyDate = getValueOfData(callbackHolder.getData(), FieldNameEnum.SURVEYDATE);
+        const dataSurveyDate = getValueOfData(context.data, FieldNameEnum.SURVEYDATE);
         const errorData =
-            dataSurveyDate != null &&
-            (typeof dataSurveyDate == "string" ? dataSurveyDate.includes("Invalid") : false);
+            inputFormatted != null &&
+            (typeof inputFormatted == "string" ? inputFormatted.includes("Invalid") : false);
 
         const disableButtonForDate = componentDateId
             ? callbackHolder.getErrors()[componentDateId].length > 0 || errorData
