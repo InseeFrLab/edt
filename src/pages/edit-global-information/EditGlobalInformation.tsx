@@ -28,7 +28,6 @@ const EditGlobalInformationPage = () => {
         if (bdd) context.data = bdd;
 
         const componentDateId = getComponentsOfVariable(FieldNameEnum.SURVEYDATE, context.source)[1].id;
-        const dataSurveyDate = getValueOfData(context.data, FieldNameEnum.SURVEYDATE);
         const errorData =
             inputFormatted != null &&
             (typeof inputFormatted == "string" ? inputFormatted.includes("Invalid") : false);

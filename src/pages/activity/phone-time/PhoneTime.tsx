@@ -3,7 +3,7 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -67,7 +67,7 @@ const PhoneTimePage = () => {
 
     const orchestratorProps = {
         source: context.source,
-        data: context.data,
+        data: getData(context.idSurvey),
         cbHolder: callbackHolder,
         page: getOrchestratorPage(currentPage, context.surveyRootPage),
         componentSpecificProps: componentLunaticProps,

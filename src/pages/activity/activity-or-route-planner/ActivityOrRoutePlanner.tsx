@@ -28,7 +28,7 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect, useState } from "react";
 import { isAndroid, isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { getLoopSize, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
@@ -50,6 +50,7 @@ import {
     surveyReadOnly,
 } from "service/survey-activity-service";
 import {
+    getData,
     getPrintedFirstName,
     getSource,
     getSurveyDate,
@@ -69,6 +70,7 @@ const ActivityOrRoutePlannerPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const source =
         context?.source?.components != null ? context.source : getSource(SourcesEnum.ACTIVITY_SURVEY);
+    const idSurvey = context.idSurvey ?? useParams();
 
     const { t } = useTranslation();
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
@@ -221,7 +223,6 @@ const ActivityOrRoutePlannerPage = () => {
             getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
         contextIteration = loopSize - 1;
-
         setValue(context.idSurvey, FieldNameEnum.START_TIME, startTime || null, contextIteration);
         setValue(context.idSurvey, FieldNameEnum.END_TIME, endTime || null, contextIteration);
         const updatedData = setValue(
@@ -230,7 +231,6 @@ const ActivityOrRoutePlannerPage = () => {
             isRouteBool,
             contextIteration,
         );
-
         saveData(context.idSurvey, updatedData || {}).then(() => {
             onCloseAddActivityOrRoute();
             setIsRoute(isRouteBool);
@@ -616,7 +616,7 @@ const ActivityOrRoutePlannerPage = () => {
                     <Outlet
                         context={{
                             source: source,
-                            data: context.data,
+                            data: getData(context.idSurvey),
                             idSurvey: context.idSurvey,
                             surveyRootPage: context.surveyRootPage,
                             isRoute: isRoute,

@@ -350,6 +350,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                 <Button
                     className={helpStep == 2 ? classes.addActivityButtonHelp : classes.addActivityButton}
                     variant="contained"
+                    onClick={clickToGap}
                 >
                     {t("common.navigation.add")}
                 </Button>

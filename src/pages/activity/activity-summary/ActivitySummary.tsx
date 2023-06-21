@@ -22,19 +22,22 @@ import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrR
 import DayCharacteristics from "components/edt/DayCharacteristic/DayCharacteristic";
 import DaySummary from "components/edt/DaySummary/DaySummary";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
 import { ActivitiesSummaryExportData } from "interface/entity/ActivitiesSummary";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { getLocalStorageValue } from "service/local-storage-service";
+import { getFlatLocalStorageValue, getLocalStorageValue } from "service/local-storage-service";
 import { getLoopSize, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
+    getLoopParameterizedNavigatePath,
     getNavigatePath,
     getOrchestratorPage,
     navToActivityOrPlannerOrSummary,
@@ -55,16 +58,16 @@ import {
 import {
     getFullFrenchDate,
     getPrintedFirstName,
+    getSource,
     getSurveyDate,
     getValue,
-    isDemoMode,
     lockSurvey,
     saveData,
     setValue,
     surveyLocked,
     validateSurvey,
 } from "service/survey-service";
-import { isReviewer } from "service/user-service";
+import { getUserRights } from "service/user-service";
 import ActivitiesSummaryExportTemplate from "template/summary-export/ActivitiesSummaryExportTemplate";
 import { v4 as uuidv4 } from "uuid";
 
@@ -74,6 +77,9 @@ const ActivitySummaryPage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
 
     const { t } = useTranslation();
+
+    const source =
+        context?.source?.components != null ? context.source : getSource(SourcesEnum.ACTIVITY_SURVEY);
     const [score, setScore] = React.useState<number | undefined>(undefined);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
     const localIsSummaryEdited = getLocalStorageValue(
@@ -85,6 +91,10 @@ const ActivitySummaryPage = () => {
     );
 
     let contextIteration = 0;
+    const [addActivityOrRouteFromGap, setAddActivityOrRouteFromGap] = React.useState(false);
+    const [gapStartTime, setGapStartTime] = React.useState<string>();
+    const [gapEndTime, setGapEndTime] = React.useState<string>();
+
     const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, context.idSurvey, context.source);
     const surveyDate = getSurveyDate(context.idSurvey) || "";
     const userActivitiesCharacteristics = getUserActivitiesCharacteristics(context.idSurvey, t);
@@ -171,13 +181,54 @@ const ActivitySummaryPage = () => {
         [],
     );
 
-    const onOpenAddActivityOrRoute = useCallback(() => {
-        setIsAddActivityOrRouteOpen(true);
-    }, []);
+    const onOpenAddActivityOrRoute = useCallback(
+        (event: any, startTime?: string, endTime?: string) => {
+            setIsAddActivityOrRouteOpen(true);
+            if (startTime && endTime) {
+                setAddActivityOrRouteFromGap(true);
+                setGapStartTime(startTime);
+                setGapEndTime(endTime);
+            }
+        },
+        [addActivityOrRouteFromGap, gapStartTime, gapEndTime],
+    );
 
     const onCloseAddActivityOrRoute = useCallback(() => {
         setIsAddActivityOrRouteOpen(false);
-    }, [isAddActivityOrRouteOpen]);
+    }, [isAddActivityOrRouteOpen, addActivityOrRouteFromGap]);
+
+    const onAddActivityOrRouteFromGap = (
+        isRouteBool: boolean,
+        startTime: string | undefined,
+        endTime: string | undefined,
+    ) => {
+        const loopSize = setLoopSize(
+            source,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
+        );
+        contextIteration = loopSize - 1;
+
+        setValue(context.idSurvey, FieldNameEnum.START_TIME, startTime || null, contextIteration);
+        setValue(context.idSurvey, FieldNameEnum.END_TIME, endTime || null, contextIteration);
+        const updatedData = setValue(
+            context.idSurvey,
+            FieldNameEnum.ISROUTE,
+            isRouteBool,
+            contextIteration,
+        );
+        saveData(context.idSurvey, updatedData || {}).then(() => {
+            onCloseAddActivityOrRoute();
+            navigate(
+                getLoopParameterizedNavigatePath(
+                    EdtRoutesNameEnum.ACTIVITY_DURATION,
+                    LoopEnum.ACTIVITY_OR_ROUTE,
+                    contextIteration,
+                ),
+            );
+            setAddActivityOrRouteFromGap(false);
+        });
+    };
 
     const onAddActivityOrRoute = (isRouteBool: boolean) => {
         const loopSize = setLoopSize(
@@ -195,6 +246,20 @@ const ActivitySummaryPage = () => {
         saveData(context.idSurvey, routeData || {}).then(() => {
             navToActivityOrRoute(contextIteration);
         });
+    };
+
+    const onAddActivity = useCallback((isRoute: boolean) => () => onAddActivityOrRoute(isRoute), []);
+
+    const onAddActivityGap = useCallback(
+        (isRoute: boolean, startTime?: string, endTime?: string) => () =>
+            onAddActivityOrRouteFromGap(isRoute, startTime, endTime),
+        [],
+    );
+
+    const addActivityOrRoute = (isRoute: boolean) => {
+        return addActivityOrRouteFromGap
+            ? onAddActivityGap(isRoute, gapStartTime, gapEndTime)
+            : onAddActivity(isRoute);
     };
 
     const onEditCharacteristics = useCallback(() => {
@@ -276,7 +341,9 @@ const ActivitySummaryPage = () => {
         saveAndNav();
     }, []);
 
-    const isReviewerMode = isReviewer() && !isDemoMode();
+    const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+    const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
+    const isReviewerMode = isReviewer && !isDemoMode;
 
     return (
         <SurveyPage
@@ -360,6 +427,7 @@ const ActivitySummaryPage = () => {
                             labelledBy={""}
                             describedBy={""}
                             onClick={navToCard(activity.iteration || 0)}
+                            onClickGap={onOpenAddActivityOrRoute}
                             activityOrRoute={activity}
                             onEdit={onEditActivity(activity.iteration || 0)}
                             onDelete={onDeleteActivity(
@@ -480,8 +548,8 @@ const ActivitySummaryPage = () => {
             <AddActivityOrRoute
                 labelledBy={""}
                 describedBy={""}
-                onClickActivity={useCallback(() => onAddActivityOrRoute(false), [])}
-                onClickRoute={useCallback(() => onAddActivityOrRoute(true), [])}
+                onClickActivity={addActivityOrRoute(false)}
+                onClickRoute={addActivityOrRoute(true)}
                 handleClose={onCloseAddActivityOrRoute}
                 open={isAddActivityOrRouteOpen}
             />

@@ -6,7 +6,7 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
@@ -15,9 +15,9 @@ import { getLoopInitialPage, skipBackPage, skipNextPage } from "service/loop-ser
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import { onClose, onNext, onPrevious, setEnviro, validate } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
+import { surveyReadOnly } from "service/survey-activity-service";
 import { getData, getValue } from "service/survey-service";
 import LoopSurveyPage from "../LoopSurveyPage";
-import { surveyReadOnly } from "service/survey-activity-service";
 
 export interface LoopSurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
@@ -143,7 +143,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
     const specifiquesPropsOrchestrator = Object.assign({}, specifiquesProps, componentLunaticProps);
     const orchestratorProps = {
         source: context.source,
-        data: context.data,
+        data: getData(context.idSurvey),
         cbHolder: callbackHolder,
         page: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
         subPage: getLoopPageSubpage(currentPage),

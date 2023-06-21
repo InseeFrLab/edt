@@ -22,8 +22,8 @@ import {
 import { getLanguage } from "service/referentiel-service";
 import { isPwa } from "service/responsive";
 import { getStepData } from "service/stepper.service";
-import { getData, getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import { surveyReadOnly } from "service/survey-activity-service";
+import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import SurveyPage from "../SurveyPage";
 
 export interface SurveyPageStepProps {

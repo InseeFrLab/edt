@@ -1,5 +1,7 @@
 import day_of_survey from "assets/illustration/day-of-survey.svg";
 import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
@@ -8,7 +10,7 @@ import React from "react";
 import { useOutletContext } from "react-router-dom";
 import { navToErrorPage } from "service/navigation-service";
 import { surveyReadOnly } from "service/survey-activity-service";
-import { getComponentId, getValueOfData } from "service/survey-service";
+import { getComponentId, setValue } from "service/survey-service";
 
 const DayOfSurveyPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -20,10 +22,15 @@ const DayOfSurveyPage = () => {
         if (componentId == null) {
             navToErrorPage();
         } else {
-            const dataSurveyDate = getValueOfData(callbackHolder.getData(), FieldNameEnum.SURVEYDATE);
+            dayjs.extend(customParseFormat);
+            const input = document.getElementsByClassName("MuiInputBase-input")?.[0]?.value;
+            const inputFormatted = dayjs(input, "DD/MM/YYYY").format("YYYY-MM-DD");
+            const bdd = setValue(context.idSurvey, FieldNameEnum.SURVEYDATE, inputFormatted);
+            if (bdd) context.data = bdd;
+
             const errorData =
-                dataSurveyDate != null &&
-                (typeof dataSurveyDate == "string" ? dataSurveyDate.includes("Invalid") : false);
+                inputFormatted != null &&
+                (typeof inputFormatted == "string" ? inputFormatted.includes("Invalid") : false);
             setDisabledButton(callbackHolder.getErrors()[componentId].length > 0 || errorData);
         }
     };

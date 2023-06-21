@@ -6,7 +6,7 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
@@ -26,7 +26,7 @@ import {
     setEnviro,
     validate,
 } from "service/navigation-service";
-import { getData, getValue } from "service/survey-service";
+import { getValue } from "service/survey-service";
 
 const WithScreenPage = () => {
     const { t } = useTranslation();

@@ -4,9 +4,9 @@ import disconnectIcon from "assets/illustration/disconnect.svg";
 import logo from "assets/illustration/logo.png";
 import help from "assets/illustration/mui-icon/help.svg";
 import home from "assets/illustration/mui-icon/home.svg";
+import lock from "assets/illustration/mui-icon/lock.svg";
 import powerSettings from "assets/illustration/mui-icon/power-settings.svg";
 import removeCircle from "assets/illustration/mui-icon/remove-circle.svg";
-import lock from "assets/illustration/mui-icon/lock.svg";
 import reminder_note from "assets/illustration/reminder-note.svg";
 import BreadcrumbsReviewer from "components/commons/BreadcrumbsReviewer/BreadcrumbsReviewer";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -26,7 +26,7 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { remotePutSurveyData, logout } from "service/api-service";
+import { logout, remotePutSurveyData } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import {
     getNavigatePath,
@@ -41,19 +41,19 @@ import {
     getPrintedFirstName,
     getPrintedSurveyDate,
     getSource,
+    getSurveyRights,
     getUserDatasActivity,
-    userDatasMap,
     getValue,
+    initializeHomeSurveys,
     initializeSurveysDatasCache,
     initializeSurveysIdsDemo,
-    saveData,
-    surveysIds,
-    initializeHomeSurveys,
     isDemoMode,
     lockAllSurveys,
-    validateAllEmptySurveys,
     nameSurveyMap,
-    getSurveyRights,
+    saveData,
+    surveysIds,
+    userDatasMap,
+    validateAllEmptySurveys,
 } from "service/survey-service";
 import { getUserRights } from "service/user-service";
 

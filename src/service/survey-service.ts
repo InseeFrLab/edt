@@ -452,15 +452,23 @@ const getData = (idSurvey: string): LunaticData => {
 };
 
 const modifyIndividualCollected = (idSurvey: string) => {
-    const dataSurv = datas.get(idSurvey);
-    const dataOfSurvey = dataSurv && dataSurv.COLLECTED;
-    for (let prop in FieldNameEnum as any) {
-        const data = dataOfSurvey && dataOfSurvey[prop];
-        if (data && !Array.isArray(data.EDITED)) {
-            data.COLLECTED = datas.get(idSurvey)?.COLLECTED?.[prop].EDITED;
+    const dataSurv = Object.assign({}, datas.get(idSurvey));
+
+    if (getModePersistence(dataSurv) != ModePersistenceEnum.EDITED) {
+        const dataOfSurvey = dataSurv && dataSurv.COLLECTED;
+        for (let prop in FieldNameEnum as any) {
+            const data = dataOfSurvey && dataOfSurvey[prop];
+            if (
+                data &&
+                data.EDITED &&
+                !Array.isArray(data.EDITED) &&
+                data.COLLECTED &&
+                !Array.isArray(data.COLLECTED)
+            ) {
+                data.COLLECTED = datas.get(idSurvey)?.COLLECTED?.[prop].EDITED;
+            }
         }
     }
-    console.log(dataSurv);
     return dataSurv;
 };
 
@@ -727,7 +735,8 @@ const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: num
         if (modePersistenceEdited && valueEdited && valueEdited[iteration] != null) value = valueEdited;
         return Array.isArray(value) ? value[iteration] : null;
     } else {
-        return modePersistenceEdited ? valueEdited ?? valueCollected : valueCollected;
+        let value = modePersistenceEdited && valueEdited != null ? valueEdited : valueCollected;
+        return value;
     }
 };
 
@@ -847,8 +856,10 @@ const getTabsDataInterviewer = (t: any) => {
 const getTabsData = (t: any): TabData[] => {
     if (isDemoMode()) {
         return getTabsDataReviewer(t);
-    } else {
+    } else if (isReviewer()) {
         setSurveysIdsReviewers();
+        return getTabsDataReviewer(t);
+    } else {
         return getTabsDataInterviewer(t);
     }
 };
@@ -1296,6 +1307,5 @@ export {
     toIgnoreForRoute,
     userDatasMap,
     validateAllEmptySurveys,
-    validateSurvey
+    validateSurvey,
 };
-

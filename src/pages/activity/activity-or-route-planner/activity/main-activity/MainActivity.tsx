@@ -36,10 +36,10 @@ import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
 import addLightBlue from "assets/illustration/mui-icon/add-light-blue.svg";
 import addWhite from "assets/illustration/mui-icon/add.svg";
-import chevronRight from "assets/illustration/mui-icon/arrow-forward-ios.svg";
 import chevronRightDisabled from "assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
-import extension from "assets/illustration/mui-icon/extension.svg";
+import chevronRight from "assets/illustration/mui-icon/arrow-forward-ios.svg";
 import extensionDisabled from "assets/illustration/mui-icon/extension-grey.svg";
+import extension from "assets/illustration/mui-icon/extension.svg";
 import search from "assets/illustration/mui-icon/search.svg";
 import { SEPARATOR_DEFAUT } from "constants/constants";
 import { LoopEnum } from "enumerations/LoopEnum";
@@ -47,8 +47,8 @@ import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
-import { addToAutocompleteActivityReferentiel, getData } from "service/survey-service";
 import { surveyReadOnly } from "service/survey-activity-service";
+import { addToAutocompleteActivityReferentiel } from "service/survey-service";
 
 const MainActivityPage = () => {
     const { t } = useTranslation();

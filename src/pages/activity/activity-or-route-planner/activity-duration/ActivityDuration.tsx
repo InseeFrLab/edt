@@ -27,7 +27,7 @@ import {
 } from "service/navigation-service";
 import { isDesktop } from "service/responsive";
 import { getActivitiesOrRoutes, surveyReadOnly } from "service/survey-activity-service";
-import { getValue, getValueOfData, saveData } from "service/survey-service";
+import { getData, getValue, getValueOfData, saveData } from "service/survey-service";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
@@ -215,7 +215,7 @@ const ActivityDurationPage = () => {
                 />
                 <OrchestratorForStories
                     source={context.source}
-                    data={context.data}
+                    data={getData(context.idSurvey)}
                     cbHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}

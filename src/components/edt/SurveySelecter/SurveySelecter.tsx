@@ -96,7 +96,6 @@ const SurveySelecter = (props: SurveySelecterProps) => {
     }, []);
 
     const tabsDataFiltred = tabsData.filter((_, index) => index < maxTabsPerRow);
-
     return (
         <Box id={id}>
             <AppBar className={classes.surveySelecterAppBar} position="static">

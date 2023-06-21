@@ -57,6 +57,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     });
 
     const components = getComponents();
+    const dependencies = getComponents();
     const currentErrors = getCurrentErrors();
 
     const getDataReviewer = () => {
@@ -72,7 +73,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 const edited = dataOfField?.EDITED;
                 const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
                 const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
-
                 if (bindings != null && bindings.includes(prop)) {
                     if (collected) {
                         if (collected && editedSaved) {
@@ -115,6 +115,33 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     cbHolder.getData = isReviewer() ? getDataReviewer : getDataInterviewer;
     cbHolder.getErrors = getCurrentErrors;
 
+    const getBindingDependencies = () => {
+        return (
+            components.filter((component: any) => component.componentType != "Sequence")[0]
+                ?.bindingDependencies ?? []
+        );
+    };
+
+    const getVariables = (bindingDependencies: string[], value: any) => {
+        let variables = new Map<string, any>();
+        const isReviewerMode = isReviewer();
+        const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED;
+        bindingDependencies?.forEach((bindingDependency: string) => {
+            let varE = data?.COLLECTED?.[bindingDependency]?.EDITED;
+            let varC = data?.COLLECTED?.[bindingDependency]?.COLLECTED;
+
+            const variableEdited =
+                iteration != null && varE && Array.isArray(varE) ? varE[iteration] : varE;
+            let variableCollected = iteration != null && Array.isArray(varC) ? varC[iteration] : varC;
+            variableCollected = variableCollected ?? value?.[bindingDependency];
+            const variable =
+                isReviewerMode || isLocked ? variableEdited ?? variableCollected : variableCollected;
+            console.log(value, variable);
+            variables.set(bindingDependency, variable);
+        });
+        return variables;
+    };
+
     const renderComponent = () => {
         return (
             <>
@@ -135,6 +162,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                 response,
                                 bindingDependencies,
                                 options,
+                                value,
                                 ...other
                             } = component;
                             const Component = lunatic[componentType];
@@ -148,6 +176,9 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                         errors={currentErrors}
                                         custom={edtComponents}
                                         componentSpecificProps={componentSpecificProps}
+                                        variables={getVariables(getBindingDependencies(), value)}
+                                        bindingDependencies={getBindingDependencies()}
+                                        value={value}
                                     />
                                 </div>
                             );

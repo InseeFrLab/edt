@@ -1,10 +1,10 @@
 import { WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
 import InfoIcon from "assets/illustration/info.svg";
-import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";
 import expandLess from "assets/illustration/mui-icon/expand-less.svg";
 import expandMoreWhite from "assets/illustration/mui-icon/expand-more-white.svg";
 import expandMore from "assets/illustration/mui-icon/expand-more.svg";
+import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import moreHorizontal from "assets/illustration/mui-icon/more-horizontal.svg";
 import work from "assets/illustration/mui-icon/work-full.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -25,8 +25,8 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
-import { getData, getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 import { surveyReadOnly } from "service/survey-activity-service";
+import { getData, getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 
 const WeeklyPlannerPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -111,7 +111,7 @@ const WeeklyPlannerPage = () => {
                 <FlexCenter>
                     <OrchestratorForStories
                         source={context.source}
-                        data={context.data}
+                        data={getData(context.idSurvey)}
                         cbHolder={callbackHolder}
                         page={getOrchestratorPage(currentPage)}
                         componentSpecificProps={specificProps}
