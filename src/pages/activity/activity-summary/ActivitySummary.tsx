@@ -80,10 +80,13 @@ const ActivitySummaryPage = () => {
 
     const source =
         context?.source?.components != null ? context.source : getSource(SourcesEnum.ACTIVITY_SURVEY);
+    const idSurveyPath = location.pathname.split("activity/")[1].split("/")[0];
+    let idSurvey = context.idSurvey != idSurveyPath ? idSurveyPath : context.idSurvey;
+
     const [score, setScore] = React.useState<number | undefined>(undefined);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
     const localIsSummaryEdited = getLocalStorageValue(
-        context.idSurvey,
+        idSurvey,
         LocalStorageVariableEnum.IS_EDITED_SUMMARY,
     );
     const [isSummaryEdited, setIsSummaryEdited] = React.useState<boolean>(
@@ -95,14 +98,14 @@ const ActivitySummaryPage = () => {
     const [gapStartTime, setGapStartTime] = React.useState<string>();
     const [gapEndTime, setGapEndTime] = React.useState<string>();
 
-    const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, context.idSurvey, context.source);
-    const surveyDate = getSurveyDate(context.idSurvey) || "";
-    const userActivitiesCharacteristics = getUserActivitiesCharacteristics(context.idSurvey, t);
-    const userActivitiesSummary = getUserActivitiesSummary(context.idSurvey, t);
+    const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey, context.source);
+    const surveyDate = getSurveyDate(idSurvey) || "";
+    const userActivitiesCharacteristics = getUserActivitiesCharacteristics(idSurvey, t);
+    const userActivitiesSummary = getUserActivitiesSummary(idSurvey, t);
     const exportData: ActivitiesSummaryExportData = {
         houseReference: context.data.houseReference || "",
-        firstName: getValue(context.idSurvey, FieldNameEnum.FIRSTNAME) as string,
-        surveyDate: getFullFrenchDate(getValue(context.idSurvey, FieldNameEnum.SURVEYDATE) as string),
+        firstName: getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string,
+        surveyDate: getFullFrenchDate(getValue(idSurvey, FieldNameEnum.SURVEYDATE) as string),
         activitiesAndRoutes: activitiesRoutesOrGaps,
         activities: activitiesRoutesOrGaps.filter(activity => !activity.isRoute),
         routes: activitiesRoutesOrGaps.filter(activity => activity.isRoute),
@@ -114,7 +117,7 @@ const ActivitySummaryPage = () => {
     const { classes } = useStyles({ "modifiable": modifiable });
 
     useEffect(() => {
-        setScore(getScore(context.idSurvey, t));
+        setScore(getScore(idSurvey, t));
     }, [activitiesRoutesOrGaps]);
 
     useEffect(() => {
@@ -122,9 +125,14 @@ const ActivitySummaryPage = () => {
         setLoopSize(
             context.source,
             LoopEnum.ACTIVITY_OR_ROUTE,
-            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE),
+            getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE),
         );
     }, []);
+
+    useEffect(() => {
+        idSurvey = context.idSurvey != idSurveyPath ? idSurveyPath : context.idSurvey;
+        context.idSurvey = idSurvey;
+    });
 
     const navToCard = useCallback((iteration: number) => () => navToActivityOrRoute(iteration), []);
 
@@ -132,11 +140,11 @@ const ActivitySummaryPage = () => {
         const isEditedSummary: { [key: string]: string } = {
             [LocalStorageVariableEnum.IS_EDITED_SUMMARY]: "true",
         };
-        localStorage.setItem(context.idSurvey, JSON.stringify(isEditedSummary));
+        localStorage.setItem(idSurvey, JSON.stringify(isEditedSummary));
         setIsSummaryEdited(true);
         navigate(
             getCurrentNavigatePath(
-                context.idSurvey,
+                idSurvey,
                 context.surveyRootPage,
                 context.source.maxPage,
                 context.source,
@@ -147,21 +155,24 @@ const ActivitySummaryPage = () => {
         setIsAddActivityOrRouteOpen(false);
     };
 
-    const onEditActivityOrRoute = useCallback((iteration: number) => {
-        const isEditedSummary: { [key: string]: string } = {
-            [LocalStorageVariableEnum.IS_EDITED_SUMMARY]: "true",
-        };
-        localStorage.setItem(context.idSurvey, JSON.stringify(isEditedSummary));
-        setIsSummaryEdited(true);
-        navToEditActivity(iteration);
-    }, []);
+    const onEditActivityOrRoute = useCallback(
+        (iteration: number) => {
+            const isEditedSummary: { [key: string]: string } = {
+                [LocalStorageVariableEnum.IS_EDITED_SUMMARY]: "true",
+            };
+            localStorage.setItem(idSurvey, JSON.stringify(isEditedSummary));
+            setIsSummaryEdited(true);
+            navToEditActivity(iteration);
+        },
+        [idSurvey],
+    );
 
     const onDeleteActivityOrRoute = useCallback(
         (idSurvey: string, source: LunaticModel, iteration: number) => {
             const isEditedSummary: { [key: string]: string } = {
                 [LocalStorageVariableEnum.IS_EDITED_SUMMARY]: "true",
             };
-            localStorage.setItem(context.idSurvey, JSON.stringify(isEditedSummary));
+            localStorage.setItem(idSurvey, JSON.stringify(isEditedSummary));
             setIsSummaryEdited(true);
             deleteActivity(idSurvey, source, iteration);
             activitiesRoutesOrGaps.splice(iteration);
@@ -198,6 +209,7 @@ const ActivitySummaryPage = () => {
     }, [isAddActivityOrRouteOpen, addActivityOrRouteFromGap]);
 
     const onAddActivityOrRouteFromGap = (
+        idSurvey: string,
         isRouteBool: boolean,
         startTime: string | undefined,
         endTime: string | undefined,
@@ -205,19 +217,14 @@ const ActivitySummaryPage = () => {
         const loopSize = setLoopSize(
             source,
             LoopEnum.ACTIVITY_OR_ROUTE,
-            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
+            getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
         contextIteration = loopSize - 1;
 
-        setValue(context.idSurvey, FieldNameEnum.START_TIME, startTime || null, contextIteration);
-        setValue(context.idSurvey, FieldNameEnum.END_TIME, endTime || null, contextIteration);
-        const updatedData = setValue(
-            context.idSurvey,
-            FieldNameEnum.ISROUTE,
-            isRouteBool,
-            contextIteration,
-        );
-        saveData(context.idSurvey, updatedData || {}).then(() => {
+        setValue(idSurvey, FieldNameEnum.START_TIME, startTime || null, contextIteration);
+        setValue(idSurvey, FieldNameEnum.END_TIME, endTime || null, contextIteration);
+        const updatedData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
+        saveData(idSurvey, updatedData || {}).then(() => {
             onCloseAddActivityOrRoute();
             navigate(
                 getLoopParameterizedNavigatePath(
@@ -230,42 +237,40 @@ const ActivitySummaryPage = () => {
         });
     };
 
-    const onAddActivityOrRoute = (isRouteBool: boolean) => {
+    const onAddActivityOrRoute = (idSurvey: string, isRouteBool: boolean) => {
         const loopSize = setLoopSize(
             context.source,
             LoopEnum.ACTIVITY_OR_ROUTE,
-            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
+            getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
         contextIteration = loopSize - 1;
-        const routeData = setValue(
-            context.idSurvey,
-            FieldNameEnum.ISROUTE,
-            isRouteBool,
-            contextIteration,
-        );
-        saveData(context.idSurvey, routeData || {}).then(() => {
+        const routeData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
+        saveData(idSurvey, routeData || {}).then(() => {
             navToActivityOrRoute(contextIteration);
         });
     };
 
-    const onAddActivity = useCallback((isRoute: boolean) => () => onAddActivityOrRoute(isRoute), []);
-
-    const onAddActivityGap = useCallback(
-        (isRoute: boolean, startTime?: string, endTime?: string) => () =>
-            onAddActivityOrRouteFromGap(isRoute, startTime, endTime),
+    const onAddActivity = useCallback(
+        (idSurvey: string, isRoute: boolean) => () => onAddActivityOrRoute(idSurvey, isRoute),
         [],
     );
 
-    const addActivityOrRoute = (isRoute: boolean) => {
+    const onAddActivityGap = useCallback(
+        (idSurvey: string, isRoute: boolean, startTime?: string, endTime?: string) => () =>
+            onAddActivityOrRouteFromGap(idSurvey, isRoute, startTime, endTime),
+        [],
+    );
+
+    const addActivityOrRoute = (idSurvey: string, isRoute: boolean) => {
         return addActivityOrRouteFromGap
-            ? onAddActivityGap(isRoute, gapStartTime, gapEndTime)
-            : onAddActivity(isRoute);
+            ? onAddActivityGap(idSurvey, isRoute, gapStartTime, gapEndTime)
+            : onAddActivity(idSurvey, isRoute);
     };
 
     const onEditCharacteristics = useCallback(() => {
         navigate(
             getCurrentNavigatePath(
-                context.idSurvey,
+                idSurvey,
                 context.surveyRootPage,
                 getOrchestratorPage(EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY, EdtRoutesNameEnum.ACTIVITY),
                 context.source,
@@ -295,7 +300,7 @@ const ActivitySummaryPage = () => {
 
     const [isAlertLockDisplayed, setIsAlertLockDisplayed] = useState<boolean>(false);
     const [isAlertValidateDisplayed, setIsAlertValidateDisplayed] = useState<boolean>(false);
-    const [isLocked, setIsLocked] = useState<boolean>(surveyLocked(context.idSurvey));
+    const [isLocked, setIsLocked] = useState<boolean>(surveyLocked(idSurvey));
 
     const alertLockLabels = {
         boldContent: isLocked
@@ -311,11 +316,11 @@ const ActivitySummaryPage = () => {
     };
 
     const lock = useCallback(() => {
-        lockSurvey(context.idSurvey).then((locked: any) => {
+        lockSurvey(idSurvey).then((locked: any) => {
             setIsLocked(locked);
             setIsAlertLockDisplayed(false);
         });
-    }, []);
+    }, [idSurvey]);
 
     const lockActivity = useCallback(() => setIsAlertLockDisplayed(true), []);
 
@@ -327,11 +332,11 @@ const ActivitySummaryPage = () => {
     };
 
     const validate = useCallback(() => {
-        validateSurvey(context.idSurvey).then(() => {
+        validateSurvey(idSurvey).then(() => {
             setIsAlertValidateDisplayed(false);
             navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
         });
-    }, []);
+    }, [idSurvey]);
 
     const openPopup = useCallback(() => {
         setIsAlertValidateDisplayed(true);
@@ -348,11 +353,11 @@ const ActivitySummaryPage = () => {
     return (
         <SurveyPage
             onPrevious={navToHome}
-            firstName={getPrintedFirstName(context.idSurvey)}
+            firstName={getPrintedFirstName(idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.planning-of")}
             onHelp={navToHelp}
             activityProgressBar={true}
-            idSurvey={context.idSurvey}
+            idSurvey={idSurvey}
             score={score}
             modifiable={modifiable}
         >
@@ -431,7 +436,7 @@ const ActivitySummaryPage = () => {
                             activityOrRoute={activity}
                             onEdit={onEditActivity(activity.iteration || 0)}
                             onDelete={onDeleteActivity(
-                                context.idSurvey,
+                                idSurvey,
                                 context.source,
                                 activity.iteration ?? 0,
                             )}
@@ -500,9 +505,9 @@ const ActivitySummaryPage = () => {
                                 document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
                                 fileName={
                                     t("export.activities-summary.file-name") +
-                                    getValue(context.idSurvey, FieldNameEnum.FIRSTNAME) +
+                                    getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
                                     "_" +
-                                    getValue(context.idSurvey, FieldNameEnum.SURVEYDATE) +
+                                    getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
                                     ".pdf"
                                 }
                             >
@@ -532,9 +537,9 @@ const ActivitySummaryPage = () => {
                                 document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
                                 fileName={
                                     t("export.activities-summary.file-name") +
-                                    getValue(context.idSurvey, FieldNameEnum.FIRSTNAME) +
+                                    getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
                                     "_" +
-                                    getValue(context.idSurvey, FieldNameEnum.SURVEYDATE) +
+                                    getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
                                     ".pdf"
                                 }
                             >
@@ -548,8 +553,8 @@ const ActivitySummaryPage = () => {
             <AddActivityOrRoute
                 labelledBy={""}
                 describedBy={""}
-                onClickActivity={addActivityOrRoute(false)}
-                onClickRoute={addActivityOrRoute(true)}
+                onClickActivity={addActivityOrRoute(idSurvey, false)}
+                onClickRoute={addActivityOrRoute(idSurvey, true)}
                 handleClose={onCloseAddActivityOrRoute}
                 open={isAddActivityOrRouteOpen}
             />

@@ -28,7 +28,7 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect, useState } from "react";
 import { isAndroid, isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { Outlet, useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { getLoopSize, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
@@ -70,7 +70,9 @@ const ActivityOrRoutePlannerPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const source =
         context?.source?.components != null ? context.source : getSource(SourcesEnum.ACTIVITY_SURVEY);
-    const idSurvey = context.idSurvey ?? useParams();
+
+    let idSurveyPath = location.pathname.split("activity/")[1].split("/")[0];
+    let idSurvey = context.idSurvey != idSurveyPath ? idSurveyPath : context.idSurvey;
 
     const { t } = useTranslation();
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
@@ -88,9 +90,9 @@ const ActivityOrRoutePlannerPage = () => {
     const isItDesktop = isDesktop();
 
     let contextIteration = 0;
-    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, context.idSurvey, source);
+    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey, source);
     const [snackbarText, setSnackbarText] = React.useState<string | undefined>(undefined);
-    const surveyDate = getSurveyDate(context.idSurvey) || "";
+    const surveyDate = getSurveyDate(idSurvey) || "";
     const modifiable = !surveyReadOnly(context.rightsSurvey);
 
     const { classes, cx } = useStyles({ "isIOS": isIOS, "modifiable": modifiable });
@@ -100,7 +102,7 @@ const ActivityOrRoutePlannerPage = () => {
     const [score, setScore] = React.useState<number | undefined>(undefined);
 
     const [isAlertLockDisplayed, setIsAlertLockDisplayed] = useState<boolean>(false);
-    const [isLocked, setIsLocked] = useState<boolean>(surveyLocked(context.idSurvey));
+    const [isLocked, setIsLocked] = useState<boolean>(surveyLocked(idSurvey));
 
     const alertLabels = {
         boldContent: t("page.alert-when-quit.activity-planner.alert-content-close-bold"),
@@ -131,7 +133,7 @@ const ActivityOrRoutePlannerPage = () => {
             location.pathname?.split("/")[3] == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER &&
             location.pathname?.split("/")[4] == null;
         if (isActivityPlanner) {
-            const act = getActivitiesOrRoutes(t, context.idSurvey, source);
+            const act = getActivitiesOrRoutes(t, idSurvey, source);
             if (act.overlaps.length > 0) {
                 setSnackbarText(
                     t("page.activity-planner.start-alert") +
@@ -145,6 +147,9 @@ const ActivityOrRoutePlannerPage = () => {
         } else {
             setSkip(false);
         }
+        idSurvey = context.idSurvey != idSurveyPath ? idSurveyPath : context.idSurvey;
+        context.idSurvey = idSurvey;
+        console.log(idSurvey);
     });
 
     useEffect(() => {
@@ -152,7 +157,7 @@ const ActivityOrRoutePlannerPage = () => {
         setLoopSize(
             source,
             LoopEnum.ACTIVITY_OR_ROUTE,
-            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE),
+            getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE),
         );
         if (overlaps.length > 0) {
             setSnackbarText(
@@ -173,13 +178,13 @@ const ActivityOrRoutePlannerPage = () => {
         }
     }, [location]);
 
-    const onFinish = (closed: boolean) => {
+    const onFinish = (closed: boolean, idSurvey: string) => {
         if (closed) {
-            const data = setValue(context.idSurvey, FieldNameEnum.ISCLOSED, true);
-            saveData(context.idSurvey, data ? data : callbackHolder.getData()).then(() => {
+            const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
+            saveData(idSurvey, data ? data : callbackHolder.getData()).then(() => {
                 navigate(
                     getCurrentNavigatePath(
-                        context.idSurvey,
+                        idSurvey,
                         context.surveyRootPage,
                         getOrchestratorPage(
                             EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
@@ -194,25 +199,21 @@ const ActivityOrRoutePlannerPage = () => {
         }
     };
 
-    const onAddActivityOrRoute = (isRouteBool: boolean) => {
+    const onAddActivityOrRoute = (isRouteBool: boolean, idSurvey: string) => {
         const loopSize = setLoopSize(
             source,
             LoopEnum.ACTIVITY_OR_ROUTE,
-            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
+            getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
         contextIteration = loopSize - 1;
-        const routeData = setValue(
-            context.idSurvey,
-            FieldNameEnum.ISROUTE,
-            isRouteBool,
-            contextIteration,
-        );
-        saveData(context.idSurvey, routeData || {}).then(() => {
-            navToActivityOrRoute(contextIteration, isRouteBool);
+        const routeData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
+        saveData(idSurvey, routeData || {}).then(() => {
+            navToActivityOrRoute(idSurvey, contextIteration, isRouteBool);
         });
     };
 
     const onAddActivityOrRouteFromGap = (
+        idSurvey: string,
         isRouteBool: boolean,
         startTime: string | undefined,
         endTime: string | undefined,
@@ -220,18 +221,13 @@ const ActivityOrRoutePlannerPage = () => {
         const loopSize = setLoopSize(
             source,
             LoopEnum.ACTIVITY_OR_ROUTE,
-            getLoopSize(context.idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
+            getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
         contextIteration = loopSize - 1;
-        setValue(context.idSurvey, FieldNameEnum.START_TIME, startTime || null, contextIteration);
-        setValue(context.idSurvey, FieldNameEnum.END_TIME, endTime || null, contextIteration);
-        const updatedData = setValue(
-            context.idSurvey,
-            FieldNameEnum.ISROUTE,
-            isRouteBool,
-            contextIteration,
-        );
-        saveData(context.idSurvey, updatedData || {}).then(() => {
+        setValue(idSurvey, FieldNameEnum.START_TIME, startTime || null, contextIteration);
+        setValue(idSurvey, FieldNameEnum.END_TIME, endTime || null, contextIteration);
+        const updatedData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
+        saveData(idSurvey, updatedData || {}).then(() => {
             onCloseAddActivityOrRoute();
             setIsRoute(isRouteBool);
             navigate(
@@ -270,12 +266,12 @@ const ActivityOrRoutePlannerPage = () => {
         navToHelp();
     }, []);
 
-    const navToActivityOrRoute = (iteration: number, isItRoute?: boolean): void => {
+    const navToActivityOrRoute = (idSurvey: string, iteration: number, isItRoute?: boolean): void => {
         setIsSubChildDisplayed(true);
         setIsRoute(isItRoute ? true : false);
         navigate(
             getCurrentNavigatePath(
-                context.idSurvey,
+                idSurvey,
                 context.surveyRootPage,
                 source.maxPage,
                 source,
@@ -317,7 +313,7 @@ const ActivityOrRoutePlannerPage = () => {
     );
 
     useEffect(() => {
-        setScore(getScore(context.idSurvey, t));
+        setScore(getScore(idSurvey, t));
     }, [activitiesRoutesOrGaps]);
 
     const navToActivityRouteHome = useCallback(() => {
@@ -336,26 +332,33 @@ const ActivityOrRoutePlannerPage = () => {
         [],
     );
 
-    const onAddActivity = useCallback((isRoute: boolean) => () => onAddActivityOrRoute(isRoute), []);
-
-    const onAddActivityGap = useCallback(
-        (isRoute: boolean, startTime?: string, endTime?: string) => () =>
-            onAddActivityOrRouteFromGap(isRoute, startTime, endTime),
+    const onAddActivity = useCallback(
+        (idSurvey: string, isRoute: boolean) => () => onAddActivityOrRoute(isRoute, idSurvey),
         [],
     );
 
-    const addActivityOrRoute = (isRoute: boolean) => {
+    const onAddActivityGap = useCallback(
+        (idSurvey: string, isRoute: boolean, startTime?: string, endTime?: string) => () =>
+            onAddActivityOrRouteFromGap(idSurvey, isRoute, startTime, endTime),
+        [],
+    );
+
+    const addActivityOrRoute = (idSurvey: string, isRoute: boolean) => {
         return addActivityOrRouteFromGap
-            ? onAddActivityGap(isRoute, gapStartTime, gapEndTime)
-            : onAddActivity(isRoute);
+            ? onAddActivityGap(idSurvey, isRoute, gapStartTime, gapEndTime)
+            : onAddActivity(idSurvey, isRoute);
     };
 
     const navToCard = useCallback(
-        (iteration: number, isRoute?: boolean) => () => navToActivityOrRoute(iteration, isRoute),
+        (iteration: number, isRoute?: boolean) => () =>
+            navToActivityOrRoute(idSurvey, iteration, isRoute),
         [],
     );
 
-    const closeActivity = useCallback((closed: boolean) => () => onFinish(closed), []);
+    const closeActivity = useCallback(
+        (closed: boolean, surveyId: string) => () => onFinish(closed, surveyId),
+        [],
+    );
 
     const displayAlert = useCallback(
         (setDisplayAlert: React.Dispatch<React.SetStateAction<boolean>>, display: boolean) => () =>
@@ -380,11 +383,11 @@ const ActivityOrRoutePlannerPage = () => {
     const heightClass = isPwa() ? classes.fullHeight : classes.fullHeightNav;
 
     const lock = useCallback(() => {
-        lockSurvey(context.idSurvey).then((locked: any) => {
+        lockSurvey(idSurvey).then((locked: any) => {
             setIsLocked(locked);
             setIsAlertLockDisplayed(false);
         });
-    }, []);
+    }, [idSurvey]);
 
     const lockActivity = useCallback(() => setIsAlertLockDisplayed(true), []);
 
@@ -405,9 +408,9 @@ const ActivityOrRoutePlannerPage = () => {
                             onPrevious={navToActivityRouteHome}
                             onEdit={onEdit}
                             onHelp={onHelp}
-                            firstName={getPrintedFirstName(context.idSurvey)}
+                            firstName={getPrintedFirstName(idSurvey)}
                             firstNamePrefix={t("component.survey-page-edit-header.planning-of")}
-                            onFinish={closeActivity(false)}
+                            onFinish={closeActivity(false, idSurvey)}
                             onAdd={onOpenAddActivityOrRoute}
                             finishLabel={t("common.navigation.finish")}
                             addLabel={
@@ -416,7 +419,7 @@ const ActivityOrRoutePlannerPage = () => {
                                     : undefined
                             }
                             activityProgressBar={true}
-                            idSurvey={context.idSurvey}
+                            idSurvey={idSurvey}
                             score={score}
                             modifiable={modifiable}
                         >
@@ -438,7 +441,7 @@ const ActivityOrRoutePlannerPage = () => {
                                         <FlexCenter>
                                             <Alert
                                                 isAlertDisplayed={isAlertDisplayed}
-                                                onCompleteCallBack={closeActivity(true)}
+                                                onCompleteCallBack={closeActivity(true, idSurvey)}
                                                 onCancelCallBack={displayAlert(
                                                     setIsAlertDisplayed,
                                                     false,
@@ -565,7 +568,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                                 activity,
                                                             )}
                                                             onDelete={onDeleteActivity(
-                                                                context.idSurvey,
+                                                                idSurvey,
                                                                 source,
                                                                 activity.iteration ?? 0,
                                                             )}
@@ -584,8 +587,8 @@ const ActivityOrRoutePlannerPage = () => {
                         <AddActivityOrRoute
                             labelledBy={""}
                             describedBy={""}
-                            onClickActivity={addActivityOrRoute(false)}
-                            onClickRoute={addActivityOrRoute(true)}
+                            onClickActivity={addActivityOrRoute(idSurvey, false)}
+                            onClickRoute={addActivityOrRoute(idSurvey, true)}
                             handleClose={onCloseAddActivityOrRoute}
                             open={isAddActivityOrRouteOpen}
                         />
@@ -616,12 +619,12 @@ const ActivityOrRoutePlannerPage = () => {
                     <Outlet
                         context={{
                             source: source,
-                            data: getData(context.idSurvey),
-                            idSurvey: context.idSurvey,
+                            data: getData(idSurvey),
+                            idSurvey: idSurvey,
                             surveyRootPage: context.surveyRootPage,
                             isRoute: isRoute,
                             activityOrRoute: activityOrRoute,
-                            rightsSurvey: getSurveyRights(context.idSurvey ?? ""),
+                            rightsSurvey: getSurveyRights(idSurvey ?? ""),
                         }}
                     />
                 </Box>
