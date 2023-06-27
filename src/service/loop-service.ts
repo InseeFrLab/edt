@@ -129,7 +129,9 @@ const ignoreVariablesCondtionals = (
     //is page of values of conditional = true
     if (isPageOfConditional) {
         const mustShowPageOfConditional =
-            valueOfConditional[iteration] != null && valueOfConditional[iteration] == "true";
+            valueOfConditional &&
+            valueOfConditional?.[iteration] != null &&
+            valueOfConditional?.[iteration] == "true";
         //in page of conditional select yes
         if (mustShowPageOfConditional) {
             let ignore = false;
