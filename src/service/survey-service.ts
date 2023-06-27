@@ -417,7 +417,9 @@ const getSurveyDataHousehold = (surveys: UserSurveys[]) => {
 
     const firstSurvey = getOrderedSurveys(activitiesSurveys, workTimeSurveys)[0];
     const firstSurveyDate = getValue(firstSurvey.data.surveyUnitId, FieldNameEnum.SURVEYDATE) as string;
-    return dayjs(generateDateFromStringInput(firstSurveyDate ?? "")).format("DD/MM/YYYY");
+    return firstSurveyDate
+        ? dayjs(generateDateFromStringInput(firstSurveyDate)).format("DD/MM/YYYY")
+        : undefined;
 };
 
 const getListSurveysHousehold = (): Household[] => {
@@ -1215,9 +1217,27 @@ const getSurveyRights = (idSurvey: string) => {
     if (isReviewerMode) {
         rights = EdtSurveyRightsEnum.WRITE_REVIEWER;
     } else {
-        rights = isLocked ? EdtSurveyRightsEnum.READ_INTERVIEWER : EdtSurveyRightsEnum.WRITE_INTERVIEWER;
+        const existVariable = existVariableEdited(idSurvey);
+        console.log(existVariable);
+        rights =
+            isLocked || isValidated || existVariable
+                ? EdtSurveyRightsEnum.READ_INTERVIEWER
+                : EdtSurveyRightsEnum.WRITE_INTERVIEWER;
     }
     return rights;
+};
+
+const existVariableEdited = (idSurvey: string) => {
+    const dataSurv = Object.assign({}, datas.get(idSurvey));
+    const dataOfSurvey = dataSurv && dataSurv.COLLECTED;
+
+    for (let prop in FieldNameEnum as any) {
+        const data = dataOfSurvey && dataOfSurvey[prop];
+        if (data && data.EDITED) {
+            return true;
+        }
+    }
+    return false;
 };
 
 const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum => {
