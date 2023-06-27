@@ -15,15 +15,15 @@ import DayCard from "components/edt/DayCard/DayCard";
 import WeekCard from "components/edt/WeekCard/WeekCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
+import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { SurveyData } from "interface/entity/Api";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { useAuth } from "oidc-react";
 import { callbackHolder } from "orchestrator/Orchestrator";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { logout, remotePutSurveyData } from "service/api-service";
@@ -44,6 +44,7 @@ import {
     getSurveyRights,
     getUserDatasActivity,
     getValue,
+    initializeDatas,
     initializeHomeSurveys,
     initializeSurveysDatasCache,
     initializeSurveysIdsDemo,
@@ -61,14 +62,23 @@ const HomeSurveyedPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { classes, cx } = useStyles();
-    const auth = useAuth();
+
     const [isAlertDisplayed, setIsAlertDisplayed] = React.useState<boolean>(false);
+    const [error, setError] = React.useState<ErrorCodeEnum | undefined>(undefined);
+    const [initialized, setInitialized] = React.useState<boolean>(false);
+
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const isDemo = isDemoMode();
     const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
     const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
 
-    let [initialized, setInitialized] = React.useState(false);
+    useEffect(() => {
+        if (navigator.onLine) {
+            initializeDatas(setError).then(() => {
+                setInitialized(true);
+            });
+        }
+    }, []);
 
     const alertProps = {
         isAlertDisplayed: isAlertDisplayed,

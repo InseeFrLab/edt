@@ -479,8 +479,7 @@ const setData = (idSurvey: string, data: LunaticData) => {
 };
 
 const createDataEmpty = (idSurvey: string): LunaticData => {
-    const length = idSurvey.length - 1;
-    const householdId = ""; //idSurvey.substring(0, length);
+    const householdId = "";
 
     return {
         COLLECTED: {},
@@ -1227,8 +1226,8 @@ const getSurveyRights = (idSurvey: string) => {
     return rights;
 };
 
-const existVariableEdited = (idSurvey: string) => {
-    const dataSurv = Object.assign({}, datas.get(idSurvey));
+const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
+    const dataSurv = Object.assign({}, data ?? datas.get(idSurvey ?? ""));
     const dataOfSurvey = dataSurv && dataSurv.COLLECTED;
 
     for (let prop in FieldNameEnum as any) {
@@ -1243,7 +1242,11 @@ const existVariableEdited = (idSurvey: string) => {
 const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum => {
     const isReviewerMode = isReviewer();
     const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED;
-    return isReviewerMode || isLocked ? ModePersistenceEnum.EDITED : ModePersistenceEnum.COLLECTED;
+    const variableEdited = existVariableEdited(undefined, data);
+    console.log(variableEdited);
+    return isReviewerMode || isLocked || variableEdited
+        ? ModePersistenceEnum.EDITED
+        : ModePersistenceEnum.COLLECTED;
 };
 
 const getValueWithData = (
