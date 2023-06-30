@@ -3,10 +3,10 @@ import { Box, Button, Modal } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
@@ -48,8 +48,8 @@ import { useState } from "react";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { mockData } from "service/survey-activity-service";
-import { addToAutocompleteActivityReferentiel, getData, getSource } from "service/survey-service";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { addToAutocompleteActivityReferentiel, getSource } from "service/survey-service";
+
 const HelpSubCategoryActivity = () => {
     const navigate = useNavigate();
     const { classes, cx } = useStyles();
@@ -254,7 +254,6 @@ const HelpSubCategoryActivity = () => {
             </>
         );
     };
-    const context: OrchestratorContext = useOutletContext();
 
     return (
         <Box className={classes.root}>

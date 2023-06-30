@@ -149,7 +149,6 @@ const ActivityOrRoutePlannerPage = () => {
         }
         idSurvey = context.idSurvey != idSurveyPath ? idSurveyPath : context.idSurvey;
         context.idSurvey = idSurvey;
-        console.log(idSurvey);
     });
 
     useEffect(() => {

@@ -57,7 +57,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     });
 
     const components = getComponents();
-    const dependencies = getComponents();
     const currentErrors = getCurrentErrors();
 
     const getDataReviewer = () => {
@@ -155,15 +154,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                         )}
                     >
                         {components.map(function (component: any) {
-                            const {
-                                id,
-                                componentType,
-                                response,
-                                bindingDependencies,
-                                options,
-                                value,
-                                ...other
-                            } = component;
+                            const { id, componentType, response, options, value, ...other } = component;
                             const Component = lunatic[componentType];
                             return (
                                 <div className="lunatic lunatic-component" key={`component-${id}`}>
