@@ -324,7 +324,7 @@ const refreshSurveyData = (setError: (error: ErrorCodeEnum) => void): Promise<an
 };
 
 const initializeSurveysIdsDataModeReviewer = (
-    setError?: (error: ErrorCodeEnum) => void,
+    setError: (error: ErrorCodeEnum) => void,
 ): Promise<any> => {
     initializeSurveysIdsModeReviewer();
     return initializeSurveysIds(surveysIds).then(() => {

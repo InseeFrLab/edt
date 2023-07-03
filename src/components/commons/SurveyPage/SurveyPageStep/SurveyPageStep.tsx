@@ -7,7 +7,7 @@ import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
-import { SetStateAction, useCallback, useState } from "react";
+import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { isAndroid, isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router";
@@ -53,7 +53,11 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
-    setEnviro(context, useNavigate(), callbackHolder);
+
+    useEffect(() => {
+        setEnviro(context, useNavigate(), callbackHolder);
+    });
+
     const { classes, cx } = useStyles({
         "isMobile": !isPwa(),
         "isIOS": isIOS,
