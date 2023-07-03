@@ -234,8 +234,7 @@
                 "content-not-locked": "En cochant cette option, l'enquêté pourra modifier le carnet."
             },
             "validate-popup": {
-                "boldContent": "Êtes-vous sûr de vouloir valider le carnet ?",
-                "content": "En cochant cette option, vous ne pourrez plus modifier le carnet."
+                "boldContent": "Êtes-vous sûr de vouloir valider le carnet ?"
             }
         },
         "breadcrumbs-reviewer": {

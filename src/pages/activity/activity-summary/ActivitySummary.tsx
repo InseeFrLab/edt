@@ -326,7 +326,7 @@ const ActivitySummaryPage = () => {
 
     const alertValidateLabels = {
         boldContent: t("page.reviewer-home.validate-popup.boldContent"),
-        content: t("page.reviewer-home.validate-popup.content"),
+        content: "",
         cancel: t("page.alert-when-quit.alert-cancel"),
         complete: t("page.reviewer-home.validate-survey"),
     };
