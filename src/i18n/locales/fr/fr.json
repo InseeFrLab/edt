@@ -62,6 +62,10 @@
             "survey-selecter": {
                 "id": "Barre d'onglets pour PC et tablette",
                 "aria-label": "Barre d'onglets pour choisir un questionnaire"
+            },
+            "surveys-overviewer": {
+                "aria-label-search": "Search",
+                "aria-label-filter": "Filter carnets validatées"
             }
         },
         "asset": {

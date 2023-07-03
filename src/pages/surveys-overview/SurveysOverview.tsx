@@ -1,10 +1,10 @@
-import { makeStylesEdt, important } from "@inseefrlab/lunatic-edt";
-import { Checkbox, InputAdornment, OutlinedInput, Typography, Button } from "@mui/material";
+import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { Button, Checkbox, InputAdornment, OutlinedInput, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import arrowForwardIosGrey from "assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
-import refresh from "assets/illustration/mui-icon/refresh-white.svg";
 import home from "assets/illustration/mui-icon/home.svg";
 import person from "assets/illustration/mui-icon/person-white.svg";
+import refresh from "assets/illustration/mui-icon/refresh-white.svg";
 import search from "assets/illustration/mui-icon/search.svg";
 import stats from "assets/illustration/stats.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -16,13 +16,13 @@ import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
+import { isMobile } from "service/responsive";
 import {
     getListSurveysHousehold,
-    initializeSurveysIdsDataModeReviewer,
     initializeListSurveys,
+    initializeSurveysIdsDataModeReviewer,
     refreshSurveyData,
 } from "service/survey-service";
-import { isMobile } from "service/responsive";
 
 const SurveysOverviewPage = () => {
     const { classes, cx } = useStyles();
@@ -197,9 +197,17 @@ const SurveysOverviewPage = () => {
                                 <img src={search} alt={t("accessibility.asset.mui-icon.search")} />
                             </InputAdornment>
                         }
+                        inputProps={{
+                            "aria-label": t("accessibility.component.surveys-overviewer.search"),
+                        }}
                     ></OutlinedInput>
                     <Box className={cx(classes.filterBox)}>
-                        <Checkbox onChange={onFilterValidatedSurveyChange} />
+                        <Checkbox
+                            onChange={onFilterValidatedSurveyChange}
+                            inputProps={{
+                                "aria-label": t("accessibility.component.surveys-overviewer.filter"),
+                            }}
+                        />
                         {t("page.surveys-overview.filter-label")}
                     </Box>
                 </Box>
