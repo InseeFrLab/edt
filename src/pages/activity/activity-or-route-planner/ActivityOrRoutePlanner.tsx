@@ -96,7 +96,11 @@ const ActivityOrRoutePlannerPage = () => {
     const surveyDate = getSurveyDate(idSurvey) || "";
     const modifiable = !surveyReadOnly(context.rightsSurvey);
 
-    const { classes, cx } = useStyles({ "isIOS": isIOS, "modifiable": modifiable });
+    const { classes, cx } = useStyles({
+        "isIOS": isIOS,
+        "modifiable": modifiable,
+        "isOpen": context.isOpenHeader ?? false,
+    });
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const [skip, setSkip] = useState<boolean>(false);
@@ -646,9 +650,9 @@ const ActivityOrRoutePlannerPage = () => {
     );
 };
 
-const useStyles = makeStylesEdt<{ isIOS: boolean; modifiable: boolean }>({
+const useStyles = makeStylesEdt<{ isIOS: boolean; modifiable: boolean; isOpen: boolean }>({
     "name": { ActivityOrRoutePlannerPage },
-})((theme, { isIOS, modifiable }) => ({
+})((theme, { isIOS, modifiable, isOpen }) => ({
     snackbar: {
         bottom: "90px !important",
         "& .MuiSnackbarContent-root": {
@@ -686,7 +690,7 @@ const useStyles = makeStylesEdt<{ isIOS: boolean; modifiable: boolean }>({
     },
     surveyPageBoxTablet: {
         height: "100vh",
-        maxHeight: isIOS ? "87vh" : "94vh",
+        maxHeight: isIOS ? (isOpen ? "80vh" : "87vh") : "94vh",
     },
     outletBoxDesktop: {
         flexGrow: "12",

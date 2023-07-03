@@ -1222,7 +1222,6 @@ const getSurveyRights = (idSurvey: string) => {
         rights = EdtSurveyRightsEnum.WRITE_REVIEWER;
     } else {
         const existVariable = existVariableEdited(idSurvey);
-        console.log(existVariable);
         rights =
             isLocked || isValidated || existVariable
                 ? EdtSurveyRightsEnum.READ_INTERVIEWER

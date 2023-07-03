@@ -6,7 +6,7 @@ import { SourcesEnum } from "enumerations/SourcesEnum";
 import { TabData } from "interface/component/Component";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import {
@@ -29,9 +29,12 @@ const ActivityPage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
     const surveyRootPage = getCurrentSurveyRootPage();
     const { t } = useTranslation();
+
     const tabsData = getTabsData(t);
     const selectedTab = tabsData.findIndex(tab => tab.idSurvey === idSurvey);
     const maxTabsPerRow = 4;
+
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (idSurvey && source) {
@@ -43,6 +46,19 @@ const ActivityPage = () => {
             navigate(getParameterizedNavigatePath(EdtRoutesNameEnum.ERROR, ErrorCodeEnum.COMMON));
         }
     }, []);
+
+    const handleClickHeader = () => {
+        const classSelecterOpen = document.getElementById("tabs-survey-selecter-2");
+        setIsOpen(classSelecterOpen !== null);
+    };
+
+    useEffect(() => {
+        window.addEventListener("click", handleClickHeader);
+
+        return () => {
+            window.removeEventListener("click", handleClickHeader);
+        };
+    });
 
     const handleTabSelecterChange = useCallback((tabData: TabData) => {
         if (tabData.isActivitySurvey) {
@@ -75,6 +91,7 @@ const ActivityPage = () => {
                     idSurvey: idSurvey,
                     surveyRootPage: surveyRootPage,
                     rightsSurvey: getSurveyRights(idSurvey ?? ""),
+                    isOpenHeader: isOpen,
                 }}
             />
         </>

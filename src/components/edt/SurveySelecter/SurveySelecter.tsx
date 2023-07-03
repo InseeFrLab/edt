@@ -32,6 +32,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
     } = props;
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
+
     const [valueRowOne, setValueRowOne] = React.useState<number | false>(
         selectedTab < maxTabsPerRow ? selectedTab : false,
     );
@@ -105,6 +106,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                         onChange={handleChangeRowOne}
                         className={classes.tabsBox}
                         aria-label={ariaLabel}
+                        id="tabs-survey-selecter"
                     >
                         {tabsDataFiltred.map((tabData, index) =>
                             getTab(tabData, index, maxTabIndex + index + 1),
@@ -125,6 +127,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                         onChange={handleChangeRowTwo}
                         className={classes.tabsBox}
                         aria-label={ariaLabel}
+                        id="tabs-survey-selecter-2"
                     >
                         {tabsData
                             .filter((_, index) => index >= maxTabsPerRow)

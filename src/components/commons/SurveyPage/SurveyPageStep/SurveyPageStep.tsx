@@ -54,7 +54,11 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
-    const { classes, cx } = useStyles({ "isMobile": !isPwa(), "isIOS": isIOS });
+    const { classes, cx } = useStyles({
+        "isMobile": !isPwa(),
+        "isIOS": isIOS,
+        "isOpen": context.isOpenHeader ?? false,
+    });
 
     const stepData = getStepData(currentPage);
     const modifiable = !surveyReadOnly(context.rightsSurvey);
@@ -169,19 +173,19 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     );
 };
 
-const useStyles = makeStylesEdt<{ isMobile: boolean; isIOS: boolean }>({ "name": { SurveyPageStep } })(
-    (theme, { isIOS }) => ({
-        bottomPadding: {
-            paddingBottom: "6rem",
-        },
-        pageDesktop: {
-            height: "100%",
-        },
-        pageMobileTablet: {
-            height: "100%",
-            maxHeight: isIOS ? "87vh" : "94vh",
-        },
-    }),
-);
+const useStyles = makeStylesEdt<{ isMobile: boolean; isIOS: boolean; isOpen: boolean }>({
+    "name": { SurveyPageStep },
+})((theme, { isIOS, isOpen }) => ({
+    bottomPadding: {
+        paddingBottom: "6rem",
+    },
+    pageDesktop: {
+        height: "100%",
+    },
+    pageMobileTablet: {
+        height: "100%",
+        maxHeight: isIOS ? (isOpen ? "80vh" : "87vh") : "94vh",
+    },
+}));
 
 export default SurveyPageStep;

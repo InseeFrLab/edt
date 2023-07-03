@@ -99,6 +99,7 @@ export interface OrchestratorContext {
     isRoute?: boolean;
     activityOrRoute?: ActivityRouteOrGap;
     global?: boolean;
+    isOpenHeader?: boolean;
 }
 
 export interface LoopData {
