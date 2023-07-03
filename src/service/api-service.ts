@@ -2,8 +2,8 @@ import { NomenclatureActivityOption } from "@inseefrlab/lunatic-edt";
 import axios from "axios";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
-import { SurveyData, UserSurveys, StateData } from "interface/entity/Api";
-import { ReferentielData, SourceData, LunaticData } from "interface/lunatic/Lunatic";
+import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
+import { LunaticData, ReferentielData, SourceData } from "interface/lunatic/Lunatic";
 import jwt, { JwtPayload } from "jwt-decode";
 import { AuthContextProps, User } from "oidc-react";
 import { getAuth, getUserToken, isReviewer } from "./user-service";
@@ -296,7 +296,10 @@ const remoteGetSurveyData = (
     });
 };
 
-const requestGetDataReviewer = (idSurvey: string): Promise<LunaticData> => {
+const requestGetDataReviewer = (
+    idSurvey: string,
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<LunaticData> => {
     return new Promise<LunaticData>(resolve => {
         axios
             .get(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data", getHeader())
@@ -306,11 +309,19 @@ const requestGetDataReviewer = (idSurvey: string): Promise<LunaticData> => {
                 } else {
                     resolve(response.data);
                 }
+            })
+            .catch(err => {
+                if (err.response?.status === 403) {
+                    setError(ErrorCodeEnum.NO_RIGHTS);
+                }
             });
     });
 };
 
-const requestGetStateReviewer = (idSurvey: string): Promise<StateData> => {
+const requestGetStateReviewer = (
+    idSurvey: string,
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<StateData> => {
     return new Promise<StateData>(resolve => {
         axios
             .get(
@@ -319,13 +330,21 @@ const requestGetStateReviewer = (idSurvey: string): Promise<StateData> => {
             )
             .then(response => {
                 resolve(response.data);
+            })
+            .catch(err => {
+                if (err.response?.status === 403) {
+                    setError(ErrorCodeEnum.NO_RIGHTS);
+                }
             });
     });
 };
 
-const requestGetSurveyDataReviewer = (idSurvey: string): Promise<SurveyData> => {
-    return requestGetDataReviewer(idSurvey).then(data => {
-        return requestGetStateReviewer(idSurvey).then(stateData => {
+const requestGetSurveyDataReviewer = (
+    idSurvey: string,
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<SurveyData> => {
+    return requestGetDataReviewer(idSurvey, setError).then(data => {
+        return requestGetStateReviewer(idSurvey, setError).then(stateData => {
             return new Promise(resolve => {
                 const surveyData: SurveyData = {
                     stateData: stateData,
@@ -339,12 +358,12 @@ const requestGetSurveyDataReviewer = (idSurvey: string): Promise<SurveyData> => 
 
 const remoteGetSurveyDataReviewer = (
     idSurvey: string,
-    setError?: (error: ErrorCodeEnum) => void,
+    setError: (error: ErrorCodeEnum) => void,
 ): Promise<SurveyData> => {
     const isReviewerMode = isReviewer();
     if (!isReviewerMode) setError && setError(ErrorCodeEnum.NO_RIGHTS);
 
-    return requestGetSurveyDataReviewer(idSurvey).catch(err => {
+    return requestGetSurveyDataReviewer(idSurvey, setError).catch(err => {
         if (err.response?.status === 403) {
             setError && setError(ErrorCodeEnum.NO_RIGHTS);
         } else {
@@ -356,12 +375,12 @@ const remoteGetSurveyDataReviewer = (
 
 export {
     fetchReferentiel,
-    fetchUserSurveysInfo,
+    fetchReviewerSurveysAssignments,
     fetchSurveysSourcesByIds,
-    remotePutSurveyData,
-    remotePutSurveyDataReviewer,
+    fetchUserSurveysInfo,
+    logout,
     remoteGetSurveyData,
     remoteGetSurveyDataReviewer,
-    fetchReviewerSurveysAssignments,
-    logout,
+    remotePutSurveyData,
+    remotePutSurveyDataReviewer,
 };

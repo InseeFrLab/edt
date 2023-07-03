@@ -316,18 +316,20 @@ const initializeSurveysIdsModeReviewer = () => {
     surveysIds = innerSurveysIds;
 };
 
-const refreshSurveyData = (): Promise<any> => {
+const refreshSurveyData = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     initData = false;
-    return getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]).then(() => {
+    return getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS], setError).then(() => {
         return initializeSurveysDatasCache();
     });
 };
 
-const initializeSurveysIdsDataModeReviewer = (): Promise<any> => {
+const initializeSurveysIdsDataModeReviewer = (
+    setError?: (error: ErrorCodeEnum) => void,
+): Promise<any> => {
     initializeSurveysIdsModeReviewer();
     return initializeSurveysIds(surveysIds).then(() => {
         if (!initData && navigator.onLine) {
-            return refreshSurveyData();
+            return refreshSurveyData(setError);
         } else {
             return initializeSurveysDatasCache();
         }
@@ -349,7 +351,7 @@ const initializeData = (remoteSurveyData: SurveyData, surveyId: string) => {
 
 const getRemoteSavedSurveysDatas = (
     surveysIds: string[],
-    setError?: (error: ErrorCodeEnum) => void,
+    setError: (error: ErrorCodeEnum) => void,
 ): Promise<any> => {
     const promises: Promise<any>[] = [];
     const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;

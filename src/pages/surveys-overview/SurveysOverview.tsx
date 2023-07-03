@@ -12,6 +12,8 @@ import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import ReviewerPage from "components/commons/ReviewerPage/ReviewerPage";
 import HouseholdCard from "components/edt/HouseholdCard/HouseholdCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
+import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -38,17 +40,21 @@ const SurveysOverviewPage = () => {
     let [searchResult, setSearchResult] = React.useState(dataHouseholds);
     let [filterValidatedResult, setFilterValidatedResult] = React.useState(emptyArray);
     let [initialized, setInitialized] = React.useState(false);
+    const [error, setError] = React.useState<ErrorCodeEnum | undefined>(undefined);
 
     const initHouseholds = () => {
         dataHouseholds = getListSurveysHousehold();
         setSearchResult(dataHouseholds);
-        setInitialized(true);
     };
 
     useEffect(() => {
-        initializeSurveysIdsDataModeReviewer().then(() => {
-            initHouseholds();
-        });
+        initializeSurveysIdsDataModeReviewer(setError)
+            .then(() => {
+                initHouseholds();
+            })
+            .finally(() => {
+                setInitialized(true);
+            });
     }, []);
 
     const navToReviewerHome = useCallback(() => {
@@ -58,8 +64,8 @@ const SurveysOverviewPage = () => {
     const refreshHouseholds = useCallback(() => {
         setInitialized(false);
         initializeListSurveys().then(() => {
-            refreshSurveyData().then(() => {
-                initHouseholds();
+            refreshSurveyData(setError).finally(() => {
+                setInitialized(true);
             });
         });
     }, []);
@@ -170,7 +176,22 @@ const SurveysOverviewPage = () => {
         );
     }, [searchResult]);
 
-    return initialized ? (
+    const renderPageOrLoadingOrError = (page: any) => {
+        if (initialized) {
+            return page;
+        } else {
+            return !error ? (
+                <LoadingFull
+                    message={t("page.home.loading.message")}
+                    thanking={t("page.home.loading.thanking")}
+                />
+            ) : (
+                <ErrorPage errorCode={error} atInit={true} />
+            );
+        }
+    };
+
+    return renderPageOrLoadingOrError(
         <ReviewerPage
             className={classes.reviewerPage}
             onClickHome={navToReviewerHome}
@@ -229,14 +250,7 @@ const SurveysOverviewPage = () => {
             </Box>
 
             <FlexCenter className={classes.searchResultBox}>{renderResults()}</FlexCenter>
-        </ReviewerPage>
-    ) : (
-        <>
-            <LoadingFull
-                message={t("page.home.loading.message")}
-                thanking={t("page.home.loading.thanking")}
-            />
-        </>
+        </ReviewerPage>,
     );
 };
 

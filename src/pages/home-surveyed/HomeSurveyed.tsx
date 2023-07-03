@@ -23,6 +23,7 @@ import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { SurveyData } from "interface/entity/Api";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
+import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -254,6 +255,21 @@ const HomeSurveyedPage = () => {
         );
     };
 
+    const renderPageOrLoadingOrError = (page: any) => {
+        if (initialized) {
+            return page;
+        } else {
+            return !error ? (
+                <LoadingFull
+                    message={t("page.home.loading.message")}
+                    thanking={t("page.home.loading.thanking")}
+                />
+            ) : (
+                <ErrorPage errorCode={error} atInit={true} />
+            );
+        }
+    };
+
     const renderHomeDemo = () => {
         let interviewers = getUserDatasActivity().map(data => data.interviewerId);
         let interviewersUniques = interviewers.filter(
@@ -270,7 +286,7 @@ const HomeSurveyedPage = () => {
             });
         });
 
-        return initialized ? (
+        return renderPageOrLoadingOrError(
             <>
                 {renderReminderNote()}
                 {interviewersUniques.map((interviewer, index) => (
@@ -283,14 +299,7 @@ const HomeSurveyedPage = () => {
                             renderWorkTimeCard(getIdSurveyWorkTime(interviewer), index * 2 + 2)}
                     </>
                 ))}
-            </>
-        ) : (
-            <>
-                <LoadingFull
-                    message={t("page.home.loading.message")}
-                    thanking={t("page.home.loading.thanking")}
-                />
-            </>
+            </>,
         );
     };
 
@@ -337,7 +346,7 @@ const HomeSurveyedPage = () => {
             });
         });
 
-        return initialized && userDatas != null ? (
+        return renderPageOrLoadingOrError(
             <>
                 {renderReminderNote()}
 
@@ -375,14 +384,7 @@ const HomeSurveyedPage = () => {
                         </Button>
                     </FlexCenter>
                 </Box>
-            </>
-        ) : (
-            <>
-                <LoadingFull
-                    message={t("page.home.loading.message")}
-                    thanking={t("page.home.loading.thanking")}
-                />
-            </>
+            </>,
         );
     };
 
