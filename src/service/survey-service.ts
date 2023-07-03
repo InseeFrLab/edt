@@ -979,7 +979,6 @@ const getOrderedSurveys = (activitiesIds: string[], workTimeIds: string[]) => {
 
 const createUserDataMap = (usersurvey: UserSurveys[]) => {
     let numInterviewer = 0;
-    console.log(usersurvey);
     return usersurvey
         .map((data, index) => {
             if (index % 2 == 0 && index != 0) {
@@ -1004,15 +1003,12 @@ const createUserDataMap = (usersurvey: UserSurveys[]) => {
  * map of name of survey and data of survey
  */
 const userDatasMap = () => {
-    console.log(userDatasActivity);
-    console.log(userDatasWorkTime);
     const userActivityMap = createUserDataMap(userDatasActivity);
     const userWeeklyPlannerMap = createUserDataMap(userDatasWorkTime);
     const userMap = userActivityMap.concat(userWeeklyPlannerMap).sort((u1, u2) => {
         if (u1.num == u2.num) return u1.firstName.localeCompare(u2.firstName);
         else return u1.num > u2.num ? 1 : -1;
     });
-    console.log(userActivityMap);
     return userMap;
 };
 
