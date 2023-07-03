@@ -50,6 +50,7 @@ import {
     surveyReadOnly,
 } from "service/survey-activity-service";
 import {
+    existVariableEdited,
     getData,
     getPrintedFirstName,
     getSource,
@@ -112,16 +113,25 @@ const ActivityOrRoutePlannerPage = () => {
     };
 
     const alertLockLabels = {
-        boldContent: isLocked
-            ? t("page.reviewer-home.lock-popup.boldContent-not-locked")
-            : t("page.reviewer-home.lock-popup.boldContent"),
-        content: isLocked
-            ? t("page.reviewer-home.lock-popup.content-not-locked")
-            : t("page.reviewer-home.lock-popup.content"),
+        boldContent: t("page.reviewer-home.lock-popup.boldContent"),
+        content: t("page.reviewer-home.lock-popup.content"),
         cancel: t("page.alert-when-quit.alert-cancel"),
-        complete: isLocked
-            ? t("page.reviewer-home.not-lock-survey")
-            : t("page.reviewer-home.lock-survey"),
+        complete: t("page.reviewer-home.lock-survey"),
+    };
+
+    const variableEdited = existVariableEdited(idSurvey);
+
+    const alertUnlockLabels = {
+        boldContent: variableEdited
+            ? t("page.reviewer-home.lock-popup.boldContent-not-unlocked")
+            : t("page.reviewer-home.lock-popup.boldContent-not-locked"),
+        content: variableEdited
+            ? t("page.reviewer-home.lock-popup.content-not-unlocked")
+            : t("page.reviewer-home.lock-popup.content-not-locked"),
+        cancel: variableEdited ? undefined : t("page.alert-when-quit.alert-cancel"),
+        complete: variableEdited
+            ? t("page.reviewer-home.lock-popup.confirm-button")
+            : t("page.reviewer-home.not-lock-survey"),
     };
 
     const isChildDisplayed = (path: string): boolean => {
@@ -469,7 +479,11 @@ const ActivityOrRoutePlannerPage = () => {
                                                                         setIsAlertLockDisplayed,
                                                                         false,
                                                                     )}
-                                                                    labels={alertLockLabels}
+                                                                    labels={
+                                                                        isLocked
+                                                                            ? alertUnlockLabels
+                                                                            : alertLockLabels
+                                                                    }
                                                                     icon={errorIcon}
                                                                     errorIconAlt={t(
                                                                         "page.alert-when-quit.alt-alert-icon",
