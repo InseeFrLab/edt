@@ -843,12 +843,15 @@ const getTabsDataReviewer = (t: any) => {
 
 const getTabsDataInterviewer = (t: any) => {
     let tabsData: TabData[] = [];
-    surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].forEach(idSurvey => {
-        const tabData = createTabData(idSurvey, t, true);
-        tabsData.push(tabData);
-    });
-    surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].forEach(idSurvey => {
-        const tabData = createTabData(idSurvey, t, false);
+
+    const dataOrdered = getOrderedSurveys(
+        surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS],
+        surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS],
+    );
+
+    dataOrdered.forEach(data => {
+        const isActivity = data.data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY;
+        const tabData = createTabData(data.data.surveyUnitId, t, isActivity);
         tabsData.push(tabData);
     });
     return tabsData;
@@ -859,7 +862,7 @@ const getTabsData = (t: any): TabData[] => {
         return getTabsDataReviewer(t);
     } else if (isReviewer()) {
         setSurveysIdsReviewers();
-        return getTabsDataReviewer(t);
+        return getTabsDataInterviewer(t);
     } else {
         return getTabsDataInterviewer(t);
     }

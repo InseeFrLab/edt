@@ -16,7 +16,6 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
-import { isTablet } from "service/responsive";
 import { getData, getSource, getSurveyRights, getTabsData } from "service/survey-service";
 
 const ActivityPage = () => {
@@ -32,7 +31,7 @@ const ActivityPage = () => {
     const { t } = useTranslation();
     const tabsData = getTabsData(t);
     const selectedTab = tabsData.findIndex(tab => tab.idSurvey === idSurvey);
-    const maxTabsPerRow = isTablet() ? 3 : 4;
+    const maxTabsPerRow = 4;
 
     useEffect(() => {
         if (idSurvey && source) {
