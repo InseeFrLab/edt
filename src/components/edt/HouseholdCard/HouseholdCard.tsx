@@ -246,6 +246,7 @@ const useStyles = makeStylesEdt({ "name": { HouseholdCard } })(theme => ({
         display: "flex",
         flexDirection: "column",
         padding: "1rem",
+        width: "95%",
     },
     personBoxMobile: {
         display: "flex",

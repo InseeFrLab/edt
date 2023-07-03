@@ -495,6 +495,7 @@ const useStyles = makeStylesEdt({ "name": { NavButton: HomeSurveyedPage } })(the
         paddingTop: "0.5rem",
         display: "flex",
         alignItems: "center",
+        flexFlow: "wrap",
     },
     logoImg: {
         width: "40px",

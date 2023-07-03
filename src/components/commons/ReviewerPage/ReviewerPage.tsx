@@ -1,8 +1,8 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
-import BreadcrumbsReviewer from "../BreadcrumbsReviewer/BreadcrumbsReviewer";
 import { isMobile } from "service/responsive";
+import BreadcrumbsReviewer from "../BreadcrumbsReviewer/BreadcrumbsReviewer";
 
 interface ReviewerPageProps {
     onClickHome: () => void;
@@ -55,7 +55,7 @@ const useStyles = makeStylesEdt({ "name": { ReviewerPage } })(theme => ({
     contentBoxMobile: {
         height: "100%",
         overflow: "hidden",
-        padding: "2rem 2rem 1rem 2rem",
+        padding: "2rem 1.5rem 1rem 1.5rem",
         display: "flex",
         flexDirection: "column",
     },
