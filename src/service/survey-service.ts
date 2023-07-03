@@ -373,11 +373,12 @@ const getRemoteSavedSurveysDatas = (
     return Promise.all(promises);
 };
 
-const initializeSurveysDatasCache = (): Promise<any> => {
+const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
     const promises: Promise<any>[] = [];
+    const idSurveysToInit = idSurveys ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS];
     return lunaticDatabase.get(SURVEYS_IDS).then(data => {
         surveysIds = data as SurveysIds;
-        for (const idSurvey of surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]) {
+        for (const idSurvey of idSurveysToInit) {
             promises.push(
                 lunaticDatabase.get(idSurvey).then(data => {
                     if (data != null) {
@@ -978,6 +979,7 @@ const getOrderedSurveys = (activitiesIds: string[], workTimeIds: string[]) => {
 
 const createUserDataMap = (usersurvey: UserSurveys[]) => {
     let numInterviewer = 0;
+    console.log(usersurvey);
     return usersurvey
         .map((data, index) => {
             if (index % 2 == 0 && index != 0) {
@@ -1002,13 +1004,15 @@ const createUserDataMap = (usersurvey: UserSurveys[]) => {
  * map of name of survey and data of survey
  */
 const userDatasMap = () => {
+    console.log(userDatasActivity);
+    console.log(userDatasWorkTime);
     const userActivityMap = createUserDataMap(userDatasActivity);
     const userWeeklyPlannerMap = createUserDataMap(userDatasWorkTime);
     const userMap = userActivityMap.concat(userWeeklyPlannerMap).sort((u1, u2) => {
         if (u1.num == u2.num) return u1.firstName.localeCompare(u2.firstName);
         else return u1.num > u2.num ? 1 : -1;
     });
-
+    console.log(userActivityMap);
     return userMap;
 };
 

@@ -73,7 +73,7 @@ const HomeSurveyedPage = () => {
     const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
 
     useEffect(() => {
-        if (navigator.onLine) {
+        if (navigator.onLine && getUserRights() === EdtUserRightsEnum.SURVEYED) {
             initializeDatas(setError).then(() => {
                 setInitialized(true);
             });
@@ -330,15 +330,14 @@ const HomeSurveyedPage = () => {
     const renderHomeReviewer = () => {
         let userDatas = userDatasMap();
 
-        if (isReviewer) {
-            initializeHomeSurveys(idHousehold ?? "").then(() => {
-                initializeSurveysDatasCache().then(() => {
-                    setInitialized(true);
-                });
+        initializeHomeSurveys(idHousehold ?? "").then(() => {
+            const idsSurveysSelected = userDatas.map(data => data.data.surveyUnitId);
+            initializeSurveysDatasCache(idsSurveysSelected).then(() => {
+                setInitialized(true);
             });
-        }
+        });
 
-        return initialized ? (
+        return initialized && userDatas != null ? (
             <>
                 {renderReminderNote()}
 
