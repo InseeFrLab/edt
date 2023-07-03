@@ -1024,7 +1024,9 @@ const isDemoMode = () => {
 
 const surveyLocked = (idSurvey: string) => {
     const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
-    return isLocked != null && isLocked;
+    const variableEdited = existVariableEdited(idSurvey);
+
+    return (isLocked != null && isLocked) || variableEdited;
 };
 
 const surveyValidated = (idSurvey: string) => {
@@ -1243,7 +1245,7 @@ const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum 
     const isReviewerMode = isReviewer();
     const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED;
     const variableEdited = existVariableEdited(undefined, data);
-    console.log(variableEdited);
+
     return isReviewerMode || isLocked || variableEdited
         ? ModePersistenceEnum.EDITED
         : ModePersistenceEnum.COLLECTED;
@@ -1278,6 +1280,7 @@ const getValueOfData = (
 export {
     addToAutocompleteActivityReferentiel,
     addToSecondaryActivityReferentiel,
+    existVariableEdited,
     getComponentId,
     getComponentsOfVariable,
     getCurrentPage,

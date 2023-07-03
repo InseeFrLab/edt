@@ -29,7 +29,14 @@ import {
     getAutoCompleteRef,
     getLanguage,
 } from "service/referentiel-service";
-import { getData, getValue, getValueOfData, saveData, surveysIds } from "service/survey-service";
+import {
+    existVariableEdited,
+    getData,
+    getValue,
+    getValueOfData,
+    saveData,
+    surveysIds,
+} from "service/survey-service";
 
 const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
     const mainActivityId = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_ID, i) as string;
@@ -164,10 +171,11 @@ const convertStringToBoolean = (value: string | undefined) => {
 const getStatutSurvey = (idSurvey: string) => {
     const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
     const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
+    const variableEdited = existVariableEdited(idSurvey);
 
     if (isValidated != null && isValidated) {
         return StateSurveyEnum.VALIDATED;
-    } else if (isLocked != null && isLocked) {
+    } else if ((isLocked != null && isLocked) || variableEdited) {
         return StateSurveyEnum.LOCKED;
     } else return StateSurveyEnum.INIT;
 };
@@ -597,18 +605,18 @@ const surveyReadOnly = (rightsSurvey: EdtSurveyRightsEnum): boolean => {
 };
 
 export {
-    getActivitiesOrRoutes,
+    deleteActivity,
     getActivitesSelectedLabel,
+    getActivitiesOrRoutes,
+    getActivityLabel,
     getActivityOrRouteDurationLabel,
     getActivityOrRouteDurationLabelFromDurationMinutes,
-    getActivityLabel,
     getLabelFromTime,
-    getTotalTimeOfActivities,
     getScore,
+    getStatutSurvey,
+    getTotalTimeOfActivities,
     getWeeklyPlannerScore,
-    deleteActivity,
     mockActivitiesRoutesOrGaps,
     mockData,
-    getStatutSurvey,
     surveyReadOnly,
 };
