@@ -361,10 +361,12 @@ const getRemoteSavedSurveysDatas = (
                 const surveyData = initializeData(remoteSurveyData, surveyId);
                 return lunaticDatabase.get(surveyId).then(localSurveyData => {
                     if (
-                        remoteSurveyData.stateData?.date &&
-                        remoteSurveyData.stateData?.date > 0 &&
-                        (localSurveyData === undefined ||
-                            (localSurveyData.lastLocalSaveDate ?? 0) < remoteSurveyData.stateData.date)
+                        remoteSurveyData.stateData?.date == null ||
+                        (remoteSurveyData.stateData?.date &&
+                            remoteSurveyData.stateData?.date > 0 &&
+                            (localSurveyData === undefined ||
+                                (localSurveyData.lastLocalSaveDate ?? 0) <
+                                    remoteSurveyData.stateData.date))
                     ) {
                         return lunaticDatabase.save(surveyId, surveyData);
                     }
@@ -391,6 +393,8 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
                         datas.set(idSurvey, data || {});
                         oldDatas.set(idSurvey, {});
                         initData = true;
+                    } else {
+                        datas.set(idSurvey, createDataEmpty(idSurvey ?? ""));
                     }
                     return data;
                 }),
