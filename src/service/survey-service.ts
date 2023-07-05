@@ -39,6 +39,7 @@ import {
 import { fetchReviewerSurveysAssignments } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrator-service";
+import dataEmpty from "utils/dataEmpty.json";
 import { groupBy, objectEquals } from "utils/utils";
 import workTimeSource from "work-time-survey.json";
 import {
@@ -343,7 +344,7 @@ const initializeData = (remoteSurveyData: SurveyData, surveyId: string) => {
     surveyData.houseReference = surveyId.replace(regexp, "");
     surveyData.CALCULATED = {};
     surveyData.EXTERNAL = {};
-    surveyData.COLLECTED = remoteSurveyData.data.COLLECTED ?? {};
+    surveyData.COLLECTED = remoteSurveyData.data.COLLECTED ?? dataEmpty;
     surveyData.lastLocalSaveDate = remoteSurveyData.data.lastLocalSaveDate ?? 0;
 
     return surveyData;
@@ -360,8 +361,9 @@ const getRemoteSavedSurveysDatas = (
             urlRemote(surveyId, setError).then((remoteSurveyData: SurveyData) => {
                 const surveyData = initializeData(remoteSurveyData, surveyId);
                 return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                    if (localSurveyData == null) return lunaticDatabase.save(surveyId, surveyData);
-                    else if (
+                    if (localSurveyData == null) {
+                        return lunaticDatabase.save(surveyId, surveyData);
+                    } else if (
                         remoteSurveyData.stateData?.date == null ||
                         (remoteSurveyData.stateData?.date &&
                             remoteSurveyData.stateData?.date > 0 &&
@@ -489,7 +491,7 @@ const setData = (idSurvey: string, data: LunaticData) => {
 const createDataEmpty = (idSurvey: string): LunaticData => {
     const householdId = "";
 
-    return {
+    const data = {
         COLLECTED: {},
         CALCULATED: {},
         EXTERNAL: {},
@@ -497,6 +499,10 @@ const createDataEmpty = (idSurvey: string): LunaticData => {
         id: idSurvey,
         lastLocalSaveDate: Date.now(),
     };
+
+    data.COLLECTED = dataEmpty;
+    console.log(data);
+    return data;
 };
 
 const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
