@@ -120,7 +120,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             () =>
                 nextRoute
                     ? saveAndNavFullPath(nextRoute)
-                    : saveAndNextStep(context.surveyRootPage, currentPage),
+                    : saveAndNextStep(context.surveyRootPage, currentPage, context),
             [],
         ),
         srcIcon: errorIcon,

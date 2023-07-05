@@ -401,7 +401,12 @@ const saveAndNavFullPath = (route: EdtRoutesNameEnum) => {
 /*
 Save and navigate to next step of stepper without loop
 */
-const saveAndNextStep = (rootPage: EdtRoutesNameEnum, currentPage: EdtRoutesNameEnum) => {
+const saveAndNextStep = (
+    rootPage: EdtRoutesNameEnum,
+    currentPage: EdtRoutesNameEnum,
+    context?: OrchestratorContext,
+) => {
+    if (_context == null && context != null) _context = context;
     console.log(_context);
     saveAndNav(
         getCurrentNavigatePath(
