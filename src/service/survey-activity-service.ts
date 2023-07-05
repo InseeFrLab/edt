@@ -12,7 +12,6 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
-import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
@@ -30,8 +29,8 @@ import {
     getLanguage,
 } from "service/referentiel-service";
 import {
-    existVariableEdited,
     getData,
+    getStatutSurvey,
     getValue,
     getValueOfData,
     saveData,
@@ -166,18 +165,6 @@ const createActivity = (
 
 const convertStringToBoolean = (value: string | undefined) => {
     return value == "true" ? true : value == "false" ? false : undefined;
-};
-
-const getStatutSurvey = (idSurvey: string) => {
-    const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
-    const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
-    const variableEdited = existVariableEdited(idSurvey);
-
-    if (isValidated != null && isValidated) {
-        return StateSurveyEnum.VALIDATED;
-    } else if ((isLocked != null && isLocked) || variableEdited) {
-        return StateSurveyEnum.LOCKED;
-    } else return StateSurveyEnum.INIT;
 };
 
 const createActivitiesOrRoutes = (
@@ -613,7 +600,6 @@ export {
     getActivityOrRouteDurationLabelFromDurationMinutes,
     getLabelFromTime,
     getScore,
-    getStatutSurvey,
     getTotalTimeOfActivities,
     getWeeklyPlannerScore,
     mockActivitiesRoutesOrGaps,

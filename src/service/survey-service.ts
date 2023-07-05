@@ -17,6 +17,7 @@ import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { StateHouseholdEnum } from "enumerations/StateHouseholdEnum";
+import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { t } from "i18next";
 import { TabData } from "interface/component/Component";
@@ -111,7 +112,7 @@ const initializeRefs = (setError: (error: ErrorCodeEnum) => void) => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
         if (!refData) {
             return fetchReferentiels(setError).then(refs => {
-                saveReferentiels(refs);
+                return saveReferentiels(refs);
             });
         } else {
             referentielsData = refData as ReferentielData;
@@ -159,11 +160,13 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                         }),
                         saveSurveysIds(surveysIds),
                         fetchSurveysSourcesByIds(distinctSources, setError).then(sources => {
-                            saveSources(sources);
-                            saveUserSurveysData({ data: userDatas });
+                            const inerFetchPromises: Promise<any>[] = [
+                                saveSources(sources),
+                                saveUserSurveysData({ data: userDatas }),
+                            ];
+                            return Promise.all(inerFetchPromises);
                         }),
                     ];
-
                     return Promise.all(innerPromises);
                 }),
             );
@@ -184,14 +187,18 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                 ),
             );
         }
-        return Promise.all(promises);
+        return new Promise(resolve => {
+            Promise.all(promises).finally(() => {
+                resolve(true);
+            });
+        });
     });
 };
 
 const initializeSources = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     let distinctSources = [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY];
     return fetchSurveysSourcesByIds(distinctSources, setError).then(sources => {
-        saveSources(sources);
+        return saveSources(sources);
     });
 };
 
@@ -275,7 +282,6 @@ const initializeHomeSurveys = (idHousehold: string) => {
                 userDatasActivity.push(userSurvey);
             }
         });
-
         setSurveysIdsReviewers();
         resolve(true);
     });
@@ -388,30 +394,34 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
     const idSurveysToInit = idSurveys ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS];
     return lunaticDatabase.get(SURVEYS_IDS).then(data => {
         surveysIds = data as SurveysIds;
-        for (const idSurvey of idSurveysToInit) {
-            promises.push(
-                lunaticDatabase.get(idSurvey).then(data => {
-                    if (data != null) {
-                        const regexp = new RegExp(
-                            process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "",
-                        );
-                        data.houseReference = idSurvey.replace(regexp, "");
-                        datas.set(idSurvey, data || {});
-                        oldDatas.set(idSurvey, {});
-                        initData = true;
-                    } else {
-                        datas.set(idSurvey, createDataEmpty(idSurvey ?? ""));
-                    }
-                    return data;
-                }),
-            );
-            promises.push(
-                lunaticDatabase.get(USER_SURVEYS_DATA).then(data => {
-                    userDatas = (data as UserSurveysData)?.data;
-                }),
-            );
-        }
-        return Promise.all(promises);
+        return new Promise(resolve => {
+            for (const idSurvey of idSurveysToInit) {
+                promises.push(
+                    lunaticDatabase.get(idSurvey).then(data => {
+                        if (data != null) {
+                            const regexp = new RegExp(
+                                process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "",
+                            );
+                            data.houseReference = idSurvey.replace(regexp, "");
+                            datas.set(idSurvey, data || {});
+                            oldDatas.set(idSurvey, {});
+                            initData = true;
+                        } else {
+                            datas.set(idSurvey, createDataEmpty(idSurvey ?? ""));
+                        }
+                        return data;
+                    }),
+                );
+                promises.push(
+                    lunaticDatabase.get(USER_SURVEYS_DATA).then(data => {
+                        userDatas = (data as UserSurveysData)?.data;
+                    }),
+                );
+            }
+            Promise.all(promises).finally(() => {
+                resolve(true);
+            });
+        });
     });
 };
 
@@ -481,7 +491,11 @@ const getData = (idSurvey: string): LunaticData => {
 };
 
 const modifyIndividualCollected = (idSurvey: string) => {
-    const dataSurv = Object.assign({}, datas.get(idSurvey));
+    let dataSurv = Object.assign(datas.get(idSurvey) ?? {});
+
+    datas.forEach((data, key) => {
+        if (key == idSurvey) dataSurv = data;
+    });
 
     if (getModePersistence(dataSurv) != ModePersistenceEnum.EDITED) {
         const dataOfSurvey = dataSurv && dataSurv.COLLECTED;
@@ -572,19 +586,22 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
     const isChange = dataIsChange(idSurvey, data);
-    console.log(isReviewerMode);
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
+        const promisesToWait: Promise<any>[] = [];
+
         if (isChange) {
             if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
-                remotePutSurveyDataReviewer(idSurvey, getSurveyStateData(data, idSurvey), data)
-                    .then(surveyData => {
-                        setLocalDatabase(surveyData, data, idSurvey);
-                    })
-                    .catch(() => {
-                        //return Promise.reject({});
-                        //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
-                    });
+                promisesToWait.push(
+                    remotePutSurveyDataReviewer(idSurvey, getSurveyStateData(data, idSurvey), data)
+                        .then(surveyData => {
+                            setLocalDatabase(surveyData, data, idSurvey);
+                        })
+                        .catch(() => {
+                            //return Promise.reject({});
+                            //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
+                        }),
+                );
             }
             //We try to submit each time the local database is updated if the user is online
             else if (!isDemoMode && !localSaveOnly && navigator.onLine) {
@@ -592,17 +609,24 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                     stateData: getSurveyStateData(data, idSurvey),
                     data: data,
                 };
-                remotePutSurveyData(idSurvey, surveyData)
-                    .then(surveyData => {
-                        setLocalDatabase(surveyData, data, idSurvey);
-                    })
-                    .catch(() => {
-                        //return Promise.reject();
-                        //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
-                    });
+                promisesToWait.push(
+                    remotePutSurveyData(idSurvey, surveyData)
+                        .then(surveyData => {
+                            setLocalDatabase(surveyData, data, idSurvey);
+                            return data;
+                        })
+                        .catch(() => {
+                            //return Promise.reject();
+                            //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
+                        }),
+                );
             }
         }
-        return data;
+        return new Promise(resolve => {
+            Promise.all(promisesToWait).finally(() => {
+                resolve(data);
+            });
+        });
     });
 };
 
@@ -765,7 +789,6 @@ const getComponentsOfVariable = (
 
 const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
     const data = datas.get(idSurvey);
-    console.log(datas);
     const valueEdited = data?.COLLECTED?.[variableName]?.EDITED;
     const valueCollected = data?.COLLECTED?.[variableName]?.COLLECTED;
     const modePersistenceEdited = getModePersistence(data) == ModePersistenceEnum.EDITED;
@@ -1232,23 +1255,19 @@ const validateAllEmptySurveys = (idHousehold: string) => {
                 data.COLLECTED.ISVALIDATED = variable;
                 datas.set(idSurvey, data || {});
                 promisesToWait.push(saveData(idSurvey, data));
-                console.log("setdata", data.COLLECTED);
             } else if (data.COLLECTED) {
                 data.COLLECTED.ISVALIDATED = variable;
                 datas.set(idSurvey, data || {});
                 promisesToWait.push(saveData(idSurvey, data));
-                console.log("setdata", data.COLLECTED);
             }
-            console.log(idSurvey, data, value);
         }
     });
 
-    /*return new Promise(resolve => {
+    return new Promise(resolve => {
         Promise.all(promisesToWait).then(() => {
             resolve(true);
         });
-    });*/
-    return Promise.all(promisesToWait);
+    });
 };
 
 const getSurveyRights = (idSurvey: string) => {
@@ -1321,6 +1340,18 @@ const getValueOfData = (
     return null;
 };
 
+const getStatutSurvey = (idSurvey: string) => {
+    const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
+    const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
+    const variableEdited = existVariableEdited(idSurvey);
+
+    if (isValidated != null && isValidated) {
+        return StateSurveyEnum.VALIDATED;
+    } else if ((isLocked != null && isLocked) || variableEdited) {
+        return StateSurveyEnum.LOCKED;
+    } else return StateSurveyEnum.INIT;
+};
+
 export {
     addToAutocompleteActivityReferentiel,
     addToSecondaryActivityReferentiel,
@@ -1342,6 +1373,7 @@ export {
     getPrintedSurveyDate,
     getReferentiel,
     getSource,
+    getStatutSurvey,
     getSurveyDate,
     getSurveyRights,
     getTabsData,

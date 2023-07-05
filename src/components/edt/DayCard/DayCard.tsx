@@ -6,11 +6,11 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
 import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
 import { useTranslation } from "react-i18next";
-import { getQualityScore } from "service/summary-service";
-import { getActivitiesOrRoutes, getScore, getStatutSurvey } from "service/survey-activity-service";
-import { isDemoMode } from "service/survey-service";
-import { isReviewer } from "service/user-service";
 import { isMobile } from "service/responsive";
+import { getQualityScore } from "service/summary-service";
+import { getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
+import { getStatutSurvey, isDemoMode } from "service/survey-service";
+import { isReviewer } from "service/user-service";
 
 interface DayCardProps {
     labelledBy: string;

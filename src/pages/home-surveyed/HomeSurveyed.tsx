@@ -21,7 +21,7 @@ import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum"
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { SurveyData } from "interface/entity/Api";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { LunaticData, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
@@ -37,7 +37,6 @@ import {
 } from "service/navigation-service";
 import {
     getData,
-    getDatas,
     getIdSurveyActivity,
     getIdSurveyWorkTime,
     getPrintedFirstName,
@@ -68,19 +67,35 @@ const HomeSurveyedPage = () => {
     const [isAlertDisplayed, setIsAlertDisplayed] = React.useState<boolean>(false);
     const [error, setError] = React.useState<ErrorCodeEnum | undefined>(undefined);
     const [initialized, setInitialized] = React.useState<boolean>(false);
+    const [state, setState] = React.useState<LunaticData | undefined>(undefined);
 
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const isDemo = isDemoMode();
     const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
     const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
 
+    let userDatas: any[] = [];
     useEffect(() => {
         if (navigator.onLine && getUserRights() === EdtUserRightsEnum.SURVEYED) {
             initializeDatas(setError).then(() => {
                 setInitialized(true);
             });
         }
-    }, []);
+
+        if (getUserRights() == EdtUserRightsEnum.REVIEWER && !isDemo) {
+            userDatas = userDatasMap();
+            initializeHomeSurveys(idHousehold ?? "").then(() => {
+                const idsSurveysSelected = userDatas.map(data => data.data.surveyUnitId);
+                initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
+                    userDatas = userDatasMap();
+                    if (getData(idsSurveysSelected[0]) != undefined) {
+                        setState(getData(idsSurveysSelected[0]));
+                        setInitialized(true);
+                    }
+                });
+            });
+        }
+    });
 
     const alertProps = {
         isAlertDisplayed: isAlertDisplayed,
@@ -104,12 +119,11 @@ const HomeSurveyedPage = () => {
                 stateData: stateData,
                 data: {},
             };
-            //promises.push(isReviewer ? remotePutSurveyDataReviewer(idSurvey, stateData, {}) : remotePutSurveyData(idSurvey, surveyData));
             promises.push(remotePutSurveyData(idSurvey, surveyData));
         });
         Promise.all(promises).then(() => {
             lunaticDatabase.clear().then(() => {
-                window.location.reload();
+                navigate(0);
             });
         });
     }, []);
@@ -257,8 +271,7 @@ const HomeSurveyedPage = () => {
     };
 
     const renderPageOrLoadingOrError = (page: any) => {
-        console.log(initialized, error);
-        if (initialized) {
+        if (initialized && state != null) {
             return page;
         } else {
             return !error ? (
@@ -306,12 +319,12 @@ const HomeSurveyedPage = () => {
     };
 
     const renderHomeInterviewer = () => {
-        let userDatas = nameSurveyMap();
+        let userDataInterviewer = nameSurveyMap();
         return (
             <>
                 {renderReminderNote()}
 
-                {userDatas.map((data, index) =>
+                {userDataInterviewer.map((data, index) =>
                     data.data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
                         ? renderActivityCard(data.data.surveyUnitId, index + 1)
                         : renderWorkTimeCard(data.data.surveyUnitId, index + 1),
@@ -327,32 +340,28 @@ const HomeSurveyedPage = () => {
     const lockSurveys = useCallback(() => {
         lockAllSurveys(idHousehold ?? "").then(() => {
             setInitialized(true);
-            window.location.reload();
         });
     }, []);
 
     const validateSurveys = useCallback(() => {
-        validateAllEmptySurveys(idHousehold ?? "")
-            .then(data => {
-                console.log(data);
-            })
-            .finally(() => {
-                window.location.reload();
-            });
+        validateAllEmptySurveys(idHousehold ?? "").then(data => {
+            //navigate(0);
+        });
     }, []);
+
+    useEffect(() => {
+        userDatas = userDatasMap();
+        setInitialized(userDatas.length > 0);
+    }, [userDatas]);
 
     const renderHomeReviewer = () => {
         let userDatas = userDatasMap();
-        console.log(userDatas);
         initializeHomeSurveys(idHousehold ?? "").then(() => {
             const idsSurveysSelected = userDatas.map(data => data.data.surveyUnitId);
-            initializeSurveysDatasCache(idsSurveysSelected).then(() => {
+            initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
                 userDatas = userDatasMap();
-                console.log(getDatas(), initialized);
-                setInitialized(userDatas.length > 0);
             });
         });
-
         return renderPageOrLoadingOrError(
             <>
                 {renderReminderNote()}

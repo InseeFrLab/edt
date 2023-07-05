@@ -114,7 +114,6 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         disableNav: disableButton,
         modifiable: modifiable,
     };
-    console.log("context", context);
     const surveyPageNotStepProps = {
         validate: useCallback(
             () =>

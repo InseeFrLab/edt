@@ -408,7 +408,6 @@ const saveAndNextStep = (
     idSurvey?: string,
 ) => {
     if (_context == null && context != null) _context = context;
-    console.log(_context, context, idSurvey, currentPage);
     saveAndNav(
         getCurrentNavigatePath(
             _context.idSurvey ?? context?.idSurvey ?? idSurvey,

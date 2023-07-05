@@ -4,10 +4,9 @@ import calendarMonth from "assets/illustration/mui-icon/calendar-month.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
 import { useTranslation } from "react-i18next";
-import { getStatutSurvey } from "service/survey-activity-service";
-import { isDemoMode } from "service/survey-service";
-import { isReviewer } from "service/user-service";
 import { isMobile } from "service/responsive";
+import { getStatutSurvey, isDemoMode } from "service/survey-service";
+import { isReviewer } from "service/user-service";
 
 interface WeekCardProps {
     labelledBy: string;
