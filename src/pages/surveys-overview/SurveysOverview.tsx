@@ -72,9 +72,9 @@ const SurveysOverviewPage = () => {
 
     const isToFilter = (houseHoldData: any): boolean => {
         return (
-            houseHoldData.surveys.startedSurveysAmount == 0 &&
-            houseHoldData.surveys.closedSurveysAmount == 0 &&
-            houseHoldData.surveys.validatedSurveysAmount >= 1
+            houseHoldData.stats?.numHouseholdsInProgress == 0 &&
+            houseHoldData.stats?.numHouseholdsClosed == 0 &&
+            houseHoldData.stats?.numHouseholdsValidated >= 1
         );
     };
 
@@ -91,7 +91,6 @@ const SurveysOverviewPage = () => {
             }
             sortSearchResult(newSearchResult);
             setSearchResult(newSearchResult);
-
             let newFilterValidatedResult = dataHouseholds.filter(
                 houseHoldData =>
                     (houseHoldData?.userName?.toLowerCase().includes(event.target.value.toLowerCase()) ||
@@ -128,9 +127,8 @@ const SurveysOverviewPage = () => {
 
     const sortSearchResult = useCallback(
         (houseHoldData: any) => {
-            const newSearchResult = houseHoldData.sort(
-                (houseHoldData1: any, houseHoldData2: any) =>
-                    Number(houseHoldData1.idHousehold) - Number(houseHoldData2.idHousehold),
+            const newSearchResult = houseHoldData.sort((houseHoldData1: any, houseHoldData2: any) =>
+                houseHoldData1.idHousehold.localeCompare(houseHoldData2.idHousehold),
             );
             setSearchResult(newSearchResult);
         },
