@@ -114,13 +114,13 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         disableNav: disableButton,
         modifiable: modifiable,
     };
-
+    console.log("context", context);
     const surveyPageNotStepProps = {
         validate: useCallback(
             () =>
                 nextRoute
                     ? saveAndNavFullPath(nextRoute)
-                    : saveAndNextStep(context.surveyRootPage, currentPage, context),
+                    : saveAndNextStep(context.surveyRootPage, currentPage, context, context.idSurvey),
             [],
         ),
         srcIcon: errorIcon,

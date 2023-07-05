@@ -405,12 +405,13 @@ const saveAndNextStep = (
     rootPage: EdtRoutesNameEnum,
     currentPage: EdtRoutesNameEnum,
     context?: OrchestratorContext,
+    idSurvey?: string,
 ) => {
     if (_context == null && context != null) _context = context;
-    console.log(_context);
+    console.log(_context, context, idSurvey, currentPage);
     saveAndNav(
         getCurrentNavigatePath(
-            _context.idSurvey,
+            _context.idSurvey ?? context?.idSurvey ?? idSurvey,
             rootPage,
             _context.source.maxPage,
             _context.source,
