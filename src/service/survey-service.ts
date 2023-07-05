@@ -570,8 +570,9 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
         data.houseReference = idSurvey.replace(regexp, "");
     }
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
-    const isReviewerMode = isReviewer();
+    const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
     const isChange = dataIsChange(idSurvey, data);
+    console.log(isReviewerMode);
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
         if (isChange) {
@@ -764,6 +765,7 @@ const getComponentsOfVariable = (
 
 const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
     const data = datas.get(idSurvey);
+    console.log(datas);
     const valueEdited = data?.COLLECTED?.[variableName]?.EDITED;
     const valueCollected = data?.COLLECTED?.[variableName]?.COLLECTED;
     const modePersistenceEdited = getModePersistence(data) == ModePersistenceEnum.EDITED;

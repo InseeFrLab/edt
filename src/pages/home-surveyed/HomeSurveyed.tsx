@@ -37,6 +37,7 @@ import {
 } from "service/navigation-service";
 import {
     getData,
+    getDatas,
     getIdSurveyActivity,
     getIdSurveyWorkTime,
     getPrintedFirstName,
@@ -256,6 +257,7 @@ const HomeSurveyedPage = () => {
     };
 
     const renderPageOrLoadingOrError = (page: any) => {
+        console.log(initialized, error);
         if (initialized) {
             return page;
         } else {
@@ -335,7 +337,6 @@ const HomeSurveyedPage = () => {
                 console.log(data);
             })
             .finally(() => {
-                //setInitialized(true);
                 window.location.reload();
             });
     }, []);
@@ -346,7 +347,9 @@ const HomeSurveyedPage = () => {
         initializeHomeSurveys(idHousehold ?? "").then(() => {
             const idsSurveysSelected = userDatas.map(data => data.data.surveyUnitId);
             initializeSurveysDatasCache(idsSurveysSelected).then(() => {
-                setInitialized(true);
+                userDatas = userDatasMap();
+                console.log(getDatas(), initialized);
+                setInitialized(userDatas.length > 0);
             });
         });
 
