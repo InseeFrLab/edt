@@ -9,10 +9,12 @@ import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
+import { UserSurveys } from "interface/entity/Api";
 
 export const REFERENTIELS_ID = "referentiels";
 export const SOURCES_MODELS = "sources";
 export const SURVEYS_IDS = "surveysIds";
+export const USER_SURVEYS_DATA = "userSurveysData";
 
 export interface Collected {
     COLLECTED: string | boolean | null;
@@ -63,6 +65,10 @@ export interface SurveysIds extends LunaticData {
     [SurveysIdsEnum.ALL_SURVEYS_IDS]: string[];
     [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: string[];
     [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: string[];
+}
+
+export interface UserSurveysData extends LunaticData {
+    data: UserSurveys[];
 }
 
 export interface LunaticModel {

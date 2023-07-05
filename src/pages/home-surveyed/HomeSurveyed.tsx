@@ -342,7 +342,7 @@ const HomeSurveyedPage = () => {
 
     const renderHomeReviewer = () => {
         let userDatas = userDatasMap();
-
+        console.log(userDatas);
         initializeHomeSurveys(idHousehold ?? "").then(() => {
             const idsSurveysSelected = userDatas.map(data => data.data.surveyUnitId);
             initializeSurveysDatasCache(idsSurveysSelected).then(() => {

@@ -35,6 +35,8 @@ import {
     SURVEYS_IDS,
     SourceData,
     SurveysIds,
+    USER_SURVEYS_DATA,
+    UserSurveysData,
 } from "interface/lunatic/Lunatic";
 import { fetchReviewerSurveysAssignments } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
@@ -158,6 +160,7 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                         saveSurveysIds(surveysIds),
                         fetchSurveysSourcesByIds(distinctSources, setError).then(sources => {
                             saveSources(sources);
+                            saveUserSurveysData({ data: userDatas });
                         }),
                     ];
 
@@ -402,6 +405,11 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
                     return data;
                 }),
             );
+            promises.push(
+                lunaticDatabase.get(USER_SURVEYS_DATA).then(data => {
+                    userDatas = (data as UserSurveysData)?.data;
+                }),
+            );
         }
         return Promise.all(promises);
     });
@@ -410,6 +418,15 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
 const initializeListSurveys = () => {
     return fetchReviewerSurveysAssignments().then(data => {
         surveysData = data;
+        data.forEach((surveyData: UserSurveys) => {
+            if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
+                userDatas.push(surveyData);
+            }
+            if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
+                userDatas.push(surveyData);
+            }
+        });
+        return saveUserSurveysData({ data: userDatas });
     });
 };
 
@@ -628,6 +645,13 @@ const saveSurveysIds = (data: SurveysIds): Promise<SurveysIds> => {
     return lunaticDatabase.save(SURVEYS_IDS, data).then(() => {
         surveysIds = data;
         return data;
+    });
+};
+
+const saveUserSurveysData = (data: UserSurveysData): Promise<UserSurveys[]> => {
+    return lunaticDatabase.save(USER_SURVEYS_DATA, data).then(() => {
+        userDatas = data.data;
+        return data.data;
     });
 };
 
