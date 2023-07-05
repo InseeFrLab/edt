@@ -53,9 +53,10 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        setEnviro(context, useNavigate(), callbackHolder);
+        setEnviro(context, navigate, callbackHolder);
     });
 
     const { classes, cx } = useStyles({

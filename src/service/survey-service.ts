@@ -360,7 +360,8 @@ const getRemoteSavedSurveysDatas = (
             urlRemote(surveyId, setError).then((remoteSurveyData: SurveyData) => {
                 const surveyData = initializeData(remoteSurveyData, surveyId);
                 return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                    if (
+                    if (localSurveyData == null) return lunaticDatabase.save(surveyId, surveyData);
+                    else if (
                         remoteSurveyData.stateData?.date == null ||
                         (remoteSurveyData.stateData?.date &&
                             remoteSurveyData.stateData?.date > 0 &&

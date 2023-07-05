@@ -330,7 +330,7 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const validateSurveys = useCallback(() => {
-        validateAllEmptySurveys(idHousehold ?? "").then(() => {
+        validateAllEmptySurveys(idHousehold ?? "").finally(() => {
             setInitialized(true);
             window.location.reload();
         });
