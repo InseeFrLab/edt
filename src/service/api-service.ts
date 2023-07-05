@@ -334,6 +334,8 @@ const requestGetStateReviewer = (
             .catch(err => {
                 if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
+                } else if (err.response?.status != 404) {
+                    setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
                 }
             });
     });
