@@ -499,9 +499,7 @@ const createDataEmpty = (idSurvey: string): LunaticData => {
         id: idSurvey,
         lastLocalSaveDate: Date.now(),
     };
-
     data.COLLECTED = dataEmpty;
-    console.log(data);
     return data;
 };
 
@@ -1219,11 +1217,12 @@ const validateAllEmptySurveys = (idHousehold: string) => {
         }
     });
 
-    return new Promise(resolve => {
+    /*return new Promise(resolve => {
         Promise.all(promisesToWait).then(() => {
             resolve(true);
         });
-    });
+    });*/
+    return Promise.all(promisesToWait);
 };
 
 const getSurveyRights = (idSurvey: string) => {

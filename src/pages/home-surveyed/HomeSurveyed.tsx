@@ -330,10 +330,14 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const validateSurveys = useCallback(() => {
-        validateAllEmptySurveys(idHousehold ?? "").finally(() => {
-            setInitialized(true);
-            window.location.reload();
-        });
+        validateAllEmptySurveys(idHousehold ?? "")
+            .then(data => {
+                console.log(data);
+            })
+            .finally(() => {
+                //setInitialized(true);
+                window.location.reload();
+            });
     }, []);
 
     const renderHomeReviewer = () => {
