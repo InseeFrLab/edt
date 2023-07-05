@@ -1199,13 +1199,17 @@ const validateAllEmptySurveys = (idHousehold: string) => {
             };
             if (data.COLLECTED && data.COLLECTED[FieldNameEnum.ISVALIDATED]) {
                 data.COLLECTED[FieldNameEnum.ISVALIDATED] = variable;
+                data.COLLECTED.ISVALIDATED = variable;
                 datas.set(idSurvey, data || {});
                 promisesToWait.push(saveData(idSurvey, data));
+                console.log("setdata", data.COLLECTED);
             } else if (data.COLLECTED) {
                 data.COLLECTED.ISVALIDATED = variable;
                 datas.set(idSurvey, data || {});
                 promisesToWait.push(saveData(idSurvey, data));
+                console.log("setdata", data.COLLECTED);
             }
+            console.log(idSurvey, data, value);
         }
     });
 
