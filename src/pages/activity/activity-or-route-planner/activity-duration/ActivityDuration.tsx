@@ -127,6 +127,7 @@ const ActivityDurationPage = () => {
             saveData(context.idSurvey, callbackHolder.getData()).then(() => {
                 navigate(
                     getLoopParameterizedNavigatePath(
+                        context.idSurvey,
                         getNextLoopPage(currentPage, isRoute),
                         LoopEnum.ACTIVITY_OR_ROUTE,
                         currentIteration,
@@ -144,9 +145,9 @@ const ActivityDurationPage = () => {
                 if (forceQuit) {
                     saveData(context.idSurvey, callbackHolder.getData()).then(() => {
                         if (isCloture) {
-                            navToActivitySummary();
+                            navToActivitySummary(context.idSurvey);
                         } else {
-                            navToActivityRoutePlanner();
+                            navToActivityRoutePlanner(context.idSurvey, context.source);
                         }
                     });
                 } else {
@@ -154,9 +155,9 @@ const ActivityDurationPage = () => {
                 }
             } else {
                 if (isCloture) {
-                    navToActivitySummary();
+                    navToActivitySummary(context.idSurvey);
                 } else {
-                    navToActivityRoutePlanner();
+                    navToActivityRoutePlanner(context.idSurvey, context.source);
                 }
             }
         }

@@ -9,6 +9,7 @@ import SurveyPageHeader from "components/commons/SurveyPage/SurveyPageHeader/Sur
 import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
 import EndActivityStepper from "components/edt/EndActivityStepper/EndActivityStepper";
+import { LunaticModel } from "interface/lunatic/Lunatic";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getLastCompletedStep } from "service/navigation-service";
@@ -19,7 +20,7 @@ interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;
     className?: string;
     validate?(): void;
-    onFinish?(): void;
+    onFinish?(idSurvey: string, source?: LunaticModel): void;
     onAdd?(): void;
     finishLabel?: string;
     addLabel?: string;

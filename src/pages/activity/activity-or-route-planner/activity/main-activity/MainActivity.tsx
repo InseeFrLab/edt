@@ -108,6 +108,8 @@ const MainActivityPage = () => {
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
             saveAndLoopNavigate(
+                context.idSurvey,
+                context.source,
                 getPreviousLoopPage(currentPage),
                 LoopEnum.ACTIVITY_OR_ROUTE,
                 currentIteration,
@@ -118,6 +120,8 @@ const MainActivityPage = () => {
             const skip = filtrePage(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL, codeActivity);
             if (routeToGoal && !skip) {
                 saveAndLoopNavigate(
+                    context.idSurvey,
+                    context.source,
                     EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
                     LoopEnum.ACTIVITY_OR_ROUTE,
                     currentIteration,
@@ -125,6 +129,8 @@ const MainActivityPage = () => {
             } else {
                 const skip = filtrePage(EdtRoutesNameEnum.SECONDARY_ACTIVITY, codeActivity);
                 saveAndLoopNavigate(
+                    context.idSurvey,
+                    context.source,
                     skip ? EdtRoutesNameEnum.ACTIVITY_LOCATION : getNextLoopPage(currentPage),
                     LoopEnum.ACTIVITY_OR_ROUTE,
                     currentIteration,
@@ -132,7 +138,7 @@ const MainActivityPage = () => {
             }
         },
         onSelectValue: () => {
-            validate().then(() => {
+            validate(context.idSurvey).then(() => {
                 skipNextPage(context.idSurvey, context.source, currentIteration, currentPage);
             });
         },
@@ -189,7 +195,14 @@ const MainActivityPage = () => {
                 [backClickEvent],
             )}
             onClose={useCallback(
-                () => onClose(false, setIsAlertDisplayed, currentIteration),
+                () =>
+                    onClose(
+                        context.idSurvey,
+                        context.source,
+                        false,
+                        setIsAlertDisplayed,
+                        currentIteration,
+                    ),
                 [isAlertDisplayed],
             )}
             currentStepIcon={stepData.stepIcon}
@@ -207,7 +220,14 @@ const MainActivityPage = () => {
                         [isAlertDisplayed],
                     )}
                     onCancelCallBack={useCallback(
-                        cancel => onClose(cancel, setIsAlertDisplayed, currentIteration),
+                        cancel =>
+                            onClose(
+                                context.idSurvey,
+                                context.source,
+                                cancel,
+                                setIsAlertDisplayed,
+                                currentIteration,
+                            ),
                         [isAlertDisplayed],
                     )}
                     labels={getLabelsWhenQuit()}

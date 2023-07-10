@@ -85,12 +85,19 @@ const WeeklyPlannerPage = () => {
             save();
             setDisplayDayOverview(false);
         } else {
-            closeFormularieAndNav(getFullNavigatePath(EdtRoutesNameEnum.KIND_OF_WEEK));
+            closeFormularieAndNav(
+                context.idSurvey,
+                getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.KIND_OF_WEEK),
+            );
         }
     };
 
     const onEdit = () => {
-        navFullPath(EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.WORK_TIME);
+        navFullPath(
+            context.idSurvey,
+            EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
+            EdtRoutesNameEnum.WORK_TIME,
+        );
     };
 
     return (
@@ -98,7 +105,7 @@ const WeeklyPlannerPage = () => {
             <SurveyPage
                 validate={useCallback(() => validateAndNav(), [displayDayOverview])}
                 onNavigateBack={useCallback(() => validateAndNav(), [displayDayOverview])}
-                onPrevious={useCallback(() => saveAndNav(), [])}
+                onPrevious={useCallback(() => saveAndNav(context.idSurvey), [])}
                 onEdit={useCallback(() => onEdit(), [])}
                 onHelp={navToHelp}
                 firstName={getPrintedFirstName(context.idSurvey)}

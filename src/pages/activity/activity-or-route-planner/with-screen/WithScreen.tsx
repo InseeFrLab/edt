@@ -52,6 +52,8 @@ const WithScreenPage = () => {
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
             saveAndLoopNavigate(
+                context.idSurvey,
+                context.source,
                 EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
                 LoopEnum.ACTIVITY_OR_ROUTE,
                 currentIteration,
@@ -61,6 +63,7 @@ const WithScreenPage = () => {
         },
         nextClickCallback: () => {
             saveAndNav(
+                context.idSurvey,
                 isCloture
                     ? summaryRoutePath
                     : getCurrentNavigatePath(
@@ -72,8 +75,9 @@ const WithScreenPage = () => {
             );
         },
         onSelectValue: () => {
-            validate().then(() => {
+            validate(context.idSurvey).then(() => {
                 saveAndNav(
+                    context.idSurvey,
                     isCloture
                         ? summaryRoutePath
                         : getCurrentNavigatePath(
@@ -97,7 +101,14 @@ const WithScreenPage = () => {
                 [backClickEvent],
             )}
             onClose={useCallback(
-                () => onClose(false, setIsAlertDisplayed, currentIteration),
+                () =>
+                    onClose(
+                        context.idSurvey,
+                        context.source,
+                        false,
+                        setIsAlertDisplayed,
+                        currentIteration,
+                    ),
                 [isAlertDisplayed],
             )}
             currentStepIcon={stepData.stepIcon}
@@ -114,7 +125,14 @@ const WithScreenPage = () => {
                         [isAlertDisplayed],
                     )}
                     onCancelCallBack={useCallback(
-                        cancel => onClose(cancel, setIsAlertDisplayed, currentIteration),
+                        cancel =>
+                            onClose(
+                                context.idSurvey,
+                                context.source,
+                                cancel,
+                                setIsAlertDisplayed,
+                                currentIteration,
+                            ),
                         [isAlertDisplayed],
                     )}
                     labels={getLabelsWhenQuit(isRoute)}

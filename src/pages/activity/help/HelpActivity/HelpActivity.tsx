@@ -8,16 +8,17 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
-import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
 import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
 import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
+import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import React, { useCallback } from "react";
+import { isAndroid, isBrowser, isIOS, isMobile as isMobileNav } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
@@ -31,7 +32,6 @@ import { getLanguage } from "service/referentiel-service";
 import { isDesktop, isMobile, isPwa, isTablet } from "service/responsive";
 import { mockActivitiesRoutesOrGaps } from "service/survey-activity-service";
 import { v4 as uuidv4 } from "uuid";
-import { isMobile as isMobileNav, isBrowser, isIOS, isAndroid } from "react-device-detect";
 
 const HelpActivity = () => {
     const navigate = useNavigate();
@@ -71,7 +71,7 @@ const HelpActivity = () => {
     }, [isAddActivityOrRouteOpen, addActivityOrRouteFromGap]);
 
     const onEdit = useCallback(() => {
-        navFullPath(EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.ACTIVITY);
+        navFullPath(" ", EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.ACTIVITY);
     }, []);
 
     const onHelp = useCallback(() => {

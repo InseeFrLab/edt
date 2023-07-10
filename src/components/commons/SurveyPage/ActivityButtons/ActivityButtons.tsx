@@ -6,7 +6,7 @@ import { isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 
 interface ActivityButtonsProps {
-    onClickFinish(): void;
+    onClickFinish(idSurvey: any): void;
     onClickAdd(): void;
     finishLabel?: string;
     addLabel?: string;

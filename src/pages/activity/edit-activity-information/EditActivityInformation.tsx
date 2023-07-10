@@ -28,7 +28,12 @@ const EditActivityInformationPage = () => {
     const navToStep = useCallback(
         (page: EdtRoutesNameEnum) => () =>
             navigate(
-                getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration),
+                getLoopParameterizedNavigatePath(
+                    context.idSurvey,
+                    page,
+                    LoopEnum.ACTIVITY_OR_ROUTE,
+                    currentIteration,
+                ),
             ),
         [],
     );
@@ -36,10 +41,13 @@ const EditActivityInformationPage = () => {
     return (
         <SurveyPage
             onNavigateBack={useCallback(
-                () => navFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                () => navFullPath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
                 [],
             )}
-            onPrevious={useCallback(() => navFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER), [])}
+            onPrevious={useCallback(
+                () => navFullPath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                [],
+            )}
             simpleHeaderLabel={t("page.edit-activity-information.header")}
             simpleHeader={true}
             backgroundWhiteHeader={false}

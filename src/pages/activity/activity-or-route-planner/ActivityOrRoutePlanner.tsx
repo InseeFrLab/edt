@@ -245,6 +245,7 @@ const ActivityOrRoutePlannerPage = () => {
             setIsRoute(isRouteBool);
             navigate(
                 getLoopParameterizedNavigatePath(
+                    context.idSurvey,
                     EdtRoutesNameEnum.ACTIVITY_DURATION,
                     LoopEnum.ACTIVITY_OR_ROUTE,
                     contextIteration,
@@ -272,7 +273,11 @@ const ActivityOrRoutePlannerPage = () => {
     }, [isAddActivityOrRouteOpen, addActivityOrRouteFromGap]);
 
     const onEdit = useCallback(() => {
-        navFullPath(EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.ACTIVITY);
+        navFullPath(
+            context.idSurvey,
+            EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
+            EdtRoutesNameEnum.ACTIVITY,
+        );
     }, []);
 
     const onHelp = useCallback(() => {
@@ -297,14 +302,14 @@ const ActivityOrRoutePlannerPage = () => {
 
     const onEditActivityOrRoute = useCallback((iteration: number, activity: ActivityRouteOrGap) => {
         setActivityOrRoute(activity);
-        navToEditActivity(iteration);
+        navToEditActivity(context.idSurvey, iteration);
     }, []);
 
     const onDeleteActivityOrRoute = useCallback(
         (idSurvey: string, source: LunaticModel, iteration: number) => {
             deleteActivity(idSurvey, source, iteration);
             activitiesRoutesOrGaps.splice(iteration);
-            navToActivityRoutePlanner();
+            navToActivityRoutePlanner(context.idSurvey, source);
         },
         [],
     );

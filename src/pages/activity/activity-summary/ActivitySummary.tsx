@@ -163,7 +163,7 @@ const ActivitySummaryPage = () => {
             };
             localStorage.setItem(idSurvey, JSON.stringify(isEditedSummary));
             setIsSummaryEdited(true);
-            navToEditActivity(iteration);
+            navToEditActivity(context.idSurvey, iteration);
         },
         [idSurvey],
     );
@@ -229,6 +229,7 @@ const ActivitySummaryPage = () => {
             onCloseAddActivityOrRoute();
             navigate(
                 getLoopParameterizedNavigatePath(
+                    context.idSurvey,
                     EdtRoutesNameEnum.ACTIVITY_DURATION,
                     LoopEnum.ACTIVITY_OR_ROUTE,
                     contextIteration,
@@ -353,7 +354,7 @@ const ActivitySummaryPage = () => {
     }, []);
 
     const back = useCallback(() => {
-        saveAndNav();
+        saveAndNav(context.idSurvey);
     }, []);
 
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";

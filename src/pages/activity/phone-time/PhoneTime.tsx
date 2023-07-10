@@ -30,10 +30,11 @@ const PhoneTimePage = () => {
     const stepData = getStepData(currentPage);
 
     const surveyPageStepProps = {
-        onNavigateBack: useCallback(() => saveAndNav(), []),
+        onNavigateBack: useCallback(() => saveAndNav(context.idSurvey), []),
         onNext: useCallback(
             () =>
                 saveAndNav(
+                    context.idSurvey,
                     getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, context.idSurvey) +
                         getNavigatePath(EdtRoutesNameEnum.END_SURVEY),
                 ),
@@ -42,8 +43,8 @@ const PhoneTimePage = () => {
         onPrevious: useCallback(
             () =>
                 context.surveyRootPage == EdtRoutesNameEnum.ACTIVITY
-                    ? saveAndNavFullPath(EdtRoutesNameEnum.TRAVEL_TIME)
-                    : saveAndNavFullPath(EdtRoutesNameEnum.WEEKLY_PLANNER),
+                    ? saveAndNavFullPath(context.idSurvey, EdtRoutesNameEnum.TRAVEL_TIME)
+                    : saveAndNavFullPath(context.idSurvey, EdtRoutesNameEnum.WEEKLY_PLANNER),
             [],
         ),
         simpleHeader: true,
@@ -55,7 +56,7 @@ const PhoneTimePage = () => {
     };
 
     const componentLunaticProps: any = {
-        onSelectValue: () => validateAndNextStep(currentPage),
+        onSelectValue: () => validateAndNextStep(context.idSurvey, context.source, currentPage),
         language: getLanguage(),
         constants: {
             START_TIME_DAY: START_TIME_DAY,

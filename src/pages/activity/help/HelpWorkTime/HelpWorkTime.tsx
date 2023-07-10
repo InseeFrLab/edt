@@ -209,7 +209,7 @@ const HelpWorkTime = () => {
             <SurveyPage
                 validate={useCallback(() => console.log(""), [])}
                 onNavigateBack={useCallback(() => console.log(""), [])}
-                onPrevious={useCallback(() => saveAndNav(), [])}
+                onPrevious={useCallback(() => saveAndNav(context.idSurvey), [])}
                 onEdit={useCallback(() => console.log(""), [])}
                 onHelp={navToHelp}
                 firstName={getPrintedFirstName(idSurvey)}

@@ -45,6 +45,7 @@ const getParameterizedNavigatePath = (page: EdtRoutesNameEnum, param: string): s
 };
 
 const getLoopParameterizedNavigatePath = (
+    idSurvey: string,
     page: EdtRoutesNameEnum,
     loop: LoopEnum,
     iteration: number,
@@ -60,7 +61,7 @@ const getLoopParameterizedNavigatePath = (
         );
         if (parentPageOrchestrator) {
             return (
-                getParameterizedNavigatePath(parentPageOrchestrator.parentPage, _context.idSurvey) +
+                getParameterizedNavigatePath(parentPageOrchestrator.parentPage, idSurvey) +
                 getNavigatePath(parentPageOrchestrator.page) +
                 getParameterizedNavigatePath(page, iteration.toString())
             );
@@ -76,15 +77,16 @@ const getLoopParameterizedNavigatePath = (
     }
 };
 
-const getFullNavigatePath = (page: EdtRoutesNameEnum, parentPage?: EdtRoutesNameEnum) => {
+const getFullNavigatePath = (
+    idSurvey: string,
+    page: EdtRoutesNameEnum,
+    parentPage?: EdtRoutesNameEnum,
+) => {
     const targetPage = mappingPageOrchestrator.find(
         link => link.page === page && (parentPage ? link.parentPage === parentPage : true),
     );
     if (targetPage && targetPage.parentPage) {
-        return (
-            getParameterizedNavigatePath(targetPage.parentPage, _context.idSurvey) +
-            getNavigatePath(page)
-        );
+        return getParameterizedNavigatePath(targetPage.parentPage, idSurvey) + getNavigatePath(page);
     } else if (targetPage) {
         return getNavigatePath(page);
     } else {
@@ -194,13 +196,14 @@ const getSurveySubPage = (page?: EdtRoutesNameEnum): string | undefined => {
 };
 
 const saveAndNav = (
+    idSurvey: string,
     route?: string,
     value?: FieldNameEnum,
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
-    saveData(_context.idSurvey, _callbackHolder.getData()).then(() => {
-        navToRouteOrRouteNotSelection(route, value, routeNotSelection, currentIteration);
+    saveData(idSurvey, _callbackHolder.getData()).then(() => {
+        navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
 
@@ -208,9 +211,9 @@ const saveAndNav = (
  * Close formulaire and nav to closing page
  * @param route
  */
-const closeFormularieAndNav = (route: string) => {
-    const data = setValue(_context.idSurvey, FieldNameEnum.ISCLOSED, true);
-    saveData(_context.idSurvey, data ? data : _callbackHolder.getData()).then(() => {
+const closeFormularieAndNav = (idSurvey: string, route: string) => {
+    const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
+    saveData(idSurvey, data ? data : _callbackHolder.getData()).then(() => {
         _navigate(route);
     });
 };
@@ -220,20 +223,21 @@ const closeFormularieAndNav = (route: string) => {
  * a change of a variable in the callbackholder,
  * we need to make the call twice to be able to retrieve the current state of the database
  */
-const validate = (): Promise<void | LunaticData> => {
-    return saveData(_context.idSurvey, _callbackHolder.getData(), true).then(() => {
-        return saveData(_context.idSurvey, _callbackHolder.getData(), false);
+const validate = (idSurvey: string): Promise<void | LunaticData> => {
+    return saveData(idSurvey, _callbackHolder.getData(), true).then(() => {
+        return saveData(idSurvey, _callbackHolder.getData(), false);
     });
 };
 
 const navToRouteOrRouteNotSelection = (
+    idSurvey: string,
     route?: string,
     value?: FieldNameEnum,
     routeNotSelection?: string,
     currentIteration?: number,
 ) => {
     if (value) {
-        const currentValue = getValue(_context.idSurvey, value, currentIteration);
+        const currentValue = getValue(idSurvey, value, currentIteration);
         const conditional = currentValue == "true";
         if (conditional || (typeof conditional == "string" && conditional != "")) {
             _navigate(route as To);
@@ -263,13 +267,13 @@ const navToErrorPage = (errorCode?: ErrorCodeEnum): void => {
     }
 };
 
-const navToActivityRoutePlanner = () => {
+const navToActivityRoutePlanner = (idSurvey: string, source: LunaticModel) => {
     _navigate(
         getCurrentNavigatePath(
-            _context.idSurvey,
+            idSurvey,
             EdtRoutesNameEnum.ACTIVITY,
             getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            _context.source,
+            source,
         ),
     );
 };
@@ -345,15 +349,19 @@ const navToWeeklyPlannerOrClose = (idSurvey: string, navigate: any, source: Luna
     }
 };
 
-const navToActivitySummary = () => {
+const navToActivitySummary = (idSurvey: string) => {
     _navigate(
-        getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, _context.idSurvey) +
+        getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
             getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
     );
 };
 
-const navFullPath = (route: EdtRoutesNameEnum, parentPage?: EdtRoutesNameEnum): void => {
-    _navigate(getFullNavigatePath(route, parentPage));
+const navFullPath = (
+    idSurvey: string,
+    route: EdtRoutesNameEnum,
+    parentPage?: EdtRoutesNameEnum,
+): void => {
+    _navigate(getFullNavigatePath(idSurvey, route, parentPage));
 };
 
 const navToActivityRouteOrHome = (navigate: any) => {
@@ -394,26 +402,26 @@ const isActivityPage = () => {
     return _context ? _context.surveyRootPage == EdtRoutesNameEnum.ACTIVITY : false;
 };
 
-const saveAndNavFullPath = (route: EdtRoutesNameEnum) => {
-    saveAndNav(getFullNavigatePath(route));
+const saveAndNavFullPath = (idSurvey: string, route: EdtRoutesNameEnum) => {
+    saveAndNav(idSurvey, getFullNavigatePath(idSurvey, route));
 };
 
 /*
 Save and navigate to next step of stepper without loop
 */
 const saveAndNextStep = (
+    idSurvey: string,
+    source: LunaticModel,
     rootPage: EdtRoutesNameEnum,
     currentPage: EdtRoutesNameEnum,
-    context?: OrchestratorContext,
-    idSurvey?: string,
 ) => {
-    if (_context == null && context != null) _context = context;
     saveAndNav(
+        idSurvey ?? "",
         getCurrentNavigatePath(
-            _context.idSurvey ?? context?.idSurvey ?? idSurvey,
+            idSurvey,
             rootPage,
-            _context.source.maxPage,
-            _context.source,
+            source.maxPage,
+            source,
             undefined,
             undefined,
             getNextPage(currentPage),
@@ -421,63 +429,88 @@ const saveAndNextStep = (
     );
 };
 
-const getLoopPageOrActivityPlanner = (page: EdtRoutesNameEnum, loop: LoopEnum, iteration: number) => {
+const getLoopPageOrActivityPlanner = (
+    idSurvey: string,
+    source: LunaticModel,
+    page: EdtRoutesNameEnum,
+    loop: LoopEnum,
+    iteration: number,
+) => {
     if (page == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER) {
         return getCurrentNavigatePath(
-            _context.idSurvey,
+            idSurvey,
             EdtRoutesNameEnum.ACTIVITY,
             getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            _context.source,
+            source,
         );
     } else {
-        return getLoopParameterizedNavigatePath(page, loop, iteration);
+        return getLoopParameterizedNavigatePath(idSurvey, page, loop, iteration);
     }
 };
 
 const saveAndLoopNavigate = (
+    idSurvey: string,
+    source: LunaticModel,
     page: EdtRoutesNameEnum,
     loop: LoopEnum,
     iteration: number,
     value?: FieldNameEnum,
     routeNotSelection?: EdtRoutesNameEnum,
 ) => {
-    const pathRoute = getLoopPageOrActivityPlanner(page, loop, iteration);
+    const pathRoute = getLoopPageOrActivityPlanner(idSurvey, source, page, loop, iteration);
     if (value && routeNotSelection) {
-        const pathRouteNotSelection = getLoopPageOrActivityPlanner(routeNotSelection, loop, iteration);
-        saveAndNav(pathRoute, value, pathRouteNotSelection, iteration);
-    } else saveAndNav(pathRoute);
+        const pathRouteNotSelection = getLoopPageOrActivityPlanner(
+            idSurvey,
+            source,
+            routeNotSelection,
+            loop,
+            iteration,
+        );
+        saveAndNav(idSurvey, pathRoute, value, pathRouteNotSelection, iteration);
+    } else saveAndNav(idSurvey, pathRoute);
 };
 
-const validateAndNextStep = (page: EdtRoutesNameEnum) => {
-    validate().then(() => {
-        saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, page);
+const validateAndNextStep = (idSurvey: string, source: LunaticModel, page: EdtRoutesNameEnum) => {
+    validate(idSurvey).then(() => {
+        saveAndNextStep(idSurvey, source, EdtRoutesNameEnum.ACTIVITY, page);
     });
 };
 
 const validateAndNextLoopStep = (
+    idSurvey: string,
+    source: LunaticModel,
     page: EdtRoutesNameEnum,
     iteration: number,
     value?: FieldNameEnum,
     routeNotSelection?: EdtRoutesNameEnum,
 ) => {
-    validate().then(() => {
-        saveAndLoopNavigate(page, LoopEnum.ACTIVITY_OR_ROUTE, iteration, value, routeNotSelection);
+    validate(idSurvey).then(() => {
+        saveAndLoopNavigate(
+            idSurvey,
+            source,
+            page,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            iteration,
+            value,
+            routeNotSelection,
+        );
     });
 };
 
-const loopNavigate = (page: EdtRoutesNameEnum, loop: LoopEnum, iteration: number) => {
-    _navigate(getLoopParameterizedNavigatePath(page, loop, iteration));
+const loopNavigate = (idSurvey: string, page: EdtRoutesNameEnum, loop: LoopEnum, iteration: number) => {
+    _navigate(getLoopParameterizedNavigatePath(idSurvey, page, loop, iteration));
 };
 
-const navToEditActivity = (iteration: number) => {
+const navToEditActivity = (idSurvey: string, iteration: number) => {
     const path =
-        getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, _context.idSurvey) +
+        getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
         getNavigatePath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER) +
         getParameterizedNavigatePath(EdtRoutesNameEnum.EDIT_ACTIVITY_INFORMATION, iteration.toString());
     _navigate(path);
 };
 
 const validateWithAlertAndNav = (
+    idSurvey: string,
     displayAlert: boolean,
     setDisplayAlert: (value: SetStateAction<boolean>) => void,
     iteration?: number,
@@ -486,7 +519,7 @@ const validateWithAlertAndNav = (
     if (!displayAlert) {
         setDisplayAlert(true);
     } else {
-        saveAndNav(route);
+        saveAndNav(idSurvey, route);
     }
 };
 
@@ -498,21 +531,27 @@ const onPrevious = (e: React.MouseEvent | undefined, setBackClickEvent: any) => 
     setBackClickEvent(e);
 };
 
-const onClose = (forceQuit: boolean, setIsAlertDisplayed: any, iteration?: number) => {
+const onClose = (
+    idSurvey: string,
+    source: LunaticModel,
+    forceQuit: boolean,
+    setIsAlertDisplayed: any,
+    iteration?: number,
+) => {
     const hasRights = !surveyReadOnly(_context.rightsSurvey);
-    const isCloture = getValue(_context.idSurvey, FieldNameEnum.ISCLOSED) as boolean;
+    const isCloture = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
     const pathNav = isCloture
-        ? getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, _context.idSurvey) +
+        ? getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
           getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)
         : getCurrentNavigatePath(
-              _context.idSurvey,
+              idSurvey,
               EdtRoutesNameEnum.ACTIVITY,
               getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-              _context.source,
+              source,
           );
 
     if (hasRights) {
-        validateWithAlertAndNav(forceQuit, setIsAlertDisplayed, iteration, pathNav);
+        validateWithAlertAndNav(idSurvey, forceQuit, setIsAlertDisplayed, iteration, pathNav);
     } else {
         _navigate(pathNav);
     }

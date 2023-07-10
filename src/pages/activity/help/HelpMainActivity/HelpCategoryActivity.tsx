@@ -32,7 +32,7 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -48,7 +48,7 @@ import {
 } from "service/navigation-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { mockData } from "service/survey-activity-service";
-import { addToAutocompleteActivityReferentiel, getData, getSource } from "service/survey-service";
+import { addToAutocompleteActivityReferentiel, getSource } from "service/survey-service";
 
 const HelpCategoryActivity = () => {
     const navigate = useNavigate();
@@ -270,7 +270,10 @@ const HelpCategoryActivity = () => {
                     (e: React.MouseEvent) => onPrevious(e, setBackClickEvent),
                     [backClickEvent],
                 )}
-                onClose={useCallback(() => onClose(false, setIsAlertDisplayed), [isAlertDisplayed])}
+                onClose={useCallback(
+                    () => onClose(context.idSurvey, source, false, setIsAlertDisplayed),
+                    [isAlertDisplayed],
+                )}
                 currentStepIcon={stepData.stepIcon}
                 currentStepIconAlt={stepData.stepIconAlt}
                 currentStepNumber={stepData.stepNumber}
@@ -286,7 +289,7 @@ const HelpCategoryActivity = () => {
                             [isAlertDisplayed],
                         )}
                         onCancelCallBack={useCallback(
-                            cancel => onClose(cancel, setIsAlertDisplayed, 0),
+                            cancel => onClose(context.idSurvey, source, cancel, setIsAlertDisplayed, 0),
                             [isAlertDisplayed],
                         )}
                         labels={getLabelsWhenQuit()}

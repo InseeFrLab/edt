@@ -267,7 +267,10 @@ const HelpSubCategoryActivity = () => {
                     (e: React.MouseEvent) => onPrevious(e, setBackClickEvent),
                     [backClickEvent],
                 )}
-                onClose={useCallback(() => onClose(false, setIsAlertDisplayed), [isAlertDisplayed])}
+                onClose={useCallback(
+                    () => onClose(" ", source, false, setIsAlertDisplayed),
+                    [isAlertDisplayed],
+                )}
                 currentStepIcon={stepData.stepIcon}
                 currentStepIconAlt={stepData.stepIconAlt}
                 currentStepNumber={stepData.stepNumber}
@@ -283,7 +286,7 @@ const HelpSubCategoryActivity = () => {
                             [isAlertDisplayed],
                         )}
                         onCancelCallBack={useCallback(
-                            cancel => onClose(cancel, setIsAlertDisplayed, 0),
+                            cancel => onClose(" ", source, cancel, setIsAlertDisplayed, 0),
                             [isAlertDisplayed],
                         )}
                         labels={getLabelsWhenQuit()}

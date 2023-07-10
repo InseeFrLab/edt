@@ -17,11 +17,11 @@ import { filtrePage } from "service/loop-service";
 interface ActivityOrRouteCardProps {
     labelledBy: string;
     describedBy: string;
-    onClick?(): void;
+    onClick?(idSurvey?: any, source?: any): void;
     onClickGap?(startTime: string | undefined, endTime: string | undefined): void;
     activityOrRoute: ActivityRouteOrGap;
-    onEdit?(): void;
-    onDelete?(): void;
+    onEdit?(idSurvey?: any, source?: any): void;
+    onDelete?(idSurvey?: any, source?: any): void;
     helpStep?: number;
     tabIndex?: number;
     modifiable?: boolean;

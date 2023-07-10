@@ -87,7 +87,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         labels: getLabels(labelOfPage),
         errorIcon: errorIcon,
         onSelectValue: () => {
-            validate().then(() => {
+            validate(context.idSurvey).then(() => {
                 skipNextPage(
                     context.idSurvey,
                     context.source,
@@ -115,7 +115,8 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
             [backClickEvent],
         ),
         onClose: useCallback(
-            () => onClose(false, setIsAlertDisplayed, currentIteration),
+            () =>
+                onClose(context.idSurvey, context.source, false, setIsAlertDisplayed, currentIteration),
             [isAlertDisplayed],
         ),
         currentStepIcon: stepData.stepIcon,
@@ -132,7 +133,8 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         isAlertDisplayed: isAlertDisplayed,
         onCompleteCallBack: useCallback(() => setIsAlertDisplayed(false), [isAlertDisplayed]),
         onCancelCallBack: useCallback(
-            (cancel: boolean) => onClose(cancel, setIsAlertDisplayed, currentIteration),
+            (cancel: boolean) =>
+                onClose(context.idSurvey, context.source, cancel, setIsAlertDisplayed, currentIteration),
             [isAlertDisplayed],
         ),
         labels: getLabelsWhenQuit(isRoute),

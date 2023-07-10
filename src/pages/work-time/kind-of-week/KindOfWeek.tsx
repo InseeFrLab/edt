@@ -44,7 +44,7 @@ const KindOfWeekPage = () => {
         icon: calendarWeek,
         altIcon: t("accessibility.asset.kind-of-week-alt"),
         onSelectValue: () => {
-            validate().then(() => saveAndNav(routeEnd));
+            validate(context.idSurvey).then(() => saveAndNav(context.idSurvey, routeEnd));
         },
         extensionIcon: extension,
         extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
@@ -60,14 +60,31 @@ const KindOfWeekPage = () => {
     return (
         <SurveyPage
             validate={useCallback(
-                () => validateWithAlertAndNav(false, setIsAlertDisplayed, undefined, routeEnd),
+                () =>
+                    validateWithAlertAndNav(
+                        context.idSurvey,
+                        false,
+                        setIsAlertDisplayed,
+                        undefined,
+                        routeEnd,
+                    ),
                 [setIsAlertDisplayed],
             )}
             onNavigateBack={useCallback(
-                () => validateWithAlertAndNav(false, setIsAlertDisplayed, undefined, routeWeeklyPlanner),
+                () =>
+                    validateWithAlertAndNav(
+                        context.idSurvey,
+                        false,
+                        setIsAlertDisplayed,
+                        undefined,
+                        routeWeeklyPlanner,
+                    ),
                 [setIsAlertDisplayed],
             )}
-            onPrevious={useCallback(() => navFullPath(EdtRoutesNameEnum.WEEKLY_PLANNER), [])}
+            onPrevious={useCallback(
+                () => navFullPath(context.idSurvey, EdtRoutesNameEnum.WEEKLY_PLANNER),
+                [],
+            )}
             srcIcon={kindOfWeek}
             altIcon={t("accessibility.asset.kind-of-week-alt")}
             firstName={getPrintedFirstName(context.idSurvey)}
@@ -83,7 +100,7 @@ const KindOfWeekPage = () => {
                         [isAlertDisplayed],
                     )}
                     onCancelCallBack={useCallback(
-                        cancel => onClose(cancel, setIsAlertDisplayed),
+                        cancel => onClose(context.idSurvey, context.source, cancel, setIsAlertDisplayed),
                         [isAlertDisplayed],
                     )}
                     labels={alertLabels}

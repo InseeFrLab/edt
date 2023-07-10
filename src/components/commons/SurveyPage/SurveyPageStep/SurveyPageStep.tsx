@@ -71,7 +71,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
 
     const componentLunaticProps: any = {
-        onSelectValue: () => validateAndNextStep(currentPage),
+        onSelectValue: () => validateAndNextStep(context.idSurvey, context.source, currentPage),
         options: specifiquesProps?.options,
         defaultIcon: specifiquesProps?.defaultIcon,
         icon: specifiquesProps?.icon,
@@ -92,17 +92,28 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             () =>
                 specifiquesProps?.displayModal
                     ? validateAndNav(false, setIsModalDisplayed)
-                    : saveAndNav(),
+                    : saveAndNav(context.idSurvey),
             [isModalDisplayed],
         ),
         onNext: useCallback(
             () =>
                 specifiquesProps?.displayModal
                     ? validateAndNav(false, setIsModalDisplayed)
-                    : saveAndNextStep(EdtRoutesNameEnum.ACTIVITY, currentPage),
+                    : saveAndNextStep(
+                          context.idSurvey,
+                          context.source,
+                          EdtRoutesNameEnum.ACTIVITY,
+                          currentPage,
+                      ),
             [isModalDisplayed],
         ),
-        onPrevious: useCallback(() => (backRoute ? saveAndNavFullPath(backRoute) : saveAndNav()), []),
+        onPrevious: useCallback(
+            () =>
+                backRoute
+                    ? saveAndNavFullPath(context.idSurvey, backRoute)
+                    : saveAndNav(context.idSurvey),
+            [],
+        ),
         simpleHeader: true,
         simpleHeaderLabel: t("page.complementary-questions.simple-header-label"),
         srcIcon: errorIcon,
@@ -118,14 +129,25 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         validate: useCallback(
             () =>
                 nextRoute
-                    ? saveAndNavFullPath(nextRoute)
-                    : saveAndNextStep(context.surveyRootPage, currentPage, context, context.idSurvey),
+                    ? saveAndNavFullPath(context.idSurvey, nextRoute)
+                    : saveAndNextStep(
+                          context.idSurvey,
+                          context.source,
+                          context.surveyRootPage,
+                          currentPage,
+                      ),
             [],
         ),
         srcIcon: errorIcon,
         altIcon: errorAltIcon ? t(errorAltIcon) : undefined,
-        onNavigateBack: useCallback(() => saveAndNav(), []),
-        onPrevious: useCallback(() => (backRoute ? saveAndNavFullPath(backRoute) : saveAndNav()), []),
+        onNavigateBack: useCallback(() => saveAndNav(context.idSurvey), []),
+        onPrevious: useCallback(
+            () =>
+                backRoute
+                    ? saveAndNavFullPath(context.idSurvey, backRoute)
+                    : saveAndNav(context.idSurvey),
+            [],
+        ),
         firstName: getPrintedFirstName(context.idSurvey),
         surveyDate: getPrintedSurveyDate(context.idSurvey, context.surveyRootPage),
         disableNav: disableButton,
@@ -146,7 +168,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         setIsModalDisplayed: (value: SetStateAction<boolean>) => void,
     ): void => {
         if (forceQuit) {
-            saveAndNav();
+            saveAndNav(context.idSurvey);
         } else {
             setIsModalDisplayed(true);
         }

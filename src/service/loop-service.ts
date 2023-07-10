@@ -338,6 +338,7 @@ const skipNextPage = (
         (nextPageRoute == null && nextPageNextLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)
     ) {
         saveAndNav(
+            idSurvey,
             getCurrentNavigatePath(
                 idSurvey,
                 EdtRoutesNameEnum.ACTIVITY,
@@ -347,6 +348,8 @@ const skipNextPage = (
         );
     } else {
         saveAndLoopNavigate(
+            idSurvey,
+            source,
             nextPageRoute || nextPageNextLoop,
             LoopEnum.ACTIVITY_OR_ROUTE,
             iteration,
@@ -387,6 +390,7 @@ const skipBackPage = (
         backPageBackLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER
     ) {
         saveAndNav(
+            idSurvey,
             getCurrentNavigatePath(
                 idSurvey,
                 EdtRoutesNameEnum.ACTIVITY,
@@ -396,6 +400,8 @@ const skipBackPage = (
         );
     } else {
         saveAndLoopNavigate(
+            idSurvey,
+            source,
             backPageRoute || backPageBackLoop,
             LoopEnum.ACTIVITY_OR_ROUTE,
             iteration,

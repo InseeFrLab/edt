@@ -30,7 +30,7 @@ import {
     onPrevious,
 } from "service/navigation-service";
 import { mockData } from "service/survey-activity-service";
-import { getData, getSource } from "service/survey-service";
+import { getSource } from "service/survey-service";
 
 const HelpCheckbox = () => {
     const navigate = useNavigate();
@@ -190,7 +190,10 @@ const HelpCheckbox = () => {
                     (e: React.MouseEvent) => onPrevious(e, setBackClickEvent),
                     [backClickEvent],
                 )}
-                onClose={useCallback(() => onClose(false, setIsAlertDisplayed), [isAlertDisplayed])}
+                onClose={useCallback(
+                    () => onClose(context.idSurvey, source, false, setIsAlertDisplayed),
+                    [isAlertDisplayed],
+                )}
                 currentStepIcon={stepData.stepIcon}
                 currentStepIconAlt={stepData.stepIconAlt}
                 currentStepNumber={stepData.stepNumber}

@@ -7,8 +7,8 @@ import { useTranslation } from "react-i18next";
 
 interface AddActivityOrRouteMobileProps {
     handleClose(): void;
-    onClickActivity(): void;
-    onClickRoute(): void;
+    onClickActivity(idSurvey?: any, source?: any): void;
+    onClickRoute(idSurvey?: any, source?: any): void;
     className: string;
     iconTitle: string;
     iconActivity: string;
