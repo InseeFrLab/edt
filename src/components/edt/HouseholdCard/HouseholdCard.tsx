@@ -38,11 +38,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
     const navigate = useNavigate();
 
     const getType = (): string => {
-        if (
-            dataHousehold.stats?.numHouseholdsInProgress == 0 &&
-            dataHousehold.stats?.numHouseholdsClosed == 0 &&
-            dataHousehold.stats?.numHouseholdsValidated == dataHousehold.stats?.numHouseholds
-        ) {
+        if (dataHousehold.stats?.numHouseholdsValidated == dataHousehold.stats?.numHouseholds) {
             return classes.gray;
         } else if (dataHousehold.stats?.numHouseholdsClosed >= 1) {
             return classes.green;
