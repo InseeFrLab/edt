@@ -2,7 +2,6 @@ import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import Box from "@mui/material/Box";
 import calendarMonth from "assets/illustration/mui-icon/calendar-month.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "service/responsive";
 import { getStatutSurvey, isDemoMode } from "service/survey-service";
@@ -25,7 +24,6 @@ const WeekCard = (props: WeekCardProps) => {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const modeReviewer = isReviewer() && !isDemoMode();
-    const stateSurvey = getStatutSurvey(idSurvey);
     const isItMobile = isMobile();
 
     const getLeftBoxClassInterviewer = () => {
@@ -81,24 +79,6 @@ const WeekCard = (props: WeekCardProps) => {
                             isItMobile && modeReviewer ? classes.progressBoxReviewerMobile : "",
                         )}
                     ></Box>
-                </Box>
-                <Box
-                    className={
-                        modeReviewer ? (isItMobile ? classes.statusBoxMobile : classes.statusBox) : ""
-                    }
-                >
-                    {modeReviewer &&
-                        (stateSurvey == StateSurveyEnum.INIT ? (
-                            <Box className={classes.statusInitBox}>
-                                {t("page.reviewer-home.status-survey.init")}
-                            </Box>
-                        ) : (
-                            <Box className={classes.statusProgressBox}>
-                                {stateSurvey == StateSurveyEnum.VALIDATED
-                                    ? t("page.reviewer-home.status-survey.validated")
-                                    : t("page.reviewer-home.status-survey.locked")}
-                            </Box>
-                        ))}
                 </Box>
             </Box>
         </FlexCenter>
