@@ -194,7 +194,7 @@ const ActivitySummaryPage = () => {
     );
 
     const onOpenAddActivityOrRoute = useCallback(
-        (event: any, startTime?: string, endTime?: string) => {
+        (startTime?: any, endTime?: any) => {
             setIsAddActivityOrRouteOpen(true);
             if (startTime && endTime) {
                 setAddActivityOrRouteFromGap(true);
