@@ -132,7 +132,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                             activityComplementaryQuestionsStepperData.length - 1
                         ].stepNumber
                     }
-                    lastCompletedStepNumber={getLastCompletedStep()}
+                    lastCompletedStepNumber={getLastCompletedStep(idSurvey ?? "")}
                     currentStepNumber={currentStepNumber}
                     currentStepLabel={currentStepLabel}
                 />

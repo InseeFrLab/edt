@@ -155,8 +155,8 @@ const getCurrentNavigatePath = (
     return getPathOfPage(idSurvey, rootPage, subpage, page, parentPage, iteration);
 };
 
-const getLastCompletedStep = (): number => {
-    const data = getData(_context.idSurvey ?? "");
+const getLastCompletedStep = (idSurvey?: string): number => {
+    const data = getData(idSurvey ?? "");
     const lastStepCompleted = getLastPageStep(data);
 
     return lastStepCompleted != null ? lastStepCompleted.stepNumber : 0;

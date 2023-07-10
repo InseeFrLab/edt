@@ -81,7 +81,7 @@ const ActivitySummaryPage = () => {
 
     const source =
         context?.source?.components != null ? context.source : getSource(SourcesEnum.ACTIVITY_SURVEY);
-    const idSurveyPath = location.pathname.split("activity/")[1].split("/")[0];
+    const idSurveyPath = location.pathname.split("activity/")[1]?.split("/")?.[0];
     let idSurvey = context.idSurvey != idSurveyPath ? idSurveyPath : context.idSurvey;
 
     const [score, setScore] = React.useState<number | undefined>(undefined);
