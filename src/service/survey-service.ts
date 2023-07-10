@@ -1125,7 +1125,7 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
         if (isValidated) {
             numHouseholdsValidated++;
         }
-        if (isClosed) {
+        if (isClosed && !isValidated) {
             numHouseholdsClosed++;
         }
 
