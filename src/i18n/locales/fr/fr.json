@@ -234,11 +234,11 @@
             "lock-popup": {
                 "boldContent": "Êtes-vous sûr de vouloir verrouiller le carnet ?",
                 "boldContent-not-locked": "Êtes-vous sûr de vouloir déverrouiller le carnet ?",
-                "boldContent-not-unlocked": "Vous pouvez pas déverrouiller le carnet!",
+                "boldContent-not-unlocked": "Vous ne pouvez pas déverrouiller le carnet !",
                 "content": "En cochant cette option, l'enquêté ne pourra pas modifier le carnet.",
                 "content-not-locked": "En cochant cette option, l'enquêté pourra modifier le carnet.",
-                "content-not-unlocked": "Un fois vous avez commencé à remplir le carnet, vous ne pouvez pas le déverrouiller.",
-                "confirm-button": "Confirmer"
+                "content-not-unlocked": "Une fois que vous avez commencé à remplir le carnet, vous ne pouvez pas le déverrouiller.",
+                "confirm-button": "Compris"
             },
             "validate-popup": {
                 "boldContent": "Êtes-vous sûr de vouloir valider le carnet ?"
