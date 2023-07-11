@@ -65,6 +65,7 @@ const SurveysOverviewPage = () => {
         setInitialized(false);
         initializeListSurveys().then(() => {
             refreshSurveyData(setError).finally(() => {
+                initHouseholds();
                 setInitialized(true);
             });
         });
