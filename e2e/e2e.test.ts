@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer";
-import { edtOrganisationApiBaseUrl, stromaeBackOfficeApiBaseUrl } from "./../src/service/api-service";
-import { getUserToken } from "./../src/service/user-service";
+import { edtOrganisationApiBaseUrl, stromaeBackOfficeApiBaseUrl } from "../src/service/api-service";
+import { getUserToken } from "../src/service/user-service";
 import userData from "./mocks/userData.json";
 import userSurveyInfo from "./mocks/userSurveyInfo.json";
 
@@ -42,13 +42,12 @@ describe("App.ts", () => {
 
     beforeAll(async () => {
         browser = await puppeteer.launch({
-            headless: true,
+            headless: "new",
             product: "chrome",
             executablePath: process.env.REACT_APP_CHROMIUM_PATH,
             devtools: true,
             args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
         });
-        process.env.DISPLAY = ":0";
 
         page = await browser.newPage();
 
@@ -107,6 +106,8 @@ describe("App.ts", () => {
     it("create new activity in activity questionarie which is not closed", async () => {
         await page.waitForSelector("#dayCard-1");
         await page.click("#dayCard-1");
+        await page.waitForNavigation();
+
         const numActivityCard = (await page.$$('[id^="activityOrRouteCard-"]')).length;
         expect(numActivityCard).toBe(2);
 
@@ -117,6 +118,7 @@ describe("App.ts", () => {
         let url = await page.url();
         expect(url).toContain("activity-duration/2");
 
+        await page.waitForSelector("#next-button");
         await page.click("#next-button");
         await page.waitForNavigation();
         await page.waitForSelector("#rankCategory-0");
@@ -171,7 +173,7 @@ describe("App.ts", () => {
 
         url = await page.url();
         expect(url).toContain(urlHost);
-    }, 30000);
+    }, 9000);
 
     it("create new route in activity questionarie which is not closed", async () => {
         await page.waitForSelector("#activityOrRouteCard-51");
@@ -186,6 +188,7 @@ describe("App.ts", () => {
         let url = await page.url();
         expect(url).toContain("activity-duration/3");
 
+        await page.waitForSelector("#next-button");
         await page.click("#next-button");
         await page.waitForNavigation();
         url = await page.url();
@@ -206,24 +209,22 @@ describe("App.ts", () => {
         await page.waitForSelector("#false-button");
         await page.click("#false-button");
         await page.waitForNavigation();
-
         url = await page.url();
         expect(url).toContain("with-who");
 
-        await page.waitForSelector("#false-button");
+        await page.waitFor(800);
         await page.click("#false-button");
         await page.waitForNavigation();
-
         url = await page.url();
         expect(url).toContain("with-screen");
 
-        await page.waitForSelector("#true-button");
+        await page.waitFor(800);
         await page.click("#true-button");
         await page.waitForNavigation();
 
         url = await page.url();
         expect(url).toContain(urlHost);
-    }, 30000);
+    }, 9000);
 
     it("clore activity questionarie", async () => {
         await page.waitForSelector("#activityOrRouteCard-51");
@@ -240,28 +241,24 @@ describe("App.ts", () => {
         await page.waitForSelector("#checkboxone-1");
         await page.click("#checkboxone-1");
         await page.waitForNavigation();
-
         url = await page.url();
         expect(url).toContain("worst-activity-day");
 
-        await page.waitForSelector("#checkboxone-0");
-        await page.click("#checkboxone-0");
+        await page.waitFor(200);
+        await page.click("#checkboxone-1");
         await page.waitForNavigation();
-
         url = await page.url();
         expect(url).toContain("kind-of-day");
 
-        await page.waitForSelector("#checkboxone-0");
+        await page.waitFor(200);
         await page.click("#checkboxone-0");
         await page.waitForNavigation();
-
         url = await page.url();
         expect(url).toContain("exceptional-day");
 
         await page.waitForSelector("#false-button");
         await page.click("#false-button");
         await page.waitForNavigation();
-
         url = await page.url();
         expect(url).toContain("travel-time");
 
@@ -269,37 +266,40 @@ describe("App.ts", () => {
         await page.click("#durationHour-select");
         await page.click("#hour-1");
 
-        await page.waitForSelector("#durationMin-select");
+        await page.waitFor(200);
         await page.click("#durationMin-select");
         await page.waitForSelector("#min-1");
         await page.click("#min-1");
 
+        await page.waitFor(200);
         await page.click("#next-button");
         await page.waitForNavigation();
 
         url = await page.url();
         expect(url).toContain("phone-time");
 
-        await page.waitForSelector("#durationHour-select");
+        await page.waitFor(200);
         await page.click("#durationHour-select");
         await page.click("#hour-2");
 
-        await page.waitForSelector("#durationMin-select");
+        await page.waitFor(200);
         await page.click("#durationMin-select");
         await page.waitForSelector("#min-1");
         await page.click("#min-1");
 
+        await page.waitFor(200);
         await page.click("#next-button");
         await page.waitForNavigation();
 
         url = await page.url();
         expect(url).toContain("end-survey");
 
+        await page.waitFor(200);
         await page.click("#send-button");
 
         await page.waitForSelector("#next-modal-button");
         await page.click("#next-modal-button");
-    }, 30000);
+    }, 9000);
 
     afterAll(() => {
         browser.close();
