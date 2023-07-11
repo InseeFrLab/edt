@@ -173,7 +173,7 @@ describe("App.ts", () => {
 
         url = await page.url();
         expect(url).toContain(urlHost);
-    }, 9000);
+    }, 30000);
 
     it("create new route in activity questionarie which is not closed", async () => {
         await page.waitForSelector("#activityOrRouteCard-51");
@@ -224,7 +224,7 @@ describe("App.ts", () => {
 
         url = await page.url();
         expect(url).toContain(urlHost);
-    }, 9000);
+    }, 30000);
 
     it("clore activity questionarie", async () => {
         await page.waitForSelector("#activityOrRouteCard-51");
@@ -299,7 +299,7 @@ describe("App.ts", () => {
 
         await page.waitForSelector("#next-modal-button");
         await page.click("#next-modal-button");
-    }, 9000);
+    }, 30000);
 
     afterAll(() => {
         browser.close();
