@@ -53,7 +53,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
             dataHousehold.stats?.numHouseholdsValidated == 0);
 
     const hasClosed = dataHousehold.stats?.numHouseholdsClosed >= 1;
-    const hasValidated = dataHousehold.stats?.numHouseholdsValidated >= 1;
+    const hasValidated = dataHousehold.stats?.numHouseholdsValidated == dataHousehold.surveys?.length;
 
     const hasSeparator =
         dataHousehold.stats?.numHouseholdsClosed >= 1 ||

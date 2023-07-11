@@ -114,7 +114,7 @@ const HomeSurveyedPage = () => {
     const resetDataAndReload = useCallback(() => {
         const promises: any[] = [];
         surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
-            const stateData = { state: null, date: 0, currentPage: 1 };
+            const stateData = { state: null, date: Date.now(), currentPage: 1 };
             const surveyData: SurveyData = {
                 stateData: stateData,
                 data: {},
