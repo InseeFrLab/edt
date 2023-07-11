@@ -589,13 +589,13 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
         const promisesToWait: Promise<any>[] = [];
-
         if (isChange) {
             if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
+                const stateData = getSurveyStateData(data, idSurvey);
                 promisesToWait.push(
-                    remotePutSurveyDataReviewer(idSurvey, getSurveyStateData(data, idSurvey), data)
+                    remotePutSurveyDataReviewer(idSurvey, stateData, data)
                         .then(surveyData => {
-                            setLocalDatabase(surveyData, data, idSurvey);
+                            setLocalDatabase(stateData, data, idSurvey);
                         })
                         .catch(() => {
                             //return Promise.reject({});
@@ -605,14 +605,15 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
             }
             //We try to submit each time the local database is updated if the user is online
             else if (!isDemoMode && !localSaveOnly && navigator.onLine) {
+                const stateData = getSurveyStateData(data, idSurvey);
                 const surveyData: SurveyData = {
-                    stateData: getSurveyStateData(data, idSurvey),
+                    stateData: stateData,
                     data: data,
                 };
                 promisesToWait.push(
                     remotePutSurveyData(idSurvey, surveyData)
                         .then(surveyData => {
-                            setLocalDatabase(surveyData, data, idSurvey);
+                            setLocalDatabase(stateData, data, idSurvey);
                             return data;
                         })
                         .catch(() => {
@@ -630,8 +631,8 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
     });
 };
 
-const setLocalDatabase = (surveyData: SurveyData, data: LunaticData, idSurvey: string) => {
-    data.lastRemoteSaveDate = surveyData.stateData?.date;
+const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: string) => {
+    data.lastRemoteSaveDate = stateData.date;
     //set the last remote save date inside local database to be able to compare it later with remote data
     lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
