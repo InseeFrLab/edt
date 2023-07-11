@@ -1,8 +1,8 @@
+import puppeteer from "puppeteer";
 import { edtOrganisationApiBaseUrl, stromaeBackOfficeApiBaseUrl } from "./../src/service/api-service";
 import { getUserToken } from "./../src/service/user-service";
-import puppeteer from "puppeteer";
-import userSurveyInfo from "./mocks/userSurveyInfo.json";
 import userData from "./mocks/userData.json";
+import userSurveyInfo from "./mocks/userSurveyInfo.json";
 
 jest.mock("axios");
 
@@ -42,11 +42,14 @@ describe("App.ts", () => {
 
     beforeAll(async () => {
         browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             product: "chrome",
             executablePath: process.env.REACT_APP_CHROMIUM_PATH,
             devtools: true,
+            args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
         });
+        process.env.DISPLAY = ":0";
+
         page = await browser.newPage();
 
         await page.setRequestInterception(true);
