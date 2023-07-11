@@ -1155,8 +1155,8 @@ const lockSurvey = (idSurvey: string) => {
     const data = getData(idSurvey || "");
     const isLocked = surveyLocked(idSurvey);
     const variable: Collected = {
-        COLLECTED: !isLocked,
-        EDITED: !isLocked,
+        COLLECTED: true,
+        EDITED: true,
         FORCED: null,
         INPUTED: null,
         PREVIOUS: null,
@@ -1172,7 +1172,7 @@ const lockSurvey = (idSurvey: string) => {
 
     return new Promise(resolve => {
         Promise.all(promisesToWait).then(() => {
-            resolve(!isLocked);
+            resolve(isLocked);
         });
     });
 };

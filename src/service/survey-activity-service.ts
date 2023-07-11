@@ -70,7 +70,6 @@ const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: Acti
             activityGoal: goalActivity,
         };
     }
-    console.log(activityOrRoute.activity);
 };
 
 export const findItemInAutoCompleteRefByLabel = (

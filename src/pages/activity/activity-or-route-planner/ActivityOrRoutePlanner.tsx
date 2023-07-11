@@ -402,7 +402,7 @@ const ActivityOrRoutePlannerPage = () => {
 
     const lock = useCallback(() => {
         lockSurvey(idSurvey).then((locked: any) => {
-            setIsLocked(locked);
+            setIsLocked(true);
             setIsAlertLockDisplayed(false);
         });
     }, [idSurvey]);
