@@ -63,12 +63,14 @@ const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: Acti
             activityCode:
                 activitySelection.suggesterId ??
                 activitySelection.id ??
-                findItemInAutoCompleteRefByLabel(activitySelection.label, getAutoCompleteRef())?.id,
-            activityLabel: getActivityLabel(activitySelection) || "",
+                findItemInAutoCompleteRefByLabel(activitySelection.label, getAutoCompleteRef())?.id ??
+                mainActivityLabel,
+            activityLabel: getActivityLabel(activitySelection),
             isGoal: mainActivitySuggesterId != null || mainActivityLabel != null,
             activityGoal: goalActivity,
         };
     }
+    console.log(activityOrRoute.activity);
 };
 
 export const findItemInAutoCompleteRefByLabel = (

@@ -84,7 +84,8 @@ const getUserActivitiesCharacteristics = (
             findActivityInAutoCompleteReferentielById(
                 getValue(idSurvey, FieldNameEnum.GREATESTACTIVITYDAY) as string,
             )?.label ||
-            undefined,
+            (getValue(idSurvey, FieldNameEnum.GREATESTACTIVITYDAY) as string) ||
+            "",
         worstActivityLabel:
             findActivityInNomenclatureReferentielById(
                 getValue(idSurvey, FieldNameEnum.WORSTACTIVITYDAY) as string,
@@ -92,7 +93,8 @@ const getUserActivitiesCharacteristics = (
             findActivityInAutoCompleteReferentielById(
                 getValue(idSurvey, FieldNameEnum.WORSTACTIVITYDAY) as string,
             )?.label ||
-            undefined,
+            (getValue(idSurvey, FieldNameEnum.WORSTACTIVITYDAY) as string) ||
+            "",
         kindOfDayLabel:
             findKindOfDayInRef(getValue(idSurvey, FieldNameEnum.KINDOFDAY) as string)?.label ||
             undefined,
@@ -378,4 +380,4 @@ const groupScore = (note: number, t: TFunction<"translation", undefined>) => {
     return group;
 };
 
-export { getUserActivitiesSummary, getUserActivitiesCharacteristics, getQualityScore };
+export { getQualityScore, getUserActivitiesCharacteristics, getUserActivitiesSummary };
