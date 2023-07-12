@@ -515,8 +515,9 @@ const getAllCodesFromActivitiesCodes = (listAIgnorer: string[]) => {
             codesActivity.push(code);
         }
         const findCategory = findItemInCategoriesNomenclature(code.toString(), categoriesActivity);
-        if (findCategory?.item?.subs) {
-            for (let category of findCategory?.item?.subs) {
+        const subs = findCategory?.item?.subs;
+        if (subs) {
+            for (let category of subs) {
                 if (codesActivity.indexOf(category.id) < 0) {
                     codesActivity.push(category.id);
                     getCodesSubCategories(category.id, codesActivity, categoriesActivity);
@@ -539,8 +540,9 @@ const getCodesSubCategories = (
     categoriesActivity: NomenclatureActivityOption[],
 ) => {
     const findCategory = findItemInCategoriesNomenclature(code.toString(), categoriesActivity);
-    if (findCategory?.item?.subs) {
-        for (let category of findCategory?.item?.subs) {
+    const subs = findCategory?.item?.subs;
+    if (subs) {
+        for (let category of subs) {
             if (codesActivity.indexOf(category.id) < 0) {
                 codesActivity.push(category.id);
                 getCodesSubCategories(category.id, codesActivity, categoriesActivity);

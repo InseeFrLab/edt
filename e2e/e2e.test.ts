@@ -6,9 +6,7 @@ import userSurveyInfo from "./mocks/userSurveyInfo.json";
 
 jest.mock("axios");
 
-const urlRedirection = process.env.REACT_APP_KEYCLOAK_AUTHORITY;
 const urlHost = process.env.REACT_APP_KEYCLOAK_REDIRECT_URI;
-
 const urlUserSurvey = edtOrganisationApiBaseUrl + "api/survey-assigment/interviewer/my-surveys";
 const urlSurveyData = stromaeBackOfficeApiBaseUrl + "api/survey-unit/";
 
@@ -42,7 +40,7 @@ describe("App.ts", () => {
 
     beforeAll(async () => {
         browser = await puppeteer.launch({
-            headless: "new",
+            headless: false,
             product: "chrome",
             executablePath: process.env.REACT_APP_CHROMIUM_PATH,
             devtools: true,

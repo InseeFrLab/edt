@@ -401,7 +401,7 @@ const ActivityOrRoutePlannerPage = () => {
     const heightClass = isPwa() ? classes.fullHeight : classes.fullHeightNav;
 
     const lock = useCallback(() => {
-        lockSurvey(idSurvey).then((locked: any) => {
+        lockSurvey(idSurvey).then(() => {
             setIsLocked(true);
             setIsAlertLockDisplayed(false);
         });

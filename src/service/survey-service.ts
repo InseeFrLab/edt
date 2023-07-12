@@ -594,7 +594,7 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                 const stateData = getSurveyStateData(data, idSurvey);
                 promisesToWait.push(
                     remotePutSurveyDataReviewer(idSurvey, stateData, data)
-                        .then(surveyData => {
+                        .then(() => {
                             setLocalDatabase(stateData, data, idSurvey);
                         })
                         .catch(() => {
@@ -612,7 +612,7 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                 };
                 promisesToWait.push(
                     remotePutSurveyData(idSurvey, surveyData)
-                        .then(surveyData => {
+                        .then(() => {
                             setLocalDatabase(stateData, data, idSurvey);
                             return data;
                         })

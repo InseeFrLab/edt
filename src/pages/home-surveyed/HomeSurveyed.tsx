@@ -255,7 +255,6 @@ const HomeSurveyedPage = () => {
                     onClick={navWorkTime(workTimeSurvey)}
                     firstName={getPrintedFirstName(workTimeSurvey)}
                     surveyDate={getPrintedSurveyDate(workTimeSurvey, EdtRoutesNameEnum.WORK_TIME)}
-                    idSurvey={workTimeSurvey}
                     isClose={formClose(workTimeSurvey)}
                     tabIndex={index + 1}
                 />
@@ -345,7 +344,7 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const validateSurveys = useCallback(() => {
-        validateAllEmptySurveys(idHousehold ?? "").then(data => {
+        validateAllEmptySurveys(idHousehold ?? "").then(() => {
             //navigate(0);
         });
     }, []);

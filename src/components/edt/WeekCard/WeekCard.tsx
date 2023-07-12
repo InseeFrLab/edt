@@ -4,7 +4,7 @@ import calendarMonth from "assets/illustration/mui-icon/calendar-month.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "service/responsive";
-import { getStatutSurvey, isDemoMode } from "service/survey-service";
+import { isDemoMode } from "service/survey-service";
 import { isReviewer } from "service/user-service";
 
 interface WeekCardProps {
@@ -13,14 +13,12 @@ interface WeekCardProps {
     onClick(): void;
     firstName: string;
     surveyDate: string;
-    idSurvey: string;
     isClose: boolean;
     tabIndex: number;
 }
 
 const WeekCard = (props: WeekCardProps) => {
-    const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey, isClose, tabIndex } =
-        props;
+    const { labelledBy, describedBy, onClick, firstName, surveyDate, isClose, tabIndex } = props;
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const modeReviewer = isReviewer() && !isDemoMode();
