@@ -40,7 +40,7 @@ describe("App.ts", () => {
 
     beforeAll(async () => {
         browser = await puppeteer.launch({
-            headless: false,
+            headless: "new",
             product: "chrome",
             executablePath: process.env.REACT_APP_CHROMIUM_PATH,
             devtools: true,
@@ -104,8 +104,6 @@ describe("App.ts", () => {
     it("create new activity in activity questionarie which is not closed", async () => {
         await page.waitForSelector("#dayCard-1");
         await page.click("#dayCard-1");
-        await page.waitForNavigation();
-
         const numActivityCard = (await page.$$('[id^="activityOrRouteCard-"]')).length;
         expect(numActivityCard).toBe(2);
 
