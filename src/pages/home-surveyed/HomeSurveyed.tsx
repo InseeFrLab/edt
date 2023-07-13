@@ -292,6 +292,7 @@ const HomeSurveyedPage = () => {
         );
 
         initializeSurveysIdsDemo().then(() => {
+            setState(getData(getIdSurveyActivity(interviewer, 0)));
             initializeSurveysDatasCache().then(() => {
                 interviewers = getUserDatasActivity().map(data => data.interviewerId);
                 interviewersUniques = interviewers.filter(
@@ -420,7 +421,12 @@ const HomeSurveyedPage = () => {
             <Box className={classes.headerBox}>
                 {isReviewer ? (
                     <Box className={classes.reviewerButtonBox}>
-                        <Button color="primary" variant="contained" onClick={navToReviewerHome}>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={navToReviewerHome}
+                            id="button-home-reviewer"
+                        >
                             <img src={home} alt={t("accessibility.asset.mui-icon.home")} />
                         </Button>
                         <BreadcrumbsReviewer
