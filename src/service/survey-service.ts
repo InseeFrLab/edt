@@ -348,13 +348,20 @@ const initializeSurveysIdsDataModeReviewer = (
 
 const initializeData = (remoteSurveyData: SurveyData, surveyId: string) => {
     const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
-    let surveyData = remoteSurveyData.data;
+    let surveyData: LunaticData = {
+        COLLECTED: {},
+        CALCULATED: {},
+        EXTERNAL: {},
+        houseReference: "",
+        id: "",
+        lastLocalSaveDate: Date.now(),
+    };
 
-    surveyData.houseReference = surveyId.replace(regexp, "");
+    surveyData.houseReference = surveyId?.replace(regexp, "");
     surveyData.CALCULATED = {};
     surveyData.EXTERNAL = {};
-    surveyData.COLLECTED = remoteSurveyData.data.COLLECTED ?? dataEmpty;
-    surveyData.lastLocalSaveDate = remoteSurveyData.data.lastLocalSaveDate ?? 0;
+    surveyData.COLLECTED = remoteSurveyData.data?.COLLECTED ?? dataEmpty;
+    surveyData.lastLocalSaveDate = remoteSurveyData.data?.lastLocalSaveDate ?? 0;
 
     return surveyData;
 };
@@ -365,6 +372,7 @@ const getRemoteSavedSurveysDatas = (
 ): Promise<any> => {
     const promises: Promise<any>[] = [];
     const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
+    console.log(urlRemote);
     surveysIds.forEach(surveyId => {
         promises.push(
             urlRemote(surveyId, setError).then((remoteSurveyData: SurveyData) => {

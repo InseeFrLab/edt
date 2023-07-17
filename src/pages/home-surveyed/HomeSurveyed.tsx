@@ -27,7 +27,7 @@ import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { logout, remotePutSurveyData, remotePutSurveyDataReviewer } from "service/api-service";
+import { logout, remotePutSurveyData } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import {
     getNavigatePath,
@@ -120,7 +120,6 @@ const HomeSurveyedPage = () => {
                 data: {},
             };
             promises.push(remotePutSurveyData(idSurvey, surveyData));
-            promises.push(remotePutSurveyDataReviewer(idSurvey, stateData, surveyData.data));
         });
         Promise.all(promises).then(() => {
             lunaticDatabase.clear().then(() => {

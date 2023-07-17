@@ -28,7 +28,7 @@ export const setUserToken = (token: string): void => {
 export const getUserRights = (): EdtUserRightsEnum => {
     if (user?.profile?.inseegroupedefaut?.includes(EdtUserRightsEnum.REVIEWER)) {
         return EdtUserRightsEnum.REVIEWER;
-    } else if (user?.profile?.inseegroupedefaut?.includes(EdtUserRightsEnum.SURVEYED)) {
+    } else if (user?.profile?.inseegrouWpedefaut?.includes(EdtUserRightsEnum.SURVEYED)) {
         return EdtUserRightsEnum.SURVEYED;
     } else {
         return EdtUserRightsEnum.NO_RIGHTS;
