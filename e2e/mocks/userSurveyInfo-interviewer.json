@@ -27,7 +27,7 @@
         "campaignId": "EDTTEST00",
         "id": "4",
         "interviewerId": "repondant10",
-        "questionnaireModelId": "edtWorkTimeSurvey",
+        "questionnaireModelId": "edtActivitySurvey",
         "reviewerId": "reviewer1",
         "surveyUnitId": "EDTTEST00-004"
     },
@@ -38,5 +38,29 @@
         "questionnaireModelId": "edtWorkTimeSurvey",
         "reviewerId": "reviewer1",
         "surveyUnitId": "EDTTEST00-005"
+    },
+    {
+        "campaignId": "EDTTEST00",
+        "id": "6",
+        "interviewerId": "repondant10",
+        "questionnaireModelId": "edtWorkTimeSurvey",
+        "reviewerId": "reviewer1",
+        "surveyUnitId": "EDTTEST00-006"
+    },
+    {
+        "campaignId": "EDTTEST00",
+        "id": "7",
+        "interviewerId": "repondant10",
+        "questionnaireModelId": "edtActivitySurvey",
+        "reviewerId": "reviewer1",
+        "surveyUnitId": "EDTTEST00-007"
+    },
+    {
+        "campaignId": "EDTTEST00",
+        "id": "8",
+        "interviewerId": "repondant10",
+        "questionnaireModelId": "edtActivitySurvey",
+        "reviewerId": "reviewer1",
+        "surveyUnitId": "EDTTEST00-008"
     }
 ]

@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 import { edtOrganisationApiBaseUrl, stromaeBackOfficeApiBaseUrl } from "../src/service/api-service";
 import { getUserToken } from "../src/service/user-service";
 import userData from "./mocks/userData.json";
-import userSurveyInfo from "./mocks/userSurveyInfo.json";
+import userSurveyInfo from "./mocks/userSurveyInfo-interviewer.json";
 
 jest.mock("axios");
 
@@ -40,7 +40,7 @@ describe("App.ts", () => {
 
     beforeAll(async () => {
         browser = await puppeteer.launch({
-            headless: "new",
+            headless: false,
             product: "chrome",
             executablePath: process.env.REACT_APP_CHROMIUM_PATH,
             devtools: true,
@@ -81,6 +81,7 @@ describe("App.ts", () => {
 
         const urlHome = await page.url();
         expect(urlHome).toContain(urlHost);
+        console.log(urlHome);
     }, 50000);
 
     it("shows home page with all of questionnaires", async () => {
@@ -88,7 +89,7 @@ describe("App.ts", () => {
 
         //verify presence of activity survey
         const numActivitySurvey = (await page.$$('[id^="dayCard-"]')).length;
-        expect(numActivitySurvey).toBe(3);
+        expect(numActivitySurvey).toBe(6);
 
         //verify presence of number of work time survey
         const numWorkTimeSurvey = (await page.$$('[id^="weekCard-"]')).length;
@@ -97,8 +98,8 @@ describe("App.ts", () => {
         const surveyDate = (await page.$$("#surveyDate-text")).length;
         const firstName = (await page.$$("#firstName-text")).length;
 
-        expect(surveyDate).toBe(5);
-        expect(firstName).toBe(5);
+        expect(surveyDate).toBe(8);
+        expect(firstName).toBe(8);
     }, 3000);
 
     it("create new activity in activity questionarie which is not closed", async () => {

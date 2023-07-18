@@ -122,6 +122,7 @@ const HomeReviewerPage = () => {
                             />
                         }
                         onClick={navToSurveysOverview}
+                        id="button-surveys-overview"
                     >
                         {t("page.reviewer-home.navigation.surveys")}
                     </Button>
@@ -132,6 +133,7 @@ const HomeReviewerPage = () => {
                             <img src={visibility} alt={t("accessibility.asset.mui-icon.visibility")} />
                         }
                         onClick={navToDemonstration}
+                        id="button-demo"
                     >
                         {t("page.reviewer-home.navigation.demo")}
                     </Button>

@@ -163,6 +163,7 @@ const SurveysOverviewPage = () => {
                             : t("page.surveys-overview.validated-survey-label")
                     }
                     dataHousehold={dataHousehold}
+                    tabIndex={index}
                 />
             );
         },

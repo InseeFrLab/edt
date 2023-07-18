@@ -19,6 +19,7 @@ interface HouseholdCardProps {
     validatedSurveyLabel: string;
     dataHousehold: any;
     onClick?: () => void;
+    tabIndex: number;
 }
 
 const HouseholdCard = (props: HouseholdCardProps) => {
@@ -33,6 +34,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
         closedSurveyLabel,
         validatedSurveyLabel,
         dataHousehold,
+        tabIndex,
     } = props;
     const { classes, cx } = useStyles();
     const navigate = useNavigate();
@@ -207,6 +209,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
         <Box
             className={cx(isItMobile ? classes.familyCardBoxMobile : classes.familyCardBox)}
             onClick={onClickHouseholdCard}
+            id={"householdCard-" + tabIndex}
         >
             {isItMobile ? renderCardMobile() : renderCard()}
         </Box>
