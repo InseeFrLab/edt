@@ -27,7 +27,7 @@ import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { logout, remotePutSurveyData } from "service/api-service";
+import { logout, remotePutSurveyData, remotePutSurveyDataReviewer } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import {
     getNavigatePath,
@@ -120,6 +120,7 @@ const HomeSurveyedPage = () => {
                 data: {},
             };
             promises.push(remotePutSurveyData(idSurvey, surveyData));
+            promises.push(remotePutSurveyDataReviewer(idSurvey, stateData, {}));
         });
         Promise.all(promises).then(() => {
             lunaticDatabase.clear().then(() => {
@@ -129,10 +130,13 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const resetDemoDataAndReload = useCallback(() => {
+        const promises: any[] = [];
         surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
-            saveData(idSurvey, {});
+            promises.push(saveData(idSurvey, {}));
         });
-        window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
+        Promise.all(promises).then(data => {
+            window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
+        });
     }, []);
 
     const navWorkTime = useCallback(

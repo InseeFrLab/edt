@@ -629,6 +629,13 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                             //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
                         }),
                 );
+            } else if (isDemoMode || localSaveOnly) {
+                promisesToWait.push(
+                    new Promise(resolve => {
+                        setLocalDatabase(getSurveyStateData(data, idSurvey), data, idSurvey);
+                        resolve(data);
+                    }),
+                );
             }
         }
         return new Promise(resolve => {
