@@ -9,7 +9,7 @@ import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { loopActivityRouteStepperData, loopActivityStepperData } from "service/loop-stepper-service";
 import { getLoopParameterizedNavigatePath, navFullPath } from "service/navigation-service";
 import { surveyReadOnly } from "service/survey-activity-service";
@@ -19,7 +19,8 @@ const EditActivityInformationPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
-    const idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
 
     const { classes } = useStyles();
     const paramIteration = useParams().iteration;

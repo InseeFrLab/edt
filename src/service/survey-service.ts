@@ -670,10 +670,23 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
     });
 };
 
-const getSurveyStateData = (data: LunaticData, idSurvey: string): StateData => {
+const getStateOfSurvey = (idSurvey: string): StateDataStateEnum => {
     const isSent = getValue(idSurvey, FieldNameEnum.ISENVOYED) as boolean;
+    const isLocked = surveyLocked(idSurvey);
+
+    let state: StateDataStateEnum = StateDataStateEnum.INIT;
+
+    if (isSent) {
+        state = StateDataStateEnum.COMPLETED;
+    } else if (isLocked) {
+        state = StateDataStateEnum.VALIDATED;
+    }
+    return state;
+};
+
+const getSurveyStateData = (data: LunaticData, idSurvey: string): StateData => {
     const stateData: StateData = {
-        state: isSent ? StateDataStateEnum.VALIDATED : StateDataStateEnum.INIT,
+        state: getStateOfSurvey(idSurvey),
         date: Date.now(),
         currentPage: getCurrentPage(data),
     };

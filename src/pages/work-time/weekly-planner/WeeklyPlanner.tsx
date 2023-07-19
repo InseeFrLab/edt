@@ -14,7 +14,7 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import {
     closeFormularieAndNav,
     getFullNavigatePath,
@@ -32,7 +32,8 @@ import { getSurveyIdFromUrl } from "utils/utils";
 const WeeklyPlannerPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { t } = useTranslation();
-    const idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
 
     setEnviro(context, useNavigate(), callbackHolder);
 

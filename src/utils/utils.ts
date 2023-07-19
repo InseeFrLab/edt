@@ -1,6 +1,6 @@
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { useLocation } from "react-router-dom";
+import { Location } from "react-router-dom";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 
 function groupBy<T>(arr: T[], fn: (item: T) => any) {
@@ -29,8 +29,7 @@ function objectEquals(a: any, b: any) {
     return true;
 }
 
-function getSurveyIdFromUrl(context: OrchestratorContext) {
-    const location = useLocation();
+function getSurveyIdFromUrl(context: OrchestratorContext, location: Location) {
     const pathSurveyRoot =
         getCurrentSurveyRootPage() == EdtRoutesNameEnum.ACTIVITY ? "activity/" : "work-time/";
     let idSurveyPath = location.pathname.split(pathSurveyRoot)[1].split("/")[0];

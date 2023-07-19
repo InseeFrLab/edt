@@ -2,13 +2,14 @@ import worstActivityDay from "assets/illustration/worst-activity-day.svg";
 import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { useOutletContext } from "react-router-dom";
+import { useLocation, useOutletContext } from "react-router-dom";
 import { getActivitesSelectedLabel } from "service/survey-activity-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
 const WorstActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
-    const idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
     const uniqueActivities = getActivitesSelectedLabel(idSurvey).filter(
         (value, index, self) =>
             index ===

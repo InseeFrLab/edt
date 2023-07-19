@@ -3,4 +3,5 @@ export enum StateDataStateEnum {
     VALIDATED = "VALIDATED",
     TOEXTRACT = "TO-EXTRACT",
     EXTRACTED = "EXTRACTED",
+    COMPLETED = "COMPLETED",
 }

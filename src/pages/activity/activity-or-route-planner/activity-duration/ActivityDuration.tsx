@@ -15,7 +15,7 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { Fragment, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
@@ -37,7 +37,8 @@ const ActivityDurationPage = () => {
     const { classes } = useStyles();
     setEnviro(context, useNavigate(), callbackHolder);
 
-    const idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
     const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;

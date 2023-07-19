@@ -3,7 +3,7 @@ import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { filtrePage, getLoopInitialPage, getValueOfActivity, skipNextPage } from "service/loop-service";
 import {
     getLoopPageSubpage,
@@ -56,7 +56,8 @@ const MainActivityPage = () => {
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
 
-    const idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY;
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;

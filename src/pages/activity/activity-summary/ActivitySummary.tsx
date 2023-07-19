@@ -32,7 +32,7 @@ import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { getFlatLocalStorageValue, getLocalStorageValue } from "service/local-storage-service";
 import { getLoopSize, setLoopSize } from "service/loop-service";
 import {
@@ -82,7 +82,8 @@ const ActivitySummaryPage = () => {
 
     const source =
         context?.source?.components != null ? context.source : getSource(SourcesEnum.ACTIVITY_SURVEY);
-    let idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    let idSurvey = getSurveyIdFromUrl(context, location);
     const [score, setScore] = React.useState<number | undefined>(undefined);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
     const localIsSummaryEdited = getLocalStorageValue(
@@ -130,7 +131,7 @@ const ActivitySummaryPage = () => {
     }, []);
 
     useEffect(() => {
-        idSurvey = getSurveyIdFromUrl(context);
+        idSurvey = getSurveyIdFromUrl(context, location);
         context.idSurvey = idSurvey;
     });
 

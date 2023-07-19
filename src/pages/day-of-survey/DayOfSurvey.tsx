@@ -7,7 +7,7 @@ import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import React from "react";
-import { useOutletContext } from "react-router-dom";
+import { useLocation, useOutletContext } from "react-router-dom";
 import { navToErrorPage } from "service/navigation-service";
 import { surveyReadOnly } from "service/survey-activity-service";
 import { getComponentId, setValue } from "service/survey-service";
@@ -15,7 +15,8 @@ import { getSurveyIdFromUrl } from "utils/utils";
 
 const DayOfSurveyPage = () => {
     const context: OrchestratorContext = useOutletContext();
-    const idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
 
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
     const modifiable = !surveyReadOnly(context.rightsSurvey);

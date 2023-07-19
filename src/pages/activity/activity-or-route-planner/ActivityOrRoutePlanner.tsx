@@ -28,7 +28,7 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect, useState } from "react";
 import { isAndroid, isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { getLoopSize, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
@@ -72,7 +72,8 @@ const ActivityOrRoutePlannerPage = () => {
     const source =
         context?.source?.components != null ? context.source : getSource(SourcesEnum.ACTIVITY_SURVEY);
 
-    let idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    let idSurvey = getSurveyIdFromUrl(context, location);
     const { t } = useTranslation();
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
@@ -159,7 +160,7 @@ const ActivityOrRoutePlannerPage = () => {
         } else {
             setSkip(false);
         }
-        idSurvey = getSurveyIdFromUrl(context);
+        idSurvey = getSurveyIdFromUrl(context, location);
         context.idSurvey = idSurvey;
     });
 

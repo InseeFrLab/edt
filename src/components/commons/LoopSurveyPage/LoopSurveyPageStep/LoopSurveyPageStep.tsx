@@ -9,7 +9,7 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage, skipBackPage, skipNextPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
@@ -46,7 +46,8 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
-    const idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
 
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;

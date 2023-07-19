@@ -26,6 +26,7 @@ import { surveyReadOnly } from "service/survey-activity-service";
 import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 import SurveyPage from "../SurveyPage";
+import { useLocation } from "react-router-dom";
 
 export interface SurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
@@ -54,7 +55,8 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
-    const idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
 
     const navigate = useNavigate();
 

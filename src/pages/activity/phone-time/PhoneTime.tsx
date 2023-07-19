@@ -6,7 +6,7 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import {
     getNavigatePath,
     getOrchestratorPage,
@@ -25,7 +25,8 @@ import { getSurveyIdFromUrl } from "utils/utils";
 const PhoneTimePage = () => {
     const currentPage = EdtRoutesNameEnum.PHONE_TIME;
     const context: OrchestratorContext = useOutletContext();
-    const idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
     const { t } = useTranslation();
     setEnviro(context, useNavigate(), callbackHolder);
 

@@ -5,7 +5,7 @@ import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { getLoopLastCompletedStep } from "service/loop-service";
 import { loopActivityStepperData } from "service/loop-stepper-service";
 import { setEnviro } from "service/navigation-service";
@@ -53,7 +53,8 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
 
-    const idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
 
     const { classes, cx } = useStyles();
 

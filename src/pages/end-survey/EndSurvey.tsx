@@ -17,7 +17,7 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { remotePutSurveyData, remotePutSurveyDataReviewer } from "service/api-service";
 import { getFlatLocalStorageValue } from "service/local-storage-service";
 import {
@@ -37,7 +37,8 @@ const EndSurveyPage = () => {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
-    const idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
 
     const navigate = useNavigate();
 
@@ -86,7 +87,7 @@ const EndSurveyPage = () => {
     const remoteSaveSurveyAndGoBackHome = useCallback(() => {
         const dataWithIsEnvoyed = setValue(idSurvey, FieldNameEnum.ISENVOYED, true);
         const stateData: StateData = {
-            state: StateDataStateEnum.VALIDATED,
+            state: StateDataStateEnum.COMPLETED,
             date: Date.now(),
             currentPage: getCurrentPage(callbackHolder.getData(), context.source),
         };

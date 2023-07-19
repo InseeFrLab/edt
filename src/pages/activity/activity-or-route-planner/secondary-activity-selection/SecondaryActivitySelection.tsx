@@ -6,7 +6,7 @@ import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { useTranslation } from "react-i18next";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useLocation, useOutletContext, useParams } from "react-router-dom";
 import {
     getActivitySecondaryActivityRef,
     getRouteSecondaryActivityRef,
@@ -18,7 +18,8 @@ const SecondaryActivitySelectionPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { t } = useTranslation();
 
-    const idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
     const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;

@@ -9,7 +9,7 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import {
     getNavigatePath,
     getOrchestratorPage,
@@ -29,8 +29,8 @@ const KindOfWeekPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { t } = useTranslation();
     setEnviro(context, useNavigate(), callbackHolder);
-
-    const idSurvey = getSurveyIdFromUrl(context);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
     const currentPage = EdtRoutesNameEnum.KIND_OF_WEEK;
 
     const routeEnd =
