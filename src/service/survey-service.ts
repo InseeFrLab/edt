@@ -602,8 +602,8 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                 const stateData = getSurveyStateData(data, idSurvey);
                 promisesToWait.push(
                     remotePutSurveyDataReviewer(idSurvey, stateData, data)
-                        .then(() => {
-                            setLocalDatabase(stateData, data, idSurvey);
+                        .then(dataRemote => {
+                            setLocalOrRemoteData(idSurvey, dataRemote, data, stateData);
                         })
                         .catch(() => {
                             //return Promise.reject({});
@@ -620,9 +620,8 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                 };
                 promisesToWait.push(
                     remotePutSurveyData(idSurvey, surveyData)
-                        .then(() => {
-                            setLocalDatabase(stateData, data, idSurvey);
-                            return data;
+                        .then(dataRemote => {
+                            setLocalOrRemoteData(idSurvey, dataRemote, data, stateData);
                         })
                         .catch(() => {
                             //return Promise.reject();
@@ -644,6 +643,21 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
             });
         });
     });
+};
+
+const setLocalOrRemoteData = (
+    idSurvey: string,
+    dataRemote: SurveyData,
+    data: LunaticData,
+    stateData: StateData,
+) => {
+    if (dataRemote != data && (data == null || data.COLLECTED == undefined)) {
+        setLocalDatabase(stateData, dataRemote.data, idSurvey);
+        console.log(dataRemote.data);
+    } else {
+        setLocalDatabase(stateData, data, idSurvey);
+        console.log(data);
+    }
 };
 
 const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: string) => {
