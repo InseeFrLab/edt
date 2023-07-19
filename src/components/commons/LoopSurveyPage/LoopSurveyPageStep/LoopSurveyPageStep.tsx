@@ -20,6 +20,7 @@ import { getData, getValue } from "service/survey-service";
 import LoopSurveyPage from "../LoopSurveyPage";
 
 export interface LoopSurveyPageStepProps {
+    idSurvey: string;
     currentPage: EdtRoutesNameEnum;
     labelOfPage: string;
     errorIcon: string;
@@ -32,6 +33,7 @@ export interface LoopSurveyPageStepProps {
 
 const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
     const {
+        idSurvey,
         currentPage,
         labelOfPage,
         errorIcon,
@@ -48,7 +50,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
 
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
-    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
+    const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
     const stepData = getStepData(currentPage, isRoute);
     const modifiable = !surveyReadOnly(context.rightsSurvey);
 
@@ -63,7 +65,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         backClickCallback: () => {
             specifiquesProps?.backClickback ??
                 skipBackPage(
-                    context.idSurvey,
+                    idSurvey,
                     context.source,
                     currentIteration,
                     currentPage,
@@ -75,7 +77,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         nextClickCallback: () => {
             specifiquesProps?.nextClickback ??
                 skipNextPage(
-                    context.idSurvey,
+                    idSurvey,
                     context.source,
                     currentIteration,
                     currentPage,
@@ -87,9 +89,9 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         labels: getLabels(labelOfPage),
         errorIcon: errorIcon,
         onSelectValue: () => {
-            validate(context.idSurvey).then(() => {
+            validate(idSurvey).then(() => {
                 skipNextPage(
-                    context.idSurvey,
+                    idSurvey,
                     context.source,
                     currentIteration,
                     currentPage,
@@ -109,14 +111,14 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
     };
 
     const loopSurveyPageProps = {
+        idSurvey: idSurvey,
         onNext: useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [nextClickEvent]),
         onPrevious: useCallback(
             (e: React.MouseEvent) => onPrevious(e, setBackClickEvent),
             [backClickEvent],
         ),
         onClose: useCallback(
-            () =>
-                onClose(context.idSurvey, context.source, false, setIsAlertDisplayed, currentIteration),
+            () => onClose(idSurvey, context.source, false, setIsAlertDisplayed, currentIteration),
             [isAlertDisplayed],
         ),
         currentStepIcon: stepData.stepIcon,
@@ -134,7 +136,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         onCompleteCallBack: useCallback(() => setIsAlertDisplayed(false), [isAlertDisplayed]),
         onCancelCallBack: useCallback(
             (cancel: boolean) =>
-                onClose(context.idSurvey, context.source, cancel, setIsAlertDisplayed, currentIteration),
+                onClose(idSurvey, context.source, cancel, setIsAlertDisplayed, currentIteration),
             [isAlertDisplayed],
         ),
         labels: getLabelsWhenQuit(isRoute),
@@ -145,7 +147,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
     const specifiquesPropsOrchestrator = Object.assign({}, specifiquesProps, componentLunaticProps);
     const orchestratorProps = {
         source: context.source,
-        data: getData(context.idSurvey),
+        data: getData(idSurvey),
         cbHolder: callbackHolder,
         page: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
         subPage: getLoopPageSubpage(currentPage),

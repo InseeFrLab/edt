@@ -11,9 +11,12 @@ import { useOutletContext } from "react-router-dom";
 import { navToErrorPage } from "service/navigation-service";
 import { surveyReadOnly } from "service/survey-activity-service";
 import { getComponentId, setValue } from "service/survey-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const DayOfSurveyPage = () => {
     const context: OrchestratorContext = useOutletContext();
+    const idSurvey = getSurveyIdFromUrl(context);
+
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
     const modifiable = !surveyReadOnly(context.rightsSurvey);
 
@@ -27,7 +30,7 @@ const DayOfSurveyPage = () => {
                 document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement
             )?.value;
             const inputFormatted = dayjs(input, "DD/MM/YYYY").format("YYYY-MM-DD");
-            const bdd = setValue(context.idSurvey, FieldNameEnum.SURVEYDATE, inputFormatted);
+            const bdd = setValue(idSurvey, FieldNameEnum.SURVEYDATE, inputFormatted);
             if (bdd) context.data = bdd;
 
             const errorData =
@@ -57,6 +60,7 @@ const DayOfSurveyPage = () => {
     return (
         <>
             <SurveyPageStep
+                idSurvey={idSurvey}
                 currentPage={EdtRoutesNameEnum.DAY_OF_SURVEY}
                 errorIcon={day_of_survey}
                 errorAltIcon={"accessibility.asset.day-of-survey-alt"}

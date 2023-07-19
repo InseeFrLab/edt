@@ -28,6 +28,7 @@ import {
 import { isDesktop } from "service/responsive";
 import { getActivitiesOrRoutes, surveyReadOnly } from "service/survey-activity-service";
 import { getData, getValue, getValueOfData, saveData } from "service/survey-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
@@ -35,17 +36,15 @@ const ActivityDurationPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { classes } = useStyles();
     setEnviro(context, useNavigate(), callbackHolder);
+
+    const idSurvey = getSurveyIdFromUrl(context);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
-    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
+    const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
     const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
     const stepData = getStepData(currentPage, isRoute);
 
-    const activitiesAct = getActivitiesOrRoutes(
-        t,
-        context.idSurvey,
-        context.source,
-    ).activitiesRoutesOrGaps;
+    const activitiesAct = getActivitiesOrRoutes(t, idSurvey, context.source).activitiesRoutesOrGaps;
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const [snackbarText, setSnackbarText] = useState<string | undefined>(undefined);
@@ -124,10 +123,10 @@ const ActivityDurationPage = () => {
         }
 
         if ((skip && isAfter) || !isAfter) {
-            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            saveData(idSurvey, callbackHolder.getData()).then(() => {
                 navigate(
                     getLoopParameterizedNavigatePath(
-                        context.idSurvey,
+                        idSurvey,
                         getNextLoopPage(currentPage, isRoute),
                         LoopEnum.ACTIVITY_OR_ROUTE,
                         currentIteration,
@@ -138,16 +137,16 @@ const ActivityDurationPage = () => {
     };
 
     const onClose = (forceQuit: boolean) => {
-        const isCompleted = getValue(context.idSurvey, FieldNameEnum.ISCOMPLETED, currentIteration);
-        const isCloture = getValue(context.idSurvey, FieldNameEnum.ISCLOSED) as boolean;
+        const isCompleted = getValue(idSurvey, FieldNameEnum.ISCOMPLETED, currentIteration);
+        const isCloture = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
         if (!openSnackbar) {
             if (!isCompleted) {
                 if (forceQuit) {
-                    saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+                    saveData(idSurvey, callbackHolder.getData()).then(() => {
                         if (isCloture) {
-                            navToActivitySummary(context.idSurvey);
+                            navToActivitySummary(idSurvey);
                         } else {
-                            navToActivityRoutePlanner(context.idSurvey, context.source);
+                            navToActivityRoutePlanner(idSurvey, context.source);
                         }
                     });
                 } else {
@@ -155,9 +154,9 @@ const ActivityDurationPage = () => {
                 }
             } else {
                 if (isCloture) {
-                    navToActivitySummary(context.idSurvey);
+                    navToActivitySummary(idSurvey);
                 } else {
-                    navToActivityRoutePlanner(context.idSurvey, context.source);
+                    navToActivityRoutePlanner(idSurvey, context.source);
                 }
             }
         }
@@ -183,6 +182,7 @@ const ActivityDurationPage = () => {
 
     return (
         <LoopSurveyPage
+            idSurvey={idSurvey}
             onNext={useCallback(() => onNext(), [snackbarText, lastEndTime, openSnackbar])}
             onClose={useCallback(() => onClose(false), [isAlertDisplayed])}
             currentStepIcon={stepData.stepIcon}
@@ -216,7 +216,7 @@ const ActivityDurationPage = () => {
                 />
                 <OrchestratorForStories
                     source={context.source}
-                    data={getData(context.idSurvey)}
+                    data={getData(idSurvey)}
                     cbHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}

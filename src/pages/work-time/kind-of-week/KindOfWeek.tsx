@@ -23,19 +23,21 @@ import {
 } from "service/navigation-service";
 import { getKindOfWeekRef } from "service/referentiel-service";
 import { getData, getPrintedFirstName } from "service/survey-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const KindOfWeekPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { t } = useTranslation();
     setEnviro(context, useNavigate(), callbackHolder);
 
+    const idSurvey = getSurveyIdFromUrl(context);
     const currentPage = EdtRoutesNameEnum.KIND_OF_WEEK;
 
     const routeEnd =
-        getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, context.idSurvey) +
+        getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey) +
         getNavigatePath(EdtRoutesNameEnum.END_SURVEY);
     const routeWeeklyPlanner =
-        getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, context.idSurvey) +
+        getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey) +
         getNavigatePath(EdtRoutesNameEnum.WEEKLY_PLANNER);
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
@@ -44,7 +46,7 @@ const KindOfWeekPage = () => {
         icon: calendarWeek,
         altIcon: t("accessibility.asset.kind-of-week-alt"),
         onSelectValue: () => {
-            validate(context.idSurvey).then(() => saveAndNav(context.idSurvey, routeEnd));
+            validate(idSurvey).then(() => saveAndNav(idSurvey, routeEnd));
         },
         extensionIcon: extension,
         extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
@@ -59,21 +61,15 @@ const KindOfWeekPage = () => {
 
     return (
         <SurveyPage
+            idSurvey={idSurvey}
             validate={useCallback(
-                () =>
-                    validateWithAlertAndNav(
-                        context.idSurvey,
-                        false,
-                        setIsAlertDisplayed,
-                        undefined,
-                        routeEnd,
-                    ),
+                () => validateWithAlertAndNav(idSurvey, false, setIsAlertDisplayed, undefined, routeEnd),
                 [setIsAlertDisplayed],
             )}
             onNavigateBack={useCallback(
                 () =>
                     validateWithAlertAndNav(
-                        context.idSurvey,
+                        idSurvey,
                         false,
                         setIsAlertDisplayed,
                         undefined,
@@ -81,13 +77,10 @@ const KindOfWeekPage = () => {
                     ),
                 [setIsAlertDisplayed],
             )}
-            onPrevious={useCallback(
-                () => navFullPath(context.idSurvey, EdtRoutesNameEnum.WEEKLY_PLANNER),
-                [],
-            )}
+            onPrevious={useCallback(() => navFullPath(idSurvey, EdtRoutesNameEnum.WEEKLY_PLANNER), [])}
             srcIcon={kindOfWeek}
             altIcon={t("accessibility.asset.kind-of-week-alt")}
-            firstName={getPrintedFirstName(context.idSurvey)}
+            firstName={getPrintedFirstName(idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={true}
             simpleHeaderLabel={t("page.kind-of-week.simple-header-label")}
@@ -100,7 +93,7 @@ const KindOfWeekPage = () => {
                         [isAlertDisplayed],
                     )}
                     onCancelCallBack={useCallback(
-                        cancel => onClose(context.idSurvey, context.source, cancel, setIsAlertDisplayed),
+                        cancel => onClose(idSurvey, context.source, cancel, setIsAlertDisplayed),
                         [isAlertDisplayed],
                     )}
                     labels={alertLabels}
@@ -109,7 +102,7 @@ const KindOfWeekPage = () => {
                 ></Alert>
                 <OrchestratorForStories
                     source={context.source}
-                    data={getData(context.idSurvey)}
+                    data={getData(idSurvey)}
                     cbHolder={callbackHolder}
                     page={getOrchestratorPage(currentPage)}
                     componentSpecificProps={specificProps}

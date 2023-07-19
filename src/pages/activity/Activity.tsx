@@ -19,14 +19,15 @@ import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { getData, getSource, getSurveyRights, getTabsData } from "service/survey-service";
 
 const ActivityPage = () => {
-    let { idSurvey } = useParams();
-    let data = getData(idSurvey || "");
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const navigate = useNavigate();
 
     const context: OrchestratorContext = useOutletContext();
-
     setEnviro(context, useNavigate(), callbackHolder);
+
+    let { idSurvey } = useParams();
+    let data = getData(idSurvey ?? context.idSurvey);
+
     const surveyRootPage = getCurrentSurveyRootPage();
     const { t } = useTranslation();
 

@@ -31,6 +31,7 @@ import { SEPARATOR_DEFAUT } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useState } from "react";
@@ -40,6 +41,7 @@ import { getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
+    getIdSurveyContext,
     getNavigatePath,
     navToActivityRouteOrHome,
     onClose,
@@ -59,6 +61,8 @@ const HelpCategoryActivity = () => {
     const stepData = getStepData(currentPage);
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const data = mockData();
+    const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
+
     const [helpStep, setHelpStep] = React.useState(1);
 
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
@@ -262,6 +266,7 @@ const HelpCategoryActivity = () => {
         <Box className={classes.root}>
             {renderHelp()}
             <LoopSurveyPage
+                idSurvey={idSurvey}
                 onNext={useCallback(
                     (e: React.MouseEvent) => onNext(e, setNextClickEvent),
                     [nextClickEvent],
@@ -271,7 +276,7 @@ const HelpCategoryActivity = () => {
                     [backClickEvent],
                 )}
                 onClose={useCallback(
-                    () => onClose(context.idSurvey, source, false, setIsAlertDisplayed),
+                    () => onClose(idSurvey, source, false, setIsAlertDisplayed),
                     [isAlertDisplayed],
                 )}
                 currentStepIcon={stepData.stepIcon}
@@ -289,7 +294,7 @@ const HelpCategoryActivity = () => {
                             [isAlertDisplayed],
                         )}
                         onCancelCallBack={useCallback(
-                            cancel => onClose(context.idSurvey, source, cancel, setIsAlertDisplayed, 0),
+                            cancel => onClose(idSurvey, source, cancel, setIsAlertDisplayed, 0),
                             [isAlertDisplayed],
                         )}
                         labels={getLabelsWhenQuit()}

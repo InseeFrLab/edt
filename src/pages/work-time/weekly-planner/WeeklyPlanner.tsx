@@ -27,10 +27,12 @@ import {
 import { getLanguage } from "service/referentiel-service";
 import { surveyReadOnly } from "service/survey-activity-service";
 import { getData, getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const WeeklyPlannerPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { t } = useTranslation();
+    const idSurvey = getSurveyIdFromUrl(context);
 
     setEnviro(context, useNavigate(), callbackHolder);
 
@@ -40,11 +42,11 @@ const WeeklyPlannerPage = () => {
     const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
 
     const save = (): void => {
-        saveData(context.idSurvey, callbackHolder.getData());
+        saveData(idSurvey, callbackHolder.getData());
     };
 
     const specificProps: WeeklyPlannerSpecificProps = {
-        surveyDate: getSurveyDate(context.idSurvey),
+        surveyDate: getSurveyDate(idSurvey),
         isSubChildDisplayed: displayDayOverview,
         setIsSubChildDisplayed: setDisplayDayOverview,
         displayedDayHeader: displayedDayHeader,
@@ -86,29 +88,26 @@ const WeeklyPlannerPage = () => {
             setDisplayDayOverview(false);
         } else {
             closeFormularieAndNav(
-                context.idSurvey,
-                getFullNavigatePath(context.idSurvey, EdtRoutesNameEnum.KIND_OF_WEEK),
+                idSurvey,
+                getFullNavigatePath(idSurvey, EdtRoutesNameEnum.KIND_OF_WEEK),
             );
         }
     };
 
     const onEdit = () => {
-        navFullPath(
-            context.idSurvey,
-            EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
-            EdtRoutesNameEnum.WORK_TIME,
-        );
+        navFullPath(idSurvey, EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.WORK_TIME);
     };
 
     return (
         <>
             <SurveyPage
+                idSurvey={idSurvey}
                 validate={useCallback(() => validateAndNav(), [displayDayOverview])}
                 onNavigateBack={useCallback(() => validateAndNav(), [displayDayOverview])}
-                onPrevious={useCallback(() => saveAndNav(context.idSurvey), [])}
+                onPrevious={useCallback(() => saveAndNav(idSurvey), [])}
                 onEdit={useCallback(() => onEdit(), [])}
                 onHelp={navToHelp}
-                firstName={getPrintedFirstName(context.idSurvey)}
+                firstName={getPrintedFirstName(idSurvey)}
                 firstNamePrefix={t("component.survey-page-edit-header.week-of")}
                 simpleHeader={displayDayOverview}
                 simpleHeaderLabel={displayedDayHeader}
@@ -118,7 +117,7 @@ const WeeklyPlannerPage = () => {
                 <FlexCenter>
                     <OrchestratorForStories
                         source={context.source}
-                        data={getData(context.idSurvey)}
+                        data={getData(idSurvey)}
                         cbHolder={callbackHolder}
                         page={getOrchestratorPage(currentPage)}
                         componentSpecificProps={specificProps}

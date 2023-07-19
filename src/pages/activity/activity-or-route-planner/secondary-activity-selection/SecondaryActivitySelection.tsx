@@ -12,14 +12,16 @@ import {
     getRouteSecondaryActivityRef,
 } from "service/referentiel-service";
 import { addToSecondaryActivityReferentiel, getValue } from "service/survey-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const SecondaryActivitySelectionPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const { t } = useTranslation();
 
+    const idSurvey = getSurveyIdFromUrl(context);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
-    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
+    const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
 
     const specifiquesProps = {
         labelsSpecifics: {
@@ -41,6 +43,7 @@ const SecondaryActivitySelectionPage = () => {
 
     return (
         <LoopSurveyPageStep
+            idSurvey={idSurvey}
             currentPage={EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION}
             labelOfPage={"secondary-activity-selecter"}
             errorIcon={errorIcon}

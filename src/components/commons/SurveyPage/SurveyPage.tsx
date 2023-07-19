@@ -42,7 +42,7 @@ interface SurveyPageProps {
     currentStepLabel?: string;
     backgroundWhiteHeader?: boolean;
     activityProgressBar?: boolean;
-    idSurvey?: string;
+    idSurvey: string;
     score?: number;
     helpStep?: number;
     modifiable?: boolean;

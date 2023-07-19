@@ -4,10 +4,12 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { useOutletContext } from "react-router-dom";
 import { getActivitesSelectedLabel } from "service/survey-activity-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const GreatestActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();
-    const uniqueActivities = getActivitesSelectedLabel(context.idSurvey).filter(
+    const idSurvey = getSurveyIdFromUrl(context);
+    const uniqueActivities = getActivitesSelectedLabel(idSurvey).filter(
         (value, index, self) =>
             index ===
             self.findIndex(
@@ -26,6 +28,7 @@ const GreatestActivityDayPage = () => {
 
     return (
         <SurveyPageStep
+            idSurvey={idSurvey}
             currentPage={EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY}
             backRoute={EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER}
             errorIcon={greatestActivityDay}

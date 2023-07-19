@@ -201,15 +201,14 @@ const HelpWorkTime = () => {
         );
     };
 
-    const context: OrchestratorContext = useOutletContext();
-
     return (
         <Box className={classes.root}>
             {renderHelp()}
             <SurveyPage
+                idSurvey={idSurvey}
                 validate={useCallback(() => console.log(""), [])}
                 onNavigateBack={useCallback(() => console.log(""), [])}
-                onPrevious={useCallback(() => saveAndNav(context.idSurvey), [])}
+                onPrevious={useCallback(() => saveAndNav(idSurvey), [])}
                 onEdit={useCallback(() => console.log(""), [])}
                 onHelp={navToHelp}
                 firstName={getPrintedFirstName(idSurvey)}

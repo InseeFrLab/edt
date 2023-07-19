@@ -28,7 +28,7 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useEffect, useState } from "react";
 import { isAndroid, isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
 import { getLoopSize, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
@@ -63,18 +63,16 @@ import {
     surveyLocked,
 } from "service/survey-service";
 import { isReviewer } from "service/user-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
-    const location = useLocation();
     const context: OrchestratorContext = useOutletContext();
     const source =
         context?.source?.components != null ? context.source : getSource(SourcesEnum.ACTIVITY_SURVEY);
 
-    let idSurveyPath = location.pathname.split("activity/")[1].split("/")[0];
-    let idSurvey = context.idSurvey != idSurveyPath ? idSurveyPath : context.idSurvey;
-
+    let idSurvey = getSurveyIdFromUrl(context);
     const { t } = useTranslation();
     const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
@@ -161,7 +159,7 @@ const ActivityOrRoutePlannerPage = () => {
         } else {
             setSkip(false);
         }
-        idSurvey = context.idSurvey != idSurveyPath ? idSurveyPath : context.idSurvey;
+        idSurvey = getSurveyIdFromUrl(context);
         context.idSurvey = idSurvey;
     });
 
@@ -245,7 +243,7 @@ const ActivityOrRoutePlannerPage = () => {
             setIsRoute(isRouteBool);
             navigate(
                 getLoopParameterizedNavigatePath(
-                    context.idSurvey,
+                    idSurvey,
                     EdtRoutesNameEnum.ACTIVITY_DURATION,
                     LoopEnum.ACTIVITY_OR_ROUTE,
                     contextIteration,
@@ -273,11 +271,7 @@ const ActivityOrRoutePlannerPage = () => {
     }, [isAddActivityOrRouteOpen, addActivityOrRouteFromGap]);
 
     const onEdit = useCallback(() => {
-        navFullPath(
-            context.idSurvey,
-            EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
-            EdtRoutesNameEnum.ACTIVITY,
-        );
+        navFullPath(idSurvey, EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.ACTIVITY);
     }, []);
 
     const onHelp = useCallback(() => {
@@ -302,14 +296,14 @@ const ActivityOrRoutePlannerPage = () => {
 
     const onEditActivityOrRoute = useCallback((iteration: number, activity: ActivityRouteOrGap) => {
         setActivityOrRoute(activity);
-        navToEditActivity(context.idSurvey, iteration);
+        navToEditActivity(idSurvey, iteration);
     }, []);
 
     const onDeleteActivityOrRoute = useCallback(
         (idSurvey: string, source: LunaticModel, iteration: number) => {
             deleteActivity(idSurvey, source, iteration);
             activitiesRoutesOrGaps.splice(iteration);
-            navToActivityRoutePlanner(context.idSurvey, source);
+            navToActivityRoutePlanner(idSurvey, source);
         },
         [],
     );

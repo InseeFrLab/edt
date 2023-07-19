@@ -20,22 +20,25 @@ import { getLanguage } from "service/referentiel-service";
 import { getStepData } from "service/stepper.service";
 import { surveyReadOnly } from "service/survey-activity-service";
 import { getData } from "service/survey-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const PhoneTimePage = () => {
     const currentPage = EdtRoutesNameEnum.PHONE_TIME;
     const context: OrchestratorContext = useOutletContext();
+    const idSurvey = getSurveyIdFromUrl(context);
     const { t } = useTranslation();
     setEnviro(context, useNavigate(), callbackHolder);
 
     const stepData = getStepData(currentPage);
 
     const surveyPageStepProps = {
-        onNavigateBack: useCallback(() => saveAndNav(context.idSurvey), []),
+        idSurvey: idSurvey,
+        onNavigateBack: useCallback(() => saveAndNav(idSurvey), []),
         onNext: useCallback(
             () =>
                 saveAndNav(
-                    context.idSurvey,
-                    getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, context.idSurvey) +
+                    idSurvey,
+                    getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
                         getNavigatePath(EdtRoutesNameEnum.END_SURVEY),
                 ),
             [],
@@ -43,8 +46,8 @@ const PhoneTimePage = () => {
         onPrevious: useCallback(
             () =>
                 context.surveyRootPage == EdtRoutesNameEnum.ACTIVITY
-                    ? saveAndNavFullPath(context.idSurvey, EdtRoutesNameEnum.TRAVEL_TIME)
-                    : saveAndNavFullPath(context.idSurvey, EdtRoutesNameEnum.WEEKLY_PLANNER),
+                    ? saveAndNavFullPath(idSurvey, EdtRoutesNameEnum.TRAVEL_TIME)
+                    : saveAndNavFullPath(idSurvey, EdtRoutesNameEnum.WEEKLY_PLANNER),
             [],
         ),
         simpleHeader: true,
@@ -56,7 +59,7 @@ const PhoneTimePage = () => {
     };
 
     const componentLunaticProps: any = {
-        onSelectValue: () => validateAndNextStep(context.idSurvey, context.source, currentPage),
+        onSelectValue: () => validateAndNextStep(idSurvey, context.source, currentPage),
         language: getLanguage(),
         constants: {
             START_TIME_DAY: START_TIME_DAY,
@@ -68,7 +71,7 @@ const PhoneTimePage = () => {
 
     const orchestratorProps = {
         source: context.source,
-        data: getData(context.idSurvey),
+        data: getData(idSurvey),
         cbHolder: callbackHolder,
         page: getOrchestratorPage(currentPage, context.surveyRootPage),
         componentSpecificProps: componentLunaticProps,

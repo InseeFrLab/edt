@@ -11,6 +11,7 @@ import LoopSurveyPageHeader from "./LoopSurveyPageHeader/LoopSurveyPageHeader";
 import LoopSurveyPageSimpleHeader from "./LoopSurveyPageSimpleHeader/LoopSurveyPageSimpleHeader";
 
 interface LoopSurveyPageProps {
+    idSurvey: string;
     onNext?(event?: React.MouseEvent): void;
     onPrevious?(event?: React.MouseEvent): void;
     onValidate?(event?: React.MouseEvent): void;
@@ -28,6 +29,7 @@ interface LoopSurveyPageProps {
 
 const LoopSurveyPage = (props: LoopSurveyPageProps) => {
     const {
+        idSurvey,
         currentStepIcon,
         currentStepIconAlt,
         currentStepNumber,
@@ -44,11 +46,12 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
     } = props;
 
     const { t } = useTranslation();
-    const { idSurvey, iteration } = useParams();
+    const { idSurveyParam, iteration } = useParams();
+
     const { classes, cx } = useStyles();
 
     const lastCompletedStep = getLoopLastCompletedStep(
-        idSurvey ?? "",
+        idSurvey,
         LoopEnum.ACTIVITY_OR_ROUTE,
         iteration ? +iteration : 0,
     );

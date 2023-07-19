@@ -49,12 +49,14 @@ import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { surveyReadOnly } from "service/survey-activity-service";
 import { addToAutocompleteActivityReferentiel } from "service/survey-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const MainActivityPage = () => {
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
 
+    const idSurvey = getSurveyIdFromUrl(context);
     const currentPage = EdtRoutesNameEnum.MAIN_ACTIVITY;
     const stepData = getStepData(currentPage);
     const paramIteration = useParams().iteration;
@@ -108,7 +110,7 @@ const MainActivityPage = () => {
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
             saveAndLoopNavigate(
-                context.idSurvey,
+                idSurvey,
                 context.source,
                 getPreviousLoopPage(currentPage),
                 LoopEnum.ACTIVITY_OR_ROUTE,
@@ -120,7 +122,7 @@ const MainActivityPage = () => {
             const skip = filtrePage(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL, codeActivity);
             if (routeToGoal && !skip) {
                 saveAndLoopNavigate(
-                    context.idSurvey,
+                    idSurvey,
                     context.source,
                     EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
                     LoopEnum.ACTIVITY_OR_ROUTE,
@@ -129,7 +131,7 @@ const MainActivityPage = () => {
             } else {
                 const skip = filtrePage(EdtRoutesNameEnum.SECONDARY_ACTIVITY, codeActivity);
                 saveAndLoopNavigate(
-                    context.idSurvey,
+                    idSurvey,
                     context.source,
                     skip ? EdtRoutesNameEnum.ACTIVITY_LOCATION : getNextLoopPage(currentPage),
                     LoopEnum.ACTIVITY_OR_ROUTE,
@@ -138,8 +140,8 @@ const MainActivityPage = () => {
             }
         },
         onSelectValue: () => {
-            validate(context.idSurvey).then(() => {
-                skipNextPage(context.idSurvey, context.source, currentIteration, currentPage);
+            validate(idSurvey).then(() => {
+                skipNextPage(idSurvey, context.source, currentIteration, currentPage);
             });
         },
         setDisplayStepper: setDisplayStepper,
@@ -189,20 +191,14 @@ const MainActivityPage = () => {
 
     return (
         <LoopSurveyPage
+            idSurvey={idSurvey}
             onNext={useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [nextClickEvent])}
             onPrevious={useCallback(
                 (e: React.MouseEvent) => onPrevious(e, setBackClickEvent),
                 [backClickEvent],
             )}
             onClose={useCallback(
-                () =>
-                    onClose(
-                        context.idSurvey,
-                        context.source,
-                        false,
-                        setIsAlertDisplayed,
-                        currentIteration,
-                    ),
+                () => onClose(idSurvey, context.source, false, setIsAlertDisplayed, currentIteration),
                 [isAlertDisplayed],
             )}
             currentStepIcon={stepData.stepIcon}
@@ -222,7 +218,7 @@ const MainActivityPage = () => {
                     onCancelCallBack={useCallback(
                         cancel =>
                             onClose(
-                                context.idSurvey,
+                                idSurvey,
                                 context.source,
                                 cancel,
                                 setIsAlertDisplayed,

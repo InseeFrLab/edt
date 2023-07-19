@@ -11,7 +11,7 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
-import { SurveyData, StateData } from "interface/entity/Api";
+import { StateData, SurveyData } from "interface/entity/Api";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction, useCallback, useEffect, useState } from "react";
@@ -31,11 +31,14 @@ import { isPwa } from "service/responsive";
 import { surveyReadOnly } from "service/survey-activity-service";
 import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from "service/survey-service";
 import { isReviewer } from "service/user-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const EndSurveyPage = () => {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    const idSurvey = getSurveyIdFromUrl(context);
+
     const navigate = useNavigate();
 
     setEnviro(context, useNavigate(), callbackHolder);
@@ -73,7 +76,7 @@ const EndSurveyPage = () => {
     };
 
     const saveDataAndInit = useCallback((surveyData: SurveyData) => {
-        saveData(context.idSurvey, surveyData.data).then(() => {
+        saveData(idSurvey, surveyData.data).then(() => {
             initializeSurveysDatasCache().finally(() => {
                 setIsModalDisplayed(true);
             });
@@ -81,7 +84,7 @@ const EndSurveyPage = () => {
     }, []);
 
     const remoteSaveSurveyAndGoBackHome = useCallback(() => {
-        const dataWithIsEnvoyed = setValue(context.idSurvey, FieldNameEnum.ISENVOYED, true);
+        const dataWithIsEnvoyed = setValue(idSurvey, FieldNameEnum.ISENVOYED, true);
         const stateData: StateData = {
             state: StateDataStateEnum.VALIDATED,
             date: Date.now(),
@@ -94,7 +97,7 @@ const EndSurveyPage = () => {
         };
 
         if (!isDemoMode && !isReviewer()) {
-            remotePutSurveyData(context.idSurvey, surveyData)
+            remotePutSurveyData(idSurvey, surveyData)
                 .then(surveyDataAnswer => {
                     surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
                     saveDataAndInit(surveyData);
@@ -103,7 +106,7 @@ const EndSurveyPage = () => {
                     setErrorSubmit(true);
                 });
         } else if (!isDemoMode && isReviewer()) {
-            remotePutSurveyDataReviewer(context.idSurvey, stateData, surveyData.data)
+            remotePutSurveyDataReviewer(idSurvey, stateData, surveyData.data)
                 .then(surveyDataAnswer => {
                     surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
                     saveDataAndInit(surveyData);
@@ -119,12 +122,12 @@ const EndSurveyPage = () => {
     const onPrevious = useCallback(() => {
         if (isActivitySurvey) {
             navigate(
-                getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, context.idSurvey) +
+                getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
                     getNavigatePath(EdtRoutesNameEnum.PHONE_TIME),
             );
         } else {
             navigate(
-                getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, context.idSurvey) +
+                getParameterizedNavigatePath(EdtRoutesNameEnum.WORK_TIME, idSurvey) +
                     getNavigatePath(EdtRoutesNameEnum.KIND_OF_WEEK),
             );
         }
@@ -145,6 +148,7 @@ const EndSurveyPage = () => {
 
     return (
         <SurveyPage
+            idSurvey={idSurvey}
             onNavigateBack={navToHome}
             displayStepper={true}
             onPrevious={onPrevious}

@@ -9,9 +9,11 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React from "react";
 import { useOutletContext } from "react-router-dom";
 import { getComponentsOfVariable, setValue } from "service/survey-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const EditGlobalInformationPage = () => {
     const context: OrchestratorContext = useOutletContext();
+    const idSurvey = getSurveyIdFromUrl(context);
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
 
     const keydownChange = () => {
@@ -25,7 +27,7 @@ const EditGlobalInformationPage = () => {
         const input = (document.getElementsByClassName("MuiInputBase-input")[1] as HTMLInputElement)
             .value;
         const inputFormatted = dayjs(input, "DD/MM/YYYY").format("YYYY-MM-DD");
-        const bdd = setValue(context.idSurvey, FieldNameEnum.SURVEYDATE, inputFormatted);
+        const bdd = setValue(idSurvey, FieldNameEnum.SURVEYDATE, inputFormatted);
         if (bdd) context.data = bdd;
 
         const componentDateId = getComponentsOfVariable(FieldNameEnum.SURVEYDATE, context.source)[1].id;
@@ -46,6 +48,7 @@ const EditGlobalInformationPage = () => {
 
     return (
         <SurveyPageStep
+            idSurvey={idSurvey}
             currentPage={EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION}
             nextRoute={EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER}
             backRoute={EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER}

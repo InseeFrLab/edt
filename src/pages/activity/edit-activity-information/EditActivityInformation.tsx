@@ -13,11 +13,14 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { loopActivityRouteStepperData, loopActivityStepperData } from "service/loop-stepper-service";
 import { getLoopParameterizedNavigatePath, navFullPath } from "service/navigation-service";
 import { surveyReadOnly } from "service/survey-activity-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const EditActivityInformationPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
+    const idSurvey = getSurveyIdFromUrl(context);
+
     const { classes } = useStyles();
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
@@ -29,7 +32,7 @@ const EditActivityInformationPage = () => {
         (page: EdtRoutesNameEnum) => () =>
             navigate(
                 getLoopParameterizedNavigatePath(
-                    context.idSurvey,
+                    idSurvey,
                     page,
                     LoopEnum.ACTIVITY_OR_ROUTE,
                     currentIteration,
@@ -40,12 +43,13 @@ const EditActivityInformationPage = () => {
 
     return (
         <SurveyPage
+            idSurvey={idSurvey}
             onNavigateBack={useCallback(
-                () => navFullPath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                () => navFullPath(idSurvey, EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
                 [],
             )}
             onPrevious={useCallback(
-                () => navFullPath(context.idSurvey, EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                () => navFullPath(idSurvey, EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
                 [],
             )}
             simpleHeaderLabel={t("page.edit-activity-information.header")}

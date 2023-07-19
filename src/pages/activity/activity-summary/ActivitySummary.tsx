@@ -70,6 +70,7 @@ import {
 } from "service/survey-service";
 import { getUserRights } from "service/user-service";
 import ActivitiesSummaryExportTemplate from "template/summary-export/ActivitiesSummaryExportTemplate";
+import { getSurveyIdFromUrl } from "utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
 const ActivitySummaryPage = () => {
@@ -81,9 +82,7 @@ const ActivitySummaryPage = () => {
 
     const source =
         context?.source?.components != null ? context.source : getSource(SourcesEnum.ACTIVITY_SURVEY);
-    const idSurveyPath = location.pathname.split("activity/")[1]?.split("/")?.[0];
-    let idSurvey = context.idSurvey != idSurveyPath ? idSurveyPath : context.idSurvey;
-
+    let idSurvey = getSurveyIdFromUrl(context);
     const [score, setScore] = React.useState<number | undefined>(undefined);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
     const localIsSummaryEdited = getLocalStorageValue(
@@ -131,7 +130,7 @@ const ActivitySummaryPage = () => {
     }, []);
 
     useEffect(() => {
-        idSurvey = context.idSurvey != idSurveyPath ? idSurveyPath : context.idSurvey;
+        idSurvey = getSurveyIdFromUrl(context);
         context.idSurvey = idSurvey;
     });
 
@@ -163,7 +162,7 @@ const ActivitySummaryPage = () => {
             };
             localStorage.setItem(idSurvey, JSON.stringify(isEditedSummary));
             setIsSummaryEdited(true);
-            navToEditActivity(context.idSurvey, iteration);
+            navToEditActivity(idSurvey, iteration);
         },
         [idSurvey],
     );
@@ -229,7 +228,7 @@ const ActivitySummaryPage = () => {
             onCloseAddActivityOrRoute();
             navigate(
                 getLoopParameterizedNavigatePath(
-                    context.idSurvey,
+                    idSurvey,
                     EdtRoutesNameEnum.ACTIVITY_DURATION,
                     LoopEnum.ACTIVITY_OR_ROUTE,
                     contextIteration,
@@ -354,7 +353,7 @@ const ActivitySummaryPage = () => {
     }, []);
 
     const back = useCallback(() => {
-        saveAndNav(context.idSurvey);
+        saveAndNav(idSurvey);
     }, []);
 
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";

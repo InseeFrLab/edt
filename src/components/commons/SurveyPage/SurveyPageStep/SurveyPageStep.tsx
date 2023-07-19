@@ -27,6 +27,7 @@ import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-servic
 import SurveyPage from "../SurveyPage";
 
 export interface SurveyPageStepProps {
+    idSurvey: string;
     currentPage: EdtRoutesNameEnum;
     backRoute?: EdtRoutesNameEnum;
     nextRoute?: EdtRoutesNameEnum;
@@ -40,6 +41,7 @@ export interface SurveyPageStepProps {
 
 const SurveyPageStep = (props: SurveyPageStepProps) => {
     const {
+        idSurvey,
         currentPage,
         backRoute,
         nextRoute,
@@ -71,7 +73,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
 
     const componentLunaticProps: any = {
-        onSelectValue: () => validateAndNextStep(context.idSurvey, context.source, currentPage),
+        onSelectValue: () => validateAndNextStep(idSurvey, context.source, currentPage),
         options: specifiquesProps?.options,
         defaultIcon: specifiquesProps?.defaultIcon,
         icon: specifiquesProps?.icon,
@@ -88,30 +90,23 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     };
 
     const surveyPageStepProps = {
+        idSurvey: idSurvey,
         onNavigateBack: useCallback(
             () =>
                 specifiquesProps?.displayModal
                     ? validateAndNav(false, setIsModalDisplayed)
-                    : saveAndNav(context.idSurvey),
+                    : saveAndNav(idSurvey),
             [isModalDisplayed],
         ),
         onNext: useCallback(
             () =>
                 specifiquesProps?.displayModal
                     ? validateAndNav(false, setIsModalDisplayed)
-                    : saveAndNextStep(
-                          context.idSurvey,
-                          context.source,
-                          EdtRoutesNameEnum.ACTIVITY,
-                          currentPage,
-                      ),
+                    : saveAndNextStep(idSurvey, context.source, EdtRoutesNameEnum.ACTIVITY, currentPage),
             [isModalDisplayed],
         ),
         onPrevious: useCallback(
-            () =>
-                backRoute
-                    ? saveAndNavFullPath(context.idSurvey, backRoute)
-                    : saveAndNav(context.idSurvey),
+            () => (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNav(idSurvey)),
             [],
         ),
         simpleHeader: true,
@@ -125,31 +120,25 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         disableNav: disableButton,
         modifiable: modifiable,
     };
+
     const surveyPageNotStepProps = {
+        idSurvey: idSurvey,
         validate: useCallback(
             () =>
                 nextRoute
-                    ? saveAndNavFullPath(context.idSurvey, nextRoute)
-                    : saveAndNextStep(
-                          context.idSurvey,
-                          context.source,
-                          context.surveyRootPage,
-                          currentPage,
-                      ),
+                    ? saveAndNavFullPath(idSurvey, nextRoute)
+                    : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage),
             [],
         ),
         srcIcon: errorIcon,
         altIcon: errorAltIcon ? t(errorAltIcon) : undefined,
-        onNavigateBack: useCallback(() => saveAndNav(context.idSurvey), []),
+        onNavigateBack: useCallback(() => saveAndNav(idSurvey), []),
         onPrevious: useCallback(
-            () =>
-                backRoute
-                    ? saveAndNavFullPath(context.idSurvey, backRoute)
-                    : saveAndNav(context.idSurvey),
+            () => (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNav(idSurvey)),
             [],
         ),
-        firstName: getPrintedFirstName(context.idSurvey),
-        surveyDate: getPrintedSurveyDate(context.idSurvey, context.surveyRootPage),
+        firstName: getPrintedFirstName(idSurvey),
+        surveyDate: getPrintedSurveyDate(idSurvey, context.surveyRootPage),
         disableNav: disableButton,
         modifiable: modifiable,
     };
@@ -168,7 +157,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         setIsModalDisplayed: (value: SetStateAction<boolean>) => void,
     ): void => {
         if (forceQuit) {
-            saveAndNav(context.idSurvey);
+            saveAndNav(idSurvey);
         } else {
             setIsModalDisplayed(true);
         }

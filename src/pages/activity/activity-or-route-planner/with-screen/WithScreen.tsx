@@ -27,20 +27,22 @@ import {
     validate,
 } from "service/navigation-service";
 import { getValue } from "service/survey-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const WithScreenPage = () => {
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
 
+    const idSurvey = getSurveyIdFromUrl(context);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
     const currentPage = EdtRoutesNameEnum.WITH_SCREEN;
-    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
+    const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
     const stepData = getStepData(currentPage, isRoute);
-    const isCloture = getValue(context.idSurvey, FieldNameEnum.ISCLOSED) as boolean;
+    const isCloture = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
     const summaryRoutePath =
-        getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, context.idSurvey) +
+        getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
         getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY);
 
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
@@ -52,7 +54,7 @@ const WithScreenPage = () => {
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
             saveAndLoopNavigate(
-                context.idSurvey,
+                idSurvey,
                 context.source,
                 EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
                 LoopEnum.ACTIVITY_OR_ROUTE,
@@ -63,11 +65,11 @@ const WithScreenPage = () => {
         },
         nextClickCallback: () => {
             saveAndNav(
-                context.idSurvey,
+                idSurvey,
                 isCloture
                     ? summaryRoutePath
                     : getCurrentNavigatePath(
-                          context.idSurvey,
+                          idSurvey,
                           EdtRoutesNameEnum.ACTIVITY,
                           getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
                           context.source,
@@ -75,13 +77,13 @@ const WithScreenPage = () => {
             );
         },
         onSelectValue: () => {
-            validate(context.idSurvey).then(() => {
+            validate(idSurvey).then(() => {
                 saveAndNav(
-                    context.idSurvey,
+                    idSurvey,
                     isCloture
                         ? summaryRoutePath
                         : getCurrentNavigatePath(
-                              context.idSurvey,
+                              idSurvey,
                               EdtRoutesNameEnum.ACTIVITY,
                               getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
                               context.source,
@@ -95,20 +97,14 @@ const WithScreenPage = () => {
 
     return (
         <LoopSurveyPage
+            idSurvey={idSurvey}
             onNext={useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [nextClickEvent])}
             onPrevious={useCallback(
                 (e: React.MouseEvent) => onPrevious(e, setBackClickEvent),
                 [backClickEvent],
             )}
             onClose={useCallback(
-                () =>
-                    onClose(
-                        context.idSurvey,
-                        context.source,
-                        false,
-                        setIsAlertDisplayed,
-                        currentIteration,
-                    ),
+                () => onClose(idSurvey, context.source, false, setIsAlertDisplayed, currentIteration),
                 [isAlertDisplayed],
             )}
             currentStepIcon={stepData.stepIcon}
@@ -127,7 +123,7 @@ const WithScreenPage = () => {
                     onCancelCallBack={useCallback(
                         cancel =>
                             onClose(
-                                context.idSurvey,
+                                idSurvey,
                                 context.source,
                                 cancel,
                                 setIsAlertDisplayed,
