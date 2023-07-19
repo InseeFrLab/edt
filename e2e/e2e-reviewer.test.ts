@@ -1,7 +1,7 @@
 import puppeteer from "puppeteer";
 import { edtOrganisationApiBaseUrl, stromaeBackOfficeApiBaseUrl } from "../src/service/api-service";
 import { getUserToken, isReviewer } from "../src/service/user-service";
-import { EdtRoutesNameEnum } from "./../src/enumerations/EdtRoutesNameEnum";
+import { EdtRoutesNameEnum } from "../src/enumerations/EdtRoutesNameEnum";
 import userData from "./mocks/userData.json";
 import surveysDataInterviewer from "./mocks/userSurveyInfo-interviewer.json";
 import surveysDataReviewer from "./mocks/userSurveyInfo-reviewer.json";
@@ -52,7 +52,7 @@ describe("App.ts", () => {
 
     beforeAll(async () => {
         browser = await puppeteer.launch({
-            headless: false,
+            headless: "new",
             product: "chrome",
             executablePath: process.env.REACT_APP_CHROMIUM_PATH,
             devtools: true,

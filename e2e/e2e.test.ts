@@ -40,7 +40,7 @@ describe("App.ts", () => {
 
     beforeAll(async () => {
         browser = await puppeteer.launch({
-            headless: false,
+            headless: "new",
             product: "chrome",
             executablePath: process.env.REACT_APP_CHROMIUM_PATH,
             devtools: true,
