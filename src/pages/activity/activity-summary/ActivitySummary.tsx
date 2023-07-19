@@ -225,7 +225,7 @@ const ActivitySummaryPage = () => {
         setValue(idSurvey, FieldNameEnum.START_TIME, startTime || null, contextIteration);
         setValue(idSurvey, FieldNameEnum.END_TIME, endTime || null, contextIteration);
         const updatedData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
-        saveData(idSurvey, updatedData || {}).then(() => {
+        saveData(idSurvey, updatedData).then(() => {
             onCloseAddActivityOrRoute();
             navigate(
                 getLoopParameterizedNavigatePath(
@@ -247,7 +247,7 @@ const ActivitySummaryPage = () => {
         );
         contextIteration = loopSize - 1;
         const routeData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
-        saveData(idSurvey, routeData || {}).then(() => {
+        saveData(idSurvey, routeData).then(() => {
             navToActivityOrRoute(contextIteration);
         });
     };

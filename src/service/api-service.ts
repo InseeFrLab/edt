@@ -57,7 +57,7 @@ export const fetchReferentiels = (
         [ReferentielsEnum.ACTIVITYGOAL]: [],
     };
     let refsEndPoints: string[] = [];
-    Object.values(ReferentielsEnum).map(value => {
+    Object.values(ReferentielsEnum).forEach(value => {
         refsEndPoints.push("api/nomenclature/" + value);
     });
 
@@ -108,7 +108,7 @@ const fetchSurveysSourcesByIds = (
 ): Promise<SourceData> => {
     let sources: any = {};
     let sourcesEndPoints: string[] = [];
-    sourcesIds.map(sourceId => sourcesEndPoints.push("api/questionnaire/" + sourceId));
+    sourcesIds.forEach(sourceId => sourcesEndPoints.push("api/questionnaire/" + sourceId));
     return new Promise(resolve => {
         axios
             .all(

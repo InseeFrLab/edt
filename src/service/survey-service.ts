@@ -26,7 +26,6 @@ import { Household } from "interface/entity/Household";
 import { StatsHousehold } from "interface/entity/StatsHouseHold";
 import {
     Collected,
-    LunaticData,
     LunaticModel,
     LunaticModelComponent,
     LunaticModelVariable,
@@ -45,6 +44,7 @@ import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrat
 import dataEmpty from "utils/dataEmpty.json";
 import { groupBy, objectEquals } from "utils/utils";
 import workTimeSource from "work-time-survey.json";
+import { LunaticData } from "./../interface/lunatic/Lunatic";
 import {
     fetchReferentiels,
     fetchSurveysSourcesByIds,
@@ -411,7 +411,7 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
                                 process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "",
                             );
                             data.houseReference = idSurvey.replace(regexp, "");
-                            datas.set(idSurvey, data || {});
+                            datas.set(idSurvey, data);
                             oldDatas.set(idSurvey, {});
                             initData = true;
                         } else {
@@ -823,8 +823,26 @@ const setValue = (
     variableName: FieldNameEnum,
     value: string | boolean | null,
     iteration?: number,
+): LunaticData => {
+    let dataAct = datas.get(idSurvey) ?? {};
+    if (dataAct == null) {
+        lunaticDatabase.get(idSurvey).then(data => {
+            getDataModePersist(idSurvey, data ?? {}, variableName, value, iteration);
+        });
+    } else {
+        getDataModePersist(idSurvey, dataAct, variableName, value, iteration);
+    }
+
+    return dataAct;
+};
+
+const getDataModePersist = (
+    idSurvey: string,
+    dataAct: LunaticData,
+    variableName: FieldNameEnum,
+    value: string | boolean | null,
+    iteration?: number,
 ) => {
-    const dataAct = datas.get(idSurvey);
     const modePersistenceEdited = getModePersistence(dataAct) == ModePersistenceEnum.EDITED;
     if (dataAct && dataAct.COLLECTED && dataAct.COLLECTED[variableName]) {
         if (iteration != null && value != null) {
@@ -852,7 +870,7 @@ const setValue = (
             dataAct.COLLECTED[variableName] = variable;
         }
     }
-    datas.set(idSurvey, dataAct ?? {});
+    datas.set(idSurvey, dataAct);
     return dataAct;
 };
 
@@ -1269,11 +1287,11 @@ const validateAllEmptySurveys = (idHousehold: string) => {
             if (data.COLLECTED && data.COLLECTED[FieldNameEnum.ISVALIDATED]) {
                 data.COLLECTED[FieldNameEnum.ISVALIDATED] = variable;
                 data.COLLECTED.ISVALIDATED = variable;
-                datas.set(idSurvey, data || {});
+                datas.set(idSurvey, data);
                 promisesToWait.push(saveData(idSurvey, data));
             } else if (data.COLLECTED) {
                 data.COLLECTED.ISVALIDATED = variable;
-                datas.set(idSurvey, data || {});
+                datas.set(idSurvey, data);
                 promisesToWait.push(saveData(idSurvey, data));
             }
         }

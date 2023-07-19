@@ -57,7 +57,7 @@ const EditActivityInformationPage = () => {
                 <ActivityOrRouteCard
                     labelledBy={""}
                     describedBy={""}
-                    activityOrRoute={context.activityOrRoute || {}}
+                    activityOrRoute={context.activityOrRoute ?? {}}
                 />
             </FlexCenter>
             <Box className={classes.titleBox}>
