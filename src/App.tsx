@@ -18,6 +18,10 @@ const App = () => {
     const auth = useAuth();
 
     useEffect(() => {
+        console.log("auth", auth);
+        console.log("auth?.userData", auth?.userData);
+        console.log("auth?.userData?.access_token", auth?.userData?.access_token);
+
         if (auth?.userData?.access_token && getDatas().size === 0 && error === undefined) {
             setUserToken(auth.userData?.access_token);
             setUser(auth.userData);
