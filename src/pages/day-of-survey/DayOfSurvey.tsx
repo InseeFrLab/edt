@@ -60,7 +60,6 @@ const DayOfSurveyPage = () => {
     return (
         <>
             <SurveyPageStep
-                idSurvey={idSurvey}
                 currentPage={EdtRoutesNameEnum.DAY_OF_SURVEY}
                 errorIcon={day_of_survey}
                 errorAltIcon={"accessibility.asset.day-of-survey-alt"}

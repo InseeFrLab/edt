@@ -13,6 +13,7 @@ import { getPlaceRef } from "service/referentiel-service";
 
 const ActivityLocationPage = () => {
     const { t } = useTranslation();
+
     const specifiquesProps = {
         optionsIcons: {
             "11": { icon: option1, altIcon: t("accessibility.assets.place.categories.option1-alt") },

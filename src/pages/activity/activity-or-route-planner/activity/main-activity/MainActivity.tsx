@@ -191,7 +191,6 @@ const MainActivityPage = () => {
 
     return (
         <LoopSurveyPage
-            idSurvey={idSurvey}
             onNext={useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [nextClickEvent])}
             onPrevious={useCallback(
                 (e: React.MouseEvent) => onPrevious(e, setBackClickEvent),

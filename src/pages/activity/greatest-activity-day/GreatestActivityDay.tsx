@@ -28,7 +28,6 @@ const GreatestActivityDayPage = () => {
 
     return (
         <SurveyPageStep
-            idSurvey={idSurvey}
             currentPage={EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY}
             backRoute={EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER}
             errorIcon={greatestActivityDay}

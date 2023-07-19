@@ -48,7 +48,6 @@ const EditGlobalInformationPage = () => {
 
     return (
         <SurveyPageStep
-            idSurvey={idSurvey}
             currentPage={EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION}
             nextRoute={EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER}
             backRoute={EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER}

@@ -24,10 +24,10 @@ import { isPwa } from "service/responsive";
 import { getStepData } from "service/stepper.service";
 import { surveyReadOnly } from "service/survey-activity-service";
 import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 import SurveyPage from "../SurveyPage";
 
 export interface SurveyPageStepProps {
-    idSurvey: string;
     currentPage: EdtRoutesNameEnum;
     backRoute?: EdtRoutesNameEnum;
     nextRoute?: EdtRoutesNameEnum;
@@ -41,7 +41,6 @@ export interface SurveyPageStepProps {
 
 const SurveyPageStep = (props: SurveyPageStepProps) => {
     const {
-        idSurvey,
         currentPage,
         backRoute,
         nextRoute,
@@ -55,6 +54,8 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
+    const idSurvey = getSurveyIdFromUrl(context);
+
     const navigate = useNavigate();
 
     useEffect(() => {

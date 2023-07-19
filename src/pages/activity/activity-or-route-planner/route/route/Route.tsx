@@ -12,7 +12,6 @@ import { getRouteRef } from "service/referentiel-service";
 
 const RoutePage = () => {
     const { t } = useTranslation();
-
     const specifiquesProps = {
         optionsIcons: {
             "1": { icon: option1, altIcon: t("accessibility.asset.route.categories.option1-alt") },

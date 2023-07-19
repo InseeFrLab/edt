@@ -17,10 +17,10 @@ import { onClose, onNext, onPrevious, setEnviro, validate } from "service/naviga
 import { getLanguage } from "service/referentiel-service";
 import { surveyReadOnly } from "service/survey-activity-service";
 import { getData, getValue } from "service/survey-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 import LoopSurveyPage from "../LoopSurveyPage";
 
 export interface LoopSurveyPageStepProps {
-    idSurvey: string;
     currentPage: EdtRoutesNameEnum;
     labelOfPage: string;
     errorIcon: string;
@@ -33,7 +33,6 @@ export interface LoopSurveyPageStepProps {
 
 const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
     const {
-        idSurvey,
         currentPage,
         labelOfPage,
         errorIcon,
@@ -47,6 +46,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
+    const idSurvey = getSurveyIdFromUrl(context);
 
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
@@ -111,7 +111,6 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
     };
 
     const loopSurveyPageProps = {
-        idSurvey: idSurvey,
         onNext: useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [nextClickEvent]),
         onPrevious: useCallback(
             (e: React.MouseEvent) => onPrevious(e, setBackClickEvent),

@@ -182,7 +182,6 @@ const ActivityDurationPage = () => {
 
     return (
         <LoopSurveyPage
-            idSurvey={idSurvey}
             onNext={useCallback(() => onNext(), [snackbarText, lastEndTime, openSnackbar])}
             onClose={useCallback(() => onClose(false), [isAlertDisplayed])}
             currentStepIcon={stepData.stepIcon}

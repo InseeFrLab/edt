@@ -2,16 +2,19 @@ import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
 import AddActivityOrRouteStepper from "components/edt/AddActivityOrRouteStepper/AddActivityOrRouteStepper";
 import { LoopEnum } from "enumerations/LoopEnum";
+import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { callbackHolder } from "orchestrator/Orchestrator";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { getLoopLastCompletedStep } from "service/loop-service";
 import { loopActivityStepperData } from "service/loop-stepper-service";
+import { setEnviro } from "service/navigation-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 import LoopNavigator from "./LoopNavigator/LoopNavigator";
 import LoopSurveyPageHeader from "./LoopSurveyPageHeader/LoopSurveyPageHeader";
 import LoopSurveyPageSimpleHeader from "./LoopSurveyPageSimpleHeader/LoopSurveyPageSimpleHeader";
 
 interface LoopSurveyPageProps {
-    idSurvey: string;
     onNext?(event?: React.MouseEvent): void;
     onPrevious?(event?: React.MouseEvent): void;
     onValidate?(event?: React.MouseEvent): void;
@@ -29,7 +32,6 @@ interface LoopSurveyPageProps {
 
 const LoopSurveyPage = (props: LoopSurveyPageProps) => {
     const {
-        idSurvey,
         currentStepIcon,
         currentStepIconAlt,
         currentStepNumber,
@@ -47,6 +49,11 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
 
     const { t } = useTranslation();
     const { idSurveyParam, iteration } = useParams();
+
+    const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
+    const idSurvey = getSurveyIdFromUrl(context);
 
     const { classes, cx } = useStyles();
 

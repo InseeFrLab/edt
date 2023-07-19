@@ -43,7 +43,6 @@ const SecondaryActivitySelectionPage = () => {
 
     return (
         <LoopSurveyPageStep
-            idSurvey={idSurvey}
             currentPage={EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION}
             labelOfPage={"secondary-activity-selecter"}
             errorIcon={errorIcon}

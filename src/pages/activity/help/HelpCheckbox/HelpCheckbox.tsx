@@ -182,7 +182,6 @@ const HelpCheckbox = () => {
         <Box className={classes.root}>
             {renderHelp()}
             <LoopSurveyPage
-                idSurvey={idSurvey}
                 onNext={useCallback(
                     (e: React.MouseEvent) => onNext(e, setNextClickEvent),
                     [nextClickEvent],
