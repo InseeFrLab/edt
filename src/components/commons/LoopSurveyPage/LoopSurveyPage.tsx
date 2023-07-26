@@ -48,7 +48,7 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
     } = props;
 
     const { t } = useTranslation();
-    const { idSurveyParam, iteration } = useParams();
+    const { iteration } = useParams();
 
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);

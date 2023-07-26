@@ -32,11 +32,10 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
@@ -259,8 +258,6 @@ const HelpCategoryActivity = () => {
             </>
         );
     };
-
-    const context: OrchestratorContext = useOutletContext();
 
     return (
         <Box className={classes.root}>

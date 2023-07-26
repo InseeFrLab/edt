@@ -134,7 +134,7 @@ const HomeSurveyedPage = () => {
         surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
             promises.push(saveData(idSurvey, {}));
         });
-        Promise.all(promises).then(data => {
+        Promise.all(promises).then(() => {
             window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
         });
     }, []);

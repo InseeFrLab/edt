@@ -13,7 +13,6 @@ import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -21,7 +20,6 @@ import { useNavigate } from "react-router-dom";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
-    getIdSurveyContext,
     getNavigatePath,
     isActivityPage,
     isPageGlobal,
@@ -42,7 +40,6 @@ const HelpCheckbox = () => {
     const stepData = getStepData(currentPage);
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const data = mockData();
-    const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
 
     const [helpStep, setHelpStep] = React.useState(1);
 
