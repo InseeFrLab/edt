@@ -25,7 +25,6 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
-import { surveyReadOnly } from "service/survey-activity-service";
 import { getData, getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
@@ -80,7 +79,7 @@ const WeeklyPlannerPage = () => {
         expandMoreWhiteIcon: expandMoreWhite,
         workIcon: work,
         workIconAlt: t("accessibility.asset.mui-icon.work"),
-        modifiable: !surveyReadOnly(context.rightsSurvey),
+        modifiable: true,
     };
 
     const validateAndNav = (): void => {
@@ -113,7 +112,7 @@ const WeeklyPlannerPage = () => {
                 simpleHeader={displayDayOverview}
                 simpleHeaderLabel={displayedDayHeader}
                 backgroundWhiteHeader={displayDayOverview}
-                modifiable={!surveyReadOnly(context.rightsSurvey)}
+                modifiable={true}
             >
                 <FlexCenter>
                     <OrchestratorForStories

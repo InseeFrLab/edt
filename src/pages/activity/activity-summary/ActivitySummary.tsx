@@ -40,6 +40,7 @@ import {
     getLoopParameterizedNavigatePath,
     getNavigatePath,
     getOrchestratorPage,
+    navFullPath,
     navToActivityOrPlannerOrSummary,
     navToEditActivity,
     navToHelp,
@@ -361,12 +362,17 @@ const ActivitySummaryPage = () => {
     const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
     const isReviewerMode = isReviewer && !isDemoMode;
 
+    const onEdit = useCallback(() => {
+        navFullPath(idSurvey, EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.ACTIVITY);
+    }, []);
+
     return (
         <SurveyPage
             onPrevious={navToHome}
             firstName={getPrintedFirstName(idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.planning-of")}
             onHelp={navToHelp}
+            onEdit={onEdit}
             activityProgressBar={true}
             idSurvey={idSurvey}
             score={score}

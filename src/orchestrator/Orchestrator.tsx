@@ -58,7 +58,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
 
     const components = getComponents();
     const currentErrors = getCurrentErrors();
-    console.log(getData());
+
     const getDataReviewer = () => {
         const callbackholder = getData();
         const dataCollected = Object.assign({}, callbackholder.COLLECTED);

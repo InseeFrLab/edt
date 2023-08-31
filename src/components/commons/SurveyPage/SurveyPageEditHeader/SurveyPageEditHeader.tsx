@@ -21,7 +21,6 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const openPopOver = Boolean(anchorEl);
     const id = openPopOver ? "edit-or-help-popover" : undefined;
-
     const handleClose = useCallback(() => {
         setAnchorEl(null);
     }, [anchorEl]);
