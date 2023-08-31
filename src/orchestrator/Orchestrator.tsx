@@ -58,7 +58,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
 
     const components = getComponents();
     const currentErrors = getCurrentErrors();
-
+    console.log(getData());
     const getDataReviewer = () => {
         const callbackholder = getData();
         const dataCollected = Object.assign({}, callbackholder.COLLECTED);
@@ -90,6 +90,11 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 } else if (dataOfField) {
                     dataOfField.EDITED = editedSaved;
                     dataOfField.COLLECTED = collectedSaved;
+                }
+
+                if (prop == FieldNameEnum.WEEKLYPLANNER) {
+                    dataOfField.EDITED = collected;
+                    dataOfField.COLLECTED = collected;
                 }
             }
         }
@@ -133,8 +138,9 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 iteration != null && varE && Array.isArray(varE) ? varE[iteration] : varE;
             let variableCollected = iteration != null && Array.isArray(varC) ? varC[iteration] : varC;
             variableCollected = variableCollected ?? value?.[bindingDependency];
-            const variable =
+            let variable =
                 isReviewerMode || isLocked ? variableEdited ?? variableCollected : variableCollected;
+
             variables.set(bindingDependency, variable);
         });
         return variables;
