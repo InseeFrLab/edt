@@ -461,6 +461,7 @@ const initializeDatasCache = (idSurvey: string) => {
         } else {
             //console.log("not idsurvey in datas cache");
             datas.set(idSurvey, createDataEmpty(idSurvey ?? ""));
+            addItemToSession(idSurvey, createDataEmpty(idSurvey ?? ""));
         }
         return data;
     });
@@ -565,6 +566,7 @@ const modifyIndividualCollected = (idSurvey: string) => {
 
 const setData = (idSurvey: string, data: LunaticData) => {
     datas.set(idSurvey, data);
+    addItemToSession(idSurvey, data);
 };
 
 const createDataEmpty = (idSurvey: string): LunaticData => {
@@ -636,6 +638,7 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
     const isChange = dataIsChange(idSurvey, data);
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
+        addItemToSession(idSurvey, data);
         const promisesToWait: Promise<any>[] = [];
         if (isChange) {
             if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
@@ -703,6 +706,7 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
     //set the last remote save date inside local database to be able to compare it later with remote data
     lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
+        addItemToSession(idSurvey, data);
         oldDatas.set(idSurvey, Object.assign({}, data));
         //return data;
     });
@@ -936,6 +940,7 @@ const getDataModePersist = (
         }
     }
     datas.set(idSurvey, dataAct);
+    addItemToSession(idSurvey, dataAct);
     return dataAct;
 };
 
@@ -1353,10 +1358,12 @@ const validateAllEmptySurveys = (idHousehold: string) => {
                 data.COLLECTED[FieldNameEnum.ISVALIDATED] = variable;
                 data.COLLECTED.ISVALIDATED = variable;
                 datas.set(idSurvey, data);
+                addItemToSession(idSurvey, data);
                 promisesToWait.push(saveData(idSurvey, data));
             } else if (data.COLLECTED) {
                 data.COLLECTED.ISVALIDATED = variable;
                 datas.set(idSurvey, data);
+                addItemToSession(idSurvey, data);
                 promisesToWait.push(saveData(idSurvey, data));
             }
         }
