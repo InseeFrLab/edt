@@ -32,9 +32,45 @@ function objectEquals(a: any, b: any) {
 function getSurveyIdFromUrl(context: OrchestratorContext, location: Location) {
     const pathSurveyRoot =
         getCurrentSurveyRootPage() == EdtRoutesNameEnum.ACTIVITY ? "activity/" : "work-time/";
-    let idSurveyPath = location.pathname.split(pathSurveyRoot)[1].split("/")[0];
+    let idSurveyPath = location.pathname.split(pathSurveyRoot)[1]?.split("/")[0];
     let idSurvey = context.idSurvey != idSurveyPath ? idSurveyPath : context.idSurvey;
     return idSurvey;
 }
 
-export { getSurveyIdFromUrl, groupBy, objectEquals };
+function addItemToSession(idSurvey: string, item: any) {
+    sessionStorage.setItem(idSurvey, JSON.stringify(item));
+}
+
+function getItemFromSession(idSurvey: string) {
+    return JSON.parse(sessionStorage.getItem(idSurvey ?? "") ?? "{}");
+}
+
+function addArrayToSession(nameItem: string, array: any[]) {
+    let copyArray = "";
+    array.forEach(item => {
+        if (copyArray != "") copyArray += ";;";
+        copyArray += JSON.stringify(item);
+    });
+    let arrayToString = copyArray.toString();
+    sessionStorage.setItem(nameItem, arrayToString);
+}
+
+function getArrayFromSession(nameItem: string): any[] {
+    let stringArray = sessionStorage.getItem(nameItem);
+    if (stringArray) {
+        let copyArrayString = stringArray.split(";;");
+        console.log(stringArray, copyArrayString);
+        let array = copyArrayString.map(c => JSON.parse(c ?? "{}"));
+        return array;
+    } else return [];
+}
+
+export {
+    addArrayToSession,
+    addItemToSession,
+    getArrayFromSession,
+    getItemFromSession,
+    getSurveyIdFromUrl,
+    groupBy,
+    objectEquals,
+};
