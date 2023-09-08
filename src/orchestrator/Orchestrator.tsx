@@ -92,7 +92,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     dataOfField.COLLECTED = collectedSaved;
                 }
 
-                if (prop == FieldNameEnum.WEEKLYPLANNER) {
+                if (prop == FieldNameEnum.WEEKLYPLANNER && dataOfField) {
                     dataOfField.EDITED = collected;
                     dataOfField.COLLECTED = collected;
                 }
