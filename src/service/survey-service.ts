@@ -2,6 +2,7 @@ import {
     AutoCompleteActiviteOption,
     CheckboxOneCustomOption,
     generateDateFromStringInput,
+    getFrenchDayFromDate,
 } from "@inseefrlab/lunatic-edt";
 import activitySurveySource from "activity-survey.json";
 import dayjs from "dayjs";
@@ -148,18 +149,12 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                             userDatas.push(surveyData);
                         }
                     });
-                    console.log("init user survey data", userDatas);
-                    const distinctSources = Array.from(
-                        new Set(userDatas.map(surveyData => surveyData.questionnaireModelId)),
-                    );
-                    console.log("sources", distinctSources);
                     userDatasActivity = userSurveyDataActivity;
                     userDatasWorkTime = userSurveyDataWorkTime;
 
                     addArrayToSession("userDatasWorkTime", userDatasWorkTime);
                     addArrayToSession("userDatasActivity", userDatasActivity);
                     addArrayToSession("userDatas", userDatas);
-                    console.log(userDatas, userDatasActivity, userDatasWorkTime);
 
                     let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
                     const surveysIds: SurveysIds = {
@@ -172,7 +167,10 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                             return initializeSurveysDatasCache(allSurveysIds);
                         }),
                         saveSurveysIds(surveysIds),
-                        fetchSurveysSourcesByIds(distinctSources, setError).then(sources => {
+                        fetchSurveysSourcesByIds(
+                            [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY],
+                            setError,
+                        ).then(sources => {
                             const inerFetchPromises: Promise<any>[] = [
                                 saveSources(sources),
                                 saveUserSurveysData({ data: userDatas }),
@@ -286,7 +284,6 @@ const initializeSurveysIdsDemo = (): Promise<any> => {
         [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
     };
     surveysIds = innerSurveysIds;
-    console.log(surveysIds, activitySurveysIds, workingTimeSurveysIds);
     return initializeSurveysIds(surveysIds);
 };
 
@@ -323,9 +320,7 @@ const getSurveysIdsForHousehold = (idHousehold: string) => {
 };
 
 const setSurveysIdsReviewers = () => {
-    console.log("setSurveysIdsReviewers - userDatas", getUserDatas());
     let allSurveysIds = getUserDatas().map(data => data.surveyUnitId);
-    console.log(getUserDatasActivity(), getUserDatasWorkTime());
     const innerSurveysIds: SurveysIds = {
         [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
         [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: getUserDatasActivity().map(data => data.surveyUnitId),
@@ -345,7 +340,6 @@ const initializeSurveysIdsModeReviewer = () => {
             workingTimeSurveysIds.push(userSurvey.surveyUnitId);
         }
     });
-    console.log("initialize surveysids mode reviewer", getListSurveys(), activitySurveysIds);
 
     let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
     const innerSurveysIds: SurveysIds = {
@@ -431,7 +425,6 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
     const idSurveysToInit = idSurveys ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS];
     return lunaticDatabase.get(SURVEYS_IDS).then(data => {
         surveysIds = data as SurveysIds;
-        //console.log("initialize surveys datas cache");
         return new Promise(resolve => {
             for (const idSurvey of idSurveysToInit) {
                 promises.push(initializeDatasCache(idSurvey));
@@ -451,7 +444,6 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
 const initializeDatasCache = (idSurvey: string) => {
     return lunaticDatabase.get(idSurvey).then(data => {
         if (data != null) {
-            //console.log("idsurvey in datas cache");
             const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
             data.houseReference = idSurvey.replace(regexp, "");
             datas.set(idSurvey, data);
@@ -459,7 +451,6 @@ const initializeDatasCache = (idSurvey: string) => {
             oldDatas.set(idSurvey, {});
             initData = true;
         } else {
-            //console.log("not idsurvey in datas cache");
             datas.set(idSurvey, createDataEmpty(idSurvey ?? ""));
             addItemToSession(idSurvey, createDataEmpty(idSurvey ?? ""));
         }
@@ -1019,7 +1010,6 @@ const getTabsDataInterviewer = (t: any) => {
         const tabData = createTabData(data.data.surveyUnitId, t, isActivity);
         tabsData.push(tabData);
     });
-    console.log("getTabs", tabsData, dataOrdered, surveysIds);
     return tabsData;
 };
 
@@ -1076,7 +1066,12 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
             ? t("component.week-card.week")
             : t("component.day-card.day");
     if (savedSurveyDate) {
-        const capitalizedDayName = "Semaine du";
+        const dayName = getFrenchDayFromDate(generateDateFromStringInput(savedSurveyDate));
+        const capitalizedDayName =
+            surveyParentPage === EdtRoutesNameEnum.WORK_TIME
+                ? "Semaine du"
+                : dayName.charAt(0).toUpperCase() + dayName.slice(1);
+
         const splittedDate = savedSurveyDate.split("-");
         return capitalizedDayName + " " + [splittedDate[2], splittedDate[1]].join("/");
     } else {
@@ -1172,7 +1167,6 @@ const userDatasMap = () => {
         if (u1.num == u2.num) return u1.firstName.localeCompare(u2.firstName);
         else return u1.num > u2.num ? 1 : -1;
     });
-    //console.log("userDatasMap", getUserDatasActivity(), getUserDatasWorkTime());
     return userMap;
 };
 
