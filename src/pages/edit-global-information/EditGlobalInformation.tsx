@@ -25,8 +25,8 @@ const EditGlobalInformationPage = () => {
             : false;
 
         dayjs.extend(customParseFormat);
-        const input = (document.getElementsByClassName("MuiInputBase-input")[1] as HTMLInputElement)
-            .value;
+        const input =
+            (document.getElementsByClassName("MuiInputBase-input")[1] as HTMLInputElement).value + " ";
         const inputFormatted = dayjs(input, "DD/MM/YYYY").format("YYYY-MM-DD");
         const bdd = setValue(idSurvey, FieldNameEnum.SURVEYDATE, inputFormatted);
         if (bdd) context.data = bdd;
@@ -46,12 +46,19 @@ const EditGlobalInformationPage = () => {
         document.addEventListener("keyup", keydownChange, true);
         return () => document.removeEventListener("keyup", keydownChange, true);
     }, [callbackHolder]);
-
     return (
         <SurveyPageStep
             currentPage={EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION}
-            nextRoute={EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER}
-            backRoute={EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER}
+            nextRoute={
+                context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME
+                    ? EdtRoutesNameEnum.WEEKLY_PLANNER
+                    : EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER
+            }
+            backRoute={
+                context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME
+                    ? EdtRoutesNameEnum.WEEKLY_PLANNER
+                    : EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER
+            }
             errorIcon={who_are_you}
             errorAltIcon={"accessibility.asset.who-are-you-alt"}
             isStep={false}
