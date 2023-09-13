@@ -226,7 +226,7 @@
             "conditionFilter": { "value": "true" },
             "id": "checkboxone_weektype",
             "page": "4",
-            "label": "\"De quel type de semaine s’agissait-il ?\"",
+            "label": "\"De quel type de semaine s’agissait-il \"",
             "mandatory": false
         },
         {

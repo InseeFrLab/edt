@@ -82,7 +82,6 @@ const SurveyPage = (props: SurveyPageProps) => {
     } = props;
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
-    console.log(modifiable);
     const [scoreAct, setScoreAct] = React.useState<number | undefined>(score);
 
     useEffect(() => {
