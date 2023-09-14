@@ -154,6 +154,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         iteration: currentIteration,
         overrideOptions: specifiquesProps?.referentiel,
         componentSpecificProps: { ...specifiquesPropsOrchestrator },
+        idSurvey: idSurvey,
     };
 
     return (

@@ -42,6 +42,7 @@ import extensionDisabled from "assets/illustration/mui-icon/extension-grey.svg";
 import extension from "assets/illustration/mui-icon/extension.svg";
 import search from "assets/illustration/mui-icon/search.svg";
 import { SEPARATOR_DEFAUT } from "constants/constants";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -238,6 +239,7 @@ const MainActivityPage = () => {
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                     componentSpecificProps={specificProps}
+                    idSurvey={idSurvey}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>

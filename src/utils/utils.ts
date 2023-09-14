@@ -59,7 +59,6 @@ function getArrayFromSession(nameItem: string): any[] {
     let stringArray = sessionStorage.getItem(nameItem);
     if (stringArray) {
         let copyArrayString = stringArray.split(";;");
-        console.log(stringArray, copyArrayString);
         let array = copyArrayString.map(c => JSON.parse(c ?? "{}"));
         return array;
     } else return [];

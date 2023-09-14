@@ -223,6 +223,7 @@ const HelpWorkTime = () => {
                         cbHolder={callbackHolder}
                         page={getOrchestratorPage(currentPage)}
                         componentSpecificProps={specificProps}
+                        idSurvey={idSurvey}
                     ></OrchestratorForStories>
                 </FlexCenter>
             </SurveyPage>

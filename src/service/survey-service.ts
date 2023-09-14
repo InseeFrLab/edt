@@ -521,20 +521,19 @@ const getDatas = (): Map<string, LunaticData> => {
 };
 
 const getData = (idSurvey: string): LunaticData => {
-    return modifyIndividualCollected(idSurvey) || createDataEmpty(idSurvey ?? "");
+    const modifyCollected = modifyIndividualCollected(idSurvey);
+    const emptyData = getDataCache(idSurvey) ?? createDataEmpty(idSurvey ?? "");
+    const data = modifyCollected || emptyData;
+    return data;
 };
 
 const getDataCache = (idSurvey: string) => {
     const dataSession = getItemFromSession(idSurvey);
-    datas.set(idSurvey, getItemFromSession(idSurvey));
     return datas.get(idSurvey) ?? dataSession;
 };
 
 const modifyIndividualCollected = (idSurvey: string) => {
     let dataSurv = Object.assign(getDataCache(idSurvey));
-    datas.forEach((data, key) => {
-        if (key == idSurvey) dataSurv = data;
-    });
 
     if (getModePersistence(dataSurv) != ModePersistenceEnum.EDITED) {
         const dataOfSurvey = dataSurv && dataSurv.COLLECTED;
@@ -547,7 +546,7 @@ const modifyIndividualCollected = (idSurvey: string) => {
                 data.COLLECTED &&
                 !Array.isArray(data.COLLECTED)
             ) {
-                data.COLLECTED = datas.get(idSurvey)?.COLLECTED?.[prop].EDITED;
+                data.COLLECTED = dataSurv?.COLLECTED?.[prop].EDITED;
             }
         }
     }
@@ -628,9 +627,8 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
     const isChange = dataIsChange(idSurvey, data);
     return lunaticDatabase.save(idSurvey, data).then(() => {
-        datas.set(idSurvey, data);
-        addItemToSession(idSurvey, data);
         const promisesToWait: Promise<any>[] = [];
+        datas.set(idSurvey, data);
         if (isChange) {
             if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
                 const stateData = getSurveyStateData(data, idSurvey);
@@ -696,10 +694,10 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
     data.lastRemoteSaveDate = stateData.date;
     //set the last remote save date inside local database to be able to compare it later with remote data
     lunaticDatabase.save(idSurvey, data).then(() => {
+        //console.log("set local database", data);
         datas.set(idSurvey, data);
         addItemToSession(idSurvey, data);
         oldDatas.set(idSurvey, Object.assign({}, data));
-        //return data;
     });
 };
 
@@ -884,7 +882,7 @@ const setValue = (
     value: string | boolean | null,
     iteration?: number,
 ): LunaticData => {
-    let dataAct = datas.get(idSurvey) ?? {};
+    let dataAct = getDataCache(idSurvey) ?? {};
     if (dataAct == null) {
         lunaticDatabase.get(idSurvey).then(data => {
             getDataModePersist(idSurvey, data ?? {}, variableName, value, iteration);
@@ -1336,6 +1334,7 @@ const validateSurvey = (idSurvey: string) => {
 const validateAllEmptySurveys = (idHousehold: string) => {
     const idSurveys = getSurveysIdsForHousehold(idHousehold);
     const promisesToWait: Promise<any>[] = [];
+    console.log("validate all empty ");
 
     idSurveys.forEach(idSurvey => {
         const data = getData(idSurvey || "");
@@ -1392,7 +1391,7 @@ const getSurveyRights = (idSurvey: string) => {
 };
 
 const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
-    const dataSurv = Object.assign({}, data ?? datas.get(idSurvey ?? ""));
+    const dataSurv = Object.assign({}, data ?? getDataCache(idSurvey ?? ""));
     const dataOfSurvey = dataSurv && dataSurv.COLLECTED;
 
     for (let prop in FieldNameEnum as any) {

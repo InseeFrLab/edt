@@ -33,6 +33,7 @@ export type OrchestratorProps = {
     iteration?: number;
     componentSpecificProps?: any;
     overrideOptions?: any;
+    idSurvey?: string;
 };
 
 const renderLoading = () => {
@@ -44,8 +45,17 @@ const renderLoading = () => {
 };
 
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    const { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
-        props;
+    const {
+        source,
+        data,
+        cbHolder,
+        page,
+        subPage,
+        iteration,
+        componentSpecificProps,
+        overrideOptions,
+        idSurvey,
+    } = props;
     const { classes, cx } = useStyles();
 
     const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
@@ -65,6 +75,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         const bindings: string[] = components?.filter(
             (component: any) => component.componentType != "Sequence",
         )[0]?.bindingDependencies;
+        console.log("orch reviewer", dataCollected, bindings);
         if (callbackholder && dataCollected) {
             for (let prop in FieldNameEnum as any) {
                 const dataOfField = dataCollected[prop];
@@ -73,9 +84,12 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
                 const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
                 if (bindings != null && bindings.includes(prop)) {
+                    console.log(prop, collected, edited, editedSaved);
                     if (collected) {
                         if (collected && editedSaved) {
-                            for (let i = 0; i < collected.length; i++) {
+                            let maxLenght = Number(localStorage.getItem("loopSize")) ?? 0;
+                            console.log("loopsize", localStorage.getItem("loopSize")), maxLenght;
+                            for (let i = 0; i < maxLenght; i++) {
                                 if (collected[i] == null) {
                                     collected[i] = editedSaved[i];
                                 }
@@ -90,6 +104,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 } else if (dataOfField) {
                     dataOfField.EDITED = editedSaved;
                     dataOfField.COLLECTED = collectedSaved;
+                    //console.log(prop, dataOfField, getItemFromSession(idSurvey ?? "").EDITED[prop]);
                 }
 
                 if (prop == FieldNameEnum.WEEKLYPLANNER && dataOfField) {
@@ -105,7 +120,11 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     const getDataInterviewer = () => {
         const callbackholder = getData();
         const dataCollected = Object.assign({}, callbackholder.COLLECTED);
-
+        const bindings: string[] = components?.filter(
+            (component: any) => component.componentType != "Sequence",
+        )[0]?.bindingDependencies;
+        console.log("callback inter", callbackHolder);
+        console.log("orch interviewer", dataCollected, bindings);
         if (callbackholder && dataCollected) {
             for (let prop in FieldNameEnum as any) {
                 const dataOfField = dataCollected[prop];
@@ -118,6 +137,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
 
     cbHolder.getData = isReviewer() ? getDataReviewer : getDataInterviewer;
     cbHolder.getErrors = getCurrentErrors;
+    console.log("callback", cbHolder.getData());
 
     const getBindingDependencies = () => {
         return (
@@ -143,6 +163,8 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
 
             variables.set(bindingDependency, variable);
         });
+        console.log("variables", bindingDependencies, value, variables);
+
         return variables;
     };
 

@@ -11,6 +11,7 @@ import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { isAndroid, isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router";
+import { useLocation } from "react-router-dom";
 import {
     getOrchestratorPage,
     saveAndNav,
@@ -26,7 +27,6 @@ import { surveyReadOnly } from "service/survey-activity-service";
 import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 import SurveyPage from "../SurveyPage";
-import { useLocation } from "react-router-dom";
 
 export interface SurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
@@ -123,7 +123,6 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         disableNav: disableButton,
         modifiable: modifiable,
     };
-
     const surveyPageNotStepProps = {
         idSurvey: idSurvey,
         validate: useCallback(
@@ -153,6 +152,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         page: getOrchestratorPage(currentPage, context.surveyRootPage),
         overrideOptions: specifiquesProps?.referentiel,
         componentSpecificProps: componentLunaticProps,
+        idSurvey: idSurvey,
     };
 
     const validateAndNav = (

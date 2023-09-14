@@ -332,7 +332,6 @@ const skipNextPage = (
         : undefined;
     const nextCurrentPage = getNextLoopPage(currentPage, isRoute);
     const nextPageNextLoop = skipAllNextPage(idSurvey, source, iteration, nextCurrentPage, isRoute);
-
     if (
         nextPageRoute == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER ||
         (nextPageRoute == null && nextPageNextLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)
@@ -652,7 +651,6 @@ const getLoopSize = (idSurvey: string, currentLoop: LoopEnum, sourceModel?: Luna
         return 0;
     }
     const data = getData(idSurvey);
-
     let currentLoopSize = 0;
     for (const component of loop.components) {
         if (component.bindingDependencies) {
@@ -668,11 +666,13 @@ const getLoopSize = (idSurvey: string, currentLoop: LoopEnum, sourceModel?: Luna
 const setLoopSize = (source: LunaticModel, currentLoop: LoopEnum, size: number): number => {
     const initialLoopPage = getLoopInitialPage(currentLoop);
     const loop = source?.components?.find(composant => composant.page === initialLoopPage);
+    let loopSize = 0;
     if (loop && loop.iterations) {
         loop.iterations.value = size.toString();
-        return +loop.iterations.value;
+        loopSize = +loop.iterations.value;
     }
-    return 0;
+    localStorage.setItem("loopSize", loopSize.toString());
+    return loopSize;
 };
 
 const haveVariableNotFilled = (

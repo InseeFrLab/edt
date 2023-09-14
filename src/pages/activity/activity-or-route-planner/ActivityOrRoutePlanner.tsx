@@ -14,6 +14,7 @@ import InfoIcon from "assets/illustration/info.svg";
 import close from "assets/illustration/mui-icon/close.svg";
 import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
@@ -56,6 +57,7 @@ import {
     getSource,
     getSurveyDate,
     getSurveyRights,
+    initializeSurveysDatasCache,
     isDemoMode,
     lockSurvey,
     saveData,
@@ -85,6 +87,7 @@ const ActivityOrRoutePlannerPage = () => {
         undefined,
     );
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
+    const [initialized, setInitialized] = React.useState<boolean>(false);
 
     setEnviro(context, useNavigate(), callbackHolder);
     const isItDesktop = isDesktop();
@@ -329,6 +332,16 @@ const ActivityOrRoutePlannerPage = () => {
         setScore(getScore(idSurvey, t));
     }, [activitiesRoutesOrGaps]);
 
+    useEffect(() => {
+        if (navigator.onLine) {
+            initializeSurveysDatasCache().finally(() => {
+                setInitialized(true);
+            });
+        } else {
+            setInitialized(true);
+        }
+    });
+
     const navToActivityRouteHome = useCallback(() => {
         navToHome();
     }, []);
@@ -406,7 +419,7 @@ const ActivityOrRoutePlannerPage = () => {
 
     const isReviewerMode = isReviewer() && !isDemoMode();
 
-    return (
+    return initialized ? (
         <>
             <Box
                 className={cx(
@@ -647,6 +660,11 @@ const ActivityOrRoutePlannerPage = () => {
                 </Box>
             </Box>
         </>
+    ) : (
+        <LoadingFull
+            message={t("page.home.loading.message")}
+            thanking={t("page.home.loading.thanking")}
+        />
     );
 };
 

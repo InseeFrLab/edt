@@ -280,7 +280,6 @@ const getActivitiesOrRoutes = (
     if (source == null) source = activitySurveySource;
 
     activitiesRoutes = createActivitiesOrRoutes(idSurvey, source, t);
-
     activitiesRoutes.sort(
         (a, b) =>
             hourToNormalizedTimeStamp(a.startTime, idSurvey) -
