@@ -17,6 +17,7 @@ const ValidateButton = (props: ValidateButtonProps) => {
             <FlexCenter className={cx(disabled ? classes.invalidButtonBox : classes.validateButtonBox)}>
                 <Button
                     id={"validateButton"}
+                    aria-label="validateButton"
                     variant="contained"
                     onClick={onClick}
                     disabled={disabled}

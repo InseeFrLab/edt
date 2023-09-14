@@ -1,4 +1,5 @@
 import { WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
+import { IODataStructure } from "@inseefrlab/lunatic-edt/dist/interface/WeeklyPlannerTypes";
 import InfoIcon from "assets/illustration/info.svg";
 import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";
 import expandLess from "assets/illustration/mui-icon/expand-less.svg";
@@ -10,6 +11,7 @@ import work from "assets/illustration/mui-icon/work-full.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
@@ -41,8 +43,18 @@ const WeeklyPlannerPage = () => {
 
     const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
 
-    const save = (): void => {
-        saveData(idSurvey, callbackHolder.getData());
+    const save = (data?: IODataStructure[]): void => {
+        const callbackData = callbackHolder.getData();
+        let dataWeeklyCallback = callbackData?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER]
+            .COLLECTED as any[];
+        if (data && dataWeeklyCallback && data?.length > dataWeeklyCallback.length) {
+            dataWeeklyCallback = data;
+            if (callbackData.COLLECTED) {
+                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data;
+                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data;
+            }
+        }
+        saveData(idSurvey, callbackData);
     };
 
     const specificProps: WeeklyPlannerSpecificProps = {
