@@ -83,12 +83,10 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 const edited = dataOfField?.EDITED;
                 const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
                 const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
-                if (bindings != null && bindings.includes(prop)) {
-                    console.log(prop, collected, edited, editedSaved);
+                if (prop != FieldNameEnum.WEEKLYPLANNER && bindings != null && bindings.includes(prop)) {
                     if (collected) {
                         if (collected && editedSaved) {
                             let maxLenght = Number(localStorage.getItem("loopSize")) ?? 0;
-                            console.log("loopsize", localStorage.getItem("loopSize")), maxLenght;
                             for (let i = 0; i < maxLenght; i++) {
                                 if (collected[i] == null) {
                                     collected[i] = editedSaved[i];
@@ -101,10 +99,9 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                         dataOfField.EDITED = edited ?? editedSaved;
                         dataOfField.COLLECTED = collectedSaved;
                     }
-                } else if (dataOfField) {
+                } else if (prop != FieldNameEnum.WEEKLYPLANNER && dataOfField) {
                     dataOfField.EDITED = editedSaved;
                     dataOfField.COLLECTED = collectedSaved;
-                    //console.log(prop, dataOfField, getItemFromSession(idSurvey ?? "").EDITED[prop]);
                 }
 
                 if (prop == FieldNameEnum.WEEKLYPLANNER && dataOfField) {
