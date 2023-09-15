@@ -44,8 +44,6 @@ const renderLoading = () => {
     );
 };
 
-const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => console.log("onChange", { ...e });
-
 export const OrchestratorForStories = (props: OrchestratorProps) => {
     const {
         source,
@@ -60,13 +58,12 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     } = props;
     const { classes, cx } = useStyles();
 
-    const { getComponents, getCurrentErrors, getData, waiting } = lunatic.useLunatic(source, data, {
+    const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
         initialPage:
             page +
             (subPage === undefined ? "" : `.${subPage}`) +
             (iteration === undefined ? "" : `#${iteration + 1}`),
-        activeControls: true,
-        onChange: onLogChange,
+        activeControls: false,
     });
 
     const components = getComponents();
@@ -139,7 +136,12 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         const componentsDep = components.filter(
             (component: any) => component.componentType != "Sequence",
         );
-        return componentsDep?.map((component: any) => component?.bindingDependencies) ?? [];
+
+        let bindings =
+            components.filter((component: any) => component.componentType != "Sequence")[0]
+                ?.bindingDependencies ?? [];
+
+        return bindings;
     };
 
     const getVariables = (bindingDependencies: string[], value: any) => {
