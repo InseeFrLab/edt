@@ -20,12 +20,14 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
+import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect, useState } from "react";
 import { isAndroid, isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
@@ -57,9 +59,9 @@ import {
     getSource,
     getSurveyDate,
     getSurveyRights,
-    initializeSurveysDatasCache,
     isDemoMode,
     lockSurvey,
+    refreshSurvey,
     saveData,
     setValue,
     surveyLocked,
@@ -110,6 +112,7 @@ const ActivityOrRoutePlannerPage = () => {
 
     const [isAlertLockDisplayed, setIsAlertLockDisplayed] = useState<boolean>(false);
     const [isLocked, setIsLocked] = useState<boolean>(surveyLocked(idSurvey));
+    const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
 
     const alertLabels = {
         boldContent: t("page.alert-when-quit.activity-planner.alert-content-close-bold"),
@@ -334,7 +337,7 @@ const ActivityOrRoutePlannerPage = () => {
 
     useEffect(() => {
         if (navigator.onLine) {
-            initializeSurveysDatasCache().finally(() => {
+            refreshSurvey(idSurvey, setError).finally(() => {
                 setInitialized(true);
             });
         } else {
@@ -660,11 +663,13 @@ const ActivityOrRoutePlannerPage = () => {
                 </Box>
             </Box>
         </>
-    ) : (
+    ) : !error ? (
         <LoadingFull
             message={t("page.home.loading.message")}
             thanking={t("page.home.loading.thanking")}
         />
+    ) : (
+        <ErrorPage errorCode={error} atInit={true} />
     );
 };
 

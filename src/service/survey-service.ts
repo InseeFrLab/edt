@@ -357,6 +357,13 @@ const refreshSurveyData = (setError: (error: ErrorCodeEnum) => void): Promise<an
     });
 };
 
+const refreshSurvey = (idSurvey: string, setError: (error: ErrorCodeEnum) => void): Promise<any> => {
+    initData = false;
+    return getRemoteSavedSurveysDatas([idSurvey], setError).then(() => {
+        return initializeSurveysDatasCache();
+    });
+};
+
 const initializeSurveysIdsDataModeReviewer = (
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<any> => {
@@ -694,7 +701,6 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
     data.lastRemoteSaveDate = stateData.date;
     //set the last remote save date inside local database to be able to compare it later with remote data
     lunaticDatabase.save(idSurvey, data).then(() => {
-        //console.log("set local database", data);
         datas.set(idSurvey, data);
         addItemToSession(idSurvey, data);
         oldDatas.set(idSurvey, Object.assign({}, data));
@@ -1334,7 +1340,6 @@ const validateSurvey = (idSurvey: string) => {
 const validateAllEmptySurveys = (idHousehold: string) => {
     const idSurveys = getSurveysIdsForHousehold(idHousehold);
     const promisesToWait: Promise<any>[] = [];
-    console.log("validate all empty ");
 
     idSurveys.forEach(idSurvey => {
         const data = getData(idSurvey || "");
@@ -1494,6 +1499,7 @@ export {
     lockAllSurveys,
     lockSurvey,
     nameSurveyMap,
+    refreshSurvey,
     refreshSurveyData,
     saveData,
     setData,

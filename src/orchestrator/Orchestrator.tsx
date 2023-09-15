@@ -133,14 +133,9 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     cbHolder.getErrors = getCurrentErrors;
 
     const getBindingDependencies = () => {
-        const componentsDep = components.filter(
-            (component: any) => component.componentType != "Sequence",
-        );
-
         let bindings =
             components.filter((component: any) => component.componentType != "Sequence")[0]
                 ?.bindingDependencies ?? [];
-
         return bindings;
     };
 
