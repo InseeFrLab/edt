@@ -20,10 +20,7 @@ const WhoAreYouPage = () => {
         if (componentId == null) {
             navToErrorPage();
         } else {
-            setDisabledButton(
-                callbackHolder.getErrors() == undefined ||
-                    callbackHolder.getErrors()[componentId].length > 0,
-            );
+            setDisabledButton(callbackHolder.getErrors()[componentId].length > 0);
         }
     };
 
@@ -36,6 +33,7 @@ const WhoAreYouPage = () => {
         if (event.key === "Enter") {
             document.getElementById("validateButton")?.click();
         }
+        setDisabledButton(false);
     };
 
     React.useEffect(() => {
