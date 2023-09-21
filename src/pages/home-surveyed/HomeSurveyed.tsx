@@ -356,10 +356,12 @@ const HomeSurveyedPage = () => {
     useEffect(() => {
         userDatas = userDatasMap();
         setInitialized(userDatas.length > 0);
+        console.log("user effect", userDatas);
     }, [userDatas]);
 
     const renderHomeReviewer = () => {
         let userDatas = userDatasMap();
+        console.log("render home reviewer", userDatas);
         initializeHomeSurveys(idHousehold ?? "").then(() => {
             const idsSurveysSelected = userDatas.map(data => data.data.surveyUnitId);
             initializeSurveysDatasCache(idsSurveysSelected).finally(() => {

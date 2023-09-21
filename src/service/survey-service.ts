@@ -404,25 +404,28 @@ const getRemoteSavedSurveysDatas = (
     const promises: Promise<any>[] = [];
     const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
     surveysIds.forEach(surveyId => {
-        promises.push(
-            urlRemote(surveyId, setError).then((remoteSurveyData: SurveyData) => {
-                const surveyData = initializeData(remoteSurveyData, surveyId);
-                return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                    if (localSurveyData == null) {
-                        return lunaticDatabase.save(surveyId, surveyData);
-                    } else if (
-                        remoteSurveyData.stateData?.date == null ||
-                        (remoteSurveyData.stateData?.date &&
-                            remoteSurveyData.stateData?.date > 0 &&
-                            (localSurveyData === undefined ||
-                                (localSurveyData.lastLocalSaveDate ?? 0) <
-                                    remoteSurveyData.stateData.date))
-                    ) {
-                        return lunaticDatabase.save(surveyId, surveyData);
-                    }
-                });
-            }),
-        );
+        promises.push(lunaticDatabase.get(surveyId).then(data => console.log(data)));
+        if (navigator.onLine) {
+            promises.push(
+                urlRemote(surveyId, setError).then((remoteSurveyData: SurveyData) => {
+                    const surveyData = initializeData(remoteSurveyData, surveyId);
+                    return lunaticDatabase.get(surveyId).then(localSurveyData => {
+                        if (localSurveyData == null) {
+                            return lunaticDatabase.save(surveyId, surveyData);
+                        } else if (
+                            remoteSurveyData.stateData?.date == null ||
+                            (remoteSurveyData.stateData?.date &&
+                                remoteSurveyData.stateData?.date > 0 &&
+                                (localSurveyData === undefined ||
+                                    (localSurveyData.lastLocalSaveDate ?? 0) <
+                                        remoteSurveyData.stateData.date))
+                        ) {
+                            return lunaticDatabase.save(surveyId, surveyData);
+                        }
+                    });
+                }),
+            );
+        }
     });
     return Promise.all(promises);
 };
@@ -466,19 +469,23 @@ const initializeDatasCache = (idSurvey: string) => {
 };
 
 const initializeListSurveys = () => {
-    return fetchReviewerSurveysAssignments().then(data => {
-        surveysData = data;
-        addArrayToSession("surveysData", surveysData);
-        data.forEach((surveyData: UserSurveys) => {
-            if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
-                userDatas.push(surveyData);
-            }
-            if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
-                userDatas.push(surveyData);
-            }
+    return fetchReviewerSurveysAssignments()
+        .then(data => {
+            surveysData = data;
+            addArrayToSession("surveysData", surveysData);
+            data.forEach((surveyData: UserSurveys) => {
+                if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
+                    userDatas.push(surveyData);
+                }
+                if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
+                    userDatas.push(surveyData);
+                }
+            });
+            return saveUserSurveysData({ data: userDatas });
+        })
+        .catch(error => {
+            console.log(error, userDatas);
         });
-        return saveUserSurveysData({ data: userDatas });
-    });
 };
 
 const getListSurveys = () => {
@@ -1171,6 +1178,7 @@ const userDatasMap = () => {
         if (u1.num == u2.num) return u1.firstName.localeCompare(u2.firstName);
         else return u1.num > u2.num ? 1 : -1;
     });
+    console.log(getUserDatasActivity(), getUserDatasWorkTime(), userMap);
     return userMap;
 };
 
