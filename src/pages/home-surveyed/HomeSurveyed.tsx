@@ -361,14 +361,18 @@ const HomeSurveyedPage = () => {
     }, [userDatas]);*/
 
     const renderHomeReviewer = () => {
-        let userDatas = userDatasMap();
-        console.log("render home reviewer", userDatas);
+        let userDatas: any[] = [];
+        let userDatasCopy = userDatasMap();
+        console.log("render home reviewer", userDatasCopy);
         initializeHomeSurveys(idHousehold ?? "").then(() => {
-            const idsSurveysSelected = userDatas.map(data => data.data.surveyUnitId);
+            const idsSurveysSelected = userDatasCopy.map(data => data.data.surveyUnitId);
             initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
-                userDatas = userDatasMap();
+                userDatasCopy = userDatasMap();
+                console.log("new render home reviewer", userDatasCopy);
             });
         });
+        if (userDatasCopy.length > 0) userDatas = userDatasCopy;
+
         return renderPageOrLoadingOrError(
             <>
                 {renderReminderNote()}

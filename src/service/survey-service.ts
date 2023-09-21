@@ -768,15 +768,18 @@ const saveUserSurveysData = (data: UserSurveysData): Promise<UserSurveys[]> => {
 };
 
 const getUserDatasActivity = (): UserSurveys[] => {
+    console.log(userDatasActivity, getArrayFromSession("userDatasActivity"));
     return userDatasActivity.length > 0 ? userDatasActivity : getArrayFromSession("userDatasActivity");
 };
 
 const getUserDatasWorkTime = (): UserSurveys[] => {
+    console.log(userDatasWorkTime, getArrayFromSession("userDatasWorkTime"));
     return userDatasWorkTime.length > 0 ? userDatasWorkTime : getArrayFromSession("userDatasWorkTime");
 };
 
 const getUserDatas = () => {
-    return userDatas ?? getArrayFromSession("userDatas");
+    console.log(userDatas, getArrayFromSession("userDatas"));
+    return userDatas.length > 0 ? userDatas : getArrayFromSession("userDatas");
 };
 
 const addToSecondaryActivityReferentiel = (
