@@ -126,7 +126,7 @@ const HelpWorkTime = () => {
         helpStep < 4 ? setHelpStep(helpStep + 1) : navToNextPage();
     }, [helpStep]);
 
-    const helpPageGlobal = localStorage.getItem("IS_GLOBAL");
+    const helpPageGlobal = isPageGlobal();
 
     const renderHelp = () => {
         return (
