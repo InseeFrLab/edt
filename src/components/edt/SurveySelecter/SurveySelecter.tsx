@@ -73,6 +73,18 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         }
     };
 
+    const renderLabel = (tabData: TabData) => {
+        return (
+            <Box>
+                <Typography className={classes.alignText}>
+                    {tabData.surveyDateLabel +
+                        (tabData.isActivitySurvey ? " - " + tabData.score + "%" : "")}
+                </Typography>
+                <Typography className={classes.alignText}>{tabData.firstNameLabel}</Typography>
+            </Box>
+        );
+    };
+
     const getTab = (tabData: TabData, index: number, tabIndex: number) => {
         return (
             <Tab
@@ -80,14 +92,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                 className={cx(classes.tab)}
                 icon={getTabIcon(tabData.isActivitySurvey)}
                 tabIndex={tabIndex}
-                label={
-                    <Box>
-                        <Typography className={classes.alignText}>
-                            {tabData.surveyDateLabel + " - " + tabData.score + "%"}
-                        </Typography>
-                        <Typography className={classes.alignText}>{tabData.firstNameLabel}</Typography>
-                    </Box>
-                }
+                label={renderLabel(tabData)}
             />
         );
     };
