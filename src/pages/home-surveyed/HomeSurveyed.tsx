@@ -146,6 +146,7 @@ const HomeSurveyedPage = () => {
             let data = getData(idSurvey || "");
 
             localStorage.setItem(LocalStorageVariableEnum.IS_GLOBAL, "false");
+            localStorage.setItem(LocalStorageVariableEnum.IDSURVEY_CURRENT, idSurvey);
 
             let context: OrchestratorContext = {
                 source: source,

@@ -13,6 +13,7 @@ import work from "assets/illustration/mui-icon/work-full.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
@@ -20,6 +21,7 @@ import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
+    getCurrentNavigatePath,
     getIdSurveyContext,
     getNavigatePath,
     getOrchestratorPage,
@@ -53,7 +55,19 @@ const HelpWorkTime = () => {
     const data = getData(idSurvey || "");
 
     const navToWeeklyPlannerHome = useCallback(() => {
-        navToWeeklyPlannerOrHome(navigate);
+        if (helpPageGlobal) {
+            navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
+        } else {
+            let idSurvey = localStorage.getItem(LocalStorageVariableEnum.IDSURVEY_CURRENT) ?? "";
+            navigate(
+                getCurrentNavigatePath(
+                    idSurvey,
+                    EdtRoutesNameEnum.WORK_TIME,
+                    getOrchestratorPage(EdtRoutesNameEnum.WEEKLY_PLANNER),
+                    source,
+                ),
+            );
+        }
     }, []);
 
     const specificProps: WeeklyPlannerSpecificProps = {
