@@ -20,7 +20,9 @@ const WhoAreYouPage = () => {
         if (componentId == null) {
             navToErrorPage();
         } else {
-            setDisabledButton(callbackHolder.getErrors()[componentId].length > 0);
+            const disabled =
+                callbackHolder.getErrors() && callbackHolder.getErrors()[componentId].length > 0;
+            setDisabledButton(disabled);
         }
     };
 
