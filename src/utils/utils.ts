@@ -33,7 +33,7 @@ function getSurveyIdFromUrl(context: OrchestratorContext, location: Location) {
     const pathSurveyRoot =
         getCurrentSurveyRootPage() == EdtRoutesNameEnum.ACTIVITY ? "activity/" : "work-time/";
     let idSurveyPath = location.pathname.split(pathSurveyRoot)[1]?.split("/")[0];
-    let idSurvey = context.idSurvey != idSurveyPath ? idSurveyPath : context.idSurvey;
+    let idSurvey = context?.idSurvey != idSurveyPath ? idSurveyPath : context?.idSurvey;
     return idSurvey;
 }
 
