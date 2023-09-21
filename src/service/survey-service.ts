@@ -310,10 +310,6 @@ const initializeHomeSurveys = (idHousehold: string) => {
         userDatasActivity =
             userDatasActivityCopy.length > 0 ? userDatasActivityCopy : getUserDatasActivity();
 
-        console.log("userDatas", userDatasCopy, userDatas);
-        console.log("userDatasWorktime", userDatasWorkTimeCopy, userDatasWorkTime);
-        console.log("userDatasActivity", userDatasActivityCopy, userDatasActivity);
-
         addArrayToSession("userDatasWorkTime", userDatasWorkTime);
         addArrayToSession("userDatasActivity", userDatasActivity);
         addArrayToSession("userDatas", userDatas);
@@ -415,7 +411,11 @@ const getRemoteSavedSurveysDatas = (
     const promises: Promise<any>[] = [];
     const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
     surveysIds.forEach(surveyId => {
-        promises.push(lunaticDatabase.get(surveyId).then(data => console.log(data)));
+        promises.push(
+            lunaticDatabase.get(surveyId).then(() => {
+                //console.log(data)
+            }),
+        );
         if (navigator.onLine) {
             promises.push(
                 urlRemote(surveyId, setError).then((remoteSurveyData: SurveyData) => {
@@ -451,7 +451,6 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
                 promises.push(initializeDatasCache(idSurvey));
                 promises.push(
                     lunaticDatabase.get(USER_SURVEYS_DATA).then(data => {
-                        console.log("user data en cache", data);
                         userDatas = (data as UserSurveysData)?.data;
                     }),
                 );
@@ -496,7 +495,6 @@ const initializeListSurveys = () => {
             return saveUserSurveysData({ data: userDatas });
         })
         .catch(error => {
-            console.log(error, userDatas);
             return lunaticDatabase.get(USER_SURVEYS_DATA);
         });
 };
@@ -781,17 +779,14 @@ const saveUserSurveysData = (data: UserSurveysData): Promise<UserSurveys[]> => {
 };
 
 const getUserDatasActivity = (): UserSurveys[] => {
-    console.log(userDatasActivity, getArrayFromSession("userDatasActivity"));
     return userDatasActivity.length > 0 ? userDatasActivity : getArrayFromSession("userDatasActivity");
 };
 
 const getUserDatasWorkTime = (): UserSurveys[] => {
-    console.log(userDatasWorkTime, getArrayFromSession("userDatasWorkTime"));
     return userDatasWorkTime.length > 0 ? userDatasWorkTime : getArrayFromSession("userDatasWorkTime");
 };
 
 const getUserDatas = () => {
-    console.log(userDatas, getArrayFromSession("userDatas"));
     return userDatas.length > 0 ? userDatas : getArrayFromSession("userDatas");
 };
 
@@ -1194,7 +1189,6 @@ const userDatasMap = () => {
         if (u1.num == u2.num) return u1.firstName.localeCompare(u2.firstName);
         else return u1.num > u2.num ? 1 : -1;
     });
-    console.log(getUserDatasActivity(), getUserDatasWorkTime(), userMap);
     return userMap;
 };
 

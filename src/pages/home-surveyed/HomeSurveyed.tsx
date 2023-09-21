@@ -354,21 +354,13 @@ const HomeSurveyedPage = () => {
         });
     }, []);
 
-    /*useEffect(() => {
-        userDatas = userDatasMap();
-        setInitialized(userDatas.length > 0);
-        console.log("user effect", userDatas);
-    }, [userDatas]);*/
-
     const renderHomeReviewer = () => {
         let userDatas: any[] = [];
         let userDatasCopy = userDatasMap();
-        console.log("render home reviewer", userDatasCopy);
         initializeHomeSurveys(idHousehold ?? "").then(() => {
             const idsSurveysSelected = userDatasCopy.map(data => data.data.surveyUnitId);
             initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
                 userDatasCopy = userDatasMap();
-                console.log("new render home reviewer", userDatasCopy);
             });
         });
         if (userDatasCopy.length > 0) userDatas = userDatasCopy;
