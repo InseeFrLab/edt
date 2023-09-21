@@ -385,7 +385,7 @@ const navToWeeklyPlannerOrHome = (navigate: any) => {
     if (firstName == null) {
         navToWeeklyPlannerOrClose(idSurvey, navigate, getSource(SourcesEnum.WORK_TIME_SURVEY));
     } else {
-        navigate("/");
+        navToHome();
     }
 };
 

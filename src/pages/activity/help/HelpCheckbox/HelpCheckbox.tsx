@@ -11,6 +11,7 @@ import parentsIcon from "assets/illustration/with-someone-categories/parents.svg
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
@@ -20,10 +21,11 @@ import { useNavigate } from "react-router-dom";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
+    getCurrentNavigatePath,
     getNavigatePath,
+    getOrchestratorPage,
     isActivityPage,
     isPageGlobal,
-    navToActivityRouteOrHome,
     onClose,
     onNext,
     onPrevious,
@@ -41,10 +43,24 @@ const HelpCheckbox = () => {
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const data = mockData();
 
+    const globalHelp = isPageGlobal() && !isActivityPage();
+
     const [helpStep, setHelpStep] = React.useState(1);
 
     const navToActivityRouteHome = useCallback(() => {
-        navToActivityRouteOrHome(navigate);
+        if (globalHelp) {
+            navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
+        } else {
+            let idSurvey = localStorage.getItem(LocalStorageVariableEnum.IDSURVEY_CURRENT) ?? "";
+            navigate(
+                getCurrentNavigatePath(
+                    idSurvey,
+                    EdtRoutesNameEnum.ACTIVITY,
+                    getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                    source,
+                ),
+            );
+        }
     }, []);
 
     const navToBackPage = useCallback(
@@ -80,7 +96,8 @@ const HelpCheckbox = () => {
                                 {t("common.navigation.previous")}
                             </Button>
                         }
-                        {isPageGlobal() && !isActivityPage() && (
+
+                        {globalHelp && (
                             <Button
                                 className={cx(classes.buttonBox, classes.buttonHelpBox)}
                                 variant="outlined"
@@ -108,7 +125,7 @@ const HelpCheckbox = () => {
                                 />
                             }
                         >
-                            {isPageGlobal() && !isActivityPage()
+                            {globalHelp
                                 ? t("common.navigation.skip")
                                 : t("common.navigation.skip-final")}
                         </Button>

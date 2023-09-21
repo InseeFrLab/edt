@@ -191,6 +191,7 @@ const HomeSurveyedPage = () => {
                 rightsSurvey: getSurveyRights(idSurvey ?? ""),
             };
             localStorage.setItem(LocalStorageVariableEnum.IS_GLOBAL, "false");
+            localStorage.setItem(LocalStorageVariableEnum.IDSURVEY_CURRENT, idSurvey);
 
             setEnviro(context, navigate, callbackHolder);
             const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
