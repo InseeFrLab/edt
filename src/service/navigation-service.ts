@@ -375,7 +375,7 @@ const navToActivityRouteOrHome = (navigate: any) => {
             getSource(SourcesEnum.ACTIVITY_SURVEY),
         );
     } else {
-        navigate("/");
+        navToHome();
     }
 };
 
