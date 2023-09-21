@@ -75,6 +75,7 @@ const HomeSurveyedPage = () => {
     const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
 
     let userDatas: any[] = [];
+
     useEffect(() => {
         if (navigator.onLine && getUserRights() === EdtUserRightsEnum.SURVEYED) {
             initializeDatas(setError).then(() => {
@@ -95,7 +96,7 @@ const HomeSurveyedPage = () => {
                 });
             });
         }
-    });
+    }, []);
 
     const alertProps = {
         isAlertDisplayed: isAlertDisplayed,
@@ -353,11 +354,11 @@ const HomeSurveyedPage = () => {
         });
     }, []);
 
-    useEffect(() => {
+    /*useEffect(() => {
         userDatas = userDatasMap();
         setInitialized(userDatas.length > 0);
         console.log("user effect", userDatas);
-    }, [userDatas]);
+    }, [userDatas]);*/
 
     const renderHomeReviewer = () => {
         let userDatas = userDatasMap();
