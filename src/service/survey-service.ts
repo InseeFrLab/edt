@@ -288,21 +288,32 @@ const initializeSurveysIdsDemo = (): Promise<any> => {
 };
 
 const initializeHomeSurveys = (idHousehold: string) => {
-    userDatas = [];
-    userDatasWorkTime = [];
-    userDatasActivity = [];
+    let userDatasCopy: UserSurveys[] = [];
+    let userDatasWorkTimeCopy: UserSurveys[] = [];
+    let userDatasActivityCopy: UserSurveys[] = [];
     return new Promise(resolve => {
-        userDatas =
+        userDatasCopy =
             getListSurveysHousehold().find(household => household.idHousehold == idHousehold)?.surveys ??
             [];
-        userDatas.forEach(userSurvey => {
+        userDatasCopy.forEach(userSurvey => {
             if (userSurvey.questionnaireModelId == SourcesEnum.WORK_TIME_SURVEY) {
-                userDatasWorkTime.push(userSurvey);
+                userDatasWorkTimeCopy.push(userSurvey);
             } else {
-                userDatasActivity.push(userSurvey);
+                userDatasActivityCopy.push(userSurvey);
             }
         });
         setSurveysIdsReviewers();
+
+        userDatas = userDatasCopy.length > 0 ? userDatasCopy : getUserDatas();
+        userDatasWorkTime =
+            userDatasWorkTimeCopy.length > 0 ? userDatasWorkTimeCopy : getUserDatasWorkTime();
+        userDatasActivity =
+            userDatasActivityCopy.length > 0 ? userDatasActivityCopy : getUserDatasActivity();
+
+        console.log("userDatas", userDatasCopy, userDatas);
+        console.log("userDatasWorktime", userDatasWorkTimeCopy, userDatasWorkTime);
+        console.log("userDatasActivity", userDatasActivityCopy, userDatasActivity);
+
         addArrayToSession("userDatasWorkTime", userDatasWorkTime);
         addArrayToSession("userDatasActivity", userDatasActivity);
         addArrayToSession("userDatas", userDatas);
@@ -440,6 +451,7 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
                 promises.push(initializeDatasCache(idSurvey));
                 promises.push(
                     lunaticDatabase.get(USER_SURVEYS_DATA).then(data => {
+                        console.log("user data en cache", data);
                         userDatas = (data as UserSurveysData)?.data;
                     }),
                 );
@@ -485,6 +497,7 @@ const initializeListSurveys = () => {
         })
         .catch(error => {
             console.log(error, userDatas);
+            return lunaticDatabase.get(USER_SURVEYS_DATA);
         });
 };
 
