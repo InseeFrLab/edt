@@ -41,6 +41,7 @@ import {
     getIdSurveyWorkTime,
     getPrintedFirstName,
     getPrintedSurveyDate,
+    getRemoteSavedSurveysDatas,
     getSource,
     getSurveyRights,
     getUserDatasActivity,
@@ -76,6 +77,18 @@ const HomeSurveyedPage = () => {
 
     let userDatas: any[] = [];
 
+    const initHome = (idsSurveysSelected: string[]) => {
+        initializeHomeSurveys(idHousehold ?? "").then(() => {
+            initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
+                userDatas = userDatasMap();
+                if (getData(idsSurveysSelected[0]) != undefined) {
+                    setState(getData(idsSurveysSelected[0]));
+                    setInitialized(true);
+                }
+            });
+        });
+    };
+
     useEffect(() => {
         if (navigator.onLine && getUserRights() === EdtUserRightsEnum.SURVEYED) {
             initializeDatas(setError).then(() => {
@@ -85,16 +98,12 @@ const HomeSurveyedPage = () => {
 
         if (getUserRights() == EdtUserRightsEnum.REVIEWER && !isDemo) {
             userDatas = userDatasMap();
-            initializeHomeSurveys(idHousehold ?? "").then(() => {
-                const idsSurveysSelected = userDatas.map(data => data.data.surveyUnitId);
-                initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
-                    userDatas = userDatasMap();
-                    if (getData(idsSurveysSelected[0]) != undefined) {
-                        setState(getData(idsSurveysSelected[0]));
-                        setInitialized(true);
-                    }
+            const idsSurveysSelected = userDatas.map(data => data.data.surveyUnitId);
+            if (navigator.onLine) {
+                getRemoteSavedSurveysDatas(idsSurveysSelected, setError, false).then(() => {
+                    initHome(idsSurveysSelected);
                 });
-            });
+            }
         }
     }, []);
 
@@ -357,16 +366,17 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const renderHomeReviewer = () => {
-        let userDatas: any[] = [];
-        let userDatasCopy = userDatasMap();
-        initializeHomeSurveys(idHousehold ?? "").then(() => {
+        //let userDatas: any[] = [];
+        let userDatas = userDatasMap();
+        /*initializeHomeSurveys(idHousehold ?? "").then(() => {
             const idsSurveysSelected = userDatasCopy.map(data => data.data.surveyUnitId);
             initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
+                console.log("rerendere home", idsSurveysSelected);
                 userDatasCopy = userDatasMap();
             });
         });
         if (userDatasCopy.length > 0) userDatas = userDatasCopy;
-
+*/
         return renderPageOrLoadingOrError(
             <>
                 {renderReminderNote()}

@@ -8,7 +8,6 @@ import activitySurveySource from "activity-survey.json";
 import dayjs from "dayjs";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
-import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
@@ -51,6 +50,7 @@ import {
     objectEquals,
 } from "utils/utils";
 import workTimeSource from "work-time-survey.json";
+import { EdtUserRightsEnum } from "./../enumerations/EdtUserRightsEnum";
 import { LunaticData } from "./../interface/lunatic/Lunatic";
 import {
     fetchReferentiels,
@@ -105,6 +105,8 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     return new Promise(resolve => {
         promisesToWait.push(initializeRefs(setError));
         if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
+            console.log(getUserDatas());
+
             promisesToWait.push(initializeSurveysIdsAndSources(setError));
         } else {
             promisesToWait.push(initializeSurveysIdsAndSources(setError));
@@ -163,7 +165,8 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                         [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
                     };
                     const innerPromises: Promise<any>[] = [
-                        getRemoteSavedSurveysDatas(allSurveysIds, setError).then(() => {
+                        getRemoteSavedSurveysDatas(allSurveysIds, setError, false).then(() => {
+                            console.log("initializeSurveysIdsAndSources - no data", allSurveysIds);
                             return initializeSurveysDatasCache(allSurveysIds);
                         }),
                         saveSurveysIds(surveysIds),
@@ -183,6 +186,16 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
             );
         } else {
             surveysIds = data as SurveysIds;
+            const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
+            const listSurveysOfHousehold =
+                getListSurveysHousehold()
+                    .find(household => household.idHousehold == idHousehold)
+                    ?.surveys?.map(survey => survey.surveyUnitId) ?? [];
+            const surveysIdsAct =
+                getUserRights() == EdtUserRightsEnum.REVIEWER
+                    ? listSurveysOfHousehold
+                    : surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS];
+
             promises.push(
                 lunaticDatabase.get(SOURCES_MODELS).then(data => {
                     if (sourcesData == undefined) {
@@ -191,11 +204,9 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                 }),
             );
             promises.push(
-                getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS], setError).then(
-                    data => {
-                        return initializeSurveysDatasCache();
-                    },
-                ),
+                getRemoteSavedSurveysDatas(surveysIdsAct, setError, false).then(data => {
+                    return initializeSurveysDatasCache();
+                }),
             );
             promises.push(
                 initializeSurveysDatasCache().then(() => {
@@ -357,16 +368,25 @@ const initializeSurveysIdsModeReviewer = () => {
     surveysIds = innerSurveysIds;
 };
 
-const refreshSurveyData = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
+const refreshSurveyData = (
+    setError: (error: ErrorCodeEnum) => void,
+    specifiquesSurveysIds?: string[],
+): Promise<any> => {
     initData = false;
-    return getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS], setError).then(() => {
+    return getRemoteSavedSurveysDatas(
+        specifiquesSurveysIds ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS],
+        setError,
+        false,
+    ).then(() => {
+        console.log("refresh survey data");
         return initializeSurveysDatasCache();
     });
 };
 
 const refreshSurvey = (idSurvey: string, setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     initData = false;
-    return getRemoteSavedSurveysDatas([idSurvey], setError).then(() => {
+    return getRemoteSavedSurveysDatas([idSurvey], setError, false).then(() => {
+        console.log("refreshSurvey");
         return initializeSurveysDatasCache();
     });
 };
@@ -407,6 +427,7 @@ const initializeData = (remoteSurveyData: SurveyData, surveyId: string) => {
 const getRemoteSavedSurveysDatas = (
     surveysIds: string[],
     setError: (error: ErrorCodeEnum) => void,
+    withoutState?: boolean,
 ): Promise<any> => {
     const promises: Promise<any>[] = [];
     const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
@@ -418,23 +439,25 @@ const getRemoteSavedSurveysDatas = (
         );
         if (navigator.onLine) {
             promises.push(
-                urlRemote(surveyId, setError).then((remoteSurveyData: SurveyData) => {
-                    const surveyData = initializeData(remoteSurveyData, surveyId);
-                    return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                        if (localSurveyData == null) {
-                            return lunaticDatabase.save(surveyId, surveyData);
-                        } else if (
-                            remoteSurveyData.stateData?.date == null ||
-                            (remoteSurveyData.stateData?.date &&
-                                remoteSurveyData.stateData?.date > 0 &&
-                                (localSurveyData === undefined ||
-                                    (localSurveyData.lastLocalSaveDate ?? 0) <
-                                        remoteSurveyData.stateData.date))
-                        ) {
-                            return lunaticDatabase.save(surveyId, surveyData);
-                        }
-                    });
-                }),
+                urlRemote(surveyId, setError, withoutState ?? true).then(
+                    (remoteSurveyData: SurveyData) => {
+                        const surveyData = initializeData(remoteSurveyData, surveyId);
+                        return lunaticDatabase.get(surveyId).then(localSurveyData => {
+                            if (localSurveyData == null) {
+                                return lunaticDatabase.save(surveyId, surveyData);
+                            } else if (
+                                remoteSurveyData.stateData?.date == null ||
+                                (remoteSurveyData.stateData?.date &&
+                                    remoteSurveyData.stateData?.date > 0 &&
+                                    (localSurveyData === undefined ||
+                                        (localSurveyData.lastLocalSaveDate ?? 0) <
+                                            remoteSurveyData.stateData.date))
+                            ) {
+                                return lunaticDatabase.save(surveyId, surveyData);
+                            }
+                        });
+                    },
+                ),
             );
         }
     });
@@ -1494,6 +1517,7 @@ export {
     getPrintedFirstName,
     getPrintedSurveyDate,
     getReferentiel,
+    getRemoteSavedSurveysDatas,
     getSource,
     getStatutSurvey,
     getSurveyDate,

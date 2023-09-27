@@ -279,6 +279,7 @@ const logout = () => {
 const remoteGetSurveyData = (
     idSurvey: string,
     setError?: (error: ErrorCodeEnum) => void,
+    withState?: boolean,
 ): Promise<SurveyData> => {
     return new Promise(resolve => {
         axios
@@ -344,28 +345,40 @@ const requestGetStateReviewer = (
 const requestGetSurveyDataReviewer = (
     idSurvey: string,
     setError: (error: ErrorCodeEnum) => void,
+    withState?: boolean,
 ): Promise<SurveyData> => {
     return requestGetDataReviewer(idSurvey, setError).then(data => {
-        return requestGetStateReviewer(idSurvey, setError).then(stateData => {
+        if (withState) {
+            return requestGetStateReviewer(idSurvey, setError).then(stateData => {
+                return new Promise(resolve => {
+                    const surveyData: SurveyData = {
+                        stateData: stateData,
+                        data: data,
+                    };
+                    resolve(surveyData);
+                });
+            });
+        } else {
             return new Promise(resolve => {
                 const surveyData: SurveyData = {
-                    stateData: stateData,
+                    stateData: undefined,
                     data: data,
                 };
                 resolve(surveyData);
             });
-        });
+        }
     });
 };
 
 const remoteGetSurveyDataReviewer = (
     idSurvey: string,
     setError: (error: ErrorCodeEnum) => void,
+    withState?: boolean,
 ): Promise<SurveyData> => {
     const isReviewerMode = isReviewer();
     if (!isReviewerMode) setError && setError(ErrorCodeEnum.NO_RIGHTS);
 
-    return requestGetSurveyDataReviewer(idSurvey, setError).catch(err => {
+    return requestGetSurveyDataReviewer(idSurvey, setError, withState).catch(err => {
         if (err.response?.status === 403) {
             setError && setError(ErrorCodeEnum.NO_RIGHTS);
         } else {

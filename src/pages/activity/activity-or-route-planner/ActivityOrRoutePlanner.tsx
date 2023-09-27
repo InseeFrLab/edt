@@ -61,7 +61,6 @@ import {
     getSurveyRights,
     isDemoMode,
     lockSurvey,
-    refreshSurvey,
     saveData,
     setValue,
     surveyLocked,
@@ -337,9 +336,11 @@ const ActivityOrRoutePlannerPage = () => {
 
     useEffect(() => {
         if (navigator.onLine) {
-            refreshSurvey(idSurvey, setError).finally(() => {
+            /*refreshSurvey(idSurvey, setError).finally(() => {
+                console.log("activity planner")
                 setInitialized(true);
-            });
+            });*/
+            setInitialized(true);
         } else {
             setInitialized(true);
         }
