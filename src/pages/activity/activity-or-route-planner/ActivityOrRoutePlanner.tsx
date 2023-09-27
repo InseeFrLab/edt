@@ -61,6 +61,7 @@ import {
     getSurveyRights,
     isDemoMode,
     lockSurvey,
+    refreshSurvey,
     saveData,
     setValue,
     surveyLocked,
@@ -335,16 +336,14 @@ const ActivityOrRoutePlannerPage = () => {
     }, [activitiesRoutesOrGaps]);
 
     useEffect(() => {
-        if (navigator.onLine) {
-            /*refreshSurvey(idSurvey, setError).finally(() => {
-                console.log("activity planner")
+        if (navigator.onLine && !isDemoMode()) {
+            refreshSurvey(idSurvey, setError).finally(() => {
                 setInitialized(true);
-            });*/
-            setInitialized(true);
+            });
         } else {
             setInitialized(true);
         }
-    });
+    }, []);
 
     const navToActivityRouteHome = useCallback(() => {
         navToHome();

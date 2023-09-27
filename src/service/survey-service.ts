@@ -386,8 +386,7 @@ const refreshSurveyData = (
 const refreshSurvey = (idSurvey: string, setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     initData = false;
     return getRemoteSavedSurveysDatas([idSurvey], setError, false).then(() => {
-        console.log("refreshSurvey");
-        return initializeSurveysDatasCache();
+        return initializeSurveysDatasCache([idSurvey]);
     });
 };
 
@@ -441,6 +440,7 @@ const getRemoteSavedSurveysDatas = (
             promises.push(
                 urlRemote(surveyId, setError, withoutState ?? true).then(
                     (remoteSurveyData: SurveyData) => {
+                        console.log(remoteSurveyData);
                         const surveyData = initializeData(remoteSurveyData, surveyId);
                         return lunaticDatabase.get(surveyId).then(localSurveyData => {
                             if (localSurveyData == null) {
