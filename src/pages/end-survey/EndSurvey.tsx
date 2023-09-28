@@ -192,7 +192,11 @@ const EndSurveyPage = () => {
                                     <img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />
                                 }
                                 id="send-button"
-                                disabled={surveyReadOnly(context.rightsSurvey)}
+                                disabled={
+                                    context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME
+                                        ? false
+                                        : surveyReadOnly(context.rightsSurvey)
+                                }
                             >
                                 {t("common.navigation.send")}
                             </Button>
