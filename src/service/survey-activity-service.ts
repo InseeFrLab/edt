@@ -592,6 +592,7 @@ const surveyReadOnly = (rightsSurvey: EdtSurveyRightsEnum): boolean => {
 };
 
 export {
+    convertStringToBoolean,
     deleteActivity,
     getActivitesSelectedLabel,
     getActivitiesOrRoutes,

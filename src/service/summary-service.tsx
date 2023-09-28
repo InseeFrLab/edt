@@ -25,6 +25,7 @@ import {
     findKindOfDayInRef,
 } from "service/referentiel-service";
 import {
+    convertStringToBoolean,
     getActivitiesOrRoutes,
     getActivityOrRouteDurationLabelFromDurationMinutes,
     getLabelFromTime,
@@ -98,7 +99,9 @@ const getUserActivitiesCharacteristics = (
         kindOfDayLabel:
             findKindOfDayInRef(getValue(idSurvey, FieldNameEnum.KINDOFDAY) as string)?.label ||
             undefined,
-        isExceptionalDay: getValue(idSurvey, FieldNameEnum.EXCEPTIONALDAY) as boolean,
+        isExceptionalDay: convertStringToBoolean(
+            getValue(idSurvey, FieldNameEnum.EXCEPTIONALDAY) as string,
+        ),
         routeTimeLabel: transformTimeInLabel(idSurvey, FieldNameEnum.TRAVELTIME), //(getValue(idSurvey, FieldNameEnum.TRAVELTIME) as string)?.replace(":", "h"),
         phoneTimeLabel: transformTimeInLabel(idSurvey, FieldNameEnum.PHONETIME), //(getValue(idSurvey, FieldNameEnum.PHONETIME) as string)?.replace(":", "h"),
         userMarkLabel:
