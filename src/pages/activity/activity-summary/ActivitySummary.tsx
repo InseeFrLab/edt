@@ -16,6 +16,7 @@ import checkIcon from "assets/illustration/mui-icon/check.svg";
 import downloadIcon from "assets/illustration/mui-icon/download.svg";
 import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
@@ -23,6 +24,7 @@ import DayCharacteristics from "components/edt/DayCharacteristic/DayCharacterist
 import DaySummary from "components/edt/DaySummary/DaySummary";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
+import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
@@ -30,6 +32,7 @@ import { SourcesEnum } from "enumerations/SourcesEnum";
 import { ActivitiesSummaryExportData } from "interface/entity/ActivitiesSummary";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
+import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
@@ -63,7 +66,9 @@ import {
     getSource,
     getSurveyDate,
     getValue,
+    isDemoMode,
     lockSurvey,
+    refreshSurvey,
     saveData,
     setValue,
     surveyLocked,
@@ -99,10 +104,13 @@ const ActivitySummaryPage = () => {
     const [addActivityOrRouteFromGap, setAddActivityOrRouteFromGap] = React.useState(false);
     const [gapStartTime, setGapStartTime] = React.useState<string>();
     const [gapEndTime, setGapEndTime] = React.useState<string>();
+    const [initialized, setInitialized] = React.useState<boolean>(false);
+    const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
 
     const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey, context.source);
     const surveyDate = getSurveyDate(idSurvey) || "";
     const userActivitiesCharacteristics = getUserActivitiesCharacteristics(idSurvey, t);
+    console.log(userActivitiesCharacteristics);
     const userActivitiesSummary = getUserActivitiesSummary(idSurvey, t);
     const exportData: ActivitiesSummaryExportData = {
         houseReference: context.data.houseReference || "",
@@ -121,6 +129,16 @@ const ActivitySummaryPage = () => {
     useEffect(() => {
         setScore(getScore(idSurvey, t));
     }, [activitiesRoutesOrGaps]);
+
+    useEffect(() => {
+        if (navigator.onLine && !isDemoMode()) {
+            refreshSurvey(idSurvey, setError).finally(() => {
+                setInitialized(true);
+            });
+        } else {
+            setInitialized(true);
+        }
+    }, []);
 
     useEffect(() => {
         //The loop have to have a default size in source but it's updated depending on the data array size
@@ -358,15 +376,15 @@ const ActivitySummaryPage = () => {
         saveAndNav(idSurvey);
     }, []);
 
-    const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+    const isDemo = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
     const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
-    const isReviewerMode = isReviewer && !isDemoMode;
+    const isReviewerMode = isReviewer && !isDemo;
 
     const onEdit = useCallback(() => {
         navFullPath(idSurvey, EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.ACTIVITY);
     }, []);
 
-    return (
+    return initialized ? (
         <SurveyPage
             onPrevious={navToHome}
             firstName={getPrintedFirstName(idSurvey)}
@@ -576,6 +594,13 @@ const ActivitySummaryPage = () => {
                 open={isAddActivityOrRouteOpen}
             />
         </SurveyPage>
+    ) : !error ? (
+        <LoadingFull
+            message={t("page.home.loading.message")}
+            thanking={t("page.home.loading.thanking")}
+        />
+    ) : (
+        <ErrorPage errorCode={error} atInit={true} />
     );
 };
 
