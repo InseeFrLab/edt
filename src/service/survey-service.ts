@@ -535,7 +535,10 @@ const getSurveyDataHousehold = (surveys: UserSurveys[]) => {
         .map(survey => survey.surveyUnitId);
 
     const firstSurvey = getOrderedSurveys(activitiesSurveys, workTimeSurveys)[0];
-    const firstSurveyDate = getValue(firstSurvey.data.surveyUnitId, FieldNameEnum.SURVEYDATE) as string;
+    const firstSurveyDate = getValue(
+        firstSurvey?.data?.surveyUnitId,
+        FieldNameEnum.SURVEYDATE,
+    ) as string;
     return firstSurveyDate
         ? dayjs(generateDateFromStringInput(firstSurveyDate)).format("DD/MM/YYYY")
         : undefined;
