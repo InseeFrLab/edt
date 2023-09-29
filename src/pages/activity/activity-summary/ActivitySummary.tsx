@@ -110,7 +110,6 @@ const ActivitySummaryPage = () => {
     const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey, context.source);
     const surveyDate = getSurveyDate(idSurvey) || "";
     const userActivitiesCharacteristics = getUserActivitiesCharacteristics(idSurvey, t);
-    console.log(userActivitiesCharacteristics);
     const userActivitiesSummary = getUserActivitiesSummary(idSurvey, t);
     const exportData: ActivitiesSummaryExportData = {
         houseReference: context.data.houseReference || "",

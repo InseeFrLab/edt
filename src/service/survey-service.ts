@@ -105,8 +105,6 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     return new Promise(resolve => {
         promisesToWait.push(initializeRefs(setError));
         if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
-            console.log(getUserDatas());
-
             promisesToWait.push(initializeSurveysIdsAndSources(setError));
         } else {
             promisesToWait.push(initializeSurveysIdsAndSources(setError));
@@ -166,7 +164,6 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                     };
                     const innerPromises: Promise<any>[] = [
                         getRemoteSavedSurveysDatas(allSurveysIds, setError, false).then(() => {
-                            console.log("initializeSurveysIdsAndSources - no data", allSurveysIds);
                             return initializeSurveysDatasCache(allSurveysIds);
                         }),
                         saveSurveysIds(surveysIds),
@@ -378,7 +375,6 @@ const refreshSurveyData = (
         setError,
         false,
     ).then(() => {
-        console.log("refresh survey data");
         return initializeSurveysDatasCache();
     });
 };
@@ -440,7 +436,6 @@ const getRemoteSavedSurveysDatas = (
             promises.push(
                 urlRemote(surveyId, setError, withoutState ?? true).then(
                     (remoteSurveyData: SurveyData) => {
-                        console.log(remoteSurveyData);
                         const surveyData = initializeData(remoteSurveyData, surveyId);
                         return lunaticDatabase.get(surveyId).then(localSurveyData => {
                             if (localSurveyData == null) {
