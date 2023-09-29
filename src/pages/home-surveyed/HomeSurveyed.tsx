@@ -98,7 +98,12 @@ const HomeSurveyedPage = () => {
 
         if (getUserRights() == EdtUserRightsEnum.REVIEWER && !isDemo) {
             userDatas = userDatasMap();
-            const idsSurveysSelected = userDatas.map(data => data.data.surveyUnitId);
+            const idsSurveysSelected = userDatas
+                .map(data => data.data.surveyUnitId)
+                .filter(
+                    (survey: string) =>
+                        !survey.startsWith("activitySurvey") && !survey.startsWith("workTimeSurvey"),
+                );
             if (navigator.onLine) {
                 getRemoteSavedSurveysDatas(idsSurveysSelected, setError, false).then(() => {
                     initHome(idsSurveysSelected);
@@ -366,17 +371,7 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const renderHomeReviewer = () => {
-        //let userDatas: any[] = [];
         let userDatas = userDatasMap();
-        /*initializeHomeSurveys(idHousehold ?? "").then(() => {
-            const idsSurveysSelected = userDatasCopy.map(data => data.data.surveyUnitId);
-            initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
-                console.log("rerendere home", idsSurveysSelected);
-                userDatasCopy = userDatasMap();
-            });
-        });
-        if (userDatasCopy.length > 0) userDatas = userDatasCopy;
-*/
         return renderPageOrLoadingOrError(
             <>
                 {renderReminderNote()}
