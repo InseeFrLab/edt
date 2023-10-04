@@ -11,7 +11,11 @@ import {
     getActivitySecondaryActivityRef,
     getRouteSecondaryActivityRef,
 } from "service/referentiel-service";
-import { addToSecondaryActivityReferentiel, getValue } from "service/survey-service";
+import {
+    addToSecondaryActivityReferentiel,
+    getNewSecondaryActivities,
+    getValue,
+} from "service/survey-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
 const SecondaryActivitySelectionPage = () => {
@@ -23,6 +27,8 @@ const SecondaryActivitySelectionPage = () => {
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
     const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
+    const referentiel = isRoute ? getRouteSecondaryActivityRef() : getActivitySecondaryActivityRef();
+    const newActivities = getNewSecondaryActivities(idSurvey, referentiel);
 
     const specifiquesProps = {
         labelsSpecifics: {
@@ -38,7 +44,7 @@ const SecondaryActivitySelectionPage = () => {
                 newItem,
             );
         },
-        referentiel: isRoute ? getRouteSecondaryActivityRef() : getActivitySecondaryActivityRef(),
+        referentiel: newActivities,
         displayStepper: false,
     };
 

@@ -64,6 +64,7 @@ import {
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
+import { isUuid } from "uuidv4";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -821,6 +822,23 @@ const addToSecondaryActivityReferentiel = (
     });
 };
 
+const getNewSecondaryActivities = (idSurvey: string, referentiel: CheckboxOneCustomOption[]) => {
+    const listSecondaryActivitiesIds = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY);
+    const listSecondaryActivitiesLabel = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY_LABEL);
+
+    let listSecondaryActivities = referentiel;
+    listSecondaryActivitiesIds.forEach((id: string, index: number) => {
+        if (isUuid(id) && !referentiel.find(opt => (opt.value = id))) {
+            const newActivity = {
+                value: id,
+                label: listSecondaryActivitiesLabel[index],
+            };
+            listSecondaryActivities.push(newActivity);
+        }
+    });
+    return listSecondaryActivities;
+};
+
 const addToAutocompleteActivityReferentiel = (newItem: AutoCompleteActiviteOption) => {
     lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
         currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE].push(newItem);
@@ -1552,4 +1570,5 @@ export {
     userDatasMap,
     validateAllEmptySurveys,
     validateSurvey,
+    getNewSecondaryActivities,
 };
