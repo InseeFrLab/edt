@@ -401,7 +401,7 @@ const getTotalTimeOfActivities = (idSurvey: string, t: TFunction<"translation", 
 const getScore = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
     const totalHourActivities = getTotalTimeOfActivities(idSurvey, t) / 60;
     const percentage = (totalHourActivities / 24) * 100;
-    return totalHourActivities > 0 ? Math.trunc(percentage) : 0;
+    return totalHourActivities > 0 ? Math.trunc(percentage >= 100 ? 100 : percentage) : 0;
 };
 
 const getWeeklyPlannerScore = (idSurvey: string): number => {
