@@ -87,7 +87,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                         if (collected && editedSaved && Array.isArray(collected)) {
                             let maxLenght = Number(localStorage.getItem("loopSize")) ?? 0;
                             for (let i = 0; i < maxLenght; i++) {
-                                if (collected[i] == null) {
+                                if (i != iteration) {
                                     collected[i] = editedSaved[i];
                                 }
                             }
