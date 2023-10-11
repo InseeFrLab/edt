@@ -49,7 +49,10 @@ import { useTranslation } from "react-i18next";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { surveyReadOnly } from "service/survey-activity-service";
-import { addToAutocompleteActivityReferentiel } from "service/survey-service";
+import {
+    addToAutocompleteActivityReferentiel,
+    createNewActivityInCategory,
+} from "service/survey-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
 const MainActivityPage = () => {
@@ -70,7 +73,7 @@ const MainActivityPage = () => {
     const [displayStepper, setDisplayStepper] = useState<boolean>(true);
     const [displayHeader, setDisplayHeader] = useState<boolean>(true);
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
-
+    const referentiel = getNomenclatureRef();
     const specificProps: ActivitySelecterSpecificProps = {
         categoriesIcons: {
             "100": {
@@ -148,7 +151,7 @@ const MainActivityPage = () => {
         },
         setDisplayStepper: setDisplayStepper,
         setDisplayHeader: setDisplayHeader,
-        categoriesAndActivitesNomenclature: getNomenclatureRef(),
+        categoriesAndActivitesNomenclature: referentiel,
         labels: {
             selectInCategory: t("component.activity-selecter.select-in-category"),
             addActivity: t("component.activity-selecter.add-activity"),
@@ -174,8 +177,12 @@ const MainActivityPage = () => {
             saveButton: t("component.activity-selecter.save-button"),
         },
         errorIcon: errorIcon,
-        addToReferentielCallBack: (newItem: AutoCompleteActiviteOption) => {
-            addToAutocompleteActivityReferentiel(newItem);
+        addToReferentielCallBack: (
+            newItem: AutoCompleteActiviteOption,
+            categoryId: string,
+            newActivity: string,
+        ) => {
+            createNewActivityInCategory(newItem, categoryId, newActivity, referentiel);
         },
         widthGlobal: true,
         separatorSuggester: process.env.REACT_APP_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,

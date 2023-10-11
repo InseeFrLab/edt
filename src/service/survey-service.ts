@@ -1,6 +1,8 @@
 import {
     AutoCompleteActiviteOption,
     CheckboxOneCustomOption,
+    NomenclatureActivityOption,
+    findItemInCategoriesNomenclature,
     generateDateFromStringInput,
     getFrenchDayFromDate,
 } from "@inseefrlab/lunatic-edt";
@@ -65,6 +67,7 @@ import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
 import { isUuid } from "uuidv4";
+import { validate } from "uuid";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -828,7 +831,8 @@ const getNewSecondaryActivities = (idSurvey: string, referentiel: CheckboxOneCus
 
     let listSecondaryActivities = referentiel;
     listSecondaryActivitiesIds.forEach((id: string, index: number) => {
-        if (isUuid(id) && !referentiel.find(opt => (opt.value = id))) {
+        const existActivity = referentiel.find(ref => ref.value == id) != null;
+        if (validate(id) && !existActivity) {
             const newActivity = {
                 value: id,
                 label: listSecondaryActivitiesLabel[index],
@@ -841,8 +845,39 @@ const getNewSecondaryActivities = (idSurvey: string, referentiel: CheckboxOneCus
 
 const addToAutocompleteActivityReferentiel = (newItem: AutoCompleteActiviteOption) => {
     lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
-        currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE].push(newItem);
-        saveReferentiels(currentData);
+        const ref = currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE];
+        if (!ref.find((opt: any) => opt.label == newItem.label)) {
+            currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE].push(newItem);
+            saveReferentiels(currentData);
+        }
+    });
+};
+
+const createNewActivityInCategory = (
+    newItem: AutoCompleteActiviteOption,
+    categoryId: string,
+    newActivity: string,
+    reeferentiel: NomenclatureActivityOption[],
+) => {
+    lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
+        const ref = currentData[ReferentielsEnum.ACTIVITYNOMENCLATURE];
+        const category = findItemInCategoriesNomenclature(categoryId, reeferentiel);
+        const categoryParent = category?.parent ?? category?.item;
+        const parentCategoryId = categoryParent?.id;
+        const existCategory = category?.item.subs.find((cat: any) => cat.label == newItem.label);
+        if (!existCategory) {
+            category?.item.subs.push({
+                id: newItem.id,
+                rang: category?.item.rang + 1,
+                label: newItem.label,
+            });
+            const indexParentCategory = ref.findIndex((opt: any) => opt.id == parentCategoryId);
+            ref[indexParentCategory] = categoryParent;
+            return saveReferentiels(currentData).then(data => {
+                addToAutocompleteActivityReferentiel(newItem);
+                localStorage.setItem("selectedIdNewActivity", newActivity);
+            });
+        }
     });
 };
 
@@ -1571,4 +1606,5 @@ export {
     validateAllEmptySurveys,
     validateSurvey,
     getNewSecondaryActivities,
+    createNewActivityInCategory,
 };

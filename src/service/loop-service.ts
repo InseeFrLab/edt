@@ -479,12 +479,19 @@ const findItemInCategoriesNomenclature = (
     id: string | undefined,
     referentiel: NomenclatureActivityOption[],
     parent?: NomenclatureActivityOption,
-): { item: NomenclatureActivityOption; parent: NomenclatureActivityOption | undefined } | undefined => {
+):
+    | {
+          item: NomenclatureActivityOption;
+          parent: NomenclatureActivityOption | undefined;
+          index?: number;
+      }
+    | undefined => {
     let res = referentiel.find(a => a.id === id);
     if (res) {
         return {
             item: res,
             parent: parent,
+            index: referentiel.findIndex(a => a.id === id),
         };
     } else {
         for (let ref of referentiel) {
