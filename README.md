@@ -3,9 +3,10 @@
 ## General information
 
 EDT is a ReactTS PWA front-end application.
-It was made to allow INSEE (French public services) to do surveys based on their own data management and treatment system. The opensource data engine made by INSEE is called Lunatic.
+It was made to allow INSEE (French public services) to do surveys based on their own data management and treatment system.
+The opensource data engine made by INSEE is called Lunatic.
 The most reusable front-end components for any surveys such as input fields have been developped inside another project repository called Lunatic-Edt and is used as a library by EDT.
-The app is using the embedded database of the navigator (IndexedDB) and is able to run offline as soon as the app have been loaded once. The user will need to recover internet connection at least to deliver his surveys answers when he finished.
+The app is using the embedded database of the navigator (IndexedDB) and is able to run offline as soon as the app have been loaded once. The user needs internet to login and he will need to recover internet connection at least to deliver his surveys answers when he finished.
 EDT is calling two different API.
 edt-pilotage API which is used to give to the surveyed their required surveys and surveyers their accessible surveys.
 Stromae Back Office API which is used to GET all required nomenclatures for the application such as question answer options. It also allow the user to POST his surveys answers and GET it when he started a survey and then change device.
@@ -291,6 +292,52 @@ This lib was designed to be integrated in the future inside another MUI reusable
 
 It contains all the survey "fields" components and an associated storybook documentation (please refer to [Lunatic-EDT local install](#lunatic-edt-local-install) section to launch the storybook).
 
+## Household lifecycle
+
+### Initial survey state
+
+A surveyed, when loggin in the first time, will be able to see REACT_APP_NUM_ACTIVITY_SURVEYS (total amount of activity surveys, accessible in env file) activity surveys and
+REACT_APP_NUM_WORKTIME_SURVEYS work time surveys.
+
+When a survey has never been started, no data are visible in the indexedDB.
+
+### Started survey state
+
+When a user starts a survey, you can find it in the indexedDB referenced by his surveyId.
+You will also find all the labels and values of the variables corresponding to each question answer for this survey and the lunatic source.
+The data is sent to INSEE by API call each time a user validate an answer and has access to internet.
+
+### Completed survey state
+
+Corresponding to ISCOMPLETED boolean variable, this state is true when a survey have been fully completed. A user isn't forced to fully complete a survey to be able to send it to INSEE.
+
+## Closed survey state
+
+This state correspond to ISCLOSED boolean variable. This state is set to true when users finishes his survey and reach the submission screen. This value is independant from ISENVOYED variable.
+
+## Sent survey state
+
+Currently corresponding to the ISENVOYED boolean variable. This state is to know if the current survey has been finished by the surveyed and its data has been submitted to INSEE backend.
+
+## Locked survey state
+
+ISLOCKED boolean variable is set to true when a surveyer change any of the surveyed data from the surveyer interface or if he locks the survey by using the lock button.
+This state is impacting the surveyed rights in the app. Any locked survey is not editable by the surveyed anymore (no more writting rights). The surveyer only can manage this state.
+
+## Validated survey state
+
+This state is visible on the ISVALIDATED boolean variable. This state can be set only by the surveyer. When this state is set to true, the ISLOCKED boolean also take true as value. The surveyer can still edit the data, but the surveyed doesn't have writting rights anymore.
+
+## Household surveys state
+
+This information concerns the surveyer interface. A color code have been set to allow surveyers to know what is the household state. The state is defined as follow :
+
+-   Orange : When no survey in the household has the state ISCLOSED to true.
+-   Green : When at least one survey in the household has the ISCLOSED state to true.
+-   Black : When all surveys in the household have the ISVALIDATED to true.
+
+Those states have been defined to ease the visibility of the ongoing current survey campain for the surveyer.
+
 ### Project structure
 
 ![](https://i.imgur.com/Jt1FrnR.png)
@@ -331,6 +378,8 @@ REACT_APP_KEYCLOAK_CLIENT_ID=client-edt
 The user bearer token is used to call the secured APIs.
 
 The accounts are created and managed by INSEE. It is not possible to sign up by yourself.
+
+SSO is available using INSEE LDAP.
 
 ### APIs usage
 
@@ -595,7 +644,7 @@ Usage : this enumeration is used to define the nomenclature ids that are used by
 
 ```
 
-const enum FieldNameEnum {
+export enum FieldNameEnum {
 LASTNAME = "LASTNAME",
 FIRSTNAME = "FIRSTNAME",
 SURVEYDATE = "SURVEYDATE",
@@ -606,10 +655,12 @@ MAINACTIVITY_SUGGESTERID = "MAINACTIVITY_SUGGESTERID",
 MAINACTIVITY_ISFULLYCOMPLETED = "MAINACTIVITY_ISFULLYCOMPLETED",
 MAINACTIVITY_LABEL = "MAINACTIVITY_LABEL",
 INPUT_SUGGESTER = "INPUT_SUGGESTER",
+ACTIVITY_SELECTER_HISTORY = "ACTIVITY_SELECTER_HISTORY",
 ROUTE = "ROUTE",
 GOAL = "GOAL",
 WITHSECONDARYACTIVITY = "WITHSECONDARYACTIVITY",
 SECONDARYACTIVITY = "SECONDARYACTIVITY",
+SECONDARYACTIVITY_LABEL = "SECONDARYACTIVITY_LABEL",
 MEANOFTRANSPORT = "MEANOFTRANSPORT",
 PLACE = "PLACE",
 WITHSOMEONE = "WITHSOMEONE",
@@ -620,6 +671,7 @@ OTHERKNOWN = "OTHERKNOWN",
 OTHER = "OTHER",
 WITHSCREEN = "WITHSCREEN",
 WEEKLYPLANNER = "WEEKLYPLANNER",
+WEEKTYPE = "WEEKTYPE",
 WORKINGWEEK = "WORKINGWEEK",
 HOLIDAYWEEK = "HOLIDAYWEEK",
 OTHERWEEK = "OTHERWEEK",
@@ -630,8 +682,11 @@ EXCEPTIONALDAY = "EXCEPTIONALDAY",
 TRAVELTIME = "TRAVELTIME",
 PHONETIME = "PHONETIME",
 ISCLOSED = "ISCLOSED",
+ISENVOYED = "ISENVOYED",
 ISROUTE = "ISROUTE",
 ISCOMPLETED = "ISCOMPLETED",
+ISVALIDATED = "ISVALIDATED",
+ISLOCKED = "ISLOCKED",
 }
 
 ```
@@ -651,8 +706,12 @@ In the case of EDT, it contains the variables from `edt-activity-survey` and `ed
 ```
 
 export enum EdtRoutesNameEnum {
+INSTALL = "install",
+REVIEWER_HOME = "reviewer-home",
+REVIEWER_SURVEYS_OVERVIEW = "surveys-overview",
+SURVEYED_HOME = "surveyed-home",
 HELP = "help",
-ERROR = "error",
+ERROR = "error/:code",
 ACTIVITY = "activity/:idSurvey",
 WHO_ARE_YOU = "who-are-you",
 DAY_OF_SURVEY = "day-of-survey",
@@ -679,6 +738,15 @@ KIND_OF_DAY = "kind-of-day",
 EXCEPTIONAL_DAY = "exceptional-day",
 TRAVEL_TIME = "travel-time",
 PHONE_TIME = "phone-time",
+END_SURVEY = "end-survey",
+ACTIVITY_SUMMARY = "activity-summary",
+HELP_INSTALL = "help-install",
+HELP_ACTIVITY = "help-activity",
+HELP_DURATION = "help-duration",
+HELP_MAIN_ACTIVITY_CATEGORY = "help-main-activity-category",
+HELP_MAIN_ACTIVITY_SUB_CATEGORY = "help-main-activity-sub-category",
+HELP_CHECKBOX = "help-checkbox",
+HELP_WORK_TIME = "help-work-time",
 }
 
 ```
@@ -901,12 +969,20 @@ The `.env.production` file is used when the builded app is hosted.
 REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL=https://stromae-edt-kc.demo.insee.io/
 REACT_APP_EDT_ORGANISATION_API_BASE_URL=https://edt-api-kc.demo.insee.io/
 REACT_APP_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
+REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/
 REACT_APP_KEYCLOAK_CLIENT_ID=client-edt
-REACT_APP_KEYCLOAK_REDIRECT_URI=https://insee-edt.k8s.keyconsulting.fr/
+REACT_APP_KEYCLOAK_REDIRECT_URI=https://insee-recette-edt.k8s.keyconsulting.fr/
+REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION=.\$
 REACT_APP_SEPARATOR_SUGGESTER=;
+REACT_APP_NODE_ENV="production"
+REACT_APP_CHROMIUM_PATH=/builds/insee/edt/deploy/pwa-edt/node_modules/chromium/lib/chromium/chrome-linux/chrome
+REACT_APP_NUM_ACTIVITY_SURVEYS=6
+REACT_APP_NUM_WORKTIME_SURVEYS=2
 
 ```
 </details>
+
+REACT_APP_NUM_ACTIVITY_SURVEYS and REACT_APP_NUM_WORKTIME_SURVEYS allows to change the amount of each survey kind for user.
 
 ## Maintenance and evolution
 
@@ -1080,9 +1156,12 @@ All the labels that are not directly related to the survey answers are reference
 ## Qualimetry and Tests
 ### Sonar
 Sonar quality have been treated using INSEE default configuration. You can refer to the Github pipeline to see which configuration is used.
+
 ### Test E2E
-E2E tests using React Testing Library have been done to cover the nominal navigation of the app.
-[TO COMPLETE]
+E2E tests using React Testing Library and Puppeteer have been done to cover the nominal navigation of the app.
+- `e2e.test` contains the e2e tests for nominal use cases in surveyed mode.
+- `e2e-reviewer.test` contains the e2e tests for nominal use cases in reviewer mode.
+
 ### Unit Tests
 JEST Unit tests have been done to cover the complexe Lunatic-EDT components such as `ActivitySelecter` or `HourChecker`.
 Run `yarn test` command inside Lunatic-EDT to execute the tests.
