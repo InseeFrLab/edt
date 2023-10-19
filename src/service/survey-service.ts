@@ -664,8 +664,60 @@ const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
     } else {
         isChange = true;
     }
+
     return isChange;
 };
+
+const undefineVarSomeone  = (data: LunaticData, modePersistence: ModePersistenceEnum, index: number) => {
+    const  dataCollected = data.COLLECTED;
+    const modeInterviewer = modePersistence == ModePersistenceEnum.COLLECTED;
+    if(dataCollected) {
+        const child = (modeInterviewer ? dataCollected[FieldNameEnum.CHILD].COLLECTED : dataCollected[FieldNameEnum.CHILD].EDITED) as (boolean|null)[];
+        const couple = (modeInterviewer ? dataCollected[FieldNameEnum.COUPLE].COLLECTED : dataCollected[FieldNameEnum.COUPLE].EDITED) as (boolean|null)[];
+        const parents = (modeInterviewer ? dataCollected[FieldNameEnum.PARENTS].COLLECTED : dataCollected[FieldNameEnum.PARENTS].EDITED) as (boolean|null)[];
+        const otherknow = (modeInterviewer ? dataCollected[FieldNameEnum.OTHERKNOWN].COLLECTED : dataCollected[FieldNameEnum.OTHERKNOWN].EDITED) as (boolean|null)[];
+        const other = (modeInterviewer ? dataCollected[FieldNameEnum.OTHER].COLLECTED : dataCollected[FieldNameEnum.OTHER].EDITED) as (boolean|null)[];
+ 
+        child[index] = null;
+        couple[index] = null;
+        parents[index] = null;
+        otherknow[index] = null;
+        other[index] = null;
+    }
+}
+
+const undefineVarSecondaryActivity  = (data: LunaticData, modePersistence: ModePersistenceEnum, index: number) => {
+    const  dataCollected = data.COLLECTED;
+    const modeInterviewer = modePersistence == ModePersistenceEnum.COLLECTED;
+    if(dataCollected) {
+        const secondaryActivity = (modeInterviewer ? dataCollected[FieldNameEnum.SECONDARYACTIVITY].COLLECTED : dataCollected[FieldNameEnum.SECONDARYACTIVITY].EDITED) as (string|null)[];
+        const secondaryActivityLabel = (modeInterviewer ? dataCollected[FieldNameEnum.SECONDARYACTIVITY_LABEL].COLLECTED : dataCollected[FieldNameEnum.SECONDARYACTIVITY_LABEL].EDITED) as (string|null)[];
+
+        secondaryActivity[index] = null;
+        secondaryActivityLabel[index] = null;
+    }
+}
+
+const fixConditionals = (data: LunaticData) => {
+    const withSomeone  = data.COLLECTED?.[FieldNameEnum.WITHSOMEONE];
+    const withSecondaryActivity  = data.COLLECTED?.[FieldNameEnum.WITHSECONDARYACTIVITY];
+    const modePersistence = getModePersistence(data);
+
+    const arrayWithSomeone = modePersistence == ModePersistenceEnum.COLLECTED ? withSomeone?.COLLECTED : withSomeone?.EDITED;
+    const arrayWithSecondaryActivity = modePersistence == ModePersistenceEnum.COLLECTED ? withSecondaryActivity?.COLLECTED : withSecondaryActivity?.EDITED;
+
+    arrayWithSomeone?.forEach((withSom:string,index:number) => {
+        if(withSom == 'false') {
+            undefineVarSomeone(data,modePersistence,index);
+        }
+    });
+
+    arrayWithSecondaryActivity?.forEach((withSecAct:string,index:number) => {
+        if(withSecAct == 'false') {
+            undefineVarSecondaryActivity(data,modePersistence,index);
+        }
+    });
+}
 
 const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): Promise<LunaticData> => {
     data.lastLocalSaveDate = Date.now();
@@ -675,7 +727,9 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
     }
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
+    fixConditionals(data);
     const isChange = dataIsChange(idSurvey, data);
+    
     return lunaticDatabase.save(idSurvey, data).then(() => {
         const promisesToWait: Promise<any>[] = [];
         datas.set(idSurvey, data);
