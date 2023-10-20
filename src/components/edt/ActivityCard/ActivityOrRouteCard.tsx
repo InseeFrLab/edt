@@ -322,7 +322,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     };
 
     const clickToGap = useCallback(() => {
-        onClickGap && onClickGap(activityOrRoute.startTime, activityOrRoute.endTime);
+        onClickGap && modifiable && onClickGap(activityOrRoute.startTime, activityOrRoute.endTime);
     }, []);
 
     const renderGap = () => {
@@ -351,6 +351,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                     className={helpStep == 2 ? classes.addActivityButtonHelp : classes.addActivityButton}
                     variant="contained"
                     onClick={clickToGap}
+                    disabled={!modifiable}
                 >
                     {t("common.navigation.add")}
                 </Button>
