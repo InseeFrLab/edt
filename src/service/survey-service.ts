@@ -678,11 +678,11 @@ const undefineVarSomeone  = (data: LunaticData, modePersistence: ModePersistence
         const otherknow = (modeInterviewer ? dataCollected[FieldNameEnum.OTHERKNOWN].COLLECTED : dataCollected[FieldNameEnum.OTHERKNOWN].EDITED) as (boolean|null)[];
         const other = (modeInterviewer ? dataCollected[FieldNameEnum.OTHER].COLLECTED : dataCollected[FieldNameEnum.OTHER].EDITED) as (boolean|null)[];
  
-        child[index] = null;
-        couple[index] = null;
-        parents[index] = null;
-        otherknow[index] = null;
-        other[index] = null;
+        if(child) child[index] = null;
+        if(couple) couple[index] = null;
+        if(parents) parents[index] = null;
+        if(otherknow) otherknow[index] = null;
+        if(other) other[index] = null;
     }
 }
 
@@ -693,8 +693,8 @@ const undefineVarSecondaryActivity  = (data: LunaticData, modePersistence: ModeP
         const secondaryActivity = (modeInterviewer ? dataCollected[FieldNameEnum.SECONDARYACTIVITY].COLLECTED : dataCollected[FieldNameEnum.SECONDARYACTIVITY].EDITED) as (string|null)[];
         const secondaryActivityLabel = (modeInterviewer ? dataCollected[FieldNameEnum.SECONDARYACTIVITY_LABEL].COLLECTED : dataCollected[FieldNameEnum.SECONDARYACTIVITY_LABEL].EDITED) as (string|null)[];
 
-        secondaryActivity[index] = null;
-        secondaryActivityLabel[index] = null;
+        if(secondaryActivity) secondaryActivity[index] = null;
+        if(secondaryActivityLabel) secondaryActivityLabel[index] = null;
     }
 }
 
