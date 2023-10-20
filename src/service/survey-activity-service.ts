@@ -514,7 +514,9 @@ const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: numbe
                 }
             }
         });
-        saveData(idSurvey, data);
+        saveData(idSurvey, data).then(() => {
+            return saveData(idSurvey,data);
+        });
     }
 };
 
