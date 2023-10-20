@@ -884,7 +884,7 @@ const getNewSecondaryActivities = (idSurvey: string, referentiel: CheckboxOneCus
     const listSecondaryActivitiesLabel = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY_LABEL);
 
     let listSecondaryActivities = referentiel;
-    listSecondaryActivitiesIds.forEach((id: string, index: number) => {
+    listSecondaryActivitiesIds?.forEach((id: string, index: number) => {
         const existActivity = referentiel.find(ref => ref.value == id) != null;
         if (validate(id) && !existActivity) {
             const newActivity = {
