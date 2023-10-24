@@ -145,7 +145,7 @@ describe("App.ts", () => {
         expect(urlHome).toContain(urlHost + EdtRoutesNameEnum.REVIEWER_SURVEYS_OVERVIEW);
 
         const numHouseholds = (await page.$$('[id^="householdCard-"]')).length;
-        //expect(numHouseholds).toBe(2);
+        expect(numHouseholds).toBe(2);
 
         /*        await page.click("#householdCard-0");
         await page.waitForNavigation();*/

@@ -279,7 +279,6 @@ const logout = () => {
 const remoteGetSurveyData = (
     idSurvey: string,
     setError?: (error: ErrorCodeEnum) => void,
-    withState?: boolean,
 ): Promise<SurveyData> => {
     return new Promise(resolve => {
         axios

@@ -45,17 +45,8 @@ const renderLoading = () => {
 };
 
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    const {
-        source,
-        data,
-        cbHolder,
-        page,
-        subPage,
-        iteration,
-        componentSpecificProps,
-        overrideOptions,
-        idSurvey,
-    } = props;
+    const { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
+        props;
     const { classes, cx } = useStyles();
 
     const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
@@ -116,9 +107,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     const getDataInterviewer = () => {
         const callbackholder = getData();
         const dataCollected = Object.assign({}, callbackholder.COLLECTED);
-        const bindings: string[] = components?.filter(
-            (component: any) => component.componentType != "Sequence",
-        )[0]?.bindingDependencies;
+
         if (callbackholder && dataCollected) {
             for (let prop in FieldNameEnum as any) {
                 const dataOfField = dataCollected[prop];
