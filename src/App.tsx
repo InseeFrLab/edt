@@ -51,7 +51,7 @@ const App = () => {
             });
 
             if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
-                initializeListSurveys().then(() => {
+                initializeListSurveys(setError).then(() => {
                     setInitialized(true);
                 });
             }
