@@ -42,7 +42,14 @@ const App = () => {
                             localStorage.clear();
                         })
                         .then(() => auth.userManager.clearStaleState())
-                        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
+                        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""))
+                        .catch(err => {
+                            if (err.response.status === 403) {
+                                setError(ErrorCodeEnum.NO_RIGHTS);
+                            } else {
+                                setError(ErrorCodeEnum.COMMON);
+                            }
+                        }); 
                 }
             });
 
