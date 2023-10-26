@@ -15,8 +15,8 @@ const GreatestActivityDayPage = () => {
             index ===
             self.findIndex(
                 activity =>
-                    activity.activityCode === value.activityCode ||
-                    activity.activityLabel === value.activityLabel,
+                    (activity.activityCode === value.activityCode ||
+                    activity.activityLabel === value.activityLabel),
             ),
     );
 
