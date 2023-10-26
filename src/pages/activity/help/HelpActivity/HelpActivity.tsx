@@ -18,7 +18,7 @@ import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import React, { useCallback } from "react";
-import { isAndroid, isBrowser, isIOS, isMobile as isMobileNav } from "react-device-detect";
+import { isAndroid, isBrowser, isIOS, isMobile as isMobileNav, useDeviceData, isIOS13 } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
@@ -211,7 +211,8 @@ const HelpActivity = () => {
     };
 
     const heightClass = isPwa() ? classes.fullHeight : classes.fullHeightNav;
-
+    console.log(useDeviceData, isIOS13);
+    
     return (
         <Box className={classes.root}>
             {renderHelp()}
