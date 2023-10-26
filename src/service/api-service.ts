@@ -132,13 +132,20 @@ const fetchSurveysSourcesByIds = (
     });
 };
 
-const fetchReviewerSurveysAssignments = (): Promise<any> => {
+const fetchReviewerSurveysAssignments = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     return new Promise(resolve => {
         axios
             .get(edtOrganisationApiBaseUrl + "api/survey-assigment/reviewer/my-surveys", getHeader())
             .then(response => {
                 resolve(response.data);
-            });
+            })
+            .catch(err => {
+                if (err.response.status === 403) {
+                    setError(ErrorCodeEnum.NO_RIGHTS);
+                } else {
+                    setError(ErrorCodeEnum.UNREACHABLE_SOURCE);
+                }
+            });;
     });
 };
 

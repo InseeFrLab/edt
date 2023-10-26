@@ -493,8 +493,8 @@ const initializeDatasCache = (idSurvey: string) => {
     });
 };
 
-const initializeListSurveys = () => {
-    return fetchReviewerSurveysAssignments()
+const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
+    return fetchReviewerSurveysAssignments(setError)
         .then(data => {
             surveysData = data;
             addArrayToSession("surveysData", surveysData);

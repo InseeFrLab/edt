@@ -63,7 +63,7 @@ const SurveysOverviewPage = () => {
 
     const refreshHouseholds = useCallback(() => {
         setInitialized(false);
-        initializeListSurveys().then(() => {
+        initializeListSurveys(setError).then(() => {
             refreshSurveyData(setError).finally(() => {
                 initHouseholds();
                 setInitialized(true);
