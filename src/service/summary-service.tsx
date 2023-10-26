@@ -23,6 +23,8 @@ import {
     findActivityInAutoCompleteReferentielById,
     findActivityInNomenclatureReferentielById,
     findKindOfDayInRef,
+    findRouteInRef,
+    findRouteSecondaryActivityInRef,
 } from "service/referentiel-service";
 import {
     convertStringToBoolean,
@@ -71,31 +73,28 @@ const getUserActivitiesSummary = (
     return activitiesSummary;
 };
 
+const getActivityOrRouteInRef = (activityOrRouteId: string) => {
+    return findActivityInNomenclatureReferentielById(
+        activityOrRouteId,
+    )?.label ||
+    findActivityInAutoCompleteReferentielById(
+        activityOrRouteId,
+    )?.label ||
+    findRouteInRef(activityOrRouteId)?.label ||
+    findRouteSecondaryActivityInRef(activityOrRouteId)?.label || (activityOrRouteId) || "";
+}
+
 const getUserActivitiesCharacteristics = (
     idSurvey: string,
     t: TFunction<"translation", undefined>,
 ): UserActivitiesCharacteristics | undefined => {
     const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
+    let greatestActivityId = getValue(idSurvey, FieldNameEnum.GREATESTACTIVITYDAY) as string;
+    let worstActivityId = getValue(idSurvey, FieldNameEnum.WORSTACTIVITYDAY) as string;
 
     let activitiesCharacteristics: UserActivitiesCharacteristics = {
-        greatestActivityLabel:
-            findActivityInNomenclatureReferentielById(
-                getValue(idSurvey, FieldNameEnum.GREATESTACTIVITYDAY) as string,
-            )?.label ||
-            findActivityInAutoCompleteReferentielById(
-                getValue(idSurvey, FieldNameEnum.GREATESTACTIVITYDAY) as string,
-            )?.label ||
-            (getValue(idSurvey, FieldNameEnum.GREATESTACTIVITYDAY) as string) ||
-            "",
-        worstActivityLabel:
-            findActivityInNomenclatureReferentielById(
-                getValue(idSurvey, FieldNameEnum.WORSTACTIVITYDAY) as string,
-            )?.label ||
-            findActivityInAutoCompleteReferentielById(
-                getValue(idSurvey, FieldNameEnum.WORSTACTIVITYDAY) as string,
-            )?.label ||
-            (getValue(idSurvey, FieldNameEnum.WORSTACTIVITYDAY) as string) ||
-            "",
+        greatestActivityLabel: getActivityOrRouteInRef(greatestActivityId),
+        worstActivityLabel: getActivityOrRouteInRef(worstActivityId),
         kindOfDayLabel:
             findKindOfDayInRef(getValue(idSurvey, FieldNameEnum.KINDOFDAY) as string)?.label ||
             undefined,
