@@ -314,7 +314,8 @@
             "route": {
                 "alert-content": "L'ajout de votre trajet n'est pas terminé"
             },
-            "alert-cancel": "Annuler",
+            "alert-undo": "Annuler",
+            "alert-cancel": "Cancel",
             "alert-complete": "Reprendre",
             "alert-closed": "Clôturer",
             "alt-alert-icon": "Illustration pièce de puzzle"

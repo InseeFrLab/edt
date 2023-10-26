@@ -199,7 +199,7 @@ const ActivityDurationPage = () => {
                         [isAlertDisplayed],
                     )}
                     onCancelCallBack={useCallback(cancel => onClose(cancel), [])}
-                    labels={getLabelsWhenQuit(isRoute)}
+                    labels={getLabelsWhenQuit(isRoute, true)}
                     icon={errorIcon}
                     errorIconAlt={t("page.activity-duration.alt-alert-icon")}
                 ></Alert>
