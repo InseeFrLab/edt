@@ -63,6 +63,7 @@ const ActivityDurationPage = () => {
         arrowDownIcon: arrowDown,
         arrowDownIconAlt: t("accessibility.asset.mui-icon.expand-more"),
         modifiable: !surveyReadOnly(context.rightsSurvey),
+        defaultLanguage: "fr"
     };
 
     let startTimeDay: Dayjs;
