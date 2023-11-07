@@ -51,6 +51,7 @@ import {
     groupBy,
     objectEquals,
 } from "utils/utils";
+import { validate } from "uuid";
 import workTimeSource from "work-time-survey.json";
 import { EdtUserRightsEnum } from "./../enumerations/EdtUserRightsEnum";
 import { LunaticData } from "./../interface/lunatic/Lunatic";
@@ -66,7 +67,6 @@ import {
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
-import { validate } from "uuid";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -442,7 +442,7 @@ const getRemoteSavedSurveysDatas = (
                                     remoteSurveyData.stateData?.date > 0 &&
                                     (localSurveyData === undefined ||
                                         (localSurveyData.lastLocalSaveDate ?? 0) <
-                                            remoteSurveyData.stateData.date))
+                                        remoteSurveyData.stateData.date))
                             ) {
                                 return lunaticDatabase.save(surveyId, surveyData);
                             }
@@ -835,12 +835,13 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
 const getStateOfSurvey = (idSurvey: string): StateDataStateEnum => {
     const isSent = getValue(idSurvey, FieldNameEnum.ISENVOYED) as boolean;
     const isLocked = surveyLocked(idSurvey);
+    const isValidated = surveyValidated(idSurvey);
 
     let state: StateDataStateEnum = StateDataStateEnum.INIT;
 
     if (isSent) {
         state = StateDataStateEnum.COMPLETED;
-    } else if (isLocked) {
+    } else if (isLocked && isValidated) {
         state = StateDataStateEnum.VALIDATED;
     }
     return state;
@@ -971,8 +972,8 @@ const getSource = (refName: SourcesEnum) => {
     return sourcesData
         ? sourcesData[refName]
         : refName == SourcesEnum.ACTIVITY_SURVEY
-        ? activitySurveySource
-        : workTimeSource;
+            ? activitySurveySource
+            : workTimeSource;
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
@@ -1322,15 +1323,15 @@ const createUserDataMap = (usersurvey: UserSurveys[]) => {
             }
             return data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
                 ? {
-                      data: data,
-                      firstName: "zzzz " + (numInterviewer + 1),
-                      num: numInterviewer + 1,
-                  }
+                    data: data,
+                    firstName: "zzzz " + (numInterviewer + 1),
+                    num: numInterviewer + 1,
+                }
                 : {
-                      data: data,
-                      firstName: "zzzzz " + index + 1,
-                      num: index + 1,
-                  };
+                    data: data,
+                    firstName: "zzzzz " + index + 1,
+                    num: index + 1,
+                };
         })
         .sort((u1, u2) => u1.data.surveyUnitId.localeCompare(u2.data.surveyUnitId));
 };
@@ -1632,8 +1633,7 @@ const getStatutSurvey = (idSurvey: string) => {
 
 export {
     addToAutocompleteActivityReferentiel,
-    addToSecondaryActivityReferentiel,
-    existVariableEdited,
+    addToSecondaryActivityReferentiel, createNewActivityInCategory, existVariableEdited,
     getComponentId,
     getComponentsOfVariable,
     getCurrentPage,
@@ -1646,8 +1646,7 @@ export {
     getLastName,
     getListSurveys,
     getListSurveysHousehold,
-    getModePersistence,
-    getPrintedFirstName,
+    getModePersistence, getNewSecondaryActivities, getPrintedFirstName,
     getPrintedSurveyDate,
     getReferentiel,
     getRemoteSavedSurveysDatas,
@@ -1686,7 +1685,6 @@ export {
     toIgnoreForRoute,
     userDatasMap,
     validateAllEmptySurveys,
-    validateSurvey,
-    getNewSecondaryActivities,
-    createNewActivityInCategory,
+    validateSurvey
 };
+
