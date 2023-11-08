@@ -1,4 +1,4 @@
-import { WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
+import { WeeklyPlannerSpecificProps, responsesHourChecker } from "@inseefrlab/lunatic-edt";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
 import InfoIcon from "assets/illustration/info.svg";
 import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";
@@ -13,7 +13,7 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
@@ -57,6 +57,59 @@ const WeeklyPlannerPage = () => {
         saveData(idSurvey, callbackData);
     };
 
+    const getHourMinWithZeros = (name: string) => {
+        let hourMin = name.split("h");
+        const hour = hourMin[0];
+        hourMin[0] = Number(hour) < 10 ? "0" + hour : hour;
+        const min = hourMin[1];
+        hourMin[1] = Number(min) < 10 ? "0" + min : min;
+        const nameCallbackdata = hourMin[0] + "H" + hourMin[1];
+        return nameCallbackdata;
+    }
+
+    const initHours = (hourMin: string) => {
+        const callbackData = callbackHolder.getData();
+        let quartier = callbackData?.COLLECTED?.[hourMin].COLLECTED;
+        let arrayQuartiers = new Array(7);
+        if (quartier) {
+            quartier = quartier as string[];
+            if (quartier.length < 7) {
+                quartier.forEach((q, index) => {
+                    arrayQuartiers[index] = q;
+                })
+            }
+        }
+        return arrayQuartiers;
+    }
+
+
+    const saveDuration = (response: responsesHourChecker) => {
+        const promisesToWait: Promise<any>[] = [];
+
+        const callbackData = callbackHolder.getData();
+        const dataCopy = Object.assign({}, callbackData);
+        const dates = dataCopy?.COLLECTED?.[FieldNameEnum.DATES].COLLECTED as string[];
+        const currentDateIndex = dates.indexOf(response.date);
+
+        response.names.forEach(name => {
+            let quartier = dataCopy?.COLLECTED?.[name].COLLECTED as string[];
+            //let arrayQuartiers = initHours(name);
+            quartier[currentDateIndex] = (response.values[name]) + "";
+
+            if (dataCopy && dataCopy.COLLECTED) {
+                dataCopy.COLLECTED[name].COLLECTED = quartier;
+            }
+
+            promisesToWait.push(
+                saveData(idSurvey, dataCopy)
+            );
+        });
+
+        saveData(idSurvey, dataCopy).then((data) => {
+            saveData(idSurvey, dataCopy);
+        });
+    }
+
     const specificProps: WeeklyPlannerSpecificProps = {
         surveyDate: getSurveyDate(idSurvey),
         isSubChildDisplayed: displayDayOverview,
@@ -92,6 +145,9 @@ const WeeklyPlannerPage = () => {
         workIcon: work,
         workIconAlt: t("accessibility.asset.mui-icon.work"),
         modifiable: true,
+        saveHours: (response: responsesHourChecker) => {
+            saveDuration(response);
+        }
     };
 
     const validateAndNav = (): void => {

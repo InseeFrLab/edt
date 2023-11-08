@@ -1,4 +1,4 @@
-import { important, makeStylesEdt, WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
+import { important, makeStylesEdt, responsesHourChecker, WeeklyPlannerSpecificProps } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
 import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
@@ -105,6 +105,9 @@ const HelpWorkTime = () => {
         expandMoreWhiteIcon: expandMoreWhite,
         workIcon: work,
         workIconAlt: t("accessibility.asset.mui-icon.work"),
+        saveHours: (response: responsesHourChecker) => {
+            console.log(response);
+        }
     };
 
     const navToBackPage = useCallback(
