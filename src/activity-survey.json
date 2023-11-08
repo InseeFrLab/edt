@@ -793,7 +793,7 @@
             },
             "id": "datepicker_surveyDate",
             "page": "2",
-            "tipsLabel": "Quelle est la date du jour sélectionnée pour l'enquête",
+            "tipsLabel": "Quelle est la date de l'enquête",
             "mandatory": false,
             "controls": [
                 {
