@@ -938,7 +938,7 @@ const addToAutocompleteActivityReferentiel = (newItem: AutoCompleteActiviteOptio
 
 const createNewActivityInCategory = (
     newItem: AutoCompleteActiviteOption,
-    categoryId: string,
+    categoryId: string | undefined,
     newActivity: string,
     reeferentiel: NomenclatureActivityOption[],
 ) => {
@@ -955,7 +955,15 @@ const createNewActivityInCategory = (
                 label: newItem.label,
             });
             const indexParentCategory = ref.findIndex((opt: any) => opt.id == parentCategoryId);
+
             ref[indexParentCategory] = categoryParent;
+            return saveReferentiels(currentData).then(() => {
+                addToAutocompleteActivityReferentiel(newItem);
+                localStorage.setItem("selectedIdNewActivity", newActivity);
+            });
+        }
+
+        if (!categoryId) {
             return saveReferentiels(currentData).then(() => {
                 addToAutocompleteActivityReferentiel(newItem);
                 localStorage.setItem("selectedIdNewActivity", newActivity);
@@ -969,11 +977,12 @@ const getReferentiel = (refName: ReferentielsEnum) => {
 };
 
 const getSource = (refName: SourcesEnum) => {
-    return sourcesData
+    /*return sourcesData
         ? sourcesData[refName]
         : refName == SourcesEnum.ACTIVITY_SURVEY
-            ? activitySurveySource
-            : workTimeSource;
+        ? activitySurveySource
+        : workTimeSource;*/
+    return refName == SourcesEnum.ACTIVITY_SURVEY ? activitySurveySource : workTimeSource;
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
