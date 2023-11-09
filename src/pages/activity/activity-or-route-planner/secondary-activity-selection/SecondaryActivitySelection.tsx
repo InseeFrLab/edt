@@ -92,7 +92,7 @@ const SecondaryActivitySelectionPage = () => {
             iconExtensionAlt: t("accessibility.asset.mui-icon.extension"),
             iconSearch: search,
             iconSearchAlt: t("accessibility.asset.mui-icon.search"),
-        }
+        },
     };
 
     return (

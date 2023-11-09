@@ -65,7 +65,7 @@ const WeeklyPlannerPage = () => {
         hourMin[1] = Number(min) < 10 ? "0" + min : min;
         const nameCallbackdata = hourMin[0] + "H" + hourMin[1];
         return nameCallbackdata;
-    }
+    };
 
     const initHours = (hourMin: string) => {
         const callbackData = callbackHolder.getData();
@@ -76,12 +76,11 @@ const WeeklyPlannerPage = () => {
             if (quartier.length < 7) {
                 quartier.forEach((q, index) => {
                     arrayQuartiers[index] = q;
-                })
+                });
             }
         }
         return arrayQuartiers;
-    }
-
+    };
 
     const saveDuration = (response: responsesHourChecker) => {
         const promisesToWait: Promise<any>[] = [];
@@ -94,21 +93,19 @@ const WeeklyPlannerPage = () => {
         response.names.forEach(name => {
             let quartier = dataCopy?.COLLECTED?.[name].COLLECTED as string[];
             //let arrayQuartiers = initHours(name);
-            quartier[currentDateIndex] = (response.values[name]) + "";
+            quartier[currentDateIndex] = response.values[name] + "";
 
             if (dataCopy && dataCopy.COLLECTED) {
                 dataCopy.COLLECTED[name].COLLECTED = quartier;
             }
 
-            promisesToWait.push(
-                saveData(idSurvey, dataCopy)
-            );
+            promisesToWait.push(saveData(idSurvey, dataCopy));
         });
 
-        saveData(idSurvey, dataCopy).then((data) => {
+        saveData(idSurvey, dataCopy).then(data => {
             saveData(idSurvey, dataCopy);
         });
-    }
+    };
 
     const specificProps: WeeklyPlannerSpecificProps = {
         surveyDate: getSurveyDate(idSurvey),
@@ -147,7 +144,7 @@ const WeeklyPlannerPage = () => {
         modifiable: true,
         saveHours: (response: responsesHourChecker) => {
             saveDuration(response);
-        }
+        },
     };
 
     const validateAndNav = (): void => {

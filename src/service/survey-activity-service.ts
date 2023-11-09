@@ -325,13 +325,12 @@ const getActivitesSelectedLabel = (idSurvey: string): Activity[] => {
             activitesSelected.push(activityRouteOrGap.activity);
         } else if (activityRouteOrGap.isRoute && activityRouteOrGap.route) {
             const route = activityRouteOrGap.route;
-            const castRouteToActivity : Activity = {
-                activityCode : route.routeCode,
-                activityLabel : route.routeLabel
-            }
+            const castRouteToActivity: Activity = {
+                activityCode: route.routeCode,
+                activityLabel: route.routeLabel,
+            };
             activitesSelected.push(castRouteToActivity);
         }
-            
     });
     return activitesSelected;
 };

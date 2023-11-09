@@ -90,7 +90,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         extensionIcon: extension,
         extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
         modifiable: modifiable,
-        defaultLanguage: "fr"
+        defaultLanguage: "fr",
     };
 
     const surveyPageStepProps = {

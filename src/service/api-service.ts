@@ -145,7 +145,7 @@ const fetchReviewerSurveysAssignments = (setError: (error: ErrorCodeEnum) => voi
                 } else {
                     setError(ErrorCodeEnum.UNREACHABLE_SOURCE);
                 }
-            });;
+            });
     });
 };
 

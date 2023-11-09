@@ -74,15 +74,15 @@ const getUserActivitiesSummary = (
 };
 
 const getActivityOrRouteInRef = (activityOrRouteId: string) => {
-    return findActivityInNomenclatureReferentielById(
-        activityOrRouteId,
-    )?.label ||
-    findActivityInAutoCompleteReferentielById(
-        activityOrRouteId,
-    )?.label ||
-    findRouteInRef(activityOrRouteId)?.label ||
-    findRouteSecondaryActivityInRef(activityOrRouteId)?.label || (activityOrRouteId) || "";
-}
+    return (
+        findActivityInNomenclatureReferentielById(activityOrRouteId)?.label ||
+        findActivityInAutoCompleteReferentielById(activityOrRouteId)?.label ||
+        findRouteInRef(activityOrRouteId)?.label ||
+        findRouteSecondaryActivityInRef(activityOrRouteId)?.label ||
+        activityOrRouteId ||
+        ""
+    );
+};
 
 const getUserActivitiesCharacteristics = (
     idSurvey: string,

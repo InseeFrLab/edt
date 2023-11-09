@@ -49,7 +49,7 @@ const App = () => {
                             } else {
                                 setError(ErrorCodeEnum.COMMON);
                             }
-                        }); 
+                        });
                 }
             });
 
