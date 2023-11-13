@@ -19,7 +19,7 @@ const getLabels = (component: string) => {
     return labels;
 };
 
-const getLabelsWhenQuit = (isRoute?: boolean, labelCancel?: true) => {
+const getLabelsWhenQuit = (isRoute?: boolean) => {
     const { t } = useTranslation();
 
     const labels = {
@@ -27,9 +27,7 @@ const getLabelsWhenQuit = (isRoute?: boolean, labelCancel?: true) => {
         content: isRoute
             ? t("page.alert-when-quit.route.alert-content")
             : t("page.alert-when-quit.activity.alert-content"),
-        cancel: labelCancel
-            ? t("page.alert-when-quit.alert-cancel")
-            : t("page.alert-when-quit.alert-undo"),
+        cancel: t("page.alert-when-quit.alert-undo"),
         complete: t("page.alert-when-quit.alert-complete"),
     };
 
