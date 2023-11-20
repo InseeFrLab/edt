@@ -20,7 +20,6 @@ import HelpCheckboxPage from "pages/activity/help/HelpCheckbox/HelpCheckbox";
 import HelpDurationPage from "pages/activity/help/HelpDuration/HelpDuration";
 import {
     default as HelpInstallPage,
-    default as InstallPage,
 } from "pages/activity/help/HelpInstallPage/HelpInstallPage";
 import HelpCategoryActivityPage from "pages/activity/help/HelpMainActivity/HelpCategoryActivity";
 import HelpSubCategoryActivityPage from "pages/activity/help/HelpMainActivity/HelpSubCategoryActivity";
@@ -34,6 +33,8 @@ import EditGlobalInformationPage from "pages/edit-global-information/EditGlobalI
 import EndSurveyPage from "pages/end-survey/EndSurvey";
 import ErrorPage from "pages/error/Error";
 import HelpPage from "pages/help/Help";
+import ContactPage from "pages/help/contact/ContactPage";
+import InstallPage from "pages/help/install/InstallPageAndroid";
 import HomeReviewerPage from "pages/home-reviewer/HomeReviewer";
 import HomeSurveyedPage from "pages/home-surveyed/HomeSurveyed";
 import HomePage from "pages/home/Home";
@@ -58,6 +59,7 @@ const EdtRoutes = (): JSX.Element => {
                     element={<SurveysOverviewPage />}
                 />
                 <Route path={EdtRoutesNameEnum.SURVEYED_HOME} element={<HomeSurveyedPage />} />
+                <Route path={EdtRoutesNameEnum.CONTACT} element={<ContactPage />} />
                 <Route path={EdtRoutesNameEnum.INSTALL} element={<InstallPage />} />
                 <Route path={EdtRoutesNameEnum.HELP} element={<HelpPage />} />
                 <Route path={EdtRoutesNameEnum.HELP_INSTALL} element={<HelpInstallPage />} />

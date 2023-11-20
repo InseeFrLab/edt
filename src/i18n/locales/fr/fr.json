@@ -192,7 +192,13 @@
                     "other-know-alt": "Icône Autre personne qui ménage",
                     "other-alt": "Icône Autre connaissance"
                 }
-            }
+            },
+            "help-menu": {
+                "contact-alt": "Illustration Contact",
+                "install-alt": "Illustration Installation",
+                "help-alt": "Illustration Aide prise en main"
+            },
+            "installation-alt": "Illustration Installation"
         }
     },
     "page": {
@@ -376,7 +382,6 @@
             "step-5-label": "Compagnie",
             "step-6-label": "Écran"
         },
-
         "end-activity-stepper": {
             "step-1-label": "Préférence",
             "step-2-label": "Type de journée",
@@ -492,7 +497,59 @@
                 "help-step-2": "2. De 3h à 4h vous avez travaillé",
                 "help-step-3": "3. De 4h à 5h vous n'avez pas travaillé",
                 "help-step-4": "4. Si vous n’avez pas travaillé sur l’intégralité de l’heure, déployez la cartouche en cliquant sur la flèche à gauche. Puis, sélectionnez les quarts d’heures où vous avez travaillé."
+            },
+            "contact": {
+                "title": "Besoin d'aide ?",
+                "info-1": "Afin de vous aidez à compléter votre enquête, Nous vous invitons à regarder notre tutoriel dans la rubrique << Comment ça marche? >>.",
+                "info-2": "Si vous ne trouvez pas votre réponse dans notre tutoriel, rendez-vous sur notre portail de réponse aux enquêtes de l'insee auprès des particulers : ",
+                "link": "https://enquetes.stat-publique.fr/edt/contacter-assistance"
+            },
+            "install": {
+                "title": "Ajoutez à l'écran d'accueil",
+                "description": "Accédez et complétez facilement votre enquête. Cette application peut être installée sur votre appareil.Pour cela, veuillez suivre les indications ci-après:",
+                "common": {
+                    "title": "Installer l'application",
+                    "description-1": "Installez l'application sur votre écran d'acceuil afin d'accéder à votre enqueête plus rapidement.",
+                    "description-2": "Également cela vous permettra de pouvoir compléter votre enquête sans avoir à maintenir votre navigateur web ouvertsi vous souhaitez saisier l'énquête sans connexion internet.",
+                    "info-bold": "L'installation n'a pas fonctionné ?",
+                    "info-text": "Ce n'est pas grave, vous pouvez completer votr3e enquête depuis votre navigateur web."
+                },
+                "ios": {
+                    "chrome": {
+                        "step-1": "Cliquez sur l'icône à droite de l'URL",
+                        "step-2": "Sélectionnez << Sur l'écran d'accueil >>"
+                    },
+                    "safari": {
+                        "step-1": "Cliquez sur l'icône en dessous de l'URL",
+                        "step-2": "Sélectionnez << Sur l'écran d'accueil >>"
+                    },
+                    "edge": {
+                        "step-1": "Cliquez sur le menu en bas à droite",
+                        "step-2": "Sélectionnez << Partager >>",
+                        "step-3": "Sélectionnez << Sur l'écran d'accueil >>"
+                    }
+                },
+                "android": {
+                    "chrome": {
+                        "step-1": "Cliquez sur les 3 points en haut à droite",
+                        "step-2": "Sélectionnez << Installer l'application >>"
+                    },
+                    "firefox": {
+                        "step-1": "Cliquez sur les 3 points en haut à droite",
+                        "step-2": "Sélectionnez << Installer >>"
+                    },
+                    "edge": {
+                        "step-1": "Cliquez sur le menu en bas à droite",
+                        "step-2": "Sélectionnez << Ajouter au téléphone >>"
+                    }
+                },
+                "step-final": "Votre application Carnet EDT est installée"
             }
+        },
+        "help-menu": {
+            "contact-label": "Contact",
+            "install-label": "installation de l'application",
+            "help-label": "Comment ça marche ?"
         }
     },
     "export": {

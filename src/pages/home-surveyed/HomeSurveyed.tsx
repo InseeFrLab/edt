@@ -12,6 +12,7 @@ import BreadcrumbsReviewer from "components/commons/BreadcrumbsReviewer/Breadcru
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import DayCard from "components/edt/DayCard/DayCard";
+import HelpMenu from "components/edt/HelpMenu/HelpMenu";
 import WeekCard from "components/edt/WeekCard/WeekCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
@@ -69,6 +70,7 @@ const HomeSurveyedPage = () => {
     const [error, setError] = React.useState<ErrorCodeEnum | undefined>(undefined);
     const [initialized, setInitialized] = React.useState<boolean>(false);
     const [state, setState] = React.useState<LunaticData | undefined>(undefined);
+    const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
 
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const isDemo = isDemoMode();
@@ -229,6 +231,36 @@ const HomeSurveyedPage = () => {
         return surveyIsClosed;
     };
 
+    const onCloseAddActivityOrRoute = useCallback(() => {
+        setIsAddActivityOrRouteOpen(false);
+    }, [isAddActivityOrRouteOpen]);
+
+    const navToContactPage = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.CONTACT));
+    }, []);
+
+    const navToInstallPage = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.INSTALL));
+    }, []);
+
+    const navToHelpPages = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
+    }, []);
+
+    const renderMenuHelp = () => {
+        return (
+            <HelpMenu
+                labelledBy={""}
+                describedBy={""}
+                onClickContact={navToContactPage}
+                onClickInstall={navToInstallPage}
+                onClickHelp={navToHelpPages}
+                handleClose={onCloseAddActivityOrRoute}
+                open={isAddActivityOrRouteOpen}
+            />
+        );
+    };
+
     const navToHelp = useCallback(() => {
         const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
         let data = getData(idSurvey || "");
@@ -242,8 +274,8 @@ const HomeSurveyedPage = () => {
         };
         localStorage.setItem(LocalStorageVariableEnum.IS_GLOBAL, "true");
         setEnviro(context, navigate, callbackHolder);
-        navigate(getNavigatePath(EdtRoutesNameEnum.HELP_INSTALL));
-    }, []);
+        setIsAddActivityOrRouteOpen(true);
+    }, [isAddActivityOrRouteOpen]);
 
     const navToReviewerHome = useCallback(() => {
         navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_HOME));
@@ -509,6 +541,8 @@ const HomeSurveyedPage = () => {
             </Box>
 
             <Box className={classes.cardsBox}>{isDemo ? renderHomeDemo() : renderHome()}</Box>
+
+            {renderMenuHelp()}
         </>
     );
 };
