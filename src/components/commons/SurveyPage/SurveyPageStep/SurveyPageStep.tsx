@@ -196,7 +196,7 @@ const useStyles = makeStylesEdt<{ isMobile: boolean; isIOS: boolean; isOpen: boo
     "name": { SurveyPageStep },
 })((theme, { isIOS, isOpen }) => ({
     bottomPadding: {
-        paddingBottom: "6rem",
+        paddingBottom: "4rem",
     },
     pageDesktop: {
         height: "100%",
