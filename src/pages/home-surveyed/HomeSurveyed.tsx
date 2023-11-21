@@ -158,7 +158,6 @@ const HomeSurveyedPage = () => {
 
     const navWorkTime = useCallback(
         (idSurvey: string) => () => {
-            const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
             let data = getData(idSurvey || "");
 
             localStorage.setItem(LocalStorageVariableEnum.IS_GLOBAL, "false");
@@ -173,16 +172,11 @@ const HomeSurveyedPage = () => {
                 rightsSurvey: getSurveyRights(idSurvey ?? ""),
             };
             setEnviro(context, navigate, callbackHolder);
-
-            if (firstName != null || isDemo) {
-                return navToWeeklyPlannerOrClose(
-                    idSurvey,
-                    navigate,
-                    getSource(SourcesEnum.WORK_TIME_SURVEY),
-                );
-            } else {
-                return navigate(getNavigatePath(EdtRoutesNameEnum.HELP_WORK_TIME));
-            }
+            return navToWeeklyPlannerOrClose(
+                idSurvey,
+                navigate,
+                getSource(SourcesEnum.WORK_TIME_SURVEY),
+            );
         },
         [],
     );
@@ -211,17 +205,12 @@ const HomeSurveyedPage = () => {
             localStorage.setItem(LocalStorageVariableEnum.IDSURVEY_CURRENT, idSurvey);
 
             setEnviro(context, navigate, callbackHolder);
-            const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
-            if (firstName != null || isDemo) {
-                navToActivityOrPlannerOrSummary(
-                    idSurvey,
-                    getSource(SourcesEnum.ACTIVITY_SURVEY).maxPage,
-                    navigate,
-                    getSource(SourcesEnum.ACTIVITY_SURVEY),
-                );
-            } else {
-                return navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
-            }
+            navToActivityOrPlannerOrSummary(
+                idSurvey,
+                getSource(SourcesEnum.ACTIVITY_SURVEY).maxPage,
+                navigate,
+                getSource(SourcesEnum.ACTIVITY_SURVEY),
+            );
         },
         [],
     );
