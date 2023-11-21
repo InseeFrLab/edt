@@ -16,9 +16,7 @@ interface NavigationStepProps {
 }
 
 const NavigationStep = (props: NavigationStepProps) => {
-    const {
-        step, stepFinal, setStep
-    } = props;
+    const { step, stepFinal, setStep } = props;
     const navigate = useNavigate();
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
@@ -70,8 +68,12 @@ const NavigationStep = (props: NavigationStepProps) => {
                 {step < stepFinal && (
                     <Button
                         variant="outlined"
-                        endIcon={<img src={arrowForwardIos}
-                            alt={t("accessibility.asset.mui-icon.arrow-forward-ios")} />}
+                        endIcon={
+                            <img
+                                src={arrowForwardIos}
+                                alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                            />
+                        }
                         onClick={nextHelpStep}
                         className={cx(
                             classes.navButton,
@@ -87,12 +89,7 @@ const NavigationStep = (props: NavigationStepProps) => {
         );
     };
 
-    return (
-        <Box className={classes.root}>
-            {renderHelp()}
-        </Box>
-    )
-
+    return <Box className={classes.root}>{renderHelp()}</Box>;
 };
 
 const useStyles = makeStylesEdt({ "name": { NavButton: NavigationStep } })(theme => ({

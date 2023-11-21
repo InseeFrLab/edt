@@ -13,7 +13,7 @@ import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { Activity, ActivityRouteOrGap, Route } from "interface/entity/ActivityRouteOrGap";
+import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import { TFunction, useTranslation } from "react-i18next";
 import { getLoopSize } from "service/loop-service";

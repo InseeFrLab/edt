@@ -57,31 +57,6 @@ const WeeklyPlannerPage = () => {
         saveData(idSurvey, callbackData);
     };
 
-    const getHourMinWithZeros = (name: string) => {
-        let hourMin = name.split("h");
-        const hour = hourMin[0];
-        hourMin[0] = Number(hour) < 10 ? "0" + hour : hour;
-        const min = hourMin[1];
-        hourMin[1] = Number(min) < 10 ? "0" + min : min;
-        const nameCallbackdata = hourMin[0] + "H" + hourMin[1];
-        return nameCallbackdata;
-    };
-
-    const initHours = (hourMin: string) => {
-        const callbackData = callbackHolder.getData();
-        let quartier = callbackData?.COLLECTED?.[hourMin].COLLECTED;
-        let arrayQuartiers = new Array(7);
-        if (quartier) {
-            quartier = quartier as string[];
-            if (quartier.length < 7) {
-                quartier.forEach((q, index) => {
-                    arrayQuartiers[index] = q;
-                });
-            }
-        }
-        return arrayQuartiers;
-    };
-
     const saveDuration = (response: responsesHourChecker) => {
         const promisesToWait: Promise<any>[] = [];
 
@@ -102,7 +77,7 @@ const WeeklyPlannerPage = () => {
             promisesToWait.push(saveData(idSurvey, dataCopy));
         });
 
-        saveData(idSurvey, dataCopy).then(data => {
+        saveData(idSurvey, dataCopy).then(() => {
             saveData(idSurvey, dataCopy);
         });
     };

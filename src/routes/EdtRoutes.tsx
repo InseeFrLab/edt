@@ -18,9 +18,7 @@ import GreatestActivityDayPage from "pages/activity/greatest-activity-day/Greate
 import HelpActivityPage from "pages/activity/help/HelpActivity/HelpActivity";
 import HelpCheckboxPage from "pages/activity/help/HelpCheckbox/HelpCheckbox";
 import HelpDurationPage from "pages/activity/help/HelpDuration/HelpDuration";
-import {
-    default as HelpInstallPage,
-} from "pages/activity/help/HelpInstallPage/HelpInstallPage";
+import { default as HelpInstallPage } from "pages/activity/help/HelpInstallPage/HelpInstallPage";
 import HelpCategoryActivityPage from "pages/activity/help/HelpMainActivity/HelpCategoryActivity";
 import HelpSubCategoryActivityPage from "pages/activity/help/HelpMainActivity/HelpSubCategoryActivity";
 import HelpWorkTimePage from "pages/activity/help/HelpWorkTime/HelpWorkTime";

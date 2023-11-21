@@ -27,10 +27,17 @@ interface InstallPageStepProps {
 
 const InstallPageStep = (props: InstallPageStepProps) => {
     const {
-        iconTitle, iconTitleAlt,
-        title, description, description2,
-        stepTitle, stepImage, stepImageAlt,
-        step, stepFinal, setStep
+        iconTitle,
+        iconTitleAlt,
+        title,
+        description,
+        description2,
+        stepTitle,
+        stepImage,
+        stepImageAlt,
+        step,
+        stepFinal,
+        setStep,
     } = props;
 
     const { t } = useTranslation();
@@ -44,7 +51,7 @@ const InstallPageStep = (props: InstallPageStepProps) => {
     return (
         <>
             <Box>
-                <Box className={step == 1 ? classes.rootFirst : classes.root} >
+                <Box className={step == 1 ? classes.rootFirst : classes.root}>
                     <SurveyPageSimpleHeader
                         onNavigateBack={useCallback(() => navToHome(), [])}
                         backgroundWhite={false}
@@ -53,11 +60,16 @@ const InstallPageStep = (props: InstallPageStepProps) => {
                         <img src={iconTitle} alt={t(iconTitleAlt)} />
                     </FlexCenter>
                     <Box className={classes.textBox}>
-                        <Box className={cx(classes.textInnerBox, isMobile ? classes.textInnerBoxMobile : undefined)}>
+                        <Box
+                            className={cx(
+                                classes.textInnerBox,
+                                isMobile ? classes.textInnerBoxMobile : undefined,
+                            )}
+                        >
                             <h2>{title}</h2>
                             <p>{description}</p>
-                            {description2 && (<p>{description2}</p>)}
-                            {step > 1 && (<h3>{(step - 1) + ". " + stepTitle}</h3>)}
+                            {description2 && <p>{description2}</p>}
+                            {step > 1 && <h3>{step - 1 + ". " + stepTitle}</h3>}
                         </Box>
                     </Box>
 
@@ -78,19 +90,15 @@ const InstallPageStep = (props: InstallPageStepProps) => {
                         />
                     </Box>
                 )}
-            </Box >
+            </Box>
             <Box>
-                <NavigationStep
-                    step={step}
-                    stepFinal={stepFinal}
-                    setStep={setStep}
-                />
+                <NavigationStep step={step} stepFinal={stepFinal} setStep={setStep} />
             </Box>
         </>
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { NavButton: InstallPageStep } })(theme => ({
+const useStyles = makeStylesEdt({ "name": { NavButton: InstallPageStep } })(() => ({
     rootFirst: {
         height: "70vh",
         maxHeight: "70vh",
@@ -101,7 +109,7 @@ const useStyles = makeStylesEdt({ "name": { NavButton: InstallPageStep } })(them
     },
     textBox: {
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
     },
     textInnerBox: {
         width: "55%",
@@ -115,13 +123,13 @@ const useStyles = makeStylesEdt({ "name": { NavButton: InstallPageStep } })(them
         display: "flex",
         justifyContent: "center",
         height: "8rem",
-        marginBottom: "2rem"
+        marginBottom: "2rem",
     },
     imgBox: {
         position: "absolute",
         top: "2rem",
-        left: "47%"
-    }
+        left: "47%",
+    },
 }));
 
 export default InstallPageStep;

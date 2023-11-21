@@ -74,7 +74,7 @@ const useStyles = makeStylesEdt({ "name": { ContactPage } })(theme => ({
     },
     innerBox: {
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
     },
     textBox: { textAlign: "center", width: "50%", fontSize: "14px" },
     textBoxMobile: { textAlign: "center", width: "80%", fontSize: "14px" },
@@ -93,11 +93,11 @@ const useStyles = makeStylesEdt({ "name": { ContactPage } })(theme => ({
     linkBox: {
         backgroundColor: theme.variables.white,
         padding: "1rem",
-        marginBottom: "2rem"
+        marginBottom: "2rem",
     },
     paddingBox: {
-        marginBottom: "2rem"
-    }
+        marginBottom: "2rem",
+    },
 }));
 
 export default ContactPage;
