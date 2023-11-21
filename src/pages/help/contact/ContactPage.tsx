@@ -9,7 +9,7 @@ import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
-import { isPwa } from "service/responsive";
+import { isMobile as isMobileImage, isPwa } from "service/responsive";
 
 const ContactPage = () => {
     const { classes, cx } = useStyles();
@@ -22,7 +22,8 @@ const ContactPage = () => {
 
     const isNavMobile = !isPwa() && isMobile;
 
-    const linkContact = t("component.help.contact.link");
+    const linkFaq = t("component.help.contact.link-1");
+    const linkContact = t("component.help.contact.link-2");
 
     return (
         <Box className={cx(classes.contentBox, isNavMobile ? classes.contentBoxMobile : "")}>
@@ -36,11 +37,17 @@ const ContactPage = () => {
                         <img src={contact} alt={t("accessibility.asset.mui-icon.download")} />
                     </FlexCenter>
                     <Box className={classes.innerBox}>
-                        <Box className={classes.textBox}>
+                        <Box className={isMobileImage() ? classes.textBoxMobile : classes.textBox}>
                             <h2>{t("component.help.contact.title")}</h2>
-                            <p>{t("component.help.contact.info-1")}</p>
+                            <p className={classes.paddingBox}>{t("component.help.contact.info-1")}</p>
                             <p>{t("component.help.contact.info-2")}</p>
-                            <a href={linkContact}>{linkContact}</a>
+                            <Box className={classes.linkBox}>
+                                <a href={linkFaq}>{linkFaq}</a>
+                            </Box>
+                            <p>{t("component.help.contact.info-3")}</p>
+                            <Box className={classes.linkBox}>
+                                <a href={linkContact}>{linkContact}</a>
+                            </Box>
                         </Box>
                     </Box>
                 </Box>
@@ -69,7 +76,8 @@ const useStyles = makeStylesEdt({ "name": { ContactPage } })(theme => ({
         display: "flex",
         justifyContent: "center"
     },
-    textBox: { textAlign: "center", width: "50%" },
+    textBox: { textAlign: "center", width: "50%", fontSize: "14px" },
+    textBoxMobile: { textAlign: "center", width: "80%", fontSize: "14px" },
     actionsBox: { display: "flex", flexDirection: "column", alignItems: "center" },
     actionBox: { maxWidth: "300px", margin: "0.5rem 0", width: "90%" },
     button: { width: "100%", backgroundColor: theme.palette.text.primary },
@@ -82,6 +90,14 @@ const useStyles = makeStylesEdt({ "name": { ContactPage } })(theme => ({
         height: "8vh",
         padding: important("1rem 0rem 0rem 1rem"),
     },
+    linkBox: {
+        backgroundColor: theme.variables.white,
+        padding: "1rem",
+        marginBottom: "2rem"
+    },
+    paddingBox: {
+        marginBottom: "2rem"
+    }
 }));
 
 export default ContactPage;
