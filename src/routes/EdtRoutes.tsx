@@ -34,7 +34,7 @@ import EndSurveyPage from "pages/end-survey/EndSurvey";
 import ErrorPage from "pages/error/Error";
 import HelpPage from "pages/help/Help";
 import ContactPage from "pages/help/contact/ContactPage";
-import InstallPage from "pages/help/install/InstallPageAndroid";
+import InstallPage from "pages/help/install/InstallPage";
 import HomeReviewerPage from "pages/home-reviewer/HomeReviewer";
 import HomeSurveyedPage from "pages/home-surveyed/HomeSurveyed";
 import HomePage from "pages/home/Home";
