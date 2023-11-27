@@ -3,10 +3,11 @@ import { Box } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { useCallback } from "react";
-import { isMobile } from "react-device-detect";
+import { isMobile as isMobileDevice } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
+import { isMobile as isMobileScreen } from "service/responsive";
 import FlexCenter from "../FlexCenter/FlexCenter";
 import NavigationStep from "../NavigationStep/NavigationStep";
 import SurveyPageSimpleHeader from "../SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
@@ -46,6 +47,7 @@ const InstallPageStep = (props: InstallPageStepProps) => {
     const navToHome = (): void => {
         navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
     };
+    const isMobile = isMobileScreen() || isMobileDevice;
 
     return (
         <>
@@ -65,9 +67,9 @@ const InstallPageStep = (props: InstallPageStepProps) => {
                                 isMobile ? classes.textInnerBoxMobile : undefined,
                             )}
                         >
-                            <h2>{title}</h2>
+                            <h2 className={classes.titleBox}>{title}</h2>
                             <p>{description}</p>
-                            {step > 1 && <h3>{step - 1 + ". " + stepTitle}</h3>}
+                            {step > 1 && <h3 className={classes.titleBox}>{step - 1 + ". " + stepTitle}</h3>}
                         </Box>
                     </Box>
 
@@ -102,8 +104,8 @@ const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { NavButton: 
         maxHeight: (innerHeight - 208) + "px",
     },
     root: {
-        height: "91vh",
-        maxHeight: "91vh",
+        height: (innerHeight - 58) + "px",
+        maxHeight: (innerHeight - 58) + "px",
     },
     textBox: {
         display: "flex",
@@ -125,11 +127,14 @@ const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { NavButton: 
     },
     imgBox: {
         position: "absolute",
-        top: "2rem",
-        left: "47%",
+        top: "1.5rem",
+        left: "50%",
     },
     stepImageBox: {
         height: "50vh"
+    },
+    titleBox: {
+        margin: "0.5rem 0rem"
     }
 }));
 
