@@ -40,8 +40,9 @@ const InstallPageStep = (props: InstallPageStepProps) => {
 
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { classes, cx } = useStyles();
-
+    const { classes, cx } = useStyles(
+        { "innerHeight": window.innerHeight });
+    console.log(window.innerHeight);
     const navToHome = (): void => {
         navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
     };
@@ -95,10 +96,10 @@ const InstallPageStep = (props: InstallPageStepProps) => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { NavButton: InstallPageStep } })(() => ({
+const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { NavButton: InstallPageStep } })(() => ({
     rootFirst: {
-        height: "70vh",
-        maxHeight: "70vh",
+        height: (innerHeight - 208) + "px",
+        maxHeight: (innerHeight - 208) + "px",
     },
     root: {
         height: "91vh",
