@@ -103,7 +103,7 @@ const useStyles = makeStylesEdt({ "name": { NavButton: NavigationStep } })(theme
     rootHelp: {
         display: "flex",
         alignItems: "center",
-        height: "4rem",
+        height: "2rem",
         marginTop: "0.5rem",
     },
     buttonBox: {

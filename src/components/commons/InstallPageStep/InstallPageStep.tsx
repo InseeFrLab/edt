@@ -72,7 +72,7 @@ const InstallPageStep = (props: InstallPageStepProps) => {
 
                     {step > 1 && (
                         <FlexCenter>
-                            <img src={stepImage} alt={t(stepImageAlt)} />
+                            <img className={classes.stepImageBox} src={stepImage} alt={t(stepImageAlt)} />
                         </FlexCenter>
                     )}
                 </Box>
@@ -120,13 +120,16 @@ const useStyles = makeStylesEdt({ "name": { NavButton: InstallPageStep } })(() =
         display: "flex",
         justifyContent: "center",
         height: "8rem",
-        marginBottom: "2rem",
+        marginBottom: "1rem",
     },
     imgBox: {
         position: "absolute",
         top: "2rem",
         left: "47%",
     },
+    stepImageBox: {
+        height: "50vh"
+    }
 }));
 
 export default InstallPageStep;
