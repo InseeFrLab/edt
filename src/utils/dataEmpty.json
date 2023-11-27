@@ -167,12 +167,71 @@
         "PREVIOUS": null,
         "COLLECTED": null
     },
-    "MEANOFTRANSPORT": {
-        "EDITED": null,
+    "FOOT": {
+        "EDITED": [
+            null
+        ],
         "FORCED": null,
         "INPUTED": null,
         "PREVIOUS": null,
-        "COLLECTED": null
+        "COLLECTED": [
+            null
+        ]
+    },
+    "BICYCLE": {
+        "EDITED": [
+            null
+        ],
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": [
+            null
+        ]
+    },
+    "TWOWHEELSMOTORIZED": {
+        "EDITED": [
+            null
+        ],
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": [
+            null
+        ]
+    },
+    "PRIVATECAR": {
+        "EDITED": [
+            null
+        ],
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": [
+            null
+        ]
+    },
+    "OTHERPRIVATE": {
+        "EDITED": [
+            null
+        ],
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": [
+            null
+        ]
+    },
+    "PUBLIC": {
+        "EDITED": [
+            null
+        ],
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": [
+            null
+        ]
     },
     "WORSTACTIVITYDAY": {
         "EDITED": null,

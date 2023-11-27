@@ -10,63 +10,84 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "CHILD": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "OTHER": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "PLACE": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": ["11", "13"]
+                    "COLLECTED": [
+                        "11",
+                        "13"
+                    ]
                 },
                 "ROUTE": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "COUPLE": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "ISROUTE": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [false, false]
+                    "COLLECTED": [
+                        false,
+                        false
+                    ]
                 },
                 "PARENTS": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "END_TIME": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": ["04:05", "04:10"]
+                    "COLLECTED": [
+                        "04:05",
+                        "04:10"
+                    ]
                 },
                 "ISCLOSED": {
                     "EDITED": null,
@@ -108,14 +129,19 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "START_TIME": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": ["04:00", "04:05"]
+                    "COLLECTED": [
+                        "04:00",
+                        "04:05"
+                    ]
                 },
                 "SURVEYDATE": {
                     "EDITED": null,
@@ -136,21 +162,30 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null, "false"]
+                    "COLLECTED": [
+                        null,
+                        "false"
+                    ]
                 },
                 "ISCOMPLETED": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [false, true]
+                    "COLLECTED": [
+                        false,
+                        true
+                    ]
                 },
                 "WITHSOMEONE": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null, "false"]
+                    "COLLECTED": [
+                        null,
+                        "false"
+                    ]
                 },
                 "EXCEPTIONALDAY": {
                     "EDITED": null,
@@ -164,21 +199,86 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null, null]
+                    "COLLECTED": [
+                        null,
+                        null
+                    ]
                 },
                 "MAINACTIVITY_ID": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": ["140", "382"]
+                    "COLLECTED": [
+                        "140",
+                        "382"
+                    ]
                 },
-                "MEANOFTRANSPORT": {
-                    "EDITED": null,
+                "FOOT": {
+                    "EDITED": [
+                        null
+                    ],
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
+                },
+                "BICYCLE": {
+                    "EDITED": [
+                        null
+                    ],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [
+                        null
+                    ]
+                },
+                "TWOWHEELSMOTORIZED": {
+                    "EDITED": [
+                        null
+                    ],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [
+                        null
+                    ]
+                },
+                "PRIVATECAR": {
+                    "EDITED": [
+                        null
+                    ],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [
+                        null
+                    ]
+                },
+                "OTHERPRIVATE": {
+                    "EDITED": [
+                        null
+                    ],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [
+                        null
+                    ]
+                },
+                "PUBLIC": {
+                    "EDITED": [
+                        null
+                    ],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "WORSTACTIVITYDAY": {
                     "EDITED": null,
@@ -192,14 +292,20 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": ["15", "5c6f5cd8-0d53-484e-b7a0-0864dad66a79"]
+                    "COLLECTED": [
+                        "15",
+                        "5c6f5cd8-0d53-484e-b7a0-0864dad66a79"
+                    ]
                 },
                 "MAINACTIVITY_LABEL": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null, null]
+                    "COLLECTED": [
+                        null,
+                        null
+                    ]
                 },
                 "GREATESTACTIVITYDAY": {
                     "EDITED": null,
@@ -213,14 +319,20 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": ["true", "true"]
+                    "COLLECTED": [
+                        "true",
+                        "true"
+                    ]
                 },
                 "MAINACTIVITY_SUGGESTERID": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null, null]
+                    "COLLECTED": [
+                        null,
+                        null
+                    ]
                 },
                 "ACTIVITY_SELECTER_HISTORY": {
                     "EDITED": null,
@@ -237,7 +349,10 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [true, true]
+                    "COLLECTED": [
+                        true,
+                        true
+                    ]
                 }
             },
             "CALCULATED": {},
@@ -263,63 +378,84 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "CHILD": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "OTHER": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "PLACE": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": ["11", "11"]
+                    "COLLECTED": [
+                        "11",
+                        "11"
+                    ]
                 },
                 "ROUTE": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "COUPLE": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "ISROUTE": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [false, false]
+                    "COLLECTED": [
+                        false,
+                        false
+                    ]
                 },
                 "PARENTS": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "END_TIME": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": ["04:05", "04:10"]
+                    "COLLECTED": [
+                        "04:05",
+                        "04:10"
+                    ]
                 },
                 "ISCLOSED": {
                     "EDITED": null,
@@ -361,14 +497,19 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "START_TIME": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": ["04:00", "04:05"]
+                    "COLLECTED": [
+                        "04:00",
+                        "04:05"
+                    ]
                 },
                 "SURVEYDATE": {
                     "EDITED": null,
@@ -389,21 +530,28 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": ["false"]
+                    "COLLECTED": [
+                        "false"
+                    ]
                 },
                 "ISCOMPLETED": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [false, false]
+                    "COLLECTED": [
+                        false,
+                        false
+                    ]
                 },
                 "WITHSOMEONE": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": ["false"]
+                    "COLLECTED": [
+                        "false"
+                    ]
                 },
                 "EXCEPTIONALDAY": {
                     "EDITED": null,
@@ -417,21 +565,74 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null, null]
+                    "COLLECTED": [
+                        null,
+                        null
+                    ]
                 },
                 "MAINACTIVITY_ID": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": ["140", "111"]
+                    "COLLECTED": [
+                        "140",
+                        "111"
+                    ]
                 },
-                "MEANOFTRANSPORT": {
+                "FOOT": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
+                },
+                "BICYCLE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [
+                        null
+                    ]
+                },
+                "TWOWHEELSMOTORIZED": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [
+                        null
+                    ]
+                },
+                "PRIVATECAR": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [
+                        null
+                    ]
+                },
+                "OTHERPRIVATE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [
+                        null
+                    ]
+                },
+                "PUBLIC": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "WORSTACTIVITYDAY": {
                     "EDITED": null,
@@ -445,14 +646,19 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null]
+                    "COLLECTED": [
+                        null
+                    ]
                 },
                 "MAINACTIVITY_LABEL": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null, null]
+                    "COLLECTED": [
+                        null,
+                        null
+                    ]
                 },
                 "GREATESTACTIVITYDAY": {
                     "EDITED": null,
@@ -466,14 +672,19 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": ["false"]
+                    "COLLECTED": [
+                        "false"
+                    ]
                 },
                 "MAINACTIVITY_SUGGESTERID": {
                     "EDITED": null,
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [null, null]
+                    "COLLECTED": [
+                        null,
+                        null
+                    ]
                 },
                 "ACTIVITY_SELECTER_HISTORY": {
                     "EDITED": null,
@@ -490,7 +701,10 @@
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
-                    "COLLECTED": [true, true]
+                    "COLLECTED": [
+                        true,
+                        true
+                    ]
                 }
             },
             "CALCULATED": {},

@@ -29,11 +29,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "START_TIME",
             "componentRef": "timepicker_durationActivity"
@@ -41,11 +51,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "END_TIME",
             "componentRef": "timepicker_durationActivity"
@@ -53,11 +73,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "MAINACTIVITY_ID",
             "componentRef": "activityselecter_mainactivity"
@@ -65,11 +95,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "MAINACTIVITY_SUGGESTERID",
             "componentRef": "activityselecter_mainactivity"
@@ -77,11 +117,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "MAINACTIVITY_ISFULLYCOMPLETED",
             "componentRef": "activityselecter_mainactivity"
@@ -89,11 +139,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "MAINACTIVITY_LABEL",
             "componentRef": "activityselecter_mainactivity"
@@ -101,11 +161,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "GOAL",
             "componentRef": "goalselecter_goal"
@@ -113,11 +183,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "WITHSECONDARYACTIVITY",
             "componentRef": "checkboxboolean_withsecondaryactivity"
@@ -125,11 +205,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "SECONDARYACTIVITY",
             "componentRef": "checkboxone_secondaryactivity"
@@ -137,11 +227,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "PLACE",
             "componentRef": "input_place"
@@ -149,11 +249,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "WITHSOMEONE",
             "componentRef": "checkboxboolean_withsomeone"
@@ -161,11 +271,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "COUPLE",
             "componentRef": "checkboxgroup_presentpeople"
@@ -173,11 +293,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "PARENTS",
             "componentRef": "checkboxgroup_presentpeople"
@@ -185,11 +315,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "CHILD",
             "componentRef": "checkboxgroup_presentpeople"
@@ -197,11 +337,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "OTHERKNOWN",
             "componentRef": "checkboxgroup_presentpeople"
@@ -209,11 +359,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "OTHER",
             "componentRef": "checkboxgroup_presentpeople"
@@ -221,11 +381,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "WITHSCREEN",
             "componentRef": "checkboxboolean_withscreen"
@@ -233,11 +403,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "ROUTE",
             "componentRef": "icongridcheckboxone_route"
@@ -245,23 +425,153 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
-            "name": "MEANOFTRANSPORT",
+            "name": "FOOT",
             "componentRef": "checkboxgroup_meanoftransport"
         },
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
+            },
+            "name": "BICYCLE",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
+            },
+            "name": "TWOWHEELSMOTORIZED",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
+            },
+            "name": "PRIVATECAR",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
+            },
+            "name": "OTHERPRIVATE",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
+            },
+            "name": "PUBLIC",
+            "componentRef": "checkboxgroup_meanoftransport"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "ISROUTE",
             "componentRef": ""
@@ -365,11 +675,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "ISCOMPLETED",
             "componentRef": ""
@@ -377,11 +697,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "INPUT_SUGGESTER",
             "componentRef": "activityselecter_mainactivity"
@@ -389,11 +719,21 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
+                "COLLECTED": [
+                    null
+                ],
+                "EDITED": [
+                    null
+                ],
+                "INPUTED": [
+                    null
+                ],
+                "FORCED": [
+                    null
+                ],
+                "PREVIOUS": [
+                    null
+                ]
             },
             "name": "ACTIVITY_SELECTER_HISTORY",
             "componentRef": "activityselecter_mainactivity"
@@ -415,21 +755,35 @@
         {
             "componentType": "Sequence",
             "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "1" }
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
             },
-            "conditionFilter": { "value": "true" },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "sequence_1",
             "page": "1",
             "label": ""
         },
         {
             "componentType": "Input",
-            "bindingDependencies": ["FIRSTNAME"],
-            "response": { "name": "FIRSTNAME" },
-            "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "1" }
+            "bindingDependencies": [
+                "FIRSTNAME"
+            ],
+            "response": {
+                "name": "FIRSTNAME"
             },
-            "conditionFilter": { "value": "true" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "inputtext_firstName",
             "page": "1",
             "label": "\"Qui êtes-vous ?\"",
@@ -454,15 +808,24 @@
         },
         {
             "componentType": "Datepicker",
-            "bindingDependencies": ["SURVEYDATE"],
+            "bindingDependencies": [
+                "SURVEYDATE"
+            ],
             "min": "1900-01-01",
             "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
             "dateFormat": "YYYY-MM-DD",
-            "response": { "name": "SURVEYDATE" },
-            "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "1" }
+            "response": {
+                "name": "SURVEYDATE"
             },
-            "conditionFilter": { "value": "true" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "datepicker_surveyDate",
             "page": "2",
             "tipsLabel": "Quelle est la date du jour sélectionnée pour l'enquête",
@@ -485,12 +848,21 @@
         },
         {
             "componentType": "Input",
-            "bindingDependencies": ["FIRSTNAME"],
-            "response": { "name": "FIRSTNAME" },
-            "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "1" }
+            "bindingDependencies": [
+                "FIRSTNAME"
+            ],
+            "response": {
+                "name": "FIRSTNAME"
             },
-            "conditionFilter": { "value": "true" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "inputtext_firstName2",
             "page": "3",
             "label": "\"Vos informations : \"",
@@ -515,15 +887,24 @@
         },
         {
             "componentType": "Datepicker",
-            "bindingDependencies": ["SURVEYDATE"],
+            "bindingDependencies": [
+                "SURVEYDATE"
+            ],
             "min": "1900-01-01",
             "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
             "dateFormat": "YYYY-MM-DD",
-            "response": { "name": "SURVEYDATE" },
-            "hierarchy": {
-                "sequence": { "id": "sequence_1", "page": "1" }
+            "response": {
+                "name": "SURVEYDATE"
             },
-            "conditionFilter": { "value": "true" },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "datepicker_surveyDate2",
             "page": "3",
             "label": "\"La journée de  l'enquête :\"",
@@ -551,14 +932,21 @@
             "maxPage": "9",
             "depth": 1,
             "paginatedLoop": true,
-            "conditionFilter": { "value": "true" },
+            "conditionFilter": {
+                "value": "true"
+            },
             "bindingDependencies": [
                 "START_TIME",
                 "END_TIME",
                 "MAINACTIVITY",
                 "GOAL",
                 "ROUTE",
-                "MEANOFTRANSPORT",
+                "FOOT",
+                "BICYCLE",
+                "TWOWHEELSMOTORIZED",
+                "PRIVATECAR",
+                "OTHERPRIVATE",
+                "PUBLIC",
                 "WITHSECONDARYACTIVITY",
                 "SECONDARYACTIVITY",
                 "PLACE",
@@ -575,7 +963,10 @@
                 "ACTIVITY_SELECTER_HISTORY"
             ],
             "loopDependencies": [],
-            "iterations": { "value": "1", "type": "VTL" },
+            "iterations": {
+                "value": "1",
+                "type": "VTL"
+            },
             "components": [
                 {
                     "componentType": "Sequence",
@@ -586,14 +977,19 @@
                             "label": "\"I - \" || \"Sequence\""
                         }
                     },
-                    "conditionFilter": { "value": "true" },
+                    "conditionFilter": {
+                        "value": "true"
+                    },
                     "id": "law86mv7",
                     "page": "4.1",
                     "label": "\"I - \" || \"Sequence\""
                 },
                 {
                     "componentType": "ActivityTime",
-                    "bindingDependencies": ["START_TIME", "END_TIME"],
+                    "bindingDependencies": [
+                        "START_TIME",
+                        "END_TIME"
+                    ],
                     "responses": [
                         {
                             "response": {
@@ -613,7 +1009,9 @@
                             "label": "\"I - \" || \"Sequence\""
                         }
                     },
-                    "conditionFilter": { "value": "true" },
+                    "conditionFilter": {
+                        "value": "true"
+                    },
                     "id": "timepicker_durationActivity",
                     "page": "4.2",
                     "startTimeLabel": "Heure de début",
@@ -670,7 +1068,9 @@
                             "label": "\"I - \" || \"Sequence\""
                         }
                     },
-                    "conditionFilter": { "value": "true" },
+                    "conditionFilter": {
+                        "value": "true"
+                    },
                     "id": "activityselecter_mainactivity",
                     "page": "4.3",
                     "label": "\"Que faisiez-vous\"",
@@ -678,8 +1078,12 @@
                 },
                 {
                     "componentType": "IconGridCheckBoxOne",
-                    "bindingDependencies": ["ROUTE"],
-                    "response": { "name": "ROUTE" },
+                    "bindingDependencies": [
+                        "ROUTE"
+                    ],
+                    "response": {
+                        "name": "ROUTE"
+                    },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -687,7 +1091,9 @@
                             "label": "\"I - \" || \"Sequence\""
                         }
                     },
-                    "conditionFilter": { "value": "true" },
+                    "conditionFilter": {
+                        "value": "true"
+                    },
                     "id": "icongridcheckboxone_route",
                     "page": "4.4",
                     "label": "\"Quel était le type de trajet\"",
@@ -695,8 +1101,58 @@
                 },
                 {
                     "componentType": "CheckboxOneEdt",
-                    "bindingDependencies": ["MEANOFTRANSPORT"],
-                    "response": { "name": "MEANOFTRANSPORT" },
+                    "bindingDependencies": [
+                        "FOOT",
+                        "BICYCLE",
+                        "TWOWHEELSMOTORIZED",
+                        "PRIVATECAR",
+                        "OTHERPRIVATE",
+                        "PUBLIC"
+                    ],
+                    "responses": [
+                        {
+                            "response": {
+                                "name": "FOOT"
+                            },
+                            "id": "1",
+                            "label": "\"À pied\""
+                        },
+                        {
+                            "response": {
+                                "name": "BICYCLE"
+                            },
+                            "id": "2",
+                            "label": "\"Velo (électrique ou non)\""
+                        },
+                        {
+                            "response": {
+                                "name": "TWOWHEELSMOTORIZED"
+                            },
+                            "id": "3",
+                            "label": "\"Deux roues motorisé (scooter, moto...)\""
+                        },
+                        {
+                            "response": {
+                                "name": "PRIVATECAR"
+                            },
+                            "id": "4",
+                            "label": "\"Voiture privée (y compris covoiturage)\""
+                        },
+                        {
+                            "response": {
+                                "name": "OTHERPRIVATE"
+                            },
+                            "id": "5",
+                            "label": "\"Autre moyen privé (monorue,kk trottinette ou skate, bateau, électrique ou non...)\""
+                        },
+                        {
+                            "response": {
+                                "name": "PUBLIC"
+                            },
+                            "id": "6",
+                            "label": "\"Transports publics (bus, train, taxi, Uber, avion...)\""
+                        }
+                    ],
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -704,7 +1160,9 @@
                             "label": "\"I - \" || \"Sequence\""
                         }
                     },
-                    "conditionFilter": { "value": "true" },
+                    "conditionFilter": {
+                        "value": "true"
+                    },
                     "id": "checkboxgroup_meanoftransport",
                     "page": "4.5",
                     "label": "\"Quels étaient vos moyens de transport\"",
@@ -713,8 +1171,12 @@
                 },
                 {
                     "componentType": "CheckboxBooleanEdt",
-                    "bindingDependencies": ["WITHSECONDARYACTIVITY"],
-                    "response": { "name": "WITHSECONDARYACTIVITY" },
+                    "bindingDependencies": [
+                        "WITHSECONDARYACTIVITY"
+                    ],
+                    "response": {
+                        "name": "WITHSECONDARYACTIVITY"
+                    },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -722,7 +1184,9 @@
                             "label": "\"I - \" || \"Sequence\""
                         }
                     },
-                    "conditionFilter": { "value": "true" },
+                    "conditionFilter": {
+                        "value": "true"
+                    },
                     "id": "checkboxboolean_withsecondaryactivity",
                     "page": "4.6",
                     "label": "\"Faisiez-vous autre chose en même temps\"",
@@ -730,8 +1194,12 @@
                 },
                 {
                     "componentType": "CheckboxOneEdt",
-                    "bindingDependencies": ["SECONDARYACTIVITY"],
-                    "response": { "name": "SECONDARYACTIVITY" },
+                    "bindingDependencies": [
+                        "SECONDARYACTIVITY"
+                    ],
+                    "response": {
+                        "name": "SECONDARYACTIVITY"
+                    },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -739,7 +1207,9 @@
                             "label": "\"I - \" || \"Sequence\""
                         }
                     },
-                    "conditionFilter": { "value": "true" },
+                    "conditionFilter": {
+                        "value": "true"
+                    },
                     "id": "checkboxone_secondaryactivity",
                     "page": "4.7",
                     "label": "\"Que faisiez-vous en même temps\"",
@@ -747,8 +1217,12 @@
                 },
                 {
                     "componentType": "IconGridCheckBoxOne",
-                    "bindingDependencies": ["PLACE"],
-                    "response": { "name": "PLACE" },
+                    "bindingDependencies": [
+                        "PLACE"
+                    ],
+                    "response": {
+                        "name": "PLACE"
+                    },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -756,7 +1230,9 @@
                             "label": "\"I - \" || \"Sequence\""
                         }
                     },
-                    "conditionFilter": { "value": "true" },
+                    "conditionFilter": {
+                        "value": "true"
+                    },
                     "id": "input_place",
                     "page": "4.8",
                     "label": "\"Où étiez-vous\"",
@@ -764,8 +1240,12 @@
                 },
                 {
                     "componentType": "CheckboxBooleanEdt",
-                    "bindingDependencies": ["WITHSOMEONE"],
-                    "response": { "name": "WITHSOMEONE" },
+                    "bindingDependencies": [
+                        "WITHSOMEONE"
+                    ],
+                    "response": {
+                        "name": "WITHSOMEONE"
+                    },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -773,7 +1253,9 @@
                             "label": "\"I - \" || \"Sequence\""
                         }
                     },
-                    "conditionFilter": { "value": "true" },
+                    "conditionFilter": {
+                        "value": "true"
+                    },
                     "id": "checkboxboolean_withsomeone",
                     "page": "4.9",
                     "label": "\"Etiez-vous en compagnie de quelqu'un\"",
@@ -781,7 +1263,13 @@
                 },
                 {
                     "componentType": "CheckboxGroupEdt",
-                    "bindingDependencies": ["COUPLE", "PARENTS", "CHILD", "OTHERKNOWN", "OTHER"],
+                    "bindingDependencies": [
+                        "COUPLE",
+                        "PARENTS",
+                        "CHILD",
+                        "OTHERKNOWN",
+                        "OTHER"
+                    ],
                     "responses": [
                         {
                             "response": {
@@ -826,7 +1314,9 @@
                             "label": "\"I - \" || \"Sequence\""
                         }
                     },
-                    "conditionFilter": { "value": "true" },
+                    "conditionFilter": {
+                        "value": "true"
+                    },
                     "id": "checkboxgroup_presentpeople",
                     "page": "4.10",
                     "label": "\"En compagnie de qui étiez-vous\"",
@@ -835,8 +1325,12 @@
                 },
                 {
                     "componentType": "CheckboxBooleanEdt",
-                    "bindingDependencies": ["WITHSCREEN"],
-                    "response": { "name": "WITHSCREEN" },
+                    "bindingDependencies": [
+                        "WITHSCREEN"
+                    ],
+                    "response": {
+                        "name": "WITHSCREEN"
+                    },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -844,7 +1338,9 @@
                             "label": "\"I - \" || \"Sequence\""
                         }
                     },
-                    "conditionFilter": { "value": "true" },
+                    "conditionFilter": {
+                        "value": "true"
+                    },
                     "id": "checkboxboolean_withscreen",
                     "page": "4.11",
                     "label": "\"Avez-vous utilisé un ordinateur, un smartphone, une tablette ou un autre objet connecté à internet\"",
@@ -852,8 +1348,12 @@
                 },
                 {
                     "componentType": "IconGridCheckBoxOne",
-                    "bindingDependencies": ["GOAL"],
-                    "response": { "name": "GOAL" },
+                    "bindingDependencies": [
+                        "GOAL"
+                    ],
+                    "response": {
+                        "name": "GOAL"
+                    },
                     "hierarchy": {
                         "sequence": {
                             "id": "law86mv7",
@@ -861,24 +1361,42 @@
                             "label": "\"I - \" || \"Sequence\""
                         }
                     },
-                    "conditionFilter": { "value": "true" },
+                    "conditionFilter": {
+                        "value": "true"
+                    },
                     "id": "goalselecter_goal",
                     "page": "4.12",
                     "label": "\"Dans quel but avez-vous fait cette activité\"",
                     "mandatory": false,
                     "options": [
-                        { "label": "\"Personnel, pour mon ménage\"", "value": "1" },
-                        { "label": "\"Professionnel\"", "value": "2" },
-                        { "label": "\"Aide à un autre ménage\"", "value": "3" },
-                        { "label": "\"Bénévole, pour une association\"", "value": "4" }
+                        {
+                            "label": "\"Personnel, pour mon ménage\"",
+                            "value": "1"
+                        },
+                        {
+                            "label": "\"Professionnel\"",
+                            "value": "2"
+                        },
+                        {
+                            "label": "\"Aide à un autre ménage\"",
+                            "value": "3"
+                        },
+                        {
+                            "label": "\"Bénévole, pour une association\"",
+                            "value": "4"
+                        }
                     ]
                 }
             ]
         },
         {
             "componentType": "CheckboxOneEdt",
-            "bindingDependencies": ["GREATESTACTIVITYDAY"],
-            "response": { "name": "GREATESTACTIVITYDAY" },
+            "bindingDependencies": [
+                "GREATESTACTIVITYDAY"
+            ],
+            "response": {
+                "name": "GREATESTACTIVITYDAY"
+            },
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
@@ -886,7 +1404,9 @@
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
-            "conditionFilter": { "value": "true" },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "checkboxone_greatestActivityDay",
             "page": "5",
             "label": "\"Quelle a été votre activité la plus agréable durant cette journée\"",
@@ -894,8 +1414,12 @@
         },
         {
             "componentType": "CheckboxOneEdt",
-            "bindingDependencies": ["WORSTACTIVITYDAY"],
-            "response": { "name": "WORSTACTIVITYDAY" },
+            "bindingDependencies": [
+                "WORSTACTIVITYDAY"
+            ],
+            "response": {
+                "name": "WORSTACTIVITYDAY"
+            },
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
@@ -903,7 +1427,9 @@
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
-            "conditionFilter": { "value": "true" },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "checkboxone_worstActivityDay",
             "page": "6",
             "label": "\"Quelle a été votre activité la plus désagréable durant cette journée\"",
@@ -911,15 +1437,21 @@
         },
         {
             "componentType": "CheckboxOneEdt",
-            "bindingDependencies": ["KINDOFDAY"],
-            "response": { "name": "KINDOFDAY" },
+            "bindingDependencies": [
+                "KINDOFDAY"
+            ],
+            "response": {
+                "name": "KINDOFDAY"
+            },
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
                     "page": "1"
                 }
             },
-            "conditionFilter": { "value": "true" },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "checkboxone_kindofday",
             "page": "7",
             "label": "\"De quel type de journée s’agissait-il\"",
@@ -927,8 +1459,12 @@
         },
         {
             "componentType": "CheckboxBooleanEdt",
-            "bindingDependencies": ["EXCEPTIONALDAY"],
-            "response": { "name": "EXCEPTIONALDAY" },
+            "bindingDependencies": [
+                "EXCEPTIONALDAY"
+            ],
+            "response": {
+                "name": "EXCEPTIONALDAY"
+            },
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
@@ -936,7 +1472,9 @@
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
-            "conditionFilter": { "value": "true" },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "checkboxboolean_exceptionalDay",
             "page": "8",
             "label": "\"Cette journée a-t-elle présenté un caractère exceptionnel\"",
@@ -944,8 +1482,12 @@
         },
         {
             "componentType": "Duration",
-            "bindingDependencies": ["TRAVELTIME"],
-            "response": { "name": "TRAVELTIME" },
+            "bindingDependencies": [
+                "TRAVELTIME"
+            ],
+            "response": {
+                "name": "TRAVELTIME"
+            },
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
@@ -953,7 +1495,9 @@
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
-            "conditionFilter": { "value": "true" },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "timepicker_travelTime",
             "page": "9",
             "label": "\" Au total, combien de temps avez-vous passé en trajets\"",
@@ -965,8 +1509,12 @@
         },
         {
             "componentType": "Duration",
-            "bindingDependencies": ["PHONETIME"],
-            "response": { "name": "PHONETIME" },
+            "bindingDependencies": [
+                "PHONETIME"
+            ],
+            "response": {
+                "name": "PHONETIME"
+            },
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
@@ -974,7 +1522,9 @@
                     "label": "\"I - \" || \"Sequence\""
                 }
             },
-            "conditionFilter": { "value": "true" },
+            "conditionFilter": {
+                "value": "true"
+            },
             "id": "timepicker_phoneTime",
             "page": "10",
             "label": "\" Au total, combien de temps avez-vous passé à consulter votre téléphone (y compris les petits moments de quelques minutes)\"",
@@ -988,13 +1538,21 @@
             "id": "End",
             "componentType": "Sequence",
             "page": "11",
-            "label": { "value": "\"End\"", "type": "VTL|MD" },
-            "conditionFilter": { "value": "true" },
+            "label": {
+                "value": "\"End\"",
+                "type": "VTL|MD"
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
             "hierarchy": {
                 "sequence": {
                     "id": "End",
                     "page": "1",
-                    "label": { "value": "\"End\"", "type": "VTL|MD" }
+                    "label": {
+                        "value": "\"End\"",
+                        "type": "VTL|MD"
+                    }
                 }
             }
         }

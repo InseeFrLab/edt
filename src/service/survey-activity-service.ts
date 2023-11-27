@@ -21,12 +21,11 @@ import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
     findActivitySecondaryActivityInRef,
-    findMeanOfTransportInRef,
     findPlaceInRef,
     findRouteInRef,
     findRouteSecondaryActivityInRef,
     getAutoCompleteRef,
-    getLanguage,
+    getLanguage
 } from "service/referentiel-service";
 import {
     getData,
@@ -142,7 +141,7 @@ const createRoute = (
     }
 
     //Mean of transport
-    activityOrRoute.meanOfTransportLabels = getMeanOfTransportLabel(idSurvey, iteration);
+    activityOrRoute.meanOfTransportLabels = getMeanOfTransportLabel(idSurvey, iteration, source);
     return activityOrRoute;
 };
 
@@ -241,7 +240,7 @@ const createGapsOverlaps = (idSurvey: string, activitiesRoutes: ActivityRouteOrG
         } else if (
             previousActivity &&
             hourToNormalizedTimeStamp(act.startTime, idSurvey) >
-                hourToNormalizedTimeStamp(previousActivity.endTime, idSurvey)
+            hourToNormalizedTimeStamp(previousActivity.endTime, idSurvey)
         ) {
             const index = activitiesRoutes.indexOf(act);
             activitiesRoutes.splice(index, 0, {
@@ -254,8 +253,8 @@ const createGapsOverlaps = (idSurvey: string, activitiesRoutes: ActivityRouteOrG
         if (
             previousActivity &&
             hourToNormalizedTimeStamp(act.startTime, idSurvey) -
-                hourToNormalizedTimeStamp(previousActivity.endTime, idSurvey) <
-                0
+            hourToNormalizedTimeStamp(previousActivity.endTime, idSurvey) <
+            0
         ) {
             overlaps.push({
                 prev: previousActivity.startTime,
@@ -502,12 +501,21 @@ const getWithSomeoneLabel = (
     return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
 };
 
-const getMeanOfTransportLabel = (idSurvey: string, i: number): string | undefined => {
-    const meanOfTransportValue = getValue(idSurvey, FieldNameEnum.MEANOFTRANSPORT, i) as
-        | string
-        | undefined;
-
-    return meanOfTransportValue ? findMeanOfTransportInRef(meanOfTransportValue)?.label : undefined;
+const getMeanOfTransportLabel = (
+    idSurvey: string,
+    i: number,
+    source: LunaticModel | undefined,
+): string | undefined => {
+    const fieldNames = [
+        FieldNameEnum.FOOT,
+        FieldNameEnum.BICYCLE,
+        FieldNameEnum.TWOWHEELSMOTORIZED,
+        FieldNameEnum.PRIVATECAR,
+        FieldNameEnum.OTHERPRIVATE,
+        FieldNameEnum.PUBLIC,
+    ]
+    const result = filterFieldNames(fieldNames, idSurvey, i, source);
+    return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
 };
 
 const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: number) => {
@@ -615,5 +623,6 @@ export {
     getWeeklyPlannerScore,
     mockActivitiesRoutesOrGaps,
     mockData,
-    surveyReadOnly,
+    surveyReadOnly
 };
+
