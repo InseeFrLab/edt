@@ -16,7 +16,6 @@ interface InstallPageStepProps {
     iconTitleAlt: string;
     title: string;
     description: string;
-    description2?: string;
     stepTitle: string;
     stepImage: string;
     stepImageAlt: string;
@@ -31,7 +30,6 @@ const InstallPageStep = (props: InstallPageStepProps) => {
         iconTitleAlt,
         title,
         description,
-        description2,
         stepTitle,
         stepImage,
         stepImageAlt,
@@ -68,7 +66,6 @@ const InstallPageStep = (props: InstallPageStepProps) => {
                         >
                             <h2>{title}</h2>
                             <p>{description}</p>
-                            {description2 && <p>{description2}</p>}
                             {step > 1 && <h3>{step - 1 + ". " + stepTitle}</h3>}
                         </Box>
                     </Box>

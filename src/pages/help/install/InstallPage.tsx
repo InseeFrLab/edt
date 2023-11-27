@@ -35,7 +35,6 @@ const InstallPage = () => {
                     ? t("component.help.install.common.description-1")
                     : t("component.help.install.description")
             }
-            description2={step == 1 ? t("component.help.install.common.description-2") : undefined}
             step={step}
             stepFinal={stepFinal}
             stepTitle={t(label)}

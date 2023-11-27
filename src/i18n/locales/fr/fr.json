@@ -205,7 +205,7 @@
         "install": {
             "title": "Ajoutez à l'écran d'accueil",
             "subtitle": "Accédez et complétez facilement votre enquête.",
-            "info": "Cette application peut être installée sur votre appareil. Veuillez vous référer au fonctionnement de votre navigateur internet afin de procéder à l'installation.",
+            "info": "Installez l’application sur votre téléphone afin d’accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
             "continue": "J'ai compris"
         },
         "surveys-overview": {
@@ -511,8 +511,7 @@
                 "description": "Accédez et complétez facilement votre enquête. Cette application peut être installée sur votre appareil. Pour cela, veuillez suivre les indications ci-après:",
                 "common": {
                     "title": "Installer l'application",
-                    "description-1": "Installez l'application sur votre écran d'acceuil afin d'accéder à votre enqueête plus rapidement.",
-                    "description-2": "Également cela vous permettra de pouvoir compléter votre enquête sans avoir à maintenir votre navigateur web ouvertsi vous souhaitez saisier l'énquête sans connexion internet.",
+                    "description-1": "Installez l'application sur votre téléphone afin d'accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
                     "info-bold": "L'installation n'a pas fonctionné ?",
                     "info-text": "Ce n'est pas grave, vous pouvez completer votre enquête depuis votre navigateur web."
                 },
