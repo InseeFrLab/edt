@@ -23,6 +23,7 @@ import {
     findActivityInAutoCompleteReferentielById,
     findActivityInNomenclatureReferentielById,
     findKindOfDayInRef,
+    findNewActivityById,
     findRouteInRef,
     findRouteSecondaryActivityInRef,
 } from "service/referentiel-service";
@@ -73,12 +74,14 @@ const getUserActivitiesSummary = (
     return activitiesSummary;
 };
 
-const getActivityOrRouteInRef = (activityOrRouteId: string) => {
+const getActivityOrRouteInRef = (idSurvey: string, activityOrRouteId: string) => {
+
     return (
         findActivityInNomenclatureReferentielById(activityOrRouteId)?.label ||
         findActivityInAutoCompleteReferentielById(activityOrRouteId)?.label ||
         findRouteInRef(activityOrRouteId)?.label ||
         findRouteSecondaryActivityInRef(activityOrRouteId)?.label ||
+        findNewActivityById(idSurvey, activityOrRouteId) ||
         activityOrRouteId ||
         ""
     );
@@ -93,8 +96,8 @@ const getUserActivitiesCharacteristics = (
     let worstActivityId = getValue(idSurvey, FieldNameEnum.WORSTACTIVITYDAY) as string;
 
     let activitiesCharacteristics: UserActivitiesCharacteristics = {
-        greatestActivityLabel: getActivityOrRouteInRef(greatestActivityId),
-        worstActivityLabel: getActivityOrRouteInRef(worstActivityId),
+        greatestActivityLabel: getActivityOrRouteInRef(idSurvey, greatestActivityId),
+        worstActivityLabel: getActivityOrRouteInRef(idSurvey, worstActivityId),
         kindOfDayLabel:
             findKindOfDayInRef(getValue(idSurvey, FieldNameEnum.KINDOFDAY) as string)?.label ||
             undefined,
@@ -240,7 +243,7 @@ const getQualityScore = (
     //insufficient number of routes (at least MIN_THRESHOLD_ROUTE_HOURS)
     substractPoint +=
         activitiesRoutesOrGaps.filter(activityOrRoute => activityOrRoute.isRoute).length <
-        MIN_THRESHOLD.MIN_THRESHOLD_ROUTE_HOURS
+            MIN_THRESHOLD.MIN_THRESHOLD_ROUTE_HOURS
             ? POINTS_REMOVE.POINTS_REMOVE_ROUTE_HOURS
             : 0;
 

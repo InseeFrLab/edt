@@ -6,9 +6,10 @@ import {
     NomenclatureActivityOption,
     SelectedActivity,
 } from "@inseefrlab/lunatic-edt";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import i18n from "i18next";
-import { getReferentiel } from "./survey-service";
+import { getReferentiel, getValue } from "./survey-service";
 
 export const getAutoCompleteRef = (): AutoCompleteActiviteOption[] => {
     return getReferentiel(ReferentielsEnum.ACTIVITYAUTOCOMPLETE) as AutoCompleteActiviteOption[];
@@ -67,6 +68,17 @@ export const findActivityInNomenclatureReferentiel = (
 ): NomenclatureActivityOption | undefined => {
     return findItemInCategoriesNomenclature(selectedActivity.id, getNomenclatureRef())?.item;
 };
+
+export const findNewActivityById = (
+    idSurvey: string,
+    activityId: string,
+): string => {
+    const newActivities = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_SUGGESTERID) as string[];
+    const index = newActivities.findIndex(act => act == activityId);
+    const activitiesLabel = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL) as string[];
+    return activitiesLabel[index];
+};
+
 
 export const findActivityInNomenclatureReferentielById = (
     activityCode: string,
