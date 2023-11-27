@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
 const getAuthority = () => {
     const authorityForReviewer = window.location.pathname.includes(
-        process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER ?? "kcidphint=sso-insee",
+        process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER ?? "kcidphint=insee-ssp",
     )
         ? process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER
         : process.env.REACT_APP_KEYCLOAK_AUTHORITY;
