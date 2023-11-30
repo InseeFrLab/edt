@@ -413,7 +413,8 @@
             "clickable-list-icon-no-result-alt": "Illustration pièce de puzzle",
             "clickable-list-not-search-label": "Affinez votre recherche en saisissant au moins 4 caractères",
             "other-button": "Autre ?",
-            "save-button": "Sauvegarder"
+            "save-button": "Sauvegarder",
+            "validate-button": "Ok"
         },
         "location-selecter": {
             "alert-message": "Aucun lieu n’a été renseigné"

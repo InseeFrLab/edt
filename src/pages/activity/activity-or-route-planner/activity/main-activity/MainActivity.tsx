@@ -171,6 +171,7 @@ const MainActivityPage = () => {
             ),
             otherButton: t("component.activity-selecter.other-button"),
             saveButton: t("component.activity-selecter.save-button"),
+            validateButton: t("component.activity-selecter.validate-button"),
         },
         errorIcon: errorIcon,
         addToReferentielCallBack: (
