@@ -581,7 +581,9 @@
                     ]
                 },
                 "FOOT": {
-                    "EDITED": null,
+                    "EDITED": [
+                        null
+                    ],
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
@@ -590,7 +592,9 @@
                     ]
                 },
                 "BICYCLE": {
-                    "EDITED": null,
+                    "EDITED": [
+                        null
+                    ],
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
@@ -599,7 +603,9 @@
                     ]
                 },
                 "TWOWHEELSMOTORIZED": {
-                    "EDITED": null,
+                    "EDITED": [
+                        null
+                    ],
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
@@ -608,7 +614,9 @@
                     ]
                 },
                 "PRIVATECAR": {
-                    "EDITED": null,
+                    "EDITED": [
+                        null
+                    ],
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
@@ -617,7 +625,9 @@
                     ]
                 },
                 "OTHERPRIVATE": {
-                    "EDITED": null,
+                    "EDITED": [
+                        null
+                    ],
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,
@@ -626,7 +636,9 @@
                     ]
                 },
                 "PUBLIC": {
-                    "EDITED": null,
+                    "EDITED": [
+                        null
+                    ],
                     "FORCED": null,
                     "INPUTED": null,
                     "PREVIOUS": null,

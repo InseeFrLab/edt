@@ -34,6 +34,11 @@ export const getDevice = () => {
 };
 
 export const getNavigator = () => {
+    console.log(
+        "isChrome:", isChrome, 
+        "isEdge: ",isEdge,
+        "isFirefox:", isFirefox, 
+        "isSafari:", isSafari);
     if (isChrome) {
         return "chrome";
     } else if (isEdge) {
