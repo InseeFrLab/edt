@@ -49,7 +49,7 @@ import {
     navToEditActivity,
     navToHome,
     saveAndNav,
-    setEnviro
+    setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { getUserActivitiesCharacteristics, getUserActivitiesSummary } from "service/summary-service";
@@ -72,7 +72,7 @@ import {
     saveData,
     setValue,
     surveyLocked,
-    validateSurvey
+    validateSurvey,
 } from "service/survey-service";
 import { getUserRights } from "service/user-service";
 import ActivitiesSummaryExportTemplate from "template/summary-export/ActivitiesSummaryExportTemplate";
@@ -93,7 +93,7 @@ const ActivitySummaryPage = () => {
     const [score, setScore] = React.useState<number | undefined>(undefined);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
     const [isHelpMenuOpen, setIsHelpMenuOpen] = React.useState(false);
-    
+
     const localIsSummaryEdited = getLocalStorageValue(
         idSurvey,
         LocalStorageVariableEnum.IS_EDITED_SUMMARY,
@@ -400,7 +400,7 @@ const ActivitySummaryPage = () => {
     const navToHelpPages = useCallback(() => {
         navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
     }, []);
-    
+
     const renderMenuHelp = () => {
         return (
             <HelpMenu
@@ -448,7 +448,10 @@ const ActivitySummaryPage = () => {
                                         <Alert
                                             isAlertDisplayed={isAlertLockDisplayed}
                                             onCompleteCallBack={lock}
-                                            onCancelCallBack={displayAlert(setIsAlertLockDisplayed, false)}
+                                            onCancelCallBack={displayAlert(
+                                                setIsAlertLockDisplayed,
+                                                false,
+                                            )}
                                             labels={isLocked ? alertUnlockLabels : alertLockLabels}
                                             icon={errorIcon}
                                             errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
@@ -519,7 +522,11 @@ const ActivitySummaryPage = () => {
                     ))}
                 </Box>
                 <FlexCenter className={classes.addActivityOrRouteButtonBox}>
-                    <Button variant="contained" onClick={onOpenAddActivityOrRoute} disabled={!modifiable}>
+                    <Button
+                        variant="contained"
+                        onClick={onOpenAddActivityOrRoute}
+                        disabled={!modifiable}
+                    >
                         {t("page.activity-summary.add-activity-or-route")}
                     </Button>
                 </FlexCenter>
@@ -574,7 +581,9 @@ const ActivitySummaryPage = () => {
                             >
                                 <PDFDownloadLink
                                     className={classes.downloadLinkReviewer}
-                                    document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
+                                    document={
+                                        <ActivitiesSummaryExportTemplate exportData={exportData} />
+                                    }
                                     fileName={
                                         t("export.activities-summary.file-name") +
                                         getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
@@ -606,7 +615,9 @@ const ActivitySummaryPage = () => {
                             <Button variant="contained" className={classes.downloadButton}>
                                 <PDFDownloadLink
                                     className={classes.downloadLink}
-                                    document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
+                                    document={
+                                        <ActivitiesSummaryExportTemplate exportData={exportData} />
+                                    }
                                     fileName={
                                         t("export.activities-summary.file-name") +
                                         getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
@@ -631,7 +642,7 @@ const ActivitySummaryPage = () => {
                     open={isAddActivityOrRouteOpen}
                 />
             </SurveyPage>
-            </>
+        </>
     ) : !error ? (
         <LoadingFull
             message={t("page.home.loading.message")}

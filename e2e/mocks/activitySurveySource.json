@@ -29,21 +29,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "START_TIME",
             "componentRef": "timepicker_durationActivity"
@@ -51,21 +41,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "END_TIME",
             "componentRef": "timepicker_durationActivity"
@@ -73,21 +53,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "MAINACTIVITY_ID",
             "componentRef": "activityselecter_mainactivity"
@@ -95,21 +65,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "MAINACTIVITY_SUGGESTERID",
             "componentRef": "activityselecter_mainactivity"
@@ -117,21 +77,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "MAINACTIVITY_ISFULLYCOMPLETED",
             "componentRef": "activityselecter_mainactivity"
@@ -139,21 +89,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "MAINACTIVITY_LABEL",
             "componentRef": "activityselecter_mainactivity"
@@ -161,21 +101,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "GOAL",
             "componentRef": "goalselecter_goal"
@@ -183,21 +113,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "WITHSECONDARYACTIVITY",
             "componentRef": "checkboxboolean_withsecondaryactivity"
@@ -205,21 +125,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "SECONDARYACTIVITY",
             "componentRef": "checkboxone_secondaryactivity"
@@ -227,21 +137,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "PLACE",
             "componentRef": "input_place"
@@ -249,21 +149,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "WITHSOMEONE",
             "componentRef": "checkboxboolean_withsomeone"
@@ -271,21 +161,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "COUPLE",
             "componentRef": "checkboxgroup_presentpeople"
@@ -293,21 +173,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "PARENTS",
             "componentRef": "checkboxgroup_presentpeople"
@@ -315,21 +185,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "CHILD",
             "componentRef": "checkboxgroup_presentpeople"
@@ -337,21 +197,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "OTHERKNOWN",
             "componentRef": "checkboxgroup_presentpeople"
@@ -359,21 +209,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "OTHER",
             "componentRef": "checkboxgroup_presentpeople"
@@ -381,21 +221,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "WITHSCREEN",
             "componentRef": "checkboxboolean_withscreen"
@@ -403,21 +233,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "ROUTE",
             "componentRef": "icongridcheckboxone_route"
@@ -425,21 +245,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "FOOT",
             "componentRef": "checkboxgroup_meanoftransport"
@@ -447,21 +257,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "BICYCLE",
             "componentRef": "checkboxgroup_meanoftransport"
@@ -469,21 +269,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "TWOWHEELSMOTORIZED",
             "componentRef": "checkboxgroup_meanoftransport"
@@ -491,21 +281,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "PRIVATECAR",
             "componentRef": "checkboxgroup_meanoftransport"
@@ -513,21 +293,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "OTHERPRIVATE",
             "componentRef": "checkboxgroup_meanoftransport"
@@ -535,21 +305,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "PUBLIC",
             "componentRef": "checkboxgroup_meanoftransport"
@@ -557,21 +317,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "ISROUTE",
             "componentRef": ""
@@ -675,21 +425,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "ISCOMPLETED",
             "componentRef": ""
@@ -697,21 +437,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "INPUT_SUGGESTER",
             "componentRef": "activityselecter_mainactivity"
@@ -719,21 +449,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "ACTIVITY_SELECTER_HISTORY",
             "componentRef": "activityselecter_mainactivity"
@@ -769,9 +489,7 @@
         },
         {
             "componentType": "Input",
-            "bindingDependencies": [
-                "FIRSTNAME"
-            ],
+            "bindingDependencies": ["FIRSTNAME"],
             "response": {
                 "name": "FIRSTNAME"
             },
@@ -808,9 +526,7 @@
         },
         {
             "componentType": "Datepicker",
-            "bindingDependencies": [
-                "SURVEYDATE"
-            ],
+            "bindingDependencies": ["SURVEYDATE"],
             "min": "1900-01-01",
             "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
             "dateFormat": "YYYY-MM-DD",
@@ -848,9 +564,7 @@
         },
         {
             "componentType": "Input",
-            "bindingDependencies": [
-                "FIRSTNAME"
-            ],
+            "bindingDependencies": ["FIRSTNAME"],
             "response": {
                 "name": "FIRSTNAME"
             },
@@ -887,9 +601,7 @@
         },
         {
             "componentType": "Datepicker",
-            "bindingDependencies": [
-                "SURVEYDATE"
-            ],
+            "bindingDependencies": ["SURVEYDATE"],
             "min": "1900-01-01",
             "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
             "dateFormat": "YYYY-MM-DD",
@@ -986,10 +698,7 @@
                 },
                 {
                     "componentType": "ActivityTime",
-                    "bindingDependencies": [
-                        "START_TIME",
-                        "END_TIME"
-                    ],
+                    "bindingDependencies": ["START_TIME", "END_TIME"],
                     "responses": [
                         {
                             "response": {
@@ -1078,9 +787,7 @@
                 },
                 {
                     "componentType": "IconGridCheckBoxOne",
-                    "bindingDependencies": [
-                        "ROUTE"
-                    ],
+                    "bindingDependencies": ["ROUTE"],
                     "response": {
                         "name": "ROUTE"
                     },
@@ -1171,9 +878,7 @@
                 },
                 {
                     "componentType": "CheckboxBooleanEdt",
-                    "bindingDependencies": [
-                        "WITHSECONDARYACTIVITY"
-                    ],
+                    "bindingDependencies": ["WITHSECONDARYACTIVITY"],
                     "response": {
                         "name": "WITHSECONDARYACTIVITY"
                     },
@@ -1194,9 +899,7 @@
                 },
                 {
                     "componentType": "CheckboxOneEdt",
-                    "bindingDependencies": [
-                        "SECONDARYACTIVITY"
-                    ],
+                    "bindingDependencies": ["SECONDARYACTIVITY"],
                     "response": {
                         "name": "SECONDARYACTIVITY"
                     },
@@ -1217,9 +920,7 @@
                 },
                 {
                     "componentType": "IconGridCheckBoxOne",
-                    "bindingDependencies": [
-                        "PLACE"
-                    ],
+                    "bindingDependencies": ["PLACE"],
                     "response": {
                         "name": "PLACE"
                     },
@@ -1240,9 +941,7 @@
                 },
                 {
                     "componentType": "CheckboxBooleanEdt",
-                    "bindingDependencies": [
-                        "WITHSOMEONE"
-                    ],
+                    "bindingDependencies": ["WITHSOMEONE"],
                     "response": {
                         "name": "WITHSOMEONE"
                     },
@@ -1263,13 +962,7 @@
                 },
                 {
                     "componentType": "CheckboxGroupEdt",
-                    "bindingDependencies": [
-                        "COUPLE",
-                        "PARENTS",
-                        "CHILD",
-                        "OTHERKNOWN",
-                        "OTHER"
-                    ],
+                    "bindingDependencies": ["COUPLE", "PARENTS", "CHILD", "OTHERKNOWN", "OTHER"],
                     "responses": [
                         {
                             "response": {
@@ -1325,9 +1018,7 @@
                 },
                 {
                     "componentType": "CheckboxBooleanEdt",
-                    "bindingDependencies": [
-                        "WITHSCREEN"
-                    ],
+                    "bindingDependencies": ["WITHSCREEN"],
                     "response": {
                         "name": "WITHSCREEN"
                     },
@@ -1348,9 +1039,7 @@
                 },
                 {
                     "componentType": "IconGridCheckBoxOne",
-                    "bindingDependencies": [
-                        "GOAL"
-                    ],
+                    "bindingDependencies": ["GOAL"],
                     "response": {
                         "name": "GOAL"
                     },
@@ -1391,9 +1080,7 @@
         },
         {
             "componentType": "CheckboxOneEdt",
-            "bindingDependencies": [
-                "GREATESTACTIVITYDAY"
-            ],
+            "bindingDependencies": ["GREATESTACTIVITYDAY"],
             "response": {
                 "name": "GREATESTACTIVITYDAY"
             },
@@ -1414,9 +1101,7 @@
         },
         {
             "componentType": "CheckboxOneEdt",
-            "bindingDependencies": [
-                "WORSTACTIVITYDAY"
-            ],
+            "bindingDependencies": ["WORSTACTIVITYDAY"],
             "response": {
                 "name": "WORSTACTIVITYDAY"
             },
@@ -1437,9 +1122,7 @@
         },
         {
             "componentType": "CheckboxOneEdt",
-            "bindingDependencies": [
-                "KINDOFDAY"
-            ],
+            "bindingDependencies": ["KINDOFDAY"],
             "response": {
                 "name": "KINDOFDAY"
             },
@@ -1459,9 +1142,7 @@
         },
         {
             "componentType": "CheckboxBooleanEdt",
-            "bindingDependencies": [
-                "EXCEPTIONALDAY"
-            ],
+            "bindingDependencies": ["EXCEPTIONALDAY"],
             "response": {
                 "name": "EXCEPTIONALDAY"
             },
@@ -1482,9 +1163,7 @@
         },
         {
             "componentType": "Duration",
-            "bindingDependencies": [
-                "TRAVELTIME"
-            ],
+            "bindingDependencies": ["TRAVELTIME"],
             "response": {
                 "name": "TRAVELTIME"
             },
@@ -1509,9 +1188,7 @@
         },
         {
             "componentType": "Duration",
-            "bindingDependencies": [
-                "PHONETIME"
-            ],
+            "bindingDependencies": ["PHONETIME"],
             "response": {
                 "name": "PHONETIME"
             },

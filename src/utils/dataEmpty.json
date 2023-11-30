@@ -168,70 +168,46 @@
         "COLLECTED": null
     },
     "FOOT": {
-        "EDITED": [
-            null
-        ],
+        "EDITED": [null],
         "FORCED": null,
         "INPUTED": null,
         "PREVIOUS": null,
-        "COLLECTED": [
-            null
-        ]
+        "COLLECTED": [null]
     },
     "BICYCLE": {
-        "EDITED": [
-            null
-        ],
+        "EDITED": [null],
         "FORCED": null,
         "INPUTED": null,
         "PREVIOUS": null,
-        "COLLECTED": [
-            null
-        ]
+        "COLLECTED": [null]
     },
     "TWOWHEELSMOTORIZED": {
-        "EDITED": [
-            null
-        ],
+        "EDITED": [null],
         "FORCED": null,
         "INPUTED": null,
         "PREVIOUS": null,
-        "COLLECTED": [
-            null
-        ]
+        "COLLECTED": [null]
     },
     "PRIVATECAR": {
-        "EDITED": [
-            null
-        ],
+        "EDITED": [null],
         "FORCED": null,
         "INPUTED": null,
         "PREVIOUS": null,
-        "COLLECTED": [
-            null
-        ]
+        "COLLECTED": [null]
     },
     "OTHERPRIVATE": {
-        "EDITED": [
-            null
-        ],
+        "EDITED": [null],
         "FORCED": null,
         "INPUTED": null,
         "PREVIOUS": null,
-        "COLLECTED": [
-            null
-        ]
+        "COLLECTED": [null]
     },
     "PUBLIC": {
-        "EDITED": [
-            null
-        ],
+        "EDITED": [null],
         "FORCED": null,
         "INPUTED": null,
         "PREVIOUS": null,
-        "COLLECTED": [
-            null
-        ]
+        "COLLECTED": [null]
     },
     "WORSTACTIVITYDAY": {
         "EDITED": null,

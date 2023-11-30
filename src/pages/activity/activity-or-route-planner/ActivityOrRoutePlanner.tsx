@@ -43,7 +43,7 @@ import {
     navToActivityRoutePlanner,
     navToEditActivity,
     navToHome,
-    setEnviro
+    setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { isDesktop, isPwa } from "service/responsive";
@@ -92,7 +92,7 @@ const ActivityOrRoutePlannerPage = () => {
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [initialized, setInitialized] = React.useState<boolean>(false);
     const [isHelpMenuOpen, setIsHelpMenuOpen] = React.useState(false);
-    
+
     setEnviro(context, useNavigate(), callbackHolder);
     const isItDesktop = isDesktop();
 
@@ -298,7 +298,7 @@ const ActivityOrRoutePlannerPage = () => {
     const navToHelpPages = useCallback(() => {
         navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
     }, []);
-    
+
     const renderMenuHelp = () => {
         return (
             <HelpMenu
@@ -459,10 +459,10 @@ const ActivityOrRoutePlannerPage = () => {
 
     const scrollToBottom = () => {
         const messages = document.getElementById("inner-content-scroll");
-        if(messages) {
+        if (messages) {
             messages.scrollTop = messages.scrollHeight;
         }
-    }
+    };
 
     return initialized ? (
         <>
@@ -509,7 +509,10 @@ const ActivityOrRoutePlannerPage = () => {
                                             : heightClass
                                     }
                                 >
-                                    <Box  id="inner-content-scroll" className={classes.innerContentScroll}>
+                                    <Box
+                                        id="inner-content-scroll"
+                                        className={classes.innerContentScroll}
+                                    >
                                         <FlexCenter>
                                             <Alert
                                                 isAlertDisplayed={isAlertDisplayed}
@@ -628,36 +631,35 @@ const ActivityOrRoutePlannerPage = () => {
                                             </>
                                         ) : (
                                             <>
-                                            <Box className={classes.activityCardsContainer}>
-                                                {activitiesRoutesOrGaps.map((activity, index) => (
-                                                    <FlexCenter key={uuidv4()}>
-                                                        <ActivityOrRouteCard
-                                                            labelledBy={""}
-                                                            describedBy={""}
-                                                            onClick={navToCard(
-                                                                activity.iteration || 0,
-                                                                activity.isRoute,
-                                                            )}
-                                                            onClickGap={onOpenAddActivityOrRoute}
-                                                            activityOrRoute={activity}
-                                                            onEdit={onEditActivity(
-                                                                activity.iteration || 0,
-                                                                activity,
-                                                            )}
-                                                            onDelete={onDeleteActivity(
-                                                                idSurvey,
-                                                                source,
-                                                                activity.iteration ?? 0,
-                                                            )}
-                                                            tabIndex={index + 51}
-                                                            modifiable={modifiable}
-                                                        />
-                                                    </FlexCenter>
-                                                ))}
-                                            </Box>
-                                            <div ref={messagesEndRef} />
+                                                <Box className={classes.activityCardsContainer}>
+                                                    {activitiesRoutesOrGaps.map((activity, index) => (
+                                                        <FlexCenter key={uuidv4()}>
+                                                            <ActivityOrRouteCard
+                                                                labelledBy={""}
+                                                                describedBy={""}
+                                                                onClick={navToCard(
+                                                                    activity.iteration || 0,
+                                                                    activity.isRoute,
+                                                                )}
+                                                                onClickGap={onOpenAddActivityOrRoute}
+                                                                activityOrRoute={activity}
+                                                                onEdit={onEditActivity(
+                                                                    activity.iteration || 0,
+                                                                    activity,
+                                                                )}
+                                                                onDelete={onDeleteActivity(
+                                                                    idSurvey,
+                                                                    source,
+                                                                    activity.iteration ?? 0,
+                                                                )}
+                                                                tabIndex={index + 51}
+                                                                modifiable={modifiable}
+                                                            />
+                                                        </FlexCenter>
+                                                    ))}
+                                                </Box>
+                                                <div ref={messagesEndRef} />
                                             </>
-
                                         )}
                                     </Box>
                                 </Box>

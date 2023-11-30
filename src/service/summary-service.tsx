@@ -75,7 +75,6 @@ const getUserActivitiesSummary = (
 };
 
 const getActivityOrRouteInRef = (idSurvey: string, activityOrRouteId: string) => {
-
     return (
         findActivityInNomenclatureReferentielById(activityOrRouteId)?.label ||
         findActivityInAutoCompleteReferentielById(activityOrRouteId)?.label ||
@@ -243,7 +242,7 @@ const getQualityScore = (
     //insufficient number of routes (at least MIN_THRESHOLD_ROUTE_HOURS)
     substractPoint +=
         activitiesRoutesOrGaps.filter(activityOrRoute => activityOrRoute.isRoute).length <
-            MIN_THRESHOLD.MIN_THRESHOLD_ROUTE_HOURS
+        MIN_THRESHOLD.MIN_THRESHOLD_ROUTE_HOURS
             ? POINTS_REMOVE.POINTS_REMOVE_ROUTE_HOURS
             : 0;
 

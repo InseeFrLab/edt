@@ -41,9 +41,7 @@ const InstallPageStep = (props: InstallPageStepProps) => {
 
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { classes, cx } = useStyles(
-        { "innerHeight": window.innerHeight });
-    console.log(window.innerHeight);
+    const { classes, cx } = useStyles({ "innerHeight": window.innerHeight });
     const navToHome = (): void => {
         navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
     };
@@ -69,13 +67,19 @@ const InstallPageStep = (props: InstallPageStepProps) => {
                         >
                             <h2 className={classes.titleBox}>{title}</h2>
                             <p>{description}</p>
-                            {step > 1 && <h3 className={classes.titleBox}>{step - 1 + ". " + stepTitle}</h3>}
+                            {step > 1 && (
+                                <h3 className={classes.titleBox}>{step - 1 + ". " + stepTitle}</h3>
+                            )}
                         </Box>
                     </Box>
 
                     {step > 1 && (
                         <FlexCenter>
-                            <img className={classes.stepImageBox} src={stepImage} alt={t(stepImageAlt)} />
+                            <img
+                                className={classes.stepImageBox}
+                                src={stepImage}
+                                alt={t(stepImageAlt)}
+                            />
                         </FlexCenter>
                     )}
                 </Box>
@@ -98,44 +102,46 @@ const InstallPageStep = (props: InstallPageStepProps) => {
     );
 };
 
-const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { NavButton: InstallPageStep } })(() => ({
-    rootFirst: {
-        height: (innerHeight - 208) + "px",
-        maxHeight: (innerHeight - 208) + "px",
-    },
-    root: {
-        height: (innerHeight - 58) + "px",
-        maxHeight: (innerHeight - 58) + "px",
-    },
-    textBox: {
-        display: "flex",
-        justifyContent: "center",
-    },
-    textInnerBox: {
-        width: "55%",
-        textAlign: "center",
-        fontSize: "14px",
-    },
-    textInnerBoxMobile: {
-        width: important("90%"),
-    },
-    infoBox: {
-        display: "flex",
-        justifyContent: "center",
-        height: "8rem",
-        marginBottom: "1rem",
-    },
-    imgBox: {
-        position: "absolute",
-        top: "1.5rem",
-        left: "50%",
-    },
-    stepImageBox: {
-        height: "50vh"
-    },
-    titleBox: {
-        margin: "0.5rem 0rem"
-    }
-}));
+const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { NavButton: InstallPageStep } })(
+    () => ({
+        rootFirst: {
+            height: innerHeight - 208 + "px",
+            maxHeight: innerHeight - 208 + "px",
+        },
+        root: {
+            height: innerHeight - 58 + "px",
+            maxHeight: innerHeight - 58 + "px",
+        },
+        textBox: {
+            display: "flex",
+            justifyContent: "center",
+        },
+        textInnerBox: {
+            width: "55%",
+            textAlign: "center",
+            fontSize: "14px",
+        },
+        textInnerBoxMobile: {
+            width: important("90%"),
+        },
+        infoBox: {
+            display: "flex",
+            justifyContent: "center",
+            height: "8rem",
+            marginBottom: "1rem",
+        },
+        imgBox: {
+            position: "absolute",
+            top: "1.5rem",
+            left: "50%",
+        },
+        stepImageBox: {
+            height: "50vh",
+        },
+        titleBox: {
+            margin: "0.5rem 0rem",
+        },
+    }),
+);
 
 export default InstallPageStep;
