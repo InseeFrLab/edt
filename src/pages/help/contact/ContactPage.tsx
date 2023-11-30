@@ -1,5 +1,5 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import { Box } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import contact from "assets/illustration/contact.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
@@ -9,10 +9,11 @@ import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
-import { isMobile as isMobileImage, isPwa } from "service/responsive";
+import { isMobile as isMobileImage, isPwa, isTablet } from "service/responsive";
+import packageJson from "../../../../package.json";
 
 const ContactPage = () => {
-    const { classes, cx } = useStyles();
+    const { classes, cx } = useStyles({ "innerHeight": window.innerHeight });
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -20,7 +21,7 @@ const ContactPage = () => {
         navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
     };
 
-    const isNavMobile = !isPwa() && isMobile;
+    const isNavMobile = !isPwa() && (isMobile);
 
     const linkFaq = t("component.help.contact.link-1");
     const linkContact = t("component.help.contact.link-2");
@@ -37,7 +38,7 @@ const ContactPage = () => {
                         <img src={contact} alt={t("accessibility.asset.mui-icon.download")} />
                     </FlexCenter>
                     <Box className={classes.innerBox}>
-                        <Box className={isMobileImage() ? classes.textBoxMobile : classes.textBox}>
+                        <Box className={(isMobileImage() || isTablet()) ? classes.textBoxMobile : classes.textBox}>
                             <h2>{t("component.help.contact.title")}</h2>
                             <p className={classes.paddingBox}>{t("component.help.contact.info-1")}</p>
                             <p>{t("component.help.contact.info-2")}</p>
@@ -52,11 +53,19 @@ const ContactPage = () => {
                     </Box>
                 </Box>
             </Box>
+            <br />
+            <Paper className={classes.footerBox} component="footer" square variant="outlined">
+                <Box>
+                    <Typography variant="caption" color="initial">
+                        <b>{t("common.version")}:</b> {packageJson.version} - {packageJson.dateVersion}
+                    </Typography>
+                </Box>
+            </Paper>
         </Box>
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { ContactPage } })(theme => ({
+const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { ContactPage } })(theme => ({
     installBox: {
         padding: "1rem",
     },
@@ -70,7 +79,7 @@ const useStyles = makeStylesEdt({ "name": { ContactPage } })(theme => ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        height: "100%",
+        height: innerHeight - 78 + "px",
     },
     innerBox: {
         display: "flex",
