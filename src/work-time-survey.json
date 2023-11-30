@@ -2009,6 +2009,13 @@
             "response": {
                 "name": "WEEKTYPE"
             },
+            "responses": [
+                {
+                    "response": {
+                        "name": "WEEKTYPE"
+                    }
+                }
+            ],
             "hierarchy": {
                 "sequence": {
                     "id": "sequence_1",
