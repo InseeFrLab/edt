@@ -1,7 +1,7 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button } from "@mui/material";
-import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
-import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
+import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
+import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { useCallback } from "react";
 import { isIOS, isMobile } from "react-device-detect";
