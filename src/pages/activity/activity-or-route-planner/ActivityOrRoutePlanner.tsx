@@ -19,6 +19,7 @@ import PageIcon from "components/commons/PageIcon/PageIcon";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
+import HelpMenu from "components/edt/HelpMenu/HelpMenu";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
@@ -36,13 +37,13 @@ import { getLoopSize, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
+    getNavigatePath,
     getOrchestratorPage,
     navFullPath,
     navToActivityRoutePlanner,
     navToEditActivity,
-    navToHelp,
     navToHome,
-    setEnviro,
+    setEnviro
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { isDesktop, isPwa } from "service/responsive";
@@ -90,7 +91,8 @@ const ActivityOrRoutePlannerPage = () => {
     );
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [initialized, setInitialized] = React.useState<boolean>(false);
-
+    const [isHelpMenuOpen, setIsHelpMenuOpen] = React.useState(false);
+    
     setEnviro(context, useNavigate(), callbackHolder);
     const isItDesktop = isDesktop();
 
@@ -281,8 +283,38 @@ const ActivityOrRoutePlannerPage = () => {
         navFullPath(idSurvey, EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.ACTIVITY);
     }, []);
 
+    const onCloseHelpMenu = useCallback(() => {
+        setIsHelpMenuOpen(false);
+    }, [isHelpMenuOpen]);
+
+    const navToContactPage = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.CONTACT));
+    }, []);
+
+    const navToInstallPage = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.INSTALL));
+    }, []);
+
+    const navToHelpPages = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
+    }, []);
+    
+    const renderMenuHelp = () => {
+        return (
+            <HelpMenu
+                labelledBy={""}
+                describedBy={""}
+                onClickContact={navToContactPage}
+                onClickInstall={navToInstallPage}
+                onClickHelp={navToHelpPages}
+                handleClose={onCloseHelpMenu}
+                open={isHelpMenuOpen}
+            />
+        );
+    };
+
     const onHelp = useCallback(() => {
-        navToHelp();
+        setIsHelpMenuOpen(true);
     }, []);
 
     const navToActivityOrRoute = (idSurvey: string, iteration: number, isItRoute?: boolean): void => {
@@ -333,6 +365,7 @@ const ActivityOrRoutePlannerPage = () => {
 
     useEffect(() => {
         setScore(getScore(idSurvey, t));
+        messagesEndRef.current?.scrollIntoView();
     }, [activitiesRoutesOrGaps]);
 
     useEffect(() => {
@@ -422,6 +455,15 @@ const ActivityOrRoutePlannerPage = () => {
 
     const isReviewerMode = isReviewer() && !isDemoMode();
 
+    const messagesEndRef = React.useRef(null);
+
+    const scrollToBottom = () => {
+        const messages = document.getElementById("inner-content-scroll");
+        if(messages) {
+            messages.scrollTop = messages.scrollHeight;
+        }
+    }
+
     return initialized ? (
         <>
             <Box
@@ -432,6 +474,7 @@ const ActivityOrRoutePlannerPage = () => {
             >
                 {(isItDesktop || !isSubchildDisplayed) && (
                     <Box className={classes.innerSurveyPageBox}>
+                        {renderMenuHelp()}
                         <SurveyPage
                             onNavigateBack={navToActivityRouteHome}
                             onPrevious={navToActivityRouteHome}
@@ -466,7 +509,7 @@ const ActivityOrRoutePlannerPage = () => {
                                             : heightClass
                                     }
                                 >
-                                    <Box className={classes.innerContentScroll}>
+                                    <Box  id="inner-content-scroll" className={classes.innerContentScroll}>
                                         <FlexCenter>
                                             <Alert
                                                 isAlertDisplayed={isAlertDisplayed}
@@ -584,6 +627,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                 </FlexCenter>
                                             </>
                                         ) : (
+                                            <>
                                             <Box className={classes.activityCardsContainer}>
                                                 {activitiesRoutesOrGaps.map((activity, index) => (
                                                     <FlexCenter key={uuidv4()}>
@@ -611,6 +655,9 @@ const ActivityOrRoutePlannerPage = () => {
                                                     </FlexCenter>
                                                 ))}
                                             </Box>
+                                            <div ref={messagesEndRef} />
+                                            </>
+
                                         )}
                                     </Box>
                                 </Box>

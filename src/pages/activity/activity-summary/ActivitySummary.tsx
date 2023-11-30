@@ -22,6 +22,7 @@ import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard
 import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
 import DayCharacteristics from "components/edt/DayCharacteristic/DayCharacteristic";
 import DaySummary from "components/edt/DaySummary/DaySummary";
+import HelpMenu from "components/edt/HelpMenu/HelpMenu";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
@@ -46,10 +47,9 @@ import {
     navFullPath,
     navToActivityOrPlannerOrSummary,
     navToEditActivity,
-    navToHelp,
     navToHome,
     saveAndNav,
-    setEnviro,
+    setEnviro
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { getUserActivitiesCharacteristics, getUserActivitiesSummary } from "service/summary-service";
@@ -72,7 +72,7 @@ import {
     saveData,
     setValue,
     surveyLocked,
-    validateSurvey,
+    validateSurvey
 } from "service/survey-service";
 import { getUserRights } from "service/user-service";
 import ActivitiesSummaryExportTemplate from "template/summary-export/ActivitiesSummaryExportTemplate";
@@ -92,6 +92,8 @@ const ActivitySummaryPage = () => {
     let idSurvey = getSurveyIdFromUrl(context, location);
     const [score, setScore] = React.useState<number | undefined>(undefined);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
+    const [isHelpMenuOpen, setIsHelpMenuOpen] = React.useState(false);
+    
     const localIsSummaryEdited = getLocalStorageValue(
         idSurvey,
         LocalStorageVariableEnum.IS_EDITED_SUMMARY,
@@ -383,216 +385,253 @@ const ActivitySummaryPage = () => {
         navFullPath(idSurvey, EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.ACTIVITY);
     }, []);
 
+    const onCloseHelpMenu = useCallback(() => {
+        setIsHelpMenuOpen(false);
+    }, [isHelpMenuOpen]);
+
+    const navToContactPage = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.CONTACT));
+    }, []);
+
+    const navToInstallPage = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.INSTALL));
+    }, []);
+
+    const navToHelpPages = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
+    }, []);
+    
+    const renderMenuHelp = () => {
+        return (
+            <HelpMenu
+                labelledBy={""}
+                describedBy={""}
+                onClickContact={navToContactPage}
+                onClickInstall={navToInstallPage}
+                onClickHelp={navToHelpPages}
+                handleClose={onCloseHelpMenu}
+                open={isHelpMenuOpen}
+            />
+        );
+    };
+
+    const onHelp = useCallback(() => {
+        setIsHelpMenuOpen(true);
+    }, []);
+
     return initialized ? (
-        <SurveyPage
-            onPrevious={navToHome}
-            firstName={getPrintedFirstName(idSurvey)}
-            firstNamePrefix={t("component.survey-page-edit-header.planning-of")}
-            onHelp={navToHelp}
-            onEdit={onEdit}
-            activityProgressBar={true}
-            idSurvey={idSurvey}
-            score={score}
-            modifiable={modifiable}
-        >
-            <FlexCenter>
-                <Box
-                    className={
-                        isReviewerMode && activitiesRoutesOrGaps.length !== 0
-                            ? classes.infoReviewerBox
-                            : classes.infoBox
-                    }
-                >
-                    {activitiesRoutesOrGaps.length !== 0 &&
-                        (isReviewerMode ? (
-                            <Box className={classes.headerActivityLockBox}>
+        <>
+            {renderMenuHelp()}
+            <SurveyPage
+                onPrevious={navToHome}
+                firstName={getPrintedFirstName(idSurvey)}
+                firstNamePrefix={t("component.survey-page-edit-header.planning-of")}
+                onHelp={onHelp}
+                onEdit={onEdit}
+                activityProgressBar={true}
+                idSurvey={idSurvey}
+                score={score}
+                modifiable={modifiable}
+            >
+                <FlexCenter>
+                    <Box
+                        className={
+                            isReviewerMode && activitiesRoutesOrGaps.length !== 0
+                                ? classes.infoReviewerBox
+                                : classes.infoBox
+                        }
+                    >
+                        {activitiesRoutesOrGaps.length !== 0 &&
+                            (isReviewerMode ? (
+                                <Box className={classes.headerActivityLockBox}>
+                                    <>
+                                        <Alert
+                                            isAlertDisplayed={isAlertLockDisplayed}
+                                            onCompleteCallBack={lock}
+                                            onCancelCallBack={displayAlert(setIsAlertLockDisplayed, false)}
+                                            labels={isLocked ? alertUnlockLabels : alertLockLabels}
+                                            icon={errorIcon}
+                                            errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                                        ></Alert>
+                                    </>
+                                    <Box className={classes.headerActivityBox}>
+                                        <Typography className={classes.label}>
+                                            {t("page.activity-planner.activity-for-day")}
+                                        </Typography>
+                                        <TooltipInfo infoLabels={infoLabels} titleLabels={titleLabels} />
+                                    </Box>
+                                    <Box className={classes.headerLockBox}>
+                                        <Typography className={classes.labelLock}>
+                                            {t("page.reviewer-home.lock-survey")}
+                                        </Typography>
+
+                                        <Switch
+                                            checked={isLocked}
+                                            onChange={lockActivity}
+                                            disabled={!modifiable}
+                                        />
+                                    </Box>
+                                </Box>
+                            ) : (
                                 <>
-                                    <Alert
-                                        isAlertDisplayed={isAlertLockDisplayed}
-                                        onCompleteCallBack={lock}
-                                        onCancelCallBack={displayAlert(setIsAlertLockDisplayed, false)}
-                                        labels={isLocked ? alertUnlockLabels : alertLockLabels}
-                                        icon={errorIcon}
-                                        errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
-                                    ></Alert>
-                                </>
-                                <Box className={classes.headerActivityBox}>
                                     <Typography className={classes.label}>
                                         {t("page.activity-planner.activity-for-day")}
                                     </Typography>
                                     <TooltipInfo infoLabels={infoLabels} titleLabels={titleLabels} />
-                                </Box>
-                                <Box className={classes.headerLockBox}>
-                                    <Typography className={classes.labelLock}>
-                                        {t("page.reviewer-home.lock-survey")}
-                                    </Typography>
-
-                                    <Switch
-                                        checked={isLocked}
-                                        onChange={lockActivity}
-                                        disabled={!modifiable}
-                                    />
-                                </Box>
-                            </Box>
-                        ) : (
+                                </>
+                            ))}
+                        {activitiesRoutesOrGaps.length === 0 && (
                             <>
                                 <Typography className={classes.label}>
                                     {t("page.activity-planner.activity-for-day")}
                                 </Typography>
-                                <TooltipInfo infoLabels={infoLabels} titleLabels={titleLabels} />
+                                <Typography className={classes.date}>
+                                    <h1 className={classes.h1}>
+                                        {formateDateToFrenchFormat(
+                                            generateDateFromStringInput(surveyDate),
+                                            getLanguage(),
+                                        )}
+                                    </h1>
+                                </Typography>
                             </>
-                        ))}
-                    {activitiesRoutesOrGaps.length === 0 && (
-                        <>
-                            <Typography className={classes.label}>
-                                {t("page.activity-planner.activity-for-day")}
-                            </Typography>
-                            <Typography className={classes.date}>
-                                <h1 className={classes.h1}>
-                                    {formateDateToFrenchFormat(
-                                        generateDateFromStringInput(surveyDate),
-                                        getLanguage(),
-                                    )}
-                                </h1>
-                            </Typography>
-                        </>
-                    )}
-                </Box>
-            </FlexCenter>
-            <Box className={classes.activityCardsContainer}>
-                {activitiesRoutesOrGaps.map((activity, index) => (
-                    <FlexCenter key={uuidv4()}>
-                        <ActivityOrRouteCard
-                            labelledBy={""}
-                            describedBy={""}
-                            onClick={navToCard(activity.iteration || 0)}
-                            onClickGap={onOpenAddActivityOrRoute}
-                            activityOrRoute={activity}
-                            onEdit={onEditActivity(activity.iteration || 0)}
-                            onDelete={onDeleteActivity(
-                                idSurvey,
-                                context.source,
-                                activity.iteration ?? 0,
-                            )}
-                            tabIndex={index + 51}
-                            modifiable={modifiable}
-                        />
-                    </FlexCenter>
-                ))}
-            </Box>
-            <FlexCenter className={classes.addActivityOrRouteButtonBox}>
-                <Button variant="contained" onClick={onOpenAddActivityOrRoute} disabled={!modifiable}>
-                    {t("page.activity-summary.add-activity-or-route")}
-                </Button>
-            </FlexCenter>
-            <Divider variant="middle" flexItem />
-            {isSummaryEdited ? (
-                <FlexCenter>
-                    <Box className={classes.tooltipBox}>
-                        <Info
-                            boldText={t("page.activity-summary.alert-tooltip-edit.alert-bold")}
-                            isAlertInfo={true}
-                            infoIconAlt={t("accessibility.asset.info.info-alt")}
-                            infoIcon={InfoAlertIcon}
-                            border={true}
-                        />
+                        )}
                     </Box>
                 </FlexCenter>
-            ) : (
-                <></>
-            )}
-            <Box className={classes.summaryBox}>
-                <DayCharacteristics
-                    userActivitiesCharacteristics={userActivitiesCharacteristics}
-                    onEdit={onEditCharacteristics}
-                    modifiable={modifiable}
-                />
-                <DaySummary userActivitiesSummary={userActivitiesSummary} />
-            </Box>
-            <FlexCenter className={classes.download}>
-                {isReviewerMode ? (
-                    <>
-                        <Alert
-                            isAlertDisplayed={isAlertValidateDisplayed}
-                            onCompleteCallBack={validate}
-                            onCancelCallBack={displayAlert(setIsAlertValidateDisplayed, false)}
-                            labels={alertValidateLabels}
-                            icon={errorIcon}
-                            errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
-                        ></Alert>
-                        <Button variant="outlined" onClick={back} className={classes.buttonNav}>
-                            {t("common.navigation.back")}
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            className={classes.buttonNav}
-                            startIcon={
-                                <img
-                                    src={downloadIcon}
-                                    alt={t("accessibility.asset.mui-icon.download")}
-                                    className={classes.midSizeButton}
-                                />
-                            }
-                        >
-                            <PDFDownloadLink
-                                className={classes.downloadLinkReviewer}
-                                document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
-                                fileName={
-                                    t("export.activities-summary.file-name") +
-                                    getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
-                                    "_" +
-                                    getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
-                                    ".pdf"
-                                }
-                            >
-                                {() => t("page.activity-summary.download-pdf")}
-                            </PDFDownloadLink>
-                        </Button>
-                        <Button
-                            variant="contained"
-                            onClick={openPopup}
-                            disabled={!modifiable}
-                            startIcon={
-                                <img
-                                    src={checkIcon}
-                                    alt={t("accessibility.asset.mui-icon.check")}
-                                    className={classes.midSizeButton}
-                                />
-                            }
-                        >
-                            {t("page.reviewer-home.validate-survey")}
-                        </Button>
-                    </>
+                <Box className={classes.activityCardsContainer}>
+                    {activitiesRoutesOrGaps.map((activity, index) => (
+                        <FlexCenter key={uuidv4()}>
+                            <ActivityOrRouteCard
+                                labelledBy={""}
+                                describedBy={""}
+                                onClick={navToCard(activity.iteration || 0)}
+                                onClickGap={onOpenAddActivityOrRoute}
+                                activityOrRoute={activity}
+                                onEdit={onEditActivity(activity.iteration || 0)}
+                                onDelete={onDeleteActivity(
+                                    idSurvey,
+                                    context.source,
+                                    activity.iteration ?? 0,
+                                )}
+                                tabIndex={index + 51}
+                                modifiable={modifiable}
+                            />
+                        </FlexCenter>
+                    ))}
+                </Box>
+                <FlexCenter className={classes.addActivityOrRouteButtonBox}>
+                    <Button variant="contained" onClick={onOpenAddActivityOrRoute} disabled={!modifiable}>
+                        {t("page.activity-summary.add-activity-or-route")}
+                    </Button>
+                </FlexCenter>
+                <Divider variant="middle" flexItem />
+                {isSummaryEdited ? (
+                    <FlexCenter>
+                        <Box className={classes.tooltipBox}>
+                            <Info
+                                boldText={t("page.activity-summary.alert-tooltip-edit.alert-bold")}
+                                isAlertInfo={true}
+                                infoIconAlt={t("accessibility.asset.info.info-alt")}
+                                infoIcon={InfoAlertIcon}
+                                border={true}
+                            />
+                        </Box>
+                    </FlexCenter>
                 ) : (
-                    <>
-                        <Button variant="contained" className={classes.downloadButton}>
-                            <PDFDownloadLink
-                                className={classes.downloadLink}
-                                document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
-                                fileName={
-                                    t("export.activities-summary.file-name") +
-                                    getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
-                                    "_" +
-                                    getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
-                                    ".pdf"
+                    <></>
+                )}
+                <Box className={classes.summaryBox}>
+                    <DayCharacteristics
+                        userActivitiesCharacteristics={userActivitiesCharacteristics}
+                        onEdit={onEditCharacteristics}
+                        modifiable={modifiable}
+                    />
+                    <DaySummary userActivitiesSummary={userActivitiesSummary} />
+                </Box>
+                <FlexCenter className={classes.download}>
+                    {isReviewerMode ? (
+                        <>
+                            <Alert
+                                isAlertDisplayed={isAlertValidateDisplayed}
+                                onCompleteCallBack={validate}
+                                onCancelCallBack={displayAlert(setIsAlertValidateDisplayed, false)}
+                                labels={alertValidateLabels}
+                                icon={errorIcon}
+                                errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                            ></Alert>
+                            <Button variant="outlined" onClick={back} className={classes.buttonNav}>
+                                {t("common.navigation.back")}
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                className={classes.buttonNav}
+                                startIcon={
+                                    <img
+                                        src={downloadIcon}
+                                        alt={t("accessibility.asset.mui-icon.download")}
+                                        className={classes.midSizeButton}
+                                    />
                                 }
                             >
-                                {() => t("page.activity-summary.download-pdf")}
-                            </PDFDownloadLink>
-                        </Button>
-                    </>
-                )}
-            </FlexCenter>
+                                <PDFDownloadLink
+                                    className={classes.downloadLinkReviewer}
+                                    document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
+                                    fileName={
+                                        t("export.activities-summary.file-name") +
+                                        getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
+                                        "_" +
+                                        getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
+                                        ".pdf"
+                                    }
+                                >
+                                    {() => t("page.activity-summary.download-pdf")}
+                                </PDFDownloadLink>
+                            </Button>
+                            <Button
+                                variant="contained"
+                                onClick={openPopup}
+                                disabled={!modifiable}
+                                startIcon={
+                                    <img
+                                        src={checkIcon}
+                                        alt={t("accessibility.asset.mui-icon.check")}
+                                        className={classes.midSizeButton}
+                                    />
+                                }
+                            >
+                                {t("page.reviewer-home.validate-survey")}
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button variant="contained" className={classes.downloadButton}>
+                                <PDFDownloadLink
+                                    className={classes.downloadLink}
+                                    document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
+                                    fileName={
+                                        t("export.activities-summary.file-name") +
+                                        getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
+                                        "_" +
+                                        getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
+                                        ".pdf"
+                                    }
+                                >
+                                    {() => t("page.activity-summary.download-pdf")}
+                                </PDFDownloadLink>
+                            </Button>
+                        </>
+                    )}
+                </FlexCenter>
 
-            <AddActivityOrRoute
-                labelledBy={""}
-                describedBy={""}
-                onClickActivity={addActivityOrRoute(idSurvey, false)}
-                onClickRoute={addActivityOrRoute(idSurvey, true)}
-                handleClose={onCloseAddActivityOrRoute}
-                open={isAddActivityOrRouteOpen}
-            />
-        </SurveyPage>
+                <AddActivityOrRoute
+                    labelledBy={""}
+                    describedBy={""}
+                    onClickActivity={addActivityOrRoute(idSurvey, false)}
+                    onClickRoute={addActivityOrRoute(idSurvey, true)}
+                    handleClose={onCloseAddActivityOrRoute}
+                    open={isAddActivityOrRouteOpen}
+                />
+            </SurveyPage>
+            </>
     ) : !error ? (
         <LoadingFull
             message={t("page.home.loading.message")}
