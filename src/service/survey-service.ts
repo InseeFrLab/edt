@@ -447,7 +447,7 @@ const getRemoteSavedSurveysDatas = (
                                     remoteSurveyData.stateData?.date > 0 &&
                                     (localSurveyData === undefined ||
                                         (localSurveyData.lastLocalSaveDate ?? 0) <
-                                            remoteSurveyData.stateData.date))
+                                        remoteSurveyData.stateData.date))
                             ) {
                                 return lunaticDatabase.save(surveyId, surveyData);
                             }
@@ -909,6 +909,10 @@ const addToSecondaryActivityReferentiel = (
 ) => {
     lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
         currentData[referentiel].push(newItem);
+        currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE].push({
+            id: newItem.value,
+            label: newItem.label
+        });
         saveReferentiels(currentData);
     });
 };
@@ -1337,15 +1341,15 @@ const createUserDataMap = (usersurvey: UserSurveys[]) => {
             }
             return data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
                 ? {
-                      data: data,
-                      firstName: "zzzz " + (numInterviewer + 1),
-                      num: numInterviewer + 1,
-                  }
+                    data: data,
+                    firstName: "zzzz " + (numInterviewer + 1),
+                    num: numInterviewer + 1,
+                }
                 : {
-                      data: data,
-                      firstName: "zzzzz " + index + 1,
-                      num: index + 1,
-                  };
+                    data: data,
+                    firstName: "zzzzz " + index + 1,
+                    num: index + 1,
+                };
         })
         .sort((u1, u2) => u1.data.surveyUnitId.localeCompare(u2.data.surveyUnitId));
 };
@@ -1703,5 +1707,6 @@ export {
     toIgnoreForRoute,
     userDatasMap,
     validateAllEmptySurveys,
-    validateSurvey,
+    validateSurvey
 };
+
