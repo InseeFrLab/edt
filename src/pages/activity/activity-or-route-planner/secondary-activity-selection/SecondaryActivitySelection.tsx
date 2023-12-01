@@ -44,6 +44,7 @@ const SecondaryActivitySelectionPage = () => {
             otherButtonLabel: t("page.secondary-activity-selection.other-button"),
             subchildLabel: t("page.secondary-activity-selection.add-activity-label"),
             inputPlaceholder: t("page.secondary-activity-selection.input-placeholder"),
+            validateButton: t("component.activity-selecter.validate-button"),
         },
         addToReferentielCallBack: (newItem: CheckboxOneCustomOption) => {
             addToSecondaryActivityReferentiel(
