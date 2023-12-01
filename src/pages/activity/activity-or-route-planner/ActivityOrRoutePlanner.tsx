@@ -363,6 +363,8 @@ const ActivityOrRoutePlannerPage = () => {
         </React.Fragment>
     );
 
+    const messagesEndRef = React.useRef<null | HTMLDivElement>(null);
+
     useEffect(() => {
         setScore(getScore(idSurvey, t));
         messagesEndRef.current?.scrollIntoView();
@@ -454,15 +456,6 @@ const ActivityOrRoutePlannerPage = () => {
     const lockActivity = useCallback(() => setIsAlertLockDisplayed(true), []);
 
     const isReviewerMode = isReviewer() && !isDemoMode();
-
-    const messagesEndRef = React.useRef(null);
-
-    const scrollToBottom = () => {
-        const messages = document.getElementById("inner-content-scroll");
-        if (messages) {
-            messages.scrollTop = messages.scrollHeight;
-        }
-    };
 
     return initialized ? (
         <>

@@ -21,7 +21,7 @@ const ContactPage = () => {
         navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
     };
 
-    const isNavMobile = !isPwa() && (isMobile);
+    const isNavMobile = !isPwa() && isMobile;
 
     const linkFaq = t("component.help.contact.link-1");
     const linkContact = t("component.help.contact.link-2");
@@ -38,7 +38,11 @@ const ContactPage = () => {
                         <img src={contact} alt={t("accessibility.asset.mui-icon.download")} />
                     </FlexCenter>
                     <Box className={classes.innerBox}>
-                        <Box className={(isMobileImage() || isTablet()) ? classes.textBoxMobile : classes.textBox}>
+                        <Box
+                            className={
+                                isMobileImage() || isTablet() ? classes.textBoxMobile : classes.textBox
+                            }
+                        >
                             <h2>{t("component.help.contact.title")}</h2>
                             <p className={classes.paddingBox}>{t("component.help.contact.info-1")}</p>
                             <p>{t("component.help.contact.info-2")}</p>
