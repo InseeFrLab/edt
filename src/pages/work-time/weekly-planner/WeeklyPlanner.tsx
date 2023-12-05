@@ -15,6 +15,7 @@ import OtherIcon from "assets/illustration/place-work-categories/other.svg";
 import WorkIcon from "assets/illustration/place-work-categories/work.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
+import HelpMenu from "components/edt/HelpMenu/HelpMenu";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
@@ -25,11 +26,11 @@ import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import {
     closeFormularieAndNav,
     getFullNavigatePath,
+    getNavigatePath,
     getOrchestratorPage,
     navFullPath,
-    navToHelp,
     saveAndNav,
-    setEnviro,
+    setEnviro
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { getData, getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
@@ -37,6 +38,8 @@ import { getSurveyIdFromUrl } from "utils/utils";
 
 const WeeklyPlannerPage = () => {
     const context: OrchestratorContext = useOutletContext();
+    const navigate = useNavigate();
+
     const { t } = useTranslation();
     const location = useLocation();
     const idSurvey = getSurveyIdFromUrl(context, location);
@@ -45,6 +48,7 @@ const WeeklyPlannerPage = () => {
 
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
     const [isPlaceWorkDisplayed, setIsPlaceWorkDisplayed] = React.useState<boolean>(false);
+    const [isHelpMenuOpen, setIsHelpMenuOpen] = React.useState(false);
 
     const [displayedDayHeader, setDisplayedDayHeader] = React.useState<string>("");
 
@@ -153,7 +157,6 @@ const WeeklyPlannerPage = () => {
     };
 
     const validateAndNav = (): void => {
-        console.log(displayDayOverview, isPlaceWorkDisplayed);
         if (displayDayOverview) {
             save();
             if (isPlaceWorkDisplayed && localStorage.getItem("HOURCHECKED_DISPLAYED") != "true") {
@@ -175,15 +178,51 @@ const WeeklyPlannerPage = () => {
         navFullPath(idSurvey, EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.WORK_TIME);
     };
 
+
+    const onCloseHelpMenu = useCallback(() => {
+        setIsHelpMenuOpen(false);
+    }, [isHelpMenuOpen]);
+
+    const navToContactPage = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.CONTACT));
+    }, []);
+
+    const navToInstallPage = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.INSTALL));
+    }, []);
+
+    const navToHelpPages = useCallback(() => {
+        navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
+    }, []);
+
+    const renderMenuHelp = () => {
+        return (
+            <HelpMenu
+                labelledBy={""}
+                describedBy={""}
+                onClickContact={navToContactPage}
+                onClickInstall={navToInstallPage}
+                onClickHelp={navToHelpPages}
+                handleClose={onCloseHelpMenu}
+                open={isHelpMenuOpen}
+            />
+        );
+    };
+
+    const onHelp = useCallback(() => {
+        setIsHelpMenuOpen(true);
+    }, []);
+
     return (
         <>
+            {renderMenuHelp()}
             <SurveyPage
                 idSurvey={idSurvey}
                 validate={useCallback(() => validateAndNav(), [displayDayOverview])}
                 onNavigateBack={useCallback(() => validateAndNav(), [displayDayOverview])}
                 onPrevious={useCallback(() => saveAndNav(idSurvey), [])}
                 onEdit={useCallback(() => onEdit(), [])}
-                onHelp={navToHelp}
+                onHelp={onHelp}
                 firstName={getPrintedFirstName(idSurvey)}
                 firstNamePrefix={t("component.survey-page-edit-header.week-of")}
                 simpleHeader={displayDayOverview}
