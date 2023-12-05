@@ -1,6 +1,8 @@
 import {
     DOMESTIC_CATEGORIES_ACTIVITES_LIST,
+    EAT_CATEGORIES_ACTIVITES_LIST,
     HOME_CATEGORY_PLACE_LIST,
+    MANDATORY_START_CODES_ACTIVIY,
     MAX_SCORE,
     MINUTES_DAY,
     MIN_THRESHOLD,
@@ -222,41 +224,93 @@ const getQualityScore = (
 ) => {
     const activitesFiltred = activitiesRoutesOrGaps.map(act => act.durationMinutes ?? 0);
     const allMinutesActivites = getAllTime(activitesFiltred);
+    const numActivities = activitiesRoutesOrGaps.filter(act => !act.isGap).length;
+    const minutesUnderConsomed = MINUTES_DAY - allMinutesActivites;
+    const minutesOverConsomed = allMinutesActivites - MINUTES_DAY;
     let substractPoint = 0;
 
-    ////missing at least MIN_THRESHOLD_PROVIDED_HOURS hours
+    // 1 - num sleep (111,114) < 5h -> 3
+    const sleepActivities = activitiesRoutesOrGaps.filter(activityOrRoute =>
+        (activityOrRoute.activity?.activityCode ?? "") in SLEEPING_CATEGORIES_ACTIVITES_LIST)
+        .map(activityOrRoute => activityOrRoute.durationMinutes ?? 0);
+    substractPoint += getAllTime(sleepActivities) > (60 * MIN_THRESHOLD.MIN_THRESHOLD_SLEEP_ACTIVITES_HOURS) ? POINTS_REMOVE.POINTS_REMOVE_SLEEP_ACTIVITES_HOURS : 0;
+
+    // 2 - num eat (140) < 2h -> 3
+    const eatActivities = activitiesRoutesOrGaps.filter(activityOrRoute =>
+        (activityOrRoute.activity?.activityCode ?? "") in EAT_CATEGORIES_ACTIVITES_LIST)
+        .map(activityOrRoute => activityOrRoute.durationMinutes ?? 0);
+    substractPoint += getAllTime(eatActivities) > (60 * MIN_THRESHOLD.MIN_THRESHOLD_EAT_ACTIVITES_HOURS) ? POINTS_REMOVE.POINTS_REMOVE_EAT_ACTIVITES_HOURS : 0;
+
+    // 3  - num routes <2 -> 2
+    //insufficient number of routes (at least MIN_THRESHOLD_ROUTE_HOURS)
     substractPoint +=
-        MINUTES_DAY - allMinutesActivites > MIN_THRESHOLD.MIN_THRESHOLD_PROVIDED_HOURS * 60
-            ? POINTS_REMOVE.POINTS_REMOVE_PROVIDED_HOURS
+        activitiesRoutesOrGaps.filter(activityOrRoute => activityOrRoute.isRoute).length <= MIN_THRESHOLD.MIN_THRESHOLD_ROUTES
+            ? POINTS_REMOVE.POINTS_REMOVE_ROUTES
             : 0;
+
+    // 4 - pas d'activité en dehors du temps perso ou temps travail/etudes (codes commence par 3,4,5,6) -> aucune -> 3
+    substractPoint += activitiesRoutesOrGaps.filter(activityOrRoute =>
+        (activityOrRoute.activity?.activityCode?.charAt(1) ?? "") in MANDATORY_START_CODES_ACTIVIY).length == 0 ?
+        POINTS_REMOVE.POINTS_REMOVE_MANDATORY_START_CODES_ACTIVIY : 0;
+
+    // 5  - nombre de boucles < 10 -> 5
+    substractPoint += numActivities < MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES ? POINTS_REMOVE.POINTS_REMOVE_MIN_ACTIVITES : 0;
+
+    // 6 - nombre de boucles 10 - 15 -> 3
+    substractPoint += (numActivities >=
+        MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES && numActivities < MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES_2) ?
+        POINTS_REMOVE.POINTS_REMOVE_MIN_ACTIVITES_2 : 0;
+
+    // 7 - minutes totals <60min manquants ->1
+    substractPoint += minutesUnderConsomed > MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME ?
+        POINTS_REMOVE.POINTS_REMOVE_MISSING_TIME : 0;
+
+    // 8 - minutes totals 1h -2h manquants -> 3
+    substractPoint += (minutesUnderConsomed >=
+        MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME && minutesUnderConsomed <= MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME_2) ?
+        POINTS_REMOVE.POINTS_REMOVE_MISSING_TIME_2 : 0;
+
+    // 9 - minutes totals >2h manquants -> 5
+    substractPoint += (minutesUnderConsomed >= MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME_2) ? POINTS_REMOVE.POINTS_REMOVE_MISSING_TIME_2 : 0;
+
+    // 10 - minutes totals <3h en plus -> 1
+    substractPoint += (minutesOverConsomed <= MIN_THRESHOLD.MIN_THRESHOLD_OVER_TIME) ? POINTS_REMOVE.POINTS_REMOVE_OVER_TIME : 0;
+
+    // 11 - minutes totals >3h en plus -> 2
+    substractPoint += (minutesOverConsomed > MIN_THRESHOLD.MIN_THRESHOLD_OVER_TIME) ? POINTS_REMOVE.POINTS_REMOVE_OVER_TIME_2 : 0;
+
+    // 12 - nombre plages horaires manquants -> 1
     //missing at least MIN_THRESHOLD_MISSING_HOURS hours
     substractPoint +=
         MINUTES_DAY - allMinutesActivites > MIN_THRESHOLD.MIN_THRESHOLD_MISSING_HOURS * 60
             ? POINTS_REMOVE.POINTS_REMOVE_MISSING_HOURS
             : 0;
+
+    // 13 - nombre chauvechements -> 1
     //exist + MIN_THRESHOLD_OVERLAPS_HOURS overlaps
     substractPoint +=
         overlaps.length >= MIN_THRESHOLD.MIN_THRESHOLD_OVERLAPS_HOURS
             ? POINTS_REMOVE.POINTS_REMOVE_OVERLAPS_HOURS
             : 0;
-    //insufficient number of routes (at least MIN_THRESHOLD_ROUTE_HOURS)
-    substractPoint +=
-        activitiesRoutesOrGaps.filter(activityOrRoute => activityOrRoute.isRoute).length <
-        MIN_THRESHOLD.MIN_THRESHOLD_ROUTE_HOURS
-            ? POINTS_REMOVE.POINTS_REMOVE_ROUTE_HOURS
-            : 0;
 
+    // 14 - variable presence manquante -> 1
     substractPoint += missingVariablesSomeone(activitiesRoutesOrGaps)
         ? POINTS_REMOVE.POINTS_REMOVE_MISSING_SOMEONE
         : 0;
+
+    // 15 - variable ecran manquante -> 1
     substractPoint += missingVariablesScreen(activitiesRoutesOrGaps)
         ? POINTS_REMOVE.POINTS_REMOVE_MISSING_SCREEN
         : 0;
+
+    // 16 - variable lieu manquante -> 1
     substractPoint += missingVariablesPlace(activitiesRoutesOrGaps)
-        ? POINTS_REMOVE.POINTS_REMOVE_MISSING_SOMEONE
+        ? POINTS_REMOVE.POINTS_REMOVE_MISSING_PLACE
         : 0;
-    substractPoint += missingVariablesGoal(activitiesRoutesOrGaps)
-        ? POINTS_REMOVE.POINTS_REMOVE_MISSING_SOMEONE
+
+    // 17 - variable moyen de transport manquant - 1
+    substractPoint += missingVariablesMeanOfTransport(activitiesRoutesOrGaps)
+        ? POINTS_REMOVE.POINTS_REMOVE_MISSING_MEANOFTRANSPORT
         : 0;
 
     return groupScore(MAX_SCORE - substractPoint, t);
@@ -296,11 +350,7 @@ const missingVariablesSomeone = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) =
         })
         .filter(act => act);
 
-    const threshold = maxMissingActivites(
-        activitiesRoutesOrGaps,
-        PERCENT_MIN_THRESHOLD.PERCENT_MIN_THRESHOLD_SOMEONE,
-    );
-    return activitesMissingSomeone.length >= threshold;
+    return activitesMissingSomeone.length >= 1;
 };
 
 /**
@@ -319,11 +369,7 @@ const missingVariablesScreen = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) =>
         })
         .filter(act => act);
 
-    const threshold = maxMissingActivites(
-        activitiesRoutesOrGaps,
-        PERCENT_MIN_THRESHOLD.PERCENT_MIN_THRESHOLD_SCREEN,
-    );
-    return activitesMissingScreen.length >= threshold;
+    return activitesMissingScreen.length >= 1;
 };
 
 const missingVariablesPlace = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => {
@@ -337,23 +383,18 @@ const missingVariablesPlace = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => 
         })
         .filter(act => act);
 
-    const threshold = maxMissingActivites(
-        activitiesRoutesOrGaps,
-        PERCENT_MIN_THRESHOLD.PERCENT_MIN_THRESHOLD_PLACE,
-    );
-    return activitesMissingPlace.length >= threshold;
+    return activitesMissingPlace.length >= 1;
 };
 
-const missingVariablesGoal = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => {
+const missingVariablesMeanOfTransport = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => {
     const activitesMandatory = getActivitiesMandatory(
         activitiesRoutesOrGaps,
-        EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
+        EdtRoutesNameEnum.MEAN_OF_TRANSPORT,
     );
-    const activitesMissingGoal = activitesMandatory
+    const activitesMissingMeanOfTransport = activitesMandatory
         .map(act => {
             return (
-                act?.activity?.isGoal &&
-                (act.activity?.activityGoal == null || act.activity?.activityGoal.length == 0)
+                act.meanOfTransportLabels == null || act.meanOfTransportLabels.length == 0
             );
         })
         .filter(act => act);
@@ -362,7 +403,7 @@ const missingVariablesGoal = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => {
         activitiesRoutesOrGaps,
         PERCENT_MIN_THRESHOLD.PERCENT_MIN_THRESHOLD_GOAL,
     );
-    return activitesMissingGoal.length >= threshold;
+    return activitesMissingMeanOfTransport.length >= threshold;
 };
 
 /**
@@ -372,14 +413,12 @@ const missingVariablesGoal = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => {
  */
 const groupScore = (note: number, t: TFunction<"translation", undefined>) => {
     let group = "";
-    if (note < 6) {
-        group = t("page.activity-summary.quality-score.type-4");
-    } else if (note >= 6 && note <= 11) {
-        group = t("page.activity-summary.quality-score.type-3");
-    } else if (note > 11 && note <= 16) {
+    if (note >= 16) {
+        group = t("page.activity-summary.quality-score.type-1");
+    } else if (note >= 9 && note <= 15) {
         group = t("page.activity-summary.quality-score.type-2");
     } else {
-        group = t("page.activity-summary.quality-score.type-1");
+        group = t("page.activity-summary.quality-score.type-3");
     }
     return group;
 };
