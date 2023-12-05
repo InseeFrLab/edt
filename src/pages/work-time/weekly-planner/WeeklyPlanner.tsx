@@ -8,6 +8,11 @@ import expandMore from "assets/illustration/mui-icon/expand-more.svg";
 import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import moreHorizontal from "assets/illustration/mui-icon/more-horizontal.svg";
 import work from "assets/illustration/mui-icon/work-full.svg";
+import ClientIcon from "assets/illustration/place-work-categories/client.svg";
+import HomeIcon from "assets/illustration/place-work-categories/home.svg";
+import NotWorkIcon from "assets/illustration/place-work-categories/notwork.svg";
+import OtherIcon from "assets/illustration/place-work-categories/other.svg";
+import WorkIcon from "assets/illustration/place-work-categories/work.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -39,6 +44,8 @@ const WeeklyPlannerPage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
 
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
+    const [isPlaceWorkDisplayed, setIsPlaceWorkDisplayed] = React.useState<boolean>(false);
+
     const [displayedDayHeader, setDisplayedDayHeader] = React.useState<string>("");
 
     const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
@@ -86,6 +93,8 @@ const WeeklyPlannerPage = () => {
         surveyDate: getSurveyDate(idSurvey),
         isSubChildDisplayed: displayDayOverview,
         setIsSubChildDisplayed: setDisplayDayOverview,
+        isPlaceWorkDisplayed: isPlaceWorkDisplayed,
+        setIsPlaceWorkDisplayed: setIsPlaceWorkDisplayed,
         displayedDayHeader: displayedDayHeader,
         setDisplayedDayHeader: setDisplayedDayHeader,
         labels: {
@@ -116,17 +125,45 @@ const WeeklyPlannerPage = () => {
         expandMoreWhiteIcon: expandMoreWhite,
         workIcon: work,
         workIconAlt: t("accessibility.asset.mui-icon.work"),
-        modifiable: true,
         saveHours: (response: responsesHourChecker) => {
             saveDuration(response);
+        },
+        optionsIcons: {
+            "1": {
+                icon: WorkIcon,
+                altIcon: t("accessibility.assets.with-someone.categories.parents-alt"),
+            },
+            "2": {
+                icon: HomeIcon,
+                altIcon: t("accessibility.assets.with-someone.categories.child-alt"),
+            },
+            "3": {
+                icon: ClientIcon,
+                altIcon: t("accessibility.assets.with-someone.categories.other-know-alt"),
+            },
+            "4": {
+                icon: OtherIcon,
+                altIcon: t("accessibility.assets.with-someone.categories.other-alt"),
+            },
+            "5": {
+                icon: NotWorkIcon,
+                altIcon: t("accessibility.assets.with-someone.categories.couple-alt"),
+            },
         },
     };
 
     const validateAndNav = (): void => {
+        console.log(displayDayOverview, isPlaceWorkDisplayed);
         if (displayDayOverview) {
             save();
-            setDisplayDayOverview(false);
+            if (isPlaceWorkDisplayed && localStorage.getItem("HOURCHECKED_DISPLAYED") != "true") {
+                setDisplayDayOverview(true);
+                localStorage.setItem("HOURCHECKED_DISPLAYED", "false");
+            } else
+                setDisplayDayOverview(false);
         } else {
+            console.log(localStorage.getItem("HOURCHECKED_DISPLAYED"));
+
             closeFormularieAndNav(
                 idSurvey,
                 getFullNavigatePath(idSurvey, EdtRoutesNameEnum.KIND_OF_WEEK),
@@ -152,7 +189,6 @@ const WeeklyPlannerPage = () => {
                 simpleHeader={displayDayOverview}
                 simpleHeaderLabel={displayedDayHeader}
                 backgroundWhiteHeader={displayDayOverview}
-                modifiable={true}
             >
                 <FlexCenter>
                     <OrchestratorForStories
