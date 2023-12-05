@@ -21,16 +21,16 @@ import safariIOS3 from "assets/illustration/install/ios/safari3.svg";
 import {
     isAndroid,
     isChrome,
-    isDesktop,
     isEdge,
     isFirefox,
     isIOS,
     isMacOs,
     isSafari,
+    isWindows
 } from "react-device-detect";
 
 export const getDevice = () => {
-    return isAndroid || isDesktop ? "android" : isIOS || isMacOs ? "ios" : "";
+    return isAndroid || isWindows ? "android" : isIOS || isMacOs ? "ios" : "";
 };
 
 export const getNavigator = () => {
