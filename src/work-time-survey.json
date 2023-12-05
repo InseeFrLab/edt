@@ -36,21 +36,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "WEEKLYPLANNER",
             "componentRef": "weeklyplanner_value"
@@ -58,21 +48,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "DATES",
             "componentRef": "weeklyplanner_value"
@@ -80,21 +60,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "DATES_STARTED",
             "componentRef": "weeklyplanner_value"
@@ -102,27 +72,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null, null, null, null, null, null, null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "00H00",
             "componentRef": "weeklyplanner_value"
@@ -130,27 +84,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null, null, null, null, null, null, null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "00H15",
             "componentRef": "weeklyplanner_value"
@@ -158,27 +96,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null, null, null, null, null, null, null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "00H30",
             "componentRef": "weeklyplanner_value"
@@ -186,27 +108,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null, null, null, null, null, null, null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "00H45",
             "componentRef": "weeklyplanner_value"
@@ -214,21 +120,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "01H00",
             "componentRef": "weeklyplanner_value"
@@ -236,21 +132,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "01H15",
             "componentRef": "weeklyplanner_value"
@@ -258,21 +144,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "01H30",
             "componentRef": "weeklyplanner_value"
@@ -280,21 +156,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "01H45",
             "componentRef": "weeklyplanner_value"
@@ -302,21 +168,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "02H00",
             "componentRef": "weeklyplanner_value"
@@ -324,21 +180,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "02H15",
             "componentRef": "weeklyplanner_value"
@@ -346,21 +192,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "02H30",
             "componentRef": "weeklyplanner_value"
@@ -368,21 +204,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "02H45",
             "componentRef": "weeklyplanner_value"
@@ -390,21 +216,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "03H00",
             "componentRef": "weeklyplanner_value"
@@ -412,21 +228,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "03H15",
             "componentRef": "weeklyplanner_value"
@@ -434,21 +240,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "03H30",
             "componentRef": "weeklyplanner_value"
@@ -456,21 +252,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "03H45",
             "componentRef": "weeklyplanner_value"
@@ -478,21 +264,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "04H00",
             "componentRef": "weeklyplanner_value"
@@ -500,21 +276,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "04H15",
             "componentRef": "weeklyplanner_value"
@@ -522,21 +288,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "04H30",
             "componentRef": "weeklyplanner_value"
@@ -544,21 +300,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "04H45",
             "componentRef": "weeklyplanner_value"
@@ -566,21 +312,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "05H00",
             "componentRef": "weeklyplanner_value"
@@ -588,21 +324,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "05H15",
             "componentRef": "weeklyplanner_value"
@@ -610,21 +336,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "05H30",
             "componentRef": "weeklyplanner_value"
@@ -632,21 +348,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "05H45",
             "componentRef": "weeklyplanner_value"
@@ -654,21 +360,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "06H00",
             "componentRef": "weeklyplanner_value"
@@ -676,21 +372,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "06H15",
             "componentRef": "weeklyplanner_value"
@@ -698,21 +384,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "06H30",
             "componentRef": "weeklyplanner_value"
@@ -720,21 +396,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "06H45",
             "componentRef": "weeklyplanner_value"
@@ -742,21 +408,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "07H00",
             "componentRef": "weeklyplanner_value"
@@ -764,21 +420,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "07H15",
             "componentRef": "weeklyplanner_value"
@@ -786,21 +432,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "07H30",
             "componentRef": "weeklyplanner_value"
@@ -808,21 +444,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "07H45",
             "componentRef": "weeklyplanner_value"
@@ -830,21 +456,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "08H00",
             "componentRef": "weeklyplanner_value"
@@ -852,21 +468,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "08H15",
             "componentRef": "weeklyplanner_value"
@@ -874,21 +480,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "08H30",
             "componentRef": "weeklyplanner_value"
@@ -896,21 +492,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "08H45",
             "componentRef": "weeklyplanner_value"
@@ -918,21 +504,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "09H00",
             "componentRef": "weeklyplanner_value"
@@ -940,21 +516,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "09H15",
             "componentRef": "weeklyplanner_value"
@@ -962,21 +528,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "09H30",
             "componentRef": "weeklyplanner_value"
@@ -984,21 +540,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "09H45",
             "componentRef": "weeklyplanner_value"
@@ -1006,21 +552,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "10H00",
             "componentRef": "weeklyplanner_value"
@@ -1028,21 +564,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "10H15",
             "componentRef": "weeklyplanner_value"
@@ -1050,21 +576,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "10H30",
             "componentRef": "weeklyplanner_value"
@@ -1072,21 +588,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "10H45",
             "componentRef": "weeklyplanner_value"
@@ -1094,21 +600,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "11H00",
             "componentRef": "weeklyplanner_value"
@@ -1116,21 +612,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "11H15",
             "componentRef": "weeklyplanner_value"
@@ -1138,21 +624,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "11H30",
             "componentRef": "weeklyplanner_value"
@@ -1160,21 +636,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "11H45",
             "componentRef": "weeklyplanner_value"
@@ -1182,21 +648,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "12H00",
             "componentRef": "weeklyplanner_value"
@@ -1204,21 +660,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "12H15",
             "componentRef": "weeklyplanner_value"
@@ -1226,21 +672,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "12H30",
             "componentRef": "weeklyplanner_value"
@@ -1248,21 +684,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "12H45",
             "componentRef": "weeklyplanner_value"
@@ -1270,21 +696,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "13H00",
             "componentRef": "weeklyplanner_value"
@@ -1292,21 +708,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "13H15",
             "componentRef": "weeklyplanner_value"
@@ -1314,21 +720,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "13H30",
             "componentRef": "weeklyplanner_value"
@@ -1336,21 +732,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "13H45",
             "componentRef": "weeklyplanner_value"
@@ -1358,21 +744,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "14H00",
             "componentRef": "weeklyplanner_value"
@@ -1380,21 +756,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "14H15",
             "componentRef": "weeklyplanner_value"
@@ -1402,21 +768,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "14H30",
             "componentRef": "weeklyplanner_value"
@@ -1424,21 +780,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "14H45",
             "componentRef": "weeklyplanner_value"
@@ -1446,21 +792,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "15H00",
             "componentRef": "weeklyplanner_value"
@@ -1468,21 +804,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "15H15",
             "componentRef": "weeklyplanner_value"
@@ -1490,21 +816,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "15H30",
             "componentRef": "weeklyplanner_value"
@@ -1512,21 +828,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "15H45",
             "componentRef": "weeklyplanner_value"
@@ -1534,21 +840,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "16H00",
             "componentRef": "weeklyplanner_value"
@@ -1556,21 +852,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "16H15",
             "componentRef": "weeklyplanner_value"
@@ -1578,21 +864,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "16H30",
             "componentRef": "weeklyplanner_value"
@@ -1600,21 +876,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "16H45",
             "componentRef": "weeklyplanner_value"
@@ -1622,21 +888,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "17H00",
             "componentRef": "weeklyplanner_value"
@@ -1644,21 +900,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "17H15",
             "componentRef": "weeklyplanner_value"
@@ -1666,21 +912,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "17H30",
             "componentRef": "weeklyplanner_value"
@@ -1688,21 +924,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "17H45",
             "componentRef": "weeklyplanner_value"
@@ -1710,21 +936,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "18H00",
             "componentRef": "weeklyplanner_value"
@@ -1732,21 +948,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "18H15",
             "componentRef": "weeklyplanner_value"
@@ -1754,21 +960,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "18H30",
             "componentRef": "weeklyplanner_value"
@@ -1776,21 +972,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "18H45",
             "componentRef": "weeklyplanner_value"
@@ -1798,21 +984,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "19H00",
             "componentRef": "weeklyplanner_value"
@@ -1820,21 +996,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "19H15",
             "componentRef": "weeklyplanner_value"
@@ -1842,21 +1008,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "19H30",
             "componentRef": "weeklyplanner_value"
@@ -1864,21 +1020,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "19H45",
             "componentRef": "weeklyplanner_value"
@@ -1886,21 +1032,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "20H00",
             "componentRef": "weeklyplanner_value"
@@ -1908,21 +1044,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "20H15",
             "componentRef": "weeklyplanner_value"
@@ -1930,21 +1056,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "20H30",
             "componentRef": "weeklyplanner_value"
@@ -1952,21 +1068,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "20H45",
             "componentRef": "weeklyplanner_value"
@@ -1974,21 +1080,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "21H00",
             "componentRef": "weeklyplanner_value"
@@ -1996,21 +1092,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "21H15",
             "componentRef": "weeklyplanner_value"
@@ -2018,21 +1104,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "21H30",
             "componentRef": "weeklyplanner_value"
@@ -2040,21 +1116,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "21H45",
             "componentRef": "weeklyplanner_value"
@@ -2062,21 +1128,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "22H00",
             "componentRef": "weeklyplanner_value"
@@ -2084,21 +1140,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "22H15",
             "componentRef": "weeklyplanner_value"
@@ -2106,21 +1152,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "22H30",
             "componentRef": "weeklyplanner_value"
@@ -2128,21 +1164,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "22H45",
             "componentRef": "weeklyplanner_value"
@@ -2150,21 +1176,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "23H00",
             "componentRef": "weeklyplanner_value"
@@ -2172,21 +1188,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "23H15",
             "componentRef": "weeklyplanner_value"
@@ -2194,21 +1200,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "23H30",
             "componentRef": "weeklyplanner_value"
@@ -2216,21 +1212,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "23H45",
             "componentRef": "weeklyplanner_value"
@@ -2298,21 +1284,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "NOTWORK",
             "componentRef": "checkboxgroup_placework"
@@ -2320,21 +1296,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "OTHER",
             "componentRef": "checkboxgroup_placework"
@@ -2342,21 +1308,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "CLIENT",
             "componentRef": "checkboxgroup_placework"
@@ -2364,21 +1320,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "HOME",
             "componentRef": "checkboxgroup_placework"
@@ -2386,21 +1332,11 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [
-                    null
-                ],
-                "EDITED": [
-                    null
-                ],
-                "INPUTED": [
-                    null
-                ],
-                "FORCED": [
-                    null
-                ],
-                "PREVIOUS": [
-                    null
-                ]
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
             },
             "name": "WORK",
             "componentRef": "checkboxgroup_placework"
@@ -2436,9 +1372,7 @@
         },
         {
             "componentType": "Input",
-            "bindingDependencies": [
-                "FIRSTNAME"
-            ],
+            "bindingDependencies": ["FIRSTNAME"],
             "response": {
                 "name": "FIRSTNAME"
             },
@@ -2475,9 +1409,7 @@
         },
         {
             "componentType": "Datepicker",
-            "bindingDependencies": [
-                "SURVEYDATE"
-            ],
+            "bindingDependencies": ["SURVEYDATE"],
             "min": "1900-01-01",
             "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
             "dateFormat": "YYYY-MM-DD",
@@ -3161,13 +2093,7 @@
             "presentButtonLabel": "Continuer",
             "futureButtonLabel": "Commencer",
             "placeWork": {
-                "bindingDependencies": [
-                    "NOTWORK",
-                    "OTHER",
-                    "WORK",
-                    "HOME",
-                    "CLIENT"
-                ],
+                "bindingDependencies": ["NOTWORK", "OTHER", "WORK", "HOME", "CLIENT"],
                 "responses": [
                     {
                         "response": {
@@ -3210,9 +2136,7 @@
         },
         {
             "componentType": "CheckboxOneEdt",
-            "bindingDependencies": [
-                "WEEKTYPE"
-            ],
+            "bindingDependencies": ["WEEKTYPE"],
             "response": {
                 "name": "WEEKTYPE"
             },
@@ -3239,9 +2163,7 @@
         },
         {
             "componentType": "Input",
-            "bindingDependencies": [
-                "FIRSTNAME"
-            ],
+            "bindingDependencies": ["FIRSTNAME"],
             "response": {
                 "name": "FIRSTNAME"
             },
@@ -3278,9 +2200,7 @@
         },
         {
             "componentType": "Datepicker",
-            "bindingDependencies": [
-                "SURVEYDATE"
-            ],
+            "bindingDependencies": ["SURVEYDATE"],
             "min": "1900-01-01",
             "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
             "dateFormat": "YYYY-MM-DD",
@@ -3318,13 +2238,7 @@
         },
         {
             "componentType": "CheckboxGroupEdt",
-            "bindingDependencies": [
-                "NOTWORK",
-                "OTHER",
-                "WORK",
-                "HOME",
-                "CLIENT"
-            ],
+            "bindingDependencies": ["NOTWORK", "OTHER", "WORK", "HOME", "CLIENT"],
             "responses": [
                 {
                     "response": {

@@ -230,54 +230,90 @@ const getQualityScore = (
     let substractPoint = 0;
 
     // 1 - num sleep (111,114) < 5h -> 3
-    const sleepActivities = activitiesRoutesOrGaps.filter(activityOrRoute =>
-        (activityOrRoute.activity?.activityCode ?? "") in SLEEPING_CATEGORIES_ACTIVITES_LIST)
+    const sleepActivities = activitiesRoutesOrGaps
+        .filter(
+            activityOrRoute =>
+                (activityOrRoute.activity?.activityCode ?? "") in SLEEPING_CATEGORIES_ACTIVITES_LIST,
+        )
         .map(activityOrRoute => activityOrRoute.durationMinutes ?? 0);
-    substractPoint += getAllTime(sleepActivities) > (60 * MIN_THRESHOLD.MIN_THRESHOLD_SLEEP_ACTIVITES_HOURS) ? POINTS_REMOVE.POINTS_REMOVE_SLEEP_ACTIVITES_HOURS : 0;
+    substractPoint +=
+        getAllTime(sleepActivities) > 60 * MIN_THRESHOLD.MIN_THRESHOLD_SLEEP_ACTIVITES_HOURS
+            ? POINTS_REMOVE.POINTS_REMOVE_SLEEP_ACTIVITES_HOURS
+            : 0;
 
     // 2 - num eat (140) < 2h -> 3
-    const eatActivities = activitiesRoutesOrGaps.filter(activityOrRoute =>
-        (activityOrRoute.activity?.activityCode ?? "") in EAT_CATEGORIES_ACTIVITES_LIST)
+    const eatActivities = activitiesRoutesOrGaps
+        .filter(
+            activityOrRoute =>
+                (activityOrRoute.activity?.activityCode ?? "") in EAT_CATEGORIES_ACTIVITES_LIST,
+        )
         .map(activityOrRoute => activityOrRoute.durationMinutes ?? 0);
-    substractPoint += getAllTime(eatActivities) > (60 * MIN_THRESHOLD.MIN_THRESHOLD_EAT_ACTIVITES_HOURS) ? POINTS_REMOVE.POINTS_REMOVE_EAT_ACTIVITES_HOURS : 0;
+    substractPoint +=
+        getAllTime(eatActivities) > 60 * MIN_THRESHOLD.MIN_THRESHOLD_EAT_ACTIVITES_HOURS
+            ? POINTS_REMOVE.POINTS_REMOVE_EAT_ACTIVITES_HOURS
+            : 0;
 
     // 3  - num routes <2 -> 2
     //insufficient number of routes (at least MIN_THRESHOLD_ROUTE_HOURS)
     substractPoint +=
-        activitiesRoutesOrGaps.filter(activityOrRoute => activityOrRoute.isRoute).length <= MIN_THRESHOLD.MIN_THRESHOLD_ROUTES
+        activitiesRoutesOrGaps.filter(activityOrRoute => activityOrRoute.isRoute).length <=
+        MIN_THRESHOLD.MIN_THRESHOLD_ROUTES
             ? POINTS_REMOVE.POINTS_REMOVE_ROUTES
             : 0;
 
     // 4 - pas d'activité en dehors du temps perso ou temps travail/etudes (codes commence par 3,4,5,6) -> aucune -> 3
-    substractPoint += activitiesRoutesOrGaps.filter(activityOrRoute =>
-        (activityOrRoute.activity?.activityCode?.charAt(1) ?? "") in MANDATORY_START_CODES_ACTIVIY).length == 0 ?
-        POINTS_REMOVE.POINTS_REMOVE_MANDATORY_START_CODES_ACTIVIY : 0;
+    substractPoint +=
+        activitiesRoutesOrGaps.filter(
+            activityOrRoute =>
+                (activityOrRoute.activity?.activityCode?.charAt(1) ?? "") in
+                MANDATORY_START_CODES_ACTIVIY,
+        ).length == 0
+            ? POINTS_REMOVE.POINTS_REMOVE_MANDATORY_START_CODES_ACTIVIY
+            : 0;
 
     // 5  - nombre de boucles < 10 -> 5
-    substractPoint += numActivities < MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES ? POINTS_REMOVE.POINTS_REMOVE_MIN_ACTIVITES : 0;
+    substractPoint +=
+        numActivities < MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES
+            ? POINTS_REMOVE.POINTS_REMOVE_MIN_ACTIVITES
+            : 0;
 
     // 6 - nombre de boucles 10 - 15 -> 3
-    substractPoint += (numActivities >=
-        MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES && numActivities < MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES_2) ?
-        POINTS_REMOVE.POINTS_REMOVE_MIN_ACTIVITES_2 : 0;
+    substractPoint +=
+        numActivities >= MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES &&
+        numActivities < MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES_2
+            ? POINTS_REMOVE.POINTS_REMOVE_MIN_ACTIVITES_2
+            : 0;
 
     // 7 - minutes totals <60min manquants ->1
-    substractPoint += minutesUnderConsomed > MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME ?
-        POINTS_REMOVE.POINTS_REMOVE_MISSING_TIME : 0;
+    substractPoint +=
+        minutesUnderConsomed > MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME
+            ? POINTS_REMOVE.POINTS_REMOVE_MISSING_TIME
+            : 0;
 
     // 8 - minutes totals 1h -2h manquants -> 3
-    substractPoint += (minutesUnderConsomed >=
-        MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME && minutesUnderConsomed <= MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME_2) ?
-        POINTS_REMOVE.POINTS_REMOVE_MISSING_TIME_2 : 0;
+    substractPoint +=
+        minutesUnderConsomed >= MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME &&
+        minutesUnderConsomed <= MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME_2
+            ? POINTS_REMOVE.POINTS_REMOVE_MISSING_TIME_2
+            : 0;
 
     // 9 - minutes totals >2h manquants -> 5
-    substractPoint += (minutesUnderConsomed >= MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME_2) ? POINTS_REMOVE.POINTS_REMOVE_MISSING_TIME_2 : 0;
+    substractPoint +=
+        minutesUnderConsomed >= MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME_2
+            ? POINTS_REMOVE.POINTS_REMOVE_MISSING_TIME_2
+            : 0;
 
     // 10 - minutes totals <3h en plus -> 1
-    substractPoint += (minutesOverConsomed <= MIN_THRESHOLD.MIN_THRESHOLD_OVER_TIME) ? POINTS_REMOVE.POINTS_REMOVE_OVER_TIME : 0;
+    substractPoint +=
+        minutesOverConsomed <= MIN_THRESHOLD.MIN_THRESHOLD_OVER_TIME
+            ? POINTS_REMOVE.POINTS_REMOVE_OVER_TIME
+            : 0;
 
     // 11 - minutes totals >3h en plus -> 2
-    substractPoint += (minutesOverConsomed > MIN_THRESHOLD.MIN_THRESHOLD_OVER_TIME) ? POINTS_REMOVE.POINTS_REMOVE_OVER_TIME_2 : 0;
+    substractPoint +=
+        minutesOverConsomed > MIN_THRESHOLD.MIN_THRESHOLD_OVER_TIME
+            ? POINTS_REMOVE.POINTS_REMOVE_OVER_TIME_2
+            : 0;
 
     // 12 - nombre plages horaires manquants -> 1
     //missing at least MIN_THRESHOLD_MISSING_HOURS hours
@@ -393,9 +429,7 @@ const missingVariablesMeanOfTransport = (activitiesRoutesOrGaps: ActivityRouteOr
     );
     const activitesMissingMeanOfTransport = activitesMandatory
         .map(act => {
-            return (
-                act.meanOfTransportLabels == null || act.meanOfTransportLabels.length == 0
-            );
+            return act.meanOfTransportLabels == null || act.meanOfTransportLabels.length == 0;
         })
         .filter(act => act);
 

@@ -30,7 +30,7 @@ import {
     getOrchestratorPage,
     navFullPath,
     saveAndNav,
-    setEnviro
+    setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { getData, getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
@@ -162,8 +162,7 @@ const WeeklyPlannerPage = () => {
             if (isPlaceWorkDisplayed && localStorage.getItem("HOURCHECKED_DISPLAYED") != "true") {
                 setDisplayDayOverview(true);
                 localStorage.setItem("HOURCHECKED_DISPLAYED", "false");
-            } else
-                setDisplayDayOverview(false);
+            } else setDisplayDayOverview(false);
         } else {
             console.log(localStorage.getItem("HOURCHECKED_DISPLAYED"));
 
@@ -177,7 +176,6 @@ const WeeklyPlannerPage = () => {
     const onEdit = () => {
         navFullPath(idSurvey, EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.WORK_TIME);
     };
-
 
     const onCloseHelpMenu = useCallback(() => {
         setIsHelpMenuOpen(false);

@@ -26,7 +26,7 @@ import {
     isIOS,
     isMacOs,
     isSafari,
-    isWindows
+    isWindows,
 } from "react-device-detect";
 
 export const getDevice = () => {
