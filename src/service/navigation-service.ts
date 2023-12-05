@@ -150,7 +150,7 @@ const getCurrentNavigatePath = (
         page = mappingPageOrchestrator.find(
             link =>
                 link.surveyPage ===
-                    (firstEmptyPage > Number(maxPage) ? maxPage : firstEmptyPage).toString() &&
+                (firstEmptyPage > Number(maxPage) ? maxPage : firstEmptyPage).toString() &&
                 link.parentPage === rootPage,
         )?.page;
     }
@@ -290,7 +290,7 @@ const navToActivityOrPlannerOrSummary = (
         if (surveyIsEnvoyed) {
             navigate(
                 getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
-                    getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
+                getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
             );
         } else {
             const currentPathNav = getCurrentNavigatePath(
@@ -352,7 +352,7 @@ const navToWeeklyPlannerOrClose = (idSurvey: string, navigate: any, source: Luna
 const navToActivitySummary = (idSurvey: string) => {
     _navigate(
         getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
-            getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
+        getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
     );
 };
 
@@ -540,20 +540,27 @@ const onClose = (
 ) => {
     const hasRights = !surveyReadOnly(_context.rightsSurvey);
     const isCloture = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
+    const isActivity = isActivityPage();
     const pathNav = isCloture
         ? getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
-          getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)
+        getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)
         : getCurrentNavigatePath(
-              idSurvey,
-              EdtRoutesNameEnum.ACTIVITY,
-              getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-              source,
-          );
+            idSurvey,
+            EdtRoutesNameEnum.ACTIVITY,
+            getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            source,
+        );
+    const weeklyPlannerRoute = getCurrentNavigatePath(
+        idSurvey,
+        EdtRoutesNameEnum.WORK_TIME,
+        getOrchestratorPage(EdtRoutesNameEnum.WEEKLY_PLANNER),
+        source,
+    );
 
     if (hasRights) {
         validateWithAlertAndNav(idSurvey, forceQuit, setIsAlertDisplayed, iteration, pathNav);
     } else {
-        _navigate(pathNav);
+        isActivity ? _navigate(pathNav) : _navigate(weeklyPlannerRoute);
     }
 };
 
@@ -597,5 +604,6 @@ export {
     validate,
     validateAndNextLoopStep,
     validateAndNextStep,
-    validateWithAlertAndNav,
+    validateWithAlertAndNav
 };
+

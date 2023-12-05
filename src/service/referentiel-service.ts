@@ -71,7 +71,7 @@ export const findActivityInNomenclatureReferentiel = (
 
 export const findNewActivityById = (idSurvey: string, activityId: string): string => {
     const newActivities = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_SUGGESTERID) as string[];
-    const index = newActivities.findIndex(act => act == activityId);
+    const index = newActivities?.findIndex(act => act == activityId);
     const activitiesLabel = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL) as string[];
     return activitiesLabel[index];
 };
