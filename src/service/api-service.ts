@@ -24,11 +24,11 @@ axios.interceptors.response.use(
     },
 );
 
-export const getHeader = (userToken?: string) => {
+export const getHeader = (origin?: string, userToken?: string) => {
     return {
         headers: {
             "Authorization": "Bearer " + (userToken ?? getUserToken()),
-            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Origin": origin ?? "*",
             "Content-type": "application/json",
         },
     };
@@ -37,7 +37,7 @@ export const getHeader = (userToken?: string) => {
 const fetchReferentiel = (auth: AuthContextProps, idReferentiel: ReferentielsEnum) => {
     return axios.get<NomenclatureActivityOption[]>(
         stromaeBackOfficeApiBaseUrl + "api/nomenclature/" + idReferentiel,
-        getHeader(),
+        getHeader(stromaeBackOfficeApiBaseUrl),
     );
 };
 
@@ -65,7 +65,7 @@ export const fetchReferentiels = (
         axios
             .all(
                 refsEndPoints.map(endPoint =>
-                    axios.get(stromaeBackOfficeApiBaseUrl + endPoint, getHeader()),
+                    axios.get(stromaeBackOfficeApiBaseUrl + endPoint, getHeader(stromaeBackOfficeApiBaseUrl)),
                 ),
             )
             .then(res => {
@@ -87,7 +87,7 @@ export const fetchReferentiels = (
 const fetchUserSurveysInfo = (setError: (error: ErrorCodeEnum) => void): Promise<UserSurveys[]> => {
     return new Promise(resolve => {
         axios
-            .get(edtOrganisationApiBaseUrl + "api/survey-assigment/interviewer/my-surveys", getHeader())
+            .get(edtOrganisationApiBaseUrl + "api/survey-assigment/interviewer/my-surveys", getHeader(edtOrganisationApiBaseUrl))
             .then(response => {
                 const data: UserSurveys[] = response.data;
                 resolve(data);
@@ -113,7 +113,7 @@ const fetchSurveysSourcesByIds = (
         axios
             .all(
                 sourcesEndPoints.map(endPoint =>
-                    axios.get(stromaeBackOfficeApiBaseUrl + endPoint, getHeader()),
+                    axios.get(stromaeBackOfficeApiBaseUrl + endPoint, getHeader(stromaeBackOfficeApiBaseUrl)),
                 ),
             )
             .then(res => {
@@ -135,7 +135,7 @@ const fetchSurveysSourcesByIds = (
 const fetchReviewerSurveysAssignments = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     return new Promise(resolve => {
         axios
-            .get(edtOrganisationApiBaseUrl + "api/survey-assigment/reviewer/my-surveys", getHeader())
+            .get(edtOrganisationApiBaseUrl + "api/survey-assigment/reviewer/my-surveys", getHeader(edtOrganisationApiBaseUrl))
             .then(response => {
                 resolve(response.data);
             })
@@ -156,7 +156,7 @@ const requestPutSurveyData = (
 ): Promise<SurveyData> => {
     return new Promise<SurveyData>(resolve => {
         axios
-            .put(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader(token))
+            .put(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader(stromaeBackOfficeApiBaseUrl, token))
             .then(() => {
                 resolve(data);
             });
@@ -221,7 +221,7 @@ const requestPutDataReviewer = (
             .put(
                 stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
                 data,
-                getHeader(token),
+                getHeader(stromaeBackOfficeApiBaseUrl, token),
             )
             .then(() => {
                 resolve(data);
@@ -239,7 +239,7 @@ const requestPutStateReviewer = (
             .put(
                 stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
                 data,
-                getHeader(token),
+                getHeader(stromaeBackOfficeApiBaseUrl, token),
             )
             .then(() => {
                 resolve(data);
@@ -289,7 +289,7 @@ const remoteGetSurveyData = (
 ): Promise<SurveyData> => {
     return new Promise(resolve => {
         axios
-            .get(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, getHeader())
+            .get(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, getHeader(stromaeBackOfficeApiBaseUrl))
             .then(response => {
                 resolve(response.data);
             })
@@ -309,7 +309,7 @@ const requestGetDataReviewer = (
 ): Promise<LunaticData> => {
     return new Promise<LunaticData>(resolve => {
         axios
-            .get(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data", getHeader())
+            .get(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data", getHeader(stromaeBackOfficeApiBaseUrl))
             .then(response => {
                 if (response.data?.data != null) {
                     resolve(response.data.data);
@@ -333,7 +333,7 @@ const requestGetStateReviewer = (
         axios
             .get(
                 stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
-                getHeader(),
+                getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {
                 resolve(response.data);
@@ -403,5 +403,6 @@ export {
     remoteGetSurveyData,
     remoteGetSurveyDataReviewer,
     remotePutSurveyData,
-    remotePutSurveyDataReviewer,
+    remotePutSurveyDataReviewer
 };
+
