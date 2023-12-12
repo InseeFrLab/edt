@@ -99,6 +99,8 @@ const HelpWorkTime = () => {
                 infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
                 border: true,
             },
+            dates: "DATES",
+            datesStarted: "DATES_STARTED",
         },
         saveAll: () => saveData(idSurvey, data),
         language: getLanguage(),
