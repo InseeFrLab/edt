@@ -159,11 +159,10 @@ const SurveysOverviewPage = () => {
             setCampaingFilter(value);
             campaingFilter = value;
 
-            if (value) {
+            if (value && value != "all") {
                 const newSearchResult = searchResult?.filter(
                     (houseHoldData: any) => houseHoldData.campaingId == value,
                 );
-                console.log(searchResult, value, newSearchResult);
                 sortSearchResult(newSearchResult);
                 setSearchResult(newSearchResult);
 
@@ -172,10 +171,8 @@ const SurveysOverviewPage = () => {
                 );
                 setFilterValidatedResult(newFilterValidatedResult);
             } else {
-                const newSearchResult = searchResult?.concat(filterValidatedResult);
-                sortSearchResult(newSearchResult);
-                setSearchResult(newSearchResult);
-                onFilterSearchBox;
+                sortSearchResult(searchResult);
+                setSearchResult(searchResult);
             }
         },
         [searchResult, filterValidatedResult, campaingFilter],
