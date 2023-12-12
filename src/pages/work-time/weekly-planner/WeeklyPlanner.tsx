@@ -1,4 +1,8 @@
-import { WeeklyPlannerSpecificProps, getArrayFromSession, responsesHourChecker } from "@inseefrlab/lunatic-edt";
+import {
+    WeeklyPlannerSpecificProps,
+    getArrayFromSession,
+    responsesHourChecker,
+} from "@inseefrlab/lunatic-edt";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
 import InfoIcon from "assets/illustration/info.svg";
 import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";

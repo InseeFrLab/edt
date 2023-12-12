@@ -25,7 +25,6 @@ const InstallPage = () => {
         stepImage = mapSteps?.get(device)?.get(navigator)?.[step - 2] ?? "";
     }, [step]);
 
-    console.log(device, navigator);
     return (
         <InstallPageStep
             iconTitle={step == 1 ? installation : step < stepFinal ? download : finalization}
