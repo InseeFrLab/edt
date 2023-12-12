@@ -1,4 +1,4 @@
-import { WeeklyPlannerSpecificProps, responsesHourChecker } from "@inseefrlab/lunatic-edt";
+import { WeeklyPlannerSpecificProps, getArrayFromSession, responsesHourChecker } from "@inseefrlab/lunatic-edt";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
 import InfoIcon from "assets/illustration/info.svg";
 import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";
@@ -47,7 +47,7 @@ const WeeklyPlannerPage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
 
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
-    const [isPlaceWorkDisplayed, setIsPlaceWorkDisplayed] = React.useState<boolean>(false);
+    let [isPlaceWorkDisplayed, setIsPlaceWorkDisplayed] = React.useState<boolean>(false);
     const [isHelpMenuOpen, setIsHelpMenuOpen] = React.useState(false);
 
     const [displayedDayHeader, setDisplayedDayHeader] = React.useState<string>("");
@@ -73,12 +73,11 @@ const WeeklyPlannerPage = () => {
 
         const callbackData = callbackHolder.getData();
         const dataCopy = Object.assign({}, callbackData);
-        const dates = dataCopy?.COLLECTED?.[FieldNameEnum.DATES].COLLECTED as string[];
+        const dates = getArrayFromSession("DATES");
         const currentDateIndex = dates.indexOf(response.date);
 
         response.names.forEach(name => {
             let quartier = dataCopy?.COLLECTED?.[name].COLLECTED as string[];
-            //let arrayQuartiers = initHours(name);
             quartier[currentDateIndex] = response.values[name] + "";
 
             if (dataCopy && dataCopy.COLLECTED) {
@@ -159,13 +158,14 @@ const WeeklyPlannerPage = () => {
     const validateAndNav = (): void => {
         if (displayDayOverview) {
             save();
-            if (isPlaceWorkDisplayed && localStorage.getItem("HOURCHECKED_DISPLAYED") != "true") {
+            if (isPlaceWorkDisplayed) {
                 setDisplayDayOverview(true);
-                localStorage.setItem("HOURCHECKED_DISPLAYED", "false");
-            } else setDisplayDayOverview(false);
+                setIsPlaceWorkDisplayed(false);
+                isPlaceWorkDisplayed = false;
+            } else {
+                setDisplayDayOverview(false);
+            }
         } else {
-            console.log(localStorage.getItem("HOURCHECKED_DISPLAYED"));
-
             closeFormularieAndNav(
                 idSurvey,
                 getFullNavigatePath(idSurvey, EdtRoutesNameEnum.KIND_OF_WEEK),
