@@ -51,10 +51,7 @@ const ErrorPage = (props: ErrorPageProps) => {
         errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
     };
 
-    let navigate: NavigateFunction | undefined = undefined;
-    if (!atInit) {
-        navigate = useNavigate();
-    }
+    let navigate: NavigateFunction = useNavigate();
 
     const navToHome = useCallback(() => {
         if (navigate) {

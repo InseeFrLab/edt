@@ -112,11 +112,7 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     const promisesToWait: Promise<any>[] = [];
     return new Promise(resolve => {
         promisesToWait.push(initializeRefs(setError));
-        if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
-            promisesToWait.push(initializeSurveysIdsAndSources(setError));
-        } else {
-            promisesToWait.push(initializeSurveysIdsAndSources(setError));
-        }
+        promisesToWait.push(initializeSurveysIdsAndSources(setError));
         Promise.all(promisesToWait).then(() => {
             resolve(true);
         });

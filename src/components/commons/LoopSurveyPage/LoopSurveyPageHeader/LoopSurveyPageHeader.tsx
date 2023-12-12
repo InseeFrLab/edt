@@ -25,6 +25,7 @@ const LoopSurveyPageHeader = (props: LoopSurveyPageHeaderProps) => {
                         alt={t("accessibility.asset.mui-icon.close")}
                         className={classes.actionIcon}
                         onClick={onClose}
+                        onKeyUp={onClose}
                     />
                 </Box>
             </Box>

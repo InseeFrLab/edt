@@ -53,6 +53,7 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
                         alt={t("accessibility.asset.mui-icon.more-horizontal")}
                         className={classes.actionIcon}
                         onClick={onEditSurvey}
+                        onKeyUp={onEditSurvey}
                     />
                     <Popover
                         id={id}

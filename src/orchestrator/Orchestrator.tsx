@@ -76,7 +76,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 if (prop != FieldNameEnum.WEEKLYPLANNER && bindings != null && bindings.includes(prop)) {
                     if (collected) {
                         if (collected && editedSaved && Array.isArray(collected)) {
-                            let maxLenght = Number(localStorage.getItem("loopSize")) ?? 0;
+                            let maxLenght = Number(localStorage.getItem("loopSize") ?? 0);
                             for (let i = 0; i < maxLenght; i++) {
                                 if (i != iteration || (collected[i] == null && i == iteration)) {
                                     collected[i] = editedSaved[i];

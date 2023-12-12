@@ -249,7 +249,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         );
     };
 
-    const onEditCard = useCallback((e: React.MouseEvent) => {
+    const onEditCard = useCallback((e: any) => {
         e.stopPropagation();
         setAnchorEl(e.currentTarget as HTMLButtonElement);
     }, []);
@@ -295,6 +295,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                             alt={t("accessibility.asset.mui-icon.more-horizontal")}
                             className={classes.actionIcon}
                             onClick={onEditCard}
+                            onKeyUp={onEditCard}
                             aria-label="editCardToggle"
                         />
                         <Popover

@@ -22,6 +22,7 @@ const LoopSurveyPageSimpleHeader = (props: LoopSurveyPageSimpleHeaderProps) => {
                     alt={t("accessibility.asset.mui-icon.close")}
                     className={classes.actionIcon}
                     onClick={onNavigateBack}
+                    onKeyUp={onNavigateBack}
                 />
             </Box>
         </Box>
