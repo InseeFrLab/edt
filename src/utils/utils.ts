@@ -64,12 +64,17 @@ function getArrayFromSession(nameItem: string): any[] {
     } else return [];
 }
 
+function getUniquesValues(listValues: any[]): any[] {
+    return listValues.filter((value, index, self) => self.indexOf(value) === index);
+}
+
 export {
     addArrayToSession,
     addItemToSession,
     getArrayFromSession,
     getItemFromSession,
     getSurveyIdFromUrl,
+    getUniquesValues,
     groupBy,
     objectEquals,
 };

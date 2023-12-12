@@ -1,5 +1,14 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import { Button, Checkbox, InputAdornment, OutlinedInput, Typography } from "@mui/material";
+import {
+    Button,
+    Checkbox,
+    InputAdornment,
+    MenuItem,
+    OutlinedInput,
+    Select,
+    SelectChangeEvent,
+    Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import arrowForwardIosGrey from "assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
 import home from "assets/illustration/mui-icon/home.svg";
@@ -25,6 +34,7 @@ import {
     initializeSurveysIdsDataModeReviewer,
     refreshSurveyData,
 } from "service/survey-service";
+import { getUniquesValues } from "utils/utils";
 
 const SurveysOverviewPage = () => {
     const { classes, cx } = useStyles();
@@ -35,8 +45,11 @@ const SurveysOverviewPage = () => {
     const isItMobile = isMobile();
 
     let dataHouseholds = getListSurveysHousehold();
+    let campaingsList = getUniquesValues(dataHouseholds?.map(household => household.campaingId));
 
     let [isFilterValidatedSurvey, setIsFilterValidatedSurvey] = React.useState(false);
+    let [campaingFilter, setCampaingFilter] = React.useState<string>("all");
+
     let [searchResult, setSearchResult] = React.useState(dataHouseholds);
     let [filterValidatedResult, setFilterValidatedResult] = React.useState(emptyArray);
     let [initialized, setInitialized] = React.useState(false);
@@ -45,6 +58,11 @@ const SurveysOverviewPage = () => {
     const initHouseholds = () => {
         dataHouseholds = getListSurveysHousehold();
         setSearchResult(dataHouseholds);
+        getListCampaigns();
+    };
+
+    const getListCampaigns = () => {
+        campaingsList = getUniquesValues(dataHouseholds.map(household => household.campaingId));
     };
 
     useEffect(() => {
@@ -98,6 +116,12 @@ const SurveysOverviewPage = () => {
                         houseHoldData?.idHousehold?.includes(event.target.value)) &&
                     isToFilter(houseHoldData),
             );
+
+            if (campaingFilter) {
+                newFilterValidatedResult = dataHouseholds.filter(
+                    houseHoldData => houseHoldData?.campaingId == campaingFilter,
+                );
+            }
             setFilterValidatedResult(newFilterValidatedResult);
         },
         [searchResult, filterValidatedResult],
@@ -125,6 +149,34 @@ const SurveysOverviewPage = () => {
             onFilterSearchBox;
         }
     }, [searchResult, filterValidatedResult]);
+
+    const onFilterCampaing = useCallback(
+        (event: SelectChangeEvent) => {
+            const value = event.target.value;
+            setCampaingFilter(value);
+            campaingFilter = value;
+
+            if (value) {
+                const newSearchResult = searchResult?.filter(
+                    (houseHoldData: any) => houseHoldData.campaingId == value,
+                );
+                console.log(searchResult, value, newSearchResult);
+                sortSearchResult(newSearchResult);
+                setSearchResult(newSearchResult);
+
+                const newFilterValidatedResult = searchResult?.filter((houseHoldData: any) =>
+                    isToFilter(houseHoldData),
+                );
+                setFilterValidatedResult(newFilterValidatedResult);
+            } else {
+                const newSearchResult = searchResult?.concat(filterValidatedResult);
+                sortSearchResult(newSearchResult);
+                setSearchResult(newSearchResult);
+                onFilterSearchBox;
+            }
+        },
+        [searchResult, filterValidatedResult, campaingFilter],
+    );
 
     const sortSearchResult = useCallback(
         (houseHoldData: any) => {
@@ -231,6 +283,28 @@ const SurveysOverviewPage = () => {
                         />
                         {t("page.surveys-overview.filter-label")}
                     </Box>
+                    <Box className={classes.filterCampaingBox}>
+                        <Select
+                            id="filter-campaing-select"
+                            value={campaingFilter}
+                            onChange={onFilterCampaing}
+                            style={{ backgroundColor: "white" }}
+                            MenuProps={{
+                                classes: {
+                                    paper: classes.paperClass,
+                                },
+                            }}
+                        >
+                            <MenuItem value={"all"} style={{ backgroundColor: "white" }}>
+                                Toutes les vagues
+                            </MenuItem>
+                            {campaingsList.map(campaing => (
+                                <MenuItem value={campaing} style={{ backgroundColor: "white" }}>
+                                    {campaing}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Box>
                 </Box>
 
                 <Box className={cx(classes.refreshBox, isItMobile ? classes.refreshMobileBox : "")}>
@@ -331,6 +405,12 @@ const useStyles = makeStylesEdt({ "name": { SurveysOverviewPage } })(theme => ({
     },
     refreshMobileBox: {
         width: "100%",
+    },
+    filterCampaingBox: {
+        padding: "1rem 0rem 0rem 1rem",
+    },
+    paperClass: {
+        backgroundColor: "white",
     },
 }));
 

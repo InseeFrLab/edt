@@ -7,4 +7,5 @@ export interface Household {
     surveys?: UserSurveys[];
     surveyDate?: string;
     stats: StatsHousehold;
+    campaingId: string;
 }

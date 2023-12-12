@@ -554,6 +554,7 @@ const getListSurveysHousehold = (): Household[] => {
                 surveys: value,
                 surveyDate: getSurveyDataHousehold(value),
                 stats: getStatsHousehold(value),
+                campaingId: value[0].campaignId ?? undefined,
             };
         })
         .sort(
