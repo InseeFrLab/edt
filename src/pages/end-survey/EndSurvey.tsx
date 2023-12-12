@@ -33,6 +33,12 @@ import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from 
 import { isReviewer } from "service/user-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
+const isActivity = () => {
+    return getCurrentSurveyRootPage() === EdtRoutesNameEnum.ACTIVITY ? true : false;
+};
+
+const isNavMobile = !isPwa() && isMobile;
+
 const EndSurveyPage = () => {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
@@ -46,7 +52,7 @@ const EndSurveyPage = () => {
 
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
     const [errorSubmit, setErrorSubmit] = useState<boolean>(false);
-    const isActivitySurvey = getCurrentSurveyRootPage() === EdtRoutesNameEnum.ACTIVITY ? true : false;
+    const isActivitySurvey = isActivity();
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
     // Online state
     const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -144,8 +150,6 @@ const EndSurveyPage = () => {
             setIsModalDisplayed(true);
         }
     };
-
-    const isNavMobile = !isPwa() && isMobile;
 
     return (
         <SurveyPage

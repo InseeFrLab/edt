@@ -44,6 +44,101 @@ const renderLoading = () => {
     );
 };
 
+const getDataReviewer = (
+    getData: any,
+    data: LunaticData | undefined,
+    components: any,
+    iteration: number | undefined,
+) => {
+    const callbackholder = getData();
+    const dataCollected = Object.assign({}, callbackholder.COLLECTED);
+    const bindings: string[] = components?.filter(
+        (component: any) => component.componentType != "Sequence",
+    )[0]?.bindingDependencies;
+    if (callbackholder && dataCollected) {
+        for (let prop in FieldNameEnum as any) {
+            const dataOfField = dataCollected[prop];
+            const collected = dataOfField?.COLLECTED;
+            const edited = dataOfField?.EDITED;
+            const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
+            const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
+            if (prop != FieldNameEnum.WEEKLYPLANNER && bindings != null && bindings.includes(prop)) {
+                if (collected) {
+                    if (collected && editedSaved && Array.isArray(collected)) {
+                        let maxLenght = Number(localStorage.getItem("loopSize") ?? 0);
+                        for (let i = 0; i < maxLenght; i++) {
+                            if (i != iteration || (collected[i] == null && i == iteration)) {
+                                collected[i] = editedSaved[i];
+                            }
+                        }
+                    }
+                    dataOfField.EDITED = collected;
+                    dataOfField.COLLECTED = collectedSaved;
+                } else if (dataOfField) {
+                    dataOfField.EDITED = edited ?? editedSaved;
+                    dataOfField.COLLECTED = collectedSaved;
+                }
+            } else if (prop != FieldNameEnum.WEEKLYPLANNER && dataOfField) {
+                dataOfField.EDITED = editedSaved;
+                dataOfField.COLLECTED = collectedSaved;
+            }
+
+            if (prop == FieldNameEnum.WEEKLYPLANNER && dataOfField) {
+                dataOfField.EDITED = collected;
+                dataOfField.COLLECTED = collected;
+            }
+        }
+    }
+    callbackholder.COLLECTED = dataCollected;
+    return callbackholder;
+};
+
+const getDataInterviewer = (getData: any, data: LunaticData | undefined) => {
+    const callbackholder = getData();
+    const dataCollected = Object.assign({}, callbackholder.COLLECTED);
+
+    if (callbackholder && dataCollected) {
+        for (let prop in FieldNameEnum as any) {
+            const dataOfField = dataCollected[prop];
+            if (dataOfField) dataOfField.EDITED = data?.COLLECTED?.[prop]?.EDITED;
+        }
+    }
+    callbackholder.COLLECTED = dataCollected;
+    return callbackholder;
+};
+
+const getBindingDependencies = (components: any) => {
+    let bindings =
+        components.filter((component: any) => component.componentType != "Sequence")[0]
+            ?.bindingDependencies ?? [];
+    return bindings;
+};
+
+const getVariables = (
+    data: LunaticData | undefined,
+    iteration: number | undefined,
+    bindingDependencies: string[],
+    value: any,
+) => {
+    let variables = new Map<string, any>();
+    const isReviewerMode = isReviewer();
+    const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED;
+    bindingDependencies?.forEach((bindingDependency: string) => {
+        let varE = data?.COLLECTED?.[bindingDependency]?.EDITED;
+        let varC = data?.COLLECTED?.[bindingDependency]?.COLLECTED;
+
+        const variableEdited = iteration != null && varE && Array.isArray(varE) ? varE[iteration] : varE;
+        let variableCollected = iteration != null && Array.isArray(varC) ? varC[iteration] : varC;
+        variableCollected = variableCollected ?? value?.[bindingDependency];
+        let variable =
+            isReviewerMode || isLocked ? variableEdited ?? variableCollected : variableCollected;
+
+        variables.set(bindingDependency, variable);
+    });
+
+    return variables;
+};
+
 export const OrchestratorForStories = (props: OrchestratorProps) => {
     const { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
         props;
@@ -60,94 +155,14 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     const components = getComponents();
     const currentErrors = getCurrentErrors();
 
-    const getDataReviewer = () => {
-        const callbackholder = getData();
-        const dataCollected = Object.assign({}, callbackholder.COLLECTED);
-        const bindings: string[] = components?.filter(
-            (component: any) => component.componentType != "Sequence",
-        )[0]?.bindingDependencies;
-        if (callbackholder && dataCollected) {
-            for (let prop in FieldNameEnum as any) {
-                const dataOfField = dataCollected[prop];
-                const collected = dataOfField?.COLLECTED;
-                const edited = dataOfField?.EDITED;
-                const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
-                const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
-                if (prop != FieldNameEnum.WEEKLYPLANNER && bindings != null && bindings.includes(prop)) {
-                    if (collected) {
-                        if (collected && editedSaved && Array.isArray(collected)) {
-                            let maxLenght = Number(localStorage.getItem("loopSize") ?? 0);
-                            for (let i = 0; i < maxLenght; i++) {
-                                if (i != iteration || (collected[i] == null && i == iteration)) {
-                                    collected[i] = editedSaved[i];
-                                }
-                            }
-                        }
-                        dataOfField.EDITED = collected;
-                        dataOfField.COLLECTED = collectedSaved;
-                    } else if (dataOfField) {
-                        dataOfField.EDITED = edited ?? editedSaved;
-                        dataOfField.COLLECTED = collectedSaved;
-                    }
-                } else if (prop != FieldNameEnum.WEEKLYPLANNER && dataOfField) {
-                    dataOfField.EDITED = editedSaved;
-                    dataOfField.COLLECTED = collectedSaved;
-                }
-
-                if (prop == FieldNameEnum.WEEKLYPLANNER && dataOfField) {
-                    dataOfField.EDITED = collected;
-                    dataOfField.COLLECTED = collected;
-                }
-            }
-        }
-        callbackholder.COLLECTED = dataCollected;
-        return callbackholder;
+    const getDataLocal = () => {
+        return isReviewer()
+            ? getDataReviewer(getData, data, components, iteration)
+            : getDataInterviewer(getData, data);
     };
 
-    const getDataInterviewer = () => {
-        const callbackholder = getData();
-        const dataCollected = Object.assign({}, callbackholder.COLLECTED);
-
-        if (callbackholder && dataCollected) {
-            for (let prop in FieldNameEnum as any) {
-                const dataOfField = dataCollected[prop];
-                if (dataOfField) dataOfField.EDITED = data?.COLLECTED?.[prop]?.EDITED;
-            }
-        }
-        callbackholder.COLLECTED = dataCollected;
-        return callbackholder;
-    };
-
-    cbHolder.getData = isReviewer() ? getDataReviewer : getDataInterviewer;
+    cbHolder.getData = getDataLocal;
     cbHolder.getErrors = getCurrentErrors;
-
-    const getBindingDependencies = () => {
-        let bindings =
-            components.filter((component: any) => component.componentType != "Sequence")[0]
-                ?.bindingDependencies ?? [];
-        return bindings;
-    };
-
-    const getVariables = (bindingDependencies: string[], value: any) => {
-        let variables = new Map<string, any>();
-        const isReviewerMode = isReviewer();
-        const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED;
-        bindingDependencies?.forEach((bindingDependency: string) => {
-            let varE = data?.COLLECTED?.[bindingDependency]?.EDITED;
-            let varC = data?.COLLECTED?.[bindingDependency]?.COLLECTED;
-
-            const variableEdited =
-                iteration != null && varE && Array.isArray(varE) ? varE[iteration] : varE;
-            let variableCollected = iteration != null && Array.isArray(varC) ? varC[iteration] : varC;
-            variableCollected = variableCollected ?? value?.[bindingDependency];
-            let variable =
-                isReviewerMode || isLocked ? variableEdited ?? variableCollected : variableCollected;
-
-            variables.set(bindingDependency, variable);
-        });
-
-        return variables;
-    };
 
     const renderComponent = () => {
         return (
@@ -175,8 +190,13 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                         errors={currentErrors}
                                         custom={edtComponents}
                                         componentSpecificProps={componentSpecificProps}
-                                        variables={getVariables(getBindingDependencies(), value)}
-                                        bindingDependencies={getBindingDependencies()}
+                                        variables={getVariables(
+                                            data,
+                                            iteration,
+                                            getBindingDependencies(components),
+                                            value,
+                                        )}
+                                        bindingDependencies={getBindingDependencies(components)}
                                         value={value}
                                     />
                                 </div>

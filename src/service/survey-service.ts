@@ -30,6 +30,7 @@ import {
     LunaticModel,
     LunaticModelComponent,
     LunaticModelVariable,
+    MultiCollected,
     REFERENTIELS_ID,
     ReferentielData,
     SOURCES_MODELS,
@@ -131,60 +132,62 @@ const initializeRefs = (setError: (error: ErrorCodeEnum) => void) => {
     });
 };
 
+const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
+    return fetchUserSurveysInfo(setError).then(userSurveyData => {
+        let activitySurveysIds: string[] = [];
+        let userSurveyDataActivity: UserSurveys[] = [];
+        let workingTimeSurveysIds: string[] = [];
+        let userSurveyDataWorkTime: UserSurveys[] = [];
+        userSurveyData.forEach(surveyData => {
+            if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
+                activitySurveysIds.push(surveyData.surveyUnitId);
+                userSurveyDataActivity.push(surveyData);
+                userDatas.push(surveyData);
+            }
+            if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
+                workingTimeSurveysIds.push(surveyData.surveyUnitId);
+                userSurveyDataWorkTime.push(surveyData);
+                userDatas.push(surveyData);
+            }
+        });
+        userDatasActivity = userSurveyDataActivity;
+        userDatasWorkTime = userSurveyDataWorkTime;
+
+        addArrayToSession("userDatasWorkTime", userDatasWorkTime);
+        addArrayToSession("userDatasActivity", userDatasActivity);
+        addArrayToSession("userDatas", userDatas);
+
+        let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
+        const surveysIds: SurveysIds = {
+            [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+            [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
+            [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
+        };
+        const innerPromises: Promise<any>[] = [
+            getRemoteSavedSurveysDatas(allSurveysIds, setError, false).then(() => {
+                return initializeSurveysDatasCache(allSurveysIds);
+            }),
+            saveSurveysIds(surveysIds),
+            fetchSurveysSourcesByIds(
+                [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY],
+                setError,
+            ).then(sources => {
+                const inerFetchPromises: Promise<any>[] = [
+                    saveSources(sources),
+                    saveUserSurveysData({ data: userDatas }),
+                ];
+                return Promise.all(inerFetchPromises);
+            }),
+        ];
+        return Promise.all(innerPromises);
+    });
+};
+
 const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     const promises: Promise<any>[] = [];
     return lunaticDatabase.get(SURVEYS_IDS).then(data => {
         if (!data) {
-            promises.push(
-                fetchUserSurveysInfo(setError).then(userSurveyData => {
-                    let activitySurveysIds: string[] = [];
-                    let userSurveyDataActivity: UserSurveys[] = [];
-                    let workingTimeSurveysIds: string[] = [];
-                    let userSurveyDataWorkTime: UserSurveys[] = [];
-                    userSurveyData.forEach(surveyData => {
-                        if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
-                            activitySurveysIds.push(surveyData.surveyUnitId);
-                            userSurveyDataActivity.push(surveyData);
-                            userDatas.push(surveyData);
-                        }
-                        if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
-                            workingTimeSurveysIds.push(surveyData.surveyUnitId);
-                            userSurveyDataWorkTime.push(surveyData);
-                            userDatas.push(surveyData);
-                        }
-                    });
-                    userDatasActivity = userSurveyDataActivity;
-                    userDatasWorkTime = userSurveyDataWorkTime;
-
-                    addArrayToSession("userDatasWorkTime", userDatasWorkTime);
-                    addArrayToSession("userDatasActivity", userDatasActivity);
-                    addArrayToSession("userDatas", userDatas);
-
-                    let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
-                    const surveysIds: SurveysIds = {
-                        [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
-                        [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
-                        [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
-                    };
-                    const innerPromises: Promise<any>[] = [
-                        getRemoteSavedSurveysDatas(allSurveysIds, setError, false).then(() => {
-                            return initializeSurveysDatasCache(allSurveysIds);
-                        }),
-                        saveSurveysIds(surveysIds),
-                        fetchSurveysSourcesByIds(
-                            [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY],
-                            setError,
-                        ).then(sources => {
-                            const inerFetchPromises: Promise<any>[] = [
-                                saveSources(sources),
-                                saveUserSurveysData({ data: userDatas }),
-                            ];
-                            return Promise.all(inerFetchPromises);
-                        }),
-                    ];
-                    return Promise.all(innerPromises);
-                }),
-            );
+            promises.push(initDataForSurveys(setError));
         } else {
             surveysIds = data as SurveysIds;
             const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
@@ -618,6 +621,45 @@ const createDataEmpty = (idSurvey: string): LunaticData => {
     return data;
 };
 
+const getIfArrayIsChange = (
+    currentData:
+        | string
+        | boolean
+        | string[]
+        | boolean[]
+        | null[]
+        | {
+              [key: string]: string;
+          }[],
+    data:
+        | string
+        | boolean
+        | string[]
+        | boolean[]
+        | null[]
+        | {
+              [key: string]: string;
+          }[],
+    isChange: boolean,
+) => {
+    let isChangeArray = isChange;
+    const currentDataCollectedArray = currentData as string[];
+    const dataCollectedArray = data as string[];
+    dataCollectedArray?.forEach((data, i) => {
+        if (typeof data === "object" && !objectEquals(currentDataCollectedArray[i], data)) {
+            isChangeArray = true;
+        } else if (
+            typeof data != "object" &&
+            (currentDataCollectedArray == null || currentDataCollectedArray[i] != data)
+        ) {
+            isChangeArray = true;
+        }
+    });
+    if (dataCollectedArray.length != currentDataCollectedArray.length) {
+        isChangeArray = true;
+    }
+    return isChangeArray;
+};
 const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
     const currentDataSurvey = oldDatas.get(idSurvey);
     const currentDataCollected = currentDataSurvey && currentDataSurvey.COLLECTED;
@@ -632,24 +674,7 @@ const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
 
             if (data != currentData) {
                 if (Array.isArray(data)) {
-                    const currentDataCollectedArray = currentData as string[];
-                    const dataCollectedArray = data as string[];
-                    dataCollectedArray?.forEach((data, i) => {
-                        if (
-                            typeof data === "object" &&
-                            !objectEquals(currentDataCollectedArray[i], data)
-                        ) {
-                            isChange = true;
-                        } else if (
-                            typeof data != "object" &&
-                            (currentDataCollectedArray == null || currentDataCollectedArray[i] != data)
-                        ) {
-                            isChange = true;
-                        }
-                    });
-                    if (dataCollectedArray.length != currentDataCollectedArray.length) {
-                        isChange = true;
-                    }
+                    isChange = getIfArrayIsChange(currentData, data, isChange);
                 } else {
                     isChange = true;
                 }
@@ -662,35 +687,39 @@ const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
     return isChange;
 };
 
+const getVarBooleanModepersistance = (
+    dataCollected: {
+        [key: string]: Collected | MultiCollected;
+    },
+    modePersistence: ModePersistenceEnum,
+    variableName: FieldNameEnum,
+) => {
+    const modeInterviewer = modePersistence == ModePersistenceEnum.COLLECTED;
+    const data = modeInterviewer
+        ? dataCollected[variableName].COLLECTED
+        : dataCollected[variableName].EDITED;
+    return data as (boolean | null)[];
+};
 const undefineVarSomeone = (data: LunaticData, modePersistence: ModePersistenceEnum, index: number) => {
     const dataCollected = data.COLLECTED;
-    const modeInterviewer = modePersistence == ModePersistenceEnum.COLLECTED;
     if (dataCollected) {
-        const child = (
-            modeInterviewer
-                ? dataCollected[FieldNameEnum.CHILD].COLLECTED
-                : dataCollected[FieldNameEnum.CHILD].EDITED
-        ) as (boolean | null)[];
-        const couple = (
-            modeInterviewer
-                ? dataCollected[FieldNameEnum.COUPLE].COLLECTED
-                : dataCollected[FieldNameEnum.COUPLE].EDITED
-        ) as (boolean | null)[];
-        const parents = (
-            modeInterviewer
-                ? dataCollected[FieldNameEnum.PARENTS].COLLECTED
-                : dataCollected[FieldNameEnum.PARENTS].EDITED
-        ) as (boolean | null)[];
-        const otherknow = (
-            modeInterviewer
-                ? dataCollected[FieldNameEnum.OTHERKNOWN].COLLECTED
-                : dataCollected[FieldNameEnum.OTHERKNOWN].EDITED
-        ) as (boolean | null)[];
-        const other = (
-            modeInterviewer
-                ? dataCollected[FieldNameEnum.OTHER].COLLECTED
-                : dataCollected[FieldNameEnum.OTHER].EDITED
-        ) as (boolean | null)[];
+        const child = getVarBooleanModepersistance(dataCollected, modePersistence, FieldNameEnum.CHILD);
+        const couple = getVarBooleanModepersistance(
+            dataCollected,
+            modePersistence,
+            FieldNameEnum.COUPLE,
+        );
+        const parents = getVarBooleanModepersistance(
+            dataCollected,
+            modePersistence,
+            FieldNameEnum.PARENTS,
+        );
+        const otherknow = getVarBooleanModepersistance(
+            dataCollected,
+            modePersistence,
+            FieldNameEnum.OTHERKNOWN,
+        );
+        const other = getVarBooleanModepersistance(dataCollected, modePersistence, FieldNameEnum.OTHER);
 
         if (child) child[index] = null;
         if (couple) couple[index] = null;
@@ -1090,6 +1119,30 @@ const setValue = (
     return dataAct;
 };
 
+const getDataModePersistOfArray = (
+    dataAct: LunaticData,
+    variableName: FieldNameEnum,
+    modePersistenceEdited: boolean,
+    value: string | boolean,
+    iteration: number,
+) => {
+    if (dataAct && dataAct.COLLECTED && dataAct.COLLECTED[variableName]) {
+        let dataAsArray = modePersistenceEdited
+            ? dataAct.COLLECTED[variableName].EDITED
+            : dataAct.COLLECTED[variableName].COLLECTED;
+        if (dataAsArray && Array.isArray(dataAsArray)) {
+            dataAsArray[iteration] = value;
+        } else {
+            dataAsArray = Array(iteration + 1);
+            dataAsArray[iteration] = value;
+        }
+
+        if (modePersistenceEdited) dataAct.COLLECTED[variableName].EDITED = dataAsArray;
+        else dataAct.COLLECTED[variableName].COLLECTED = dataAsArray;
+    }
+    return dataAct;
+};
+
 const getDataModePersist = (
     idSurvey: string,
     dataAct: LunaticData,
@@ -1100,18 +1153,13 @@ const getDataModePersist = (
     const modePersistenceEdited = getModePersistence(dataAct) == ModePersistenceEnum.EDITED;
     if (dataAct && dataAct.COLLECTED && dataAct.COLLECTED[variableName]) {
         if (iteration != null && value != null) {
-            let dataAsArray = modePersistenceEdited
-                ? dataAct.COLLECTED[variableName].EDITED
-                : dataAct.COLLECTED[variableName].COLLECTED;
-            if (dataAsArray && Array.isArray(dataAsArray)) {
-                dataAsArray[iteration] = value;
-            } else {
-                dataAsArray = Array(iteration + 1);
-                dataAsArray[iteration] = value;
-            }
-
-            if (modePersistenceEdited) dataAct.COLLECTED[variableName].EDITED = dataAsArray;
-            else dataAct.COLLECTED[variableName].COLLECTED = dataAsArray;
+            dataAct = getDataModePersistOfArray(
+                dataAct,
+                variableName,
+                modePersistenceEdited,
+                value,
+                iteration,
+            );
         } else {
             const valueCollected = dataAct.COLLECTED[variableName].COLLECTED as string | boolean;
             const variable: Collected = {

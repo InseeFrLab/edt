@@ -12,21 +12,29 @@ function groupBy<T>(arr: T[], fn: (item: T) => any) {
     }, {});
 }
 
+function hasOwnProperty(obj: any, prop: string) {
+    return obj != null && Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
 function objectEquals(a: any, b: any) {
     for (let prop in a) {
-        if (a != null && Object.prototype.hasOwnProperty.call(a, prop)) {
-            if (b != null && Object.prototype.hasOwnProperty.call(b, prop)) {
-                if (typeof a[prop] === "object") {
-                    if (!objectEquals(a[prop], b[prop])) return false;
-                } else {
-                    if (a[prop] !== b[prop]) return false;
-                }
+        if (hasOwnProperty(a, prop)) {
+            if (hasOwnProperty(b, prop)) {
+                comparaisonPropsValues(a, b, prop);
             } else {
                 return false;
             }
         }
     }
     return true;
+}
+
+function comparaisonPropsValues(obj1: any, obj2: any, prop: string) {
+    if (typeof obj1[prop] === "object") {
+        if (!objectEquals(obj1[prop], obj2[prop])) return false;
+    } else {
+        if (obj1[prop] !== obj2[prop]) return false;
+    }
 }
 
 function getSurveyIdFromUrl(context: OrchestratorContext, location: Location) {

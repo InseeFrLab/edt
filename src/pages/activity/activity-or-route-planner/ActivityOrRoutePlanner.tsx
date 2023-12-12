@@ -26,13 +26,20 @@ import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
-import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
+import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect, useState } from "react";
 import { isAndroid, isIOS, isMobile } from "react-device-detect";
-import { useTranslation } from "react-i18next";
-import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { TFunction, useTranslation } from "react-i18next";
+import {
+    Location,
+    NavigateFunction,
+    Outlet,
+    useLocation,
+    useNavigate,
+    useOutletContext,
+} from "react-router-dom";
 import { getLoopSize, setLoopSize } from "service/loop-service";
 import {
     getCurrentNavigatePath,
@@ -71,6 +78,110 @@ import { isReviewer } from "service/user-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
+const getSurveyDatePlanner = (idSurvey: string) => {
+    return getSurveyDate(idSurvey) || "";
+};
+
+const propsUseStyles = (context: OrchestratorContext, modifiable: boolean) => {
+    return {
+        "isIOS": isIOS,
+        "modifiable": modifiable,
+        "isOpen": context.isOpenHeader ?? false,
+    };
+};
+
+const getAlertUnlockLabels = (variableEdited: boolean, t: TFunction<"translation", undefined>) => {
+    return {
+        boldContent: variableEdited
+            ? t("page.reviewer-home.lock-popup.boldContent-not-unlocked")
+            : t("page.reviewer-home.lock-popup.boldContent-not-locked"),
+        content: variableEdited
+            ? t("page.reviewer-home.lock-popup.content-not-unlocked")
+            : t("page.reviewer-home.lock-popup.content-not-locked"),
+        cancel: variableEdited ? undefined : t("page.alert-when-quit.alert-cancel"),
+        complete: variableEdited
+            ? t("page.reviewer-home.lock-popup.confirm-button")
+            : t("page.reviewer-home.not-lock-survey"),
+    };
+};
+
+const isChildDisplayed = (path: string): boolean => {
+    return path.split(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)[1].length > 0 ? true : false;
+};
+
+const isActivity = (location: Location) => {
+    return (
+        location.pathname?.split("/")[3] == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER &&
+        location.pathname?.split("/")[4] == null
+    );
+};
+
+const setAlertSnackbar = (
+    setSnackbarText: (value: React.SetStateAction<string | undefined>) => void,
+    setOpenSnackbar: (value: React.SetStateAction<boolean>) => void,
+    skip: boolean,
+    haveOverlaps: boolean,
+    overlaps: {
+        prev: string | undefined;
+        current: string | undefined;
+    }[],
+    t: TFunction<"translation", undefined>,
+) => {
+    if (haveOverlaps) {
+        setSnackbarText(
+            t("page.activity-planner.start-alert") +
+                overlaps
+                    .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
+                    .join(", ") +
+                t("page.activity-planner.end-alert"),
+        );
+        if (!skip) setOpenSnackbar(true);
+    }
+};
+
+const setValueOrNull = (
+    idSurvey: string,
+    variableName: FieldNameEnum,
+    value: string | boolean | undefined,
+    iteration: number | undefined,
+) => {
+    setValue(idSurvey, variableName, value || null, iteration);
+};
+
+const onFinish = (
+    closed: boolean,
+    idSurvey: string,
+    setIsAlertDisplayed: React.Dispatch<React.SetStateAction<boolean>>,
+    callbackHolder: {
+        getData(): LunaticData;
+        getErrors(): {
+            [key: string]: [];
+        };
+    },
+    navigate: NavigateFunction,
+    context: OrchestratorContext,
+    source: LunaticModel,
+) => {
+    if (closed) {
+        const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
+        saveData(idSurvey, data ? data : callbackHolder.getData()).then(() => {
+            navigate(
+                getCurrentNavigatePath(
+                    idSurvey,
+                    context.surveyRootPage,
+                    getOrchestratorPage(
+                        EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
+                        EdtRoutesNameEnum.ACTIVITY,
+                    ),
+                    source,
+                ),
+            );
+        });
+    } else {
+        setIsAlertDisplayed(true);
+    }
+};
+
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
@@ -99,14 +210,10 @@ const ActivityOrRoutePlannerPage = () => {
     let contextIteration = 0;
     const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey, source);
     const [snackbarText, setSnackbarText] = React.useState<string | undefined>(undefined);
-    const surveyDate = getSurveyDate(idSurvey) || "";
+    const surveyDate = getSurveyDatePlanner(idSurvey);
     const modifiable = !surveyReadOnly(context.rightsSurvey);
 
-    const { classes, cx } = useStyles({
-        "isIOS": isIOS,
-        "modifiable": modifiable,
-        "isOpen": context.isOpenHeader ?? false,
-    });
+    const { classes, cx } = useStyles(propsUseStyles(context, modifiable));
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const [skip, setSkip] = useState<boolean>(false);
@@ -132,39 +239,20 @@ const ActivityOrRoutePlannerPage = () => {
 
     const variableEdited = existVariableEdited(idSurvey);
 
-    const alertUnlockLabels = {
-        boldContent: variableEdited
-            ? t("page.reviewer-home.lock-popup.boldContent-not-unlocked")
-            : t("page.reviewer-home.lock-popup.boldContent-not-locked"),
-        content: variableEdited
-            ? t("page.reviewer-home.lock-popup.content-not-unlocked")
-            : t("page.reviewer-home.lock-popup.content-not-locked"),
-        cancel: variableEdited ? undefined : t("page.alert-when-quit.alert-cancel"),
-        complete: variableEdited
-            ? t("page.reviewer-home.lock-popup.confirm-button")
-            : t("page.reviewer-home.not-lock-survey"),
-    };
-
-    const isChildDisplayed = (path: string): boolean => {
-        return path.split(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)[1].length > 0 ? true : false;
-    };
+    const alertUnlockLabels = getAlertUnlockLabels(variableEdited, t);
 
     useEffect(() => {
-        const isActivityPlanner =
-            location.pathname?.split("/")[3] == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER &&
-            location.pathname?.split("/")[4] == null;
+        const isActivityPlanner = isActivity(location);
         if (isActivityPlanner) {
             const act = getActivitiesOrRoutes(t, idSurvey, source);
-            if (act.overlaps.length > 0) {
-                setSnackbarText(
-                    t("page.activity-planner.start-alert") +
-                        overlaps
-                            .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
-                            .join(", ") +
-                        t("page.activity-planner.end-alert"),
-                );
-                if (!skip) setOpenSnackbar(true);
-            }
+            setAlertSnackbar(
+                setSnackbarText,
+                setOpenSnackbar,
+                skip,
+                act.overlaps.length > 0,
+                overlaps,
+                t,
+            );
         } else {
             setSkip(false);
         }
@@ -179,16 +267,7 @@ const ActivityOrRoutePlannerPage = () => {
             LoopEnum.ACTIVITY_OR_ROUTE,
             getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE),
         );
-        if (overlaps.length > 0) {
-            setSnackbarText(
-                t("page.activity-planner.start-alert") +
-                    overlaps
-                        .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
-                        .join(", ") +
-                    t("page.activity-planner.end-alert"),
-            );
-            if (!skip) setOpenSnackbar(true);
-        }
+        setAlertSnackbar(setSnackbarText, setOpenSnackbar, skip, overlaps.length > 0, overlaps, t);
     }, []);
 
     useEffect(() => {
@@ -197,27 +276,6 @@ const ActivityOrRoutePlannerPage = () => {
             setIsSubChildDisplayed(currentIsChildDisplay);
         }
     }, [location]);
-
-    const onFinish = (closed: boolean, idSurvey: string) => {
-        if (closed) {
-            const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
-            saveData(idSurvey, data ? data : callbackHolder.getData()).then(() => {
-                navigate(
-                    getCurrentNavigatePath(
-                        idSurvey,
-                        context.surveyRootPage,
-                        getOrchestratorPage(
-                            EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
-                            EdtRoutesNameEnum.ACTIVITY,
-                        ),
-                        source,
-                    ),
-                );
-            });
-        } else {
-            setIsAlertDisplayed(true);
-        }
-    };
 
     const onAddActivityOrRoute = (isRouteBool: boolean, idSurvey: string) => {
         const loopSize = setLoopSize(
@@ -244,8 +302,8 @@ const ActivityOrRoutePlannerPage = () => {
             getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE) + 1,
         );
         contextIteration = loopSize - 1;
-        setValue(idSurvey, FieldNameEnum.START_TIME, startTime || null, contextIteration);
-        setValue(idSurvey, FieldNameEnum.END_TIME, endTime || null, contextIteration);
+        setValueOrNull(idSurvey, FieldNameEnum.START_TIME, startTime, contextIteration);
+        setValueOrNull(idSurvey, FieldNameEnum.END_TIME, endTime, contextIteration);
         const updatedData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
         saveData(idSurvey, updatedData).then(() => {
             onCloseAddActivityOrRoute();
@@ -420,7 +478,8 @@ const ActivityOrRoutePlannerPage = () => {
     );
 
     const closeActivity = useCallback(
-        (closed: boolean, surveyId: string) => () => onFinish(closed, surveyId),
+        (closed: boolean, surveyId: string) => () =>
+            onFinish(closed, surveyId, setIsAlertDisplayed, callbackHolder, navigate, context, source),
         [],
     );
 

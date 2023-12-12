@@ -24,7 +24,7 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { TFunction, useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
 import { isMobile } from "service/responsive";
@@ -35,6 +35,52 @@ import {
     refreshSurveyData,
 } from "service/survey-service";
 import { getUniquesValues } from "utils/utils";
+
+const isToFilter = (houseHoldData: any): boolean => {
+    return (
+        houseHoldData.stats?.numHouseholdsInProgress == 0 &&
+        houseHoldData.stats?.numHouseholdsClosed == 0 &&
+        houseHoldData.stats?.numHouseholdsValidated >= 1
+    );
+};
+
+const getStartedSurveyLabel = (dataHousehold: any, t: TFunction<"translation", undefined>) => {
+    return dataHousehold?.stats?.numHouseholdsInProgress > 1
+        ? t("page.surveys-overview.starteds-survey-label")
+        : t("page.surveys-overview.started-survey-label");
+};
+
+const getClosedSurveyLabel = (dataHousehold: any, t: TFunction<"translation", undefined>) => {
+    return dataHousehold?.stats?.numHouseholdsClosed > 1
+        ? t("page.surveys-overview.closeds-survey-label")
+        : t("page.surveys-overview.closed-survey-label");
+};
+
+const getValidatedSurveyLabel = (dataHousehold: any, t: TFunction<"translation", undefined>) => {
+    return dataHousehold?.stats?.numHouseholdsValidated > 1
+        ? t("page.surveys-overview.validateds-survey-label")
+        : t("page.surveys-overview.validated-survey-label");
+};
+
+const renderPageOrLoadingOrError = (
+    initialized: boolean,
+    error: ErrorCodeEnum | undefined,
+    t: TFunction<"translation", undefined>,
+    page: any,
+) => {
+    if (initialized) {
+        return page;
+    } else {
+        return !error ? (
+            <LoadingFull
+                message={t("page.home.loading.message")}
+                thanking={t("page.home.loading.thanking")}
+            />
+        ) : (
+            <ErrorPage errorCode={error} atInit={true} />
+        );
+    }
+};
 
 const SurveysOverviewPage = () => {
     const { classes, cx } = useStyles();
@@ -89,14 +135,6 @@ const SurveysOverviewPage = () => {
         });
     }, []);
 
-    const isToFilter = (houseHoldData: any): boolean => {
-        return (
-            houseHoldData.stats?.numHouseholdsInProgress == 0 &&
-            houseHoldData.stats?.numHouseholdsClosed == 0 &&
-            houseHoldData.stats?.numHouseholdsValidated >= 1
-        );
-    };
-
     const onFilterSearchBox = useCallback(
         (event: any) => {
             let newSearchResult = dataHouseholds.filter(
@@ -147,7 +185,6 @@ const SurveysOverviewPage = () => {
                 const newSearchResult = searchResult?.concat(filterValidatedResult);
                 sortSearchResult(newSearchResult);
                 setSearchResult(newSearchResult);
-                onFilterSearchBox;
             }
         },
         [searchResult, filterValidatedResult],
@@ -199,21 +236,9 @@ const SurveysOverviewPage = () => {
                     iconPersonAlt={t("accessibility.asset.mui-icon.person")}
                     iconArrow={arrowForwardIosGrey}
                     iconArrowAlt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
-                    startedSurveyLabel={
-                        dataHousehold?.stats?.numHouseholdsInProgress > 1
-                            ? t("page.surveys-overview.starteds-survey-label")
-                            : t("page.surveys-overview.started-survey-label")
-                    }
-                    closedSurveyLabel={
-                        dataHousehold?.stats?.numHouseholdsClosed > 1
-                            ? t("page.surveys-overview.closeds-survey-label")
-                            : t("page.surveys-overview.closed-survey-label")
-                    }
-                    validatedSurveyLabel={
-                        dataHousehold?.stats?.numHouseholdsValidated > 1
-                            ? t("page.surveys-overview.validateds-survey-label")
-                            : t("page.surveys-overview.validated-survey-label")
-                    }
+                    startedSurveyLabel={getStartedSurveyLabel(dataHousehold, t)}
+                    closedSurveyLabel={getClosedSurveyLabel(dataHousehold, t)}
+                    validatedSurveyLabel={getValidatedSurveyLabel(dataHousehold, t)}
                     dataHousehold={dataHousehold}
                     tabIndex={index}
                 />
@@ -228,22 +253,10 @@ const SurveysOverviewPage = () => {
         );
     }, [searchResult]);
 
-    const renderPageOrLoadingOrError = (page: any) => {
-        if (initialized) {
-            return page;
-        } else {
-            return !error ? (
-                <LoadingFull
-                    message={t("page.home.loading.message")}
-                    thanking={t("page.home.loading.thanking")}
-                />
-            ) : (
-                <ErrorPage errorCode={error} atInit={true} />
-            );
-        }
-    };
-
     return renderPageOrLoadingOrError(
+        initialized,
+        error,
+        t,
         <ReviewerPage
             className={classes.reviewerPage}
             onClickHome={navToReviewerHome}

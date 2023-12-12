@@ -23,13 +23,21 @@ interface DayCardProps {
     tabIndex: number;
 }
 
+const getIsModeReviewer = () => {
+    return isReviewer() && !isDemoMode();
+};
+
+const getClassClose = (isClose: boolean, classNameClose: any, classNameNotClose?: any) => {
+    return isClose ? classNameClose : classNameNotClose ?? "";
+};
+
 const DayCard = (props: DayCardProps) => {
     const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey, isClose, tabIndex } =
         props;
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const progressActivity = getScore(idSurvey, t);
-    const modeReviewer = isReviewer() && !isDemoMode();
+    const modeReviewer = getIsModeReviewer();
     const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
     const qualityScore = getQualityScore(activitiesRoutesOrGaps, overlaps, t);
     const stateSurvey = getStatutSurvey(idSurvey);
@@ -50,13 +58,13 @@ const DayCard = (props: DayCardProps) => {
             <Box
                 aria-labelledby={labelledBy}
                 aria-describedby={describedBy}
-                className={cx(classes.dayCardBox, isClose ? classes.closeCardBox : "")}
+                className={cx(classes.dayCardBox, getClassClose(isClose, classes.closeCardBox))}
                 onClick={onClick}
                 tabIndex={tabIndex}
                 id={"dayCard-" + tabIndex}
             >
                 <Box className={getLeftBoxClass()}>
-                    <Box className={cx(classes.iconBox, isClose ? classes.closeIconBox : "")}>
+                    <Box className={cx(classes.iconBox, getClassClose(isClose, classes.closeIconBox))}>
                         <img
                             src={isClose ? PersonSunCloseIcon : PersonSunIcon}
                             alt={
