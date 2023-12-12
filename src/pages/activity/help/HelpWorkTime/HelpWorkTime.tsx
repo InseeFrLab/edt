@@ -51,6 +51,7 @@ const HelpWorkTime = () => {
     const { classes, cx } = useStyles();
 
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
+    const [isPlaceWorkDisplayed, setIsPlaceWorkDisplayed] = React.useState<boolean>(false);
     const [displayedDayHeader, setDisplayedDayHeader] = React.useState<string>("");
     const [helpStep, setHelpStep] = React.useState(1);
 
@@ -79,6 +80,8 @@ const HelpWorkTime = () => {
         surveyDate: getSurveyDate(idSurvey),
         isSubChildDisplayed: displayDayOverview,
         setIsSubChildDisplayed: setDisplayDayOverview,
+        isPlaceWorkDisplayed: isPlaceWorkDisplayed,
+        setIsPlaceWorkDisplayed: setIsPlaceWorkDisplayed,
         displayedDayHeader: displayedDayHeader,
         setDisplayedDayHeader: setDisplayedDayHeader,
         labels: {
@@ -112,6 +115,12 @@ const HelpWorkTime = () => {
         workIconAlt: t("accessibility.asset.mui-icon.work"),
         saveHours: (response: responsesHourChecker) => {
             console.log(response);
+        },
+        optionsIcons: {
+            "1": {
+                icon: "",
+                altIcon: "",
+            },
         },
     };
 
