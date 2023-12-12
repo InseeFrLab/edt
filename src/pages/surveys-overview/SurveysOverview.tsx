@@ -127,40 +127,15 @@ const SurveysOverviewPage = () => {
         [searchResult, filterValidatedResult],
     );
 
-    const onFilterValidatedSurveyChange = useCallback(() => {
-        isFilterValidatedSurvey = !isFilterValidatedSurvey;
-        setIsFilterValidatedSurvey(isFilterValidatedSurvey);
+    const onFilterValidatedSurveyChange = useCallback(
+        (isFilter: boolean) => () => {
+            isFilterValidatedSurvey = isFilter;
+            setIsFilterValidatedSurvey(isFilter);
 
-        if (isFilterValidatedSurvey) {
-            const newSearchResult = searchResult?.filter(
-                (houseHoldData: any) => !isToFilter(houseHoldData),
-            );
-            sortSearchResult(newSearchResult);
-            setSearchResult(newSearchResult);
-
-            const newFilterValidatedResult = searchResult?.filter((houseHoldData: any) =>
-                isToFilter(houseHoldData),
-            );
-            setFilterValidatedResult(newFilterValidatedResult);
-        } else {
-            const newSearchResult = searchResult?.concat(filterValidatedResult);
-            sortSearchResult(newSearchResult);
-            setSearchResult(newSearchResult);
-            onFilterSearchBox;
-        }
-    }, [searchResult, filterValidatedResult]);
-
-    const onFilterCampaing = useCallback(
-        (event: SelectChangeEvent) => {
-            const value = event.target.value;
-            setCampaingFilter(value);
-            campaingFilter = value;
-
-            if (value) {
+            if (isFilterValidatedSurvey) {
                 const newSearchResult = searchResult?.filter(
-                    (houseHoldData: any) => houseHoldData.campaingId == value,
+                    (houseHoldData: any) => !isToFilter(houseHoldData),
                 );
-                console.log(searchResult, value, newSearchResult);
                 sortSearchResult(newSearchResult);
                 setSearchResult(newSearchResult);
 
@@ -173,6 +148,31 @@ const SurveysOverviewPage = () => {
                 sortSearchResult(newSearchResult);
                 setSearchResult(newSearchResult);
                 onFilterSearchBox;
+            }
+        },
+        [searchResult, filterValidatedResult],
+    );
+
+    const onFilterCampaing = useCallback(
+        (event: SelectChangeEvent) => {
+            const value = event.target.value;
+            setCampaingFilter(value);
+            campaingFilter = value;
+
+            if (value && value != "all") {
+                const newSearchResult = searchResult?.filter(
+                    (houseHoldData: any) => houseHoldData.campaingId == value,
+                );
+                sortSearchResult(newSearchResult);
+                setSearchResult(newSearchResult);
+
+                const newFilterValidatedResult = searchResult?.filter((houseHoldData: any) =>
+                    isToFilter(houseHoldData),
+                );
+                setFilterValidatedResult(newFilterValidatedResult);
+            } else {
+                sortSearchResult(searchResult);
+                setSearchResult(searchResult);
             }
         },
         [searchResult, filterValidatedResult, campaingFilter],
@@ -276,7 +276,7 @@ const SurveysOverviewPage = () => {
                     ></OutlinedInput>
                     <Box className={cx(classes.filterBox)}>
                         <Checkbox
-                            onChange={onFilterValidatedSurveyChange}
+                            onChange={onFilterValidatedSurveyChange(!isFilterValidatedSurvey)}
                             inputProps={{
                                 "aria-label": t("accessibility.component.surveys-overviewer.filter"),
                             }}
@@ -295,11 +295,15 @@ const SurveysOverviewPage = () => {
                                 },
                             }}
                         >
-                            <MenuItem value={"all"} style={{ backgroundColor: "white" }}>
+                            <MenuItem key="all" value={"all"} style={{ backgroundColor: "white" }}>
                                 Toutes les vagues
                             </MenuItem>
                             {campaingsList.map(campaing => (
-                                <MenuItem value={campaing} style={{ backgroundColor: "white" }}>
+                                <MenuItem
+                                    key={campaing}
+                                    value={campaing}
+                                    style={{ backgroundColor: "white" }}
+                                >
                                     {campaing}
                                 </MenuItem>
                             ))}
