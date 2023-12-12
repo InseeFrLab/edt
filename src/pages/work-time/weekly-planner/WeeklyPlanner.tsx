@@ -119,6 +119,8 @@ const WeeklyPlannerPage = () => {
                 infoIconTooltip: InfoTooltipIcon,
                 infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
             },
+            dates: "DATES",
+            datesStarted: "DATES_STARTED",
         },
         saveAll: save,
         language: getLanguage(),
