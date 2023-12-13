@@ -44,7 +44,17 @@ const renderLoading = () => {
     );
 };
 
-const getDataOfLoop = (
+const getDataOfLoop = (collected: any, editedSaved: any, iteration: number | undefined) => {
+    let maxLenght = Number(localStorage.getItem("loopSize") ?? 0);
+    for (let i = 0; i < maxLenght; i++) {
+        if (i != iteration || (collected[i] == null && i == iteration)) {
+            collected[i] = editedSaved[i];
+        }
+    }
+    return collected;
+};
+
+const getDataOfCurrentBinding = (
     collected: any,
     edited: any,
     collectedSaved: any,
@@ -56,12 +66,7 @@ const getDataOfLoop = (
     // and collected remains with the collected value on bdd
     if (collected) {
         if (collected && editedSaved && Array.isArray(collected)) {
-            let maxLenght = Number(localStorage.getItem("loopSize") ?? 0);
-            for (let i = 0; i < maxLenght; i++) {
-                if (i != iteration || (collected[i] == null && i == iteration)) {
-                    collected[i] = editedSaved[i];
-                }
-            }
+            collected = getDataOfLoop(collected, editedSaved, iteration);
         }
         dataOfField.EDITED = collected;
         dataOfField.COLLECTED = collectedSaved;
@@ -105,7 +110,7 @@ const getDataReviewer = (
             const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
             //prop activity + prop currently being edited
             if (isPropOfActivityCurrent(prop, bindings)) {
-                dataOfField = getDataOfLoop(
+                dataOfField = getDataOfCurrentBinding(
                     collected,
                     edited,
                     collectedSaved,

@@ -262,6 +262,59 @@ const getIterationOrZero = (activity: ActivityRouteOrGap) => {
     return activity.iteration ?? 0;
 };
 
+const displaySnackbar = (
+    idSurvey: string,
+    source: LunaticModel,
+    setSnackbarText: (value: React.SetStateAction<string | undefined>) => void,
+    setOpenSnackbar: (value: React.SetStateAction<boolean>) => void,
+    setSkip: (value: React.SetStateAction<boolean>) => void,
+    skip: boolean,
+    overlaps: {
+        prev: string | undefined;
+        current: string | undefined;
+    }[],
+    location: Location,
+    t: TFunction<"translation", undefined>,
+) => {
+    const isActivityPlanner = isActivity(location);
+    if (isActivityPlanner) {
+        const act = getActivitiesOrRoutes(t, idSurvey, source);
+        setAlertSnackbar(setSnackbarText, setOpenSnackbar, skip, act.overlaps.length > 0, overlaps, t);
+    } else {
+        setSkip(false);
+    }
+};
+
+const openAddActivityOrRoute = (
+    startTime: string | undefined,
+    endTime: string | undefined,
+    setIsAddActivityOrRouteOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    setAddActivityOrRouteFromGap: React.Dispatch<React.SetStateAction<boolean>>,
+    setGapStartTime: React.Dispatch<React.SetStateAction<string | undefined>>,
+    setGapEndTime: React.Dispatch<React.SetStateAction<string | undefined>>,
+) => {
+    setIsAddActivityOrRouteOpen(true);
+    if (startTime && endTime) {
+        setAddActivityOrRouteFromGap(true);
+        setGapStartTime(startTime);
+        setGapEndTime(endTime);
+    }
+};
+
+const init = (
+    idSurvey: string,
+    setError: React.Dispatch<React.SetStateAction<ErrorCodeEnum | undefined>>,
+    setInitialized: (value: React.SetStateAction<boolean>) => void,
+) => {
+    if (navigator.onLine && !isDemoMode()) {
+        refreshSurvey(idSurvey, setError).finally(() => {
+            setInitialized(true);
+        });
+    } else {
+        setInitialized(true);
+    }
+};
+
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
@@ -301,6 +354,9 @@ const ActivityOrRoutePlannerPage = () => {
     const [isAlertLockDisplayed, setIsAlertLockDisplayed] = useState<boolean>(false);
     const [isLocked, setIsLocked] = useState<boolean>(surveyLocked(idSurvey));
     const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
+    const [menuActivityPlannerDisplayed, setMenuActivityPlannerDisplayed] = React.useState(
+        isItDesktop && isSubchildDisplayed,
+    );
 
     const alertLabels = {
         boldContent: t("page.alert-when-quit.activity-planner.alert-content-close-bold"),
@@ -312,20 +368,17 @@ const ActivityOrRoutePlannerPage = () => {
     const variableEdited = existVariableEdited(idSurvey);
 
     useEffect(() => {
-        const isActivityPlanner = isActivity(location);
-        if (isActivityPlanner) {
-            const act = getActivitiesOrRoutes(t, idSurvey, source);
-            setAlertSnackbar(
-                setSnackbarText,
-                setOpenSnackbar,
-                skip,
-                act.overlaps.length > 0,
-                overlaps,
-                t,
-            );
-        } else {
-            setSkip(false);
-        }
+        displaySnackbar(
+            idSurvey,
+            source,
+            setSnackbarText,
+            setOpenSnackbar,
+            setSkip,
+            skip,
+            overlaps,
+            location,
+            t,
+        );
         idSurvey = getSurveyIdFromUrl(context, location);
         context.idSurvey = idSurvey;
     });
@@ -346,6 +399,10 @@ const ActivityOrRoutePlannerPage = () => {
             setIsSubChildDisplayed(currentIsChildDisplay);
         }
     }, [location]);
+
+    useEffect(() => {
+        setMenuActivityPlannerDisplayed(isItDesktop && isSubchildDisplayed);
+    }, [isSubchildDisplayed]);
 
     const onAddActivityOrRoute = (isRouteBool: boolean, idSurvey: string) => {
         const loopSize = setLoopSize(
@@ -392,12 +449,14 @@ const ActivityOrRoutePlannerPage = () => {
 
     const onOpenAddActivityOrRoute = useCallback(
         (startTime?: string, endTime?: string) => {
-            setIsAddActivityOrRouteOpen(true);
-            if (startTime && endTime) {
-                setAddActivityOrRouteFromGap(true);
-                setGapStartTime(startTime);
-                setGapEndTime(endTime);
-            }
+            openAddActivityOrRoute(
+                startTime,
+                endTime,
+                setIsAddActivityOrRouteOpen,
+                setAddActivityOrRouteFromGap,
+                setGapStartTime,
+                setGapEndTime,
+            );
         },
         [addActivityOrRouteFromGap, gapStartTime, gapEndTime],
     );
@@ -499,13 +558,7 @@ const ActivityOrRoutePlannerPage = () => {
     }, [activitiesRoutesOrGaps]);
 
     useEffect(() => {
-        if (navigator.onLine && !isDemoMode()) {
-            refreshSurvey(idSurvey, setError).finally(() => {
-                setInitialized(true);
-            });
-        } else {
-            setInitialized(true);
-        }
+        init(idSurvey, setError, setInitialized);
     }, []);
 
     const navToActivityRouteHome = useCallback(() => {
@@ -613,7 +666,7 @@ const ActivityOrRoutePlannerPage = () => {
                             <Box
                                 className={getClassCondition(
                                     classes,
-                                    isItDesktop && isSubchildDisplayed,
+                                    menuActivityPlannerDisplayed,
                                     classes.outerContentBox,
                                     heightClass(classes),
                                 )}
@@ -621,7 +674,7 @@ const ActivityOrRoutePlannerPage = () => {
                                 <Box
                                     className={getClassCondition(
                                         classes,
-                                        isItDesktop && isSubchildDisplayed,
+                                        menuActivityPlannerDisplayed,
                                         classes.innerContentBox,
                                         heightClass(classes),
                                     )}
@@ -842,7 +895,7 @@ const ActivityOrRoutePlannerPage = () => {
                         ),
                     )}
                 >
-                    {isItDesktop && isSubchildDisplayed && <Divider orientation="vertical" light />}
+                    {menuActivityPlannerDisplayed && <Divider orientation="vertical" light />}
                     <Outlet
                         context={{
                             source: source,

@@ -22,6 +22,7 @@ import ReviewerPage from "components/commons/ReviewerPage/ReviewerPage";
 import HouseholdCard from "components/edt/HouseholdCard/HouseholdCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
+import { Household } from "interface/entity/Household";
 import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
 import { TFunction, useTranslation } from "react-i18next";
@@ -82,6 +83,41 @@ const renderPageOrLoadingOrError = (
     }
 };
 
+const filterSearchInput = (
+    input: string,
+    dataHouseholds: Household[],
+    isFilterValidatedSurvey: boolean,
+    campaingFilter: string,
+    setSearchResult: (value: React.SetStateAction<Household[]>) => void,
+    setFilterValidatedResult: React.Dispatch<React.SetStateAction<any[]>>,
+    sortSearchResult: (houseHoldData: any) => void,
+) => {
+    let newSearchResult = dataHouseholds.filter(
+        houseHoldData =>
+            houseHoldData?.userName?.toLowerCase().includes(input.toLowerCase()) ||
+            houseHoldData?.idHousehold?.toLowerCase().includes(input.toLowerCase()),
+    );
+
+    if (isFilterValidatedSurvey) {
+        newSearchResult = newSearchResult?.filter(houseHoldData => !isToFilter(houseHoldData));
+    }
+    sortSearchResult(newSearchResult);
+    setSearchResult(newSearchResult);
+    let newFilterValidatedResult = dataHouseholds.filter(
+        houseHoldData =>
+            (houseHoldData?.userName?.toLowerCase().includes(input.toLowerCase()) ||
+                houseHoldData?.idHousehold?.includes(input)) &&
+            isToFilter(houseHoldData),
+    );
+
+    if (campaingFilter) {
+        newFilterValidatedResult = dataHouseholds.filter(
+            houseHoldData => houseHoldData?.campaingId == campaingFilter,
+        );
+    }
+    setFilterValidatedResult(newFilterValidatedResult);
+};
+
 const SurveysOverviewPage = () => {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
@@ -137,30 +173,15 @@ const SurveysOverviewPage = () => {
 
     const onFilterSearchBox = useCallback(
         (event: any) => {
-            let newSearchResult = dataHouseholds.filter(
-                houseHoldData =>
-                    houseHoldData?.userName?.toLowerCase().includes(event.target.value.toLowerCase()) ||
-                    houseHoldData?.idHousehold?.toLowerCase().includes(event.target.value.toLowerCase()),
+            filterSearchInput(
+                event.target.value,
+                dataHouseholds,
+                isFilterValidatedSurvey,
+                campaingFilter,
+                setSearchResult,
+                setFilterValidatedResult,
+                sortSearchResult,
             );
-
-            if (isFilterValidatedSurvey) {
-                newSearchResult = newSearchResult?.filter(houseHoldData => !isToFilter(houseHoldData));
-            }
-            sortSearchResult(newSearchResult);
-            setSearchResult(newSearchResult);
-            let newFilterValidatedResult = dataHouseholds.filter(
-                houseHoldData =>
-                    (houseHoldData?.userName?.toLowerCase().includes(event.target.value.toLowerCase()) ||
-                        houseHoldData?.idHousehold?.includes(event.target.value)) &&
-                    isToFilter(houseHoldData),
-            );
-
-            if (campaingFilter) {
-                newFilterValidatedResult = dataHouseholds.filter(
-                    houseHoldData => houseHoldData?.campaingId == campaingFilter,
-                );
-            }
-            setFilterValidatedResult(newFilterValidatedResult);
         },
         [searchResult, filterValidatedResult],
     );
