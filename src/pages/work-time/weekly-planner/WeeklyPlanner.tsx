@@ -59,7 +59,6 @@ const WeeklyPlannerPage = () => {
         let dataWeeklyCallback = callbackData?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER]
             .COLLECTED as any[];
         if (data && dataWeeklyCallback && data?.length > dataWeeklyCallback.length) {
-            dataWeeklyCallback = data;
             if (callbackData.COLLECTED) {
                 callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data;
                 callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data;
@@ -78,10 +77,9 @@ const WeeklyPlannerPage = () => {
 
         response.names.forEach(name => {
             let quartier = dataCopy?.COLLECTED?.[name].COLLECTED as string[];
-            //let arrayQuartiers = initHours(name);
             quartier[currentDateIndex] = response.values[name] + "";
 
-            if (dataCopy && dataCopy.COLLECTED) {
+            if (dataCopy?.COLLECTED) {
                 dataCopy.COLLECTED[name].COLLECTED = quartier;
             }
 

@@ -31,6 +31,14 @@ const getClassClose = (isClose: boolean, classNameClose: any, classNameNotClose?
     return isClose ? classNameClose : classNameNotClose ?? "";
 };
 
+const getClassModePersist = (
+    modeReviewer: boolean,
+    classNameReviewer: any,
+    classNameInterviewer: any,
+) => {
+    return modeReviewer ? classNameReviewer : classNameInterviewer;
+};
+
 const DayCard = (props: DayCardProps) => {
     const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey, isClose, tabIndex } =
         props;
@@ -43,14 +51,20 @@ const DayCard = (props: DayCardProps) => {
     const stateSurvey = getStatutSurvey(idSurvey);
     const isItMobile = isMobile();
 
+    const getLeftBoxClassReviewer = () => {
+        return isItMobile ? classes.leftReviewerBoxMobile : classes.leftReviewerBox;
+    };
+
+    const getLeftBoxClassInterviewer = () => {
+        return isItMobile ? classes.leftBoxMobile : classes.leftBox;
+    };
+
     const getLeftBoxClass = () => {
-        return modeReviewer
-            ? isItMobile
-                ? classes.leftReviewerBoxMobile
-                : classes.leftReviewerBox
-            : isItMobile
-            ? classes.leftBoxMobile
-            : classes.leftBox;
+        return getClassModePersist(
+            modeReviewer,
+            getLeftBoxClassReviewer(),
+            getLeftBoxClassInterviewer(),
+        );
     };
 
     return (
@@ -84,13 +98,11 @@ const DayCard = (props: DayCardProps) => {
                     </Box>
                 </Box>
                 <Box
-                    className={
-                        modeReviewer
-                            ? isItMobile
-                                ? classes.scoreReviewerBoxMobile
-                                : classes.scoreReviewerBox
-                            : classes.scoreBox
-                    }
+                    className={getClassModePersist(
+                        modeReviewer,
+                        isItMobile ? classes.scoreReviewerBoxMobile : classes.scoreReviewerBox,
+                        classes.scoreBox,
+                    )}
                 >
                     {modeReviewer && (
                         <Box className={classes.qualityScoreBox}>
@@ -105,7 +117,11 @@ const DayCard = (props: DayCardProps) => {
                     <Box
                         className={cx(
                             classes.progressBox,
-                            isItMobile && modeReviewer ? classes.progressBoxReviewerMobile : "",
+                            getClassModePersist(
+                                isItMobile && modeReviewer,
+                                classes.progressBoxReviewerMobile,
+                                "",
+                            ),
                         )}
                     >
                         <PourcentProgress
@@ -117,9 +133,11 @@ const DayCard = (props: DayCardProps) => {
                     </Box>
                 </Box>
                 <Box
-                    className={
-                        modeReviewer ? (isItMobile ? classes.statusBoxMobile : classes.statusBox) : ""
-                    }
+                    className={getClassModePersist(
+                        modeReviewer,
+                        isItMobile ? classes.statusBoxMobile : classes.statusBox,
+                        "",
+                    )}
                 >
                     {modeReviewer &&
                         (stateSurvey == StateSurveyEnum.INIT ? (

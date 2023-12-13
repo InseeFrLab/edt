@@ -166,9 +166,7 @@ const ignoreVariablesCondtionals = (
     //is page of values of conditional = true
     if (isPageOfConditional) {
         const mustShowPageOfConditional =
-            valueOfConditional &&
-            valueOfConditional?.[iteration] != null &&
-            valueOfConditional?.[iteration] == "true";
+            valueOfConditional?.[iteration] != null && valueOfConditional?.[iteration] == "true";
         return ifIgnoreVariables(component, data, iteration, mustShowPageOfConditional);
     } else return false;
 };

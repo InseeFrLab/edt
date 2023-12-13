@@ -224,12 +224,12 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     );
 
     const onEditIn = useCallback((e: React.MouseEvent) => {
-        onEdit && onEdit();
+        onEdit?.();
         e.stopPropagation();
     }, []);
 
     const onDeleteIn = useCallback((e: React.MouseEvent) => {
-        onDelete && onDelete();
+        onDelete?.();
         e.stopPropagation();
     }, []);
 

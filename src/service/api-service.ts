@@ -314,9 +314,9 @@ const remoteGetSurveyData = (
             })
             .catch(err => {
                 if (err.response?.status === 403) {
-                    setError && setError(ErrorCodeEnum.NO_RIGHTS);
+                    setError?.(ErrorCodeEnum.NO_RIGHTS);
                 } else {
-                    setError && setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
+                    setError?.(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
                 }
             });
     });
@@ -404,13 +404,13 @@ const remoteGetSurveyDataReviewer = (
     withState?: boolean,
 ): Promise<SurveyData> => {
     const isReviewerMode = isReviewer();
-    if (!isReviewerMode) setError && setError(ErrorCodeEnum.NO_RIGHTS);
+    if (!isReviewerMode) setError?.(ErrorCodeEnum.NO_RIGHTS);
 
     return requestGetSurveyDataReviewer(idSurvey, setError, withState).catch(err => {
         if (err.response?.status === 403) {
-            setError && setError(ErrorCodeEnum.NO_RIGHTS);
+            setError?.(ErrorCodeEnum.NO_RIGHTS);
         } else {
-            setError && setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
+            setError?.(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
         }
         return Promise.reject(null);
     });

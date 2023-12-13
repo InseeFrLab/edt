@@ -32,9 +32,7 @@ function objectEquals(a: any, b: any) {
 function comparaisonPropsValues(obj1: any, obj2: any, prop: string) {
     if (typeof obj1[prop] === "object") {
         if (!objectEquals(obj1[prop], obj2[prop])) return false;
-    } else {
-        if (obj1[prop] !== obj2[prop]) return false;
-    }
+    } else if (obj1[prop] !== obj2[prop]) return false;
 }
 
 function getSurveyIdFromUrl(context: OrchestratorContext, location: Location) {

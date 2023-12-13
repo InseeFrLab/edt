@@ -212,11 +212,7 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                     return initializeSurveysDatasCache();
                 }),
             );
-            promises.push(
-                initializeSurveysDatasCache().then(() => {
-                    //console.log("get remote save survey datas");
-                }),
-            );
+            promises.push(initializeSurveysDatasCache());
         }
         return new Promise(resolve => {
             Promise.all(promises).finally(() => {
@@ -438,9 +434,8 @@ const getRemoteSavedSurveysDatas = (
                     (remoteSurveyData: SurveyData) => {
                         const surveyData = initializeData(remoteSurveyData, surveyId);
                         return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                            if (localSurveyData == null) {
-                                return lunaticDatabase.save(surveyId, surveyData);
-                            } else if (
+                            if (
+                                localSurveyData == null ||
                                 remoteSurveyData.stateData?.date == null ||
                                 (remoteSurveyData.stateData?.date &&
                                     remoteSurveyData.stateData?.date > 0 &&
@@ -583,12 +578,11 @@ const modifyIndividualCollected = (idSurvey: string) => {
     let dataSurv = Object.assign(getDataCache(idSurvey));
 
     if (getModePersistence(dataSurv) != ModePersistenceEnum.EDITED) {
-        const dataOfSurvey = dataSurv && dataSurv.COLLECTED;
+        const dataOfSurvey = dataSurv?.COLLECTED;
         for (let prop in FieldNameEnum as any) {
-            const data = dataOfSurvey && dataOfSurvey[prop];
+            const data = dataOfSurvey?.[prop];
             if (
-                data &&
-                data.EDITED &&
+                data?.EDITED &&
                 !Array.isArray(data.EDITED) &&
                 data.COLLECTED &&
                 !Array.isArray(data.COLLECTED)
@@ -646,11 +640,10 @@ const getIfArrayIsChange = (
     const currentDataCollectedArray = currentData as string[];
     const dataCollectedArray = data as string[];
     dataCollectedArray?.forEach((data, i) => {
-        if (typeof data === "object" && !objectEquals(currentDataCollectedArray[i], data)) {
-            isChangeArray = true;
-        } else if (
-            typeof data != "object" &&
-            (currentDataCollectedArray == null || currentDataCollectedArray[i] != data)
+        if (
+            (typeof data === "object" && !objectEquals(currentDataCollectedArray[i], data)) ||
+            (typeof data != "object" &&
+                (currentDataCollectedArray == null || currentDataCollectedArray[i] != data))
         ) {
             isChangeArray = true;
         }
@@ -662,8 +655,8 @@ const getIfArrayIsChange = (
 };
 const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
     const currentDataSurvey = oldDatas.get(idSurvey);
-    const currentDataCollected = currentDataSurvey && currentDataSurvey.COLLECTED;
-    const dataCollected = dataAct && dataAct.COLLECTED;
+    const currentDataCollected = currentDataSurvey?.COLLECTED;
+    const dataCollected = dataAct?.COLLECTED;
     let isChange = false;
 
     if (dataCollected && currentDataCollected) {
@@ -1012,11 +1005,6 @@ const getReferentiel = (refName: ReferentielsEnum) => {
 };
 
 const getSource = (refName: SourcesEnum) => {
-    /*return sourcesData
-        ? sourcesData[refName]
-        : refName == SourcesEnum.ACTIVITY_SURVEY
-        ? activitySurveySource
-        : workTimeSource;*/
     return refName == SourcesEnum.ACTIVITY_SURVEY ? activitySurveySource : workTimeSource;
 };
 
@@ -1126,7 +1114,7 @@ const getDataModePersistOfArray = (
     value: string | boolean,
     iteration: number,
 ) => {
-    if (dataAct && dataAct.COLLECTED && dataAct.COLLECTED[variableName]) {
+    if (dataAct?.COLLECTED && dataAct.COLLECTED[variableName]) {
         let dataAsArray = modePersistenceEdited
             ? dataAct.COLLECTED[variableName].EDITED
             : dataAct.COLLECTED[variableName].COLLECTED;
@@ -1151,7 +1139,7 @@ const getDataModePersist = (
     iteration?: number,
 ) => {
     const modePersistenceEdited = getModePersistence(dataAct) == ModePersistenceEnum.EDITED;
-    if (dataAct && dataAct.COLLECTED && dataAct.COLLECTED[variableName]) {
+    if (dataAct?.COLLECTED && dataAct.COLLECTED[variableName]) {
         if (iteration != null && value != null) {
             dataAct = getDataModePersistOfArray(
                 dataAct,
@@ -1452,7 +1440,7 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
         .filter(survey => survey.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY)
         .map(survey => survey.surveyUnitId);
     let stats = null;
-    let state = StateHouseholdEnum.IN_PROGRESS;
+    let state: StateHouseholdEnum;
     let numHouseholds = 0,
         numHouseholdsInProgress = 0,
         numHouseholdsClosed = 0,
@@ -1501,7 +1489,7 @@ const lockSurvey = (idSurvey: string) => {
         PREVIOUS: null,
     };
 
-    if (data.COLLECTED && data.COLLECTED[FieldNameEnum.ISLOCKED]) {
+    if (data.COLLECTED?.[FieldNameEnum.ISLOCKED]) {
         data.COLLECTED[FieldNameEnum.ISLOCKED] = variable;
         promisesToWait.push(saveData(idSurvey, data));
     } else if (data.COLLECTED) {
@@ -1531,7 +1519,7 @@ const lockAllSurveys = (idHousehold: string) => {
                 PREVIOUS: null,
             };
 
-            if (data.COLLECTED && data.COLLECTED[FieldNameEnum.ISLOCKED]) {
+            if (data.COLLECTED?.[FieldNameEnum.ISLOCKED]) {
                 data.COLLECTED[FieldNameEnum.ISLOCKED] = variable;
                 promisesToWait.push(saveData(idSurvey, data));
             } else if (data.COLLECTED) {
@@ -1560,7 +1548,7 @@ const validateSurvey = (idSurvey: string) => {
         PREVIOUS: null,
     };
 
-    if (data.COLLECTED && data.COLLECTED[FieldNameEnum.ISVALIDATED]) {
+    if (data.COLLECTED?.[FieldNameEnum.ISVALIDATED]) {
         data.COLLECTED[FieldNameEnum.ISVALIDATED] = variable;
         promisesToWait.push(saveData(idSurvey, data));
     } else if (data.COLLECTED) {
@@ -1590,7 +1578,7 @@ const validateAllEmptySurveys = (idHousehold: string) => {
                 INPUTED: null,
                 PREVIOUS: null,
             };
-            if (data.COLLECTED && data.COLLECTED[FieldNameEnum.ISVALIDATED]) {
+            if (data.COLLECTED?.[FieldNameEnum.ISVALIDATED]) {
                 data.COLLECTED[FieldNameEnum.ISVALIDATED] = variable;
                 data.COLLECTED.ISVALIDATED = variable;
                 datas.set(idSurvey, data);
@@ -1617,9 +1605,7 @@ const getSurveyRights = (idSurvey: string) => {
     const isValidated = surveyValidated(idSurvey);
     const isLocked = surveyLocked(idSurvey);
 
-    let rights: EdtSurveyRightsEnum = isReviewerMode
-        ? EdtSurveyRightsEnum.WRITE_REVIEWER
-        : EdtSurveyRightsEnum.WRITE_INTERVIEWER;
+    let rights: EdtSurveyRightsEnum;
 
     if (isReviewerMode) {
         rights = EdtSurveyRightsEnum.WRITE_REVIEWER;
@@ -1635,11 +1621,11 @@ const getSurveyRights = (idSurvey: string) => {
 
 const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
     const dataSurv = Object.assign({}, data ?? getDataCache(idSurvey ?? ""));
-    const dataOfSurvey = dataSurv && dataSurv.COLLECTED;
+    const dataOfSurvey = dataSurv?.COLLECTED;
 
     for (let prop in FieldNameEnum as any) {
-        const data = dataOfSurvey && dataOfSurvey[prop];
-        if (data && data.EDITED) {
+        const data = dataOfSurvey?.[prop];
+        if (data?.EDITED) {
             return true;
         }
     }
@@ -1668,7 +1654,7 @@ const getValueOfData = (
     variableName: string,
 ): string | boolean | string[] | boolean[] | null[] | { [key: string]: string }[] | null | undefined => {
     const modePersistenceEdited = getModePersistence(data) == ModePersistenceEnum.EDITED;
-    const dataCollected = data && data.COLLECTED;
+    const dataCollected = data?.COLLECTED;
     const dataSurvey = dataCollected?.[variableName];
     const dataEdited = dataSurvey?.EDITED;
     const dataCollect = dataSurvey?.COLLECTED;

@@ -913,6 +913,10 @@ const ActivityOrRoutePlannerPage = () => {
     );
 };
 
+const styleSurveyPageBoxTabletWhenIOS = (isOpen: boolean) => {
+    return isOpen ? "80vh" : "87vh";
+};
+
 const useStyles = makeStylesEdt<{ isIOS: boolean; modifiable: boolean; isOpen: boolean }>({
     "name": { ActivityOrRoutePlannerPage },
 })((theme, { isIOS, modifiable, isOpen }) => ({
@@ -953,7 +957,7 @@ const useStyles = makeStylesEdt<{ isIOS: boolean; modifiable: boolean; isOpen: b
     },
     surveyPageBoxTablet: {
         height: "100vh",
-        maxHeight: isIOS ? (isOpen ? "80vh" : "87vh") : "94vh",
+        maxHeight: isIOS ? styleSurveyPageBoxTabletWhenIOS(isOpen) : "94vh",
     },
     outletBoxDesktop: {
         flexGrow: "12",

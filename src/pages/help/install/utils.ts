@@ -29,21 +29,15 @@ import {
     isWindows,
 } from "react-device-detect";
 
+export const isIOSDevice = () => {
+    return isIOS || isMacOs ? "ios" : "";
+};
+
 export const getDevice = () => {
-    return isAndroid || isWindows ? "android" : isIOS || isMacOs ? "ios" : "";
+    return isAndroid || isWindows ? "android" : isIOSDevice();
 };
 
 export const getNavigator = () => {
-    console.log(
-        "isChrome:",
-        isChrome,
-        "isEdge: ",
-        isEdge,
-        "isFirefox:",
-        isFirefox,
-        "isSafari:",
-        isSafari,
-    );
     if (isChrome) {
         return "chrome";
     } else if (isEdge) {

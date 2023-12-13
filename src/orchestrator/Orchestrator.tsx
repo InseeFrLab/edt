@@ -25,7 +25,7 @@ export const callbackHolder: { getData(): LunaticData; getErrors(): { [key: stri
 };
 
 export type OrchestratorProps = {
-    source?: LunaticModel | undefined;
+    source?: LunaticModel;
     data?: LunaticData;
     cbHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } };
     page: string;
@@ -65,7 +65,7 @@ const getDataOfCurrentBinding = (
     // partie collected dejà set (mode enquete) -> set values of collected (value current lunawtic) to edited
     // and collected remains with the collected value on bdd
     if (collected) {
-        if (collected && editedSaved && Array.isArray(collected)) {
+        if (editedSaved && Array.isArray(collected)) {
             collected = getDataOfLoop(collected, editedSaved, iteration);
         }
         dataOfField.EDITED = collected;

@@ -85,7 +85,7 @@ const getFullNavigatePath = (
     const targetPage = mappingPageOrchestrator.find(
         link => link.page === page && (parentPage ? link.parentPage === parentPage : true),
     );
-    if (targetPage && targetPage.parentPage) {
+    if (targetPage?.parentPage) {
         return getParameterizedNavigatePath(targetPage.parentPage, idSurvey) + getNavigatePath(page);
     } else if (targetPage) {
         return getNavigatePath(page);
@@ -393,9 +393,13 @@ const getIdSurveyContext = (typeSurvey: SurveysIdsEnum) => {
     return _context ? _context.idSurvey : surveysIds[typeSurvey][0];
 };
 
-const isPageGlobal = () => {
+const isGlobalString = () => {
     const isGlobal = localStorage.getItem(LocalStorageVariableEnum.IS_GLOBAL);
-    return _context ? _context.global : isGlobal != null && isGlobal == "true" ? true : false;
+    return isGlobal != null && isGlobal == "true" ? true : false;
+};
+
+const isPageGlobal = () => {
+    return _context ? _context.global : isGlobalString();
 };
 
 const isActivityPage = () => {

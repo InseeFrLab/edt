@@ -27,13 +27,13 @@ const LoopNavigator = (props: LoopNavigatorProps) => {
 
     const backClick = useCallback(
         (event: React.MouseEvent) => {
-            onPrevious && onPrevious(event);
+            onPrevious?.(event);
         },
         [onPrevious],
     );
     const nextClick = useCallback(
         (event: React.MouseEvent) => {
-            onNext && onNext(event);
+            onNext?.(event);
         },
         [onNext],
     );

@@ -230,7 +230,6 @@ const SurveysOverviewPage = () => {
                 setFilterValidatedResult(newFilterValidatedResult);
             } else {
                 sortSearchResult(searchResult);
-                //setSearchResult(searchResult);
             }
         },
         [searchResult, filterValidatedResult, campaingFilter],

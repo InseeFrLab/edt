@@ -220,9 +220,8 @@ const getAloneTime = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => {
 // 1 - num sleep (111,114) < 5h -> 3
 const substractPointsOfNotHaveThresholdSleep = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => {
     const sleepActivities = activitiesRoutesOrGaps
-        .filter(
-            activityOrRoute =>
-                (activityOrRoute.activity?.activityCode ?? "") in SLEEPING_CATEGORIES_ACTIVITES_LIST,
+        .filter(activityOrRoute =>
+            SLEEPING_CATEGORIES_ACTIVITES_LIST.includes(activityOrRoute.activity?.activityCode ?? ""),
         )
         .map(activityOrRoute => activityOrRoute.durationMinutes ?? 0);
     const points =
@@ -235,9 +234,8 @@ const substractPointsOfNotHaveThresholdSleep = (activitiesRoutesOrGaps: Activity
 // 2 - num eat (140) < 2h -> 3
 const substractPointsOfNotHaveThresholdEat = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => {
     const eatActivities = activitiesRoutesOrGaps
-        .filter(
-            activityOrRoute =>
-                (activityOrRoute.activity?.activityCode ?? "") in EAT_CATEGORIES_ACTIVITES_LIST,
+        .filter(activityOrRoute =>
+            EAT_CATEGORIES_ACTIVITES_LIST.includes(activityOrRoute.activity?.activityCode ?? ""),
         )
         .map(activityOrRoute => activityOrRoute.durationMinutes ?? 0);
     const points =
@@ -260,9 +258,8 @@ const substractPointsOfNotHaveThresholdRoutes = (activitiesRoutesOrGaps: Activit
 const substractPointsOfNotHaveThresholdMinActNotPerso = (
     activitiesRoutesOrGaps: ActivityRouteOrGap[],
 ) => {
-    return activitiesRoutesOrGaps.filter(
-        activityOrRoute =>
-            (activityOrRoute.activity?.activityCode?.charAt(1) ?? "") in MANDATORY_START_CODES_ACTIVIY,
+    return activitiesRoutesOrGaps.filter(activityOrRoute =>
+        MANDATORY_START_CODES_ACTIVIY.includes(activityOrRoute.activity?.activityCode?.charAt(1) ?? ""),
     ).length == 0
         ? POINTS_REMOVE.POINTS_REMOVE_MANDATORY_START_CODES_ACTIVIY
         : 0;

@@ -78,7 +78,10 @@ const ActivityDurationPage = () => {
 
             dayjs.extend(customParseFormat);
             if (startTime && endTime) {
-                setStartEndTime(isAfter, startTime, endTime);
+                const setter = setStartEndTime(isAfter, startTime, endTime);
+                startTimeDay = setter[0] as dayjs.Dayjs;
+                endTimeDay = setter[1] as dayjs.Dayjs;
+                isAfter = setter[2] as boolean;
             }
         }
         return isAfter;
@@ -95,6 +98,7 @@ const ActivityDurationPage = () => {
         if (startTimeDay.isAfter(endTimeDay)) {
             isAfter = true;
         }
+        return [startTimeDay, endTimeDay, isAfter];
     };
 
     // when the start time < 4 and the end time is >=4, it is counted as the same day

@@ -164,7 +164,8 @@ const createActivity = (
 };
 
 const convertStringToBoolean = (value: string | undefined) => {
-    return value == "true" ? true : value == "false" ? false : undefined;
+    const valueFalseOrUndefined = value == "false" ? false : undefined;
+    return value == "true" ? true : valueFalseOrUndefined;
 };
 
 const createActivitiesOrRoutes = (
@@ -408,7 +409,8 @@ const getTotalTimeOfActivities = (idSurvey: string, t: TFunction<"translation", 
 const getScore = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
     const totalHourActivities = getTotalTimeOfActivities(idSurvey, t) / 60;
     const percentage = (totalHourActivities / 24) * 100;
-    return totalHourActivities > 0 ? Math.trunc(percentage >= 100 ? 100 : percentage) : 0;
+    const percentageMax = percentage >= 100 ? 100 : percentage;
+    return totalHourActivities > 0 ? Math.trunc(percentageMax) : 0;
 };
 
 const getWeeklyPlannerScore = (idSurvey: string): number => {
@@ -441,6 +443,14 @@ const getDiffTime = (startTime?: dayjs.Dayjs, endTime?: dayjs.Dayjs, diffType?: 
     return diffHours;
 };
 
+const findLabelNotInputed = (activity: SelectedActivity) => {
+    if (activity.suggesterId) {
+        return findActivityInAutoCompleteReferentiel(activity)?.label;
+    } else {
+        return findActivityInNomenclatureReferentiel(activity)?.label;
+    }
+};
+
 const getActivityLabel = (activity: SelectedActivity | undefined): string | undefined => {
     if (!activity) {
         return undefined;
@@ -448,11 +458,7 @@ const getActivityLabel = (activity: SelectedActivity | undefined): string | unde
     if (activity.label) {
         return activity.label;
     } else {
-        if (activity.suggesterId) {
-            return findActivityInAutoCompleteReferentiel(activity)?.label;
-        } else {
-            return findActivityInNomenclatureReferentiel(activity)?.label;
-        }
+        findLabelNotInputed(activity);
     }
 };
 
@@ -590,7 +596,7 @@ const mockData = () => {
     const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
     let dataAct = Object.assign({}, getData(idSurvey || ""));
 
-    if (dataAct != null && dataAct.COLLECTED) {
+    if (dataAct?.COLLECTED) {
         if (dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_ID])
             dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_ID].COLLECTED = null;
         if (dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED])
