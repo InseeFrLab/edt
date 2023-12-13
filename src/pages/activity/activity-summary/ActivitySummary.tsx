@@ -129,6 +129,49 @@ const getIterationOrZero = (activity: ActivityRouteOrGap) => {
     return activity.iteration ?? 0;
 };
 
+const addActivityOrRoute = (
+    idSurvey: string,
+    isRoute: boolean,
+    addActivityOrRouteFromGap: boolean,
+    gapStartTime: string | undefined,
+    gapEndTime: string | undefined,
+    onAddActivityGap: (
+        idSurvey: string,
+        isRoute: boolean,
+        startTime?: string,
+        endTime?: string,
+    ) => () => void,
+    onAddActivity: (idSurvey: string, isRoute: boolean) => () => void,
+) => {
+    return addActivityOrRouteFromGap
+        ? onAddActivityGap(idSurvey, isRoute, gapStartTime, gapEndTime)
+        : onAddActivity(idSurvey, isRoute);
+};
+
+const isDemo = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
+const isReviewerMode = isReviewer && !isDemo;
+
+const renderPageOrLoadingOrError = (
+    initialized: boolean,
+    error: ErrorCodeEnum | undefined,
+    t: TFunction<"translation", undefined>,
+    page: any,
+) => {
+    if (initialized) {
+        return page;
+    } else {
+        return !error ? (
+            <LoadingFull
+                message={t("page.home.loading.message")}
+                thanking={t("page.home.loading.thanking")}
+            />
+        ) : (
+            <ErrorPage errorCode={error} atInit={true} />
+        );
+    }
+};
+
 const ActivitySummaryPage = () => {
     const context: OrchestratorContext = useOutletContext();
     const navigate = useNavigate();
@@ -333,12 +376,6 @@ const ActivitySummaryPage = () => {
         [],
     );
 
-    const addActivityOrRoute = (idSurvey: string, isRoute: boolean) => {
-        return addActivityOrRouteFromGap
-            ? onAddActivityGap(idSurvey, isRoute, gapStartTime, gapEndTime)
-            : onAddActivity(idSurvey, isRoute);
-    };
-
     const onEditCharacteristics = useCallback(() => {
         navigate(
             getCurrentNavigatePath(
@@ -407,10 +444,6 @@ const ActivitySummaryPage = () => {
         saveAndNav(idSurvey);
     }, []);
 
-    const isDemo = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
-    const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
-    const isReviewerMode = isReviewer && !isDemo;
-
     const onEdit = useCallback(() => {
         navFullPath(idSurvey, EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.ACTIVITY);
     }, []);
@@ -449,7 +482,10 @@ const ActivitySummaryPage = () => {
         setIsHelpMenuOpen(true);
     }, []);
 
-    return initialized ? (
+    return renderPageOrLoadingOrError(
+        initialized,
+        error,
+        t,
         <>
             {renderMenuHelp()}
             <SurveyPage
@@ -465,11 +501,12 @@ const ActivitySummaryPage = () => {
             >
                 <FlexCenter>
                     <Box
-                        className={
-                            isReviewerMode && activitiesRoutesOrGaps.length !== 0
-                                ? classes.infoReviewerBox
-                                : classes.infoBox
-                        }
+                        className={getClassCondition(
+                            classes,
+                            isReviewerMode && activitiesRoutesOrGaps.length !== 0,
+                            classes.infoReviewerBox,
+                            classes.infoBox,
+                        )}
                     >
                         {activitiesRoutesOrGaps.length !== 0 &&
                             (isReviewerMode ? (
@@ -666,21 +703,34 @@ const ActivitySummaryPage = () => {
                 <AddActivityOrRoute
                     labelledBy={""}
                     describedBy={""}
-                    onClickActivity={addActivityOrRoute(idSurvey, false)}
-                    onClickRoute={addActivityOrRoute(idSurvey, true)}
+                    onClickActivity={addActivityOrRoute(
+                        idSurvey,
+                        false,
+                        addActivityOrRouteFromGap,
+                        gapStartTime,
+                        gapEndTime,
+                        onAddActivityGap,
+                        onAddActivity,
+                    )}
+                    onClickRoute={addActivityOrRoute(
+                        idSurvey,
+                        true,
+                        addActivityOrRouteFromGap,
+                        gapStartTime,
+                        gapEndTime,
+                        onAddActivityGap,
+                        onAddActivity,
+                    )}
                     handleClose={onCloseAddActivityOrRoute}
                     open={isAddActivityOrRouteOpen}
                 />
             </SurveyPage>
-        </>
-    ) : !error ? (
-        <LoadingFull
-            message={t("page.home.loading.message")}
-            thanking={t("page.home.loading.thanking")}
-        />
-    ) : (
-        <ErrorPage errorCode={error} atInit={true} />
+        </>,
     );
+};
+
+const getClassCondition = (classes: any, condition: boolean, classNameYes: any, classNameNo: any) => {
+    return condition ? classNameYes : classNameNo;
 };
 
 const useStyles = makeStylesEdt<{ modifiable: boolean }>({ "name": { ActivitySummaryPage } })(

@@ -105,6 +105,12 @@ const getStringOrEmpty = (text: string | undefined) => {
     return text ?? "";
 };
 
+const ignoreIfContidional = (conditional: string | boolean, ignore: boolean) => {
+    if (typeof conditional == "string") ignore = conditional.length > 0;
+    if (typeof conditional == "boolean") ignore = conditional;
+    return ignore;
+};
+
 /**
  * ignore all variables of composant if it's added one of dependencies of component
  */
@@ -120,12 +126,10 @@ const ifIgnoreVariables = (
         const deps = component?.bindingDependencies; //values of composant
         deps?.forEach(dep => {
             const value = getValueOfData(data, getStringOrEmpty(dep));
-
             if (Array.isArray(value) && value[iteration] != null) {
                 const conditional = value[iteration] as string | boolean;
                 if (!ignore) {
-                    if (typeof conditional == "string") ignore = conditional.length > 0;
-                    if (typeof conditional == "boolean") ignore = conditional;
+                    ignore = ignoreIfContidional(conditional, ignore);
                 }
             }
         });

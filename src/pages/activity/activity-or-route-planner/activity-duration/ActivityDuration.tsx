@@ -155,6 +155,14 @@ const ActivityDurationPage = () => {
         }
     };
 
+    const navIsClompleted = (isCloture: boolean) => {
+        if (isCloture) {
+            navToActivitySummary(idSurvey);
+        } else {
+            navToActivityRoutePlanner(idSurvey, context.source);
+        }
+    };
+
     const onClose = (forceQuit: boolean) => {
         const isCompleted = getValue(idSurvey, FieldNameEnum.ISCOMPLETED, currentIteration);
         const isCloture = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
@@ -162,21 +170,13 @@ const ActivityDurationPage = () => {
             if (!isCompleted) {
                 if (forceQuit) {
                     saveData(idSurvey, callbackHolder.getData()).then(() => {
-                        if (isCloture) {
-                            navToActivitySummary(idSurvey);
-                        } else {
-                            navToActivityRoutePlanner(idSurvey, context.source);
-                        }
+                        navIsClompleted(isCloture);
                     });
                 } else {
                     setIsAlertDisplayed(true);
                 }
             } else {
-                if (isCloture) {
-                    navToActivitySummary(idSurvey);
-                } else {
-                    navToActivityRoutePlanner(idSurvey, context.source);
-                }
+                navIsClompleted(isCloture);
             }
         }
     };

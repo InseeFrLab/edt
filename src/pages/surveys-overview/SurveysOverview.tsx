@@ -34,7 +34,7 @@ import {
     initializeSurveysIdsDataModeReviewer,
     refreshSurveyData,
 } from "service/survey-service";
-import { getUniquesValues } from "utils/utils";
+import { getClassCondition, getUniquesValues } from "utils/utils";
 
 const isToFilter = (houseHoldData: any): boolean => {
     return (
@@ -209,7 +209,7 @@ const SurveysOverviewPage = () => {
                 setFilterValidatedResult(newFilterValidatedResult);
             } else {
                 sortSearchResult(searchResult);
-                setSearchResult(searchResult);
+                //setSearchResult(searchResult);
             }
         },
         [searchResult, filterValidatedResult, campaingFilter],
@@ -271,7 +271,7 @@ const SurveysOverviewPage = () => {
                 <Box
                     className={cx(
                         classes.innerSearchBox,
-                        isItMobile ? classes.innerSearchMobileBox : "",
+                        getClassCondition(classes, isItMobile, classes.innerSearchMobileBox, ""),
                     )}
                 >
                     <OutlinedInput
@@ -324,7 +324,12 @@ const SurveysOverviewPage = () => {
                     </Box>
                 </Box>
 
-                <Box className={cx(classes.refreshBox, isItMobile ? classes.refreshMobileBox : "")}>
+                <Box
+                    className={cx(
+                        classes.refreshBox,
+                        getClassCondition(classes, isItMobile, classes.refreshMobileBox, ""),
+                    )}
+                >
                     <Button
                         color="primary"
                         variant="contained"

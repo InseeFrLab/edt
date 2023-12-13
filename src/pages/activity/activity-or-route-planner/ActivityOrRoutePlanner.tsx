@@ -182,11 +182,90 @@ const onFinish = (
     }
 };
 
+const getSourceContext = (context: OrchestratorContext) => {
+    return context?.source?.components != null ? context.source : getSource(SourcesEnum.ACTIVITY_SURVEY);
+};
+
+const addActivityOrRoute = (
+    idSurvey: string,
+    isRoute: boolean,
+    addActivityOrRouteFromGap: boolean,
+    gapStartTime: string | undefined,
+    gapEndTime: string | undefined,
+    onAddActivityGap: (
+        idSurvey: string,
+        isRoute: boolean,
+        startTime?: string,
+        endTime?: string,
+    ) => () => void,
+    onAddActivity: (idSurvey: string, isRoute: boolean) => () => void,
+) => {
+    return addActivityOrRouteFromGap
+        ? onAddActivityGap(idSurvey, isRoute, gapStartTime, gapEndTime)
+        : onAddActivity(idSurvey, isRoute);
+};
+
+const heightClass = (classes: any) => {
+    return isPwa() ? classes.fullHeight : classes.fullHeightNav;
+};
+
+const isReviewerMode = () => {
+    return isReviewer() && !isDemoMode();
+};
+
+const renderPageOrLoadingOrError = (
+    initialized: boolean,
+    error: ErrorCodeEnum | undefined,
+    t: TFunction<"translation", undefined>,
+    page: any,
+) => {
+    if (initialized) {
+        return page;
+    } else {
+        return !error ? (
+            <LoadingFull
+                message={t("page.home.loading.message")}
+                thanking={t("page.home.loading.thanking")}
+            />
+        ) : (
+            <ErrorPage errorCode={error} atInit={true} />
+        );
+    }
+};
+
+const isMobileApp = () => {
+    return !isPwa() && isMobile && (isIOS || isAndroid);
+};
+
+const getClassCondition = (classes: any, condition: boolean, classNameYes: any, classNameNo: any) => {
+    return condition ? classNameYes : classNameNo;
+};
+
+const isLockedLabels = (
+    isLocked: boolean,
+    variableEdited: boolean,
+    t: TFunction<"translation", undefined>,
+) => {
+    const alertUnlockLabels = getAlertUnlockLabels(variableEdited, t);
+
+    const alertLockLabels = {
+        boldContent: t("page.reviewer-home.lock-popup.boldContent"),
+        content: t("page.reviewer-home.lock-popup.content"),
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: t("page.reviewer-home.lock-survey"),
+    };
+
+    return isLocked ? alertUnlockLabels : alertLockLabels;
+};
+
+const getIterationOrZero = (activity: ActivityRouteOrGap) => {
+    return activity.iteration ?? 0;
+};
+
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
-    const source =
-        context?.source?.components != null ? context.source : getSource(SourcesEnum.ACTIVITY_SURVEY);
+    const source = getSourceContext(context);
 
     const location = useLocation();
     let idSurvey = getSurveyIdFromUrl(context, location);
@@ -230,16 +309,7 @@ const ActivityOrRoutePlannerPage = () => {
         complete: t("page.alert-when-quit.alert-closed"),
     };
 
-    const alertLockLabels = {
-        boldContent: t("page.reviewer-home.lock-popup.boldContent"),
-        content: t("page.reviewer-home.lock-popup.content"),
-        cancel: t("page.alert-when-quit.alert-cancel"),
-        complete: t("page.reviewer-home.lock-survey"),
-    };
-
     const variableEdited = existVariableEdited(idSurvey);
-
-    const alertUnlockLabels = getAlertUnlockLabels(variableEdited, t);
 
     useEffect(() => {
         const isActivityPlanner = isActivity(location);
@@ -465,12 +535,6 @@ const ActivityOrRoutePlannerPage = () => {
         [],
     );
 
-    const addActivityOrRoute = (idSurvey: string, isRoute: boolean) => {
-        return addActivityOrRouteFromGap
-            ? onAddActivityGap(idSurvey, isRoute, gapStartTime, gapEndTime)
-            : onAddActivity(idSurvey, isRoute);
-    };
-
     const navToCard = useCallback(
         (iteration: number, isRoute?: boolean) => () =>
             navToActivityOrRoute(idSurvey, iteration, isRoute),
@@ -503,8 +567,6 @@ const ActivityOrRoutePlannerPage = () => {
         typeTitle: "h1",
     };
 
-    const heightClass = isPwa() ? classes.fullHeight : classes.fullHeightNav;
-
     const lock = useCallback(() => {
         lockSurvey(idSurvey).then(() => {
             setIsLocked(true);
@@ -514,14 +576,15 @@ const ActivityOrRoutePlannerPage = () => {
 
     const lockActivity = useCallback(() => setIsAlertLockDisplayed(true), []);
 
-    const isReviewerMode = isReviewer() && !isDemoMode();
-
-    return initialized ? (
+    return renderPageOrLoadingOrError(
+        initialized,
+        error,
+        t,
         <>
             <Box
                 className={cx(
                     classes.surveyPageBox,
-                    !isPwa() && isMobile && (isIOS || isAndroid) ? classes.surveyPageBoxTablet : "",
+                    getClassCondition(classes, isMobileApp(), classes.surveyPageBoxTablet, ""),
                 )}
             >
                 {(isItDesktop || !isSubchildDisplayed) && (
@@ -548,18 +611,20 @@ const ActivityOrRoutePlannerPage = () => {
                             modifiable={modifiable}
                         >
                             <Box
-                                className={
-                                    isItDesktop && isSubchildDisplayed
-                                        ? classes.outerContentBox
-                                        : heightClass
-                                }
+                                className={getClassCondition(
+                                    classes,
+                                    isItDesktop && isSubchildDisplayed,
+                                    classes.outerContentBox,
+                                    heightClass(classes),
+                                )}
                             >
                                 <Box
-                                    className={
-                                        isItDesktop && isSubchildDisplayed
-                                            ? classes.innerContentBox
-                                            : heightClass
-                                    }
+                                    className={getClassCondition(
+                                        classes,
+                                        isItDesktop && isSubchildDisplayed,
+                                        classes.innerContentBox,
+                                        heightClass(classes),
+                                    )}
                                 >
                                     <Box
                                         id="inner-content-scroll"
@@ -578,14 +643,16 @@ const ActivityOrRoutePlannerPage = () => {
                                                 errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
                                             ></Alert>
                                             <Box
-                                                className={
-                                                    isReviewerMode && activitiesRoutesOrGaps.length !== 0
-                                                        ? classes.infoReviewerBox
-                                                        : classes.infoBox
-                                                }
+                                                className={getClassCondition(
+                                                    classes,
+                                                    isReviewerMode() &&
+                                                        activitiesRoutesOrGaps.length !== 0,
+                                                    classes.infoReviewerBox,
+                                                    classes.infoBox,
+                                                )}
                                             >
                                                 {activitiesRoutesOrGaps.length !== 0 &&
-                                                    (isReviewerMode ? (
+                                                    (isReviewerMode() ? (
                                                         <Box className={classes.headerActivityLockBox}>
                                                             <>
                                                                 <Alert
@@ -597,11 +664,11 @@ const ActivityOrRoutePlannerPage = () => {
                                                                         setIsAlertLockDisplayed,
                                                                         false,
                                                                     )}
-                                                                    labels={
-                                                                        isLocked
-                                                                            ? alertUnlockLabels
-                                                                            : alertLockLabels
-                                                                    }
+                                                                    labels={isLockedLabels(
+                                                                        isLocked,
+                                                                        variableEdited,
+                                                                        t,
+                                                                    )}
                                                                     icon={errorIcon}
                                                                     errorIconAlt={t(
                                                                         "page.alert-when-quit.alt-alert-icon",
@@ -690,19 +757,19 @@ const ActivityOrRoutePlannerPage = () => {
                                                                 labelledBy={""}
                                                                 describedBy={""}
                                                                 onClick={navToCard(
-                                                                    activity.iteration || 0,
+                                                                    getIterationOrZero(activity),
                                                                     activity.isRoute,
                                                                 )}
                                                                 onClickGap={onOpenAddActivityOrRoute}
                                                                 activityOrRoute={activity}
                                                                 onEdit={onEditActivity(
-                                                                    activity.iteration || 0,
+                                                                    getIterationOrZero(activity),
                                                                     activity,
                                                                 )}
                                                                 onDelete={onDeleteActivity(
                                                                     idSurvey,
                                                                     source,
-                                                                    activity.iteration ?? 0,
+                                                                    getIterationOrZero(activity),
                                                                 )}
                                                                 tabIndex={index + 51}
                                                                 modifiable={modifiable}
@@ -721,8 +788,24 @@ const ActivityOrRoutePlannerPage = () => {
                         <AddActivityOrRoute
                             labelledBy={""}
                             describedBy={""}
-                            onClickActivity={addActivityOrRoute(idSurvey, false)}
-                            onClickRoute={addActivityOrRoute(idSurvey, true)}
+                            onClickActivity={addActivityOrRoute(
+                                idSurvey,
+                                false,
+                                addActivityOrRouteFromGap,
+                                gapStartTime,
+                                gapEndTime,
+                                onAddActivityGap,
+                                onAddActivity,
+                            )}
+                            onClickRoute={addActivityOrRoute(
+                                idSurvey,
+                                true,
+                                addActivityOrRouteFromGap,
+                                gapStartTime,
+                                gapEndTime,
+                                onAddActivityGap,
+                                onAddActivity,
+                            )}
                             handleClose={onCloseAddActivityOrRoute}
                             open={isAddActivityOrRouteOpen}
                         />
@@ -745,8 +828,18 @@ const ActivityOrRoutePlannerPage = () => {
                 )}
                 <Box
                     className={cx(
-                        isSubchildDisplayed && isItDesktop ? classes.outletBoxDesktop : "",
-                        isSubchildDisplayed && !isItDesktop ? classes.outletBoxMobileTablet : "",
+                        getClassCondition(
+                            classes,
+                            isSubchildDisplayed && isItDesktop,
+                            classes.outletBoxDesktop,
+                            "",
+                        ),
+                        getClassCondition(
+                            classes,
+                            isSubchildDisplayed && !isItDesktop,
+                            classes.outletBoxMobileTablet,
+                            "",
+                        ),
                     )}
                 >
                     {isItDesktop && isSubchildDisplayed && <Divider orientation="vertical" light />}
@@ -763,14 +856,7 @@ const ActivityOrRoutePlannerPage = () => {
                     />
                 </Box>
             </Box>
-        </>
-    ) : !error ? (
-        <LoadingFull
-            message={t("page.home.loading.message")}
-            thanking={t("page.home.loading.thanking")}
-        />
-    ) : (
-        <ErrorPage errorCode={error} atInit={true} />
+        </>,
     );
 };
 

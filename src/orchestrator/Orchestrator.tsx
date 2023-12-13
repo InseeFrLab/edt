@@ -44,6 +44,47 @@ const renderLoading = () => {
     );
 };
 
+const getDataOfLoop = (
+    collected: any,
+    edited: any,
+    collectedSaved: any,
+    editedSaved: any,
+    dataOfField: any,
+    iteration: number | undefined,
+) => {
+    // partie collected dejà set (mode enquete) -> set values of collected (value current lunawtic) to edited
+    // and collected remains with the collected value on bdd
+    if (collected) {
+        if (collected && editedSaved && Array.isArray(collected)) {
+            let maxLenght = Number(localStorage.getItem("loopSize") ?? 0);
+            for (let i = 0; i < maxLenght; i++) {
+                if (i != iteration || (collected[i] == null && i == iteration)) {
+                    collected[i] = editedSaved[i];
+                }
+            }
+        }
+        dataOfField.EDITED = collected;
+        dataOfField.COLLECTED = collectedSaved;
+    } else if (dataOfField) {
+        dataOfField.EDITED = edited ?? editedSaved;
+        dataOfField.COLLECTED = collectedSaved;
+    }
+
+    return dataOfField;
+};
+
+const isPropOfActivityCurrent = (prop: string, bindings: string[]) => {
+    return prop != FieldNameEnum.WEEKLYPLANNER && bindings != null && bindings.includes(prop);
+};
+
+const isPropActivity = (prop: string, dataOfField: any) => {
+    return prop != FieldNameEnum.WEEKLYPLANNER && dataOfField;
+};
+
+const isPropWorktime = (prop: string, dataOfField: any) => {
+    return prop == FieldNameEnum.WEEKLYPLANNER && dataOfField;
+};
+
 const getDataReviewer = (
     getData: any,
     data: LunaticData | undefined,
@@ -57,33 +98,28 @@ const getDataReviewer = (
     )[0]?.bindingDependencies;
     if (callbackholder && dataCollected) {
         for (let prop in FieldNameEnum as any) {
-            const dataOfField = dataCollected[prop];
+            let dataOfField = dataCollected[prop];
             const collected = dataOfField?.COLLECTED;
             const edited = dataOfField?.EDITED;
             const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
             const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
-            if (prop != FieldNameEnum.WEEKLYPLANNER && bindings != null && bindings.includes(prop)) {
-                if (collected) {
-                    if (collected && editedSaved && Array.isArray(collected)) {
-                        let maxLenght = Number(localStorage.getItem("loopSize") ?? 0);
-                        for (let i = 0; i < maxLenght; i++) {
-                            if (i != iteration || (collected[i] == null && i == iteration)) {
-                                collected[i] = editedSaved[i];
-                            }
-                        }
-                    }
-                    dataOfField.EDITED = collected;
-                    dataOfField.COLLECTED = collectedSaved;
-                } else if (dataOfField) {
-                    dataOfField.EDITED = edited ?? editedSaved;
-                    dataOfField.COLLECTED = collectedSaved;
-                }
-            } else if (prop != FieldNameEnum.WEEKLYPLANNER && dataOfField) {
+            //prop activity + prop currently being edited
+            if (isPropOfActivityCurrent(prop, bindings)) {
+                dataOfField = getDataOfLoop(
+                    collected,
+                    edited,
+                    collectedSaved,
+                    editedSaved,
+                    dataOfField,
+                    iteration,
+                );
+            } else if (isPropActivity(prop, dataOfField)) {
+                //prop activity + prop not currently being edited, so edited get value of edited in bdd, and collected get value of partie collected in bdd
                 dataOfField.EDITED = editedSaved;
                 dataOfField.COLLECTED = collectedSaved;
             }
-
-            if (prop == FieldNameEnum.WEEKLYPLANNER && dataOfField) {
+            //if weekly planner, doesn't distinction edited/collected, so edited/collected get value of collected
+            if (isPropWorktime(prop, dataOfField)) {
                 dataOfField.EDITED = collected;
                 dataOfField.COLLECTED = collected;
             }

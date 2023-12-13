@@ -76,10 +76,15 @@ function getUniquesValues(listValues: any[]): any[] {
     return listValues.filter((value, index, self) => self.indexOf(value) === index);
 }
 
+function getClassCondition(classes: any, condition: boolean, classNameYes: any, classNameNo: any) {
+    return condition ? classNameYes : classNameNo;
+}
+
 export {
     addArrayToSession,
     addItemToSession,
     getArrayFromSession,
+    getClassCondition,
     getItemFromSession,
     getSurveyIdFromUrl,
     getUniquesValues,
