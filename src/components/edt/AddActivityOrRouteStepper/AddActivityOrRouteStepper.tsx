@@ -1,7 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
-import React from "react";
 import { useTranslation } from "react-i18next";
 
 interface AddActivityOrRouteStepperStepperProps {
@@ -25,7 +24,7 @@ const AddActivityOrRouteStepper = (props: AddActivityOrRouteStepperStepperProps)
     const { t } = useTranslation();
     const { classes } = useStyles();
     let stepIncrement = 100 / numberOfSteps;
-    const [progress, setProgress] = React.useState(stepIncrement * lastCompletedStepNumber);
+    const progress = stepIncrement * lastCompletedStepNumber;
 
     return (
         <Box className={classes.stepper}>

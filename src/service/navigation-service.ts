@@ -302,8 +302,9 @@ const navToActivityOrPlannerOrSummary = (
             const navEndSurvey =
                 getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
                 getNavigatePath(EdtRoutesNameEnum.END_SURVEY);
+
             const allStepsAdded =
-                currentPathNav.indexOf(EdtRoutesNameEnum.PHONE_TIME) != 0 &&
+                currentPathNav.startsWith(EdtRoutesNameEnum.PHONE_TIME) &&
                 getValue(idSurvey, FieldNameEnum.PHONETIME) != null;
             navigate(allStepsAdded ? navEndSurvey : currentPathNav);
         }

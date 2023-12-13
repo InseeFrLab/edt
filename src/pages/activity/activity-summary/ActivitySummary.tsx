@@ -511,19 +511,14 @@ const ActivitySummaryPage = () => {
                         {activitiesRoutesOrGaps.length !== 0 &&
                             (isReviewerMode ? (
                                 <Box className={classes.headerActivityLockBox}>
-                                    <>
-                                        <Alert
-                                            isAlertDisplayed={isAlertLockDisplayed}
-                                            onCompleteCallBack={lock}
-                                            onCancelCallBack={displayAlert(
-                                                setIsAlertLockDisplayed,
-                                                false,
-                                            )}
-                                            labels={getAlertLabelsLock(isLocked, variableEdited, t)}
-                                            icon={errorIcon}
-                                            errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
-                                        ></Alert>
-                                    </>
+                                    <Alert
+                                        isAlertDisplayed={isAlertLockDisplayed}
+                                        onCompleteCallBack={lock}
+                                        onCancelCallBack={displayAlert(setIsAlertLockDisplayed, false)}
+                                        labels={getAlertLabelsLock(isLocked, variableEdited, t)}
+                                        icon={errorIcon}
+                                        errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                                    ></Alert>
                                     <Box className={classes.headerActivityBox}>
                                         <Typography className={classes.label}>
                                             {t("page.activity-planner.activity-for-day")}
@@ -678,25 +673,21 @@ const ActivitySummaryPage = () => {
                             </Button>
                         </>
                     ) : (
-                        <>
-                            <Button variant="contained" className={classes.downloadButton}>
-                                <PDFDownloadLink
-                                    className={classes.downloadLink}
-                                    document={
-                                        <ActivitiesSummaryExportTemplate exportData={exportData} />
-                                    }
-                                    fileName={
-                                        t("export.activities-summary.file-name") +
-                                        getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
-                                        "_" +
-                                        getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
-                                        ".pdf"
-                                    }
-                                >
-                                    {() => t("page.activity-summary.download-pdf")}
-                                </PDFDownloadLink>
-                            </Button>
-                        </>
+                        <Button variant="contained" className={classes.downloadButton}>
+                            <PDFDownloadLink
+                                className={classes.downloadLink}
+                                document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
+                                fileName={
+                                    t("export.activities-summary.file-name") +
+                                    getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
+                                    "_" +
+                                    getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
+                                    ".pdf"
+                                }
+                            >
+                                {() => t("page.activity-summary.download-pdf")}
+                            </PDFDownloadLink>
+                        </Button>
                     )}
                 </FlexCenter>
 

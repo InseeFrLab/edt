@@ -19,13 +19,11 @@ const SurveyPageHeader = (props: SurveyPageHeaderProps) => {
             <Box>
                 <Typography className={classes.infoText}>{surveyDate + " - " + firstName}</Typography>
             </Box>
-            <Box>
+            <Box onClick={onNavigateBack} onKeyUp={onNavigateBack}>
                 <img
                     src={close}
                     alt={t("accessibility.asset.mui-icon.close")}
                     className={classes.actionIcon}
-                    onClick={onNavigateBack}
-                    onKeyUp={onNavigateBack}
                 />
             </Box>
         </Box>

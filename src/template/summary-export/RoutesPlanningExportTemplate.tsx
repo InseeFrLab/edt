@@ -10,6 +10,9 @@ const RoutesPlanningExportTemplate = (props: RoutesPlanningExportTemplateProps) 
     const { exportData } = props;
     const { t } = useTranslation();
 
+    const getKeyRoutes = (index: number) => {
+        return "row-routes-planning-" + index;
+    };
     return (
         <View>
             <View style={classes.title}>
@@ -50,7 +53,7 @@ const RoutesPlanningExportTemplate = (props: RoutesPlanningExportTemplateProps) 
                         </View>
                     </View>
                     {exportData.routes.map((route, index) => (
-                        <View style={classes.tableRow} key={"row-routes-planning-" + index}>
+                        <View style={classes.tableRow} key={getKeyRoutes(index)}>
                             <View style={classes.tableCol16}>
                                 <Text style={classes.tableCell}>
                                     {route.startTime + " - " + route.endTime}

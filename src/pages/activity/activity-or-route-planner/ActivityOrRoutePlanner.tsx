@@ -265,9 +265,11 @@ const getIterationOrZero = (activity: ActivityRouteOrGap) => {
 const displaySnackbar = (
     idSurvey: string,
     source: LunaticModel,
-    setSnackbarText: (value: React.SetStateAction<string | undefined>) => void,
-    setOpenSnackbar: (value: React.SetStateAction<boolean>) => void,
-    setSkip: (value: React.SetStateAction<boolean>) => void,
+    setters: {
+        setSnackbarText: (value: React.SetStateAction<string | undefined>) => void;
+        setOpenSnackbar: (value: React.SetStateAction<boolean>) => void;
+        setSkip: (value: React.SetStateAction<boolean>) => void;
+    },
     skip: boolean,
     overlaps: {
         prev: string | undefined;
@@ -279,9 +281,16 @@ const displaySnackbar = (
     const isActivityPlanner = isActivity(location);
     if (isActivityPlanner) {
         const act = getActivitiesOrRoutes(t, idSurvey, source);
-        setAlertSnackbar(setSnackbarText, setOpenSnackbar, skip, act.overlaps.length > 0, overlaps, t);
+        setAlertSnackbar(
+            setters.setSnackbarText,
+            setters.setOpenSnackbar,
+            skip,
+            act.overlaps.length > 0,
+            overlaps,
+            t,
+        );
     } else {
-        setSkip(false);
+        setters.setSkip(false);
     }
 };
 
@@ -315,6 +324,23 @@ const init = (
     }
 };
 
+const updateSubChildDisplayed = (
+    isSubchildDisplayed: boolean,
+    setIsSubChildDisplayed: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
+    const currentIsChildDisplay = isChildDisplayed(location.pathname);
+    if (currentIsChildDisplay !== isSubchildDisplayed) {
+        setIsSubChildDisplayed(currentIsChildDisplay);
+    }
+};
+
+const getAddLabel = (
+    activitiesRoutesOrGaps: ActivityRouteOrGap[],
+    t: TFunction<"translation", undefined>,
+) => {
+    return activitiesRoutesOrGaps.length === 0 ? t("common.navigation.add") : undefined;
+};
+
 const ActivityOrRoutePlannerPage = () => {
     const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
@@ -323,7 +349,7 @@ const ActivityOrRoutePlannerPage = () => {
     const location = useLocation();
     let idSurvey = getSurveyIdFromUrl(context, location);
     const { t } = useTranslation();
-    const [isSubchildDisplayed, setIsSubChildDisplayed] = React.useState(false);
+    const [isSubChildDisplayed, setIsSubChildDisplayed] = React.useState<boolean>(false);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
     const [isRoute, setIsRoute] = React.useState(false);
     const [addActivityOrRouteFromGap, setAddActivityOrRouteFromGap] = React.useState(false);
@@ -355,7 +381,7 @@ const ActivityOrRoutePlannerPage = () => {
     const [isLocked, setIsLocked] = useState<boolean>(surveyLocked(idSurvey));
     const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
     const [menuActivityPlannerDisplayed, setMenuActivityPlannerDisplayed] = React.useState(
-        isItDesktop && isSubchildDisplayed,
+        isItDesktop && isSubChildDisplayed,
     );
 
     const alertLabels = {
@@ -371,9 +397,11 @@ const ActivityOrRoutePlannerPage = () => {
         displaySnackbar(
             idSurvey,
             source,
-            setSnackbarText,
-            setOpenSnackbar,
-            setSkip,
+            {
+                setSnackbarText,
+                setOpenSnackbar,
+                setSkip,
+            },
             skip,
             overlaps,
             location,
@@ -394,15 +422,12 @@ const ActivityOrRoutePlannerPage = () => {
     }, []);
 
     useEffect(() => {
-        const currentIsChildDisplay = isChildDisplayed(location.pathname);
-        if (currentIsChildDisplay !== isSubchildDisplayed) {
-            setIsSubChildDisplayed(currentIsChildDisplay);
-        }
+        updateSubChildDisplayed(isSubChildDisplayed, setIsSubChildDisplayed);
     }, [location]);
 
     useEffect(() => {
-        setMenuActivityPlannerDisplayed(isItDesktop && isSubchildDisplayed);
-    }, [isSubchildDisplayed]);
+        setMenuActivityPlannerDisplayed(isItDesktop && isSubChildDisplayed);
+    }, [isSubChildDisplayed]);
 
     const onAddActivityOrRoute = (isRouteBool: boolean, idSurvey: string) => {
         const loopSize = setLoopSize(
@@ -543,11 +568,9 @@ const ActivityOrRoutePlannerPage = () => {
     }, []);
 
     const snackbarAction = (
-        <React.Fragment>
-            <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
-                <img src={close} alt={t("accessibility.asset.mui-icon.close")} />
-            </IconButton>
-        </React.Fragment>
+        <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
+            <img src={close} alt={t("accessibility.asset.mui-icon.close")} />
+        </IconButton>
     );
 
     const messagesEndRef = React.useRef<null | HTMLDivElement>(null);
@@ -639,7 +662,7 @@ const ActivityOrRoutePlannerPage = () => {
                 getClassCondition(classes, isMobileApp(), classes.surveyPageBoxTablet, ""),
             )}
         >
-            {(isItDesktop || !isSubchildDisplayed) && (
+            {(isItDesktop || !isSubChildDisplayed) && (
                 <Box className={classes.innerSurveyPageBox}>
                     {renderMenuHelp()}
                     <SurveyPage
@@ -652,9 +675,7 @@ const ActivityOrRoutePlannerPage = () => {
                         onFinish={closeActivity(false, idSurvey)}
                         onAdd={onOpenAddActivityOrRoute}
                         finishLabel={t("common.navigation.finish")}
-                        addLabel={
-                            activitiesRoutesOrGaps.length === 0 ? t("common.navigation.add") : undefined
-                        }
+                        addLabel={getAddLabel(activitiesRoutesOrGaps, t)}
                         activityProgressBar={true}
                         idSurvey={idSurvey}
                         score={score}
@@ -697,25 +718,23 @@ const ActivityOrRoutePlannerPage = () => {
                                             {activitiesRoutesOrGaps.length !== 0 &&
                                                 (isReviewerMode() ? (
                                                     <Box className={classes.headerActivityLockBox}>
-                                                        <>
-                                                            <Alert
-                                                                isAlertDisplayed={isAlertLockDisplayed}
-                                                                onCompleteCallBack={lock}
-                                                                onCancelCallBack={displayAlert(
-                                                                    setIsAlertLockDisplayed,
-                                                                    false,
-                                                                )}
-                                                                labels={isLockedLabels(
-                                                                    isLocked,
-                                                                    variableEdited,
-                                                                    t,
-                                                                )}
-                                                                icon={errorIcon}
-                                                                errorIconAlt={t(
-                                                                    "page.alert-when-quit.alt-alert-icon",
-                                                                )}
-                                                            ></Alert>
-                                                        </>
+                                                        <Alert
+                                                            isAlertDisplayed={isAlertLockDisplayed}
+                                                            onCompleteCallBack={lock}
+                                                            onCancelCallBack={displayAlert(
+                                                                setIsAlertLockDisplayed,
+                                                                false,
+                                                            )}
+                                                            labels={isLockedLabels(
+                                                                isLocked,
+                                                                variableEdited,
+                                                                t,
+                                                            )}
+                                                            icon={errorIcon}
+                                                            errorIconAlt={t(
+                                                                "page.alert-when-quit.alt-alert-icon",
+                                                            )}
+                                                        ></Alert>
                                                         <Box className={classes.headerActivityBox}>
                                                             <Typography className={classes.label}>
                                                                 {t(
@@ -865,13 +884,13 @@ const ActivityOrRoutePlannerPage = () => {
                 className={cx(
                     getClassCondition(
                         classes,
-                        isSubchildDisplayed && isItDesktop,
+                        isSubChildDisplayed && isItDesktop,
                         classes.outletBoxDesktop,
                         "",
                     ),
                     getClassCondition(
                         classes,
-                        isSubchildDisplayed && !isItDesktop,
+                        isSubChildDisplayed && !isItDesktop,
                         classes.outletBoxMobileTablet,
                         "",
                     ),

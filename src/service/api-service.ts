@@ -192,9 +192,9 @@ const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<Survey
             .then((user: User | null) => {
                 return requestPutSurveyData(idSurvey, data, user?.access_token);
             })
-            .catch(() => {
+            .catch(err => {
                 logout();
-                return Promise.reject(null);
+                return Promise.reject(err);
             });
     } else {
         return requestPutSurveyData(idSurvey, data);
@@ -218,9 +218,9 @@ const remotePutSurveyDataReviewer = (
             .then((user: User | null) => {
                 return requestPutSurveyDataReviewer(idSurvey, data, stateData, user?.access_token);
             })
-            .catch(() => {
+            .catch(err => {
                 logout();
-                return Promise.reject(null);
+                return Promise.reject(err);
             });
     } else {
         return requestPutSurveyDataReviewer(idSurvey, data, stateData);
@@ -412,7 +412,7 @@ const remoteGetSurveyDataReviewer = (
         } else {
             setError?.(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
         }
-        return Promise.reject(null);
+        return Promise.reject(err);
     });
 };
 

@@ -6,24 +6,6 @@ import {
     makeStylesEdt,
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
-import React, { useCallback, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { getLoopInitialPage } from "service/loop-service";
-import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
-import {
-    getNavigatePath,
-    navToActivityRouteOrHome,
-    onClose,
-    onNext,
-    onPrevious,
-} from "service/navigation-service";
-
-import {} from "@inseefrlab/lunatic-edt";
 import catIcon100 from "assets/illustration/activity-categories/1.svg";
 import catIcon200 from "assets/illustration/activity-categories/2.svg";
 import catIcon300 from "assets/illustration/activity-categories/3.svg";
@@ -43,10 +25,26 @@ import {
 import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
 import extension from "assets/illustration/mui-icon/extension.svg";
 import search from "assets/illustration/mui-icon/search.svg";
+import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { SEPARATOR_DEFAUT } from "constants/constants";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
+import React, { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { getLabelsWhenQuit } from "service/alert-service";
+import { getLoopInitialPage } from "service/loop-service";
+import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
+import {
+    getNavigatePath,
+    navToActivityRouteOrHome,
+    onClose,
+    onNext,
+    onPrevious,
+} from "service/navigation-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { mockData } from "service/survey-activity-service";
 import { addToAutocompleteActivityReferentiel, getSource } from "service/survey-service";

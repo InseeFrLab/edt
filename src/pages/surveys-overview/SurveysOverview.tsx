@@ -94,7 +94,7 @@ const filterSearchInput = (
 ) => {
     let newSearchResult = dataHouseholds.filter(
         houseHoldData =>
-            houseHoldData?.userName?.toLowerCase().includes(input.toLowerCase()) ||
+            houseHoldData?.userName?.toLowerCase().includes(input.toLowerCase()) ??
             houseHoldData?.idHousehold?.toLowerCase().includes(input.toLowerCase()),
     );
 

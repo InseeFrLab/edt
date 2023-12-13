@@ -47,13 +47,11 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
                     ></Button>
                     <Typography className={classes.infoText}>{firstNamePrefix + firstName}</Typography>
                 </Box>
-                <Box>
+                <Box onClick={onEditSurvey} onKeyUp={onEditSurvey}>
                     <img
                         src={moreHorizontal}
                         alt={t("accessibility.asset.mui-icon.more-horizontal")}
                         className={classes.actionIcon}
-                        onClick={onEditSurvey}
-                        onKeyUp={onEditSurvey}
                     />
                     <Popover
                         id={id}

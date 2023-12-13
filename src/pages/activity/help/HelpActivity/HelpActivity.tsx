@@ -37,7 +37,7 @@ const HelpActivity = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const [isSubchildDisplayed] = React.useState(false);
+    const isSubchildDisplayed = false;
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
     const [addActivityOrRouteFromGap, setAddActivityOrRouteFromGap] = React.useState(false);
     const [gapStartTime, setGapStartTime] = React.useState<string>();

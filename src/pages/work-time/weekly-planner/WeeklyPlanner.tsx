@@ -68,8 +68,6 @@ const WeeklyPlannerPage = () => {
     };
 
     const saveDuration = (response: responsesHourChecker) => {
-        const promisesToWait: Promise<any>[] = [];
-
         const callbackData = callbackHolder.getData();
         const dataCopy = callbackData;
         const dates = dataCopy?.COLLECTED?.[FieldNameEnum.DATES].COLLECTED as string[];
@@ -82,8 +80,6 @@ const WeeklyPlannerPage = () => {
             if (dataCopy?.COLLECTED) {
                 dataCopy.COLLECTED[name].COLLECTED = quartier;
             }
-
-            promisesToWait.push(saveData(idSurvey, dataCopy));
         });
 
         saveData(idSurvey, dataCopy).then(() => {

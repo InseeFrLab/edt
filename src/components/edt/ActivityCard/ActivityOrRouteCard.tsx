@@ -289,13 +289,11 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                     {renderWithScreen(activityOrRoute, classes, renderInsideAlert, t)}
                 </Box>
                 {onEdit && onDelete && modifiable && (
-                    <Box className={classes.editBox}>
+                    <Box className={classes.editBox} onClick={onEditCard} onKeyUp={onEditCard}>
                         <img
                             src={moreHorizontal}
                             alt={t("accessibility.asset.mui-icon.more-horizontal")}
                             className={classes.actionIcon}
-                            onClick={onEditCard}
-                            onKeyUp={onEditCard}
                             aria-label="editCardToggle"
                         />
                         <Popover

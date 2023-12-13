@@ -10,6 +10,10 @@ const GlobalOrganisationExportTemplate = (props: GlobalOrganisationExportTemplat
     const { exportData } = props;
     const { t } = useTranslation();
 
+    const getKeyOrganisation = (index: number) => {
+        return "row-organisation-" + index;
+    };
+
     return (
         <View>
             <View style={classes.title}>
@@ -40,7 +44,7 @@ const GlobalOrganisationExportTemplate = (props: GlobalOrganisationExportTemplat
                         </View>
                     </View>
                     {exportData.activitiesAndRoutes.map((activityOrRoute, index) => (
-                        <View style={classes.tableRow} key={"row-organisation-" + index}>
+                        <View style={classes.tableRow} key={getKeyOrganisation(index)}>
                             <View style={classes.tableCol25}>
                                 <Text style={classes.tableCell}>
                                     {activityOrRoute.startTime + " - " + activityOrRoute.endTime}
