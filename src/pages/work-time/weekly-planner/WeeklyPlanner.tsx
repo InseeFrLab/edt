@@ -71,7 +71,7 @@ const WeeklyPlannerPage = () => {
         const promisesToWait: Promise<any>[] = [];
 
         const callbackData = callbackHolder.getData();
-        const dataCopy = Object.assign({}, callbackData);
+        const dataCopy = callbackData;
         const dates = dataCopy?.COLLECTED?.[FieldNameEnum.DATES].COLLECTED as string[];
         const currentDateIndex = dates.indexOf(response.date);
 

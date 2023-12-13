@@ -25,7 +25,7 @@ const AddActivityOrRouteStepper = (props: AddActivityOrRouteStepperStepperProps)
     const { t } = useTranslation();
     const { classes } = useStyles();
     let stepIncrement = 100 / numberOfSteps;
-    const [progress] = React.useState(stepIncrement * lastCompletedStepNumber);
+    const [progress, setProgress] = React.useState(stepIncrement * lastCompletedStepNumber);
 
     return (
         <Box className={classes.stepper}>

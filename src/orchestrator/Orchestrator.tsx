@@ -97,7 +97,7 @@ const getDataReviewer = (
     iteration: number | undefined,
 ) => {
     const callbackholder = getData();
-    const dataCollected = Object.assign({}, callbackholder.COLLECTED);
+    const dataCollected = callbackholder.COLLECTED;
     const bindings: string[] = components?.filter(
         (component: any) => component.componentType != "Sequence",
     )[0]?.bindingDependencies;
@@ -136,7 +136,7 @@ const getDataReviewer = (
 
 const getDataInterviewer = (getData: any, data: LunaticData | undefined) => {
     const callbackholder = getData();
-    const dataCollected = Object.assign({}, callbackholder.COLLECTED);
+    const dataCollected = callbackholder.COLLECTED;
 
     if (callbackholder && dataCollected) {
         for (let prop in FieldNameEnum as any) {
@@ -207,45 +207,43 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
 
     const renderComponent = () => {
         return (
-            <>
-                <Box className={classes.orchestratorBox}>
-                    <div
-                        className={cx(
-                            "components",
-                            classes.styleOverride,
-                            window.innerWidth <= 667 && componentSpecificProps.widthGlobal
-                                ? classes.styleOverrideMobile
-                                : "",
-                        )}
-                    >
-                        {components.map(function (component: any) {
-                            const { id, componentType, response, options, value, ...other } = component;
-                            const Component = lunatic[componentType];
-                            return (
-                                <div className="lunatic lunatic-component" key={`component-${id}`}>
-                                    <Component
-                                        id={id}
-                                        response={response}
-                                        options={options ? options : overrideOptions}
-                                        {...other}
-                                        errors={currentErrors}
-                                        custom={edtComponents}
-                                        componentSpecificProps={componentSpecificProps}
-                                        variables={getVariables(
-                                            data,
-                                            iteration,
-                                            getBindingDependencies(components),
-                                            value,
-                                        )}
-                                        bindingDependencies={getBindingDependencies(components)}
-                                        value={value}
-                                    />
-                                </div>
-                            );
-                        })}
-                    </div>
-                </Box>
-            </>
+            <Box className={classes.orchestratorBox}>
+                <div
+                    className={cx(
+                        "components",
+                        classes.styleOverride,
+                        window.innerWidth <= 667 && componentSpecificProps.widthGlobal
+                            ? classes.styleOverrideMobile
+                            : "",
+                    )}
+                >
+                    {components.map(function (component: any) {
+                        const { id, componentType, response, options, value, ...other } = component;
+                        const Component = lunatic[componentType];
+                        return (
+                            <div className="lunatic lunatic-component" key={`component-${id}`}>
+                                <Component
+                                    id={id}
+                                    response={response}
+                                    options={options ?? overrideOptions}
+                                    {...other}
+                                    errors={currentErrors}
+                                    custom={edtComponents}
+                                    componentSpecificProps={componentSpecificProps}
+                                    variables={getVariables(
+                                        data,
+                                        iteration,
+                                        getBindingDependencies(components),
+                                        value,
+                                    )}
+                                    bindingDependencies={getBindingDependencies(components)}
+                                    value={value}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+            </Box>
         );
     };
 

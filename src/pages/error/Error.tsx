@@ -121,7 +121,7 @@ const ErrorPage = (props: ErrorPageProps) => {
 
     const disconnect = useCallback(() => {
         auth.userManager.signoutRedirect({
-            id_token_hint: localStorage.getItem("id_token") || undefined,
+            id_token_hint: localStorage.getItem("id_token") ?? undefined,
         });
         auth.userManager.clearStaleState();
         auth.userManager.signoutRedirectCallback().then(() => {

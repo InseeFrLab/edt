@@ -144,7 +144,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
     };
 
-    const specifiquesPropsOrchestrator = Object.assign({}, specifiquesProps, componentLunaticProps);
+    const specifiquesPropsOrchestrator = Object.assign(specifiquesProps, componentLunaticProps);
     const orchestratorProps = {
         source: context.source,
         data: getData(idSurvey),

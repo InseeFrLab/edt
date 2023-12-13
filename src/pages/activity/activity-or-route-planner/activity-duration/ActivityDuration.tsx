@@ -200,6 +200,7 @@ const ActivityDurationPage = () => {
             <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
                 <img src={close} alt={t("accessibility.asset.mui-icon.close")} />
             </IconButton>
+            <></>
         </Fragment>
     );
 

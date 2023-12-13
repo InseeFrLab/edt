@@ -22,7 +22,7 @@ const GreatestActivityDayPage = () => {
 
     const specifiquesProps = {
         options: uniqueActivities.map(activity => {
-            return { label: activity.activityLabel || "", value: activity.activityCode || "" };
+            return { label: activity.activityLabel ?? "", value: activity.activityCode ?? "" };
         }),
         defaultIcon: true,
     };

@@ -33,7 +33,7 @@ const DaySummary = (props: DaySummaryProps) => {
                 <Divider variant="middle" flexItem />
                 <Box className={classes.rowBox}>
                     <Box className={classes.valueBox}>
-                        {timeLabel || t("component.day-summary.no-time")}
+                        {timeLabel ?? t("component.day-summary.no-time")}
                     </Box>
                     <Typography className={classes.label}>{t(label)}</Typography>
                 </Box>
@@ -51,13 +51,13 @@ const DaySummary = (props: DaySummaryProps) => {
                 />
             </Box>
             <Box className={classes.rowBox}>
-                <Box className={classes.valueBox}>{userActivitiesSummary?.activitiesAmount || 0}</Box>
+                <Box className={classes.valueBox}>{userActivitiesSummary?.activitiesAmount ?? 0}</Box>
                 <Typography className={classes.label}>
                     {t("component.day-summary.activity-done")}
                 </Typography>
             </Box>
             <Box className={classes.rowBox}>
-                <Box className={classes.valueBox}>{userActivitiesSummary?.routesAmount || 0}</Box>
+                <Box className={classes.valueBox}>{userActivitiesSummary?.routesAmount ?? 0}</Box>
                 <Typography className={classes.label}>
                     {t("component.day-summary.route-done")}
                 </Typography>

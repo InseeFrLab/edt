@@ -44,15 +44,13 @@ const WhoAreYouPage = () => {
     }, [callbackHolder]);
 
     return (
-        <>
-            <SurveyPageStep
-                currentPage={EdtRoutesNameEnum.WHO_ARE_YOU}
-                errorIcon={who_are_you}
-                errorAltIcon={"accessibility.asset.who-are-you-alt"}
-                isStep={false}
-                disableButton={modifiable ? disabledButton : true}
-            />
-        </>
+        <SurveyPageStep
+            currentPage={EdtRoutesNameEnum.WHO_ARE_YOU}
+            errorIcon={who_are_you}
+            errorAltIcon={"accessibility.asset.who-are-you-alt"}
+            isStep={false}
+            disableButton={modifiable ? disabledButton : true}
+        />
     );
 };
 

@@ -526,7 +526,7 @@ const getMeanOfTransportLabel = (
 
 const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: number) => {
     const data = getData(idSurvey);
-    const dataCollected = data.COLLECTED != null ? data.COLLECTED : null;
+    const dataCollected = data.COLLECTED ?? null;
     if (dataCollected) {
         source.variables.forEach(variable => {
             let value = getValueOfData(data, variable.name);
@@ -594,7 +594,7 @@ const mockActivitiesRoutesOrGaps = () => {
 
 const mockData = () => {
     const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
-    let dataAct = Object.assign({}, getData(idSurvey || ""));
+    let dataAct = getData(idSurvey ?? "");
 
     if (dataAct?.COLLECTED) {
         if (dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_ID])

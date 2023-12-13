@@ -287,7 +287,7 @@ const logout = () => {
     let auth = getAuth();
     auth.userManager
         .signoutRedirect({
-            id_token_hint: localStorage.getItem("id_token") || undefined,
+            id_token_hint: localStorage.getItem("id_token") ?? undefined,
         })
         .then(() => auth.userManager.clearStaleState())
         .then(() => auth.userManager.signoutRedirectCallback())
@@ -296,7 +296,7 @@ const logout = () => {
             localStorage.clear();
         })
         .then(() => auth.userManager.clearStaleState())
-        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
+        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL ?? ""));
 };
 
 const remoteGetSurveyData = (

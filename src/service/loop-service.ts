@@ -366,7 +366,7 @@ const skipNextPage = (
         saveAndLoopNavigate(
             idSurvey,
             source,
-            nextPageRoute || nextPageNextLoop,
+            nextPageRoute ?? nextPageNextLoop,
             LoopEnum.ACTIVITY_OR_ROUTE,
             iteration,
             fieldConditionNext,
@@ -418,7 +418,7 @@ const skipBackPage = (
         saveAndLoopNavigate(
             idSurvey,
             source,
-            backPageRoute || backPageBackLoop,
+            backPageRoute ?? backPageBackLoop,
             LoopEnum.ACTIVITY_OR_ROUTE,
             iteration,
             fieldConditionBack,
@@ -669,7 +669,7 @@ const getLoopSizeOfVariable = (
 };
 
 const getLoopSize = (idSurvey: string, currentLoop: LoopEnum, sourceModel?: LunaticModel): number => {
-    const source = sourceModel != null ? sourceModel : getCurrentPageSource();
+    const source = sourceModel ?? getCurrentPageSource();
     const loopPage = getLoopInitialPage(currentLoop);
     if (!source?.components) {
         return 0;

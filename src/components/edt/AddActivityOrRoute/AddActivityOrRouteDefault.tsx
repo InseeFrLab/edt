@@ -21,59 +21,57 @@ const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
     return (
-        <>
-            <Box className={cx(className, classes.modalDefault)}>
-                <Box id="modal-title" className={classes.titleBox}>
-                    <Box className={classes.iconBox}>
-                        <img src={iconTitle} alt={t("accessibility.asset.yellow-plus-alt")} />
-                    </Box>
-                    <Box className={classes.modalTitleBox}>
-                        <h1>{t("component.add-activity-or-route.title")}</h1>
-                    </Box>
+        <Box className={cx(className, classes.modalDefault)}>
+            <Box id="modal-title" className={classes.titleBox}>
+                <Box className={classes.iconBox}>
+                    <img src={iconTitle} alt={t("accessibility.asset.yellow-plus-alt")} />
                 </Box>
-                <Box id="add-activity" className={classes.navigateBox} onClick={onClickActivity}>
-                    <Box className={classes.iconBox}>
-                        <img src={iconActivity} alt={t("accessibility.asset.activity-alt")} />
-                    </Box>
-                    <Box className={classes.textBox}>
-                        <h2>{t("component.add-activity-or-route.activity-label")}</h2>
-                        <p>{t("component.add-activity-or-route.activity-description")}</p>
-                    </Box>
-                    <Box className={classes.navIconBox}>
-                        <img
-                            src={arrowForwardIos}
-                            alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
-                        />
-                    </Box>
+                <Box className={classes.modalTitleBox}>
+                    <h1>{t("component.add-activity-or-route.title")}</h1>
                 </Box>
-                <Divider light />
-                <Box id="add-route" className={classes.navigateBox} onClick={onClickRoute}>
-                    <Box className={classes.iconBox}>
-                        <img src={iconRoute} alt={t("accessibility.asset.route-alt")} />
-                    </Box>
-                    <Box className={classes.textBox}>
-                        <h2>{t("component.add-activity-or-route.route-label")}</h2>
-                        <p>{t("component.add-activity-or-route.route-description")}</p>
-                    </Box>
-                    <Box className={classes.navIconBox}>
-                        <img
-                            src={arrowForwardIos}
-                            alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
-                        />
-                    </Box>
-                </Box>
-                <FlexCenter>
-                    <Button className={classes.closeButton} onClick={handleClose}>
-                        <Box>
-                            <Box>
-                                <img src={close} alt={t("accessibility.asset.mui-icon.close")} />
-                            </Box>
-                            <Box>{t("common.navigation.close")}</Box>
-                        </Box>
-                    </Button>
-                </FlexCenter>
             </Box>
-        </>
+            <Box id="add-activity" className={classes.navigateBox} onClick={onClickActivity}>
+                <Box className={classes.iconBox}>
+                    <img src={iconActivity} alt={t("accessibility.asset.activity-alt")} />
+                </Box>
+                <Box className={classes.textBox}>
+                    <h2>{t("component.add-activity-or-route.activity-label")}</h2>
+                    <p>{t("component.add-activity-or-route.activity-description")}</p>
+                </Box>
+                <Box className={classes.navIconBox}>
+                    <img
+                        src={arrowForwardIos}
+                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                    />
+                </Box>
+            </Box>
+            <Divider light />
+            <Box id="add-route" className={classes.navigateBox} onClick={onClickRoute}>
+                <Box className={classes.iconBox}>
+                    <img src={iconRoute} alt={t("accessibility.asset.route-alt")} />
+                </Box>
+                <Box className={classes.textBox}>
+                    <h2>{t("component.add-activity-or-route.route-label")}</h2>
+                    <p>{t("component.add-activity-or-route.route-description")}</p>
+                </Box>
+                <Box className={classes.navIconBox}>
+                    <img
+                        src={arrowForwardIos}
+                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                    />
+                </Box>
+            </Box>
+            <FlexCenter>
+                <Button className={classes.closeButton} onClick={handleClose}>
+                    <Box>
+                        <Box>
+                            <img src={close} alt={t("accessibility.asset.mui-icon.close")} />
+                        </Box>
+                        <Box>{t("common.navigation.close")}</Box>
+                    </Box>
+                </Button>
+            </FlexCenter>
+        </Box>
     );
 };
 

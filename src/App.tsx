@@ -18,7 +18,7 @@ const App = () => {
     const auth = useAuth();
 
     const getTokenHint = () => {
-        return localStorage.getItem("id_token") || undefined;
+        return localStorage.getItem("id_token") ?? undefined;
     };
 
     const setErrorType = (err: any) => {

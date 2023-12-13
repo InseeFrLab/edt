@@ -146,7 +146,7 @@ const getCurrentNavigatePath = (
         parentPage = pageOrchestrator?.parentPage;
     } else {
         const currentPage = getCurrentPage(surveyData, source);
-        const firstEmptyPage = nextPage ? nextPage : currentPage;
+        const firstEmptyPage = nextPage ?? currentPage;
         page = mappingPageOrchestrator.find(
             link =>
                 link.surveyPage ===
@@ -169,7 +169,7 @@ const getOrchestratorPage = (page: EdtRoutesNameEnum, parentPage?: EdtRoutesName
         mappingPageOrchestrator.find(
             pageData =>
                 pageData.page === page && (parentPage ? pageData.parentPage === parentPage : true),
-        )?.surveyPage || ""
+        )?.surveyPage ?? ""
     );
 };
 
@@ -213,7 +213,7 @@ const saveAndNav = (
  */
 const closeFormularieAndNav = (idSurvey: string, route: string) => {
     const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
-    saveData(idSurvey, data ? data : _callbackHolder.getData()).then(() => {
+    saveData(idSurvey, data ?? _callbackHolder.getData()).then(() => {
         _navigate(route);
     });
 };
@@ -244,7 +244,7 @@ const navToRouteOrRouteNotSelection = (
         } else {
             _navigate(routeNotSelection as To);
         }
-    } else _navigate(route ? route : getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
+    } else _navigate(route ?? getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
 };
 
 const navToHome = (): void => {
@@ -395,7 +395,7 @@ const getIdSurveyContext = (typeSurvey: SurveysIdsEnum) => {
 
 const isGlobalString = () => {
     const isGlobal = localStorage.getItem(LocalStorageVariableEnum.IS_GLOBAL);
-    return isGlobal != null && isGlobal == "true" ? true : false;
+    return isGlobal != null && isGlobal == "true";
 };
 
 const isPageGlobal = () => {

@@ -47,7 +47,7 @@ const activityComplementaryQuestionsStepperData: StepData[] = [
 
 const getStepData = (page: EdtRoutesNameEnum): StepData => {
     return (
-        activityComplementaryQuestionsStepperData.find(stepData => stepData.page === page) ||
+        activityComplementaryQuestionsStepperData.find(stepData => stepData.page === page) ??
         activityComplementaryQuestionsStepperData[0]
     );
 };
@@ -59,7 +59,7 @@ const getLastStep = () => {
 };
 
 const getPageOfStep = (page: EdtRoutesNameEnum) => {
-    return mappingPageOrchestrator.find(pageData => pageData.page === page)?.surveyPage || "";
+    return mappingPageOrchestrator.find(pageData => pageData.page === page)?.surveyPage ?? "";
 };
 
 const getComponentStep = (step: StepData, source: LunaticModel): LunaticModelComponent | undefined => {
@@ -117,8 +117,8 @@ const getLastPageStep = (data: LunaticData | undefined): StepData | null => {
 
 export {
     activityComplementaryQuestionsStepperData,
-    getStepData,
-    getLastStep,
     getLastPageStep,
+    getLastStep,
     getPageOfStep,
+    getStepData,
 };

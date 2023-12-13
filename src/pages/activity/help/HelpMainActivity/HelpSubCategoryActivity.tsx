@@ -1,10 +1,16 @@
-import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import {
+    ActivitySelecterSpecificProps,
+    Alert,
+    AutoCompleteActiviteOption,
+    important,
+    makeStylesEdt,
+} from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getLoopInitialPage } from "service/loop-service";
@@ -17,11 +23,7 @@ import {
     onPrevious,
 } from "service/navigation-service";
 
-import {
-    ActivitySelecterSpecificProps,
-    Alert,
-    AutoCompleteActiviteOption,
-} from "@inseefrlab/lunatic-edt";
+import {} from "@inseefrlab/lunatic-edt";
 import catIcon100 from "assets/illustration/activity-categories/1.svg";
 import catIcon200 from "assets/illustration/activity-categories/2.svg";
 import catIcon300 from "assets/illustration/activity-categories/3.svg";
@@ -44,7 +46,6 @@ import search from "assets/illustration/mui-icon/search.svg";
 import { SEPARATOR_DEFAUT } from "constants/constants";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
-import { useState } from "react";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { mockData } from "service/survey-activity-service";

@@ -81,7 +81,7 @@ import { getSurveyIdFromUrl } from "utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
 const getSurveyDatePlanner = (idSurvey: string) => {
-    return getSurveyDate(idSurvey) || "";
+    return getSurveyDate(idSurvey) ?? "";
 };
 
 const setValueOrNull = (
@@ -90,7 +90,7 @@ const setValueOrNull = (
     value: string | boolean | undefined,
     iteration: number | undefined,
 ) => {
-    setValue(idSurvey, variableName, value || null, iteration);
+    setValue(idSurvey, variableName, value ?? null, iteration);
 };
 
 const getAlertUnlockLabels = (variableEdited: boolean, t: TFunction<"translation", undefined>) => {
@@ -207,7 +207,7 @@ const ActivitySummaryPage = () => {
     const userActivitiesCharacteristics = getUserActivitiesCharacteristics(idSurvey, t);
     const userActivitiesSummary = getUserActivitiesSummary(idSurvey, t);
     const exportData: ActivitiesSummaryExportData = {
-        houseReference: context.data.houseReference || "",
+        houseReference: context.data.houseReference ?? "",
         firstName: getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string,
         surveyDate: getFullFrenchDate(getValue(idSurvey, FieldNameEnum.SURVEYDATE) as string),
         activitiesAndRoutes: activitiesRoutesOrGaps,

@@ -326,7 +326,7 @@ const getSurveysIdsForHousehold = (idHousehold: string) => {
     return (
         getListSurveysHousehold()
             .find(household => household.idHousehold == idHousehold)
-            ?.surveys?.map(survey => survey.surveyUnitId) || []
+            ?.surveys?.map(survey => survey.surveyUnitId) ?? []
     );
 };
 
@@ -852,7 +852,7 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
     lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
         addItemToSession(idSurvey, data);
-        oldDatas.set(idSurvey, Object.assign({}, data));
+        oldDatas.set(idSurvey, data);
     });
 };
 
@@ -1620,7 +1620,7 @@ const getSurveyRights = (idSurvey: string) => {
 };
 
 const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
-    const dataSurv = Object.assign({}, data ?? getDataCache(idSurvey ?? ""));
+    const dataSurv = data ?? getDataCache(idSurvey ?? "");
     const dataOfSurvey = dataSurv?.COLLECTED;
 
     for (let prop in FieldNameEnum as any) {
