@@ -11,17 +11,17 @@ import reminder_note from "assets/illustration/reminder-note.svg";
 import BreadcrumbsReviewer from "components/commons/BreadcrumbsReviewer/BreadcrumbsReviewer";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
-import DayCard from "components/edt/DayCard/DayCard";
 import HelpMenu from "components/edt/HelpMenu/HelpMenu";
-import WeekCard from "components/edt/WeekCard/WeekCard";
+import PersonCard from "components/edt/PersonCard/PersonCard";
+
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { SurveyData } from "interface/entity/Api";
+import { Person } from "interface/entity/Person";
 import { LunaticData, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import ErrorPage from "pages/error/Error";
@@ -30,36 +30,29 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { logout, remotePutSurveyData, remotePutSurveyDataReviewer } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
+import { getNavigatePath, setEnviro } from "service/navigation-service";
 import {
-    getNavigatePath,
-    navToActivityOrPlannerOrSummary,
-    navToWeeklyPlannerOrClose,
-    setEnviro,
-} from "service/navigation-service";
-import {
+    arrayOfSurveysPersonDemo,
     getData,
     getIdSurveyActivity,
-    getIdSurveyWorkTime,
-    getPrintedFirstName,
-    getPrintedSurveyDate,
     getRemoteSavedSurveysDatas,
     getSource,
     getSurveyRights,
     getUserDatasActivity,
-    getValue,
     initializeDatas,
     initializeHomeSurveys,
     initializeSurveysDatasCache,
     initializeSurveysIdsDemo,
     isDemoMode,
     lockAllSurveys,
-    nameSurveyMap,
+    nameSurveyGroupMap,
     saveData,
     surveysIds,
     userDatasMap,
     validateAllEmptySurveys,
 } from "service/survey-service";
 import { getUserRights } from "service/user-service";
+import { groupBy } from "utils/utils";
 
 const HomeSurveyedPage = () => {
     const { t } = useTranslation();
@@ -77,7 +70,7 @@ const HomeSurveyedPage = () => {
     const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
     const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
 
-    let userDatas: any[] = [];
+    let userDatas: Person[];
 
     const initHome = (idsSurveysSelected: string[]) => {
         initializeHomeSurveys(idHousehold ?? "").then(() => {
@@ -156,31 +149,6 @@ const HomeSurveyedPage = () => {
         });
     }, []);
 
-    const navWorkTime = useCallback(
-        (idSurvey: string) => () => {
-            let data = getData(idSurvey || "");
-
-            localStorage.setItem(LocalStorageVariableEnum.IS_GLOBAL, "false");
-            localStorage.setItem(LocalStorageVariableEnum.IDSURVEY_CURRENT, idSurvey);
-
-            let context: OrchestratorContext = {
-                source: source,
-                data: data,
-                idSurvey: idSurvey,
-                surveyRootPage: EdtRoutesNameEnum.WORK_TIME,
-                global: false,
-                rightsSurvey: getSurveyRights(idSurvey ?? ""),
-            };
-            setEnviro(context, navigate, callbackHolder);
-            return navToWeeklyPlannerOrClose(
-                idSurvey,
-                navigate,
-                getSource(SourcesEnum.WORK_TIME_SURVEY),
-            );
-        },
-        [],
-    );
-
     const onDisconnect = useCallback(() => {
         setIsAlertDisplayed(true);
     }, [isAlertDisplayed]);
@@ -189,36 +157,6 @@ const HomeSurveyedPage = () => {
         window.localStorage.clear();
         lunaticDatabase.clear().then(() => logout());
     }, []);
-
-    const navActivity = useCallback(
-        (idSurvey: string) => () => {
-            let data = getData(idSurvey || "");
-            let context: OrchestratorContext = {
-                source: source,
-                data: data,
-                idSurvey: idSurvey,
-                surveyRootPage: EdtRoutesNameEnum.ACTIVITY,
-                global: false,
-                rightsSurvey: getSurveyRights(idSurvey ?? ""),
-            };
-            localStorage.setItem(LocalStorageVariableEnum.IS_GLOBAL, "false");
-            localStorage.setItem(LocalStorageVariableEnum.IDSURVEY_CURRENT, idSurvey);
-
-            setEnviro(context, navigate, callbackHolder);
-            navToActivityOrPlannerOrSummary(
-                idSurvey,
-                getSource(SourcesEnum.ACTIVITY_SURVEY).maxPage,
-                navigate,
-                getSource(SourcesEnum.ACTIVITY_SURVEY),
-            );
-        },
-        [],
-    );
-
-    const formClose = (idSurvey: string) => {
-        const surveyIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
-        return surveyIsClosed;
-    };
 
     const onCloseAddActivityOrRoute = useCallback(() => {
         setIsAddActivityOrRouteOpen(false);
@@ -270,39 +208,6 @@ const HomeSurveyedPage = () => {
         navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_HOME));
     }, []);
 
-    const renderActivityCard = (activitySurveyId: string, index: number) => {
-        return (
-            <Box key={"dayCard-" + index}>
-                <DayCard
-                    labelledBy={""}
-                    describedBy={""}
-                    onClick={navActivity(activitySurveyId)}
-                    firstName={getPrintedFirstName(activitySurveyId)}
-                    surveyDate={getPrintedSurveyDate(activitySurveyId)}
-                    idSurvey={activitySurveyId}
-                    isClose={formClose(activitySurveyId)}
-                    tabIndex={index}
-                />
-            </Box>
-        );
-    };
-
-    const renderWorkTimeCard = (workTimeSurvey: string, index: number) => {
-        return (
-            <Box key={"weekCard-" + index}>
-                <WeekCard
-                    labelledBy={""}
-                    describedBy={""}
-                    onClick={navWorkTime(workTimeSurvey)}
-                    firstName={getPrintedFirstName(workTimeSurvey)}
-                    surveyDate={getPrintedSurveyDate(workTimeSurvey, EdtRoutesNameEnum.WORK_TIME)}
-                    isClose={formClose(workTimeSurvey)}
-                    tabIndex={index + 1}
-                />
-            </Box>
-        );
-    };
-
     const renderReminderNote = () => {
         return (
             <FlexCenter className={classes.spacing}>
@@ -331,7 +236,6 @@ const HomeSurveyedPage = () => {
         let interviewersUniques = interviewers.filter(
             (value, index, self) => self.indexOf(value) === index,
         );
-
         initializeSurveysIdsDemo().then(() => {
             setState(getData(getIdSurveyActivity(interviewers[0], 0)));
             initializeSurveysDatasCache().then(() => {
@@ -346,31 +250,32 @@ const HomeSurveyedPage = () => {
         return renderPageOrLoadingOrError(
             <>
                 {renderReminderNote()}
-                {interviewersUniques.map((interviewer, index) => (
-                    <>
-                        {getIdSurveyActivity(interviewer, 0) &&
-                            renderActivityCard(getIdSurveyActivity(interviewer, 0), index * 2)}
-                        {getIdSurveyActivity(interviewer, 1) &&
-                            renderActivityCard(getIdSurveyActivity(interviewer, 1), index * 2 + 1)}
-                        {getIdSurveyWorkTime(interviewer) &&
-                            renderWorkTimeCard(getIdSurveyWorkTime(interviewer), index * 2 + 2)}
-                    </>
-                ))}
+                <Box className={classes.groupCardBox}>
+                    {interviewersUniques.map((interviewer, index) => (
+                        <>
+                            <PersonCard
+                                numPerson={index}
+                                values={arrayOfSurveysPersonDemo(interviewer, index)}
+                            />
+                        </>
+                    ))}
+                </Box>
             </>,
         );
     };
 
     const renderHomeInterviewer = () => {
-        let userDataInterviewer = nameSurveyMap();
+        let userDataGroupedInterv = nameSurveyGroupMap();
+        let groups = Object.keys(userDataGroupedInterv);
+
         return (
             <>
                 {renderReminderNote()}
-
-                {userDataInterviewer.map((data, index) =>
-                    data.data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
-                        ? renderActivityCard(data.data.surveyUnitId, index + 1)
-                        : renderWorkTimeCard(data.data.surveyUnitId, index + 1),
-                )}
+                <Box className={classes.groupCardBox}>
+                    {groups.map((group, index) => (
+                        <PersonCard numPerson={index} values={userDataGroupedInterv[group]} />
+                    ))}
+                </Box>
             </>
         );
     };
@@ -392,17 +297,17 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const renderHomeReviewer = () => {
-        let userDatas = userDatasMap();
+        let userDatas = groupBy(userDatasMap(), nameSurveyData => nameSurveyData.num);
+        let groups = Object.keys(userDatas);
+
         return renderPageOrLoadingOrError(
             <>
                 {renderReminderNote()}
 
-                <Box>
-                    {userDatas.map((data, index) =>
-                        data.data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
-                            ? renderActivityCard(data.data.surveyUnitId, index + 1)
-                            : renderWorkTimeCard(data.data.surveyUnitId, index + 1),
-                    )}
+                <Box className={classes.groupCardBox}>
+                    {groups.map((group, index) => (
+                        <PersonCard numPerson={index} values={userDatas[group]} />
+                    ))}
                 </Box>
                 <Box className={classes.navButtonsBox}>
                     <FlexCenter className={classes.innerButtonsBox}>
@@ -594,8 +499,8 @@ const useStyles = makeStylesEdt({ "name": { NavButton: HomeSurveyedPage } })(the
         width: "30%",
         minWidth: "130px",
     },
-    lockAllSurveysButton: {
-        minWidth: "45px",
+    groupCardBox: {
+        marginTop: "2rem",
     },
 }));
 
