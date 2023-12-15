@@ -68,6 +68,10 @@ const SurveysOverviewPage = () => {
     useEffect(() => {
         initializeSurveysIdsDataModeReviewer(setError)
             .then(() => {
+                dataHouseholds = getListSurveysHousehold();
+                if (dataHouseholds.length == 0) {
+                    refreshHouseholds();
+                }
                 initHouseholds();
             })
             .finally(() => {
