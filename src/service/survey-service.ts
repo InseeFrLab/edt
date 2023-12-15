@@ -1722,7 +1722,11 @@ const validateAllGroup = (idSurvey: string, inputAct: string, navigate: any) => 
     const idsSurveysFromGroupAct = surveys
         ?.filter(survey => survey.num == personAct?.num)
         .map(survey => survey.data.surveyUnitId);
-    const route = getFullNavigatePath(idSurvey, EdtRoutesNameEnum.DAY_OF_SURVEY);
+    const surveyRootPage =
+        personAct?.data?.questionnaireModelId == SourcesEnum.WORK_TIME_SURVEY
+            ? EdtRoutesNameEnum.WORK_TIME
+            : EdtRoutesNameEnum.ACTIVITY;
+    const route = getFullNavigatePath(idSurvey, EdtRoutesNameEnum.DAY_OF_SURVEY, surveyRootPage);
     setAllNamesOfGroupAndNav(idSurvey, idsSurveysFromGroupAct, inputAct, route, navigate);
 };
 

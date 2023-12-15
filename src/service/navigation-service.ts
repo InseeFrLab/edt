@@ -343,7 +343,7 @@ const setAllNamesOfGroupAndNav = (
 ) => {
     const promises = setNamesOfGroup(idSurvey, nameAct, idsSurveysOfGroup);
 
-    Promise.all(promises).then(dta => {
+    Promise.all(promises).then(() => {
         navigate(route);
     });
 };

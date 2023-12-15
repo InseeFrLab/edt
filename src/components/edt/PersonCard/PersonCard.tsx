@@ -44,7 +44,6 @@ const PersonCard = (props: PersonCardProps) => {
     const isItMobile = isMobile();
     const { classes, cx } = useStyles({ "isMobileScreen": isItMobile });
 
-    const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const imagesArray = [zebra, owl, cat];
     const numGroup = values[0].num;
 
@@ -73,7 +72,7 @@ const PersonCard = (props: PersonCardProps) => {
         (idSurvey: string) => () => {
             let data = getData(idSurvey || "");
             let context: OrchestratorContext = {
-                source: source,
+                source: getSource(SourcesEnum.ACTIVITY_SURVEY),
                 data: data,
                 idSurvey: idSurvey,
                 surveyRootPage: EdtRoutesNameEnum.ACTIVITY,
@@ -119,7 +118,7 @@ const PersonCard = (props: PersonCardProps) => {
             localStorage.setItem(LocalStorageVariableEnum.IDSURVEY_CURRENT, idSurvey);
 
             let context: OrchestratorContext = {
-                source: source,
+                source: getSource(SourcesEnum.WORK_TIME_SURVEY),
                 data: data,
                 idSurvey: idSurvey,
                 surveyRootPage: EdtRoutesNameEnum.WORK_TIME,
