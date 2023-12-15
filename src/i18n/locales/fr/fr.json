@@ -1,5 +1,6 @@
 {
     "common": {
+        "version": "Version",
         "navigation": {
             "previous": "Précédent",
             "next": "Suivant",
@@ -9,7 +10,21 @@
             "complete": "Completer",
             "validate": "Valider",
             "add": "Ajouter",
-            "finish": "Clore"
+            "finish": "Clore ma journée",
+            "edit": "Modifier",
+            "delete": "Supprimer",
+            "help": "Aide",
+            "back-to-home": "Retourner à l'accueil",
+            "retry": "Réessayer",
+            "send": "Envoyer",
+            "alert": {
+                "ignore": "Ignorer",
+                "complete": "Compléter",
+                "alt-icon": "Illustration pièce de puzzle"
+            },
+            "skip": "Passer",
+            "skip-final": "Fin",
+            "back": "Retour"
         },
         "stepper": {
             "step": "Étape",
@@ -17,15 +32,25 @@
             "add-route": "AJOUT D'UN TRAJET"
         },
         "error": {
+            "error-default-title": "OUPS...",
+            "error-default": "Une erreur s'est produite...",
+            "error-no-rights": "Il semblerait que vous n'avez pas les droits d'accès nécessaires pour répondre au(x) questionnaire(s). Veuillez contacter votre enquêteur référent.",
+            "error-nomenclatures": "Il semblerait qu'une erreur s'est produite lors de la récupération des nomenclatures. Veuillez contacter votre enquêteur référent.",
+            "error-get-surveys-sources": "Il semblerait qu'une erreur s'est produite lors de la récupération des sources des questionnaires. Veuillez contacter votre enquêteur référent.",
+            "error-get-surveys-data": "Il semblerait qu'une erreur s'est produite lors de la récupération des données de questionnaires. Veuillez contacter votre enquêteur référent.",
+            "error-get-surveys-assignments": "Il semblerait qu'une erreur s'est produite lors de la récupération des identifiants de questionnaires associés à votre identifiant. Veuillez contacter votre enquêteur référent.",
             "error-location": {
                 "message": "Aucun lieu n'a été renseigné"
-            }
+            },
+            "error-submit-survey": "Une erreur s'est produite lors de l'envoie de votre questionnaire à l'insee. Veuillez réessayer plus tard.",
+            "error-user-info": "Identifiant utilisateur : "
         },
         "user": {
             "person": "PERSONNE"
         },
         "activity": {
-            "unknown-activity": "Activité "
+            "unknown-activity": "Activité ",
+            "unknown-route": "Trajet "
         }
     },
     "accessibility": {
@@ -33,40 +58,214 @@
             "add-activity-or-route": {
                 "labelled-by": "Ajouter une activité ou un trajet",
                 "described-by": "navigue vers l'ajout d'une activité ou d'un trajet"
+            },
+            "survey-selecter": {
+                "id": "Barre d'onglets pour PC et tablette",
+                "aria-label": "Barre d'onglets pour choisir un questionnaire"
+            },
+            "surveys-overviewer": {
+                "aria-label-search": "Search",
+                "aria-label-filter": "Filter carnets validatées"
             }
         },
         "asset": {
-            "reminder-notes-alt": "Alt pour reminder-note",
-            "who-are-you-alt": "Alt pour who-are-you",
-            "day-of-survey-alt": "Alt pour day-of-survey",
-            "yellow-plus-alt": "Alt pour yellow-plus",
-            "activity-alt": "Alt pour activity",
-            "route-alt": "Alt pour route",
-            "empty-activity-alt": "Alt pour empty-activity",
+            "logo-alt": "Logo INSEE",
+            "reminder-notes-alt": "Illustration d’accueil",
+            "who-are-you-alt": "Illustration de personnalisation d’un carnet ou d’un semainier",
+            "day-of-survey-alt": "Illustration date de l’enquête",
+            "yellow-plus-alt": "Illustration ajout d’une activité ou d’un trajet",
+            "activity-alt": "Illustration ajout d’une activité",
+            "route-alt": "Illustration ajout d’un trajet",
+            "empty-activity-alt": "Illustration aucune Activité renseignée",
+            "kind-of-week-alt": "Alt pour kind of week",
+            "exceptional-day-alt": "Illustration d’une journée exceptionnelle",
+            "greatest-activity-day-alt": "Illustration activité agréable",
+            "worst-activity-day-alt": "Illustration activité moins ou pas agréable",
+            "submit-alt": "Illustration envoie d’une enquête",
+            "reviewer-alt": "Alt pour reviewer",
+            "kind-of-day-alt": "Alt pour kind of day",
+            "stats-alt": "Illustration pour liste des enquêtes",
+            "mui-icon": {
+                "close": "Bouton Fermer",
+                "more-horizontal": "Bouton Plus d’options",
+                "done": "Alt pour more-horizontal",
+                "arrow-forward-ios": "Bouton Suivant ou sélectionner",
+                "arrow-forward": "Bouton passer",
+                "arrow-back-ios": "Bouton Précédent / retour",
+                "add-circle": "Icône activité agréable",
+                "add": "Bouton Ajouter",
+                "calendar-month": "Icône calendrier",
+                "event": "Icône journée",
+                "expand-less": "Bouton passer",
+                "expand-more": "Bouton Pour déplier",
+                "help": "Bouton d’aide",
+                "home": "Alt pour home",
+                "phone-android": "Icône téléphone",
+                "power-settings": "Bouton de déconnexion",
+                "remove-circle": "Icône activité moins agréable",
+                "replay": "Alt pour replay",
+                "send": "Icône envoyer",
+                "visibility": "Alt pour visibility",
+                "work": "Icone Type de journée",
+                "commute": "Icône trajet",
+                "search": "Icone de Recherche",
+                "extension": "Icône Autre personne qui ménage",
+                "download": "Icone téléchargement",
+                "person-white": "Icone personne",
+                "refresh": "Icone rafraichir"
+            },
             "info": {
-                "info-alt": "Alt pour info"
+                "info-alt": "Icône information"
             },
             "error": {
-                "location-error-alt": "Alt pour position"
+                "default": "Erreur générique",
+                "location-error-alt": "Icône lieu ou trajet non renseigné"
             },
             "stepper": {
-                "step-activity-duration-alt": "Alt pour step-activity-duration",
-                "step-main-activity-alt": "Alt pour step-main-activity",
-                "step-secondary-activity-alt": "Alt pour step-secondary-activity",
-                "step-activity-location-alt": "Alt pour step-location",
-                "step-with-someone-alt": "Alt pour step-with-someone",
-                "step-with-screen-alt": "Alt pour step-with-screen"
+                "step-activity-duration-alt": "Illustration étape durée",
+                "step-main-activity-alt": "Illustration étape activité principale",
+                "step-route-alt": "Illustration étape type de trajet",
+                "step-mean-of-transport-alt": "Illustration étape moyen de transport",
+                "step-secondary-activity-alt": "Illustration étape activité secondaire",
+                "step-activity-location-alt": "Illustration étape lieu",
+                "step-with-someone-alt": "Illustration étape compagnie",
+                "step-with-screen-alt": "Illustration étape écran"
             },
             "card": {
-                "person-sun-alt": "Alt pour person-sun"
-            }
+                "person-sun-alt": "Icône d’une journée enquêtée",
+                "person-sun-close-alt": "Icône d’une journée enquêtée clore"
+            },
+            "insideAlerts": {
+                "activity-error-alt": "Icône activité non renseignée",
+                "route-error-alt": "Icône lieu ou trajet non renseigné",
+                "place-error-alt": "Icône lieu ou trajet non renseigné",
+                "mean-of-transport-error-alt": "Icône moyen de transport non renseigné",
+                "secondary-activity-error-alt": "Icône activité non renseignée",
+                "someone-error-alt": "Icône compagnie non renseignée",
+                "screen-error-alt": "Icône écran non renseigné"
+            },
+            "activities": {
+                "categories": {
+                    "cat-icon-100-alt": "Illustration catégorie temps personnel",
+                    "cat-icon-200-alt": "Illustration catégorie travail et études",
+                    "cat-icon-300-alt": "Illustration catégorie tâches domestiques",
+                    "cat-icon-400-alt": "Illustration catégorie soins aux enfants ou aux adultes de son logement",
+                    "cat-icon-440-alt": "Illustration catégorie aide non rémunérée à ses voisins, ses amis, bénévolat",
+                    "cat-icon-500-alt": "Illustration catégorie interaction sociale",
+                    "cat-icon-600-alt": "Illustration catégorie sorties",
+                    "cat-icon-650-alt": "Illustration catégorie interaction sociale"
+                }
+            },
+            "place": {
+                "categories": {
+                    "option1-alt": "Illustration chez soi",
+                    "option2-alt": "Illustration lieu de travail ou d’étude",
+                    "option3-alt": "Illustration autre lieu",
+                    "option4-alt": "Illustration résidence secondaire, location de vacances",
+                    "option5-alt": "Illustration restaurant, café, bar",
+                    "option6-alt": "Illustration chez une autre personne"
+                }
+            },
+            "goal": {
+                "categories": {
+                    "home-alt": "Illustration catégorie temps personnel",
+                    "work-alt": "Illustration catégorie travail et études",
+                    "help-alt": "Alt pour goal category 'help'",
+                    "solidarity-alt": "AltAlt pour goal category 'work' pour goal category 'solidarity'"
+                }
+            },
+            "route": {
+                "categories": {
+                    "option1-alt": "Illustration Trajet domicile-travail",
+                    "option2-alt": "Illustration Trajet domicile-lieu d’études",
+                    "option3-alt": "Illustration Trajets liés aux enfants",
+                    "option4-alt": "Illustration Trajets lié au bénévolat",
+                    "option5-alt": "Illustration Trajets pour aider un autre ménage",
+                    "option6-alt": "Illustration Autres trajets"
+                }
+            },
+            "with-someone": {
+                "categories": {
+                    "couple-alt": "Icône Conjoint",
+                    "parents-alt": "Icône Mère, père",
+                    "child-alt": "Icône Conjoint",
+                    "other-know-alt": "Icône Autre personne qui ménage",
+                    "other-alt": "Icône Autre connaissance"
+                }
+            },
+            "help-menu": {
+                "contact-alt": "Illustration Contact",
+                "install-alt": "Illustration Installation",
+                "help-alt": "Illustration Aide prise en main"
+            },
+            "installation-alt": "Illustration Installation"
         }
     },
     "page": {
+        "install": {
+            "title": "Ajoutez à l'écran d'accueil",
+            "subtitle": "Accédez et complétez facilement votre enquête.",
+            "info": "Installez l’application sur votre téléphone afin d’accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
+            "continue": "J'ai compris"
+        },
+        "surveys-overview": {
+            "title": "Enquête Emploi du Temps",
+            "search-placeholder": "Rechercher par nom ou identifiant",
+            "filter-label": "Masquer les ménages terminés",
+            "household-static-label": "Ménage",
+            "started-survey-label": "Carnet commencé",
+            "starteds-survey-label": "Carnets commencés",
+            "closed-survey-label": "Carnet clôturé",
+            "closeds-survey-label": "Carnets clôturés",
+            "validated-survey-label": "Carnet validé",
+            "validateds-survey-label": "Carnets validés",
+            "refresh-button": "Actualiser la liste"
+        },
+        "reviewer-home": {
+            "welcome": "Bienvenue dans votre espace",
+            "reviewer": "ENQUÊTEUR",
+            "validate-all-empties-surveys": "Valider les carnets vides",
+            "validate-survey": "Valider le carnet",
+            "lock-survey": "Verrouiller le carnet",
+            "not-lock-survey": "Devérrouiller le carnet",
+            "status-survey": {
+                "locked": "Verrouillé",
+                "validated": "Déjà validé",
+                "init": "Examiner"
+            },
+            "navigation": {
+                "surveys": "Accéder aux enquêtes",
+                "demo": "Démonstration"
+            },
+            "lock-popup": {
+                "boldContent": "Êtes-vous sûr de vouloir verrouiller le carnet ?",
+                "boldContent-not-locked": "Êtes-vous sûr de vouloir déverrouiller le carnet ?",
+                "boldContent-not-unlocked": "Vous ne pouvez pas déverrouiller le carnet !",
+                "content": "En cochant cette option, l'enquêté ne pourra pas modifier le carnet.",
+                "content-not-locked": "En cochant cette option, l'enquêté pourra modifier le carnet.",
+                "content-not-unlocked": "Une fois que vous avez commencé à remplir le carnet, vous ne pouvez pas le déverrouiller.",
+                "confirm-button": "Compris"
+            },
+            "validate-popup": {
+                "boldContent": "Êtes-vous sûr de vouloir valider le carnet ?"
+            }
+        },
+        "breadcrumbs-reviewer": {
+            "home": "LISTE DES ENQUÊTES",
+            "demostration": "DEMONSTRATION",
+            "all-surveys": "tous",
+            "survey": "Ménage"
+        },
         "home": {
             "welcome": "Bienvenue sur la PWA Carnet EDT",
             "navigation": {
-                "link-help-label": "Aide"
+                "reset-data": "Effacer les données",
+                "reset-data-demo": "Effacer les données de démonstration",
+                "link-help-label": "Aide",
+                "logout": "Déconnexion"
+            },
+            "logout-popup": {
+                "content": "Êtes-vous sûr de vouloir vous déconnecter de l'application ?"
             },
             "loading": {
                 "message": "Nous mettons à jour vos données.",
@@ -77,12 +276,92 @@
             "not-found": "Oups ! Cette page n'existe pas :("
         },
         "activity-planner": {
-            "activity-for-day": "Activité de votre journée du",
-            "no-activity": "Aucune activité renseignée"
+            "activity-for-day": "Activités de votre journée du",
+            "no-activity": "Activité non renseignée",
+            "no-route": "Trajet non renseigné",
+            "no-mean-of-transport": "Aucun moyen de transport renseigné",
+            "no-secondary-activity": "Activité secondaire non renseignée",
+            "without-secondary-activity": "Sans activité secondaire",
+            "no-place": "Aucun lieu renseigné",
+            "no-with-someone": "Aucune compagnie renseignée",
+            "alone": "Seul",
+            "no-screen": "Aucun écran renseigné",
+            "with-screen": "Écran utilisé",
+            "without-screen": "Sans écran",
+            "gap-main": "Aucune activité renseignée",
+            "gap-secondary": "Ajouter une activité ou un trajet",
+            "start-alert": "Les heures des activités de : ",
+            "and": " et ",
+            "end-alert": " se chevauchent.",
+            "info": "Indiquez vos différentes occupations de la journée. Par défaut, votre première activité débute à 4h du matin.",
+            "lock": "Verrouiller le carnet"
         },
         "secondary-activity": {
             "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",
             "info-bold": "Si vous en faites plusieurs, notez seulement la plus importante"
+        },
+        "secondary-activity-selection": {
+            "add-activity-label": "Ajoutez une autre activité",
+            "input-placeholder": "Activité secondaire",
+            "other-button": "Autre ?"
+        },
+        "with-someone": {
+            "tooltip-bold": "Indiquer si d’autres personnes étaient présentes, dans la pièce ou à portée de voix, même si elles faisaient autre chose que vous."
+        },
+        "alert-when-quit": {
+            "activity-planner": {
+                "alert-content-close-bold": "Souhaitez-vous clôturer votre journée?",
+                "alert-content-close": "Clôturez-la une fois que toutes les activités de votre journée sont renseignées"
+            },
+            "activity": {
+                "alert-content-bold": "Souhaitez vous reprendre ou annuler ?",
+                "alert-content": "L'ajout de votre activité n'est pas terminé"
+            },
+            "route": {
+                "alert-content": "L'ajout de votre trajet n'est pas terminé"
+            },
+            "alert-undo": "Annuler",
+            "alert-cancel": "Cancel",
+            "alert-complete": "Reprendre",
+            "alert-closed": "Clôturer",
+            "alt-alert-icon": "Illustration pièce de puzzle"
+        },
+        "kind-of-week": {
+            "simple-header-label": "CARACTÉRISTIQUES DE LA SEMAINE"
+        },
+        "complementary-questions": {
+            "simple-header-label": "CARACTÉRISTIQUES DE LA JOURNÉE"
+        },
+        "edit-activity-information": {
+            "header": "MODIFIER L'ACTIVITÉ",
+            "what-to-edit": "Que souhaitez-vous modifier ?"
+        },
+        "activity-duration": {
+            "hour-alert": "Attention! L'heure de fin est antérieure à l'heure de début"
+        },
+        "weekly-planner": {
+            "info-light": "Pour remplir votre calendrier de travail de la semaine, indiquez chaque jour les moments de la journée où vous travaillez.",
+            "info-bold": "Indiquez votre temps de travail réel et le travail éventuel que vous rapportez à la maison."
+        },
+        "activity-summary": {
+            "add-activity-or-route": "Ajouter +",
+            "download-pdf": "Télécharger le PDF",
+            "quality-score": {
+                "label": "GROUPE",
+                "type-1": "A",
+                "type-2": "B",
+                "type-3": "C",
+                "type-4": "D"
+            },
+            "alert-tooltip-edit": {
+                "alert-bold": "Vous avez ajouté ou modifié une activité. Pensez à mettre à jour vos réponses aux caractéristiques de votre journée si vous le souhaitez."
+            }
+        },
+        "end-survey": {
+            "end-of-work-time-survey": "Vous êtes arrivé à la fin du semainier.",
+            "end-of-activity-survey": "Vous êtes arrivé à la fin du carnet d'activités.",
+            "end-explanation": "Merci de cliquer sur le bouton \" Envoyer \" pour le transmettre à l'Insee. Pour toute modification, cliquer sur le bouton \" Précédent \"",
+            "online-tooltip-text": "Il est nécessaire d'être connecté à internet pour pouvoir soumettre votre questionnaire."
         }
     },
     "component": {
@@ -96,10 +375,18 @@
         "add-activity-stepper": {
             "step-1-label": "Durée",
             "step-2-label": "Activité principale",
+            "step-2-bis-label": "Trajet",
             "step-3-label": "Activité secondaire",
+            "step-3-bis-label": "Moyen de transport",
             "step-4-label": "Lieu",
-            "step-5-label": "Présence",
+            "step-5-label": "Compagnie",
             "step-6-label": "Écran"
+        },
+        "end-activity-stepper": {
+            "step-1-label": "Préférence",
+            "step-2-label": "Type de journée",
+            "step-3-label": "Temps de trajet",
+            "step-4-label": "Temps sur le téléphone"
         },
         "day-card": {
             "day": "Journée"
@@ -119,25 +406,205 @@
             "select-in-category": "Sélectionnez une activité dans la catégorie",
             "add-activity": "Ajoutez une autre activité",
             "alert-message": "Attention ! Vous n’avez pas été au bout de cette étape. Souhaitez-vous la compléter ?",
-            "alert-ignore": "Ignorer",
-            "alert-complete": "Compléter",
             "clickable-list-placeholder": "Saisissez une activité",
             "clickable-list-not-found-label": "Aucun résultat trouvé",
             "clickable-list-not-found-comment": "Vous pourrez l'ajouter en cliquant sur le bouton ci-dessous, ou le bouton + ci-dessus",
             "clickable-list-add-activity-button": "Ajouter l'activité",
-            "clickable-list-icon-no-result-alt": "alt pour icon no result",
-            "other-button": "Autre ?"
+            "clickable-list-icon-no-result-alt": "Illustration pièce de puzzle",
+            "clickable-list-not-search-label": "Affinez votre recherche en saisissant au moins 4 caractères",
+            "other-button": "Autre ?",
+            "save-button": "Sauvegarder",
+            "validate-button": "Ok"
         },
         "location-selecter": {
-            "alert-message": "Aucun lieu n’a été renseigné",
-            "alert-ignore": "Ignorer",
-            "alert-complete": "Compléter"
+            "alert-message": "Aucun lieu n’a été renseigné"
+        },
+        "goal-selecter": {
+            "alert-message": "Aucun but n’a été renseigné"
+        },
+        "secondary-activity-selecter": {
+            "alert-message": "Aucune activité secondaire n’a été renseignée"
+        },
+        "with-screen-selecter": {
+            "alert-message": "Aucun écran n’a été renseigné"
+        },
+        "with-someone-selecter": {
+            "alert-message": "Aucune compagnie n’a été renseignée"
+        },
+        "route-selecter": {
+            "alert-message": "Aucun type de trajet n’a été renseigné"
+        },
+        "mean-of-transport-selecter": {
+            "alert-message": "Aucun moyen de transport n’a été renseigné"
         },
         "weekly-planner": {
             "title": "Planning de votre semaine",
-            "work-sumlabel": "Durée totale travaillée : ",
+            "work-sum-label": "Durée totale travaillée : ",
             "present-button-label": "Continuer",
             "future-button-label": "Commencer"
+        },
+        "modal-edt": {
+            "modal-felicitation": {
+                "title": "Félicitations !",
+                "end-content": "Merci pour votre participation.",
+                "button": "Revenir à l’accueil",
+                "alt-icon": "Illustration enquête envoyée",
+                "survey-content": "Vous avez complété votre semainier.",
+                "activity-content": "Vous avez complété votre 1ère journée."
+            }
+        },
+        "day-characteristic": {
+            "title": "CARACTÉRISTIQUES DE LA JOURNÉE",
+            "normal-day": "Journée normale",
+            "exceptional-day": "Journée exceptionnelle",
+            "travel-time": " de trajet",
+            "phone-time": " de consultation du téléphone"
+        },
+        "day-summary": {
+            "tooltip-summary": "Toutes les activités ajoutées manuellement, c’est à dire en ne sélectionnant pas parmi celles déjà proposées ainsi que les activités ajoutées via les boutons « autre » ne peuvent être prises en compte dans les calculs de ce résumé.",
+            "title": "RÉSUMÉ DE LA JOURNÉE",
+            "no-time": "0min",
+            "activity-done": "Nombre d’activités déclarées",
+            "route-done": "Nombre de trajets déclarés",
+            "real-route-time": "Temps consacrés aux trajets décrits",
+            "home-task-time": "Temps passé à son domicile",
+            "alone-task-time": "Temps passé seul",
+            "sleep-time": "Temps de sommeil",
+            "work-time": "Temps de travail et étude",
+            "domestic-task-time": "Temps de tâches domestiques",
+            "other-home-time": "Temps pour un autre ménage"
+        },
+        "help": {
+            "help-page-1": {
+                "help-step-1": "1. Cliquez ici pour ajouter une nouvelle activité ou un trajet",
+                "help-step-2": "2. Lorsqu'une plage horaire est vide entre deux activités, cliquez ici pour la compléter",
+                "help-step-3": "3. Une fois toutes les activités de votre journée remplies, clôturez la journée"
+            },
+            "help-page-2": {
+                "help-step-1": "Sélectionnez l’horaire auquel vous commencez et vous terminez votre activité / trajet. Puis cliquez sur « OK »"
+            },
+            "help-page-3": {
+                "help-step-1": "1. Recherchez votre activité par catégorie",
+                "help-step-2": "2. Si vous ne trouvez pas de catégorie correspondante, cherchez votre activité en la saisissant manuellement"
+            },
+            "help-page-4": {
+                "help-step-1": "Après avoir choisi la catégorie, sélectionnez l'activité exacte"
+            },
+            "help-page-5": {
+                "help-step-1": "Le cas échéant, renseignez qui vous tient compagnie lors de votre activité / trajet. Vous pouvez en renseigner plusieurs."
+            },
+            "help-page-6": {
+                "help-step-1": "1. Cliquez sur les cartouches correspondantes aux plages horaires où vous avez travaillé. Indiquez votre temps de travail réel et le travail éventuel que vous rapportez à la maison.",
+                "help-step-2": "2. De 3h à 4h vous avez travaillé",
+                "help-step-3": "3. De 4h à 5h vous n'avez pas travaillé",
+                "help-step-4": "4. Si vous n’avez pas travaillé sur l’intégralité de l’heure, déployez la cartouche en cliquant sur la flèche à gauche. Puis, sélectionnez les quarts d’heures où vous avez travaillé."
+            },
+            "contact": {
+                "title": "Besoin d'aide ?",
+                "info-1": "Afin de vous aidez à compléter votre carnet, nous vous invitons à regarder notre tutoriel dans la rubrique << Comment ça marche? >>.",
+                "info-2": "Si vous ne trouvez pas votre réponse dans notre tutoriel, rendez-vous sur l'aide en ligne : ",
+                "link-1": "https://enquetes.stat-publique.fr/edt/faq",
+                "info-3": "ou contactez l'assistance : ",
+                "link-2": "https://enquetes.stat-publique.fr/edt/contacter-assistance"
+            },
+            "install": {
+                "title": "Ajoutez à l'écran d'accueil",
+                "description": "Accédez et complétez facilement votre enquête. Cette application peut être installée sur votre appareil. Pour cela, veuillez suivre les indications ci-après:",
+                "common": {
+                    "title": "Installer l'application",
+                    "description-1": "Installez l'application sur votre téléphone afin d'accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
+                    "info-bold": "L'installation n'a pas fonctionné ?",
+                    "info-text": "Ce n'est pas grave, vous pouvez completer votre enquête depuis votre navigateur web."
+                },
+                "ios": {
+                    "chrome": {
+                        "step-2": "Cliquez sur l'icône à droite de l'URL",
+                        "step-3": "Sélectionnez << Sur l'écran d'accueil >>"
+                    },
+                    "safari": {
+                        "step-2": "Cliquez sur l'icône en dessous de l'URL",
+                        "step-3": "Sélectionnez << Sur l'écran d'accueil >>"
+                    },
+                    "edge": {
+                        "step-2": "Cliquez sur le menu en bas à droite",
+                        "step-3": "Sélectionnez << Partager >>",
+                        "step-4": "Sélectionnez << Sur l'écran d'accueil >>"
+                    }
+                },
+                "android": {
+                    "chrome": {
+                        "step-2": "Cliquez sur les 3 points en haut à droite",
+                        "step-3": "Sélectionnez << Installer l'application >>"
+                    },
+                    "firefox": {
+                        "step-2": "Cliquez sur les 3 points en haut à droite",
+                        "step-3": "Sélectionnez << Ajouter à l'écran d'acceuil >>"
+                    },
+                    "edge": {
+                        "step-2": "Cliquez sur le menu en bas à droite",
+                        "step-3": "Sélectionnez << Ajouter au téléphone >>"
+                    }
+                },
+                "step-final": "Votre application Carnet EDT est installée"
+            }
+        },
+        "help-menu": {
+            "contact-label": "Contact",
+            "install-label": "installation de l'application",
+            "help-label": "Comment ça marche ?"
+        }
+    },
+    "export": {
+        "activities-summary": {
+            "file-name": "Export_carnet_EDT_",
+            "header": {
+                "insee": "INSEE",
+                "survey-day": "Date de la journée enquêtée : ",
+                "edt-survey": "Carnet EDT",
+                "house-reference": "RÉFÉRENCE MÉNAGE "
+            },
+            "table-header": {
+                "schedule": "HORAIRES",
+                "duration": "DURÉE",
+                "activity": "ACTIVITÉ",
+                "secondary-activity": "ACTIVITÉ SECONDAIRE",
+                "location": "LIEU",
+                "presence": "PRÉSENCE",
+                "screen": "ÉCRAN",
+                "route": "TRAJET",
+                "mean-of-transport": "MOYEN DE TRANSPORT"
+            },
+            "title": {
+                "global-day-overview": "Organisation générale de la journée",
+                "activities-planning": "Planning des activités",
+                "routes-planning": "Planning des trajets",
+                "day-characteristics": "Caractéristiques de la journée",
+                "day-summary": "Résumé de la journée"
+            },
+            "table-data": {
+                "yes": "Oui",
+                "no": "Non",
+                "empty": "/"
+            },
+            "day-characteristics": {
+                "best-activity": "Activité la plus agréable",
+                "worst-activity": "Activité la moins agréable",
+                "kind-of-day": "Type de journée",
+                "special-day": "Caractère exceptionnel",
+                "route-time-estimation": "Estimation du temps de trajet",
+                "phone-time-estimation": "Estimation consultation du téléphone"
+            },
+            "day-summary": {
+                "activities-amount": "Nombre d'activités : ",
+                "routes-amount": "Nombre de trajets : ",
+                "working-time": "Temps de travail",
+                "sleeping-time": "Temps de sommeil",
+                "house-tasks-time": "Temps de tâches ménagères",
+                "other-house-tasks-time": "Temps pour un autre ménage",
+                "amount-activity-or-route-with-screen": "Nombre d'activités/trajets avec un écran",
+                "time-activity-with-screen": "Temps d'activité avec un écran",
+                "real-route-time": "Temps de trajet effectif"
+            }
         }
     }
 }

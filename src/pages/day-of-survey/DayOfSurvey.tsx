@@ -1,36 +1,45 @@
 import day_of_survey from "assets/illustration/day-of-survey.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
+import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { callbackHolder } from "orchestrator/Orchestrator";
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import { getCurrentNavigatePath } from "service/navigation-service";
-import {
-    FieldNameEnum,
-    getComponentId,
-    getPrintedFirstName,
-    getPrintedSurveyDate,
-    saveData,
-} from "service/survey-service";
+import { useLocation, useOutletContext } from "react-router-dom";
+import { navToErrorPage } from "service/navigation-service";
+import { surveyReadOnly } from "service/survey-activity-service";
+import { getComponentId, setValue } from "service/survey-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const DayOfSurveyPage = () => {
-    const { t } = useTranslation();
-    const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
 
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
+    const modifiable = !surveyReadOnly(context.rightsSurvey);
 
     const keydownChange = () => {
-        //TODO: nav to error page when componentId empty
-        const componentId = getComponentId(FieldNameEnum.SURVEYDATE, context.source) || "";
-        const dataSurveyDate = callbackHolder.getData().COLLECTED?.SURVEYDATE.COLLECTED;
-        const errorData =
-            dataSurveyDate != null &&
-            (typeof dataSurveyDate == "string" ? dataSurveyDate.includes("Invalid") : false);
+        const componentId = getComponentId(FieldNameEnum.SURVEYDATE, context.source);
+        if (componentId == null) {
+            navToErrorPage();
+        } else {
+            dayjs.extend(customParseFormat);
+            const input = (
+                document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement
+            )?.value;
+            const inputFormatted = dayjs(input, "DD/MM/YYYY").format("YYYY-MM-DD");
+            const bdd = setValue(idSurvey, FieldNameEnum.SURVEYDATE, inputFormatted);
+            if (bdd) context.data = bdd;
 
-        setDisabledButton(callbackHolder.getErrors()[componentId].length > 0 || errorData);
+            const errorData =
+                inputFormatted != null &&
+                (typeof inputFormatted == "string" ? inputFormatted.includes("Invalid") : false);
+
+            setDisabledButton(callbackHolder.getErrors()[componentId].length > 0 || errorData);
+        }
     };
 
     React.useEffect(() => {
@@ -38,41 +47,25 @@ const DayOfSurveyPage = () => {
         return () => document.removeEventListener("keyup", keydownChange, true);
     }, [callbackHolder]);
 
-    const validate = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate(
-                getCurrentNavigatePath(context.idSurvey, context.surveyRootPage, context.source.maxPage),
-            );
-        });
+    const keypressChange = (event: any) => {
+        if (event.key === "Enter") {
+            document.getElementById("validateButton")?.click();
+        }
     };
 
-    const navBack = () => {
-        saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-            navigate("/");
-        });
-    };
+    React.useEffect(() => {
+        document.addEventListener("keypress", keypressChange, true);
+        return () => document.removeEventListener("keypress", keypressChange, true);
+    }, [callbackHolder]);
 
     return (
-        <>
-            <SurveyPage
-                validate={validate}
-                srcIcon={day_of_survey}
-                altIcon={t("accessibility.asset.day-of-survey-alt")}
-                onNavigateBack={navBack}
-                firstName={getPrintedFirstName(context.idSurvey)}
-                surveyDate={getPrintedSurveyDate(context.idSurvey, context.surveyRootPage)}
-                disableNav={disabledButton}
-            >
-                <FlexCenter>
-                    <OrchestratorForStories
-                        source={context.source}
-                        data={context.data}
-                        callbackHolder={callbackHolder}
-                        page="2"
-                    ></OrchestratorForStories>
-                </FlexCenter>
-            </SurveyPage>
-        </>
+        <SurveyPageStep
+            currentPage={EdtRoutesNameEnum.DAY_OF_SURVEY}
+            errorIcon={day_of_survey}
+            errorAltIcon={"accessibility.asset.day-of-survey-alt"}
+            isStep={false}
+            disableButton={modifiable ? disabledButton : true}
+        />
     );
 };
 

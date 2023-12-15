@@ -1,33 +1,45 @@
-import CloseIcon from "@mui/icons-material/Close";
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import { makeStylesEdt } from "lunatic-edt";
+import close from "assets/illustration/mui-icon/close.svg";
+import { useTranslation } from "react-i18next";
 
 interface SurveyPageSimpleHeaderProps {
     onNavigateBack(): void;
+    simpleHeaderLabel?: string;
+    backgroundWhite?: boolean;
 }
 
 const SurveyPageSimpleHeader = (props: SurveyPageSimpleHeaderProps) => {
-    const { onNavigateBack } = props;
-    const { classes } = useStyles();
+    const { simpleHeaderLabel, onNavigateBack, backgroundWhite } = props;
+    const { classes, cx } = useStyles();
+    const { t } = useTranslation();
+
     return (
-        <Box className={classes.headerBox}>
-            <Box></Box>
-            <Box>
-                <CloseIcon className={classes.actionIcon} onClick={onNavigateBack} />
+        <Box className={cx(classes.headerBox, backgroundWhite ? classes.headerWhiteBox : "")}>
+            <Box>{simpleHeaderLabel}</Box>
+            <Box onClick={onNavigateBack} onKeyUp={onNavigateBack}>
+                <img
+                    src={close}
+                    alt={t("accessibility.asset.mui-icon.close")}
+                    className={classes.actionIcon}
+                    id="close-button"
+                />
             </Box>
         </Box>
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { SurveyPageSimpleHeader } })(() => ({
+const useStyles = makeStylesEdt({ "name": { SurveyPageSimpleHeader } })(theme => ({
     headerBox: {
         display: "flex",
-        flexGrow: "1",
         justifyContent: "space-between",
         alignItems: "center",
-        margin: "1rem",
+        padding: "1rem",
         position: "relative",
         zIndex: "10",
+    },
+    headerWhiteBox: {
+        backgroundColor: theme.variables.white,
     },
     actionIcon: {
         cursor: "pointer",

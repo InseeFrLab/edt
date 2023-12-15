@@ -1,0 +1,710 @@
+[
+    {
+        "comment": {},
+        "data": {
+            "id": "EDTTEST00-001",
+            "EXTERNAL": {},
+            "COLLECTED": {
+                "GOAL": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "CHILD": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "OTHER": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "PLACE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": ["11", "13"]
+                },
+                "ROUTE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "COUPLE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "ISROUTE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [false, false]
+                },
+                "PARENTS": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "END_TIME": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": ["04:05", "04:10"]
+                },
+                "ISCLOSED": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": null
+                },
+                "FIRSTNAME": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": "t"
+                },
+                "ISENVOYED": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": null
+                },
+                "KINDOFDAY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": null
+                },
+                "PHONETIME": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": null
+                },
+                "OTHERKNOWN": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "START_TIME": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": ["04:00", "04:05"]
+                },
+                "SURVEYDATE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": "2023-05-12"
+                },
+                "TRAVELTIME": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": null
+                },
+                "WITHSCREEN": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null, "false"]
+                },
+                "ISCOMPLETED": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [false, true]
+                },
+                "WITHSOMEONE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null, "false"]
+                },
+                "EXCEPTIONALDAY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": null
+                },
+                "INPUT_SUGGESTER": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null, null]
+                },
+                "MAINACTIVITY_ID": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": ["140", "382"]
+                },
+                "FOOT": {
+                    "EDITED": [null],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "BICYCLE": {
+                    "EDITED": [null],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "TWOWHEELSMOTORIZED": {
+                    "EDITED": [null],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "PRIVATECAR": {
+                    "EDITED": [null],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "OTHERPRIVATE": {
+                    "EDITED": [null],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "PUBLIC": {
+                    "EDITED": [null],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "WORSTACTIVITYDAY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": null
+                },
+                "SECONDARYACTIVITY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": ["15", "5c6f5cd8-0d53-484e-b7a0-0864dad66a79"]
+                },
+                "MAINACTIVITY_LABEL": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null, null]
+                },
+                "GREATESTACTIVITYDAY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": null
+                },
+                "WITHSECONDARYACTIVITY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": ["true", "true"]
+                },
+                "MAINACTIVITY_SUGGESTERID": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null, null]
+                },
+                "ACTIVITY_SELECTER_HISTORY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [
+                        "Temps personnel (dormir, se laver, manger …);Manger;",
+                        "Tâches domestiques (ménage, cuisine, courses …);Jardinage;"
+                    ]
+                },
+                "MAINACTIVITY_ISFULLYCOMPLETED": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [true, true]
+                }
+            },
+            "CALCULATED": {},
+            "houseReference": "EDTTEST00-00",
+            "lastLocalSaveDate": 0
+        },
+        "personalization": {},
+        "questionnaireId": "edt-activity-survey",
+        "stateData": {
+            "state": "INIT",
+            "date": 1683891451464,
+            "currentPage": null
+        }
+    },
+    {
+        "comment": {},
+        "data": {
+            "id": "EDTTEST00-002",
+            "EXTERNAL": {},
+            "COLLECTED": {
+                "GOAL": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "CHILD": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "OTHER": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "PLACE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": ["11", "11"]
+                },
+                "ROUTE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "COUPLE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "ISROUTE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [false, false]
+                },
+                "PARENTS": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "END_TIME": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": ["04:05", "04:10"]
+                },
+                "ISCLOSED": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": true
+                },
+                "FIRSTNAME": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": "TEST1"
+                },
+                "ISENVOYED": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": true
+                },
+                "KINDOFDAY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": "3"
+                },
+                "PHONETIME": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": "4:4"
+                },
+                "OTHERKNOWN": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "START_TIME": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": ["04:00", "04:05"]
+                },
+                "SURVEYDATE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": "2023-05-19"
+                },
+                "TRAVELTIME": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": "3:3"
+                },
+                "WITHSCREEN": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": ["false"]
+                },
+                "ISCOMPLETED": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [false, false]
+                },
+                "WITHSOMEONE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": ["false"]
+                },
+                "EXCEPTIONALDAY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": "false"
+                },
+                "INPUT_SUGGESTER": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null, null]
+                },
+                "MAINACTIVITY_ID": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": ["140", "111"]
+                },
+                "FOOT": {
+                    "EDITED": [null],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "BICYCLE": {
+                    "EDITED": [null],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "TWOWHEELSMOTORIZED": {
+                    "EDITED": [null],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "PRIVATECAR": {
+                    "EDITED": [null],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "OTHERPRIVATE": {
+                    "EDITED": [null],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "PUBLIC": {
+                    "EDITED": [null],
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "WORSTACTIVITYDAY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": "111"
+                },
+                "SECONDARYACTIVITY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null]
+                },
+                "MAINACTIVITY_LABEL": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null, null]
+                },
+                "GREATESTACTIVITYDAY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": "140"
+                },
+                "WITHSECONDARYACTIVITY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": ["false"]
+                },
+                "MAINACTIVITY_SUGGESTERID": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [null, null]
+                },
+                "ACTIVITY_SELECTER_HISTORY": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [
+                        "Temps personnel (dormir, se laver, manger …);Manger;",
+                        "Temps personnel (dormir, se laver, manger …);Etre au lit;Dormir (hors sieste);"
+                    ]
+                },
+                "MAINACTIVITY_ISFULLYCOMPLETED": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [true, true]
+                }
+            },
+            "CALCULATED": {},
+            "houseReference": "EDTTEST00-00",
+            "lastLocalSaveDate": 1684525265251,
+            "lastRemoteSaveDate": 1684525264532
+        },
+        "personalization": {},
+        "questionnaireId": "edt-activity-survey",
+        "stateData": {
+            "state": "VALIDATED",
+            "date": 1684525265253,
+            "currentPage": null
+        }
+    },
+    {
+        "comment": {},
+        "data": {
+            "houseReference": "EDTTEST00-00"
+        },
+        "personalization": {},
+        "questionnaireId": "edt-activity-survey",
+        "stateData": {
+            "currentPage": null,
+            "date": 0,
+            "state": null
+        }
+    },
+    {
+        "comment": {},
+        "data": {
+            "id": "EDTTEST00-004",
+            "EXTERNAL": {},
+            "COLLECTED": {
+                "ISCLOSED": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": true
+                },
+                "WEEKTYPE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": "2"
+                },
+                "FIRSTNAME": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": "TEST"
+                },
+                "ISENVOYED": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": true
+                },
+                "SURVEYDATE": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": "2023-05-19"
+                },
+                "WEEKLYPLANNER": {
+                    "EDITED": null,
+                    "FORCED": null,
+                    "INPUTED": null,
+                    "PREVIOUS": null,
+                    "COLLECTED": [
+                        {
+                            "dateJ1": "2023-5-19"
+                        },
+                        {
+                            "dateJ1_started": "false"
+                        },
+                        {
+                            "dateJ2": "2023-5-20"
+                        },
+                        {
+                            "dateJ2_started": "false"
+                        },
+                        {
+                            "dateJ3": "2023-5-21"
+                        },
+                        {
+                            "dateJ3_started": "false"
+                        },
+                        {
+                            "dateJ4": "2023-5-22"
+                        },
+                        {
+                            "dateJ4_started": "false"
+                        },
+                        {
+                            "dateJ5": "2023-5-23"
+                        },
+                        {
+                            "dateJ5_started": "false"
+                        },
+                        {
+                            "dateJ6": "2023-5-24"
+                        },
+                        {
+                            "dateJ6_started": "false"
+                        },
+                        {
+                            "dateJ7": "2023-5-25"
+                        },
+                        {
+                            "dateJ7_started": "false"
+                        }
+                    ]
+                }
+            },
+            "CALCULATED": {},
+            "houseReference": "EDTTEST00-00",
+            "lastLocalSaveDate": 1684525132215,
+            "lastRemoteSaveDate": 1684525132039
+        },
+        "personalization": {},
+        "questionnaireId": "edt-work-time-survey",
+        "stateData": {
+            "state": "VALIDATED",
+            "date": 1684525132217,
+            "currentPage": null
+        }
+    },
+    {
+        "comment": {},
+        "data": {
+            "houseReference": "EDTTEST00-00"
+        },
+        "personalization": {},
+        "questionnaireId": "edt-work-time-survey",
+        "stateData": {
+            "currentPage": null,
+            "date": 0,
+            "state": null
+        }
+    }
+]

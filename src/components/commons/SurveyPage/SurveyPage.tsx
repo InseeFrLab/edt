@@ -1,18 +1,26 @@
+import { makeStylesEdt, ProgressBar } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import LoopNavigator from "components/commons/LoopSurveyPage/LoopNavigator/LoopNavigator";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import ActivityButtons from "components/commons/SurveyPage/ActivityButtons/ActivityButtons";
 import SurveyPageEditHeader from "components/commons/SurveyPage/SurveyPageEditHeader/SurveyPageEditHeader";
 import SurveyPageHeader from "components/commons/SurveyPage/SurveyPageHeader/SurveyPageHeader";
 import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
+import EndActivityStepper from "components/edt/EndActivityStepper/EndActivityStepper";
+import { LunaticModel } from "interface/lunatic/Lunatic";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { getLastCompletedStep } from "service/navigation-service";
+import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
+import { getScore } from "service/survey-activity-service";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;
     className?: string;
     validate?(): void;
-    onFinish?(): void;
+    onFinish?(idSurvey: string, source?: LunaticModel): void;
     onAdd?(): void;
     finishLabel?: string;
     addLabel?: string;
@@ -23,8 +31,21 @@ interface SurveyPageProps {
     firstNamePrefix?: string;
     surveyDate?: string;
     onEdit?(): void;
+    onHelp?(): void;
     simpleHeader?: boolean;
+    simpleHeaderLabel?: string;
     disableNav?: boolean;
+    displayStepper?: boolean;
+    onNext?(event?: React.MouseEvent): void;
+    onPrevious?(event?: React.MouseEvent): void;
+    currentStepNumber?: number;
+    currentStepLabel?: string;
+    backgroundWhiteHeader?: boolean;
+    activityProgressBar?: boolean;
+    idSurvey: string;
+    score?: number;
+    helpStep?: number;
+    modifiable?: boolean;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
@@ -40,16 +61,46 @@ const SurveyPage = (props: SurveyPageProps) => {
         addLabel,
         onNavigateBack,
         onEdit,
+        onHelp,
         firstName,
         firstNamePrefix,
         surveyDate,
         simpleHeader = false,
+        simpleHeaderLabel,
         disableNav,
+        displayStepper = false,
+        onNext,
+        onPrevious,
+        currentStepNumber,
+        currentStepLabel,
+        backgroundWhiteHeader,
+        activityProgressBar = false,
+        idSurvey,
+        score,
+        helpStep,
+        modifiable = true,
     } = props;
     const { t } = useTranslation();
+    const { classes, cx } = useStyles();
+    const [scoreAct, setScoreAct] = React.useState<number | undefined>(score);
+
+    useEffect(() => {
+        setScoreAct(getScore(idSurvey || "", t));
+    }, [score]);
+
+    const renderProgressBar = () => {
+        return (
+            activityProgressBar &&
+            idSurvey && (
+                <Box className={classes.progressBar}>
+                    <ProgressBar value={scoreAct} showlabel={true}></ProgressBar>
+                </Box>
+            )
+        );
+    };
 
     return (
-        <Box className={className}>
+        <Box className={cx(classes.page, className)}>
             {!simpleHeader && firstName && surveyDate && onNavigateBack && (
                 <SurveyPageHeader
                     surveyDate={surveyDate}
@@ -57,40 +108,99 @@ const SurveyPage = (props: SurveyPageProps) => {
                     onNavigateBack={onNavigateBack}
                 />
             )}
-            {!simpleHeader && firstName && firstNamePrefix && onEdit && onNavigateBack && (
+            {!simpleHeader && firstName && firstNamePrefix && (onEdit || onHelp) && onPrevious && (
                 <SurveyPageEditHeader
                     firstName={firstName}
                     firstNamePrefix={firstNamePrefix}
-                    onNavigateBack={onNavigateBack}
+                    onNavigateBack={onPrevious}
                     onEdit={onEdit}
+                    onHelp={onHelp}
+                    modifiable={modifiable}
                 />
             )}
             {simpleHeader && onNavigateBack && (
-                <SurveyPageSimpleHeader onNavigateBack={onNavigateBack} />
+                <SurveyPageSimpleHeader
+                    simpleHeaderLabel={simpleHeaderLabel}
+                    onNavigateBack={onNavigateBack}
+                    backgroundWhite={backgroundWhiteHeader}
+                />
             )}
-            {srcIcon && altIcon && <PageIcon srcIcon={srcIcon} altIcon={altIcon} />}
-            {children}
-            {validate && (
+            {displayStepper && currentStepNumber && currentStepLabel && (
+                <EndActivityStepper
+                    numberOfSteps={
+                        activityComplementaryQuestionsStepperData[
+                            activityComplementaryQuestionsStepperData.length - 1
+                        ].stepNumber
+                    }
+                    lastCompletedStepNumber={getLastCompletedStep(idSurvey ?? "")}
+                    currentStepNumber={currentStepNumber}
+                    currentStepLabel={currentStepLabel}
+                />
+            )}
+            {renderProgressBar()}
+            <Box className={classes.content}>
+                {srcIcon && altIcon && <PageIcon srcIcon={srcIcon} altIcon={altIcon} />}
+                {children}
+            </Box>
+
+            {displayStepper && (
+                <LoopNavigator
+                    onNext={onNext}
+                    onPrevious={onPrevious}
+                    onValidate={validate}
+                    nextLabel={t("common.navigation.next")}
+                    previousLabel={t("common.navigation.previous")}
+                    validateLabel={t("common.navigation.validate")}
+                />
+            )}
+
+            {!displayStepper && validate && (
                 <FlexCenter>
                     <ValidateButton
                         onClick={validate}
                         text={t("common.navigation.validate")}
-                        disabled={disableNav}
+                        disabled={modifiable ? disableNav : true}
                     />
                 </FlexCenter>
             )}
-            {onFinish && onAdd && finishLabel && !validate && (
+            {!displayStepper && onFinish && onAdd && finishLabel && !validate && (
                 <FlexCenter>
                     <ActivityButtons
                         onClickFinish={onFinish}
                         onClickAdd={onAdd}
                         finishLabel={finishLabel}
                         addLabel={addLabel}
+                        helpStep={helpStep}
+                        modifiable={modifiable}
                     />
                 </FlexCenter>
             )}
         </Box>
     );
 };
+
+const useStyles = makeStylesEdt({ "name": { NavButton: SurveyPage } })(theme => ({
+    page: {
+        flexGrow: "1",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden !important",
+        height: "100%",
+    },
+    content: {
+        flexGrow: "1",
+        overflow: "auto",
+        minHeight: "0",
+        overflowX: "hidden",
+        overflowY: "auto",
+        display: "flex",
+        flexDirection: "column",
+    },
+    progressBar: {
+        padding: "1rem 0.5rem",
+        backgroundColor: theme.variables.white,
+        overflow: "hidden",
+    },
+}));
 
 export default SurveyPage;

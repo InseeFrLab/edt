@@ -1,5 +1,5 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import { makeStylesEdt } from "lunatic-edt";
 
 interface FlexEndProps {
     children: JSX.Element[] | JSX.Element;

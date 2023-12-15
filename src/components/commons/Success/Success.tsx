@@ -1,7 +1,8 @@
-import DoneIcon from "@mui/icons-material/Done";
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
+import done from "assets/illustration/mui-icon/done.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { makeStylesEdt } from "lunatic-edt";
+import { useTranslation } from "react-i18next";
 
 interface SuccessProps {
     labelledBy: string;
@@ -12,6 +13,7 @@ interface SuccessProps {
 const Success = (props: SuccessProps) => {
     const { labelledBy, describedBy, successMessage } = props;
     const { classes } = useStyles();
+    const { t } = useTranslation();
 
     return (
         <FlexCenter>
@@ -21,7 +23,11 @@ const Success = (props: SuccessProps) => {
                 aria-describedby={describedBy}
             >
                 <Box>
-                    <DoneIcon className={classes.icon} />
+                    <img
+                        className={classes.icon}
+                        src={done}
+                        alt={t("accessibility.asset.mui-icon.done")}
+                    />
                 </Box>
                 <Box>
                     <h3>{successMessage}</h3>

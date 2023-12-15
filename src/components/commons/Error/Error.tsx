@@ -1,8 +1,8 @@
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FlexEvenly from "components/commons/FlexEvenly/FlexEvenly";
-import { makeStylesEdt } from "lunatic-edt";
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 interface ErrorProps {
@@ -22,9 +22,9 @@ const Error = (props: ErrorProps) => {
     const { classes } = useStyles();
     const [open, setOpen] = React.useState(true);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setOpen(false);
-    };
+    }, [open]);
 
     return (
         <>

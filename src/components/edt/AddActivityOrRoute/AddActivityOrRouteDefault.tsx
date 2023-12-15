@@ -1,14 +1,14 @@
-import CloseIcon from "@mui/icons-material/Close";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider } from "@mui/material";
+import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import close from "assets/illustration/mui-icon/close.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { makeStylesEdt } from "lunatic-edt";
 import { useTranslation } from "react-i18next";
 
 interface AddActivityOrRouteDefaultProps {
     handleClose(): void;
-    onClickActivity(): void;
-    onClickRoute(): void;
+    onClickActivity(idSurvey?: any, source?: any): void;
+    onClickRoute(idSurvey?: any, source?: any): void;
     className: string;
     iconTitle: string;
     iconActivity: string;
@@ -21,53 +21,57 @@ const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
     return (
-        <>
-            <Box className={cx(className, classes.modalDefault)}>
-                <Box id="modal-title" className={classes.titleBox}>
-                    <Box className={classes.iconBox}>
-                        <img src={iconTitle} alt={t("accessibility.asset.yellow-plus-alt")} />
-                    </Box>
-                    <Box className={classes.modalTitleBox}>
-                        <h1>{t("component.add-activity-or-route.title")}</h1>
-                    </Box>
+        <Box className={cx(className, classes.modalDefault)}>
+            <Box id="modal-title" className={classes.titleBox}>
+                <Box className={classes.iconBox}>
+                    <img src={iconTitle} alt={t("accessibility.asset.yellow-plus-alt")} />
                 </Box>
-                <Box id="add-activity" className={classes.navigateBox} onClick={onClickActivity}>
-                    <Box className={classes.iconBox}>
-                        <img src={iconActivity} alt={t("accessibility.asset.activity-alt")} />
-                    </Box>
-                    <Box className={classes.textBox}>
-                        <h2>{t("component.add-activity-or-route.activity-label")}</h2>
-                        <p>{t("component.add-activity-or-route.activity-description")}</p>
-                    </Box>
-                    <Box className={classes.navIconBox}>
-                        <NavigateNextIcon />
-                    </Box>
+                <Box className={classes.modalTitleBox}>
+                    <h1>{t("component.add-activity-or-route.title")}</h1>
                 </Box>
-                <Divider light />
-                <Box id="add-route" className={classes.navigateBox} onClick={onClickRoute}>
-                    <Box className={classes.iconBox}>
-                        <img src={iconRoute} alt={t("accessibility.asset.route-alt")} />
-                    </Box>
-                    <Box className={classes.textBox}>
-                        <h2>{t("component.add-activity-or-route.route-label")}</h2>
-                        <p>{t("component.add-activity-or-route.route-description")}</p>
-                    </Box>
-                    <Box className={classes.navIconBox}>
-                        <NavigateNextIcon />
-                    </Box>
-                </Box>
-                <FlexCenter>
-                    <Button className={classes.closeButton} onClick={handleClose}>
-                        <Box>
-                            <Box>
-                                <CloseIcon />
-                            </Box>
-                            <Box>{t("common.navigation.close")}</Box>
-                        </Box>
-                    </Button>
-                </FlexCenter>
             </Box>
-        </>
+            <Box id="add-activity" className={classes.navigateBox} onClick={onClickActivity}>
+                <Box className={classes.iconBox}>
+                    <img src={iconActivity} alt={t("accessibility.asset.activity-alt")} />
+                </Box>
+                <Box className={classes.textBox}>
+                    <h2>{t("component.add-activity-or-route.activity-label")}</h2>
+                    <p>{t("component.add-activity-or-route.activity-description")}</p>
+                </Box>
+                <Box className={classes.navIconBox}>
+                    <img
+                        src={arrowForwardIos}
+                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                    />
+                </Box>
+            </Box>
+            <Divider light />
+            <Box id="add-route" className={classes.navigateBox} onClick={onClickRoute}>
+                <Box className={classes.iconBox}>
+                    <img src={iconRoute} alt={t("accessibility.asset.route-alt")} />
+                </Box>
+                <Box className={classes.textBox}>
+                    <h2>{t("component.add-activity-or-route.route-label")}</h2>
+                    <p>{t("component.add-activity-or-route.route-description")}</p>
+                </Box>
+                <Box className={classes.navIconBox}>
+                    <img
+                        src={arrowForwardIos}
+                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                    />
+                </Box>
+            </Box>
+            <FlexCenter>
+                <Button className={classes.closeButton} onClick={handleClose}>
+                    <Box>
+                        <Box>
+                            <img src={close} alt={t("accessibility.asset.mui-icon.close")} />
+                        </Box>
+                        <Box>{t("common.navigation.close")}</Box>
+                    </Box>
+                </Button>
+            </FlexCenter>
+        </Box>
     );
 };
 
@@ -112,6 +116,7 @@ const useStyles = makeStylesEdt({ "name": { AddActivityOrRouteDefault } })(theme
     closeButton: {
         marginTop: "2rem",
         fontSize: "14px",
+        color: theme.palette.text.primary,
     },
 }));
 

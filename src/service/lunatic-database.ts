@@ -1,9 +1,10 @@
-import Dexie from "dexie";
+import Dexie, { PromiseExtended } from "dexie";
 import { LunaticData } from "interface/lunatic/Lunatic";
 
 export interface LunaticDatabase {
     save(id: string, data: LunaticData): Promise<string>;
     get(id: string): Promise<LunaticData | undefined>;
+    clear(): Promise<void>;
 }
 
 class LunaticDatabaseImpl extends Dexie implements LunaticDatabase {
@@ -24,6 +25,10 @@ class LunaticDatabaseImpl extends Dexie implements LunaticDatabase {
     public get(id: string): Promise<LunaticData | undefined> {
         return this.lunaticData.get(id);
     }
+
+    public clear(): PromiseExtended<void> {
+        return this.lunaticData.clear();
+    }
 }
 
 class MemoryLunaticDatabaseImpl implements LunaticDatabase {
@@ -38,6 +43,10 @@ class MemoryLunaticDatabaseImpl implements LunaticDatabase {
     public get(id: string): Promise<LunaticData | undefined> {
         return Promise.resolve(this.lunaticData.get(id));
     }
+
+    public clear(): Promise<void> {
+        return Promise.resolve(this.lunaticData.clear());
+    }
 }
 
 class PromiseProxyLunaticDatabaseImpl implements LunaticDatabase {
@@ -50,6 +59,10 @@ class PromiseProxyLunaticDatabaseImpl implements LunaticDatabase {
 
     public get(id: string): Promise<LunaticData | undefined> {
         return lunaticDatabasePromise.then(database => database.get(id));
+    }
+
+    public clear(): Promise<void> {
+        return lunaticDatabasePromise.then(database => database.clear());
     }
 }
 

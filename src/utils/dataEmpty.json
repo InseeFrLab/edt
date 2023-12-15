@@ -1,0 +1,282 @@
+{
+    "GOAL": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "CHILD": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "OTHER": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "PLACE": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "ROUTE": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "COUPLE": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "ISROUTE": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "PARENTS": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "END_TIME": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "ISCLOSED": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "FIRSTNAME": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "ISENVOYED": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "KINDOFDAY": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "PHONETIME": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "OTHERKNOWN": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "START_TIME": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "SURVEYDATE": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "TRAVELTIME": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "WITHSCREEN": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "ISCOMPLETED": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "WITHSOMEONE": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "EXCEPTIONALDAY": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "INPUT_SUGGESTER": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "MAINACTIVITY_ID": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "FOOT": {
+        "EDITED": [null],
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": [null]
+    },
+    "BICYCLE": {
+        "EDITED": [null],
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": [null]
+    },
+    "TWOWHEELSMOTORIZED": {
+        "EDITED": [null],
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": [null]
+    },
+    "PRIVATECAR": {
+        "EDITED": [null],
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": [null]
+    },
+    "OTHERPRIVATE": {
+        "EDITED": [null],
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": [null]
+    },
+    "PUBLIC": {
+        "EDITED": [null],
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": [null]
+    },
+    "WORSTACTIVITYDAY": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "SECONDARYACTIVITY": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "MAINACTIVITY_LABEL": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "GREATESTACTIVITYDAY": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "WITHSECONDARYACTIVITY": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "MAINACTIVITY_SUGGESTERID": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "ACTIVITY_SELECTER_HISTORY": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "MAINACTIVITY_ISFULLYCOMPLETED": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "ISLOCKED": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "ISVALIDATED": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    }
+}

@@ -9,7 +9,20 @@ html * {
 
 html, body {
     max-width: 100%;
-    overflow-x: hidden !important;
+    min-height: 100vh;
+    overflow: hidden !important;
+    padding: 0 !important;
+}
+
+#root {
+    height: 100vh;
+    max-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
 }
 
 button {

@@ -20,5 +20,6 @@
         "strictNullChecks": true,
         "baseUrl": "src"
     },
+    "allowImportingTsExtensions": true,
     "include": ["src"]
 }

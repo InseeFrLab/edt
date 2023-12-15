@@ -1,6 +1,7 @@
-import CloseIcon from "@mui/icons-material/Close";
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Typography } from "@mui/material";
-import { makeStylesEdt } from "lunatic-edt";
+import close from "assets/illustration/mui-icon/close.svg";
+import { useTranslation } from "react-i18next";
 
 interface SurveyPageHeaderProps {
     surveyDate: string;
@@ -11,13 +12,19 @@ interface SurveyPageHeaderProps {
 const SurveyPageHeader = (props: SurveyPageHeaderProps) => {
     const { surveyDate, firstName, onNavigateBack } = props;
     const { classes } = useStyles();
+    const { t } = useTranslation();
+
     return (
         <Box className={classes.headerBox}>
             <Box>
                 <Typography className={classes.infoText}>{surveyDate + " - " + firstName}</Typography>
             </Box>
-            <Box>
-                <CloseIcon className={classes.actionIcon} onClick={onNavigateBack} />
+            <Box onClick={onNavigateBack} onKeyUp={onNavigateBack}>
+                <img
+                    src={close}
+                    alt={t("accessibility.asset.mui-icon.close")}
+                    className={classes.actionIcon}
+                />
             </Box>
         </Box>
     );
@@ -26,7 +33,6 @@ const SurveyPageHeader = (props: SurveyPageHeaderProps) => {
 const useStyles = makeStylesEdt({ "name": { SurveyPageHeader } })(() => ({
     headerBox: {
         display: "flex",
-        flexGrow: "1",
         justifyContent: "space-between",
         alignItems: "center",
         margin: "1rem",

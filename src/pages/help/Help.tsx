@@ -1,27 +1,37 @@
-import { ClickableList } from "lunatic-edt";
+import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { Box, Paper, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import iconNoResult from "../../assets/illustration/error/puzzle.svg";
-import activites from ".././../activitesAutoCompleteRef.json";
+import packageJson from "../../../package.json";
 
 const HelpPage = () => {
     const { t } = useTranslation();
+    const { classes } = useStyles();
+
     return (
         <>
-            <header>Help - {t("home.page.welcome")}</header>
-
-            <ClickableList
-                options={activites}
-                handleChange={() => console.log("handleChange")}
-                createActivity={() => console.log("createActivity")}
-                placeholder="Saisissez une activité"
-                notFoundLabel="Aucun résultat trouvé"
-                notFoundComment="Vous pourrez l'ajouter en cliquant sur le bouton ci-dessous, ou le bouton + ci-dessus"
-                addActivityButtonLabel="Ajouter l'activité"
-                iconNoResult={iconNoResult}
-                iconNoResultAlt="alt pour icon no result"
-            ></ClickableList>
+            <header>Help - Page temporaire</header>
+            <br />
+            <Paper className={classes.footerBox} component="footer" square variant="outlined">
+                <Box>
+                    <Typography variant="caption" color="initial">
+                        <b>{t("common.version")}:</b> {packageJson.version} - {packageJson.dateVersion}
+                    </Typography>
+                </Box>
+            </Paper>
         </>
     );
 };
+
+const useStyles = makeStylesEdt({ "name": { HelpPage } })(() => ({
+    clickableListBox: {
+        height: "90vh",
+    },
+    footerBox: {
+        height: "7vh",
+        display: "flex",
+        alignItems: "center",
+        padding: "1rem",
+    },
+}));
 
 export default HelpPage;
