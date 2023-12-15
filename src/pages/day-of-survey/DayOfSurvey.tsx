@@ -38,7 +38,7 @@ const DayOfSurveyPage = () => {
                 inputFormatted != null &&
                 (typeof inputFormatted == "string" ? inputFormatted.includes("Invalid") : false);
 
-            setDisabledButton(callbackHolder.getErrors()[componentId].length > 0 || errorData);
+            setDisabledButton(callbackHolder.getErrors()?.[componentId]?.length > 0 || errorData);
         }
     };
 
