@@ -2,11 +2,11 @@ import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { LunaticData } from "interface/lunatic/Lunatic";
 
 export interface UserSurveys {
-    id: number;
+    id?: number;
     campaignId: string;
     interviewerId: string;
     questionnaireModelId: string;
-    reviewerId: string;
+    reviewerId?: string;
     surveyUnitId: string;
     nameHousehold?: string;
 }

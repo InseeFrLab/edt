@@ -133,7 +133,8 @@
             },
             "card": {
                 "person-sun-alt": "Icône d’une journée enquêtée",
-                "person-sun-close-alt": "Icône d’une journée enquêtée clore"
+                "person-sun-close-alt": "Icône d’une journée enquêtée clore",
+                "person-alt": "Icône d'une personne"
             },
             "insideAlerts": {
                 "activity-error-alt": "Icône activité non renseignée",
