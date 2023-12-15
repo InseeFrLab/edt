@@ -18,11 +18,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
-import {
-    getIdSurveyContext,
-    getNavigatePath,
-    navToActivityRouteOrHome,
-} from "service/navigation-service";
+import { getIdSurveyContext, getNavigatePath, navToHome } from "service/navigation-service";
 import { getActivitiesOrRoutes, mockData } from "service/survey-activity-service";
 import { getSource } from "service/survey-service";
 
@@ -59,7 +55,7 @@ const HelpDuration = () => {
     };
 
     const navToActivityRouteHome = useCallback(() => {
-        navToActivityRouteOrHome(navigate);
+        navToHome();
     }, []);
 
     const nextHelpStep = useCallback(() => {

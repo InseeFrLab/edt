@@ -42,7 +42,7 @@ import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
 import {
     getIdSurveyContext,
     getNavigatePath,
-    navToActivityRouteOrHome,
+    navToHome,
     onClose,
     onNext,
     onPrevious,
@@ -165,7 +165,7 @@ const HelpCategoryActivity = () => {
     };
 
     const navToActivityRouteHome = useCallback(() => {
-        navToActivityRouteOrHome(navigate);
+        navToHome();
     }, []);
 
     const navToNextPage = useCallback(() => {

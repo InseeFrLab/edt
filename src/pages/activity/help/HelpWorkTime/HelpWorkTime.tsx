@@ -33,7 +33,6 @@ import {
     isPageGlobal,
     navToHelp,
     navToHome,
-    navToWeeklyPlannerOrHome,
     saveAndNav,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
@@ -132,10 +131,7 @@ const HelpWorkTime = () => {
         [helpStep],
     );
 
-    const navToNextPage = useCallback(
-        () => (isPageGlobal() ? navigate("/") : navToWeeklyPlannerOrHome(navigate)),
-        [helpStep],
-    );
+    const navToNextPage = useCallback(() => (isPageGlobal() ? navigate("/") : navToHome()), [helpStep]);
 
     const previousHelpStep = useCallback(() => {
         helpStep > 1 ? setHelpStep(helpStep - 1) : navToBackPage();

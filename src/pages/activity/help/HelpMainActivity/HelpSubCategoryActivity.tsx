@@ -9,13 +9,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
-import {
-    getNavigatePath,
-    navToActivityRouteOrHome,
-    onClose,
-    onNext,
-    onPrevious,
-} from "service/navigation-service";
+import { getNavigatePath, navToHome, onClose, onNext, onPrevious } from "service/navigation-service";
 
 import {
     ActivitySelecterSpecificProps,
@@ -163,7 +157,7 @@ const HelpSubCategoryActivity = () => {
     };
 
     const navToActivityRouteHome = useCallback(() => {
-        navToActivityRouteOrHome(navigate);
+        navToHome();
     }, []);
 
     const navToNextPage = useCallback(
