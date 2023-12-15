@@ -24,6 +24,7 @@ import { t } from "i18next";
 import { TabData } from "interface/component/Component";
 import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
 import { Household } from "interface/entity/Household";
+import { Person } from "interface/entity/Person";
 import { StatsHousehold } from "interface/entity/StatsHouseHold";
 import {
     Collected,
@@ -65,6 +66,7 @@ import {
     remotePutSurveyDataReviewer,
 } from "./api-service";
 import { getFlatLocalStorageValue } from "./local-storage-service";
+import { getFullNavigatePath, setAllNamesOfGroupAndNav } from "./navigation-service";
 import { getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
 
@@ -72,7 +74,7 @@ const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
 
 const NUM_MAX_ACTIVITY_SURVEYS = process.env.REACT_APP_NUM_ACTIVITY_SURVEYS ?? 6;
-const NUM_MAX_WORKTIME_SURVEYS = process.env.REACT_APP_NUM_WORKTIME_SURVEYS ?? 2;
+const NUM_MAX_WORKTIME_SURVEYS = 3;
 
 let referentielsData: ReferentielData;
 let sourcesData: SourceData;
@@ -447,7 +449,7 @@ const getRemoteSavedSurveysDatas = (
                                     remoteSurveyData.stateData?.date > 0 &&
                                     (localSurveyData === undefined ||
                                         (localSurveyData.lastLocalSaveDate ?? 0) <
-                                            remoteSurveyData.stateData.date))
+                                        remoteSurveyData.stateData.date))
                             ) {
                                 return lunaticDatabase.save(surveyId, surveyData);
                             }
@@ -541,7 +543,8 @@ const getSurveyDataHousehold = (surveys: UserSurveys[]) => {
 };
 
 const getListSurveysHousehold = (): Household[] => {
-    let grouped = groupBy(getListSurveys(), surveyData => {
+    const listSurveys = getListSurveys();
+    let grouped = groupBy(listSurveys, surveyData => {
         const length = surveyData.surveyUnitId.length - 1;
         const group = surveyData.surveyUnitId.substring(0, length);
         return group;
@@ -763,7 +766,6 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
     fixConditionals(data);
     const isChange = dataIsChange(idSurvey, data);
-
     return lunaticDatabase.save(idSurvey, data).then(() => {
         const promisesToWait: Promise<any>[] = [];
         datas.set(idSurvey, data);
@@ -987,11 +989,6 @@ const getReferentiel = (refName: ReferentielsEnum) => {
 };
 
 const getSource = (refName: SourcesEnum) => {
-    /*return sourcesData
-        ? sourcesData[refName]
-        : refName == SourcesEnum.ACTIVITY_SURVEY
-        ? activitySurveySource
-        : workTimeSource;*/
     return refName == SourcesEnum.ACTIVITY_SURVEY ? activitySurveySource : workTimeSource;
 };
 
@@ -1316,11 +1313,21 @@ const createNameSurveyMap = (idSurveys: string[]) => {
         .sort((u1, u2) => u1.data.surveyUnitId.localeCompare(u2.data.surveyUnitId));
 };
 
-const nameSurveyMap = () => {
+const nameSurveyMap = (): Person[] => {
     return getOrderedSurveys(
         surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS],
         surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS],
     );
+};
+
+const nameSurveyGroupMap = () => {
+    const listSurveysAct = getOrderedSurveys(
+        surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS],
+        surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS],
+    );
+
+    let grouped = groupBy(listSurveysAct, nameSurveyData => nameSurveyData.num);
+    return grouped;
 };
 
 const getOrderedSurveys = (activitiesIds: string[], workTimeIds: string[]) => {
@@ -1333,7 +1340,7 @@ const getOrderedSurveys = (activitiesIds: string[], workTimeIds: string[]) => {
     return userMap;
 };
 
-const createUserDataMap = (usersurvey: UserSurveys[]) => {
+const createUserDataMap = (usersurvey: UserSurveys[]): Person[] => {
     let numInterviewer = 0;
     return usersurvey
         .map((data, index) => {
@@ -1342,15 +1349,15 @@ const createUserDataMap = (usersurvey: UserSurveys[]) => {
             }
             return data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
                 ? {
-                      data: data,
-                      firstName: "zzzz " + (numInterviewer + 1),
-                      num: numInterviewer + 1,
-                  }
+                    data: data,
+                    firstName: "zzzz " + (numInterviewer + 1),
+                    num: numInterviewer + 1,
+                }
                 : {
-                      data: data,
-                      firstName: "zzzzz " + index + 1,
-                      num: index + 1,
-                  };
+                    data: data,
+                    firstName: "zzzzz " + index + 1,
+                    num: index + 1,
+                };
         })
         .sort((u1, u2) => u1.data.surveyUnitId.localeCompare(u2.data.surveyUnitId));
 };
@@ -1361,11 +1368,48 @@ const createUserDataMap = (usersurvey: UserSurveys[]) => {
 const userDatasMap = () => {
     const userActivityMap = createUserDataMap(getUserDatasActivity());
     const userWeeklyPlannerMap = createUserDataMap(getUserDatasWorkTime());
+
     const userMap = userActivityMap.concat(userWeeklyPlannerMap).sort((u1, u2) => {
         if (u1.num == u2.num) return u1.firstName.localeCompare(u2.firstName);
         else return u1.num > u2.num ? 1 : -1;
     });
+
     return userMap;
+};
+
+const arrayOfSurveysPersonDemo = (interviewer: string, index: number): Person[] => {
+    return [
+        {
+            data: {
+                questionnaireModelId: SourcesEnum.ACTIVITY_SURVEY,
+                surveyUnitId: getIdSurveyActivity(interviewer, 0),
+                interviewerId: interviewer,
+                campaignId: "",
+            },
+            firstName: "zzzz" + interviewer,
+            num: index,
+        },
+        {
+            data: {
+                questionnaireModelId: SourcesEnum.ACTIVITY_SURVEY,
+                surveyUnitId: getIdSurveyActivity(interviewer, 1),
+                interviewerId: interviewer,
+                campaignId: "",
+            },
+            firstName: "zzzz" + interviewer,
+            num: index,
+        },
+        {
+            data: {
+                questionnaireModelId: SourcesEnum.WORK_TIME_SURVEY,
+                surveyUnitId: getIdSurveyWorkTime(interviewer),
+                interviewerId: interviewer,
+                campaignId: "",
+            },
+            firstName: "zzzz" + interviewer,
+            num: index,
+        },
+    ];
 };
 
 const getPersonNumber = (idSurvey: string) => {
@@ -1650,9 +1694,43 @@ const getStatutSurvey = (idSurvey: string) => {
     } else return StateSurveyEnum.INIT;
 };
 
+const getSurveysAct = () => {
+    let surveys: Person[] = [];
+    const isDemo = isDemoMode();
+
+    if (getUserRights() === EdtUserRightsEnum.REVIEWER && !isDemo) {
+        surveys = userDatasMap();
+    } else if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
+        let interviewers = getUserDatasActivity().map(data => data.interviewerId);
+        let interviewersUniques = interviewers.filter(
+            (value, index, self) => self.indexOf(value) === index,
+        );
+        interviewersUniques.forEach((interviewer, index) => {
+            surveys = surveys.concat(arrayOfSurveysPersonDemo(interviewer, index));
+        });
+    } else {
+        surveys = nameSurveyMap();
+    }
+    return surveys;
+};
+
+const validateAllGroup = (idSurvey: string, inputAct: string, navigate: any) => {
+    const surveys = getSurveysAct();
+
+    const personAct = surveys?.find(survey => survey.data.surveyUnitId == idSurvey);
+
+    const idsSurveysFromGroupAct = surveys
+        ?.filter(survey => survey.num == personAct?.num)
+        .map(survey => survey.data.surveyUnitId);
+    const route = getFullNavigatePath(idSurvey, EdtRoutesNameEnum.DAY_OF_SURVEY);
+    setAllNamesOfGroupAndNav(idSurvey, idsSurveysFromGroupAct, inputAct, route, navigate);
+};
+
 export {
     addToAutocompleteActivityReferentiel,
     addToSecondaryActivityReferentiel,
+    arrayOfSurveysPersonDemo,
+    createDataEmpty,
     createNewActivityInCategory,
     existVariableEdited,
     getComponentId,
@@ -1695,6 +1773,7 @@ export {
     isDemoMode,
     lockAllSurveys,
     lockSurvey,
+    nameSurveyGroupMap,
     nameSurveyMap,
     refreshSurvey,
     refreshSurveyData,
@@ -1708,5 +1787,7 @@ export {
     toIgnoreForRoute,
     userDatasMap,
     validateAllEmptySurveys,
-    validateSurvey,
+    validateAllGroup,
+    validateSurvey
 };
+

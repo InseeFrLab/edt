@@ -37,6 +37,7 @@ export interface SurveyPageStepProps {
     errorAltIcon?: string;
     specifiquesProps?: any;
     disableButton?: boolean;
+    validateButton?: () => void;
     withBottomPadding?: boolean;
 }
 
@@ -50,6 +51,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         errorAltIcon,
         specifiquesProps,
         disableButton,
+        validateButton,
         withBottomPadding = false,
     } = props;
 
@@ -126,13 +128,15 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     };
     const surveyPageNotStepProps = {
         idSurvey: idSurvey,
-        validate: useCallback(
-            () =>
-                nextRoute
-                    ? saveAndNavFullPath(idSurvey, nextRoute)
-                    : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage),
-            [],
-        ),
+        validate:
+            validateButton ??
+            useCallback(
+                () =>
+                    nextRoute
+                        ? saveAndNavFullPath(idSurvey, nextRoute)
+                        : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage),
+                [],
+            ),
         srcIcon: errorIcon,
         altIcon: errorAltIcon ? t(errorAltIcon) : undefined,
         onNavigateBack: useCallback(() => saveAndNav(idSurvey), []),
