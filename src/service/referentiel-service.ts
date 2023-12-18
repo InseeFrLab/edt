@@ -69,11 +69,13 @@ export const findActivityInNomenclatureReferentiel = (
     return findItemInCategoriesNomenclature(selectedActivity.id, getNomenclatureRef())?.item;
 };
 
-export const findNewActivityById = (idSurvey: string, activityId: string): string => {
+export const findNewActivityById = (idSurvey: string, activityId: string): string | undefined => {
     const newActivities = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_SUGGESTERID) as string[];
-    const index = newActivities?.findIndex(act => act == activityId);
-    const activitiesLabel = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL) as string[];
-    return activitiesLabel[index];
+    if (newActivities != null && newActivities.length > 0) {
+        const index = newActivities.findIndex(act => act == activityId);
+        const activitiesLabel = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL) as string[];
+        return activitiesLabel[index];
+    } else return undefined;
 };
 
 export const findActivityInNomenclatureReferentielById = (
