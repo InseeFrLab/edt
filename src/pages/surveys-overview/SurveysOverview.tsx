@@ -97,7 +97,7 @@ const SurveysOverviewPage = () => {
         return (
             houseHoldData.stats?.numHouseholdsInProgress == 0 &&
             houseHoldData.stats?.numHouseholdsClosed == 0 &&
-            houseHoldData.stats?.numHouseholdsValidated >= 1
+            houseHoldData.stats?.numHouseholdsValidated == houseHoldData.stats?.numHouseholds
         );
     };
 
