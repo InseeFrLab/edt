@@ -77,7 +77,7 @@ const SurveysOverviewPage = () => {
             .finally(() => {
                 setInitialized(true);
             });
-    }, []);
+    });
 
     const navToReviewerHome = useCallback(() => {
         navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_HOME));
