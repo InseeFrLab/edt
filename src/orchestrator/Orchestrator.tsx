@@ -131,7 +131,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     const getVariables = (bindingDependencies: string[], value: any) => {
         let variables = new Map<string, any>();
         const isReviewerMode = isReviewer();
-        const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED;
+        const isLocked: boolean = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED as boolean;
         bindingDependencies?.forEach((bindingDependency: string) => {
             let varE = data?.COLLECTED?.[bindingDependency]?.EDITED;
             let varC = data?.COLLECTED?.[bindingDependency]?.COLLECTED;

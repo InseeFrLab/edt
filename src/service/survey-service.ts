@@ -449,7 +449,7 @@ const getRemoteSavedSurveysDatas = (
                                     remoteSurveyData.stateData?.date > 0 &&
                                     (localSurveyData === undefined ||
                                         (localSurveyData.lastLocalSaveDate ?? 0) <
-                                            remoteSurveyData.stateData.date))
+                                        remoteSurveyData.stateData.date))
                             ) {
                                 return lunaticDatabase.save(surveyId, surveyData);
                             }
@@ -846,7 +846,6 @@ const getStateOfSurvey = (idSurvey: string): StateDataStateEnum => {
     const isValidated = surveyValidated(idSurvey);
 
     let state: StateDataStateEnum = StateDataStateEnum.INIT;
-
     if (isSent) {
         state = StateDataStateEnum.COMPLETED;
     } else if (isLocked && isValidated) {
@@ -1349,15 +1348,15 @@ const createUserDataMap = (usersurvey: UserSurveys[]): Person[] => {
             }
             return data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
                 ? {
-                      data: data,
-                      firstName: "zzzz " + (numInterviewer + 1),
-                      num: numInterviewer + 1,
-                  }
+                    data: data,
+                    firstName: "zzzz " + (numInterviewer + 1),
+                    num: numInterviewer + 1,
+                }
                 : {
-                      data: data,
-                      firstName: "zzzzz " + index + 1,
-                      num: index + 1,
-                  };
+                    data: data,
+                    firstName: "zzzzz " + index + 1,
+                    num: index + 1,
+                };
         })
         .sort((u1, u2) => u1.data.surveyUnitId.localeCompare(u2.data.surveyUnitId));
 };
@@ -1428,18 +1427,17 @@ const isDemoMode = () => {
 const surveyLocked = (idSurvey: string) => {
     const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
     const variableEdited = existVariableEdited(idSurvey);
-
-    return (isLocked != null && isLocked) || variableEdited;
+    return (isLocked != null && isLocked == true) || variableEdited;
 };
 
 const surveyValidated = (idSurvey: string) => {
     const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
-    return isValidated != null && isValidated;
+    return isValidated != null && isValidated == true;
 };
 
 const surveyClosed = (idSurvey: string) => {
     const isClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
-    return isClosed != null && isClosed;
+    return isClosed != null && isClosed == true;
 };
 
 const surveyStarted = (idSurvey: string) => {
@@ -1639,7 +1637,11 @@ const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
 
     for (let prop in FieldNameEnum as any) {
         const data = dataOfSurvey && dataOfSurvey[prop];
-        if (data && data.EDITED) {
+        const ifArrayInputed = data && data.EDITED && Array.isArray(data.EDITED) && data.EDITED.length > 0 && data.EDITED[0] != null;
+        if (data && data.EDITED && ifArrayInputed) {
+            return true;
+        }
+        else if (data && data.EDITED && !Array.isArray(data.EDITED)) {
             return true;
         }
     }
@@ -1648,7 +1650,7 @@ const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
 
 const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum => {
     const isReviewerMode = isReviewer();
-    const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED;
+    const isLocked = (data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED as boolean) == true;
     const variableEdited = existVariableEdited(undefined, data);
 
     return isReviewerMode || isLocked || variableEdited
@@ -1686,10 +1688,9 @@ const getStatutSurvey = (idSurvey: string) => {
     const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
     const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
     const variableEdited = existVariableEdited(idSurvey);
-
-    if (isValidated != null && isValidated) {
+    if (isValidated != null && isValidated == true) {
         return StateSurveyEnum.VALIDATED;
-    } else if ((isLocked != null && isLocked) || variableEdited) {
+    } else if ((isLocked != null && isLocked == true) || variableEdited) {
         return StateSurveyEnum.LOCKED;
     } else return StateSurveyEnum.INIT;
 };
@@ -1792,5 +1793,6 @@ export {
     userDatasMap,
     validateAllEmptySurveys,
     validateAllGroup,
-    validateSurvey,
+    validateSurvey
 };
+
