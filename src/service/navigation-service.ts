@@ -151,7 +151,7 @@ const getCurrentNavigatePath = (
         page = mappingPageOrchestrator.find(
             link =>
                 link.surveyPage ===
-                    (firstEmptyPage > Number(maxPage) ? maxPage : firstEmptyPage).toString() &&
+                (firstEmptyPage > Number(maxPage) ? maxPage : firstEmptyPage).toString() &&
                 link.parentPage === rootPage,
         )?.page;
     }
@@ -291,6 +291,8 @@ const setNamesOfGroup = (idSurvey: string, nameAct: string, idsSurveysOfGroup?: 
 
     if ((listNames && listNames?.length > 0) || nameAct != null) {
         idsSurveysOfGroup?.forEach(id => {
+            //let firstname = getValue(id, FieldNameEnum.FIRSTNAME);
+            //if (firstname == null) {
             let dataAct = setValue(id, FieldNameEnum.FIRSTNAME, listNames?.[0] ?? nameAct);
             if (dataAct.COLLECTED == null || dataAct.COLLECTED?.[FieldNameEnum.FIRSTNAME] == null) {
                 dataAct = emptyDataSetFirstName(
@@ -300,6 +302,7 @@ const setNamesOfGroup = (idSurvey: string, nameAct: string, idsSurveysOfGroup?: 
                 );
             }
             promises.push(saveData(id, dataAct));
+            //}
         });
     }
     return promises;
@@ -360,7 +363,7 @@ const navToActivityOrPlannerOrSummary = (
         if (surveyIsEnvoyed) {
             navigate(
                 getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
-                    getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
+                getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
             );
         } else {
             const currentPathNav = getCurrentNavigatePath(
@@ -422,7 +425,7 @@ const navToWeeklyPlannerOrClose = (idSurvey: string, navigate: any, source: Luna
 const navToActivitySummary = (idSurvey: string) => {
     _navigate(
         getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
-            getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
+        getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
     );
 };
 
@@ -588,13 +591,13 @@ const onClose = (
     const isActivity = isActivityPage();
     const pathNav = isCloture
         ? getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
-          getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)
+        getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)
         : getCurrentNavigatePath(
-              idSurvey,
-              EdtRoutesNameEnum.ACTIVITY,
-              getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-              source,
-          );
+            idSurvey,
+            EdtRoutesNameEnum.ACTIVITY,
+            getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+            source,
+        );
     const weeklyPlannerRoute = getCurrentNavigatePath(
         idSurvey,
         EdtRoutesNameEnum.WORK_TIME,
@@ -648,5 +651,6 @@ export {
     validate,
     validateAndNextLoopStep,
     validateAndNextStep,
-    validateWithAlertAndNav,
+    validateWithAlertAndNav
 };
+

@@ -78,14 +78,6 @@ const getUserActivitiesSummary = (
 
 const getActivityOrRouteInRef = (idSurvey: string, activityOrRouteId: string) => {
     if (typeof activityOrRouteId != "string") activityOrRouteId = "";
-    console.log(
-        findActivityInNomenclatureReferentielById(activityOrRouteId)?.label,
-        findActivityInAutoCompleteReferentielById(activityOrRouteId)?.label,
-        findRouteInRef(activityOrRouteId)?.label,
-        findRouteSecondaryActivityInRef(activityOrRouteId)?.label,
-        findNewActivityById(idSurvey, activityOrRouteId),
-        activityOrRouteId,
-    );
     return (
         findActivityInNomenclatureReferentielById(activityOrRouteId)?.label ||
         findActivityInAutoCompleteReferentielById(activityOrRouteId)?.label ||

@@ -449,7 +449,7 @@ const getRemoteSavedSurveysDatas = (
                                     remoteSurveyData.stateData?.date > 0 &&
                                     (localSurveyData === undefined ||
                                         (localSurveyData.lastLocalSaveDate ?? 0) <
-                                            remoteSurveyData.stateData.date))
+                                        remoteSurveyData.stateData.date))
                             ) {
                                 return lunaticDatabase.save(surveyId, surveyData);
                             }
@@ -533,11 +533,12 @@ const getSurveyDataHousehold = (surveys: UserSurveys[]) => {
         .map(survey => survey.surveyUnitId);
 
     const firstSurvey = getOrderedSurveys(activitiesSurveys, workTimeSurveys)[0];
+
     const firstSurveyDate = getValue(
         firstSurvey?.data?.surveyUnitId,
         FieldNameEnum.SURVEYDATE,
     ) as string;
-    return firstSurveyDate
+    return firstSurveyDate && firstSurveyDate.length && firstSurveyDate.length > 0
         ? dayjs(generateDateFromStringInput(firstSurveyDate)).format("DD/MM/YYYY")
         : undefined;
 };
@@ -742,18 +743,21 @@ const fixConditionals = (data: LunaticData) => {
         modePersistence == ModePersistenceEnum.COLLECTED
             ? withSecondaryActivity?.COLLECTED
             : withSecondaryActivity?.EDITED;
+    if (arrayWithSomeone?.length && arrayWithSomeone?.length == 0) {
+        arrayWithSomeone?.forEach((withSom: string, index: number) => {
+            if (withSom == "false") {
+                undefineVarSomeone(data, modePersistence, index);
+            }
+        });
+    }
 
-    arrayWithSomeone?.forEach((withSom: string, index: number) => {
-        if (withSom == "false") {
-            undefineVarSomeone(data, modePersistence, index);
-        }
-    });
-
-    arrayWithSecondaryActivity?.forEach((withSecAct: string, index: number) => {
-        if (withSecAct == "false") {
-            undefineVarSecondaryActivity(data, modePersistence, index);
-        }
-    });
+    if (arrayWithSecondaryActivity && arrayWithSecondaryActivity.length == 0) {
+        arrayWithSecondaryActivity?.forEach((withSecAct: string, index: number) => {
+            if (withSecAct == "false") {
+                undefineVarSecondaryActivity(data, modePersistence, index);
+            }
+        });
+    }
 };
 
 const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): Promise<LunaticData> => {
@@ -1348,15 +1352,15 @@ const createUserDataMap = (usersurvey: UserSurveys[]): Person[] => {
             }
             return data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
                 ? {
-                      data: data,
-                      firstName: "zzzz " + (numInterviewer + 1),
-                      num: numInterviewer + 1,
-                  }
+                    data: data,
+                    firstName: "zzzz " + (numInterviewer + 1),
+                    num: numInterviewer + 1,
+                }
                 : {
-                      data: data,
-                      firstName: "zzzzz " + index + 1,
-                      num: index + 1,
-                  };
+                    data: data,
+                    firstName: "zzzzz " + index + 1,
+                    num: index + 1,
+                };
         })
         .sort((u1, u2) => u1.data.surveyUnitId.localeCompare(u2.data.surveyUnitId));
 };
@@ -1636,6 +1640,7 @@ const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
     const dataOfSurvey = dataSurv && dataSurv.COLLECTED;
 
     for (let prop in FieldNameEnum as any) {
+        if (prop == FieldNameEnum.FIRSTNAME) continue;
         const data = dataOfSurvey && dataOfSurvey[prop];
         const ifArrayInputed =
             data &&
@@ -1797,5 +1802,6 @@ export {
     userDatasMap,
     validateAllEmptySurveys,
     validateAllGroup,
-    validateSurvey,
+    validateSurvey
 };
+

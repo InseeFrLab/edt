@@ -1,7 +1,7 @@
 {
     "name": "edt",
-    "version": "3.9.5",
-    "dateVersion": "18/12/2023",
+    "version": "3.9.9",
+    "dateVersion": "20/12/2023",
     "licence": "MIT",
     "dependencies": {
         "@emotion/react": "^11.10.4",

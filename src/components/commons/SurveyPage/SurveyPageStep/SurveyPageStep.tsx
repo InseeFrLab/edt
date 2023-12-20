@@ -24,7 +24,7 @@ import { getLanguage } from "service/referentiel-service";
 import { isPwa } from "service/responsive";
 import { getStepData } from "service/stepper.service";
 import { surveyReadOnly } from "service/survey-activity-service";
-import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
+import { getData, getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 import SurveyPage from "../SurveyPage";
 
@@ -152,7 +152,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 
     const orchestratorProps = {
         source: context.source,
-        data: context.data,
+        data: getData(idSurvey), //context.data,
         cbHolder: callbackHolder,
         page: getOrchestratorPage(currentPage, context.surveyRootPage),
         overrideOptions: specifiquesProps?.referentiel,
