@@ -21,16 +21,20 @@ import safariIOS3 from "assets/illustration/install/ios/safari3.svg";
 import {
     isAndroid,
     isChrome,
+    isDesktop,
     isEdge,
     isFirefox,
     isIOS,
     isMacOs,
-    isSafari,
-    isWindows,
+    isSafari
 } from "react-device-detect";
 
 export const getDevice = () => {
-    return isAndroid || isWindows ? "android" : isIOS || isMacOs ? "ios" : "";
+    if (isIOS || isMacOs) {
+        return "ios"
+    } else if (isAndroid || isDesktop) {
+        return "android"
+    } else return "";
 };
 
 export const getNavigator = () => {
@@ -46,6 +50,8 @@ export const getNavigator = () => {
 };
 
 export const getLabelStep = (step: number, stepFinal: number) => {
+    const device = getDevice();
+    console.log(device);
     const label = "component.help.install." + getDevice() + "." + getNavigator() + ".step-" + step;
     const labelFinal = "component.help.install.step-final";
     return step < stepFinal ? label : labelFinal;
