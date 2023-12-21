@@ -302,7 +302,7 @@
             "info-bold": "Si vous en faites plusieurs, notez seulement la plus importante"
         },
         "secondary-activity-selection": {
-            "add-activity-label": "Ajoutez une autre activité",
+            "add-activity-label": "Ajoutez une activité",
             "input-placeholder": "Activité secondaire",
             "other-button": "Autre ?"
         },
@@ -405,7 +405,7 @@
         },
         "activity-selecter": {
             "select-in-category": "Sélectionnez une activité dans la catégorie",
-            "add-activity": "Ajoutez une autre activité",
+            "add-activity": "Ajoutez une activité",
             "alert-message": "Attention ! Vous n’avez pas été au bout de cette étape. Souhaitez-vous la compléter ?",
             "clickable-list-placeholder": "Saisissez une activité",
             "clickable-list-not-found-label": "Aucun résultat trouvé",
