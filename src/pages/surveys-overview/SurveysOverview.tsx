@@ -28,6 +28,7 @@ import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { remotePutSurveyDataReviewer } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getNavigatePath } from "service/navigation-service";
 import { isMobile } from "service/responsive";
@@ -93,10 +94,13 @@ const SurveysOverviewPage = () => {
                 stateData: stateData,
                 data: {},
             };
-            //promises.push(remotePutSurveyData(idSurvey, surveyData));
-            //promises.push(remotePutSurveyDataReviewer(idSurvey, stateData, {}));
+            promises.push(remotePutSurveyDataReviewer(idSurvey, stateData, {}));
         });
         Promise.all(promises).then(() => {
+            lunaticDatabase.clear().then(() => {
+                navigate(0);
+            });
+        }).catch(err => {
             lunaticDatabase.clear().then(() => {
                 navigate(0);
             });
