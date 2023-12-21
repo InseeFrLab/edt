@@ -73,7 +73,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     });
 
     const stepData = getStepData(currentPage);
-    const modifiable = !surveyReadOnly(context.rightsSurvey);
+    const modifiable = context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME ? true : !surveyReadOnly(context.rightsSurvey);
 
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
 
