@@ -510,10 +510,10 @@
             },
             "install": {
                 "title": "Ajoutez à l'écran d'accueil",
-                "description": "Accédez et complétez facilement votre enquête. Cette application peut être installée sur votre appareil. Pour cela, veuillez suivre les indications ci-après:",
+                "description": " ",
                 "common": {
                     "title": "Installer l'application",
-                    "description-1": "Installez l'application sur votre téléphone afin d'accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
+                    "description-1": "Pour installez l'application sur votre téléphone afin d'accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
                     "info-bold": "L'installation n'a pas fonctionné ?",
                     "info-text": "Ce n'est pas grave, vous pouvez completer votre enquête depuis votre navigateur web."
                 },

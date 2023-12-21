@@ -139,7 +139,7 @@ const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { NavButton: 
             height: "50vh",
         },
         titleBox: {
-            margin: "0.5rem 0rem",
+            margin: "1.5rem 0rem",
         },
     }),
 );
