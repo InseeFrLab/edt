@@ -296,7 +296,6 @@ const HelpSubCategoryActivity = () => {
                         subPage={getLoopPageSubpage(currentPage)}
                         iteration={0}
                         componentSpecificProps={specificProps}
-                        idSurvey={""}
                     ></OrchestratorForStories>
                 </FlexCenter>
             </LoopSurveyPage>

@@ -33,7 +33,6 @@ export type OrchestratorProps = {
     iteration?: number;
     componentSpecificProps?: any;
     overrideOptions?: any;
-    idSurvey?: string;
 };
 
 const renderLoading = () => {
@@ -78,66 +77,57 @@ const getDataOfCurrentBinding = (
     return dataOfField;
 };
 
+//prop is for activity and prop being modified
 const isPropOfActivityCurrent = (prop: string, bindings: string[]) => {
     return prop != FieldNameEnum.WEEKLYPLANNER && bindings != null && bindings.includes(prop);
 };
 
+//prop is a activity
 const isPropActivity = (prop: string, dataOfField: any) => {
     return prop != FieldNameEnum.WEEKLYPLANNER && dataOfField;
 };
-
+//prop is a work time
 const isPropWorktime = (prop: string, dataOfField: any) => {
     return prop == FieldNameEnum.WEEKLYPLANNER && dataOfField;
 };
 
+//return a copy of a object
 const copyObject = (object: any) => {
     if (object == null) return object;
     return Array.isArray(object) ? [...object] : JSON.parse(JSON.stringify(object));
 }
 
-const getDataReviewer = (
-    getData: any,
-    data: LunaticData | undefined,
-    components: any,
-    iteration: number | undefined,
-) => {
+//data of a reviewer
+const getDataReviewer = (getData: any, data: LunaticData | undefined, components: any, iteration: number | undefined,) => {
     const callbackholder = getData();
     const dataCollected = callbackholder.COLLECTED;
-    const bindings: string[] = components?.filter(
-        (component: any) => component.componentType != "Sequence",
-    )[0]?.bindingDependencies;
-    // data -> get of bdd, callbackholder -> lunatic / current
+    const bindings: string[] = components?.filter((component: any) => component.componentType != "Sequence")[0]?.bindingDependencies;
+    // data -> get data of bdd, callbackholder -> lunatic / current data
     if (callbackholder && dataCollected) {
         for (let prop in FieldNameEnum as any) {
             let dataOfField = dataCollected[prop];
             const collected = dataOfField?.COLLECTED;
-            const previous = dataOfField?.PREVIOUS;
             const edited = dataOfField?.EDITED;
             const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
-            const previousSaved = data?.COLLECTED?.[prop]?.PREVIOUS;
             const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
             //prop activity + prop currently being edited
             if (isPropOfActivityCurrent(prop, bindings)) {
+                //get data of current prop -> 
+                //COLLECTED : value of bdd (COLLECTED)
+                //EDITED: if exist EDITED -> value of lunatic for value[iteration], other -> value of bdd (EDITED)
                 dataOfField = getDataOfCurrentBinding(
-                    copyObject(collected),
-                    copyObject(edited),
-                    copyObject(collectedSaved),
-                    copyObject(editedSaved),
-                    dataOfField,
-                    iteration,
+                    copyObject(collected), copyObject(edited), copyObject(collectedSaved), copyObject(editedSaved), dataOfField, iteration,
                 );
-                dataOfField.PREVIOUS = copyObject(previousSaved);
             } else if (isPropActivity(prop, dataOfField)) {
-                //prop activity + prop not currently being edited, so edited get value of edited in bdd, and collected get value of partie collected in bdd
+                //prop activity + prop not currently being edited, 
+                //so edited get value of edited in bdd, and collected get value of partie collected in bdd
                 dataOfField.EDITED = copyObject(editedSaved);
                 dataOfField.COLLECTED = copyObject(collectedSaved);
-                dataOfField.PREVIOUS = copyObject(previousSaved);
             }
             //if weekly planner, doesn't distinction edited/collected, so edited/collected get value of collected
             if (isPropWorktime(prop, dataOfField)) {
                 dataOfField.EDITED = collected;
                 dataOfField.COLLECTED = collected;
-                dataOfField.PREVIOUS = collected;
             }
         }
     }
@@ -145,6 +135,7 @@ const getDataReviewer = (
     return callbackholder;
 };
 
+//data of interviewer
 const getDataInterviewer = (getData: any, data: LunaticData | undefined) => {
     const callbackholder = getData();
     const dataCollected = callbackholder.COLLECTED;
@@ -155,7 +146,6 @@ const getDataInterviewer = (getData: any, data: LunaticData | undefined) => {
             //set values edited with values in bdd, because we don't recover the edited part with lunatic
             if (dataOfField) {
                 dataOfField.EDITED = data?.COLLECTED?.[prop]?.EDITED;
-                dataOfField.PREVIOUS = data?.COLLECTED?.[prop]?.COLLECTED;
             }
         }
     }
@@ -172,7 +162,7 @@ const getBindingDependencies = (components: any) => {
 
 const getVariables = (
     data: LunaticData | undefined,
-    iteration: number | undefined,
+    iteration: number | undefined | null,
     bindingDependencies: string[],
     value: any,
 ) => {
@@ -206,16 +196,16 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         iteration,
         componentSpecificProps,
         overrideOptions,
-        idSurvey,
     } = props;
     const { classes, cx } = useStyles();
-    const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
-        initialPage:
-            page +
-            (subPage === undefined ? "" : `.${subPage}`) +
-            (iteration === undefined ? "" : `#${iteration + 1}`),
-        activeControls: false,
-    });
+    const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data,
+        {
+            initialPage:
+                page +
+                (subPage === undefined ? "" : `.${subPage}`) +
+                (iteration === undefined ? "" : `#${iteration + 1}`),
+            activeControls: false,
+        });
 
     const components = getComponents();
     const currentErrors = getCurrentErrors();

@@ -78,6 +78,7 @@ const SurveysOverviewPage = () => {
                 }
                 initHouseholds();
             })
+            //catch
             .finally(() => {
                 setInitialized(true);
             });

@@ -223,7 +223,6 @@ const ActivityDurationPage = () => {
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                     componentSpecificProps={specificProps}
-                    idSurvey={idSurvey}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>

@@ -70,11 +70,11 @@ const WithScreenPage = () => {
                 isCloture
                     ? summaryRoutePath
                     : getCurrentNavigatePath(
-                          idSurvey,
-                          EdtRoutesNameEnum.ACTIVITY,
-                          getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                          context.source,
-                      ),
+                        idSurvey,
+                        EdtRoutesNameEnum.ACTIVITY,
+                        getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                        context.source,
+                    ),
             );
         },
         onSelectValue: () => {
@@ -84,11 +84,11 @@ const WithScreenPage = () => {
                     isCloture
                         ? summaryRoutePath
                         : getCurrentNavigatePath(
-                              idSurvey,
-                              EdtRoutesNameEnum.ACTIVITY,
-                              getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                              context.source,
-                          ),
+                            idSurvey,
+                            EdtRoutesNameEnum.ACTIVITY,
+                            getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                            context.source,
+                        ),
                 );
             });
         },
@@ -143,7 +143,6 @@ const WithScreenPage = () => {
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                     componentSpecificProps={specificProps}
-                    idSurvey={idSurvey}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>
