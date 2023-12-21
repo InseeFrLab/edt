@@ -322,7 +322,7 @@
                 "alert-content": "L'ajout de votre trajet n'est pas terminé"
             },
             "alert-undo": "Annuler",
-            "alert-cancel": "Cancel",
+            "alert-cancel": "Annuler",
             "alert-complete": "Reprendre",
             "alert-closed": "Clôturer",
             "alt-alert-icon": "Illustration pièce de puzzle"
