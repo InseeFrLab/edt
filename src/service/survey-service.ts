@@ -852,7 +852,7 @@ const getStateOfSurvey = (idSurvey: string): StateDataStateEnum => {
     let state: StateDataStateEnum = StateDataStateEnum.INIT;
     if (isSent) {
         state = StateDataStateEnum.COMPLETED;
-    } else if (isLocked && isValidated) {
+    } else if (isLocked || isValidated) {
         state = StateDataStateEnum.VALIDATED;
     }
     return state;
