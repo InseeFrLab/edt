@@ -206,7 +206,7 @@
         "install": {
             "title": "Ajoutez à l'écran d'accueil",
             "subtitle": "Accédez et complétez facilement votre enquête.",
-            "info": "Installez l’application sur votre téléphone afin d’accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
+            "info": "Installez l’application sur votre appareil afin d’accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
             "continue": "J'ai compris"
         },
         "surveys-overview": {
@@ -513,7 +513,7 @@
                 "description": " ",
                 "common": {
                     "title": "Installer l'application",
-                    "description-1": "Pour installez l'application sur votre téléphone afin d'accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
+                    "description-1": "Pour installez l'application sur votre appareil afin d'accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
                     "info-bold": "L'installation n'a pas fonctionné ?",
                     "info-text": "Ce n'est pas grave, vous pouvez completer votre enquête depuis votre navigateur web."
                 },
@@ -539,11 +539,11 @@
                     },
                     "firefox": {
                         "step-2": "Cliquez sur les 3 points en haut à droite",
-                        "step-3": "Sélectionnez << Ajouter à l'écran d'acceuil >>"
+                        "step-3": "Sélectionnez << Ajouter à l'écran d'accueil >>"
                     },
                     "edge": {
                         "step-2": "Cliquez sur le menu en bas à droite",
-                        "step-3": "Sélectionnez << Ajouter au téléphone >>"
+                        "step-3": "Sélectionnez << Ajouter au appareil >>"
                     }
                 },
                 "step-final": "Votre application Carnet EDT est installée"
