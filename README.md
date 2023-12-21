@@ -338,29 +338,35 @@ This information concerns the surveyer interface. A color code have been set to 
 
 Those states have been defined to ease the visibility of the ongoing current survey campain for the surveyer.
 
+## Lifecycle state
+
+![](https://imgur.com/Y3bjnVs.png)
+
 ### Project structure
 
 ![](https://i.imgur.com/Jt1FrnR.png)
 
 `src` : Contains all the source code of the application. It also has the 2 surveys sources required by Lunatic and used by EDT.
 
-`enumerations` : Contains all enumerations of the application.
-
-`service` : Contains all the app services. Please refer to the [Services section](#services) for further information.
+`assets` : Contains all app assets such as svg icons or fonts.
 
 `components` : Contains two folders. `commons` which has all the components that could be reusable in another app that would work like EDT using Lunatic. `edt` that has all the EDT specific components.
 
-`interface` : Contains all the Typescript interfaces of the used entities, lunatic models etc...
-
-`routes` : Contains `EdtRoutes.tsx` which holds the React BrowserRouter tag and all the navigation routes. `EdtRoutesMapping.ts` is holding the `mappingPageOrchestrator` (refer to the [Enumerations & Maps](#maps) section).
-
-`pages` : Contains all app pages. The `activity` folder holds the specific pages for the activity survey and `work-time` the ones for the work time survey. Other common pages are directly inside the `pages` folder.
-
 `documentation` : Contains the app technical documentation. Including `LunaticSourceToEdt.xlsx` file that contains the links between the EDT pages, the Lunatic-EDT components used and the sources variables.
+
+`enumerations` : Contains all enumerations of the application.
 
 `i18n` : Contains i18n configuration and `fr.json` which is the file that holds all the app labels including accessility labels.
 
-`assets` : Contains all app assets such as svg icons or fonts.
+`interface` : Contains all the Typescript interfaces of the used entities, lunatic models etc...
+
+`orchestrator`: Contains orchestrator, which manages the communication of the app with lunatic, where we recover the Lunatic components, its data, etc.
+
+`pages` : Contains all app pages. The `activity` folder holds the specific pages for the activity survey and `work-time` the ones for the work time survey. Other common pages are directly inside the `pages` folder.
+
+`routes` : Contains `EdtRoutes.tsx` which holds the React BrowserRouter tag and all the navigation routes. `EdtRoutesMapping.ts` is holding the `mappingPageOrchestrator` (refer to the [Enumerations & Maps](#maps) section).
+
+`service` : Contains all the app services. Please refer to the [Services section](#services) for further information.
 
 ### Authentification
 
@@ -982,7 +988,99 @@ REACT_APP_NUM_WORKTIME_SURVEYS=2
 ```
 </details>
 
-REACT_APP_NUM_ACTIVITY_SURVEYS and REACT_APP_NUM_WORKTIME_SURVEYS allows to change the amount of each survey kind for user.
+`REACT_APP_NUM_ACTIVITY_SURVEYS` and `REACT_APP_NUM_WORKTIME_SURVEYS` allows to change the amount of each survey kind for user.
+
+## Orchestrator 
+
+
+Orchestrator manages the communication of the app with lunatic, where we recover the Lunatic components, its data, etc.
+
+Currently the application manages access modes (profiles): interviewer mode and reviewer mode which can save and consult data.
+
+​The app manages the two modes using the different properties that exist in the database, for each variable.
+For each variable, there are 5 usable properties: **COLLECTED, EDITED, FORCED, INPUTED, PREVIOUS**. In this app, we will use the **COLLECTED** property for the **interviewer mode** and the **EDITED** property for the **reviewer mode**.
+
+Normally, the management of persistence modes is done on the lunatic side, unfortunately the current version that we use on the app does not take this option into account. To resolve this problem, we managed the recovery of data from the orchestrator.
+
+### Updated variables
+
+The orchestrator is summoned on each page of the application where we have displayed a lunatic component.
+
+For each lunatic component, we have several variables attached. Each time we enter the corresponding page, we modify the corresponding variables; if we do not enter this page, no modification is made to the variables.
+
+For example, for the creation of an activity, on the page for choosing a main activity (main_activity), we have attached the lunatic component "activity_selecter" and on this component we have the variables: **"MAINACTIVITY_ID", "MAINACTIVITY_SUGGESTERID" , "MAINACTIVITY_LABEL", "MAINACTIVITY_ISFULLYCOMPLETED", "INPUT_SUGGESTER", "ACTIVITY_SELECTER_HISTORY"**.
+
+So, if you create an activity, when you arrive on the main_activity page, the values for these variables are updated, so we add a value to the array or we modify the corresponding value.
+If you create an activity, but get to the previous step, you will never modify the values of these variables.
+Even if you create a path, it never passes through this component, so we cannot modify the values.
+
+### Orchestrator flow
+
+The callbackHolder function recovers the data and the errors which give us lunatic.
+
+![](https://imgur.com/SNpbvje.png)
+
+The getData() function provided by lunatic, instead of returning it within callbackHolder, we proceed to process the data recovered by lunatic, to be able to transform that data, along with that of the database and obtain our data model filled with the COLLECTED and EDITED.
+
+For this process,
+
+First, the profile of the current user is obtained.
+
+If the user is an interviewer, the data is treated as follows:
+
+- getData(): data of lunatic,
+- data: data in database,
+
+For each existing property :
+
+- **value of EDITED:** if mode EDITED exists in the database *(data[prop].EDITED)*, it is set, otherwise value is null .
+- **value of COLLECTED:** data of lunatic *(callbackholder.getData()[prop].COLLECTED)*;
+
+
+
+![](https://imgur.com/JCtEcUC.png)
+
+
+If the user is a reviewer, the data is treated as follows:
+
+- getData(): data of lunatic,
+- data: data in database,
+
+For each existing property :
+
+value of lunatic for value[iteration], other -> value of bdd (EDITED)
+
+- if (prop being modified in current component (prop in binding dependencies)) :
+
+    - if(exist data for property in lunatic) : 
+
+        - if (data for property is array): 
+
+        
+            - **value of EDITED:** data of lunatic for data[iteration] *(callbackholder.getData()[prop].COLLECTED[iteration])* and for other values data of bbdd *(data[prop].EDITED[i])*.
+            - **value of COLLECTED:** data of bbdd *(data[prop].COLLECTED)*;
+
+        - else :
+
+            - **value of EDITED:** data of lunatic *(callbackholder.getData()[prop].COLLECTED)*.
+            - **value of COLLECTED:** data of bbdd *(data[prop].COLLECTED)*;
+
+    - else :
+
+        - **value of EDITED:** data of bbdd *(data[prop].EDITED)*;
+        - **value of COLLECTED:** data of bbdd *(data[prop].COLLECTED)*;
+
+- else :
+
+    - **value of EDITED:** data of bbdd *(data[prop].EDITED)*;
+    - **value of COLLECTED:** data of bbdd *(data[prop].COLLECTED)*;
+            
+![](https://imgur.com/PNZL2hu.png)
+
+Here a diagram of the flow of orchestrator data
+
+![Orchestrator data flow](https://imgur.com/yYYqvSJ.png)
+
 
 ## Maintenance and evolution
 
