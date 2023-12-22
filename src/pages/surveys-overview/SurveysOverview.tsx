@@ -62,7 +62,7 @@ const SurveysOverviewPage = () => {
 
     const initHouseholds = () => {
         dataHouseholds = getListSurveysHousehold();
-        setSearchResult(dataHouseholds);
+        if (searchResult == null || searchResult.length == 0) setSearchResult(dataHouseholds);
         getListCampaigns();
     };
 
@@ -131,11 +131,16 @@ const SurveysOverviewPage = () => {
 
     const onFilterSearchBox = useCallback(
         (event: any) => {
-            let newSearchResult = dataHouseholds.filter(
-                houseHoldData =>
-                    houseHoldData?.userName?.toLowerCase().includes(event.target.value.toLowerCase()) ||
-                    houseHoldData?.idHousehold?.toLowerCase().includes(event.target.value.toLowerCase()),
-            );
+            dataHouseholds.forEach(household => {
+                return household;
+            });
+            const value = event.target.value.toLowerCase();
+
+            let newSearchResult = dataHouseholds
+                .filter(
+                    houseHoldData =>
+                        houseHoldData?.idHousehold?.toLowerCase().includes(value),
+                );
 
             if (isFilterValidatedSurvey) {
                 newSearchResult = newSearchResult?.filter(houseHoldData => !isToFilter(houseHoldData));
@@ -155,6 +160,7 @@ const SurveysOverviewPage = () => {
                 );
             }
             setFilterValidatedResult(newFilterValidatedResult);
+            setSearchResult(newSearchResult);
         },
         [searchResult, filterValidatedResult],
     );
@@ -207,7 +213,7 @@ const SurveysOverviewPage = () => {
                 setSearchResult(searchResult);
             }
         },
-        [searchResult, filterValidatedResult, campaingFilter],
+        [campaingFilter],
     );
 
     const sortSearchResult = useCallback(
