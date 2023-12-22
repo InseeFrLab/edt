@@ -87,8 +87,8 @@ const SurveysOverviewPage = () => {
 
     const resetDataAndReload = useCallback(() => {
         const promises: any[] = [];
-        console.log(surveysIds);
-        surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
+        let surveys = surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS];
+        surveys.forEach(idSurvey => {
             const stateData = { state: null, date: Date.now(), currentPage: 1 };
             const surveyData: SurveyData = {
                 stateData: stateData,
