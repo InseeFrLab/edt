@@ -1445,8 +1445,8 @@ const surveyClosed = (idSurvey: string) => {
 };
 
 const surveyStarted = (idSurvey: string) => {
-    const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string;
-    return firstName != null && firstName.length > 0;
+    const surveyDate = getValue(idSurvey, FieldNameEnum.SURVEYDATE) as string;
+    return surveyDate != null && surveyDate.length > 0;
 };
 
 const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
