@@ -68,13 +68,56 @@ function getUniquesValues(listValues: any[]): any[] {
     return listValues.filter((value, index, self) => self.indexOf(value) === index);
 }
 
+import {
+    isAndroid,
+    isChrome,
+    isDesktop,
+    isEdge,
+    isFirefox,
+    isIOS,
+    isMacOs,
+    isSafari
+} from "react-device-detect";
+
+const getDevice = () => {
+    if (isIOS || isMacOs) {
+        return "ios"
+    } else if (isAndroid || isDesktop) {
+        return "android"
+    } else return "";
+};
+
+const getNavigator = () => {
+    if (isChrome) {
+        return "chrome";
+    } else if (isEdge) {
+        return "edge";
+    } else if (isFirefox) {
+        return "firefox";
+    } else if (isSafari) {
+        return "safari";
+    } else return "";
+};
+
+const getDeviceNavigatorIsAvaiableForInstall = () => {
+    const device = getDevice();
+    const navigator = getNavigator();
+
+    if (device == "ios" && ["chrome", "edge", "safari"].includes(navigator)) {
+        return true
+    } else if (device == "android" && ["chrome", "edge", "firefox"].includes(navigator)) {
+        return true;
+    } else {
+        return null;
+    }
+}
+
 export {
     addArrayToSession,
     addItemToSession,
-    getArrayFromSession,
-    getItemFromSession,
-    getSurveyIdFromUrl,
+    getArrayFromSession, getDevice, getDeviceNavigatorIsAvaiableForInstall, getItemFromSession, getNavigator, getSurveyIdFromUrl,
     getUniquesValues,
     groupBy,
-    objectEquals,
+    objectEquals
 };
+
