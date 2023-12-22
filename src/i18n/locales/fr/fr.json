@@ -513,7 +513,7 @@
                 "description": " ",
                 "common": {
                     "title": "Installer l'application",
-                    "description-1": "Pour installez l'application sur votre appareil afin d'accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
+                    "description-1": "Pour installer l'application sur votre appareil afin d'accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
                     "info-bold": "L'installation n'a pas fonctionné ?",
                     "info-text": "Ce n'est pas grave, vous pouvez completer votre enquête depuis votre navigateur web."
                 },
