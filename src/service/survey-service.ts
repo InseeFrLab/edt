@@ -1736,7 +1736,20 @@ const validateAllGroup = (idSurvey: string, inputAct: string, navigate: any) => 
         personAct?.data?.questionnaireModelId == SourcesEnum.WORK_TIME_SURVEY
             ? EdtRoutesNameEnum.WORK_TIME
             : EdtRoutesNameEnum.ACTIVITY;
-    const route = getFullNavigatePath(idSurvey, EdtRoutesNameEnum.DAY_OF_SURVEY, surveyRootPage);
+
+    const dayOfSurvey = getValue(idSurvey, FieldNameEnum.SURVEYDATE) as string;
+    let route = "";
+
+    if (dayOfSurvey) {
+
+        const routeActivity = getFullNavigatePath(idSurvey, EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER, surveyRootPage);
+        const routeWorktime = getFullNavigatePath(idSurvey, EdtRoutesNameEnum.WEEKLY_PLANNER, surveyRootPage);
+
+        route = (surveyRootPage == EdtRoutesNameEnum.WORK_TIME) ? routeWorktime : routeActivity;
+    } else {
+        route = getFullNavigatePath(idSurvey, EdtRoutesNameEnum.DAY_OF_SURVEY, surveyRootPage);
+    }
+
     setAllNamesOfGroupAndNav(idSurvey, idsSurveysFromGroupAct, inputAct, route, navigate);
 };
 

@@ -288,16 +288,16 @@ const setNamesOfGroup = (idSurvey: string, nameAct: string, idsSurveysOfGroup?: 
         .filter(firstname => firstname != null);
 
     const promises: any[] = [];
-
-    if ((listNames && listNames?.length > 0) || nameAct != null) {
+    if ((nameAct ?? (listNames && listNames?.length > 0))) {
         idsSurveysOfGroup?.forEach(id => {
             //let firstname = getValue(id, FieldNameEnum.FIRSTNAME);
             //if (firstname == null) {
-            let dataAct = setValue(id, FieldNameEnum.FIRSTNAME, listNames?.[0] ?? nameAct);
+            const name = nameAct ?? listNames?.[0];
+            let dataAct = setValue(id, FieldNameEnum.FIRSTNAME, name);
             if (dataAct.COLLECTED == null || dataAct.COLLECTED?.[FieldNameEnum.FIRSTNAME] == null) {
                 dataAct = emptyDataSetFirstName(
                     callbackHolder.getData(),
-                    listNames?.[0] ?? nameAct,
+                    name,
                     getModePersistence(callbackHolder.getData()),
                 );
             }
@@ -345,7 +345,7 @@ const setAllNamesOfGroupAndNav = (
     navigate: any,
 ) => {
     const promises = setNamesOfGroup(idSurvey, nameAct, idsSurveysOfGroup);
-
+    console.log(route);
     Promise.all(promises).then(() => {
         navigate(route);
     });
