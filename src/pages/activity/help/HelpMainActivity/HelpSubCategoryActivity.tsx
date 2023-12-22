@@ -36,6 +36,7 @@ import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
 import extension from "assets/illustration/mui-icon/extension.svg";
 import search from "assets/illustration/mui-icon/search.svg";
 import { SEPARATOR_DEFAUT } from "constants/constants";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { useState } from "react";
@@ -53,6 +54,12 @@ const HelpSubCategoryActivity = () => {
     const stepData = getStepData(currentPage);
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const data = mockData();
+
+    if (data && data.COLLECTED && data.COLLECTED[FieldNameEnum.MAINACTIVITY_ID])
+        data.COLLECTED[FieldNameEnum.MAINACTIVITY_ID].COLLECTED = ['120'];
+
+    if (data && data.COLLECTED && data.COLLECTED[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED])
+        data.COLLECTED[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED].COLLECTED = [false];
 
     const [helpStep, setHelpStep] = React.useState(3);
 
