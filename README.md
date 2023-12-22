@@ -385,7 +385,7 @@ The user bearer token is used to call the secured APIs.
 
 The accounts are created and managed by INSEE. It is not possible to sign up by yourself.
 
-SSO is available using INSEE LDAP.
+SSO is available using INSEE LDAP only with users with reviewer role. The reviewer is already authenticated when we enter with SSO, if he enter the url https://auth.insee.net/auth/realms/questionnaire-particuliers/protocol/openid-connect/token?kcidphint=insee-ssp already authenticated, he is redirect to the main page of the app taking the current token and the information corresponding.
 
 ### APIs usage
 
