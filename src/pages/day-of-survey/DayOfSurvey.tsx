@@ -19,7 +19,7 @@ const DayOfSurveyPage = () => {
     const idSurvey = getSurveyIdFromUrl(context, location);
 
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
-    const modifiable = !surveyReadOnly(context.rightsSurvey);
+    const modifiable = context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME ? true : !surveyReadOnly(context.rightsSurvey);
 
     const keydownChange = () => {
         const componentId = getComponentId(FieldNameEnum.SURVEYDATE, context.source);
