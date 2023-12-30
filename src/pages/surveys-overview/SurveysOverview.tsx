@@ -3,6 +3,7 @@ import {
     Button,
     Checkbox,
     InputAdornment,
+    InputLabel,
     MenuItem,
     OutlinedInput,
     Select,
@@ -322,6 +323,7 @@ const SurveysOverviewPage = () => {
                         {t("page.surveys-overview.filter-label")}
                     </Box>
                     <Box className={classes.filterCampaingBox}>
+                        <InputLabel id="filter-campaing-select" className={classes.emptyLabel}>Vague</InputLabel>
                         <Select
                             id="filter-campaing-select"
                             value={campaingFilter}
@@ -331,6 +333,10 @@ const SurveysOverviewPage = () => {
                                 classes: {
                                     paper: classes.paperClass,
                                 },
+                                "aria-label": t("accessibility.component.surveys-overviewer.filter"),
+                            }}
+                            inputProps={{
+                                "aria-label": t("accessibility.component.surveys-overviewer.filter"),
                             }}
                         >
                             <MenuItem key="all" value={"all"} style={{ backgroundColor: "white" }}>
@@ -470,6 +476,9 @@ const useStyles = makeStylesEdt({ "name": { SurveysOverviewPage } })(theme => ({
     paperClass: {
         backgroundColor: "white",
     },
+    emptyLabel: {
+        display: important("none"),
+    }
 }));
 
 export default SurveysOverviewPage;

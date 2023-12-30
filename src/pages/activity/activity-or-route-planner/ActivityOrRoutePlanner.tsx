@@ -158,10 +158,10 @@ const ActivityOrRoutePlannerPage = () => {
             if (act.overlaps.length > 0) {
                 setSnackbarText(
                     t("page.activity-planner.start-alert") +
-                        overlaps
-                            .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
-                            .join(", ") +
-                        t("page.activity-planner.end-alert"),
+                    overlaps
+                        .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
+                        .join(", ") +
+                    t("page.activity-planner.end-alert"),
                 );
                 if (!skip) setOpenSnackbar(true);
             }
@@ -182,10 +182,10 @@ const ActivityOrRoutePlannerPage = () => {
         if (overlaps.length > 0) {
             setSnackbarText(
                 t("page.activity-planner.start-alert") +
-                    overlaps
-                        .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
-                        .join(", ") +
-                    t("page.activity-planner.end-alert"),
+                overlaps
+                    .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current || ""))
+                    .join(", ") +
+                t("page.activity-planner.end-alert"),
             );
             if (!skip) setOpenSnackbar(true);
         }
@@ -571,6 +571,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                                     checked={isLocked}
                                                                     onChange={lockActivity}
                                                                     disabled={!modifiable}
+                                                                    inputProps={{ 'aria-label': t("page.reviewer-home.lock-survey") }}
                                                                 />
                                                             </Box>
                                                         </Box>

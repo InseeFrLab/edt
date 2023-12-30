@@ -373,11 +373,14 @@ const HomeSurveyedPage = () => {
                     </Box>
                 ) : (
                     <Box className={classes.logoBox}>
-                        <img
-                            className={classes.logoImg}
-                            src={logo}
-                            alt={t("accessibility.asset.logo-alt")}
-                        />
+                        <>
+                            <img
+                                className={classes.logoImg}
+                                src={logo}
+                                alt={t("accessibility.asset.logo-alt")}
+                            />
+                            <h1 className={classes.emptyHeader}>Header</h1>
+                        </>
                     </Box>
                 )}
 
@@ -502,6 +505,9 @@ const useStyles = makeStylesEdt({ "name": { NavButton: HomeSurveyedPage } })(the
     groupCardBox: {
         marginTop: "2rem",
     },
+    emptyHeader: {
+        visibility: "none",
+    }
 }));
 
 export default HomeSurveyedPage;
