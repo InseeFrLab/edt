@@ -51,6 +51,7 @@ const HelpDuration = () => {
         helpImage: imageHelp,
         arrowDownIcon: arrowDown,
         arrowDownIconAlt: t("accessibility.asset.mui-icon.expand-more"),
+        ariaLabelTimepicker: t("accessibility.asset.timepicker-alt"),
         defaultLanguage: "fr",
     };
 

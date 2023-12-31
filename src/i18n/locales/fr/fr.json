@@ -199,7 +199,8 @@
                 "install-alt": "Illustration Installation",
                 "help-alt": "Illustration Aide prise en main"
             },
-            "installation-alt": "Illustration Installation"
+            "installation-alt": "Illustration Installation",
+            "timepicker-alt": "Input pour saisie heure"
         }
     },
     "page": {

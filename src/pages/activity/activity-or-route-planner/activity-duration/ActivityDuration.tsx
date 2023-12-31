@@ -64,6 +64,7 @@ const ActivityDurationPage = () => {
         arrowDownIconAlt: t("accessibility.asset.mui-icon.expand-more"),
         modifiable: !surveyReadOnly(context.rightsSurvey),
         defaultLanguage: "fr",
+        ariaLabelTimepicker: t("accessibility.asset.timepicker-alt"),
     };
 
     let startTimeDay: Dayjs;
