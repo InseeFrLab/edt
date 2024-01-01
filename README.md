@@ -378,6 +378,7 @@ These two environment variables are used to setup the connection :
 
 ```
 REACT_APP_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
+REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/?kc_idp_hint=insee-ssp
 REACT_APP_KEYCLOAK_CLIENT_ID=client-edt
 ```
 
@@ -385,7 +386,7 @@ The user bearer token is used to call the secured APIs.
 
 The accounts are created and managed by INSEE. It is not possible to sign up by yourself.
 
-SSO is available using INSEE LDAP only with users with reviewer role. The reviewer is already authenticated when we enter with SSO, if he enter the url https://auth.insee.net/auth/realms/questionnaire-particuliers/protocol/openid-connect/token?kcidphint=insee-ssp already authenticated, he is redirect to the main page of the app taking the current token and the information corresponding.
+SSO is available using INSEE LDAP only with users with reviewer role. The reviewer is already authenticated when we enter with SSO, if he enter the url https://{URL_ENVIRO}/?kc_idp_hint=insee-ssp already authenticated, he is redirect to the main page of the app taking the current token and the information corresponding, without having to go through the authentication page again.
 
 ### APIs usage
 
@@ -975,7 +976,7 @@ The `.env.production` file is used when the builded app is hosted.
 REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL=https://stromae-edt-kc.demo.insee.io/
 REACT_APP_EDT_ORGANISATION_API_BASE_URL=https://edt-api-kc.demo.insee.io/
 REACT_APP_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
-REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/
+REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/?kc_idp_hint=insee-ssp
 REACT_APP_KEYCLOAK_CLIENT_ID=client-edt
 REACT_APP_KEYCLOAK_REDIRECT_URI=https://insee-recette-edt.k8s.keyconsulting.fr/
 REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION=.\$

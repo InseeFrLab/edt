@@ -13,17 +13,11 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
 const getAuthority = () => {
-    const authorityForReviewer = window.location.pathname.includes(
-        process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER ?? "kcidphint=insee-ssp",
-    )
-        ? process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER
+    const authority = window.location.search.includes(
+        "kc_idp_hint=insee-ssp",
+    ) ?
+     process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER
         : process.env.REACT_APP_KEYCLOAK_AUTHORITY;
-
-    const authority =
-        getUserRights() === EdtUserRightsEnum.REVIEWER
-            ? authorityForReviewer
-            : process.env.REACT_APP_KEYCLOAK_AUTHORITY;
-    console.log("oidc config - authority", authority);
 
     return authority;
 };
