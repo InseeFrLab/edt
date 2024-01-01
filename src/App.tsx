@@ -18,53 +18,69 @@ const App = () => {
     const auth = useAuth();
 
     useEffect(() => {
+
         if (auth?.userData?.access_token && getDatas().size === 0 && error === undefined) {
             setUserToken(auth.userData?.access_token);
             setUser(auth.userData);
-            setAuth(auth);
-            //keeps user token up to date after session renewal
-            auth.userManager.events.addUserLoaded(() => {
-                auth.userManager.getUser().then(user => {
-                    setUserToken(user?.access_token || "");
-                });
-            });
+        }
 
-            auth.userManager.events.addSilentRenewError(() => {
-                if (navigator.onLine) {
-                    auth.userManager
-                        .signoutRedirect({
-                            id_token_hint: localStorage.getItem("id_token") || undefined,
-                        })
-                        .then(() => auth.userManager.clearStaleState())
-                        .then(() => auth.userManager.signoutRedirectCallback())
-                        .then(() => {
-                            sessionStorage.clear();
-                            localStorage.clear();
-                        })
-                        .then(() => auth.userManager.clearStaleState())
-                        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""))
-                        .catch(err => {
-                            if (err.response.status === 403) {
-                                setError(ErrorCodeEnum.NO_RIGHTS);
-                            } else {
-                                setError(ErrorCodeEnum.COMMON);
-                            }
-                        });
+        setAuth(auth);
+        //keeps user token up to date after session renewal
+        auth.userManager.events.addUserLoaded(() => {
+            auth.userManager.getUser().then(user => {
+                setUserToken(user?.access_token || "");
+            });
+        });
+
+        auth.userManager.events.addSilentRenewError(() => {
+            if (navigator.onLine) {
+                auth.userManager
+                    .signoutRedirect({
+                        id_token_hint: localStorage.getItem("id_token") || undefined,
+                    })
+                    .then(() => auth.userManager.clearStaleState())
+                    .then(() => auth.userManager.signoutRedirectCallback())
+                    .then(() => {
+                        sessionStorage.clear();
+                        localStorage.clear();
+                    })
+                    .then(() => auth.userManager.clearStaleState())
+                    .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""))
+                    .catch(err => {
+                        if (err.response.status === 403) {
+                            setError(ErrorCodeEnum.NO_RIGHTS);
+                        } else {
+                            setError(ErrorCodeEnum.COMMON);
+                        }
+                    });
+            }
+        });
+
+        auth.userManager.settings.userStore.getAllKeys().then(keys => {
+            auth.userManager.settings.stateStore.getAllKeys().then(keysState => {
+                if(window.location.search.includes("state") 
+                    && auth.userData == null
+                    && keys.length == 0
+                    && keysState.length == 0
+                ) {
+                    window.location.search = "";
                 }
-            });
+            })            
+        });
 
+        if(auth.userData) {
             initializeDatas(setError).then(() => {
                 setInitialized(true);
             });
-
+    
             if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
                 initializeListSurveys(setError).then(() => {
                     setInitialized(true);
                 });
             }
         }
-    }, [auth]);
 
+    }, [auth]);
     return (
         <>
             {initialized && !error ? (

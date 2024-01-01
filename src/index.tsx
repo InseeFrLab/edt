@@ -18,7 +18,7 @@ const getAuthority = () => {
     ) ?
      process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER
         : process.env.REACT_APP_KEYCLOAK_AUTHORITY;
-
+    console.log("oidc authority: ", authority);
     return authority;
 };
 
