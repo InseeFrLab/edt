@@ -58,42 +58,53 @@ const WeeklyPlannerPage = () => {
 
     const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
 
-    const save = (data?: IODataStructure[]): void => {
+    const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
         const callbackData = callbackHolder.getData();
         let dataWeeklyCallback = callbackData?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER]
             .COLLECTED as any[];
-        if (data && dataWeeklyCallback && data?.length > dataWeeklyCallback.length) {
+        if (data && data[1].length > 0) {
             dataWeeklyCallback = data;
             if (callbackData.COLLECTED) {
-                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data;
-                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data;
+                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data[0];
+                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data[0];
+                callbackData.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
+                callbackData.COLLECTED[FieldNameEnum.DATES].EDITED = data[1];
+                callbackData.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
+                callbackData.COLLECTED[FieldNameEnum.DATES_STARTED].EDITED = data[2];
+            }
+
+            const dataResponse = getData(idSurvey);
+            if(dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED == callbackData.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED) {
+                saveData(idSurvey, callbackData).then(() => console.log("save"));
+                //saveData(idSurvey, callbackData);
             }
         }
-        saveData(idSurvey, callbackData);
+        
     };
 
-    const saveDuration = (response: responsesHourChecker) => {
+    const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
         const promisesToWait: Promise<any>[] = [];
 
         const callbackData = callbackHolder.getData();
         const dataCopy = Object.assign({}, callbackData);
-        const dates = getArrayFromSession("DATES");
+        const dates = (dataCopy?.COLLECTED?.["DATES"].COLLECTED ?? getArrayFromSession("DATES")) as string[];
         const currentDateIndex = dates.indexOf(response.date);
-
-        response.names.forEach(name => {
-            let quartier = dataCopy?.COLLECTED?.[name].COLLECTED as string[];
-            quartier[currentDateIndex] = response.values[name] + "";
-
-            if (dataCopy && dataCopy.COLLECTED) {
-                dataCopy.COLLECTED[name].COLLECTED = quartier;
-            }
-
-            promisesToWait.push(saveData(idSurvey, dataCopy));
-        });
-
-        saveData(idSurvey, dataCopy).then(() => {
-            saveData(idSurvey, dataCopy);
-        });
+        const dataResponse = getData(idSurveyResponse);
+        if(dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED == dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED) {
+            response.names.forEach(name => {
+                let quartier = dataCopy?.COLLECTED?.[name].COLLECTED as string[];
+                quartier[currentDateIndex] = response.values[name] + "";
+    
+                if (dataCopy && dataCopy.COLLECTED) {
+                    dataCopy.COLLECTED[name].COLLECTED = quartier;
+                }
+            });
+            saveData(idSurveyResponse, dataCopy).then(data => {
+                //saveData(idSurveyResponse, dataCopy).then(data => {
+                console.log(idSurveyResponse, data, dataCopy);
+                //})
+            });
+        }
     };
 
     const specificProps: WeeklyPlannerSpecificProps = {
@@ -134,8 +145,8 @@ const WeeklyPlannerPage = () => {
         expandMoreWhiteIcon: expandMoreWhite,
         workIcon: work,
         workIconAlt: t("accessibility.asset.mui-icon.work"),
-        saveHours: (response: responsesHourChecker) => {
-            saveDuration(response);
+        saveHours: (idSurvey:string, response: responsesHourChecker) => {
+            saveDuration(idSurvey,response);
         },
         optionsIcons: {
             "1": {
@@ -159,11 +170,12 @@ const WeeklyPlannerPage = () => {
                 altIcon: t("accessibility.assets.with-someone.categories.couple-alt"),
             },
         },
+        idSurvey: idSurvey
     };
 
     const validateAndNav = (): void => {
         if (displayDayOverview) {
-            save();
+            //save(idSurvey);
             if (isPlaceWorkDisplayed) {
                 setDisplayDayOverview(true);
                 setIsPlaceWorkDisplayed(false);

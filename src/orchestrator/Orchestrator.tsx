@@ -160,7 +160,7 @@ const getBindingDependencies = (components: any) => {
     return bindings;
 };
 
-const getVariables = (
+const getVariablesActivity = (
     data: LunaticData | undefined,
     iteration: number | undefined | null,
     bindingDependencies: string[],
@@ -169,7 +169,6 @@ const getVariables = (
     let variables = new Map<string, any>();
     const isReviewerMode = isReviewer();
     const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED;
-
     bindingDependencies?.forEach((bindingDependency: string) => {
         let varE = data?.COLLECTED?.[bindingDependency]?.EDITED;
         let varC = data?.COLLECTED?.[bindingDependency]?.COLLECTED;
@@ -182,9 +181,39 @@ const getVariables = (
 
         variables.set(bindingDependency, variable);
     });
-
     return variables;
 };
+
+const getVariablesWeeklyPlanner = (
+    data: LunaticData | undefined,
+    dataBdd: LunaticData | undefined,
+    bindingDependencies: string[],
+    value: any,
+) => {
+    let variables = new Map<string, any>();
+
+    bindingDependencies?.forEach((bindingDependency: string) => {
+        const varC = dataBdd?.COLLECTED?.[bindingDependency]?.COLLECTED;
+        const variableCollected = varC ?? value?.[bindingDependency];
+        variables.set(bindingDependency, variableCollected);    
+    });
+    return variables;
+};
+
+const getVariables = (
+    data: LunaticData | undefined,
+    dataBdd: LunaticData | undefined,
+    iteration: number | undefined | null,
+    bindingDependencies: string[],
+    value: any,
+) => {
+    if(bindingDependencies.find((bindingDependency: string) => bindingDependency == "WEEKLYPLANNER")) {
+        const variables = getVariablesWeeklyPlanner(data, dataBdd, bindingDependencies, value);
+        return variables;
+    } else {
+        return getVariablesActivity(data, iteration, bindingDependencies, value);
+    }
+}
 
 export const OrchestratorForStories = (props: OrchestratorProps) => {
     const {
@@ -246,6 +275,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                     componentSpecificProps={componentSpecificProps}
                                     variables={getVariables(
                                         data,
+                                        getDataLocal(),
                                         iteration,
                                         getBindingDependencies(components),
                                         value,

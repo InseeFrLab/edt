@@ -114,8 +114,8 @@ const HelpWorkTime = () => {
         expandMoreWhiteIcon: expandMoreWhite,
         workIcon: work,
         workIconAlt: t("accessibility.asset.mui-icon.work"),
-        saveHours: (response: responsesHourChecker) => {
-            console.log(response);
+        saveHours: (idSurvey: string, response: responsesHourChecker) => {
+            console.log(idSurvey, response);
         },
         optionsIcons: {
             "1": {
@@ -123,6 +123,7 @@ const HelpWorkTime = () => {
                 altIcon: "",
             },
         },
+        idSurvey: "",
     };
 
     const navToBackPage = useCallback(
