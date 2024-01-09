@@ -109,6 +109,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
             MINUTE_LABEL: MINUTE_LABEL,
         },
         modifiable: modifiable,
+        idSurvey: idSurvey,
     };
 
     const loopSurveyPageProps = {

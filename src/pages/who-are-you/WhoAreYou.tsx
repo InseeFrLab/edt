@@ -14,7 +14,10 @@ import { getSurveyIdFromUrl } from "utils/utils";
 const WhoAreYouPage = () => {
     const context: OrchestratorContext = useOutletContext();
     let [disabledButton, setDisabledButton] = React.useState<boolean>(true);
-    const modifiable = context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME ? true : !surveyReadOnly(context.rightsSurvey);
+    const modifiable =
+        context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME
+            ? true
+            : !surveyReadOnly(context.rightsSurvey);
 
     const location = useLocation();
     const idSurvey = getSurveyIdFromUrl(context, location);

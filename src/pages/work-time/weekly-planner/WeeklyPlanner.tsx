@@ -74,12 +74,14 @@ const WeeklyPlannerPage = () => {
             }
 
             const dataResponse = getData(idSurvey);
-            if(dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED == callbackData.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED) {
+            if (
+                dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
+                callbackData.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
+            ) {
                 saveData(idSurvey, callbackData).then(() => console.log("save"));
                 //saveData(idSurvey, callbackData);
             }
         }
-        
     };
 
     const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
@@ -87,14 +89,18 @@ const WeeklyPlannerPage = () => {
 
         const callbackData = callbackHolder.getData();
         const dataCopy = Object.assign({}, callbackData);
-        const dates = (dataCopy?.COLLECTED?.["DATES"].COLLECTED ?? getArrayFromSession("DATES")) as string[];
+        const dates = (dataCopy?.COLLECTED?.["DATES"].COLLECTED ??
+            getArrayFromSession("DATES")) as string[];
         const currentDateIndex = dates.indexOf(response.date);
         const dataResponse = getData(idSurveyResponse);
-        if(dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED == dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED) {
+        if (
+            dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
+            dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
+        ) {
             response.names.forEach(name => {
                 let quartier = dataCopy?.COLLECTED?.[name].COLLECTED as string[];
                 quartier[currentDateIndex] = response.values[name] + "";
-    
+
                 if (dataCopy && dataCopy.COLLECTED) {
                     dataCopy.COLLECTED[name].COLLECTED = quartier;
                 }
@@ -145,8 +151,8 @@ const WeeklyPlannerPage = () => {
         expandMoreWhiteIcon: expandMoreWhite,
         workIcon: work,
         workIconAlt: t("accessibility.asset.mui-icon.work"),
-        saveHours: (idSurvey:string, response: responsesHourChecker) => {
-            saveDuration(idSurvey,response);
+        saveHours: (idSurvey: string, response: responsesHourChecker) => {
+            saveDuration(idSurvey, response);
         },
         optionsIcons: {
             "1": {
@@ -170,7 +176,7 @@ const WeeklyPlannerPage = () => {
                 altIcon: t("accessibility.assets.with-someone.categories.couple-alt"),
             },
         },
-        idSurvey: idSurvey
+        idSurvey: idSurvey,
     };
 
     const validateAndNav = (): void => {

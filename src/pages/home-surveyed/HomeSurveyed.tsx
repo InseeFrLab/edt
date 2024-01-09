@@ -506,8 +506,8 @@ const useStyles = makeStylesEdt({ "name": { NavButton: HomeSurveyedPage } })(the
         marginTop: "2rem",
     },
     emptyHeader: {
-        visibility: "hidden"
-    }
+        visibility: "hidden",
+    },
 }));
 
 export default HomeSurveyedPage;

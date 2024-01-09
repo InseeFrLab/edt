@@ -97,15 +97,17 @@ const SurveysOverviewPage = () => {
             };
             promises.push(remotePutSurveyDataReviewer(idSurvey, stateData, {}));
         });
-        Promise.all(promises).then(() => {
-            lunaticDatabase.clear().then(() => {
-                navigate(0);
+        Promise.all(promises)
+            .then(() => {
+                lunaticDatabase.clear().then(() => {
+                    navigate(0);
+                });
+            })
+            .catch(err => {
+                lunaticDatabase.clear().then(() => {
+                    navigate(0);
+                });
             });
-        }).catch(err => {
-            lunaticDatabase.clear().then(() => {
-                navigate(0);
-            });
-        });
     }, []);
 
     const navToReviewerHome = useCallback(() => {
@@ -137,11 +139,9 @@ const SurveysOverviewPage = () => {
             });
             const value = event.target.value.toLowerCase();
 
-            let newSearchResult = dataHouseholds
-                .filter(
-                    houseHoldData =>
-                        houseHoldData?.idHousehold?.toLowerCase().includes(value),
-                );
+            let newSearchResult = dataHouseholds.filter(houseHoldData =>
+                houseHoldData?.idHousehold?.toLowerCase().includes(value),
+            );
 
             if (isFilterValidatedSurvey) {
                 newSearchResult = newSearchResult?.filter(houseHoldData => !isToFilter(houseHoldData));
@@ -323,7 +323,9 @@ const SurveysOverviewPage = () => {
                         {t("page.surveys-overview.filter-label")}
                     </Box>
                     <Box className={classes.filterCampaingBox}>
-                        <InputLabel id="filter-campaing-select" className={classes.emptyLabel}>Vague</InputLabel>
+                        <InputLabel id="filter-campaing-select" className={classes.emptyLabel}>
+                            Vague
+                        </InputLabel>
                         <Select
                             id="filter-campaing-select"
                             value={campaingFilter}
@@ -376,19 +378,19 @@ const SurveysOverviewPage = () => {
                             variant="contained"
                             onClick={resetDataAndReload}
                             aria-label={"refresh"}
-                            startIcon={<img src={refresh} alt={t("accessibility.asset.mui-icon.refresh")} />}
+                            startIcon={
+                                <img src={refresh} alt={t("accessibility.asset.mui-icon.refresh")} />
+                            }
                             disabled={!navigator.onLine}
                         >
-                            <Box className={classes.labelButton}>
-                                reset all menages
-                            </Box>
+                            <Box className={classes.labelButton}>reset all menages</Box>
                         </Button>
                     </Box>
                 )}
             </Box>
 
             <FlexCenter className={classes.searchResultBox}>{renderResults()}</FlexCenter>
-        </ReviewerPage>
+        </ReviewerPage>,
     );
 };
 
@@ -478,7 +480,7 @@ const useStyles = makeStylesEdt({ "name": { SurveysOverviewPage } })(theme => ({
     },
     emptyLabel: {
         display: important("none"),
-    }
+    },
 }));
 
 export default SurveysOverviewPage;

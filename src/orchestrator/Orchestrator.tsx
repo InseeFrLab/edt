@@ -95,13 +95,20 @@ const isPropWorktime = (prop: string, dataOfField: any) => {
 const copyObject = (object: any) => {
     if (object == null) return object;
     return Array.isArray(object) ? [...object] : JSON.parse(JSON.stringify(object));
-}
+};
 
 //data of a reviewer
-const getDataReviewer = (getData: any, data: LunaticData | undefined, components: any, iteration: number | undefined,) => {
+const getDataReviewer = (
+    getData: any,
+    data: LunaticData | undefined,
+    components: any,
+    iteration: number | undefined,
+) => {
     const callbackholder = getData();
     const dataCollected = callbackholder.COLLECTED;
-    const bindings: string[] = components?.filter((component: any) => component.componentType != "Sequence")[0]?.bindingDependencies;
+    const bindings: string[] = components?.filter(
+        (component: any) => component.componentType != "Sequence",
+    )[0]?.bindingDependencies;
     // data -> get data of bdd, callbackholder -> lunatic / current data
     if (callbackholder && dataCollected) {
         for (let prop in FieldNameEnum as any) {
@@ -112,14 +119,19 @@ const getDataReviewer = (getData: any, data: LunaticData | undefined, components
             const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
             //prop activity + prop currently being edited
             if (isPropOfActivityCurrent(prop, bindings)) {
-                //get data of current prop -> 
+                //get data of current prop ->
                 //COLLECTED : value of bdd (COLLECTED)
                 //EDITED: if exist EDITED -> value of lunatic for value[iteration], other -> value of bdd (EDITED)
                 dataOfField = getDataOfCurrentBinding(
-                    copyObject(collected), copyObject(edited), copyObject(collectedSaved), copyObject(editedSaved), dataOfField, iteration,
+                    copyObject(collected),
+                    copyObject(edited),
+                    copyObject(collectedSaved),
+                    copyObject(editedSaved),
+                    dataOfField,
+                    iteration,
                 );
             } else if (isPropActivity(prop, dataOfField)) {
-                //prop activity + prop not currently being edited, 
+                //prop activity + prop not currently being edited,
                 //so edited get value of edited in bdd, and collected get value of partie collected in bdd
                 dataOfField.EDITED = copyObject(editedSaved);
                 dataOfField.COLLECTED = copyObject(collectedSaved);
@@ -195,7 +207,7 @@ const getVariablesWeeklyPlanner = (
     bindingDependencies?.forEach((bindingDependency: string) => {
         const varC = dataBdd?.COLLECTED?.[bindingDependency]?.COLLECTED;
         const variableCollected = varC ?? value?.[bindingDependency];
-        variables.set(bindingDependency, variableCollected);    
+        variables.set(bindingDependency, variableCollected);
     });
     return variables;
 };
@@ -207,34 +219,25 @@ const getVariables = (
     bindingDependencies: string[],
     value: any,
 ) => {
-    if(bindingDependencies.find((bindingDependency: string) => bindingDependency == "WEEKLYPLANNER")) {
+    if (bindingDependencies.find((bindingDependency: string) => bindingDependency == "WEEKLYPLANNER")) {
         const variables = getVariablesWeeklyPlanner(data, dataBdd, bindingDependencies, value);
         return variables;
     } else {
         return getVariablesActivity(data, iteration, bindingDependencies, value);
     }
-}
+};
 
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    const {
-        source,
-        data,
-        cbHolder,
-        page,
-        subPage,
-        iteration,
-        componentSpecificProps,
-        overrideOptions,
-    } = props;
+    const { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
+        props;
     const { classes, cx } = useStyles();
-    const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data,
-        {
-            initialPage:
-                page +
-                (subPage === undefined ? "" : `.${subPage}`) +
-                (iteration === undefined ? "" : `#${iteration + 1}`),
-            activeControls: false,
-        });
+    const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
+        initialPage:
+            page +
+            (subPage === undefined ? "" : `.${subPage}`) +
+            (iteration === undefined ? "" : `#${iteration + 1}`),
+        activeControls: false,
+    });
 
     const components = getComponents();
     const currentErrors = getCurrentErrors();

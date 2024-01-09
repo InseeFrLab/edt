@@ -76,14 +76,14 @@ import {
     isFirefox,
     isIOS,
     isMacOs,
-    isSafari
+    isSafari,
 } from "react-device-detect";
 
 const getDevice = () => {
     if (isIOS || isMacOs) {
-        return "ios"
+        return "ios";
     } else if (isAndroid || isDesktop) {
-        return "android"
+        return "android";
     } else return "";
 };
 
@@ -104,20 +104,24 @@ const getDeviceNavigatorIsAvaiableForInstall = () => {
     const navigator = getNavigator();
 
     if (device == "ios" && ["chrome", "edge", "safari"].includes(navigator)) {
-        return true
+        return true;
     } else if (device == "android" && ["chrome", "edge", "firefox"].includes(navigator)) {
         return true;
     } else {
         return null;
     }
-}
+};
 
 export {
     addArrayToSession,
     addItemToSession,
-    getArrayFromSession, getDevice, getDeviceNavigatorIsAvaiableForInstall, getItemFromSession, getNavigator, getSurveyIdFromUrl,
+    getArrayFromSession,
+    getDevice,
+    getDeviceNavigatorIsAvaiableForInstall,
+    getItemFromSession,
+    getNavigator,
+    getSurveyIdFromUrl,
     getUniquesValues,
     groupBy,
-    objectEquals
+    objectEquals,
 };
-

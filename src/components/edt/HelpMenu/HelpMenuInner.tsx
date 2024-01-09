@@ -66,7 +66,10 @@ const HelpMenuInner = (props: HelpMenuInnerProps) => {
                     <>
                         <Box id="install" className={getClassNavigateBox()} onClick={onClickInstall}>
                             <Box className={getClassIconBox()}>
-                                <img src={download} alt={t("accessibility.asset.help-menu.install-alt")} />
+                                <img
+                                    src={download}
+                                    alt={t("accessibility.asset.help-menu.install-alt")}
+                                />
                             </Box>
                             <Box className={getClassTextBox()}>
                                 <p>{t("component.help-menu.install-label")}</p>

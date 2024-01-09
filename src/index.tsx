@@ -13,10 +13,8 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
 const getAuthority = () => {
-    const authority = window.location.search.includes(
-        "kc_idp_hint=insee-ssp",
-    ) ?
-     process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER
+    const authority = window.location.search.includes("kc_idp_hint=insee-ssp")
+        ? process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER
         : process.env.REACT_APP_KEYCLOAK_AUTHORITY;
     console.log("oidc authority: ", authority);
     return authority;

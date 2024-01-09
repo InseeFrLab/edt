@@ -262,7 +262,7 @@ const getQualityScore = (
     //insufficient number of routes (at least MIN_THRESHOLD_ROUTE_HOURS)
     substractPoint +=
         activitiesRoutesOrGaps.filter(activityOrRoute => activityOrRoute.isRoute).length <=
-            MIN_THRESHOLD.MIN_THRESHOLD_ROUTES
+        MIN_THRESHOLD.MIN_THRESHOLD_ROUTES
             ? POINTS_REMOVE.POINTS_REMOVE_ROUTES
             : 0;
 
@@ -285,7 +285,7 @@ const getQualityScore = (
     // 6 - nombre de boucles 10 - 14 -> 3
     substractPoint +=
         numActivities >= MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES &&
-            numActivities < MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES_2
+        numActivities < MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES_2
             ? POINTS_REMOVE.POINTS_REMOVE_MIN_ACTIVITES_2
             : 0;
 
@@ -298,7 +298,7 @@ const getQualityScore = (
     // 8 - minutes totals 1h -2h manquants -> 3
     substractPoint +=
         minutesUnderConsomed >= MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME &&
-            minutesUnderConsomed <= MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME_2
+        minutesUnderConsomed <= MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME_2
             ? POINTS_REMOVE.POINTS_REMOVE_MISSING_TIME_2
             : 0;
 

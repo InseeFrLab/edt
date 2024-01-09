@@ -991,7 +991,7 @@ REACT_APP_NUM_WORKTIME_SURVEYS=2
 
 `REACT_APP_NUM_ACTIVITY_SURVEYS` and `REACT_APP_NUM_WORKTIME_SURVEYS` allows to change the amount of each survey kind for user.
 
-## Orchestrator 
+## Orchestrator
 
 
 Orchestrator manages the communication of the app with lunatic, where we recover the Lunatic components, its data, etc.
@@ -1053,11 +1053,11 @@ value of lunatic for value[iteration], other -> value of bdd (EDITED)
 
 - if (prop being modified in current component (prop in binding dependencies)) :
 
-    - if(exist data for property in lunatic) : 
+    - if(exist data for property in lunatic) :
 
-        - if (data for property is array): 
+        - if (data for property is array):
 
-        
+
             - **value of EDITED:** data of lunatic for data[iteration] *(callbackholder.getData()[prop].COLLECTED[iteration])* and for other values data of bbdd *(data[prop].EDITED[i])*.
             - **value of COLLECTED:** data of bbdd *(data[prop].COLLECTED)*;
 
@@ -1075,7 +1075,7 @@ value of lunatic for value[iteration], other -> value of bdd (EDITED)
 
     - **value of EDITED:** data of bbdd *(data[prop].EDITED)*;
     - **value of COLLECTED:** data of bbdd *(data[prop].COLLECTED)*;
-            
+
 ![](https://imgur.com/PNZL2hu.png)
 
 Here a diagram of the flow of orchestrator data

@@ -18,7 +18,6 @@ const App = () => {
     const auth = useAuth();
 
     useEffect(() => {
-
         if (auth?.userData?.access_token && getDatas().size === 0 && error === undefined) {
             setUserToken(auth.userData?.access_token);
             setUser(auth.userData);
@@ -58,28 +57,28 @@ const App = () => {
 
         auth.userManager.settings.userStore.getAllKeys().then(keys => {
             auth.userManager.settings.stateStore.getAllKeys().then(keysState => {
-                if(window.location.search.includes("state") 
-                    && auth.userData == null
-                    && keys.length == 0
-                    && keysState.length == 0
+                if (
+                    window.location.search.includes("state") &&
+                    auth.userData == null &&
+                    keys.length == 0 &&
+                    keysState.length == 0
                 ) {
                     window.location.search = "";
                 }
-            })            
+            });
         });
 
-        if(auth.userData) {
+        if (auth.userData) {
             initializeDatas(setError).then(() => {
                 setInitialized(true);
             });
-    
+
             if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
                 initializeListSurveys(setError).then(() => {
                     setInitialized(true);
                 });
             }
         }
-
     }, [auth]);
     return (
         <>

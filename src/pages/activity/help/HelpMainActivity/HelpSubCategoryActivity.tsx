@@ -56,7 +56,7 @@ const HelpSubCategoryActivity = () => {
     const data = mockData();
 
     if (data && data.COLLECTED && data.COLLECTED[FieldNameEnum.MAINACTIVITY_ID])
-        data.COLLECTED[FieldNameEnum.MAINACTIVITY_ID].COLLECTED = ['120'];
+        data.COLLECTED[FieldNameEnum.MAINACTIVITY_ID].COLLECTED = ["120"];
 
     if (data && data.COLLECTED && data.COLLECTED[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED])
         data.COLLECTED[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED].COLLECTED = [false];
