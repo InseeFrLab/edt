@@ -70,10 +70,14 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         "isMobile": !isPwa(),
         "isIOS": isIOS,
         "isOpen": context.isOpenHeader ?? false,
+        "withStepper": isStep,
     });
 
     const stepData = getStepData(currentPage);
-    const modifiable = context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME ? true : !surveyReadOnly(context.rightsSurvey);
+    const modifiable =
+        context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME
+            ? true
+            : !surveyReadOnly(context.rightsSurvey);
 
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
 
@@ -126,6 +130,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         disableNav: disableButton,
         modifiable: modifiable,
     };
+
     const surveyPageNotStepProps = {
         idSurvey: idSurvey,
         validate:
@@ -196,14 +201,19 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     );
 };
 
-const useStyles = makeStylesEdt<{ isMobile: boolean; isIOS: boolean; isOpen: boolean }>({
+const useStyles = makeStylesEdt<{
+    isMobile: boolean;
+    isIOS: boolean;
+    isOpen: boolean;
+    withStepper: boolean;
+}>({
     "name": { SurveyPageStep },
-})((theme, { isIOS, isOpen }) => ({
+})((theme, { isIOS, isOpen, withStepper }) => ({
     bottomPadding: {
         paddingBottom: "4rem",
     },
     pageDesktop: {
-        height: "100%",
+        height: withStepper ? "90%" : "100%",
     },
     pageMobileTablet: {
         height: "100%",

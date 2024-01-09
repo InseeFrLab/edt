@@ -90,7 +90,7 @@ const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { ContactPage
         justifyContent: "center",
     },
     textBox: { textAlign: "center", width: "50%", fontSize: "14px" },
-    textBoxMobile: { textAlign: "center", width: "80%", fontSize: "14px" },
+    textBoxMobile: { textAlign: "center", width: "100%", fontSize: "14px" },
     actionsBox: { display: "flex", flexDirection: "column", alignItems: "center" },
     actionBox: { maxWidth: "300px", margin: "0.5rem 0", width: "90%" },
     button: { width: "100%", backgroundColor: theme.palette.text.primary },
