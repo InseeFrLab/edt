@@ -79,7 +79,6 @@ const WeeklyPlannerPage = () => {
                 callbackData.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
             ) {
                 saveData(idSurvey, callbackData).then(() => console.log("save"));
-                //saveData(idSurvey, callbackData);
             }
         }
     };
@@ -105,11 +104,7 @@ const WeeklyPlannerPage = () => {
                     dataCopy.COLLECTED[name].COLLECTED = quartier;
                 }
             });
-            saveData(idSurveyResponse, dataCopy).then(data => {
-                //saveData(idSurveyResponse, dataCopy).then(data => {
-                console.log(idSurveyResponse, data, dataCopy);
-                //})
-            });
+            saveData(idSurveyResponse, dataCopy);
         }
     };
 

@@ -6,7 +6,6 @@ import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
-import { callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction } from "react";
 import { NavigateFunction, To } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
@@ -279,32 +278,24 @@ const navToActivityRoutePlanner = (idSurvey: string, source: LunaticModel) => {
     );
 };
 
-const setNamesOfGroup = (idSurvey: string, nameAct: string, idsSurveysOfGroup?: string[]) => {
+const setNamesOfGroup = (idSurvey: string, nameAct: string, idsSurveysOfGroup: string[]) => {
     let listNames = idsSurveysOfGroup
         ?.map(id => {
             const firstName = getValue(id, FieldNameEnum.FIRSTNAME) as string;
             return firstName;
         })
         .filter(firstname => firstname != null);
-
     const promises: any[] = [];
-    if (nameAct ?? (listNames && listNames?.length > 0)) {
-        idsSurveysOfGroup?.forEach(id => {
-            //let firstname = getValue(id, FieldNameEnum.FIRSTNAME);
-            //if (firstname == null) {
-            const name = nameAct ?? listNames?.[0];
-            let dataAct = setValue(id, FieldNameEnum.FIRSTNAME, name);
-            if (dataAct.COLLECTED == null || dataAct.COLLECTED?.[FieldNameEnum.FIRSTNAME] == null) {
-                dataAct = emptyDataSetFirstName(
-                    callbackHolder.getData(),
-                    name,
-                    getModePersistence(callbackHolder.getData()),
-                );
-            }
-            promises.push(saveData(id, dataAct));
-            //}
-        });
-    }
+    const nameOfGroup = listNames.length > 0 ? listNames[0] : nameAct;
+    idsSurveysOfGroup.forEach(idSurvey => {
+        let firstname = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
+        if (firstname == null) {
+            let dataActuel = Object.assign({}, getData(idSurvey));
+            const datasirv = { ...dataActuel };
+            const emptydata = emptyDataSetFirstName(datasirv, nameOfGroup, getModePersistence(datasirv));
+            promises.push(saveData(idSurvey, emptydata));
+        }
+    });
     return promises;
 };
 
@@ -313,7 +304,8 @@ const emptyDataSetFirstName = (
     firstName: string,
     modePersistence: ModePersistenceEnum,
 ) => {
-    const dataCollected = data.COLLECTED;
+    let dataCollected = { ...data.COLLECTED };
+
     if (dataCollected) {
         for (let prop in FieldNameEnum as any) {
             if (prop == FieldNameEnum.SURVEYDATE) continue;
@@ -345,7 +337,6 @@ const setAllNamesOfGroupAndNav = (
     navigate: any,
 ) => {
     const promises = setNamesOfGroup(idSurvey, nameAct, idsSurveysOfGroup);
-    console.log(route);
     Promise.all(promises).then(() => {
         navigate(route);
     });
@@ -524,27 +515,6 @@ const validateAndNextStep = (idSurvey: string, source: LunaticModel, page: EdtRo
     });
 };
 
-const validateAndNextLoopStep = (
-    idSurvey: string,
-    source: LunaticModel,
-    page: EdtRoutesNameEnum,
-    iteration: number,
-    value?: FieldNameEnum,
-    routeNotSelection?: EdtRoutesNameEnum,
-) => {
-    validate(idSurvey).then(() => {
-        saveAndLoopNavigate(
-            idSurvey,
-            source,
-            page,
-            LoopEnum.ACTIVITY_OR_ROUTE,
-            iteration,
-            value,
-            routeNotSelection,
-        );
-    });
-};
-
 const loopNavigate = (idSurvey: string, page: EdtRoutesNameEnum, loop: LoopEnum, iteration: number) => {
     _navigate(getLoopParameterizedNavigatePath(idSurvey, page, loop, iteration));
 };
@@ -649,7 +619,6 @@ export {
     setAllNamesOfGroupAndNav,
     setEnviro,
     validate,
-    validateAndNextLoopStep,
     validateAndNextStep,
     validateWithAlertAndNav,
 };
