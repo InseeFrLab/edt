@@ -25,6 +25,7 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { SurveyData } from "interface/entity/Api";
+import { Household } from "interface/entity/Household";
 import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -56,13 +57,14 @@ const SurveysOverviewPage = () => {
     let [isFilterValidatedSurvey, setIsFilterValidatedSurvey] = React.useState(false);
     let [campaingFilter, setCampaingFilter] = React.useState<string>("all");
 
-    let [searchResult, setSearchResult] = React.useState(dataHouseholds);
+    let [searchResult, setSearchResult] = React.useState<Household[] | undefined>(undefined);
     let [filterValidatedResult, setFilterValidatedResult] = React.useState(emptyArray);
     let [initialized, setInitialized] = React.useState(false);
     const [error, setError] = React.useState<ErrorCodeEnum | undefined>(undefined);
 
     const initHouseholds = () => {
         dataHouseholds = getListSurveysHousehold();
+        console.log(searchResult, dataHouseholds);
         if (searchResult == null || searchResult.length == 0) setSearchResult(dataHouseholds);
         getListCampaigns();
     };
@@ -80,7 +82,9 @@ const SurveysOverviewPage = () => {
                 }
                 initHouseholds();
             })
-            //catch
+            .catch(err => {
+                console.log(err);
+            })
             .finally(() => {
                 setInitialized(true);
             });
@@ -181,7 +185,7 @@ const SurveysOverviewPage = () => {
                 const newFilterValidatedResult = searchResult?.filter((houseHoldData: any) =>
                     isToFilter(houseHoldData),
                 );
-                setFilterValidatedResult(newFilterValidatedResult);
+                setFilterValidatedResult(newFilterValidatedResult ?? []);
             } else {
                 const newSearchResult = searchResult?.concat(filterValidatedResult);
                 sortSearchResult(newSearchResult);
@@ -208,7 +212,7 @@ const SurveysOverviewPage = () => {
                 const newFilterValidatedResult = searchResult?.filter((houseHoldData: any) =>
                     isToFilter(houseHoldData),
                 );
-                setFilterValidatedResult(newFilterValidatedResult);
+                setFilterValidatedResult(newFilterValidatedResult ?? []);
             } else {
                 sortSearchResult(searchResult);
                 setSearchResult(searchResult);
@@ -232,7 +236,7 @@ const SurveysOverviewPage = () => {
             return (
                 <HouseholdCard
                     key={"household-card-" + index}
-                    idHousehold={dataHousehold.idHousehold}
+                    idHousehold={dataHousehold?.idHousehold}
                     householdStaticLabel={t("page.surveys-overview.household-static-label")}
                     iconPerson={person}
                     iconPersonAlt={t("accessibility.asset.mui-icon.person")}
@@ -262,13 +266,15 @@ const SurveysOverviewPage = () => {
     );
 
     const renderResults = useCallback(() => {
-        return searchResult?.map((dataHousehold: any, index: number) =>
-            renderHouseHold(dataHousehold, index),
+        return (
+            searchResult?.map((dataHousehold: any, index: number) =>
+                renderHouseHold(dataHousehold, index),
+            ) ?? renderHouseHold(null, 0)
         );
     }, [searchResult]);
 
     const renderPageOrLoadingOrError = (page: any) => {
-        if (initialized) {
+        if (initialized && searchResult != null) {
             return page;
         } else {
             return !error ? (
