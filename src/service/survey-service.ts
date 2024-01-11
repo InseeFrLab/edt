@@ -532,7 +532,7 @@ const getSurveyDataHousehold = (surveys: UserSurveys[]) => {
         firstSurvey?.data?.surveyUnitId,
         FieldNameEnum.SURVEYDATE,
     ) as string;
-    return firstSurveyDate && firstSurveyDate.length && firstSurveyDate.length > 0
+    return firstSurveyDate?.length && firstSurveyDate.length > 0
         ? dayjs(generateDateFromStringInput(firstSurveyDate)).format("DD/MM/YYYY")
         : undefined;
 };
@@ -1469,17 +1469,17 @@ const isDemoMode = () => {
 const surveyLocked = (idSurvey: string) => {
     const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
     const variableEdited = existVariableEdited(idSurvey);
-    return (isLocked != null && isLocked == true) || variableEdited;
+    return (isLocked != null && isLocked) || variableEdited;
 };
 
 const surveyValidated = (idSurvey: string) => {
     const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
-    return isValidated != null && isValidated == true;
+    return isValidated != null && isValidated;
 };
 
 const surveyClosed = (idSurvey: string) => {
     const isClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
-    return isClosed != null && isClosed == true;
+    return isClosed != null && isClosed;
 };
 
 const surveyStarted = (idSurvey: string) => {
@@ -1679,14 +1679,11 @@ const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
         if (prop == FieldNameEnum.FIRSTNAME) continue;
         const data = dataOfSurvey && dataOfSurvey[prop];
         const ifArrayInputed =
-            data &&
-            data.EDITED &&
+            data?.EDITED &&
             Array.isArray(data.EDITED) &&
             data.EDITED.length > 0 &&
             data.EDITED[0] != null;
-        if (data && data.EDITED && ifArrayInputed) {
-            return true;
-        } else if (data && data.EDITED && !Array.isArray(data.EDITED)) {
+        if ((data?.EDITED && ifArrayInputed) || (data?.EDITED && !Array.isArray(data.EDITED))) {
             return true;
         }
     }
@@ -1695,7 +1692,7 @@ const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
 
 const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum => {
     const isReviewerMode = isReviewer();
-    const isLocked = (data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED as boolean) == true;
+    const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED as boolean;
     const variableEdited = existVariableEdited(undefined, data);
 
     return isReviewerMode || isLocked || variableEdited
@@ -1733,9 +1730,9 @@ const getStatutSurvey = (idSurvey: string) => {
     const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
     const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
     const variableEdited = existVariableEdited(idSurvey);
-    if (isValidated != null && isValidated == true) {
+    if (isValidated != null && isValidated) {
         return StateSurveyEnum.VALIDATED;
-    } else if ((isLocked != null && isLocked == true) || variableEdited) {
+    } else if ((isLocked != null && isLocked) || variableEdited) {
         return StateSurveyEnum.LOCKED;
     } else return StateSurveyEnum.INIT;
 };

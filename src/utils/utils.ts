@@ -116,7 +116,7 @@ const getDeviceNavigatorIsAvaiableForInstall = () => {
         return null;
     }
 };
-function getClassCondition(classes: any, condition: boolean, classNameYes: any, classNameNo: any) {
+function getClassCondition(condition: boolean, classNameYes: any, classNameNo: any) {
     return condition ? classNameYes : classNameNo;
 }
 

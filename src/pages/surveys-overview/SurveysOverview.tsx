@@ -313,7 +313,7 @@ const SurveysOverviewPage = () => {
             homeIcon={home}
             homeIconAlt={t("accessibility.asset.mui-icon.home")}
         >
-            <Box className={cx(classes.title, isItMobile ? classes.titleMobile : "")}>
+            <Box className={cx(classes.title, getClassCondition(isItMobile, classes.titleMobile, ""))}>
                 <img src={stats} alt={t("accessibility.asset.stats-alt")} />
                 <Typography className={classes.label}>{t("page.surveys-overview.title")}</Typography>
             </Box>
@@ -321,7 +321,7 @@ const SurveysOverviewPage = () => {
                 <Box
                     className={cx(
                         classes.innerSearchBox,
-                        getClassCondition(classes, isItMobile, classes.innerSearchMobileBox, ""),
+                        getClassCondition(isItMobile, classes.innerSearchMobileBox, ""),
                     )}
                 >
                     <OutlinedInput
@@ -384,7 +384,7 @@ const SurveysOverviewPage = () => {
                 <Box
                     className={cx(
                         classes.refreshBox,
-                        getClassCondition(classes, isItMobile, classes.refreshMobileBox, ""),
+                        getClassCondition(isItMobile, classes.refreshMobileBox, ""),
                     )}
                 >
                     <Button
@@ -401,7 +401,12 @@ const SurveysOverviewPage = () => {
                     </Button>
                 </Box>
                 {process.env.REACT_APP_NODE_ENV !== "production" && (
-                    <Box className={cx(classes.refreshBox, isItMobile ? classes.refreshMobileBox : "")}>
+                    <Box
+                        className={cx(
+                            classes.refreshBox,
+                            getClassCondition(isItMobile, classes.refreshMobileBox, ""),
+                        )}
+                    >
                         <Button
                             color="primary"
                             variant="contained"

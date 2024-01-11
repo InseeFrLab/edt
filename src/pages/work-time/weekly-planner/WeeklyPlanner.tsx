@@ -75,15 +75,14 @@ const WeeklyPlannerPage = () => {
                 dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
                 callbackData.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
             ) {
-                saveData(idSurvey, callbackData).then(() => console.log("save"));
-                //saveData(idSurvey, callbackData);
+                saveData(idSurvey, callbackData);
             }
         }
     };
 
     const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
         const callbackData = callbackHolder.getData();
-        const dataCopy = Object.assign({}, callbackData);
+        const dataCopy = { ...callbackData };
         const dates = (dataCopy?.COLLECTED?.["DATES"].COLLECTED ??
             getArrayFromSession("DATES")) as string[];
         const currentDateIndex = dates.indexOf(response.date);
@@ -96,15 +95,11 @@ const WeeklyPlannerPage = () => {
                 let quartier = dataCopy?.COLLECTED?.[name].COLLECTED as string[];
                 quartier[currentDateIndex] = response.values[name] + "";
 
-                if (dataCopy && dataCopy.COLLECTED) {
+                if (dataCopy?.COLLECTED) {
                     dataCopy.COLLECTED[name].COLLECTED = quartier;
                 }
             });
-            saveData(idSurveyResponse, dataCopy).then(data => {
-                //saveData(idSurveyResponse, dataCopy).then(data => {
-                console.log(idSurveyResponse, data, dataCopy);
-                //})
-            });
+            saveData(idSurveyResponse, dataCopy);
         }
     };
 
@@ -176,7 +171,7 @@ const WeeklyPlannerPage = () => {
 
     const validateAndNav = (): void => {
         if (displayDayOverview) {
-            //save(idSurvey);
+            save(idSurvey);
             if (isPlaceWorkDisplayed) {
                 setDisplayDayOverview(true);
                 setIsPlaceWorkDisplayed(false);

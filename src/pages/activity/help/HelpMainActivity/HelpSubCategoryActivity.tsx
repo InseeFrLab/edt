@@ -54,10 +54,10 @@ const HelpSubCategoryActivity = () => {
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
     const data = mockData();
 
-    if (data && data.COLLECTED && data.COLLECTED[FieldNameEnum.MAINACTIVITY_ID])
+    if (data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_ID])
         data.COLLECTED[FieldNameEnum.MAINACTIVITY_ID].COLLECTED = ["120"];
 
-    if (data && data.COLLECTED && data.COLLECTED[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED])
+    if (data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED])
         data.COLLECTED[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED].COLLECTED = [false];
 
     const [helpStep, setHelpStep] = React.useState(3);

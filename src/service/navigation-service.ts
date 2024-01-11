@@ -290,19 +290,19 @@ const setNamesOfGroup = (idSurvey: string, nameAct: string, idsSurveysOfGroup?: 
     const promises: any[] = [];
     if (nameAct ?? (listNames && listNames?.length > 0)) {
         idsSurveysOfGroup?.forEach(id => {
-            //let firstname = getValue(id, FieldNameEnum.FIRSTNAME);
-            //if (firstname == null) {
-            const name = nameAct ?? listNames?.[0];
-            let dataAct = setValue(id, FieldNameEnum.FIRSTNAME, name);
-            if (dataAct.COLLECTED == null || dataAct.COLLECTED?.[FieldNameEnum.FIRSTNAME] == null) {
-                dataAct = emptyDataSetFirstName(
-                    callbackHolder.getData(),
-                    name,
-                    getModePersistence(callbackHolder.getData()),
-                );
+            let firstname = getValue(id, FieldNameEnum.FIRSTNAME);
+            if (firstname == null) {
+                const name = nameAct ?? listNames?.[0];
+                let dataAct = setValue(id, FieldNameEnum.FIRSTNAME, name);
+                if (dataAct.COLLECTED == null || dataAct.COLLECTED?.[FieldNameEnum.FIRSTNAME] == null) {
+                    dataAct = emptyDataSetFirstName(
+                        callbackHolder.getData(),
+                        name,
+                        getModePersistence(callbackHolder.getData()),
+                    );
+                }
+                promises.push(saveData(id, dataAct));
             }
-            promises.push(saveData(id, dataAct));
-            //}
         });
     }
     return promises;
