@@ -37,13 +37,13 @@ const App = () => {
 
         setAuth(auth);
         //keeps user token up to date after session renewal
-        auth.userManager.events.addUserLoaded(() => {
+        auth.userManager?.events.addUserLoaded(() => {
             auth.userManager.getUser().then(user => {
                 setUserToken(user?.access_token || "");
             });
         });
 
-        auth.userManager.events.addSilentRenewError(() => {
+        auth.userManager?.events.addSilentRenewError(() => {
             if (navigator.onLine) {
                 auth.userManager
                     .signoutRedirect({
@@ -63,7 +63,7 @@ const App = () => {
             }
         });
 
-        auth.userManager.settings.userStore.getAllKeys().then(keys => {
+        auth.userManager?.settings.userStore.getAllKeys().then(keys => {
             auth.userManager.settings.stateStore.getAllKeys().then(keysState => {
                 if (
                     window.location.search.includes("state") &&
