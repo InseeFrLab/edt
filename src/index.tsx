@@ -1,10 +1,8 @@
 import { theme } from "@inseefrlab/lunatic-edt";
 import { CssBaseline, StyledEngineProvider, ThemeProvider } from "@mui/material";
-import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { AuthProvider } from "oidc-react";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { getUserRights } from "service/user-service";
 import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";

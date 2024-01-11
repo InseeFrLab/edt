@@ -24,7 +24,6 @@ import HouseholdCard from "components/edt/HouseholdCard/HouseholdCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { SurveyData } from "interface/entity/Api";
 import { Household } from "interface/entity/Household";
 import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
@@ -173,10 +172,6 @@ const SurveysOverviewPage = () => {
         let surveys = surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS];
         surveys.forEach(idSurvey => {
             const stateData = { state: null, date: Date.now(), currentPage: 1 };
-            const surveyData: SurveyData = {
-                stateData: stateData,
-                data: {},
-            };
             promises.push(remotePutSurveyDataReviewer(idSurvey, stateData, {}));
         });
         Promise.all(promises)
@@ -185,7 +180,7 @@ const SurveysOverviewPage = () => {
                     navigate(0);
                 });
             })
-            .catch(err => {
+            .catch(() => {
                 lunaticDatabase.clear().then(() => {
                     navigate(0);
                 });
