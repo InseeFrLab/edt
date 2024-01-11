@@ -13,20 +13,18 @@ const ValidateButton = (props: ValidateButtonProps) => {
     const { classes, cx } = useStyles();
 
     return (
-        <>
-            <FlexCenter className={cx(disabled ? classes.invalidButtonBox : classes.validateButtonBox)}>
-                <Button
-                    id={"validateButton"}
-                    aria-label="validateButton"
-                    variant="contained"
-                    onClick={onClick}
-                    disabled={disabled}
-                    className={disabled ? classes.invalidButton : classes.validateButton}
-                >
-                    {text}
-                </Button>
-            </FlexCenter>
-        </>
+        <FlexCenter className={cx(disabled ? classes.invalidButtonBox : classes.validateButtonBox)}>
+            <Button
+                id={"validateButton"}
+                aria-label="validateButton"
+                variant="contained"
+                onClick={onClick}
+                disabled={disabled}
+                className={disabled ? classes.invalidButton : classes.validateButton}
+            >
+                {text}
+            </Button>
+        </FlexCenter>
     );
 };
 

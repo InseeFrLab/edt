@@ -201,6 +201,10 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     );
 };
 
+const stylePageMobileTabletWhenIOS = (isOpen: boolean) => {
+    return isOpen ? "80vh" : "87vh";
+};
+
 const useStyles = makeStylesEdt<{
     isMobile: boolean;
     isIOS: boolean;
@@ -217,7 +221,7 @@ const useStyles = makeStylesEdt<{
     },
     pageMobileTablet: {
         height: "100%",
-        maxHeight: isIOS ? (isOpen ? "80vh" : "87vh") : "94vh",
+        maxHeight: isIOS ? stylePageMobileTabletWhenIOS(isOpen) : "94vh",
     },
 }));
 

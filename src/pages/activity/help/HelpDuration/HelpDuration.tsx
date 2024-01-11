@@ -13,7 +13,7 @@ import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { getLoopInitialPage } from "service/loop-service";
@@ -35,7 +35,7 @@ const HelpDuration = () => {
 
     const { classes, cx } = useStyles();
 
-    const [helpStep] = React.useState(1);
+    const helpStep = 1;
 
     const activitiesAct = getActivitiesOrRoutes(t, idSurvey, source).activitiesRoutesOrGaps;
 

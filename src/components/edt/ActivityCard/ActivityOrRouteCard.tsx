@@ -224,12 +224,12 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     );
 
     const onEditIn = useCallback((e: React.MouseEvent) => {
-        onEdit && onEdit();
+        onEdit?.();
         e.stopPropagation();
     }, []);
 
     const onDeleteIn = useCallback((e: React.MouseEvent) => {
-        onDelete && onDelete();
+        onDelete?.();
         e.stopPropagation();
     }, []);
 
@@ -249,7 +249,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         );
     };
 
-    const onEditCard = useCallback((e: React.MouseEvent) => {
+    const onEditCard = useCallback((e: any) => {
         e.stopPropagation();
         setAnchorEl(e.currentTarget as HTMLButtonElement);
     }, []);
@@ -289,12 +289,11 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                     {renderWithScreen(activityOrRoute, classes, renderInsideAlert, t)}
                 </Box>
                 {onEdit && onDelete && modifiable && (
-                    <Box className={classes.editBox}>
+                    <Box className={classes.editBox} onClick={onEditCard} onKeyUp={onEditCard}>
                         <img
                             src={moreHorizontal}
                             alt={t("accessibility.asset.mui-icon.more-horizontal")}
                             className={classes.actionIcon}
-                            onClick={onEditCard}
                             aria-label="editCardToggle"
                         />
                         <Popover

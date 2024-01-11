@@ -25,9 +25,10 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { SurveyData } from "interface/entity/Api";
+import { Household } from "interface/entity/Household";
 import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { TFunction, useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { remotePutSurveyDataReviewer } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
@@ -40,7 +41,88 @@ import {
     refreshSurveyData,
     surveysIds,
 } from "service/survey-service";
-import { getUniquesValues } from "utils/utils";
+import { getClassCondition, getUniquesValues } from "utils/utils";
+
+const isToFilter = (houseHoldData: any): boolean => {
+    return (
+        houseHoldData.stats?.numHouseholdsInProgress == 0 &&
+        houseHoldData.stats?.numHouseholdsClosed == 0 &&
+        houseHoldData.stats?.numHouseholdsValidated == houseHoldData.stats?.numHouseholds
+    );
+};
+
+const getStartedSurveyLabel = (dataHousehold: any, t: TFunction<"translation", undefined>) => {
+    return dataHousehold?.stats?.numHouseholdsInProgress > 1
+        ? t("page.surveys-overview.starteds-survey-label")
+        : t("page.surveys-overview.started-survey-label");
+};
+
+const getClosedSurveyLabel = (dataHousehold: any, t: TFunction<"translation", undefined>) => {
+    return dataHousehold?.stats?.numHouseholdsClosed > 1
+        ? t("page.surveys-overview.closeds-survey-label")
+        : t("page.surveys-overview.closed-survey-label");
+};
+
+const getValidatedSurveyLabel = (dataHousehold: any, t: TFunction<"translation", undefined>) => {
+    return dataHousehold?.stats?.numHouseholdsValidated > 1
+        ? t("page.surveys-overview.validateds-survey-label")
+        : t("page.surveys-overview.validated-survey-label");
+};
+
+const renderPageOrLoadingOrError = (
+    initialized: boolean,
+    error: ErrorCodeEnum | undefined,
+    t: TFunction<"translation", undefined>,
+    page: any,
+) => {
+    if (initialized) {
+        return page;
+    } else {
+        return !error ? (
+            <LoadingFull
+                message={t("page.home.loading.message")}
+                thanking={t("page.home.loading.thanking")}
+            />
+        ) : (
+            <ErrorPage errorCode={error} atInit={true} />
+        );
+    }
+};
+
+const filterSearchInput = (
+    input: string,
+    dataHouseholds: Household[],
+    isFilterValidatedSurvey: boolean,
+    campaingFilter: string,
+    setSearchResult: (value: React.SetStateAction<Household[]>) => void,
+    setFilterValidatedResult: React.Dispatch<React.SetStateAction<any[]>>,
+    sortSearchResult: (houseHoldData: any) => void,
+) => {
+    let newSearchResult = dataHouseholds.filter(
+        houseHoldData =>
+            houseHoldData?.userName?.toLowerCase().includes(input.toLowerCase()) ??
+            houseHoldData?.idHousehold?.toLowerCase().includes(input.toLowerCase()),
+    );
+
+    if (isFilterValidatedSurvey) {
+        newSearchResult = newSearchResult?.filter(houseHoldData => !isToFilter(houseHoldData));
+    }
+    sortSearchResult(newSearchResult);
+    setSearchResult(newSearchResult);
+    let newFilterValidatedResult = dataHouseholds.filter(
+        houseHoldData =>
+            (houseHoldData?.userName?.toLowerCase().includes(input.toLowerCase()) ||
+                houseHoldData?.idHousehold?.includes(input)) &&
+            isToFilter(houseHoldData),
+    );
+
+    if (campaingFilter) {
+        newFilterValidatedResult = dataHouseholds.filter(
+            houseHoldData => houseHoldData?.campaingId == campaingFilter,
+        );
+    }
+    setFilterValidatedResult(newFilterValidatedResult);
+};
 
 const SurveysOverviewPage = () => {
     const { classes, cx } = useStyles();
@@ -124,44 +206,17 @@ const SurveysOverviewPage = () => {
         });
     }, []);
 
-    const isToFilter = (houseHoldData: any): boolean => {
-        return (
-            houseHoldData.stats?.numHouseholdsInProgress == 0 &&
-            houseHoldData.stats?.numHouseholdsClosed == 0 &&
-            houseHoldData.stats?.numHouseholdsValidated == houseHoldData.stats?.numHouseholds
-        );
-    };
-
     const onFilterSearchBox = useCallback(
         (event: any) => {
-            dataHouseholds.forEach(household => {
-                return household;
-            });
-            const value = event.target.value.toLowerCase();
-
-            let newSearchResult = dataHouseholds.filter(houseHoldData =>
-                houseHoldData?.idHousehold?.toLowerCase().includes(value),
+            filterSearchInput(
+                event.target.value,
+                dataHouseholds,
+                isFilterValidatedSurvey,
+                campaingFilter,
+                setSearchResult,
+                setFilterValidatedResult,
+                sortSearchResult,
             );
-
-            if (isFilterValidatedSurvey) {
-                newSearchResult = newSearchResult?.filter(houseHoldData => !isToFilter(houseHoldData));
-            }
-            sortSearchResult(newSearchResult);
-            setSearchResult(newSearchResult);
-            let newFilterValidatedResult = dataHouseholds.filter(
-                houseHoldData =>
-                    (houseHoldData?.userName?.toLowerCase().includes(event.target.value.toLowerCase()) ||
-                        houseHoldData?.idHousehold?.includes(event.target.value)) &&
-                    isToFilter(houseHoldData),
-            );
-
-            if (campaingFilter) {
-                newFilterValidatedResult = dataHouseholds.filter(
-                    houseHoldData => houseHoldData?.campaingId == campaingFilter,
-                );
-            }
-            setFilterValidatedResult(newFilterValidatedResult);
-            setSearchResult(newSearchResult);
         },
         [searchResult, filterValidatedResult],
     );
@@ -186,7 +241,6 @@ const SurveysOverviewPage = () => {
                 const newSearchResult = searchResult?.concat(filterValidatedResult);
                 sortSearchResult(newSearchResult);
                 setSearchResult(newSearchResult);
-                onFilterSearchBox;
             }
         },
         [searchResult, filterValidatedResult],
@@ -211,7 +265,6 @@ const SurveysOverviewPage = () => {
                 setFilterValidatedResult(newFilterValidatedResult);
             } else {
                 sortSearchResult(searchResult);
-                setSearchResult(searchResult);
             }
         },
         [campaingFilter],
@@ -238,21 +291,9 @@ const SurveysOverviewPage = () => {
                     iconPersonAlt={t("accessibility.asset.mui-icon.person")}
                     iconArrow={arrowForwardIosGrey}
                     iconArrowAlt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
-                    startedSurveyLabel={
-                        dataHousehold?.stats?.numHouseholdsInProgress > 1
-                            ? t("page.surveys-overview.starteds-survey-label")
-                            : t("page.surveys-overview.started-survey-label")
-                    }
-                    closedSurveyLabel={
-                        dataHousehold?.stats?.numHouseholdsClosed > 1
-                            ? t("page.surveys-overview.closeds-survey-label")
-                            : t("page.surveys-overview.closed-survey-label")
-                    }
-                    validatedSurveyLabel={
-                        dataHousehold?.stats?.numHouseholdsValidated > 1
-                            ? t("page.surveys-overview.validateds-survey-label")
-                            : t("page.surveys-overview.validated-survey-label")
-                    }
+                    startedSurveyLabel={getStartedSurveyLabel(dataHousehold, t)}
+                    closedSurveyLabel={getClosedSurveyLabel(dataHousehold, t)}
+                    validatedSurveyLabel={getValidatedSurveyLabel(dataHousehold, t)}
                     dataHousehold={dataHousehold}
                     tabIndex={index}
                 />
@@ -267,22 +308,10 @@ const SurveysOverviewPage = () => {
         );
     }, [searchResult]);
 
-    const renderPageOrLoadingOrError = (page: any) => {
-        if (initialized) {
-            return page;
-        } else {
-            return !error ? (
-                <LoadingFull
-                    message={t("page.home.loading.message")}
-                    thanking={t("page.home.loading.thanking")}
-                />
-            ) : (
-                <ErrorPage errorCode={error} atInit={true} />
-            );
-        }
-    };
-
     return renderPageOrLoadingOrError(
+        initialized,
+        error,
+        t,
         <ReviewerPage
             className={classes.reviewerPage}
             onClickHome={navToReviewerHome}
@@ -297,7 +326,7 @@ const SurveysOverviewPage = () => {
                 <Box
                     className={cx(
                         classes.innerSearchBox,
-                        isItMobile ? classes.innerSearchMobileBox : "",
+                        getClassCondition(classes, isItMobile, classes.innerSearchMobileBox, ""),
                     )}
                 >
                     <OutlinedInput
@@ -357,7 +386,12 @@ const SurveysOverviewPage = () => {
                     </Box>
                 </Box>
 
-                <Box className={cx(classes.refreshBox, isItMobile ? classes.refreshMobileBox : "")}>
+                <Box
+                    className={cx(
+                        classes.refreshBox,
+                        getClassCondition(classes, isItMobile, classes.refreshMobileBox, ""),
+                    )}
+                >
                     <Button
                         color="primary"
                         variant="contained"

@@ -143,12 +143,12 @@ const loopActivityRouteStepperData: StepData[] = [
 const getStepData = (page: EdtRoutesNameEnum, isRoute?: boolean): StepData => {
     if (isRoute) {
         return (
-            loopActivityRouteStepperData.find(stepData => stepData.page === page) ||
+            loopActivityRouteStepperData.find(stepData => stepData.page === page) ??
             loopActivityRouteStepperData[0]
         );
     } else {
         return (
-            loopActivityStepperData.find(stepData => stepData.page === page) ||
+            loopActivityStepperData.find(stepData => stepData.page === page) ??
             loopActivityStepperData[0]
         );
     }
@@ -173,7 +173,7 @@ const getPreviousLoopPage = (currentPage: EdtRoutesNameEnum, isRoute?: boolean) 
 };
 
 const getLoopPageSubpage = (page: EdtRoutesNameEnum) => {
-    return mappingPageOrchestrator.find(pageData => pageData.page === page)?.surveySubPage || "";
+    return mappingPageOrchestrator.find(pageData => pageData.page === page)?.surveySubPage ?? "";
 };
 
 const getStepPage = (currentPage?: EdtRoutesNameEnum, isRoute?: boolean) => {
@@ -192,13 +192,13 @@ const getStepper = (isRoute?: boolean) => {
 };
 
 export {
-    loopActivityStepperData,
-    loopActivityRouteStepperData,
-    getStepData,
-    getPreviousLoopPage,
-    getNextLoopPage,
-    getLoopPageSubpage,
-    getStepPage,
     getLastStep,
+    getLoopPageSubpage,
+    getNextLoopPage,
+    getPreviousLoopPage,
+    getStepData,
+    getStepPage,
     getStepper,
+    loopActivityRouteStepperData,
+    loopActivityStepperData,
 };

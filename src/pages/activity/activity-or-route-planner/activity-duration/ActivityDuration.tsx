@@ -79,27 +79,48 @@ const ActivityDurationPage = () => {
 
             dayjs.extend(customParseFormat);
             if (startTime && endTime) {
-                startTimeDay = dayjs(startTime[currentIteration], "HH:mm");
-                endTimeDay = dayjs(endTime[currentIteration], "HH:mm");
-                let init = dayjs(START_TIME_DAY, FORMAT_TIME);
-
-                if (startTimeDay.hour() < 4 && endTimeDay.isAfter(init)) {
-                    startTimeDay = startTimeDay.add(1, "day");
-                }
-
-                if (endTimeDay.hour() < 4 || endTimeDay.isSame(init)) {
-                    endTimeDay = endTimeDay.add(1, "day");
-                }
-
-                if (startTimeDay.isSame(endTimeDay) && startTimeDay.isSame(init)) {
-                    endTimeDay = endTimeDay.add(1, DAY_LABEL);
-                }
-                if (startTimeDay.isAfter(endTimeDay)) {
-                    isAfter = true;
-                }
+                const setter = setStartEndTime(isAfter, startTime, endTime);
+                startTimeDay = setter[0] as dayjs.Dayjs;
+                endTimeDay = setter[1] as dayjs.Dayjs;
+                isAfter = setter[2] as boolean;
             }
         }
         return isAfter;
+    };
+
+    const setStartEndTime = (isAfter: boolean, startTime: string[], endTime: string[]) => {
+        startTimeDay = dayjs(startTime[currentIteration], "HH:mm");
+        endTimeDay = dayjs(endTime[currentIteration], "HH:mm");
+        let init = dayjs(START_TIME_DAY, FORMAT_TIME);
+
+        startTimeDay = addDayOfStartDay(startTimeDay, init);
+        endTimeDay = addDayEndTime(startTimeDay, endTimeDay, init);
+
+        if (startTimeDay.isAfter(endTimeDay)) {
+            isAfter = true;
+        }
+        return [startTimeDay, endTimeDay, isAfter];
+    };
+
+    // when the start time < 4 and the end time is >=4, it is counted as the same day
+    const addDayOfStartDay = (startTimeDay: dayjs.Dayjs, init: dayjs.Dayjs) => {
+        if (startTimeDay.hour() < 4 && endTimeDay.isAfter(init)) {
+            startTimeDay = startTimeDay.add(1, DAY_LABEL);
+        }
+        return startTimeDay;
+    };
+
+    const addDayEndTime = (startTimeDay: dayjs.Dayjs, endTimeDay: dayjs.Dayjs, init: dayjs.Dayjs) => {
+        // when the end time is <=4, it is counted as the same day
+        if (endTimeDay.hour() < 4 || endTimeDay.isSame(init)) {
+            endTimeDay = endTimeDay.add(1, DAY_LABEL);
+        }
+
+        if (startTimeDay.isSame(endTimeDay) && startTimeDay.isSame(init)) {
+            endTimeDay = endTimeDay.add(1, DAY_LABEL);
+        }
+
+        return endTimeDay;
     };
 
     const endTimeAfterStartTime = (isAfter: boolean) => {
@@ -139,6 +160,14 @@ const ActivityDurationPage = () => {
         }
     };
 
+    const navIsClompleted = (isCloture: boolean) => {
+        if (isCloture) {
+            navToActivitySummary(idSurvey);
+        } else {
+            navToActivityRoutePlanner(idSurvey, context.source);
+        }
+    };
+
     const onClose = (forceQuit: boolean) => {
         const isCompleted = getValue(idSurvey, FieldNameEnum.ISCOMPLETED, currentIteration);
         const isCloture = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
@@ -146,21 +175,13 @@ const ActivityDurationPage = () => {
             if (!isCompleted) {
                 if (forceQuit) {
                     saveData(idSurvey, callbackHolder.getData()).then(() => {
-                        if (isCloture) {
-                            navToActivitySummary(idSurvey);
-                        } else {
-                            navToActivityRoutePlanner(idSurvey, context.source);
-                        }
+                        navIsClompleted(isCloture);
                     });
                 } else {
                     setIsAlertDisplayed(true);
                 }
             } else {
-                if (isCloture) {
-                    navToActivitySummary(idSurvey);
-                } else {
-                    navToActivityRoutePlanner(idSurvey, context.source);
-                }
+                navIsClompleted(isCloture);
             }
         }
     };
@@ -180,6 +201,7 @@ const ActivityDurationPage = () => {
             <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
                 <img src={close} alt={t("accessibility.asset.mui-icon.close")} />
             </IconButton>
+            <></>
         </Fragment>
     );
 

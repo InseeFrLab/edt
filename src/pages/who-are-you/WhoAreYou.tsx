@@ -58,7 +58,6 @@ const WhoAreYouPage = () => {
     }, []);
 
     return (
-        <>
             <SurveyPageStep
                 currentPage={EdtRoutesNameEnum.WHO_ARE_YOU}
                 errorIcon={who_are_you}
@@ -67,7 +66,6 @@ const WhoAreYouPage = () => {
                 disableButton={modifiable ? disabledButton : true}
                 validateButton={validate}
             />
-        </>
     );
 };
 

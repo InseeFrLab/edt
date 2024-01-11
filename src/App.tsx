@@ -17,6 +17,18 @@ const App = () => {
     const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
     const auth = useAuth();
 
+    const getTokenHint = () => {
+        return localStorage.getItem("id_token") ?? undefined;
+    };
+
+    const setErrorType = (err: any) => {
+        if (err.response.status === 403) {
+            setError(ErrorCodeEnum.NO_RIGHTS);
+        } else {
+            setError(ErrorCodeEnum.COMMON);
+        }
+    };
+
     useEffect(() => {
         if (auth?.userData?.access_token && getDatas().size === 0 && error === undefined) {
             setUserToken(auth.userData?.access_token);

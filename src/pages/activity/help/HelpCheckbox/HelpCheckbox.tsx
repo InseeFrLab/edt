@@ -151,8 +151,8 @@ const HelpCheckbox = () => {
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
-    const [displayStepper] = useState<boolean>(true);
-    const [displayHeader] = useState<boolean>(true);
+    const displayStepper = true;
+    const displayHeader = true;
 
     const specificProps = {
         backClickEvent: backClickEvent,

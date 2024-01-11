@@ -291,9 +291,7 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const validateSurveys = useCallback(() => {
-        validateAllEmptySurveys(idHousehold ?? "").then(() => {
-            //navigate(0);
-        });
+        validateAllEmptySurveys(idHousehold ?? "");
     }, []);
 
     const renderHomeReviewer = () => {
