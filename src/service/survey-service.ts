@@ -67,7 +67,8 @@ import {
 } from "./api-service";
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getFullNavigatePath, setAllNamesOfGroupAndNav } from "./navigation-service";
-import { getScore } from "./survey-activity-service";
+import { getQualityScore } from "./summary-service";
+import { getActivitiesOrRoutes, getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
 
 const datas = new Map<string, LunaticData>();
@@ -760,6 +761,31 @@ const fixConditionals = (data: LunaticData) => {
     }
 };
 
+const saveQualityScore = (idSurvey: string, data: LunaticData) => {
+    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
+    const qualityScore = getQualityScore(idSurvey, activitiesRoutesOrGaps, overlaps, t);
+    const modePersistence = getModePersistence(data);
+    if (data.COLLECTED?.[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS]) {
+        data.COLLECTED[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS] = {
+            COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? qualityScore.points : null,
+            EDITED: modePersistence == ModePersistenceEnum.EDITED ? qualityScore.points : null,
+            FORCED: null,
+            INPUTED: null,
+            PREVIOUS: null,
+        };
+    }
+    if (data.COLLECTED?.[FieldNameEnum.QUALITY_SCORE]) {
+        data.COLLECTED[FieldNameEnum.QUALITY_SCORE] = {
+            COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? qualityScore.group : null,
+            EDITED: modePersistence == ModePersistenceEnum.EDITED ? qualityScore.group : null,
+            FORCED: null,
+            INPUTED: null,
+            PREVIOUS: null,
+        };
+    }
+    return data;
+};
+
 const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): Promise<LunaticData> => {
     data.lastLocalSaveDate = Date.now();
     if (!data.houseReference) {
@@ -774,6 +800,7 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
         const promisesToWait: Promise<any>[] = [];
         datas.set(idSurvey, data);
         if (isChange) {
+            data = saveQualityScore(idSurvey, data);
             if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
                 const stateData = getSurveyStateData(data, idSurvey);
                 promisesToWait.push(
