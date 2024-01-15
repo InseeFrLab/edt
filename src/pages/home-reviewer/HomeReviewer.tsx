@@ -58,6 +58,7 @@ const HomeReviewerPage = () => {
                 localStorage.clear();
             })
             .then(() => auth.userManager.clearStaleState())
+            .then(() => localStorage.removeItem("auth"))
             .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
     }, []);
 

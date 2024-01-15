@@ -3,6 +3,7 @@ import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import "i18n/i18n";
+import jwt_decode from "jwt-decode";
 import { useAuth } from "oidc-react";
 import ErrorPage from "pages/error/Error";
 import { useEffect, useState } from "react";
@@ -10,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { EdtRoutes } from "routes/EdtRoutes";
 import { getDatas, initializeDatas, initializeListSurveys } from "service/survey-service";
 import { getUserRights, setAuth, setUser, setUserToken } from "service/user-service";
+import { getCookie } from "utils/utils";
 
 const App = () => {
     const { t } = useTranslation();
@@ -18,57 +20,69 @@ const App = () => {
     const auth = useAuth();
 
     useEffect(() => {
+        const token = getCookie("KC_RESTART") ?? getCookie("kc-state");
+        //const cookieDecode = jwtDecode(cookie);
+        const decoded: {
+            "cid": string;
+            "pty": string;
+            "ruri": string;
+            "act": string;
+            "notes": {
+                "scope": string;
+                "iss": string;
+                "response_type": string;
+                "code_challenge_method": string;
+                "redirect_uri": string;
+                "state": string;
+                "code_challenge": string;
+                "response_mode": string;
+            };
+        } = jwt_decode(token ?? "");
+
+        if (
+            window.location.search &&
+            getCookie("KC_RESTART") == null &&
+            localStorage.getItem("setauth") == null
+        ) {
+            localStorage.setItem("setauth", "yes");
+            window.location.search = "";
+        }
+
         if (auth?.userData?.access_token && getDatas().size === 0 && error === undefined) {
             setUserToken(auth.userData?.access_token);
             setUser(auth.userData);
-        }
-
-        setAuth(auth);
-        //keeps user token up to date after session renewal
-        auth.userManager.events.addUserLoaded(() => {
-            auth.userManager.getUser().then(user => {
-                setUserToken(user?.access_token || "");
+            setAuth(auth);
+            //keeps user token up to date after session renewal
+            auth.userManager.events.addUserLoaded(() => {
+                auth.userManager.getUser().then(user => {
+                    setUserToken(user?.access_token || "");
+                });
             });
-        });
 
-        auth.userManager.events.addSilentRenewError(() => {
-            if (navigator.onLine) {
-                auth.userManager
-                    .signoutRedirect({
-                        id_token_hint: localStorage.getItem("id_token") || undefined,
-                    })
-                    .then(() => auth.userManager.clearStaleState())
-                    .then(() => auth.userManager.signoutRedirectCallback())
-                    .then(() => {
-                        sessionStorage.clear();
-                        localStorage.clear();
-                    })
-                    .then(() => auth.userManager.clearStaleState())
-                    .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""))
-                    .catch(err => {
-                        if (err.response.status === 403) {
-                            setError(ErrorCodeEnum.NO_RIGHTS);
-                        } else {
-                            setError(ErrorCodeEnum.COMMON);
-                        }
-                    });
-            }
-        });
-
-        auth.userManager.settings.userStore.getAllKeys().then(keys => {
-            auth.userManager.settings.stateStore.getAllKeys().then(keysState => {
-                if (
-                    window.location.search.includes("state") &&
-                    auth.userData == null &&
-                    keys.length == 0 &&
-                    keysState.length == 0
-                ) {
-                    window.location.search = "";
+            auth.userManager.events.addSilentRenewError(() => {
+                if (navigator.onLine) {
+                    auth.userManager
+                        .signoutRedirect({
+                            id_token_hint: localStorage.getItem("id_token") || undefined,
+                        })
+                        .then(() => auth.userManager.clearStaleState())
+                        .then(() => auth.userManager.signoutRedirectCallback())
+                        .then(() => {
+                            sessionStorage.clear();
+                            localStorage.clear();
+                        })
+                        .then(() => auth.userManager.clearStaleState())
+                        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""))
+                        .catch(err => {
+                            if (err.response.status === 403) {
+                                setError(ErrorCodeEnum.NO_RIGHTS);
+                            } else {
+                                setError(ErrorCodeEnum.COMMON);
+                            }
+                        });
                 }
             });
-        });
 
-        if (auth.userData) {
             initializeDatas(setError).then(() => {
                 setInitialized(true);
             });
@@ -79,7 +93,8 @@ const App = () => {
                 });
             }
         }
-    }, [auth]);
+    }, [auth.userData?.access_token]);
+
     return (
         <>
             {initialized && !error ? (
