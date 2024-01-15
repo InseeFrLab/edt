@@ -293,6 +293,7 @@ const setNamesOfGroup = (idSurvey: string, nameAct: string, idsSurveysOfGroup: s
             let dataActuel = Object.assign({}, getData(idSurvey));
             const datasirv = { ...dataActuel };
             const emptydata = emptyDataSetFirstName(datasirv, nameOfGroup, getModePersistence(datasirv));
+            console.log(emptydata);
             promises.push(saveData(idSurvey, emptydata));
         }
     });
@@ -312,18 +313,18 @@ const emptyDataSetFirstName = (
             dataCollected[prop] = {
                 COLLECTED: null,
                 EDITED: null,
-                FORCED: {},
-                INPUTED: {},
-                PREVIOUS: {},
+                FORCED: null,
+                INPUTED: null,
+                PREVIOUS: null,
             };
         }
 
         dataCollected[FieldNameEnum.FIRSTNAME] = {
             COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,
             EDITED: modePersistence == ModePersistenceEnum.EDITED ? firstName : null,
-            FORCED: {},
-            INPUTED: {},
-            PREVIOUS: {},
+            FORCED: null,
+            INPUTED: null,
+            PREVIOUS: null,
         };
     }
     data.COLLECTED = dataCollected;
