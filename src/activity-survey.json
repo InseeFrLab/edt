@@ -514,6 +514,30 @@
             "componentRef": ""
         },
         {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "QUALITY_SCORE",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "QUALITY_SCORE_SUBSTRACT_POINTS",
+            "componentRef": ""
+        },
+        {
             "variableType": "CALCULATED",
             "expression": "true",
             "name": "FILTER_RESULT_INPUTTEXT",

@@ -36,7 +36,7 @@ import {
     getLabelFromTime,
 } from "service/survey-activity-service";
 import { filtrePage, getAllCodesFromActivitiesCodes } from "./loop-service";
-import { getValue } from "./survey-service";
+import { getValue, saveData, setValue } from "./survey-service";
 
 const getUserActivitiesSummary = (
     idSurvey: string,
@@ -113,7 +113,7 @@ const getUserActivitiesCharacteristics = (
         userMarkLabel:
             t("page.activity-summary.quality-score.label") +
             " " +
-            getQualityScore(activitiesRoutesOrGaps, overlaps, t),
+            getQualityScore(idSurvey, activitiesRoutesOrGaps, overlaps, t),
     };
     return activitiesCharacteristics;
 };
@@ -223,6 +223,7 @@ const getAloneTime = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => {
 };
 
 const getQualityScore = (
+    idSurvey: string,
     activitiesRoutesOrGaps: ActivityRouteOrGap[],
     overlaps: { prev: string | undefined; current: string | undefined }[],
     t: TFunction<"translation", undefined>,
@@ -353,8 +354,15 @@ const getQualityScore = (
     substractPoint += missingVariablesMeanOfTransport(activitiesRoutesOrGaps)
         ? POINTS_REMOVE.POINTS_REMOVE_MISSING_MEANOFTRANSPORT
         : 0;
+    const group = groupScore(MAX_SCORE - substractPoint, t);
+    const data = setValue(idSurvey, FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS, substractPoint + "");
 
-    return groupScore(MAX_SCORE - substractPoint, t);
+    saveData(idSurvey, data, true).then(() => {
+        const data1 = setValue(idSurvey, FieldNameEnum.QUALITY_SCORE, group);
+        saveData(idSurvey, data1);
+    });
+
+    return group;
 };
 
 /**
