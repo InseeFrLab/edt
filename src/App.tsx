@@ -3,7 +3,6 @@ import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import "i18n/i18n";
-import jwt_decode from "jwt-decode";
 import { useAuth } from "oidc-react";
 import ErrorPage from "pages/error/Error";
 import { useEffect, useState } from "react";
@@ -12,7 +11,6 @@ import { EdtRoutes } from "routes/EdtRoutes";
 import { getDatas, initializeDatas, initializeListSurveys } from "service/survey-service";
 import { getUserRights, setAuth, setUser, setUserToken } from "service/user-service";
 import { getCookie } from "utils/utils";
-
 const App = () => {
     const { t } = useTranslation();
     const [initialized, setInitialized] = useState(false);
@@ -20,30 +18,13 @@ const App = () => {
     const auth = useAuth();
 
     useEffect(() => {
-        const token = getCookie("KC_RESTART") ?? getCookie("kc-state");
-        //const cookieDecode = jwtDecode(cookie);
-        const decoded: {
-            "cid": string;
-            "pty": string;
-            "ruri": string;
-            "act": string;
-            "notes": {
-                "scope": string;
-                "iss": string;
-                "response_type": string;
-                "code_challenge_method": string;
-                "redirect_uri": string;
-                "state": string;
-                "code_challenge": string;
-                "response_mode": string;
-            };
-        } = jwt_decode(token ?? "");
-
         if (
             window.location.search &&
             getCookie("KC_RESTART") == null &&
             localStorage.getItem("setauth") == null
         ) {
+            console.log(window.location.search);
+            console.log("reset state");
             localStorage.setItem("setauth", "yes");
             window.location.search = "";
         }
@@ -93,7 +74,7 @@ const App = () => {
                 });
             }
         }
-    }, [auth.userData?.access_token]);
+    }, [auth]);
 
     return (
         <>
