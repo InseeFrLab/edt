@@ -29,7 +29,7 @@ const DayCard = (props: DayCardProps) => {
     const progressActivity = getScore(idSurvey, t);
     const modeReviewer = isReviewer() && !isDemoMode();
     const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
-    const qualityScore = getQualityScore(idSurvey, activitiesRoutesOrGaps, overlaps, t);
+    const qualityScore = getQualityScore(idSurvey, activitiesRoutesOrGaps, overlaps, t).group;
     const stateSurvey = getStatutSurvey(idSurvey);
     const isItMobile = isMobile();
 

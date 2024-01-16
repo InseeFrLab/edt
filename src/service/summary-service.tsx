@@ -113,7 +113,7 @@ const getUserActivitiesCharacteristics = (
         userMarkLabel:
             t("page.activity-summary.quality-score.label") +
             " " +
-            getQualityScore(idSurvey, activitiesRoutesOrGaps, overlaps, t),
+            getQualityScore(idSurvey, activitiesRoutesOrGaps, overlaps, t).group,
     };
     return activitiesCharacteristics;
 };
