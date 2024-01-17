@@ -18,11 +18,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
-import {
-    getIdSurveyContext,
-    getNavigatePath,
-    navToActivityRouteOrHome,
-} from "service/navigation-service";
+import { getIdSurveyContext, getNavigatePath, navToHome } from "service/navigation-service";
 import { getActivitiesOrRoutes, mockData } from "service/survey-activity-service";
 import { getSource } from "service/survey-service";
 
@@ -55,11 +51,12 @@ const HelpDuration = () => {
         helpImage: imageHelp,
         arrowDownIcon: arrowDown,
         arrowDownIconAlt: t("accessibility.asset.mui-icon.expand-more"),
+        ariaLabelTimepicker: t("accessibility.asset.timepicker-alt"),
         defaultLanguage: "fr",
     };
 
     const navToActivityRouteHome = useCallback(() => {
-        navToActivityRouteOrHome(navigate);
+        navToHome();
     }, []);
 
     const nextHelpStep = useCallback(() => {
@@ -159,7 +156,6 @@ const HelpDuration = () => {
                         subPage={getLoopPageSubpage(currentPage)}
                         iteration={0}
                         componentSpecificProps={specificProps}
-                        idSurvey={idSurvey}
                     ></OrchestratorForStories>
                 </FlexCenter>
             </LoopSurveyPage>

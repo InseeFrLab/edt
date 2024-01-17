@@ -24,9 +24,9 @@ import { useNavigate } from "react-router-dom";
 import {
     getNavigatePath,
     navFullPath,
-    navToActivityRouteOrHome,
     navToActivityRoutePlanner,
     navToHelp,
+    navToHome,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { isDesktop, isMobile, isPwa, isTablet } from "service/responsive";
@@ -79,7 +79,7 @@ const HelpActivity = () => {
     }, []);
 
     const navToActivityRouteHome = useCallback(() => {
-        navToActivityRouteOrHome(navigate);
+        navToHome();
     }, []);
 
     const infoLabels: InfoProps = {
@@ -411,7 +411,7 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         marginBottom: "4.5rem",
     },
     contentHelpBoxMobile: {
-        height: "60vh",
+        height: "100%",
         maxHeight: "60vh",
         display: "flex",
         alignItems: "end",

@@ -24,12 +24,12 @@ const isPwa = (): boolean => {
 };
 
 export {
-    isMobile,
-    isTablet,
-    isDesktop,
-    isPwa,
-    mobileMaxWidth,
-    tabletMinWidth,
-    tabletMaxWidth,
     destktopMinWidth,
+    isDesktop,
+    isMobile,
+    isPwa,
+    isTablet,
+    mobileMaxWidth,
+    tabletMaxWidth,
+    tabletMinWidth,
 };

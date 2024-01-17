@@ -19,7 +19,10 @@ const DayOfSurveyPage = () => {
     const idSurvey = getSurveyIdFromUrl(context, location);
 
     let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
-    const modifiable = !surveyReadOnly(context.rightsSurvey);
+    const modifiable =
+        context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME
+            ? true
+            : !surveyReadOnly(context.rightsSurvey);
 
     const keydownChange = () => {
         const componentId = getComponentId(FieldNameEnum.SURVEYDATE, context.source);
@@ -38,7 +41,7 @@ const DayOfSurveyPage = () => {
                 inputFormatted != null &&
                 (typeof inputFormatted == "string" ? inputFormatted.includes("Invalid") : false);
 
-            setDisabledButton(callbackHolder.getErrors()[componentId].length > 0 || errorData);
+            setDisabledButton(callbackHolder.getErrors()?.[componentId]?.length > 0 || errorData);
         }
     };
 

@@ -2,6 +2,16 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { Location } from "react-router-dom";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
+import {
+    isAndroid,
+    isChrome,
+    isDesktop,
+    isEdge,
+    isFirefox,
+    isIOS,
+    isMacOs,
+    isSafari,
+} from "react-device-detect";
 
 function groupBy<T>(arr: T[], fn: (item: T) => any) {
     return arr.reduce<Record<string, T[]>>((prev, curr) => {
@@ -74,7 +84,39 @@ function getUniquesValues(listValues: any[]): any[] {
     return listValues.filter((value, index, self) => self.indexOf(value) === index);
 }
 
-function getClassCondition(classes: any, condition: boolean, classNameYes: any, classNameNo: any) {
+const getDevice = () => {
+    if (isIOS || isMacOs) {
+        return "ios";
+    } else if (isAndroid || isDesktop) {
+        return "android";
+    } else return "";
+};
+
+const getNavigator = () => {
+    if (isChrome) {
+        return "chrome";
+    } else if (isEdge) {
+        return "edge";
+    } else if (isFirefox) {
+        return "firefox";
+    } else if (isSafari) {
+        return "safari";
+    } else return "";
+};
+
+const getDeviceNavigatorIsAvaiableForInstall = () => {
+    const device = getDevice();
+    const navigator = getNavigator();
+
+    if (device == "ios" && ["chrome", "edge", "safari"].includes(navigator)) {
+        return true;
+    } else if (device == "android" && ["chrome", "edge", "firefox"].includes(navigator)) {
+        return true;
+    } else {
+        return null;
+    }
+};
+function getClassCondition(condition: boolean, classNameYes: any, classNameNo: any) {
     return condition ? classNameYes : classNameNo;
 }
 
@@ -82,8 +124,11 @@ export {
     addArrayToSession,
     addItemToSession,
     getArrayFromSession,
+    getDevice,
+    getDeviceNavigatorIsAvaiableForInstall,
     getClassCondition,
     getItemFromSession,
+    getNavigator,
     getSurveyIdFromUrl,
     getUniquesValues,
     groupBy,

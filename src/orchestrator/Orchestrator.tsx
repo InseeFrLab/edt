@@ -33,7 +33,6 @@ export type OrchestratorProps = {
     iteration?: number;
     componentSpecificProps?: any;
     overrideOptions?: any;
-    idSurvey?: string;
 };
 
 const renderLoading = () => {
@@ -78,18 +77,27 @@ const getDataOfCurrentBinding = (
     return dataOfField;
 };
 
+//prop is for activity and prop being modified
 const isPropOfActivityCurrent = (prop: string, bindings: string[]) => {
     return prop != FieldNameEnum.WEEKLYPLANNER && bindings != null && bindings.includes(prop);
 };
 
+//prop is a activity
 const isPropActivity = (prop: string, dataOfField: any) => {
     return prop != FieldNameEnum.WEEKLYPLANNER && dataOfField;
 };
-
+//prop is a work time
 const isPropWorktime = (prop: string, dataOfField: any) => {
     return prop == FieldNameEnum.WEEKLYPLANNER && dataOfField;
 };
 
+//return a copy of a object
+const copyObject = (object: any) => {
+    if (object == null) return object;
+    return Array.isArray(object) ? [...object] : JSON.parse(JSON.stringify(object));
+};
+
+//data of a reviewer
 const getDataReviewer = (
     getData: any,
     data: LunaticData | undefined,
@@ -101,6 +109,7 @@ const getDataReviewer = (
     const bindings: string[] = components?.filter(
         (component: any) => component.componentType != "Sequence",
     )[0]?.bindingDependencies;
+    // data -> get data of bdd, callbackholder -> lunatic / current data
     if (callbackholder && dataCollected) {
         for (let prop in FieldNameEnum as any) {
             let dataOfField = dataCollected[prop];
@@ -110,18 +119,22 @@ const getDataReviewer = (
             const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
             //prop activity + prop currently being edited
             if (isPropOfActivityCurrent(prop, bindings)) {
+                //get data of current prop ->
+                //COLLECTED : value of bdd (COLLECTED)
+                //EDITED: if exist EDITED -> value of lunatic for value[iteration], other -> value of bdd (EDITED)
                 dataOfField = getDataOfCurrentBinding(
-                    collected,
-                    edited,
-                    collectedSaved,
-                    editedSaved,
+                    copyObject(collected),
+                    copyObject(edited),
+                    copyObject(collectedSaved),
+                    copyObject(editedSaved),
                     dataOfField,
                     iteration,
                 );
             } else if (isPropActivity(prop, dataOfField)) {
-                //prop activity + prop not currently being edited, so edited get value of edited in bdd, and collected get value of partie collected in bdd
-                dataOfField.EDITED = editedSaved;
-                dataOfField.COLLECTED = collectedSaved;
+                //prop activity + prop not currently being edited,
+                //so edited get value of edited in bdd, and collected get value of partie collected in bdd
+                dataOfField.EDITED = copyObject(editedSaved);
+                dataOfField.COLLECTED = copyObject(collectedSaved);
             }
             //if weekly planner, doesn't distinction edited/collected, so edited/collected get value of collected
             if (isPropWorktime(prop, dataOfField)) {
@@ -134,14 +147,18 @@ const getDataReviewer = (
     return callbackholder;
 };
 
+//data of interviewer
 const getDataInterviewer = (getData: any, data: LunaticData | undefined) => {
     const callbackholder = getData();
     const dataCollected = callbackholder.COLLECTED;
-
+    //dataCollected values get of lunatic
     if (callbackholder && dataCollected) {
         for (let prop in FieldNameEnum as any) {
             const dataOfField = dataCollected[prop];
-            if (dataOfField) dataOfField.EDITED = data?.COLLECTED?.[prop]?.EDITED;
+            //set values edited with values in bdd, because we don't recover the edited part with lunatic
+            if (dataOfField) {
+                dataOfField.EDITED = data?.COLLECTED?.[prop]?.EDITED;
+            }
         }
     }
     callbackholder.COLLECTED = dataCollected;
@@ -155,9 +172,9 @@ const getBindingDependencies = (components: any) => {
     return bindings;
 };
 
-const getVariables = (
+const getVariablesActivity = (
     data: LunaticData | undefined,
-    iteration: number | undefined,
+    iteration: number | undefined | null,
     bindingDependencies: string[],
     value: any,
 ) => {
@@ -176,15 +193,44 @@ const getVariables = (
 
         variables.set(bindingDependency, variable);
     });
-
     return variables;
+};
+
+const getVariablesWeeklyPlanner = (
+    data: LunaticData | undefined,
+    dataBdd: LunaticData | undefined,
+    bindingDependencies: string[],
+    value: any,
+) => {
+    let variables = new Map<string, any>();
+
+    bindingDependencies?.forEach((bindingDependency: string) => {
+        const varC = dataBdd?.COLLECTED?.[bindingDependency]?.COLLECTED;
+        const variableCollected = varC ?? value?.[bindingDependency];
+        variables.set(bindingDependency, variableCollected);
+    });
+    return variables;
+};
+
+const getVariables = (
+    data: LunaticData | undefined,
+    dataBdd: LunaticData | undefined,
+    iteration: number | undefined | null,
+    bindingDependencies: string[],
+    value: any,
+) => {
+    if (bindingDependencies.find((bindingDependency: string) => bindingDependency == "WEEKLYPLANNER")) {
+        const variables = getVariablesWeeklyPlanner(data, dataBdd, bindingDependencies, value);
+        return variables;
+    } else {
+        return getVariablesActivity(data, iteration, bindingDependencies, value);
+    }
 };
 
 export const OrchestratorForStories = (props: OrchestratorProps) => {
     const { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
         props;
     const { classes, cx } = useStyles();
-
     const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
         initialPage:
             page +
@@ -232,6 +278,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                     componentSpecificProps={componentSpecificProps}
                                     variables={getVariables(
                                         data,
+                                        getDataLocal(),
                                         iteration,
                                         getBindingDependencies(components),
                                         value,

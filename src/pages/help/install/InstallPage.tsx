@@ -4,7 +4,8 @@ import download from "assets/illustration/mui-icon/download.svg";
 import InstallPageStep from "components/commons/InstallPageStep/InstallPageStep";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { createMap, getDevice, getLabelStep, getNavigator } from "./utils";
+import { getDevice, getNavigator } from "utils/utils";
+import { createMap, getLabelStep } from "./utils";
 
 const InstallPage = () => {
     const { t } = useTranslation();

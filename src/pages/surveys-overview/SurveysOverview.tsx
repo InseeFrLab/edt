@@ -3,6 +3,7 @@ import {
     Button,
     Checkbox,
     InputAdornment,
+    InputLabel,
     MenuItem,
     OutlinedInput,
     Select,
@@ -22,11 +23,14 @@ import ReviewerPage from "components/commons/ReviewerPage/ReviewerPage";
 import HouseholdCard from "components/edt/HouseholdCard/HouseholdCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { Household } from "interface/entity/Household";
 import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
 import { TFunction, useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { remotePutSurveyDataReviewer } from "service/api-service";
+import { lunaticDatabase } from "service/lunatic-database";
 import { getNavigatePath } from "service/navigation-service";
 import { isMobile } from "service/responsive";
 import {
@@ -34,6 +38,7 @@ import {
     initializeListSurveys,
     initializeSurveysIdsDataModeReviewer,
     refreshSurveyData,
+    surveysIds,
 } from "service/survey-service";
 import { getClassCondition, getUniquesValues } from "utils/utils";
 
@@ -41,7 +46,7 @@ const isToFilter = (houseHoldData: any): boolean => {
     return (
         houseHoldData.stats?.numHouseholdsInProgress == 0 &&
         houseHoldData.stats?.numHouseholdsClosed == 0 &&
-        houseHoldData.stats?.numHouseholdsValidated >= 1
+        houseHoldData.stats?.numHouseholdsValidated == houseHoldData.stats?.numHouseholds
     );
 };
 
@@ -139,7 +144,7 @@ const SurveysOverviewPage = () => {
 
     const initHouseholds = () => {
         dataHouseholds = getListSurveysHousehold();
-        setSearchResult(dataHouseholds);
+        if (searchResult == null || searchResult.length == 0) setSearchResult(dataHouseholds);
         getListCampaigns();
     };
 
@@ -150,10 +155,35 @@ const SurveysOverviewPage = () => {
     useEffect(() => {
         initializeSurveysIdsDataModeReviewer(setError)
             .then(() => {
+                dataHouseholds = getListSurveysHousehold();
+                if (dataHouseholds.length == 0) {
+                    refreshHouseholds();
+                }
                 initHouseholds();
             })
+            //catch
             .finally(() => {
                 setInitialized(true);
+            });
+    });
+
+    const resetDataAndReload = useCallback(() => {
+        const promises: any[] = [];
+        let surveys = surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS];
+        surveys.forEach(idSurvey => {
+            const stateData = { state: null, date: Date.now(), currentPage: 1 };
+            promises.push(remotePutSurveyDataReviewer(idSurvey, stateData, {}));
+        });
+        Promise.all(promises)
+            .then(() => {
+                lunaticDatabase.clear().then(() => {
+                    navigate(0);
+                });
+            })
+            .catch(() => {
+                lunaticDatabase.clear().then(() => {
+                    navigate(0);
+                });
             });
     }, []);
 
@@ -232,7 +262,7 @@ const SurveysOverviewPage = () => {
                 sortSearchResult(searchResult);
             }
         },
-        [searchResult, filterValidatedResult, campaingFilter],
+        [campaingFilter],
     );
 
     const sortSearchResult = useCallback(
@@ -283,7 +313,7 @@ const SurveysOverviewPage = () => {
             homeIcon={home}
             homeIconAlt={t("accessibility.asset.mui-icon.home")}
         >
-            <Box className={cx(classes.title, isItMobile ? classes.titleMobile : "")}>
+            <Box className={cx(classes.title, getClassCondition(isItMobile, classes.titleMobile, ""))}>
                 <img src={stats} alt={t("accessibility.asset.stats-alt")} />
                 <Typography className={classes.label}>{t("page.surveys-overview.title")}</Typography>
             </Box>
@@ -291,7 +321,7 @@ const SurveysOverviewPage = () => {
                 <Box
                     className={cx(
                         classes.innerSearchBox,
-                        getClassCondition(classes, isItMobile, classes.innerSearchMobileBox, ""),
+                        getClassCondition(isItMobile, classes.innerSearchMobileBox, ""),
                     )}
                 >
                     <OutlinedInput
@@ -317,6 +347,9 @@ const SurveysOverviewPage = () => {
                         {t("page.surveys-overview.filter-label")}
                     </Box>
                     <Box className={classes.filterCampaingBox}>
+                        <InputLabel id="filter-campaing-select" className={classes.emptyLabel}>
+                            Vague
+                        </InputLabel>
                         <Select
                             id="filter-campaing-select"
                             value={campaingFilter}
@@ -326,6 +359,10 @@ const SurveysOverviewPage = () => {
                                 classes: {
                                     paper: classes.paperClass,
                                 },
+                                "aria-label": t("accessibility.component.surveys-overviewer.filter"),
+                            }}
+                            inputProps={{
+                                "aria-label": t("accessibility.component.surveys-overviewer.filter"),
                             }}
                         >
                             <MenuItem key="all" value={"all"} style={{ backgroundColor: "white" }}>
@@ -347,7 +384,7 @@ const SurveysOverviewPage = () => {
                 <Box
                     className={cx(
                         classes.refreshBox,
-                        getClassCondition(classes, isItMobile, classes.refreshMobileBox, ""),
+                        getClassCondition(isItMobile, classes.refreshMobileBox, ""),
                     )}
                 >
                     <Button
@@ -363,6 +400,27 @@ const SurveysOverviewPage = () => {
                         </Box>
                     </Button>
                 </Box>
+                {process.env.REACT_APP_NODE_ENV !== "production" && (
+                    <Box
+                        className={cx(
+                            classes.refreshBox,
+                            getClassCondition(isItMobile, classes.refreshMobileBox, ""),
+                        )}
+                    >
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={resetDataAndReload}
+                            aria-label={"refresh"}
+                            startIcon={
+                                <img src={refresh} alt={t("accessibility.asset.mui-icon.refresh")} />
+                            }
+                            disabled={!navigator.onLine}
+                        >
+                            <Box className={classes.labelButton}>reset all menages</Box>
+                        </Button>
+                    </Box>
+                )}
             </Box>
 
             <FlexCenter className={classes.searchResultBox}>{renderResults()}</FlexCenter>
@@ -453,6 +511,9 @@ const useStyles = makeStylesEdt({ "name": { SurveysOverviewPage } })(theme => ({
     },
     paperClass: {
         backgroundColor: "white",
+    },
+    emptyLabel: {
+        display: important("none"),
     },
 }));
 

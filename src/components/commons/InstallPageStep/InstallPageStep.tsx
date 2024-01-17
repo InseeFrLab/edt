@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { useCallback } from "react";
-import { isMobile as isMobileDevice } from "react-device-detect";
+import { isMobile as isMobileDevice, isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
@@ -50,7 +50,12 @@ const InstallPageStep = (props: InstallPageStepProps) => {
     return (
         <>
             <Box>
-                <Box className={step == 1 ? classes.rootFirst : classes.root}>
+                <Box
+                    className={cx(
+                        step == 1 ? classes.rootFirst : classes.root,
+                        isIOS ? classes.rootFirstMobile : "",
+                    )}
+                >
                     <SurveyPageSimpleHeader
                         onNavigateBack={useCallback(() => navToHome(), [])}
                         backgroundWhite={false}
@@ -108,6 +113,9 @@ const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { NavButton: 
             height: innerHeight - 208 + "px",
             maxHeight: innerHeight - 208 + "px",
         },
+        rootFirstMobile: {
+            maxHeight: "94vh",
+        },
         root: {
             height: innerHeight - 58 + "px",
             maxHeight: innerHeight - 58 + "px",
@@ -139,7 +147,7 @@ const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { NavButton: 
             height: "50vh",
         },
         titleBox: {
-            margin: "0.5rem 0rem",
+            margin: "1.5rem 0rem",
         },
     }),
 );

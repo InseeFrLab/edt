@@ -143,7 +143,6 @@ const WithScreenPage = () => {
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                     componentSpecificProps={specificProps}
-                    idSurvey={idSurvey}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>

@@ -1,10 +1,8 @@
 import { theme } from "@inseefrlab/lunatic-edt";
 import { CssBaseline, StyledEngineProvider, ThemeProvider } from "@mui/material";
-import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { AuthProvider } from "oidc-react";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { getUserRights } from "service/user-service";
 import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
@@ -13,18 +11,10 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
 const getAuthority = () => {
-    const authorityForReviewer = window.location.pathname.includes(
-        process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER ?? "kcidphint=insee-ssp",
-    )
+    const authority = window.location.search.includes("kc_idp_hint=insee-ssp")
         ? process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER
         : process.env.REACT_APP_KEYCLOAK_AUTHORITY;
-
-    const authority =
-        getUserRights() === EdtUserRightsEnum.REVIEWER
-            ? authorityForReviewer
-            : process.env.REACT_APP_KEYCLOAK_AUTHORITY;
-    console.log("oidc config - authority", authority);
-
+    console.log("oidc authority: ", authority);
     return authority;
 };
 

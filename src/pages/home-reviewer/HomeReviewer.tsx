@@ -80,11 +80,14 @@ const HomeReviewerPage = () => {
             </FlexCenter>
             <Box className={classes.headerBox}>
                 <Box className={classes.logoBox}>
-                    <img
-                        className={classes.logoImg}
-                        src={logo}
-                        alt={t("accessibility.asset.logo-alt")}
-                    />
+                    <>
+                        <img
+                            className={classes.logoImg}
+                            src={logo}
+                            alt={t("accessibility.asset.logo-alt")}
+                        />
+                        <h1 className={classes.emptyHeader}>Header</h1>
+                    </>
                 </Box>
                 <Button
                     color="secondary"
@@ -171,6 +174,9 @@ const useStyles = makeStylesEdt({ "name": { HomeReviewerPage } })(theme => ({
         "&:hover": {
             color: theme.variables.white,
         },
+    },
+    emptyHeader: {
+        visibility: "hidden",
     },
 }));
 

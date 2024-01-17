@@ -2,10 +2,11 @@ import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
+import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
+import { callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction } from "react";
 import { NavigateFunction, To } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
@@ -13,7 +14,7 @@ import { getCurrentLoopPage, getLoopInitialPage } from "service/loop-service";
 import {
     getCurrentPage,
     getData,
-    getSource,
+    getModePersistence,
     getValue,
     saveData,
     setValue,
@@ -278,6 +279,78 @@ const navToActivityRoutePlanner = (idSurvey: string, source: LunaticModel) => {
     );
 };
 
+const setNamesOfGroup = (idSurvey: string, nameAct: string, idsSurveysOfGroup?: string[]) => {
+    let listNames = idsSurveysOfGroup
+        ?.map(id => {
+            const firstName = getValue(id, FieldNameEnum.FIRSTNAME) as string;
+            return firstName;
+        })
+        .filter(firstname => firstname != null);
+
+    const promises: any[] = [];
+    if (nameAct ?? (listNames && listNames?.length > 0)) {
+        idsSurveysOfGroup?.forEach(id => {
+            let firstname = getValue(id, FieldNameEnum.FIRSTNAME);
+            if (firstname == null) {
+                const name = nameAct ?? listNames?.[0];
+                let dataAct = setValue(id, FieldNameEnum.FIRSTNAME, name);
+                if (dataAct.COLLECTED == null || dataAct.COLLECTED?.[FieldNameEnum.FIRSTNAME] == null) {
+                    dataAct = emptyDataSetFirstName(
+                        callbackHolder.getData(),
+                        name,
+                        getModePersistence(callbackHolder.getData()),
+                    );
+                }
+                promises.push(saveData(id, dataAct));
+            }
+        });
+    }
+    return promises;
+};
+
+const emptyDataSetFirstName = (
+    data: LunaticData,
+    firstName: string,
+    modePersistence: ModePersistenceEnum,
+) => {
+    const dataCollected = data.COLLECTED;
+    if (dataCollected) {
+        for (let prop in FieldNameEnum as any) {
+            if (prop == FieldNameEnum.SURVEYDATE) continue;
+            dataCollected[prop] = {
+                COLLECTED: null,
+                EDITED: null,
+                FORCED: {},
+                INPUTED: {},
+                PREVIOUS: {},
+            };
+        }
+
+        dataCollected[FieldNameEnum.FIRSTNAME] = {
+            COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,
+            EDITED: modePersistence == ModePersistenceEnum.EDITED ? firstName : null,
+            FORCED: {},
+            INPUTED: {},
+            PREVIOUS: {},
+        };
+    }
+    data.COLLECTED = dataCollected;
+    return data;
+};
+const setAllNamesOfGroupAndNav = (
+    idSurvey: string,
+    idsSurveysOfGroup: string[],
+    nameAct: string,
+    route: string,
+    navigate: any,
+) => {
+    const promises = setNamesOfGroup(idSurvey, nameAct, idsSurveysOfGroup);
+    console.log(route);
+    Promise.all(promises).then(() => {
+        navigate(route);
+    });
+};
+
 const navToActivityOrPlannerOrSummary = (
     idSurvey: string,
     maxPage: string,
@@ -363,31 +436,6 @@ const navFullPath = (
     parentPage?: EdtRoutesNameEnum,
 ): void => {
     _navigate(getFullNavigatePath(idSurvey, route, parentPage));
-};
-
-const navToActivityRouteOrHome = (navigate: any) => {
-    const idSurvey = getIdSurveyContext(SurveysIdsEnum.ACTIVITY_SURVEYS_IDS);
-    const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
-    if (firstName == null) {
-        navToActivityOrPlannerOrSummary(
-            idSurvey,
-            getSource(SourcesEnum.ACTIVITY_SURVEY).maxPage,
-            navigate,
-            getSource(SourcesEnum.ACTIVITY_SURVEY),
-        );
-    } else {
-        navToHome();
-    }
-};
-
-const navToWeeklyPlannerOrHome = (navigate: any) => {
-    const idSurvey = getIdSurveyContext(SurveysIdsEnum.WORK_TIME_SURVEYS_IDS);
-    const firstName = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
-    if (firstName == null) {
-        navToWeeklyPlannerOrClose(idSurvey, navigate, getSource(SourcesEnum.WORK_TIME_SURVEY));
-    } else {
-        navToHome();
-    }
 };
 
 const getIdSurveyContext = (typeSurvey: SurveysIdsEnum) => {
@@ -588,7 +636,6 @@ export {
     loopNavigate,
     navFullPath,
     navToActivityOrPlannerOrSummary,
-    navToActivityRouteOrHome,
     navToActivityRoutePlanner,
     navToActivitySummary,
     navToEditActivity,
@@ -597,7 +644,6 @@ export {
     navToHome,
     navToHomeReviewer,
     navToWeeklyPlannerOrClose,
-    navToWeeklyPlannerOrHome,
     onClose,
     onNext,
     onPrevious,
@@ -605,6 +651,7 @@ export {
     saveAndNav,
     saveAndNavFullPath,
     saveAndNextStep,
+    setAllNamesOfGroupAndNav,
     setEnviro,
     validate,
     validateAndNextLoopStep,

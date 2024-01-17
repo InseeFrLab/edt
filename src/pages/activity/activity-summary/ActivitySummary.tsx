@@ -77,7 +77,7 @@ import {
 } from "service/survey-service";
 import { getUserRights } from "service/user-service";
 import ActivitiesSummaryExportTemplate from "template/summary-export/ActivitiesSummaryExportTemplate";
-import { getSurveyIdFromUrl } from "utils/utils";
+import { getClassCondition, getSurveyIdFromUrl } from "utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
 const getSurveyDatePlanner = (idSurvey: string) => {
@@ -502,7 +502,6 @@ const ActivitySummaryPage = () => {
                 <FlexCenter>
                     <Box
                         className={getClassCondition(
-                            classes,
                             isReviewerMode && activitiesRoutesOrGaps.length !== 0,
                             classes.infoReviewerBox,
                             classes.infoBox,
@@ -534,6 +533,9 @@ const ActivitySummaryPage = () => {
                                             checked={isLocked}
                                             onChange={lockActivity}
                                             disabled={!modifiable}
+                                            inputProps={{
+                                                "aria-label": t("page.reviewer-home.lock-survey"),
+                                            }}
                                         />
                                     </Box>
                                 </Box>
@@ -718,10 +720,6 @@ const ActivitySummaryPage = () => {
             </SurveyPage>
         </>,
     );
-};
-
-const getClassCondition = (classes: any, condition: boolean, classNameYes: any, classNameNo: any) => {
-    return condition ? classNameYes : classNameNo;
 };
 
 const useStyles = makeStylesEdt<{ modifiable: boolean }>({ "name": { ActivitySummaryPage } })(

@@ -33,7 +33,6 @@ import {
     isPageGlobal,
     navToHelp,
     navToHome,
-    navToWeeklyPlannerOrHome,
     saveAndNav,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
@@ -99,6 +98,8 @@ const HelpWorkTime = () => {
                 infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
                 border: true,
             },
+            dates: "DATES",
+            datesStarted: "DATES_STARTED",
         },
         saveAll: () => saveData(idSurvey, data),
         language: getLanguage(),
@@ -113,8 +114,8 @@ const HelpWorkTime = () => {
         expandMoreWhiteIcon: expandMoreWhite,
         workIcon: work,
         workIconAlt: t("accessibility.asset.mui-icon.work"),
-        saveHours: (response: responsesHourChecker) => {
-            console.log(response);
+        saveHours: (idSurvey: string, response: responsesHourChecker) => {
+            console.log(idSurvey, response);
         },
         optionsIcons: {
             "1": {
@@ -122,6 +123,7 @@ const HelpWorkTime = () => {
                 altIcon: "",
             },
         },
+        idSurvey: "",
     };
 
     const navToBackPage = useCallback(
@@ -130,10 +132,7 @@ const HelpWorkTime = () => {
         [helpStep],
     );
 
-    const navToNextPage = useCallback(
-        () => (isPageGlobal() ? navigate("/") : navToWeeklyPlannerOrHome(navigate)),
-        [helpStep],
-    );
+    const navToNextPage = useCallback(() => (isPageGlobal() ? navigate("/") : navToHome()), [helpStep]);
 
     const previousHelpStep = useCallback(() => {
         helpStep > 1 ? setHelpStep(helpStep - 1) : navToBackPage();
@@ -254,7 +253,6 @@ const HelpWorkTime = () => {
                         cbHolder={callbackHolder}
                         page={getOrchestratorPage(currentPage)}
                         componentSpecificProps={specificProps}
-                        idSurvey={idSurvey}
                     ></OrchestratorForStories>
                 </FlexCenter>
             </SurveyPage>

@@ -48,7 +48,7 @@ import { useTranslation } from "react-i18next";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
 import { surveyReadOnly } from "service/survey-activity-service";
-import { createNewActivityInCategory } from "service/survey-service";
+import { createNewActivityInCategory, getData } from "service/survey-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
 const MainActivityPage = () => {
@@ -237,13 +237,12 @@ const MainActivityPage = () => {
                 ></Alert>
                 <OrchestratorForStories
                     source={context.source}
-                    data={context.data}
+                    data={getData(idSurvey)}
                     cbHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}
                     componentSpecificProps={specificProps}
-                    idSurvey={idSurvey}
                 ></OrchestratorForStories>
             </FlexCenter>
         </LoopSurveyPage>

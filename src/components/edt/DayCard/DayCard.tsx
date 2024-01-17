@@ -16,7 +16,6 @@ interface DayCardProps {
     labelledBy: string;
     describedBy: string;
     onClick(): void;
-    firstName: string;
     surveyDate: string;
     idSurvey: string;
     isClose: boolean;
@@ -40,8 +39,7 @@ const getClassModePersist = (
 };
 
 const DayCard = (props: DayCardProps) => {
-    const { labelledBy, describedBy, onClick, firstName, surveyDate, idSurvey, isClose, tabIndex } =
-        props;
+    const { labelledBy, describedBy, onClick, surveyDate, idSurvey, isClose, tabIndex } = props;
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const progressActivity = getScore(idSurvey, t);
@@ -91,9 +89,6 @@ const DayCard = (props: DayCardProps) => {
                     <Box className={classes.textBox}>
                         <Box id="surveyDate-text" className={classes.breakWordBox}>
                             {surveyDate}
-                        </Box>
-                        <Box id="firstName-text" className={classes.breakWordBox}>
-                            {firstName}
                         </Box>
                     </Box>
                 </Box>

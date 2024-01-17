@@ -50,7 +50,8 @@ export const getNavigator = () => {
 };
 
 export const getLabelStep = (step: number, stepFinal: number) => {
-    const label = "component.help.install." + getDevice() + "." + getNavigator() + ".step-" + step;
+    const device = getDevice();
+    const label = "component.help.install." + device + "." + getNavigator() + ".step-" + step;
     const labelFinal = "component.help.install.step-final";
     return step < stepFinal ? label : labelFinal;
 };

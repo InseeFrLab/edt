@@ -133,7 +133,8 @@
             },
             "card": {
                 "person-sun-alt": "Icône d’une journée enquêtée",
-                "person-sun-close-alt": "Icône d’une journée enquêtée clore"
+                "person-sun-close-alt": "Icône d’une journée enquêtée clore",
+                "person-alt": "Icône d'une personne"
             },
             "insideAlerts": {
                 "activity-error-alt": "Icône activité non renseignée",
@@ -198,14 +199,15 @@
                 "install-alt": "Illustration Installation",
                 "help-alt": "Illustration Aide prise en main"
             },
-            "installation-alt": "Illustration Installation"
+            "installation-alt": "Illustration Installation",
+            "timepicker-alt": "Input pour saisie heure"
         }
     },
     "page": {
         "install": {
             "title": "Ajoutez à l'écran d'accueil",
             "subtitle": "Accédez et complétez facilement votre enquête.",
-            "info": "Installez l’application sur votre téléphone afin d’accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
+            "info": "Installez l’application sur votre appareil afin d’accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
             "continue": "J'ai compris"
         },
         "surveys-overview": {
@@ -301,7 +303,7 @@
             "info-bold": "Si vous en faites plusieurs, notez seulement la plus importante"
         },
         "secondary-activity-selection": {
-            "add-activity-label": "Ajoutez une autre activité",
+            "add-activity-label": "Ajoutez une activité",
             "input-placeholder": "Activité secondaire",
             "other-button": "Autre ?"
         },
@@ -321,7 +323,7 @@
                 "alert-content": "L'ajout de votre trajet n'est pas terminé"
             },
             "alert-undo": "Annuler",
-            "alert-cancel": "Cancel",
+            "alert-cancel": "Annuler",
             "alert-complete": "Reprendre",
             "alert-closed": "Clôturer",
             "alt-alert-icon": "Illustration pièce de puzzle"
@@ -404,7 +406,7 @@
         },
         "activity-selecter": {
             "select-in-category": "Sélectionnez une activité dans la catégorie",
-            "add-activity": "Ajoutez une autre activité",
+            "add-activity": "Ajoutez une activité",
             "alert-message": "Attention ! Vous n’avez pas été au bout de cette étape. Souhaitez-vous la compléter ?",
             "clickable-list-placeholder": "Saisissez une activité",
             "clickable-list-not-found-label": "Aucun résultat trouvé",
@@ -509,10 +511,10 @@
             },
             "install": {
                 "title": "Ajoutez à l'écran d'accueil",
-                "description": "Accédez et complétez facilement votre enquête. Cette application peut être installée sur votre appareil. Pour cela, veuillez suivre les indications ci-après:",
+                "description": " ",
                 "common": {
                     "title": "Installer l'application",
-                    "description-1": "Installez l'application sur votre téléphone afin d'accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
+                    "description-1": "Pour installer l'application sur votre appareil afin d'accéder à vos carnets plus rapidement, sans besoin de vous reconnecter.",
                     "info-bold": "L'installation n'a pas fonctionné ?",
                     "info-text": "Ce n'est pas grave, vous pouvez completer votre enquête depuis votre navigateur web."
                 },
@@ -538,11 +540,11 @@
                     },
                     "firefox": {
                         "step-2": "Cliquez sur les 3 points en haut à droite",
-                        "step-3": "Sélectionnez << Ajouter à l'écran d'acceuil >>"
+                        "step-3": "Sélectionnez << Ajouter à l'écran d'accueil >>"
                     },
                     "edge": {
                         "step-2": "Cliquez sur le menu en bas à droite",
-                        "step-3": "Sélectionnez << Ajouter au téléphone >>"
+                        "step-3": "Sélectionnez << Ajouter au appareil >>"
                     }
                 },
                 "step-final": "Votre application Carnet EDT est installée"

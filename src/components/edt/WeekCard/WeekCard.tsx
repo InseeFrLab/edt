@@ -11,7 +11,6 @@ interface WeekCardProps {
     labelledBy: string;
     describedBy: string;
     onClick(): void;
-    firstName: string;
     surveyDate: string;
     isClose: boolean;
     tabIndex: number;
@@ -26,7 +25,7 @@ const getClassModePersist = (
 };
 
 const WeekCard = (props: WeekCardProps) => {
-    const { labelledBy, describedBy, onClick, firstName, surveyDate, isClose, tabIndex } = props;
+    const { labelledBy, describedBy, onClick, surveyDate, isClose, tabIndex } = props;
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     const modeReviewer = isReviewer() && !isDemoMode();
@@ -64,9 +63,6 @@ const WeekCard = (props: WeekCardProps) => {
                     <Box className={classes.textBox}>
                         <Box id="surveyDate-text" className={classes.breakWordBox}>
                             {surveyDate}
-                        </Box>
-                        <Box id="firstName-text" className={classes.breakWordBox}>
-                            {firstName}
                         </Box>
                     </Box>
                 </Box>

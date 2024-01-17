@@ -24,7 +24,7 @@ import { getLanguage } from "service/referentiel-service";
 import { isPwa } from "service/responsive";
 import { getStepData } from "service/stepper.service";
 import { surveyReadOnly } from "service/survey-activity-service";
-import { getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
+import { getData, getPrintedFirstName, getPrintedSurveyDate } from "service/survey-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 import SurveyPage from "../SurveyPage";
 
@@ -37,6 +37,7 @@ export interface SurveyPageStepProps {
     errorAltIcon?: string;
     specifiquesProps?: any;
     disableButton?: boolean;
+    validateButton?: () => void;
     withBottomPadding?: boolean;
 }
 
@@ -50,6 +51,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         errorAltIcon,
         specifiquesProps,
         disableButton,
+        validateButton,
         withBottomPadding = false,
     } = props;
 
@@ -68,10 +70,14 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         "isMobile": !isPwa(),
         "isIOS": isIOS,
         "isOpen": context.isOpenHeader ?? false,
+        "withStepper": isStep,
     });
 
     const stepData = getStepData(currentPage);
-    const modifiable = !surveyReadOnly(context.rightsSurvey);
+    const modifiable =
+        context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME
+            ? true
+            : !surveyReadOnly(context.rightsSurvey);
 
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
 
@@ -124,15 +130,20 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         disableNav: disableButton,
         modifiable: modifiable,
     };
+
+    const nextRouteNav = useCallback(() => {
+        if (validateButton) {
+            return validateButton;
+        } else {
+            nextRoute
+                ? saveAndNavFullPath(idSurvey, nextRoute)
+                : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage);
+        }
+    }, []);
+
     const surveyPageNotStepProps = {
         idSurvey: idSurvey,
-        validate: useCallback(
-            () =>
-                nextRoute
-                    ? saveAndNavFullPath(idSurvey, nextRoute)
-                    : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage),
-            [],
-        ),
+        validate: nextRouteNav,
         srcIcon: errorIcon,
         altIcon: errorAltIcon ? t(errorAltIcon) : undefined,
         onNavigateBack: useCallback(() => saveAndNav(idSurvey), []),
@@ -148,7 +159,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 
     const orchestratorProps = {
         source: context.source,
-        data: context.data,
+        data: getData(idSurvey), //context.data,
         cbHolder: callbackHolder,
         page: getOrchestratorPage(currentPage, context.surveyRootPage),
         overrideOptions: specifiquesProps?.referentiel,
@@ -196,14 +207,19 @@ const stylePageMobileTabletWhenIOS = (isOpen: boolean) => {
     return isOpen ? "80vh" : "87vh";
 };
 
-const useStyles = makeStylesEdt<{ isMobile: boolean; isIOS: boolean; isOpen: boolean }>({
+const useStyles = makeStylesEdt<{
+    isMobile: boolean;
+    isIOS: boolean;
+    isOpen: boolean;
+    withStepper: boolean;
+}>({
     "name": { SurveyPageStep },
-})((theme, { isIOS, isOpen }) => ({
+})((theme, { isIOS, isOpen, withStepper }) => ({
     bottomPadding: {
         paddingBottom: "4rem",
     },
     pageDesktop: {
-        height: "100%",
+        height: withStepper ? "90%" : "100%",
     },
     pageMobileTablet: {
         height: "100%",

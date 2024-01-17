@@ -75,7 +75,7 @@ import {
     surveyLocked,
 } from "service/survey-service";
 import { isReviewer } from "service/user-service";
-import { getSurveyIdFromUrl } from "utils/utils";
+import { getClassCondition, getSurveyIdFromUrl } from "utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
 const getSurveyDatePlanner = (idSurvey: string) => {
@@ -235,10 +235,6 @@ const renderPageOrLoadingOrError = (
 
 const isMobileApp = () => {
     return !isPwa() && isMobile && (isIOS || isAndroid);
-};
-
-const getClassCondition = (classes: any, condition: boolean, classNameYes: any, classNameNo: any) => {
-    return condition ? classNameYes : classNameNo;
 };
 
 const isLockedLabels = (
@@ -659,7 +655,7 @@ const ActivityOrRoutePlannerPage = () => {
         <Box
             className={cx(
                 classes.surveyPageBox,
-                getClassCondition(classes, isMobileApp(), classes.surveyPageBoxTablet, ""),
+                getClassCondition(isMobileApp(), classes.surveyPageBoxTablet, ""),
             )}
         >
             {(isItDesktop || !isSubChildDisplayed) && (
@@ -683,7 +679,6 @@ const ActivityOrRoutePlannerPage = () => {
                     >
                         <Box
                             className={getClassCondition(
-                                classes,
                                 menuActivityPlannerDisplayed,
                                 classes.outerContentBox,
                                 heightClass(classes),
@@ -691,7 +686,6 @@ const ActivityOrRoutePlannerPage = () => {
                         >
                             <Box
                                 className={getClassCondition(
-                                    classes,
                                     menuActivityPlannerDisplayed,
                                     classes.innerContentBox,
                                     heightClass(classes),
@@ -709,7 +703,6 @@ const ActivityOrRoutePlannerPage = () => {
                                         ></Alert>
                                         <Box
                                             className={getClassCondition(
-                                                classes,
                                                 isReviewerMode() && activitiesRoutesOrGaps.length !== 0,
                                                 classes.infoReviewerBox,
                                                 classes.infoBox,
@@ -882,14 +875,8 @@ const ActivityOrRoutePlannerPage = () => {
             )}
             <Box
                 className={cx(
+                    getClassCondition(isSubChildDisplayed && isItDesktop, classes.outletBoxDesktop, ""),
                     getClassCondition(
-                        classes,
-                        isSubChildDisplayed && isItDesktop,
-                        classes.outletBoxDesktop,
-                        "",
-                    ),
-                    getClassCondition(
-                        classes,
                         isSubChildDisplayed && !isItDesktop,
                         classes.outletBoxMobileTablet,
                         "",

@@ -35,8 +35,8 @@ import {
     getActivityOrRouteDurationLabelFromDurationMinutes,
     getLabelFromTime,
 } from "service/survey-activity-service";
-import { getValue } from "service/survey-service";
 import { filtrePage, getAllCodesFromActivitiesCodes } from "./loop-service";
+import { getValue } from "./survey-service";
 
 const getUserActivitiesSummary = (
     idSurvey: string,
@@ -77,6 +77,7 @@ const getUserActivitiesSummary = (
 };
 
 const getActivityOrRouteInRef = (idSurvey: string, activityOrRouteId: string) => {
+    if (typeof activityOrRouteId != "string") activityOrRouteId = "";
     return (
         findActivityInNomenclatureReferentielById(activityOrRouteId)?.label ||
         findActivityInAutoCompleteReferentielById(activityOrRouteId)?.label ||
@@ -93,8 +94,8 @@ const getUserActivitiesCharacteristics = (
     t: TFunction<"translation", undefined>,
 ): UserActivitiesCharacteristics | undefined => {
     const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
-    let greatestActivityId = getValue(idSurvey, FieldNameEnum.GREATESTACTIVITYDAY) as string;
-    let worstActivityId = getValue(idSurvey, FieldNameEnum.WORSTACTIVITYDAY) as string;
+    let greatestActivityId: string = getValue(idSurvey, FieldNameEnum.GREATESTACTIVITYDAY) as string;
+    let worstActivityId: string = getValue(idSurvey, FieldNameEnum.WORSTACTIVITYDAY) as string;
 
     let activitiesCharacteristics: UserActivitiesCharacteristics = {
         greatestActivityLabel: getActivityOrRouteInRef(idSurvey, greatestActivityId),
@@ -105,8 +106,10 @@ const getUserActivitiesCharacteristics = (
         isExceptionalDay: convertStringToBoolean(
             getValue(idSurvey, FieldNameEnum.EXCEPTIONALDAY) as string,
         ),
-        routeTimeLabel: transformTimeInLabel(idSurvey, FieldNameEnum.TRAVELTIME), //(getValue(idSurvey, FieldNameEnum.TRAVELTIME) as string)?.replace(":", "h"),
-        phoneTimeLabel: transformTimeInLabel(idSurvey, FieldNameEnum.PHONETIME), //(getValue(idSurvey, FieldNameEnum.PHONETIME) as string)?.replace(":", "h"),
+        routeTimeLabel: transformTimeInLabel(idSurvey, FieldNameEnum.TRAVELTIME),
+        //(getValue(idSurvey, FieldNameEnum.TRAVELTIME) as string)?.replace(":", "h"),
+        phoneTimeLabel: transformTimeInLabel(idSurvey, FieldNameEnum.PHONETIME),
+        //(getValue(idSurvey, FieldNameEnum.PHONETIME) as string)?.replace(":", "h"),
         userMarkLabel:
             t("page.activity-summary.quality-score.label") +
             " " +
@@ -118,9 +121,11 @@ const getUserActivitiesCharacteristics = (
 const transformTimeInLabel = (idSurvey: string, variable: FieldNameEnum) => {
     const value = getValue(idSurvey, variable) as string;
 
-    if (value == null) return "";
-
-    const valueSplitted = value.split(":");
+    if (value == null) return "0min";
+    if (typeof value != "string") {
+        return "0min";
+    }
+    const valueSplitted = value?.split(":");
     const hours = Number(valueSplitted[0]);
     const minutes = Number(valueSplitted[1]);
 
@@ -273,7 +278,8 @@ const substractPointsOfNotHaveThresholdLoop = (numActivities: number) => {
         numActivities < MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES
             ? POINTS_REMOVE.POINTS_REMOVE_MIN_ACTIVITES
             : 0;
-    // 6 - nombre de boucles 10 - 15 -> 3
+
+    // 6 - nombre de boucles 10 - 14 -> 3
     substractPoint +=
         numActivities >= MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES &&
         numActivities < MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES_2

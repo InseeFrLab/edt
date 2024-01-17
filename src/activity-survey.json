@@ -715,6 +715,8 @@
                 "OTHERPRIVATE",
                 "PUBLIC",
                 "WITHSECONDARYACTIVITY",
+                "SECONDARYACTIVITY_SUGGESTERID",
+                "SECONDARYACTIVITY_LABEL",
                 "SECONDARYACTIVITY",
                 "PLACE",
                 "WITHSOMEONE",

@@ -1,4 +1,8 @@
-import { WeeklyPlannerSpecificProps, responsesHourChecker } from "@inseefrlab/lunatic-edt";
+import {
+    WeeklyPlannerSpecificProps,
+    getArrayFromSession,
+    responsesHourChecker,
+} from "@inseefrlab/lunatic-edt";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
 import InfoIcon from "assets/illustration/info.svg";
 import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";
@@ -47,44 +51,56 @@ const WeeklyPlannerPage = () => {
     setEnviro(context, useNavigate(), callbackHolder);
 
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
-    const [isPlaceWorkDisplayed, setIsPlaceWorkDisplayed] = React.useState<boolean>(false);
+    let [isPlaceWorkDisplayed, setIsPlaceWorkDisplayed] = React.useState<boolean>(false);
     const [isHelpMenuOpen, setIsHelpMenuOpen] = React.useState(false);
 
     const [displayedDayHeader, setDisplayedDayHeader] = React.useState<string>("");
 
     const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
 
-    const save = (data?: IODataStructure[]): void => {
+    const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
         const callbackData = callbackHolder.getData();
-        let dataWeeklyCallback = callbackData?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER]
-            .COLLECTED as any[];
-        if (data && dataWeeklyCallback && data?.length > dataWeeklyCallback.length) {
+        if (data && data[1].length > 0) {
             if (callbackData.COLLECTED) {
-                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data;
-                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data;
+                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data[0];
+                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data[0];
+                callbackData.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
+                callbackData.COLLECTED[FieldNameEnum.DATES].EDITED = data[1];
+                callbackData.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
+                callbackData.COLLECTED[FieldNameEnum.DATES_STARTED].EDITED = data[2];
+            }
+
+            const dataResponse = getData(idSurvey);
+            if (
+                dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
+                callbackData.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
+            ) {
+                saveData(idSurvey, callbackData);
             }
         }
-        saveData(idSurvey, callbackData);
     };
 
-    const saveDuration = (response: responsesHourChecker) => {
+    const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
         const callbackData = callbackHolder.getData();
-        const dataCopy = callbackData;
-        const dates = dataCopy?.COLLECTED?.[FieldNameEnum.DATES].COLLECTED as string[];
+        const dataCopy = { ...callbackData };
+        const dates = (dataCopy?.COLLECTED?.["DATES"].COLLECTED ??
+            getArrayFromSession("DATES")) as string[];
         const currentDateIndex = dates.indexOf(response.date);
+        const dataResponse = getData(idSurveyResponse);
+        if (
+            dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
+            dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
+        ) {
+            response.names.forEach(name => {
+                let quartier = dataCopy?.COLLECTED?.[name].COLLECTED as string[];
+                quartier[currentDateIndex] = response.values[name] + "";
 
-        response.names.forEach(name => {
-            let quartier = dataCopy?.COLLECTED?.[name].COLLECTED as string[];
-            quartier[currentDateIndex] = response.values[name] + "";
-
-            if (dataCopy?.COLLECTED) {
-                dataCopy.COLLECTED[name].COLLECTED = quartier;
-            }
-        });
-
-        saveData(idSurvey, dataCopy).then(() => {
-            saveData(idSurvey, dataCopy);
-        });
+                if (dataCopy?.COLLECTED) {
+                    dataCopy.COLLECTED[name].COLLECTED = quartier;
+                }
+            });
+            saveData(idSurveyResponse, dataCopy);
+        }
     };
 
     const specificProps: WeeklyPlannerSpecificProps = {
@@ -110,6 +126,8 @@ const WeeklyPlannerPage = () => {
                 infoIconTooltip: InfoTooltipIcon,
                 infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
             },
+            dates: "DATES",
+            datesStarted: "DATES_STARTED",
         },
         saveAll: save,
         language: getLanguage(),
@@ -123,8 +141,8 @@ const WeeklyPlannerPage = () => {
         expandMoreWhiteIcon: expandMoreWhite,
         workIcon: work,
         workIconAlt: t("accessibility.asset.mui-icon.work"),
-        saveHours: (response: responsesHourChecker) => {
-            saveDuration(response);
+        saveHours: (idSurvey: string, response: responsesHourChecker) => {
+            saveDuration(idSurvey, response);
         },
         optionsIcons: {
             "1": {
@@ -148,18 +166,20 @@ const WeeklyPlannerPage = () => {
                 altIcon: t("accessibility.assets.with-someone.categories.couple-alt"),
             },
         },
+        idSurvey: idSurvey,
     };
 
     const validateAndNav = (): void => {
         if (displayDayOverview) {
-            save();
-            if (isPlaceWorkDisplayed && localStorage.getItem("HOURCHECKED_DISPLAYED") != "true") {
+            save(idSurvey);
+            if (isPlaceWorkDisplayed) {
                 setDisplayDayOverview(true);
-                localStorage.setItem("HOURCHECKED_DISPLAYED", "false");
-            } else setDisplayDayOverview(false);
+                setIsPlaceWorkDisplayed(false);
+                isPlaceWorkDisplayed = false;
+            } else {
+                setDisplayDayOverview(false);
+            }
         } else {
-            console.log(localStorage.getItem("HOURCHECKED_DISPLAYED"));
-
             closeFormularieAndNav(
                 idSurvey,
                 getFullNavigatePath(idSurvey, EdtRoutesNameEnum.KIND_OF_WEEK),
@@ -228,7 +248,6 @@ const WeeklyPlannerPage = () => {
                         cbHolder={callbackHolder}
                         page={getOrchestratorPage(currentPage)}
                         componentSpecificProps={specificProps}
-                        idSurvey={idSurvey}
                     ></OrchestratorForStories>
                 </FlexCenter>
             </SurveyPage>
