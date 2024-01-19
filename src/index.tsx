@@ -1,10 +1,9 @@
 import { theme } from "@inseefrlab/lunatic-edt";
 import { CssBaseline, StyledEngineProvider, ThemeProvider } from "@mui/material";
-import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { AuthProvider } from "oidc-react";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { getUserRights } from "service/user-service";
+import { createUserManager, isSSO } from "service/auth-service";
 import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
@@ -13,12 +12,18 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
 const getAuthority = () => {
-    const authority = window.location.search.includes("kc_idp_hint=insee-ssp")
+    const authority = isSSO
         ? process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER
         : process.env.REACT_APP_KEYCLOAK_AUTHORITY;
     console.log("oidc authority: ", authority);
     return authority;
 };
+
+const userManagerCustom = isSSO
+    ? {
+          userManager: createUserManager(),
+      }
+    : {};
 
 const oidcConfig = {
     onSignIn: () => {
@@ -28,6 +33,7 @@ const oidcConfig = {
     authority: getAuthority(),
     clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID,
     redirectUri: process.env.REACT_APP_KEYCLOAK_REDIRECT_URI,
+    ...{ userManagerCustom },
 };
 
 root.render(
