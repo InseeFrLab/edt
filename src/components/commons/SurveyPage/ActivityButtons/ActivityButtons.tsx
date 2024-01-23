@@ -19,43 +19,39 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
     return (
-        <>
-            <FlexCenter
-                className={cx(classes.ButtonsBox, isIOS && isMobile ? classes.buttonBoxPwa : "")}
+        <FlexCenter className={cx(classes.ButtonsBox, isIOS && isMobile ? classes.buttonBoxPwa : "")}>
+            <>
+                {!addLabel && (
+                    <Button
+                        variant="outlined"
+                        onClick={onClickFinish}
+                        className={cx(
+                            classes.buttons,
+                            helpStep == 3 ? classes.helpButton : "",
+                            helpStep == 3 ? classes.helpCloseButton : "",
+                        )}
+                        id="clore-button"
+                        disabled={!modifiable}
+                    >
+                        {finishLabel}
+                    </Button>
+                )}
+            </>
+            <Button
+                variant="contained"
+                onClick={onClickAdd}
+                className={cx(
+                    addLabel === undefined ? classes.buttons : classes.aloneAddButton,
+                    helpStep == 1 ? classes.helpButton : "",
+                    helpStep == 1 ? classes.helpAddButton : "",
+                )}
+                id="add-button"
+                disabled={!modifiable}
             >
-                <>
-                    {!addLabel && (
-                        <Button
-                            variant="outlined"
-                            onClick={onClickFinish}
-                            className={cx(
-                                classes.buttons,
-                                helpStep == 3 ? classes.helpButton : "",
-                                helpStep == 3 ? classes.helpCloseButton : "",
-                            )}
-                            id="clore-button"
-                            disabled={!modifiable}
-                        >
-                            {finishLabel}
-                        </Button>
-                    )}
-                </>
-                <Button
-                    variant="contained"
-                    onClick={onClickAdd}
-                    className={cx(
-                        addLabel === undefined ? classes.buttons : classes.aloneAddButton,
-                        helpStep == 1 ? classes.helpButton : "",
-                        helpStep == 1 ? classes.helpAddButton : "",
-                    )}
-                    id="add-button"
-                    disabled={!modifiable}
-                >
-                    <img src={add} alt={t("accessibility.asset.mui-icon.add")} />
-                    {addLabel}
-                </Button>
-            </FlexCenter>
-        </>
+                <img src={add} alt={t("accessibility.asset.mui-icon.add")} />
+                {addLabel}
+            </Button>
+        </FlexCenter>
     );
 };
 

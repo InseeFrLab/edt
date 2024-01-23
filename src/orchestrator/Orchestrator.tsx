@@ -110,17 +110,12 @@ const propsWorkTime = (source: LunaticModel) => {
     return uniqueBindingDependencies;
 };
 //if weekly planner, doesn't distinction edited/collected, so edited/collected get value of collected
-const setDataOfWorkTimeReviewer = (
-    source: LunaticModel | undefined,
-    dataCollected: any,
-    data: LunaticData | undefined,
-) => {
+const setDataOfWorkTimeReviewer = (source: LunaticModel | undefined, dataCollected: any) => {
     if (source) {
         const weeklyPlannerProps = propsWorkTime(source);
         weeklyPlannerProps.forEach(prop => {
             let dataOfField = dataCollected[prop];
             const collected = dataOfField?.COLLECTED;
-            const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
             dataOfField.COLLECTED = collected;
         });
     }
@@ -181,7 +176,7 @@ const getDataReviewer = (
     // data -> get data of bdd, callbackholder -> lunatic / current data
     if (callbackholder && dataCollected) {
         if (isWorkTime(callbackholder)) {
-            dataCollected = setDataOfWorkTimeReviewer(source, dataCollected, data);
+            dataCollected = setDataOfWorkTimeReviewer(source, dataCollected);
         } else {
             dataCollected = setDataOfActivityReviewer(dataCollected, data, components, iteration);
         }

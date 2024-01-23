@@ -31,11 +31,12 @@ import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum"
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { ActivitiesSummaryExportData } from "interface/entity/ActivitiesSummary";
+import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { TFunction, useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { getFlatLocalStorageValue, getLocalStorageValue } from "service/local-storage-service";
 import { getLoopSize, setLoopSize } from "service/loop-service";
@@ -76,8 +77,100 @@ import {
 } from "service/survey-service";
 import { getUserRights } from "service/user-service";
 import ActivitiesSummaryExportTemplate from "template/summary-export/ActivitiesSummaryExportTemplate";
-import { getSurveyIdFromUrl } from "utils/utils";
+import { getClassCondition, getSurveyIdFromUrl } from "utils/utils";
 import { v4 as uuidv4 } from "uuid";
+
+const getSurveyDatePlanner = (idSurvey: string) => {
+    return getSurveyDate(idSurvey) ?? "";
+};
+
+const setValueOrNull = (
+    idSurvey: string,
+    variableName: FieldNameEnum,
+    value: string | boolean | undefined,
+    iteration: number | undefined,
+) => {
+    setValue(idSurvey, variableName, value ?? null, iteration);
+};
+
+const getAlertUnlockLabels = (variableEdited: boolean, t: TFunction<"translation", undefined>) => {
+    return {
+        boldContent: variableEdited
+            ? t("page.reviewer-home.lock-popup.boldContent-not-unlocked")
+            : t("page.reviewer-home.lock-popup.boldContent-not-locked"),
+        content: variableEdited
+            ? t("page.reviewer-home.lock-popup.content-not-unlocked")
+            : t("page.reviewer-home.lock-popup.content-not-locked"),
+        cancel: variableEdited ? undefined : t("page.alert-when-quit.alert-cancel"),
+        complete: variableEdited
+            ? t("page.reviewer-home.lock-popup.confirm-button")
+            : t("page.reviewer-home.not-lock-survey"),
+    };
+};
+
+const getAlertLabelsLock = (
+    isLocked: boolean,
+    variableEdited: boolean,
+    t: TFunction<"translation", undefined>,
+) => {
+    const alertLockLabels = {
+        boldContent: t("page.reviewer-home.lock-popup.boldContent"),
+        content: t("page.reviewer-home.lock-popup.content"),
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: t("page.reviewer-home.lock-survey"),
+    };
+
+    const alertUnlockLabels = getAlertUnlockLabels(variableEdited, t);
+
+    return isLocked ? alertUnlockLabels : alertLockLabels;
+};
+
+const getIterationOrZero = (activity: ActivityRouteOrGap) => {
+    return activity.iteration ?? 0;
+};
+
+const addActivityOrRoute = (
+    idSurvey: string,
+    isRoute: boolean,
+    addActivityOrRouteFromGap: boolean,
+    gapStartTime: string | undefined,
+    gapEndTime: string | undefined,
+    onAddActivityGap: (
+        idSurvey: string,
+        isRoute: boolean,
+        startTime?: string,
+        endTime?: string,
+    ) => () => void,
+    onAddActivity: (idSurvey: string, isRoute: boolean) => () => void,
+) => {
+    return addActivityOrRouteFromGap
+        ? onAddActivityGap(idSurvey, isRoute, gapStartTime, gapEndTime)
+        : onAddActivity(idSurvey, isRoute);
+};
+
+const isDemo = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
+const isReviewerMode = isReviewer && !isDemo;
+
+const renderPageOrLoadingOrError = (
+    initialized: boolean,
+    error: ErrorCodeEnum | undefined,
+    t: TFunction<"translation", undefined>,
+    page: any,
+) => {
+    if (initialized) {
+        return page;
+    } else {
+        return !error ? (
+            <LoadingFull
+                message={t("page.home.loading.message")}
+                thanking={t("page.home.loading.thanking")}
+            />
+        ) : (
+            <ErrorPage errorCode={error} atInit={true} />
+        );
+    }
+};
 
 const ActivitySummaryPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -110,11 +203,11 @@ const ActivitySummaryPage = () => {
     const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
 
     const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey, context.source);
-    const surveyDate = getSurveyDate(idSurvey) || "";
+    const surveyDate = getSurveyDatePlanner(idSurvey);
     const userActivitiesCharacteristics = getUserActivitiesCharacteristics(idSurvey, t);
     const userActivitiesSummary = getUserActivitiesSummary(idSurvey, t);
     const exportData: ActivitiesSummaryExportData = {
-        houseReference: context.data.houseReference || "",
+        houseReference: context.data.houseReference ?? "",
         firstName: getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string,
         surveyDate: getFullFrenchDate(getValue(idSurvey, FieldNameEnum.SURVEYDATE) as string),
         activitiesAndRoutes: activitiesRoutesOrGaps,
@@ -242,8 +335,8 @@ const ActivitySummaryPage = () => {
         );
         contextIteration = loopSize - 1;
 
-        setValue(idSurvey, FieldNameEnum.START_TIME, startTime || null, contextIteration);
-        setValue(idSurvey, FieldNameEnum.END_TIME, endTime || null, contextIteration);
+        setValueOrNull(idSurvey, FieldNameEnum.START_TIME, startTime, contextIteration);
+        setValueOrNull(idSurvey, FieldNameEnum.END_TIME, endTime, contextIteration);
         const updatedData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
         saveData(idSurvey, updatedData).then(() => {
             onCloseAddActivityOrRoute();
@@ -283,12 +376,6 @@ const ActivitySummaryPage = () => {
         [],
     );
 
-    const addActivityOrRoute = (idSurvey: string, isRoute: boolean) => {
-        return addActivityOrRouteFromGap
-            ? onAddActivityGap(idSurvey, isRoute, gapStartTime, gapEndTime)
-            : onAddActivity(idSurvey, isRoute);
-    };
-
     const onEditCharacteristics = useCallback(() => {
         navigate(
             getCurrentNavigatePath(
@@ -324,27 +411,7 @@ const ActivitySummaryPage = () => {
     const [isAlertValidateDisplayed, setIsAlertValidateDisplayed] = useState<boolean>(false);
     const [isLocked, setIsLocked] = useState<boolean>(surveyLocked(idSurvey));
 
-    const alertLockLabels = {
-        boldContent: t("page.reviewer-home.lock-popup.boldContent"),
-        content: t("page.reviewer-home.lock-popup.content"),
-        cancel: t("page.alert-when-quit.alert-cancel"),
-        complete: t("page.reviewer-home.lock-survey"),
-    };
-
     const variableEdited = existVariableEdited(idSurvey);
-
-    const alertUnlockLabels = {
-        boldContent: variableEdited
-            ? t("page.reviewer-home.lock-popup.boldContent-not-unlocked")
-            : t("page.reviewer-home.lock-popup.boldContent-not-locked"),
-        content: variableEdited
-            ? t("page.reviewer-home.lock-popup.content-not-unlocked")
-            : t("page.reviewer-home.lock-popup.content-not-locked"),
-        cancel: variableEdited ? undefined : t("page.alert-when-quit.alert-cancel"),
-        complete: variableEdited
-            ? t("page.reviewer-home.lock-popup.confirm-button")
-            : t("page.reviewer-home.not-lock-survey"),
-    };
 
     const lock = useCallback(() => {
         lockSurvey(idSurvey).then((locked: any) => {
@@ -376,10 +443,6 @@ const ActivitySummaryPage = () => {
     const back = useCallback(() => {
         saveAndNav(idSurvey);
     }, []);
-
-    const isDemo = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
-    const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
-    const isReviewerMode = isReviewer && !isDemo;
 
     const onEdit = useCallback(() => {
         navFullPath(idSurvey, EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.ACTIVITY);
@@ -419,7 +482,10 @@ const ActivitySummaryPage = () => {
         setIsHelpMenuOpen(true);
     }, []);
 
-    return initialized ? (
+    return renderPageOrLoadingOrError(
+        initialized,
+        error,
+        t,
         <>
             {renderMenuHelp()}
             <SurveyPage
@@ -435,28 +501,23 @@ const ActivitySummaryPage = () => {
             >
                 <FlexCenter>
                     <Box
-                        className={
-                            isReviewerMode && activitiesRoutesOrGaps.length !== 0
-                                ? classes.infoReviewerBox
-                                : classes.infoBox
-                        }
+                        className={getClassCondition(
+                            isReviewerMode && activitiesRoutesOrGaps.length !== 0,
+                            classes.infoReviewerBox,
+                            classes.infoBox,
+                        )}
                     >
                         {activitiesRoutesOrGaps.length !== 0 &&
                             (isReviewerMode ? (
                                 <Box className={classes.headerActivityLockBox}>
-                                    <>
-                                        <Alert
-                                            isAlertDisplayed={isAlertLockDisplayed}
-                                            onCompleteCallBack={lock}
-                                            onCancelCallBack={displayAlert(
-                                                setIsAlertLockDisplayed,
-                                                false,
-                                            )}
-                                            labels={isLocked ? alertUnlockLabels : alertLockLabels}
-                                            icon={errorIcon}
-                                            errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
-                                        ></Alert>
-                                    </>
+                                    <Alert
+                                        isAlertDisplayed={isAlertLockDisplayed}
+                                        onCompleteCallBack={lock}
+                                        onCancelCallBack={displayAlert(setIsAlertLockDisplayed, false)}
+                                        labels={getAlertLabelsLock(isLocked, variableEdited, t)}
+                                        icon={errorIcon}
+                                        errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                                    ></Alert>
                                     <Box className={classes.headerActivityBox}>
                                         <Typography className={classes.label}>
                                             {t("page.activity-planner.activity-for-day")}
@@ -509,14 +570,14 @@ const ActivitySummaryPage = () => {
                             <ActivityOrRouteCard
                                 labelledBy={""}
                                 describedBy={""}
-                                onClick={navToCard(activity.iteration || 0)}
+                                onClick={navToCard(getIterationOrZero(activity))}
                                 onClickGap={onOpenAddActivityOrRoute}
                                 activityOrRoute={activity}
-                                onEdit={onEditActivity(activity.iteration || 0)}
+                                onEdit={onEditActivity(getIterationOrZero(activity))}
                                 onDelete={onDeleteActivity(
                                     idSurvey,
                                     context.source,
-                                    activity.iteration ?? 0,
+                                    getIterationOrZero(activity),
                                 )}
                                 tabIndex={index + 51}
                                 modifiable={modifiable}
@@ -614,45 +675,50 @@ const ActivitySummaryPage = () => {
                             </Button>
                         </>
                     ) : (
-                        <>
-                            <Button variant="contained" className={classes.downloadButton}>
-                                <PDFDownloadLink
-                                    className={classes.downloadLink}
-                                    document={
-                                        <ActivitiesSummaryExportTemplate exportData={exportData} />
-                                    }
-                                    fileName={
-                                        t("export.activities-summary.file-name") +
-                                        getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
-                                        "_" +
-                                        getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
-                                        ".pdf"
-                                    }
-                                >
-                                    {() => t("page.activity-summary.download-pdf")}
-                                </PDFDownloadLink>
-                            </Button>
-                        </>
+                        <Button variant="contained" className={classes.downloadButton}>
+                            <PDFDownloadLink
+                                className={classes.downloadLink}
+                                document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
+                                fileName={
+                                    t("export.activities-summary.file-name") +
+                                    getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
+                                    "_" +
+                                    getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
+                                    ".pdf"
+                                }
+                            >
+                                {() => t("page.activity-summary.download-pdf")}
+                            </PDFDownloadLink>
+                        </Button>
                     )}
                 </FlexCenter>
 
                 <AddActivityOrRoute
                     labelledBy={""}
                     describedBy={""}
-                    onClickActivity={addActivityOrRoute(idSurvey, false)}
-                    onClickRoute={addActivityOrRoute(idSurvey, true)}
+                    onClickActivity={addActivityOrRoute(
+                        idSurvey,
+                        false,
+                        addActivityOrRouteFromGap,
+                        gapStartTime,
+                        gapEndTime,
+                        onAddActivityGap,
+                        onAddActivity,
+                    )}
+                    onClickRoute={addActivityOrRoute(
+                        idSurvey,
+                        true,
+                        addActivityOrRouteFromGap,
+                        gapStartTime,
+                        gapEndTime,
+                        onAddActivityGap,
+                        onAddActivity,
+                    )}
                     handleClose={onCloseAddActivityOrRoute}
                     open={isAddActivityOrRouteOpen}
                 />
             </SurveyPage>
-        </>
-    ) : !error ? (
-        <LoadingFull
-            message={t("page.home.loading.message")}
-            thanking={t("page.home.loading.thanking")}
-        />
-    ) : (
-        <ErrorPage errorCode={error} atInit={true} />
+        </>,
     );
 };
 

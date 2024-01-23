@@ -2,7 +2,6 @@ import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Modal } from "@mui/material";
 import { Default, Mobile } from "components/commons/Responsive/Responsive";
 import { LunaticModel } from "interface/lunatic/Lunatic";
-import React from "react";
 import HelpMenuInner from "./HelpMenuInner";
 
 interface HelpMenuProps {
@@ -28,37 +27,35 @@ const HelpMenu = (props: HelpMenuProps) => {
                 className={classes.shadowBackground}
                 sx={{ display: open ? "visible" : "none" }}
             ></Box>
-            <React.Fragment>
-                <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby={labelledBy}
-                    aria-describedby={describedBy}
-                >
-                    <>
-                        <Default>
-                            <HelpMenuInner
-                                handleClose={handleClose}
-                                onClickContact={onClickContact}
-                                onClickInstall={onClickInstall}
-                                onClickHelp={onClickHelp}
-                                className={classes.modal}
-                                isMobile={false}
-                            />
-                        </Default>
-                        <Mobile>
-                            <HelpMenuInner
-                                handleClose={handleClose}
-                                onClickContact={onClickContact}
-                                onClickInstall={onClickInstall}
-                                onClickHelp={onClickHelp}
-                                className={classes.modal}
-                                isMobile={true}
-                            />
-                        </Mobile>
-                    </>
-                </Modal>
-            </React.Fragment>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby={labelledBy}
+                aria-describedby={describedBy}
+            >
+                <>
+                    <Default>
+                        <HelpMenuInner
+                            handleClose={handleClose}
+                            onClickContact={onClickContact}
+                            onClickInstall={onClickInstall}
+                            onClickHelp={onClickHelp}
+                            className={classes.modal}
+                            isMobile={false}
+                        />
+                    </Default>
+                    <Mobile>
+                        <HelpMenuInner
+                            handleClose={handleClose}
+                            onClickContact={onClickContact}
+                            onClickInstall={onClickInstall}
+                            onClickHelp={onClickHelp}
+                            className={classes.modal}
+                            isMobile={true}
+                        />
+                    </Mobile>
+                </>
+            </Modal>
         </>
     );
 };

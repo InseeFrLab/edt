@@ -24,11 +24,11 @@ axios.interceptors.response.use(
     },
 );
 
-export const getHeader = (userToken?: string) => {
+export const getHeader = (origin?: string, userToken?: string) => {
     return {
         headers: {
             "Authorization": "Bearer " + (userToken ?? getUserToken()),
-            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Origin": origin ?? "*",
             "Content-type": "application/json",
         },
     };
@@ -37,7 +37,7 @@ export const getHeader = (userToken?: string) => {
 const fetchReferentiel = (auth: AuthContextProps, idReferentiel: ReferentielsEnum) => {
     return axios.get<NomenclatureActivityOption[]>(
         stromaeBackOfficeApiBaseUrl + "api/nomenclature/" + idReferentiel,
-        getHeader(),
+        getHeader(stromaeBackOfficeApiBaseUrl),
     );
 };
 
@@ -65,7 +65,10 @@ export const fetchReferentiels = (
         axios
             .all(
                 refsEndPoints.map(endPoint =>
-                    axios.get(stromaeBackOfficeApiBaseUrl + endPoint, getHeader()),
+                    axios.get(
+                        stromaeBackOfficeApiBaseUrl + endPoint,
+                        getHeader(stromaeBackOfficeApiBaseUrl),
+                    ),
                 ),
             )
             .then(res => {
@@ -87,7 +90,10 @@ export const fetchReferentiels = (
 const fetchUserSurveysInfo = (setError: (error: ErrorCodeEnum) => void): Promise<UserSurveys[]> => {
     return new Promise(resolve => {
         axios
-            .get(edtOrganisationApiBaseUrl + "api/survey-assigment/interviewer/my-surveys", getHeader())
+            .get(
+                edtOrganisationApiBaseUrl + "api/survey-assigment/interviewer/my-surveys",
+                getHeader(edtOrganisationApiBaseUrl),
+            )
             .then(response => {
                 const data: UserSurveys[] = response.data;
                 resolve(data);
@@ -113,7 +119,10 @@ const fetchSurveysSourcesByIds = (
         axios
             .all(
                 sourcesEndPoints.map(endPoint =>
-                    axios.get(stromaeBackOfficeApiBaseUrl + endPoint, getHeader()),
+                    axios.get(
+                        stromaeBackOfficeApiBaseUrl + endPoint,
+                        getHeader(stromaeBackOfficeApiBaseUrl),
+                    ),
                 ),
             )
             .then(res => {
@@ -135,7 +144,10 @@ const fetchSurveysSourcesByIds = (
 const fetchReviewerSurveysAssignments = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     return new Promise(resolve => {
         axios
-            .get(edtOrganisationApiBaseUrl + "api/survey-assigment/reviewer/my-surveys", getHeader())
+            .get(
+                edtOrganisationApiBaseUrl + "api/survey-assigment/reviewer/my-surveys",
+                getHeader(edtOrganisationApiBaseUrl),
+            )
             .then(response => {
                 resolve(response.data);
             })
@@ -156,7 +168,11 @@ const requestPutSurveyData = (
 ): Promise<SurveyData> => {
     return new Promise<SurveyData>(resolve => {
         axios
-            .put(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, data, getHeader(token))
+            .put(
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
+                data,
+                getHeader(stromaeBackOfficeApiBaseUrl, token),
+            )
             .then(() => {
                 resolve(data);
             });
@@ -176,9 +192,9 @@ const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<Survey
             .then((user: User | null) => {
                 return requestPutSurveyData(idSurvey, data, user?.access_token);
             })
-            .catch(() => {
+            .catch(err => {
                 logout();
-                return Promise.reject(null);
+                return Promise.reject(err);
             });
     } else {
         return requestPutSurveyData(idSurvey, data);
@@ -202,9 +218,9 @@ const remotePutSurveyDataReviewer = (
             .then((user: User | null) => {
                 return requestPutSurveyDataReviewer(idSurvey, data, stateData, user?.access_token);
             })
-            .catch(() => {
+            .catch(err => {
                 logout();
-                return Promise.reject(null);
+                return Promise.reject(err);
             });
     } else {
         return requestPutSurveyDataReviewer(idSurvey, data, stateData);
@@ -221,7 +237,7 @@ const requestPutDataReviewer = (
             .put(
                 stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
                 data,
-                getHeader(token),
+                getHeader(stromaeBackOfficeApiBaseUrl, token),
             )
             .then(() => {
                 resolve(data);
@@ -239,7 +255,7 @@ const requestPutStateReviewer = (
             .put(
                 stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
                 data,
-                getHeader(token),
+                getHeader(stromaeBackOfficeApiBaseUrl, token),
             )
             .then(() => {
                 resolve(data);
@@ -271,7 +287,7 @@ const logout = () => {
     let auth = getAuth();
     auth.userManager
         .signoutRedirect({
-            id_token_hint: localStorage.getItem("id_token") || undefined,
+            id_token_hint: localStorage.getItem("id_token") ?? undefined,
         })
         .then(() => auth.userManager.clearStaleState())
         .then(() => auth.userManager.signoutRedirectCallback())
@@ -280,7 +296,7 @@ const logout = () => {
             localStorage.clear();
         })
         .then(() => auth.userManager.clearStaleState())
-        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
+        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL ?? ""));
 };
 
 const remoteGetSurveyData = (
@@ -289,15 +305,18 @@ const remoteGetSurveyData = (
 ): Promise<SurveyData> => {
     return new Promise(resolve => {
         axios
-            .get(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey, getHeader())
+            .get(
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
+                getHeader(stromaeBackOfficeApiBaseUrl),
+            )
             .then(response => {
                 resolve(response.data);
             })
             .catch(err => {
                 if (err.response?.status === 403) {
-                    setError && setError(ErrorCodeEnum.NO_RIGHTS);
+                    setError?.(ErrorCodeEnum.NO_RIGHTS);
                 } else {
-                    setError && setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
+                    setError?.(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
                 }
             });
     });
@@ -309,7 +328,10 @@ const requestGetDataReviewer = (
 ): Promise<LunaticData> => {
     return new Promise<LunaticData>(resolve => {
         axios
-            .get(stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data", getHeader())
+            .get(
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
+                getHeader(stromaeBackOfficeApiBaseUrl),
+            )
             .then(response => {
                 if (response.data?.data != null) {
                     resolve(response.data.data);
@@ -333,7 +355,7 @@ const requestGetStateReviewer = (
         axios
             .get(
                 stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
-                getHeader(),
+                getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {
                 resolve(response.data);
@@ -382,15 +404,15 @@ const remoteGetSurveyDataReviewer = (
     withState?: boolean,
 ): Promise<SurveyData> => {
     const isReviewerMode = isReviewer();
-    if (!isReviewerMode) setError && setError(ErrorCodeEnum.NO_RIGHTS);
+    if (!isReviewerMode) setError?.(ErrorCodeEnum.NO_RIGHTS);
 
     return requestGetSurveyDataReviewer(idSurvey, setError, withState).catch(err => {
         if (err.response?.status === 403) {
-            setError && setError(ErrorCodeEnum.NO_RIGHTS);
+            setError?.(ErrorCodeEnum.NO_RIGHTS);
         } else {
-            setError && setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
+            setError?.(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
         }
-        return Promise.reject(null);
+        return Promise.reject(err);
     });
 };
 

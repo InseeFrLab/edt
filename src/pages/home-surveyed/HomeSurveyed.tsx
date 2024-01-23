@@ -251,14 +251,16 @@ const HomeSurveyedPage = () => {
             <>
                 {renderReminderNote()}
                 <Box className={classes.groupCardBox}>
-                    {interviewersUniques.map((interviewer, index) => (
-                        <>
+                    {interviewersUniques.map((interviewer, index) => {
+                        const keyIndex = interviewer + "-" + index;
+                        return (
                             <PersonCard
+                                key={"person-card-" + keyIndex}
                                 numPerson={index}
                                 values={arrayOfSurveysPersonDemo(interviewer, index)}
                             />
-                        </>
-                    ))}
+                        );
+                    })}
                 </Box>
             </>,
         );
@@ -272,9 +274,16 @@ const HomeSurveyedPage = () => {
             <>
                 {renderReminderNote()}
                 <Box className={classes.groupCardBox}>
-                    {groups.map((group, index) => (
-                        <PersonCard numPerson={index} values={userDataGroupedInterv[group]} />
-                    ))}
+                    {groups.map((group, index) => {
+                        const keyIndex = group + "-" + index;
+                        return (
+                            <PersonCard
+                                key={"person-card-" + keyIndex}
+                                numPerson={index}
+                                values={userDataGroupedInterv[group]}
+                            />
+                        );
+                    })}
                 </Box>
             </>
         );
@@ -291,9 +300,7 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const validateSurveys = useCallback(() => {
-        validateAllEmptySurveys(idHousehold ?? "").then(() => {
-            //navigate(0);
-        });
+        validateAllEmptySurveys(idHousehold ?? "");
     }, []);
 
     const renderHomeReviewer = () => {
@@ -305,9 +312,16 @@ const HomeSurveyedPage = () => {
                 {renderReminderNote()}
 
                 <Box className={classes.groupCardBox}>
-                    {groups.map((group, index) => (
-                        <PersonCard numPerson={index} values={userDatas[group]} />
-                    ))}
+                    {groups.map((group, index) => {
+                        const keyIndex = group + "-" + index;
+                        return (
+                            <PersonCard
+                                key={"person-card-" + keyIndex}
+                                numPerson={index}
+                                values={userDatas[group]}
+                            />
+                        );
+                    })}
                 </Box>
                 <Box className={classes.navButtonsBox}>
                     <FlexCenter className={classes.innerButtonsBox}>

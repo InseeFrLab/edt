@@ -62,15 +62,13 @@ const DayOfSurveyPage = () => {
     }, [callbackHolder]);
 
     return (
-        <>
-            <SurveyPageStep
-                currentPage={EdtRoutesNameEnum.DAY_OF_SURVEY}
-                errorIcon={day_of_survey}
-                errorAltIcon={"accessibility.asset.day-of-survey-alt"}
-                isStep={false}
-                disableButton={modifiable ? disabledButton : true}
-            />
-        </>
+        <SurveyPageStep
+            currentPage={EdtRoutesNameEnum.DAY_OF_SURVEY}
+            errorIcon={day_of_survey}
+            errorAltIcon={"accessibility.asset.day-of-survey-alt"}
+            isStep={false}
+            disableButton={modifiable ? disabledButton : true}
+        />
     );
 };
 

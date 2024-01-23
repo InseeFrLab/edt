@@ -27,11 +27,11 @@ const DayCharacteristics = (props: DayCharacteristicsProps) => {
     const id = openPopOver ? "edit-or-delete-popover" : undefined;
 
     const onEditIn = useCallback((e: React.MouseEvent) => {
-        onEdit && onEdit();
+        onEdit?.();
         e.stopPropagation();
     }, []);
 
-    const onEditCard = useCallback((e: React.MouseEvent) => {
+    const onEditCard = useCallback((e: any) => {
         e.stopPropagation();
         setAnchorEl(e.currentTarget as HTMLButtonElement);
     }, []);
@@ -51,12 +51,11 @@ const DayCharacteristics = (props: DayCharacteristicsProps) => {
                     {t("component.day-characteristic.title")}
                 </h2>
                 {onEdit && modifiable && (
-                    <Box className={classes.editBox}>
+                    <Box className={classes.editBox} onClick={onEditCard} onKeyUp={onEditCard}>
                         <img
                             src={moreHorizontal}
                             alt={t("accessibility.asset.mui-icon.more-horizontal")}
                             className={classes.actionIcon}
-                            onClick={onEditCard}
                             aria-label="editCardToggle"
                         />
                         <Popover

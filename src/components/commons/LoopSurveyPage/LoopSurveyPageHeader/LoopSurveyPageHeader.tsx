@@ -19,12 +19,11 @@ const LoopSurveyPageHeader = (props: LoopSurveyPageHeaderProps) => {
                 <Box>
                     <Typography className={classes.infoText}>{label}</Typography>
                 </Box>
-                <Box>
+                <Box onClick={onClose} onKeyUp={onClose}>
                     <img
                         src={close}
                         alt={t("accessibility.asset.mui-icon.close")}
                         className={classes.actionIcon}
-                        onClick={onClose}
                     />
                 </Box>
             </Box>

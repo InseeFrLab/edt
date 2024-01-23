@@ -2,6 +2,16 @@ import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { Location } from "react-router-dom";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
+import {
+    isAndroid,
+    isChrome,
+    isDesktop,
+    isEdge,
+    isFirefox,
+    isIOS,
+    isMacOs,
+    isSafari,
+} from "react-device-detect";
 
 function groupBy<T>(arr: T[], fn: (item: T) => any) {
     return arr.reduce<Record<string, T[]>>((prev, curr) => {
@@ -12,21 +22,27 @@ function groupBy<T>(arr: T[], fn: (item: T) => any) {
     }, {});
 }
 
+function hasOwnProperty(obj: any, prop: string) {
+    return obj != null && Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
 function objectEquals(a: any, b: any) {
     for (let prop in a) {
-        if (a != null && Object.prototype.hasOwnProperty.call(a, prop)) {
-            if (b != null && Object.prototype.hasOwnProperty.call(b, prop)) {
-                if (typeof a[prop] === "object") {
-                    if (!objectEquals(a[prop], b[prop])) return false;
-                } else {
-                    if (a[prop] !== b[prop]) return false;
-                }
+        if (hasOwnProperty(a, prop)) {
+            if (hasOwnProperty(b, prop)) {
+                comparaisonPropsValues(a, b, prop);
             } else {
                 return false;
             }
         }
     }
     return true;
+}
+
+function comparaisonPropsValues(obj1: any, obj2: any, prop: string) {
+    if (typeof obj1[prop] === "object") {
+        if (!objectEquals(obj1[prop], obj2[prop])) return false;
+    } else if (obj1[prop] !== obj2[prop]) return false;
 }
 
 function getSurveyIdFromUrl(context: OrchestratorContext, location: Location) {
@@ -68,17 +84,6 @@ function getUniquesValues(listValues: any[]): any[] {
     return listValues.filter((value, index, self) => self.indexOf(value) === index);
 }
 
-import {
-    isAndroid,
-    isChrome,
-    isDesktop,
-    isEdge,
-    isFirefox,
-    isIOS,
-    isMacOs,
-    isSafari,
-} from "react-device-detect";
-
 const getDevice = () => {
     if (isIOS || isMacOs) {
         return "ios";
@@ -111,6 +116,9 @@ const getDeviceNavigatorIsAvaiableForInstall = () => {
         return null;
     }
 };
+function getClassCondition(condition: boolean, classNameYes: any, classNameNo: any) {
+    return condition ? classNameYes : classNameNo;
+}
 
 function getCookie(name: string): string | null {
     const nameLenPlus = name.length + 1;
@@ -134,6 +142,7 @@ export {
     getCookie,
     getDevice,
     getDeviceNavigatorIsAvaiableForInstall,
+    getClassCondition,
     getItemFromSession,
     getNavigator,
     getSurveyIdFromUrl,

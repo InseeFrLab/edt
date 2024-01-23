@@ -48,7 +48,7 @@ const HomeReviewerPage = () => {
             .clear()
             .then(() =>
                 auth.userManager.signoutRedirect({
-                    id_token_hint: localStorage.getItem("id_token") || undefined,
+                    id_token_hint: localStorage.getItem("id_token") ?? undefined,
                 }),
             )
             .then(() => auth.userManager.clearStaleState())

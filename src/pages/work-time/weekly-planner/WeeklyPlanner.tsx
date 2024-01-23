@@ -60,10 +60,7 @@ const WeeklyPlannerPage = () => {
 
     const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
         const callbackData = callbackHolder.getData();
-        let dataWeeklyCallback = callbackData?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER]
-            .COLLECTED as any[];
         if (data && data[1].length > 0) {
-            dataWeeklyCallback = data;
             if (callbackData.COLLECTED) {
                 callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data[0];
                 callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data[0];
@@ -84,10 +81,8 @@ const WeeklyPlannerPage = () => {
     };
 
     const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
-        const promisesToWait: Promise<any>[] = [];
-
         const callbackData = callbackHolder.getData();
-        const dataCopy = Object.assign({}, callbackData);
+        const dataCopy = { ...callbackData };
         const dates = (dataCopy?.COLLECTED?.["DATES"].COLLECTED ??
             getArrayFromSession("DATES")) as string[];
         const currentDateIndex = dates.indexOf(response.date);
@@ -100,7 +95,7 @@ const WeeklyPlannerPage = () => {
                 let quartier = dataCopy?.COLLECTED?.[name].COLLECTED as string[];
                 quartier[currentDateIndex] = response.values[name] + "";
 
-                if (dataCopy && dataCopy.COLLECTED) {
+                if (dataCopy?.COLLECTED) {
                     dataCopy.COLLECTED[name].COLLECTED = quartier;
                 }
             });
@@ -176,7 +171,7 @@ const WeeklyPlannerPage = () => {
 
     const validateAndNav = (): void => {
         if (displayDayOverview) {
-            //save(idSurvey);
+            save(idSurvey);
             if (isPlaceWorkDisplayed) {
                 setDisplayDayOverview(true);
                 setIsPlaceWorkDisplayed(false);

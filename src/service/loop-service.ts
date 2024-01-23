@@ -100,6 +100,43 @@ const ignoreActivity = (
     }
     return false;
 };
+
+const getStringOrEmpty = (text: string | undefined) => {
+    return text ?? "";
+};
+
+const ignoreIfContidional = (conditional: string | boolean, ignore: boolean) => {
+    if (typeof conditional == "string") ignore = conditional.length > 0;
+    if (typeof conditional == "boolean") ignore = conditional;
+    return ignore;
+};
+
+/**
+ * ignore all variables of composant if it's added one of dependencies of component
+ */
+const ifIgnoreVariables = (
+    component: LunaticModelComponent | undefined,
+    data: LunaticData | undefined,
+    iteration: number,
+    mustShowPageOfConditional: boolean,
+) => {
+    //in page of conditional select yes
+    if (mustShowPageOfConditional) {
+        let ignore = false;
+        const deps = component?.bindingDependencies; //values of composant
+        deps?.forEach(dep => {
+            const value = getValueOfData(data, getStringOrEmpty(dep));
+            if (Array.isArray(value) && value[iteration] != null) {
+                const conditional = value[iteration] as string | boolean;
+                if (!ignore) {
+                    ignore = ignoreIfContidional(conditional, ignore);
+                }
+            }
+        });
+        return ignore;
+    } //other, skip variables of conditional
+    else return true;
+};
 /**
  * Skip pages conditionals
  * if conditional value is false or
@@ -118,39 +155,19 @@ const ignoreVariablesCondtionals = (
     iteration: number,
 ) => {
     const pageOfConditional = Number(component?.page?.split(".")[1]) - 1;
-    const isPageOfConditional = LOOP_PAGES_CONDITIONALS.indexOf(component?.page ?? "") >= 0;
+    const isPageOfConditional = LOOP_PAGES_CONDITIONALS.indexOf(getStringOrEmpty(component?.page)) >= 0;
 
     const componentConditional = loopComponents.find(
         component => component.page == component?.page?.split(".")[0] + "." + pageOfConditional,
     );
     const depConditional = componentConditional?.bindingDependencies?.[0];
-    const valueOfConditional = getValueOfData(data, depConditional ?? "") as string[];
+    const valueOfConditional = getValueOfData(data, getStringOrEmpty(depConditional)) as string[];
 
     //is page of values of conditional = true
     if (isPageOfConditional) {
         const mustShowPageOfConditional =
-            valueOfConditional &&
-            valueOfConditional?.[iteration] != null &&
-            valueOfConditional?.[iteration] == "true";
-        //in page of conditional select yes
-        if (mustShowPageOfConditional) {
-            let ignore = false;
-            const deps = component?.bindingDependencies; //values of composant
-            //ignore all variables of composant if it's added one of dependencies of component
-            deps?.forEach(dep => {
-                const value = getValueOfData(data, dep ?? "");
-
-                if (Array.isArray(value) && value[iteration] != null) {
-                    const conditional = value[iteration] as string | boolean;
-                    if (!ignore) {
-                        if (typeof conditional == "string") ignore = conditional.length > 0;
-                        if (typeof conditional == "boolean") ignore = conditional;
-                    }
-                }
-            });
-            return ignore;
-        } //other, skip variables of conditional
-        else return true;
+            valueOfConditional?.[iteration] != null && valueOfConditional?.[iteration] == "true";
+        return ifIgnoreVariables(component, data, iteration, mustShowPageOfConditional);
     } else return false;
 };
 
@@ -349,7 +366,7 @@ const skipNextPage = (
         saveAndLoopNavigate(
             idSurvey,
             source,
-            nextPageRoute || nextPageNextLoop,
+            nextPageRoute ?? nextPageNextLoop,
             LoopEnum.ACTIVITY_OR_ROUTE,
             iteration,
             fieldConditionNext,
@@ -401,7 +418,7 @@ const skipBackPage = (
         saveAndLoopNavigate(
             idSurvey,
             source,
-            backPageRoute || backPageBackLoop,
+            backPageRoute ?? backPageBackLoop,
             LoopEnum.ACTIVITY_OR_ROUTE,
             iteration,
             fieldConditionBack,
@@ -557,6 +574,10 @@ const getCodesSubCategories = (
     }
 };
 
+const setIfLoopCompleted = (components: LunaticModelComponent[], notFilled: boolean, i: number) => {
+    return i == components.length && !notFilled;
+};
+
 // Give the first loop subpage that don't have any data fill
 const getCurrentLoopPage = (
     idSurvey: string,
@@ -598,7 +619,7 @@ const getCurrentLoopPage = (
         }
         i++;
     }
-    if (i == components.length && !notFilled) completed = true;
+    completed = setIfLoopCompleted(components, notFilled, i);
     setLoopCompleted(idSurvey, iteration, completed);
 
     if (completed) {
@@ -648,7 +669,7 @@ const getLoopSizeOfVariable = (
 };
 
 const getLoopSize = (idSurvey: string, currentLoop: LoopEnum, sourceModel?: LunaticModel): number => {
-    const source = sourceModel != null ? sourceModel : getCurrentPageSource();
+    const source = sourceModel ?? getCurrentPageSource();
     const loopPage = getLoopInitialPage(currentLoop);
     if (!source?.components) {
         return 0;

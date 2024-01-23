@@ -17,6 +17,18 @@ const App = () => {
     const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
     const auth = useAuth();
 
+    const getTokenHint = () => {
+        return localStorage.getItem("id_token") ?? undefined;
+    };
+
+    const setErrorType = (err: any) => {
+        if (err.response.status === 403) {
+            setError(ErrorCodeEnum.NO_RIGHTS);
+        } else {
+            setError(ErrorCodeEnum.COMMON);
+        }
+    };
+
     useEffect(() => {
         if (
             window.location.search &&
@@ -44,7 +56,7 @@ const App = () => {
                 if (navigator.onLine) {
                     auth.userManager
                         .signoutRedirect({
-                            id_token_hint: localStorage.getItem("id_token") || undefined,
+                            id_token_hint: getTokenHint(),
                         })
                         .then(() => auth.userManager.clearStaleState())
                         .then(() => auth.userManager.signoutRedirectCallback())
@@ -55,11 +67,7 @@ const App = () => {
                         .then(() => auth.userManager.clearStaleState())
                         .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""))
                         .catch(err => {
-                            if (err.response.status === 403) {
-                                setError(ErrorCodeEnum.NO_RIGHTS);
-                            } else {
-                                setError(ErrorCodeEnum.COMMON);
-                            }
+                            setErrorType(err);
                         });
                 }
             });

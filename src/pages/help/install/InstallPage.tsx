@@ -26,9 +26,13 @@ const InstallPage = () => {
         stepImage = mapSteps?.get(device)?.get(navigator)?.[step - 2] ?? "";
     }, [step]);
 
+    const getIconStep = () => {
+        return step < stepFinal ? download : finalization;
+    };
+
     return (
         <InstallPageStep
-            iconTitle={step == 1 ? installation : step < stepFinal ? download : finalization}
+            iconTitle={step == 1 ? installation : getIconStep()}
             iconTitleAlt={t("accessibility.asset.installation-alt")}
             title={t("component.help.install.common.title")}
             description={

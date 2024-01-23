@@ -18,7 +18,6 @@ interface HouseholdCardProps {
     closedSurveyLabel: string;
     validatedSurveyLabel: string;
     dataHousehold: any;
-    onClick?: () => void;
     tabIndex: number;
 }
 

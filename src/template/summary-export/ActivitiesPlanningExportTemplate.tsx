@@ -10,6 +10,9 @@ const ActivitiesPlanningExportTemplate = (props: ActivitiesPlanningExportTemplat
     const { exportData } = props;
     const { t } = useTranslation();
 
+    const getKeyOfActivitesPlanning = (index: number) => {
+        return "row-activities-planning-" + index;
+    };
     return (
         <View>
             <View style={classes.title}>
@@ -55,7 +58,7 @@ const ActivitiesPlanningExportTemplate = (props: ActivitiesPlanningExportTemplat
                         </View>
                     </View>
                     {exportData.activities.map((activity, index) => (
-                        <View style={classes.tableRow} key={"row-activities-planning-" + index}>
+                        <View style={classes.tableRow} key={getKeyOfActivitesPlanning(index)}>
                             <View style={classes.tableCol14}>
                                 <Text style={classes.tableCell}>
                                     {activity.startTime + " - " + activity.endTime}

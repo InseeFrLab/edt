@@ -16,6 +16,14 @@ interface WeekCardProps {
     tabIndex: number;
 }
 
+const getClassModePersist = (
+    modeReviewer: boolean,
+    classNameReviewer: any,
+    classNameInterviewer: any,
+) => {
+    return modeReviewer ? classNameReviewer : classNameInterviewer;
+};
+
 const WeekCard = (props: WeekCardProps) => {
     const { labelledBy, describedBy, onClick, surveyDate, isClose, tabIndex } = props;
     const { classes, cx } = useStyles();
@@ -59,13 +67,11 @@ const WeekCard = (props: WeekCardProps) => {
                     </Box>
                 </Box>
                 <Box
-                    className={
-                        modeReviewer
-                            ? isItMobile
-                                ? classes.scoreReviewerBoxMobile
-                                : classes.scoreReviewerBox
-                            : classes.scoreBox
-                    }
+                    className={getClassModePersist(
+                        modeReviewer,
+                        isItMobile ? classes.scoreReviewerBoxMobile : classes.scoreReviewerBox,
+                        classes.scoreBox,
+                    )}
                 >
                     <Box
                         className={cx(

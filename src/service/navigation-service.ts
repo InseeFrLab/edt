@@ -86,7 +86,7 @@ const getFullNavigatePath = (
     const targetPage = mappingPageOrchestrator.find(
         link => link.page === page && (parentPage ? link.parentPage === parentPage : true),
     );
-    if (targetPage && targetPage.parentPage) {
+    if (targetPage?.parentPage) {
         return getParameterizedNavigatePath(targetPage.parentPage, idSurvey) + getNavigatePath(page);
     } else if (targetPage) {
         return getNavigatePath(page);
@@ -147,7 +147,7 @@ const getCurrentNavigatePath = (
         parentPage = pageOrchestrator?.parentPage;
     } else {
         const currentPage = getCurrentPage(surveyData, source);
-        const firstEmptyPage = nextPage ? nextPage : currentPage;
+        const firstEmptyPage = nextPage ?? currentPage;
         page = mappingPageOrchestrator.find(
             link =>
                 link.surveyPage ===
@@ -170,7 +170,7 @@ const getOrchestratorPage = (page: EdtRoutesNameEnum, parentPage?: EdtRoutesName
         mappingPageOrchestrator.find(
             pageData =>
                 pageData.page === page && (parentPage ? pageData.parentPage === parentPage : true),
-        )?.surveyPage || ""
+        )?.surveyPage ?? ""
     );
 };
 
@@ -214,7 +214,7 @@ const saveAndNav = (
  */
 const closeFormularieAndNav = (idSurvey: string, route: string) => {
     const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
-    saveData(idSurvey, data ? data : _callbackHolder.getData()).then(() => {
+    saveData(idSurvey, data ?? _callbackHolder.getData()).then(() => {
         _navigate(route);
     });
 };
@@ -245,7 +245,7 @@ const navToRouteOrRouteNotSelection = (
         } else {
             _navigate(routeNotSelection as To);
         }
-    } else _navigate(route ? route : getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
+    } else _navigate(route ?? getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
 };
 
 const navToHome = (): void => {
@@ -384,8 +384,9 @@ const navToActivityOrPlannerOrSummary = (
             const navEndSurvey =
                 getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
                 getNavigatePath(EdtRoutesNameEnum.END_SURVEY);
+
             const allStepsAdded =
-                currentPathNav.indexOf(EdtRoutesNameEnum.PHONE_TIME) != 0 &&
+                currentPathNav.startsWith(EdtRoutesNameEnum.PHONE_TIME) &&
                 getValue(idSurvey, FieldNameEnum.PHONETIME) != null;
             navigate(allStepsAdded ? navEndSurvey : currentPathNav);
         }
@@ -450,9 +451,13 @@ const getIdSurveyContext = (typeSurvey: SurveysIdsEnum) => {
     return _context ? _context.idSurvey : surveysIds[typeSurvey][0];
 };
 
-const isPageGlobal = () => {
+const isGlobalString = () => {
     const isGlobal = localStorage.getItem(LocalStorageVariableEnum.IS_GLOBAL);
-    return _context ? _context.global : isGlobal != null && isGlobal == "true" ? true : false;
+    return isGlobal != null && isGlobal == "true";
+};
+
+const isPageGlobal = () => {
+    return _context ? _context.global : isGlobalString();
 };
 
 const isActivityPage = () => {

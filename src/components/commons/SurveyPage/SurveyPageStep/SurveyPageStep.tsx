@@ -131,17 +131,19 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         modifiable: modifiable,
     };
 
+    const nextRouteNav = useCallback(() => {
+        if (validateButton) {
+            return validateButton;
+        } else {
+            nextRoute
+                ? saveAndNavFullPath(idSurvey, nextRoute)
+                : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage);
+        }
+    }, []);
+
     const surveyPageNotStepProps = {
         idSurvey: idSurvey,
-        validate:
-            validateButton ??
-            useCallback(
-                () =>
-                    nextRoute
-                        ? saveAndNavFullPath(idSurvey, nextRoute)
-                        : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage),
-                [],
-            ),
+        validate: nextRouteNav,
         srcIcon: errorIcon,
         altIcon: errorAltIcon ? t(errorAltIcon) : undefined,
         onNavigateBack: useCallback(() => saveAndNav(idSurvey), []),
@@ -201,6 +203,10 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     );
 };
 
+const stylePageMobileTabletWhenIOS = (isOpen: boolean) => {
+    return isOpen ? "80vh" : "87vh";
+};
+
 const useStyles = makeStylesEdt<{
     isMobile: boolean;
     isIOS: boolean;
@@ -217,7 +223,7 @@ const useStyles = makeStylesEdt<{
     },
     pageMobileTablet: {
         height: "100%",
-        maxHeight: isIOS ? (isOpen ? "80vh" : "87vh") : "94vh",
+        maxHeight: isIOS ? stylePageMobileTabletWhenIOS(isOpen) : "94vh",
     },
 }));
 

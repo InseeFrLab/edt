@@ -51,10 +51,7 @@ const ErrorPage = (props: ErrorPageProps) => {
         errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
     };
 
-    let navigate: NavigateFunction | undefined = undefined;
-    if (!atInit) {
-        navigate = useNavigate();
-    }
+    let navigate: NavigateFunction = useNavigate();
 
     const navToHome = useCallback(() => {
         if (navigate) {
@@ -124,7 +121,7 @@ const ErrorPage = (props: ErrorPageProps) => {
 
     const disconnect = useCallback(() => {
         auth.userManager.signoutRedirect({
-            id_token_hint: localStorage.getItem("id_token") || undefined,
+            id_token_hint: localStorage.getItem("id_token") ?? undefined,
         });
         auth.userManager.clearStaleState();
         auth.userManager.signoutRedirectCallback().then(() => {

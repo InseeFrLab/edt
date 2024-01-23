@@ -45,21 +45,10 @@ const HelpMenuInner = (props: HelpMenuInnerProps) => {
     };
 
     return (
-        <>
-            <Box className={cx(className, getClassDevice(classes.modalMobile, classes.modalDefault))}>
-                <Box id="contact" className={getClassNavigateBox()} onClick={onClickContact}>
-                    <Box className={getClassIconBox()}>
-                        <img src={mail} alt={t("accessibility.asset.help-menu.contact-alt")} />
-                    </Box>
-                    <Box className={getClassTextBox()}>
-                        <p>{t("component.help-menu.contact-label")}</p>
-                    </Box>
-                    <Box className={getClassNavIconBox()}>
-                        <img
-                            src={arrowForwardIos}
-                            alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
-                        />
-                    </Box>
+        <Box className={cx(className, getClassDevice(classes.modalMobile, classes.modalDefault))}>
+            <Box id="contact" className={getClassNavigateBox()} onClick={onClickContact}>
+                <Box className={getClassIconBox()}>
+                    <img src={mail} alt={t("accessibility.asset.help-menu.contact-alt")} />
                 </Box>
                 <Divider light />
                 {getDeviceNavigatorIsAvaiableForInstall() && (
@@ -98,24 +87,33 @@ const HelpMenuInner = (props: HelpMenuInnerProps) => {
                         />
                     </Box>
                 </Box>
-                <FlexCenter>
-                    <Button
-                        className={getClassDevice(classes.closeButtonMobile, classes.closeButton)}
-                        onClick={handleClose}
-                    >
-                        <Box>
-                            <Box>
-                                <img
-                                    src={isMobile ? expandLess : close}
-                                    alt={t("accessibility.asset.mui-icon.close")}
-                                />
-                            </Box>
-                            {!isMobile && <Box>{t("common.navigation.close")}</Box>}
-                        </Box>
-                    </Button>
-                </FlexCenter>
+                <Box className={getClassTextBox()}>
+                    <p>{t("component.help-menu.help-label")}</p>
+                </Box>
+                <Box className={getClassNavIconBox()}>
+                    <img
+                        src={arrowForwardIos}
+                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                    />
+                </Box>
             </Box>
-        </>
+            <FlexCenter>
+                <Button
+                    className={getClassDevice(classes.closeButtonMobile, classes.closeButton)}
+                    onClick={handleClose}
+                >
+                    <Box>
+                        <Box>
+                            <img
+                                src={isMobile ? expandLess : close}
+                                alt={t("accessibility.asset.mui-icon.close")}
+                            />
+                        </Box>
+                        {!isMobile && <Box>{t("common.navigation.close")}</Box>}
+                    </Box>
+                </Button>
+            </FlexCenter>
+        </Box>
     );
 };
 

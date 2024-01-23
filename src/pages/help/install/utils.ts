@@ -17,7 +17,37 @@ import edgeIOS3 from "assets/illustration/install/ios/edge3.svg";
 import safariIOS1 from "assets/illustration/install/ios/safari1.svg";
 import safariIOS2 from "assets/illustration/install/ios/safari2.svg";
 import safariIOS3 from "assets/illustration/install/ios/safari3.svg";
-import { getDevice, getNavigator } from "utils/utils";
+
+import {
+    isAndroid,
+    isChrome,
+    isEdge,
+    isFirefox,
+    isIOS,
+    isMacOs,
+    isSafari,
+    isWindows,
+} from "react-device-detect";
+
+export const isIOSDevice = () => {
+    return isIOS || isMacOs ? "ios" : "";
+};
+
+export const getDevice = () => {
+    return isAndroid || isWindows ? "android" : isIOSDevice();
+};
+
+export const getNavigator = () => {
+    if (isChrome) {
+        return "chrome";
+    } else if (isEdge) {
+        return "edge";
+    } else if (isFirefox) {
+        return "firefox";
+    } else if (isSafari) {
+        return "safari";
+    } else return "";
+};
 
 export const getLabelStep = (step: number, stepFinal: number) => {
     const device = getDevice();
