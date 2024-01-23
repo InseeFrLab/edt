@@ -18,7 +18,8 @@
         "noImplicitAny": true,
         "noImplicitThis": true,
         "strictNullChecks": true,
-        "baseUrl": "src"
+        "baseUrl": "src",
+        "downlevelIteration": true
     },
     "allowImportingTsExtensions": true,
     "include": ["src"]
