@@ -64,7 +64,6 @@ const SurveysOverviewPage = () => {
 
     const initHouseholds = () => {
         dataHouseholds = getListSurveysHousehold();
-        console.log(searchResult, dataHouseholds);
         if (searchResult == null || searchResult.length == 0) setSearchResult(dataHouseholds);
         getListCampaigns();
     };

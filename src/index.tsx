@@ -19,11 +19,7 @@ const getAuthority = () => {
     return authority;
 };
 
-const userManagerCustom = isSSO
-    ? {
-          userManager: createUserManager(),
-      }
-    : {};
+const userManagerCustom = isSSO ? { userManager: createUserManager() } : {};
 
 const oidcConfig = {
     onSignIn: () => {
