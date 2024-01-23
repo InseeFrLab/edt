@@ -40,6 +40,7 @@ import {
     USER_SURVEYS_DATA,
     UserSurveysData,
 } from "interface/lunatic/Lunatic";
+import { NavigateFunction } from "react-router-dom";
 import { fetchReviewerSurveysAssignments } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrator-service";
@@ -824,7 +825,6 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
                 promisesToWait.push(
                     remotePutSurveyData(idSurvey, surveyData)
                         .then(dataRemote => {
-                            console.log("push remote data intereviewer");
                             setLocalOrRemoteData(idSurvey, dataRemote, data, stateData);
                         })
                         .catch(() => {
@@ -1689,8 +1689,8 @@ const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum 
     const isReviewerMode = isReviewer();
     const isLocked = (data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED as boolean) == true;
     const variableEdited = existVariableEdited(undefined, data);
-
-    return isReviewerMode || isLocked || variableEdited
+    const isWorkTime = data?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER];
+    return (isReviewerMode || isLocked || variableEdited) && !isWorkTime
         ? ModePersistenceEnum.EDITED
         : ModePersistenceEnum.COLLECTED;
 };
@@ -1752,7 +1752,7 @@ const getSurveysAct = () => {
     return surveys;
 };
 
-const validateAllGroup = (idSurvey: string, inputAct: string, navigate: any) => {
+const validateAllGroup = (navigate: NavigateFunction, idSurvey: string, inputNameAct: string) => {
     const surveys = getSurveysAct();
 
     const personAct = surveys?.find(survey => survey.data.surveyUnitId == idSurvey);
@@ -1785,7 +1785,7 @@ const validateAllGroup = (idSurvey: string, inputAct: string, navigate: any) => 
         route = getFullNavigatePath(idSurvey, EdtRoutesNameEnum.DAY_OF_SURVEY, surveyRootPage);
     }
 
-    setAllNamesOfGroupAndNav(idSurvey, idsSurveysFromGroupAct, inputAct, route, navigate);
+    setAllNamesOfGroupAndNav(navigate, route, idSurvey, idsSurveysFromGroupAct, inputNameAct);
 };
 
 export {

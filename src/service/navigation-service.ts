@@ -6,6 +6,7 @@ import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
+import { callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction } from "react";
 import { NavigateFunction, To } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
@@ -278,22 +279,30 @@ const navToActivityRoutePlanner = (idSurvey: string, source: LunaticModel) => {
     );
 };
 
-const setNamesOfGroup = (idSurvey: string, nameAct: string, idsSurveysOfGroup: string[]) => {
+const setNamesOfGroup = (idSurvey: string, idsSurveysOfGroup: string[], nameAct: string) => {
     let listNames = idsSurveysOfGroup
         ?.map(id => {
             const firstName = getValue(id, FieldNameEnum.FIRSTNAME) as string;
             return firstName;
         })
         .filter(firstname => firstname != null);
+    const nameSaved = getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string;
+    const replaceName = nameSaved != null && nameSaved.length > 0;
+
     const promises: any[] = [];
-    const nameOfGroup = listNames.length > 0 ? listNames[0] : nameAct;
+    const nameOfGroup = listNames.length > 0 && !replaceName ? listNames[0] : nameAct;
+    const date = callbackHolder.getData().COLLECTED?.[FieldNameEnum.SURVEYDATE].COLLECTED as string;
     idsSurveysOfGroup.forEach(idSurvey => {
         let firstname = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
-        if (firstname == null) {
+        if (firstname == null || replaceName) {
             let dataActuel = Object.assign({}, getData(idSurvey));
             const datasirv = { ...dataActuel };
-            const emptydata = emptyDataSetFirstName(datasirv, nameOfGroup, getModePersistence(datasirv));
-            console.log(emptydata);
+            const emptydata = emptyDataSetFirstName(
+                datasirv,
+                getModePersistence(datasirv),
+                nameOfGroup,
+                date,
+            );
             promises.push(saveData(idSurvey, emptydata));
         }
     });
@@ -302,11 +311,11 @@ const setNamesOfGroup = (idSurvey: string, nameAct: string, idsSurveysOfGroup: s
 
 const emptyDataSetFirstName = (
     data: LunaticData,
-    firstName: string,
     modePersistence: ModePersistenceEnum,
+    firstName: string,
+    surveyDate?: string,
 ) => {
     let dataCollected = { ...data.COLLECTED };
-
     if (dataCollected) {
         for (let prop in FieldNameEnum as any) {
             if (prop == FieldNameEnum.SURVEYDATE) continue;
@@ -318,7 +327,6 @@ const emptyDataSetFirstName = (
                 PREVIOUS: null,
             };
         }
-
         dataCollected[FieldNameEnum.FIRSTNAME] = {
             COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,
             EDITED: modePersistence == ModePersistenceEnum.EDITED ? firstName : null,
@@ -326,18 +334,27 @@ const emptyDataSetFirstName = (
             INPUTED: null,
             PREVIOUS: null,
         };
+        if (surveyDate) {
+            dataCollected[FieldNameEnum.SURVEYDATE] = {
+                COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? surveyDate : null,
+                EDITED: modePersistence == ModePersistenceEnum.EDITED ? surveyDate : null,
+                FORCED: null,
+                INPUTED: null,
+                PREVIOUS: null,
+            };
+        }
     }
     data.COLLECTED = dataCollected;
     return data;
 };
 const setAllNamesOfGroupAndNav = (
+    navigate: NavigateFunction,
+    route: string,
     idSurvey: string,
     idsSurveysOfGroup: string[],
     nameAct: string,
-    route: string,
-    navigate: any,
 ) => {
-    const promises = setNamesOfGroup(idSurvey, nameAct, idsSurveysOfGroup);
+    const promises = setNamesOfGroup(idSurvey, idsSurveysOfGroup, nameAct);
     Promise.all(promises).then(() => {
         navigate(route);
     });

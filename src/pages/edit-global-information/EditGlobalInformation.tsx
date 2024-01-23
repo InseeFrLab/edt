@@ -49,9 +49,10 @@ const EditGlobalInformationPage = () => {
     }, [callbackHolder]);
 
     const validate = useCallback(() => {
-        const input = (document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement)
-            ?.value;
-        validateAllGroup(idSurvey, input, navigate);
+        const inputName = (
+            document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement
+        )?.value;
+        validateAllGroup(navigate, idSurvey, inputName);
     }, []);
 
     return (
