@@ -221,7 +221,8 @@
             "closeds-survey-label": "Carnets clôturés",
             "validated-survey-label": "Carnet validé",
             "validateds-survey-label": "Carnets validés",
-            "refresh-button": "Actualiser la liste"
+            "refresh-button": "Actualiser la liste",
+            "all-campaigns": "Toutes les vagues"
         },
         "reviewer-home": {
             "welcome": "Bienvenue dans votre espace",

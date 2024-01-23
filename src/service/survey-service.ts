@@ -243,6 +243,7 @@ const activitySurveyDemo = () => {
             surveyUnitId: "activitySurvey" + i,
             questionnaireModelId: SourcesEnum.ACTIVITY_SURVEY,
             campaignId: "",
+            subCampaignId: "",
             id: i,
             reviewerId: "",
         };
@@ -265,6 +266,7 @@ const workTimeSurveyDemo = () => {
             surveyUnitId: "workTimeSurvey" + i,
             questionnaireModelId: SourcesEnum.WORK_TIME_SURVEY,
             campaignId: "",
+            subCampaignId: "",
             id: i,
             reviewerId: "",
         };
@@ -561,6 +563,7 @@ const getListSurveysHousehold = (): Household[] => {
                 surveyDate: getSurveyDataHousehold(value),
                 stats: getStatsHousehold(value),
                 campaingId: value[0].campaignId ?? undefined,
+                subCampaignId: value[0].subCampaignId ?? undefined,
             };
         })
         .sort(
@@ -1329,6 +1332,7 @@ const createNameSurveyMap = (idSurveys: string[]) => {
                     : SourcesEnum.WORK_TIME_SURVEY,
                 id: 0,
                 campaignId: "",
+                subCampaignId: "",
                 interviewerId: "",
                 reviewerId: "",
             };
@@ -1416,6 +1420,7 @@ const arrayOfSurveysPersonDemo = (interviewer: string, index: number): Person[] 
                 surveyUnitId: getIdSurveyActivity(interviewer, 0),
                 interviewerId: interviewer,
                 campaignId: "",
+                subCampaignId: "",
             },
             firstName: "zzzz" + interviewer,
             num: index,
@@ -1426,6 +1431,7 @@ const arrayOfSurveysPersonDemo = (interviewer: string, index: number): Person[] 
                 surveyUnitId: getIdSurveyActivity(interviewer, 1),
                 interviewerId: interviewer,
                 campaignId: "",
+                subCampaignId: "",
             },
             firstName: "zzzz" + interviewer,
             num: index,
@@ -1436,6 +1442,7 @@ const arrayOfSurveysPersonDemo = (interviewer: string, index: number): Person[] 
                 surveyUnitId: getIdSurveyWorkTime(interviewer),
                 interviewerId: interviewer,
                 campaignId: "",
+                subCampaignId: "",
             },
             firstName: "zzzz" + interviewer,
             num: index,

@@ -7,7 +7,6 @@ import {
     MenuItem,
     OutlinedInput,
     Select,
-    SelectChangeEvent,
     Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
@@ -28,7 +27,7 @@ import { SurveyData } from "interface/entity/Api";
 import { Household } from "interface/entity/Household";
 import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { TFunction, useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { remotePutSurveyDataReviewer } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
@@ -43,6 +42,18 @@ import {
 } from "service/survey-service";
 import { getUniquesValues } from "utils/utils";
 
+const getListCampaigns = (dataHouseholds: Household[], t: TFunction<"translation", undefined>) => {
+    const subCampaignIds = getUniquesValues(
+        dataHouseholds.map(household => household.subCampaignId),
+    ).map(household => {
+        return {
+            value: household,
+            label: household,
+        };
+    });
+    return [{ value: "all", label: t("page.surveys-overview.all-campaigns") }].concat(subCampaignIds);
+};
+
 const SurveysOverviewPage = () => {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
@@ -52,24 +63,28 @@ const SurveysOverviewPage = () => {
     const isItMobile = isMobile();
 
     let dataHouseholds = getListSurveysHousehold();
-    let campaingsList = getUniquesValues(dataHouseholds?.map(household => household.campaingId));
-
+    let campaingsList = getListCampaigns(dataHouseholds, t);
     let [isFilterValidatedSurvey, setIsFilterValidatedSurvey] = React.useState(false);
     let [campaingFilter, setCampaingFilter] = React.useState<string>("all");
+    let [nameOrIdentiantFilter, setNameOrIdentiantFilter] = React.useState<string>("");
 
     let [searchResult, setSearchResult] = React.useState<Household[] | undefined>(undefined);
-    let [filterValidatedResult, setFilterValidatedResult] = React.useState(emptyArray);
+    let [filterValidatedResult, setFilterValidatedResult] = React.useState<Household[]>(emptyArray);
+    let [filterCampaingResult, setFilterCampaingResult] = React.useState<Household[]>(emptyArray);
+    let [filterNameOrIdentiantResult, setFilterNameOrIdentiantResult] =
+        React.useState<Household[]>(emptyArray);
+
     let [initialized, setInitialized] = React.useState(false);
     const [error, setError] = React.useState<ErrorCodeEnum | undefined>(undefined);
 
     const initHouseholds = () => {
         dataHouseholds = getListSurveysHousehold();
-        if (searchResult == null || searchResult.length == 0) setSearchResult(dataHouseholds);
-        getListCampaigns();
-    };
-
-    const getListCampaigns = () => {
-        campaingsList = getUniquesValues(dataHouseholds.map(household => household.campaingId));
+        if (searchResult == null || searchResult.length == 0) {
+            setSearchResult(dataHouseholds);
+            console.log("set search result");
+        }
+        campaingsList = getListCampaigns(dataHouseholds, t);
+        console.log(campaingsList);
     };
 
     useEffect(() => {
@@ -127,7 +142,7 @@ const SurveysOverviewPage = () => {
         });
     }, []);
 
-    const isToFilter = (houseHoldData: any): boolean => {
+    const isToFilterValidate = (houseHoldData: any): boolean => {
         return (
             houseHoldData.stats?.numHouseholdsInProgress == 0 &&
             houseHoldData.stats?.numHouseholdsClosed == 0 &&
@@ -135,89 +150,82 @@ const SurveysOverviewPage = () => {
         );
     };
 
-    const onFilterSearchBox = useCallback(
-        (event: any) => {
-            dataHouseholds.forEach(household => {
-                return household;
-            });
-            const value = event.target.value.toLowerCase();
+    const isToFilterCampaing = (houseHoldData: any, value: string): boolean => {
+        return houseHoldData.subCampaignId.toLowerCase() == value.toLowerCase();
+    };
 
-            let newSearchResult = dataHouseholds.filter(houseHoldData =>
-                houseHoldData?.idHousehold?.toLowerCase().includes(value),
+    const isToFilterNameOrIdentifiant = (houseHoldData: any, value: string): boolean => {
+        return (
+            houseHoldData?.userName?.toLowerCase().includes(value.toLowerCase()) ||
+            houseHoldData?.idHousehold?.toLowerCase().includes(value.toLowerCase())
+        );
+    };
+
+    const filterValidate = (listStart: any[], value: boolean): Household[] => {
+        if (value) {
+            return getUniquesValues(
+                listStart?.filter((houseHoldData: any) => isToFilterValidate(houseHoldData)),
             );
+        } else return [];
+    };
 
-            if (isFilterValidatedSurvey) {
-                newSearchResult = newSearchResult?.filter(houseHoldData => !isToFilter(houseHoldData));
-            }
-            sortSearchResult(newSearchResult);
-            setSearchResult(newSearchResult);
-            let newFilterValidatedResult = dataHouseholds.filter(
-                houseHoldData =>
-                    (houseHoldData?.userName?.toLowerCase().includes(event.target.value.toLowerCase()) ||
-                        houseHoldData?.idHousehold?.includes(event.target.value)) &&
-                    isToFilter(houseHoldData),
+    const filterCampaign = (listStart: any[], value: string): Household[] => {
+        if (value != "all") {
+            return listStart?.filter((houseHoldData: any) => !isToFilterCampaing(houseHoldData, value));
+        } else return [];
+    };
+
+    const filterNameOrIdentifiant = (listStart: any[], value: string): Household[] => {
+        if (value != "") {
+            console.log(value);
+            return listStart?.filter(
+                (houseHoldData: any) => !isToFilterNameOrIdentifiant(houseHoldData, value),
             );
+        } else return [];
+    };
 
-            if (campaingFilter) {
-                newFilterValidatedResult = dataHouseholds.filter(
-                    houseHoldData => houseHoldData?.campaingId == campaingFilter,
-                );
+    const isToFilter = (listOfElements: Household[], houseHoldData: Household): boolean => {
+        return listOfElements.findIndex(hh => hh.idHousehold == houseHoldData.idHousehold) >= 0;
+    };
+
+    useEffect(() => {
+        const allFiltres = filterNameOrIdentiantResult
+            .concat(filterValidatedResult)
+            .concat(filterCampaingResult);
+        const arrayUniqueByKey = [
+            ...new Map(allFiltres.map(item => [item["idHousehold"], item])).values(),
+        ];
+        let newFilterCampaingResult =
+            dataHouseholds?.filter(houseHoldData => !isToFilter(arrayUniqueByKey, houseHoldData)) ??
+            dataHouseholds;
+
+        setSearchResult(newFilterCampaingResult);
+        sortSearchResult(newFilterCampaingResult);
+    }, [filterNameOrIdentiantResult, filterValidatedResult, filterCampaingResult]);
+
+    const onFilter = useCallback(
+        (type: string) => (event: any) => {
+            if (type == "nameOrIdentifiant") {
+                const nameOrIdentifiant = event.target.value.toLowerCase();
+                setNameOrIdentiantFilter(nameOrIdentiantFilter);
+                const filter = filterNameOrIdentifiant(dataHouseholds, nameOrIdentifiant);
+                setFilterNameOrIdentiantResult(filter);
             }
-            setFilterValidatedResult(newFilterValidatedResult);
-            setSearchResult(newSearchResult);
-        },
-        [searchResult, filterValidatedResult],
-    );
 
-    const onFilterValidatedSurveyChange = useCallback(
-        (isFilter: boolean) => () => {
-            isFilterValidatedSurvey = isFilter;
-            setIsFilterValidatedSurvey(isFilter);
-
-            if (isFilterValidatedSurvey) {
-                const newSearchResult = searchResult?.filter(
-                    (houseHoldData: any) => !isToFilter(houseHoldData),
-                );
-                sortSearchResult(newSearchResult);
-                setSearchResult(newSearchResult);
-
-                const newFilterValidatedResult = searchResult?.filter((houseHoldData: any) =>
-                    isToFilter(houseHoldData),
-                );
-                setFilterValidatedResult(newFilterValidatedResult ?? []);
-            } else {
-                const newSearchResult = searchResult?.concat(filterValidatedResult);
-                sortSearchResult(newSearchResult);
-                setSearchResult(newSearchResult);
-                onFilterSearchBox;
+            if (type == "validate") {
+                setIsFilterValidatedSurvey(!isFilterValidatedSurvey);
+                const filter = filterValidate(dataHouseholds, !isFilterValidatedSurvey);
+                setFilterValidatedResult(filter);
             }
-        },
-        [searchResult, filterValidatedResult],
-    );
 
-    const onFilterCampaing = useCallback(
-        (event: SelectChangeEvent) => {
-            const value = event.target.value;
-            setCampaingFilter(value);
-            campaingFilter = value;
-
-            if (value && value != "all") {
-                const newSearchResult = searchResult?.filter(
-                    (houseHoldData: any) => houseHoldData.campaingId == value,
-                );
-                sortSearchResult(newSearchResult);
-                setSearchResult(newSearchResult);
-
-                const newFilterValidatedResult = searchResult?.filter((houseHoldData: any) =>
-                    isToFilter(houseHoldData),
-                );
-                setFilterValidatedResult(newFilterValidatedResult ?? []);
-            } else {
-                sortSearchResult(searchResult);
-                setSearchResult(searchResult);
+            if (type == "campaign") {
+                const campaign = event.target.value.toLowerCase();
+                setCampaingFilter(campaign);
+                const filter = filterCampaign(dataHouseholds, campaign);
+                setFilterCampaingResult(filter);
             }
         },
-        [campaingFilter],
+        [campaingFilter, isFilterValidatedSurvey, nameOrIdentiantFilter],
     );
 
     const sortSearchResult = useCallback(
@@ -306,7 +314,7 @@ const SurveysOverviewPage = () => {
                     )}
                 >
                     <OutlinedInput
-                        onChange={onFilterSearchBox}
+                        onChange={onFilter("nameOrIdentifiant")}
                         className={classes.searchInput}
                         placeholder={t("page.surveys-overview.search-placeholder")}
                         endAdornment={
@@ -320,7 +328,7 @@ const SurveysOverviewPage = () => {
                     ></OutlinedInput>
                     <Box className={cx(classes.filterBox)}>
                         <Checkbox
-                            onChange={onFilterValidatedSurveyChange(!isFilterValidatedSurvey)}
+                            onChange={onFilter("validate")}
                             inputProps={{
                                 "aria-label": t("accessibility.component.surveys-overviewer.filter"),
                             }}
@@ -333,8 +341,12 @@ const SurveysOverviewPage = () => {
                         </InputLabel>
                         <Select
                             id="filter-campaing-select"
-                            value={campaingFilter}
-                            onChange={onFilterCampaing}
+                            value={
+                                campaingsList.filter(option => {
+                                    return option?.value.toUpperCase() == campaingFilter.toUpperCase();
+                                })[0].value
+                            }
+                            onChange={onFilter("campaign")}
                             style={{ backgroundColor: "white" }}
                             MenuProps={{
                                 classes: {
@@ -346,16 +358,13 @@ const SurveysOverviewPage = () => {
                                 "aria-label": t("accessibility.component.surveys-overviewer.filter"),
                             }}
                         >
-                            <MenuItem key="all" value={"all"} style={{ backgroundColor: "white" }}>
-                                Toutes les vagues
-                            </MenuItem>
                             {campaingsList.map(campaing => (
                                 <MenuItem
-                                    key={campaing}
-                                    value={campaing}
+                                    key={campaing.value}
+                                    value={campaing.value}
                                     style={{ backgroundColor: "white" }}
                                 >
-                                    {campaing}
+                                    {campaing.label}
                                 </MenuItem>
                             ))}
                         </Select>

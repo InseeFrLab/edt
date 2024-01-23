@@ -8,4 +8,5 @@ export interface Household {
     surveyDate?: string;
     stats: StatsHousehold;
     campaingId: string;
+    subCampaignId?: string;
 }
