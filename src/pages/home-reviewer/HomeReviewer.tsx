@@ -91,6 +91,7 @@ const HomeReviewerPage = () => {
                     </>
                 </Box>
                 <Button
+                    className={classes.logoutBox}
                     color="secondary"
                     startIcon={
                         <img
@@ -157,6 +158,9 @@ const useStyles = makeStylesEdt({ "name": { HomeReviewerPage } })(theme => ({
     logoBox: {
         paddingLeft: "1rem",
         paddingTop: "0.5rem",
+    },
+    logoutBox: {
+        height: "4rem",
     },
     logoImg: {
         width: "40px",
