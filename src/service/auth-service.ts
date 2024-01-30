@@ -12,6 +12,7 @@ const isSSO = attributeSSO && window.location.search.includes(attributeSSO);
 const url = isSSO ? authUrlSS0 : authUrl;
 
 const createUserManager = () => {
+    console.log("create new usermanager");
     const IDENTITY_CONFIG = {
         authority: url, //(string): The URL of the OIDC provider.
         client_id: clientId, //(string): Your client application's identifier as registered with the OIDC provider.
@@ -21,12 +22,12 @@ const createUserManager = () => {
     const METADATA_OIDC = {
         issuer: url,
         authorization_endpoint: url + protocol + "?" + attributeSSO,
-        token_endpoint: url + protocol + "/token",
+        token_endpoint: url + "protocol/openid-connect/token",
         introspection_endpoint: url + protocol + "/introspect",
         userinfo_endpoint: url + protocol + "/userInfo",
         end_session_endpoint: url + protocol + "/logout",
         revocation_endpoint: url + protocol + "/revoke",
-        registration_endpoint: url + "/clients-registrations/openid-connect",
+        registration_endpoint: url + "clients-registrations/openid-connect",
         jwks_uri: url + "/.well-known/openid-configuration/?" + attributeSSO,
         device_authorization_endpoint: url + protocol + "/device",
         backchannel_authentication_endpoint: url + protocol + "/ext/ciba/auth",
@@ -79,6 +80,10 @@ const createUserManager = () => {
     userManager.events.addAccessTokenExpired(() => {
         console.log("token expired");
         signinSilent(userManager);
+    });
+
+    userManager.metadataService.getMetadata().then(data => {
+        console.log("metadata of new userManager");
     });
 
     return userManager;
