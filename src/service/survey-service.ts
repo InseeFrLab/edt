@@ -1097,6 +1097,7 @@ const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: num
     const valueEdited = data?.COLLECTED?.[variableName]?.EDITED;
     const valueCollected = data?.COLLECTED?.[variableName]?.COLLECTED;
     const modePersistenceEdited = getModePersistence(data) == ModePersistenceEnum.EDITED;
+
     if (iteration != null) {
         let value = valueCollected;
         if (modePersistenceEdited && valueEdited && valueEdited[iteration] != null) value = valueEdited;
@@ -1178,6 +1179,7 @@ const getSurveyDate = (idSurvey: string) => {
 
 // return survey firstname if exist or default value
 const getPrintedFirstName = (idSurvey: string): string => {
+    const firstname = getFirstName(idSurvey);
     return getFirstName(idSurvey) || t("common.user.person") + " " + getPersonNumber(idSurvey);
 };
 
@@ -1222,7 +1224,6 @@ const getTabsDataReviewer = (t: any) => {
             tabsData.push(tabData3);
         }
     });
-
     return tabsData;
 };
 
@@ -1697,7 +1698,8 @@ const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum 
     const isLocked = (data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED as boolean) == true;
     const variableEdited = existVariableEdited(undefined, data);
     const isWorkTime = data?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER];
-    return (isReviewerMode || isLocked || variableEdited) && !isWorkTime
+
+    return isReviewerMode || isLocked || variableEdited
         ? ModePersistenceEnum.EDITED
         : ModePersistenceEnum.COLLECTED;
 };

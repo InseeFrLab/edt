@@ -4,8 +4,10 @@ import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { FieldNameEnum, FieldNameEnumActivity } from "enumerations/FieldNameEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
 import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import React from "react";
+import { getSource } from "service/survey-service";
 import { isReviewer } from "service/user-service";
 
 const { ...edtComponents } = lunaticEDT;
@@ -63,6 +65,7 @@ const getDataOfCurrentBinding = (
 ) => {
     // partie collected dejà set (mode enquete) -> set values of collected (value current lunawtic) to edited
     // and collected remains with the collected value on bdd
+
     if (collected) {
         if (editedSaved && Array.isArray(collected)) {
             collected = getDataOfLoop(collected, editedSaved, iteration);
@@ -115,15 +118,19 @@ const setDataOfWorkTimeReviewer = (
     dataCollected: any,
     data: LunaticData | undefined,
 ) => {
-    if (source) {
-        const weeklyPlannerProps = propsWorkTime(source);
-        weeklyPlannerProps.forEach(prop => {
-            let dataOfField = dataCollected[prop];
-            const collected = dataOfField?.COLLECTED;
-            const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
-            dataOfField.COLLECTED = collected;
-        });
+    if (!source) {
+        source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     }
+
+    const weeklyPlannerProps = propsWorkTime(source);
+    weeklyPlannerProps.forEach(prop => {
+        let dataOfField = dataCollected[prop];
+        const collected = dataOfField?.COLLECTED;
+        const edited = data?.COLLECTED?.[prop]?.EDITED;
+        const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
+        dataOfField.COLLECTED = collected ?? collectedSaved;
+        dataOfField.EDITED = edited;
+    });
 
     return dataCollected;
 };
@@ -149,6 +156,7 @@ const setDataOfActivityReviewer = (
             //get data of current prop ->
             //COLLECTED : value of bdd (COLLECTED)
             //EDITED: if exist EDITED -> value of lunatic for value[iteration], other -> value of bdd (EDITED)
+
             dataOfField = getDataOfCurrentBinding(
                 copyObject(collected),
                 copyObject(edited),
@@ -208,6 +216,7 @@ const getDataInterviewer = (getData: any, data: LunaticData | undefined, source?
             //set values edited with values in bdd, because we don't recover the edited part with lunatic
             if (dataOfField) {
                 dataOfField.COLLECTED = dataOfField.COLLECTED ?? data?.COLLECTED?.[prop]?.EDITED;
+                dataOfField.EDTED = data?.COLLECTED?.[prop]?.EDITED;
             }
         });
     }
@@ -253,11 +262,13 @@ const getVariablesWeeklyPlanner = (
     value: any,
 ) => {
     let variables = new Map<string, any>();
+    const isReviewerMode = isReviewer();
 
     bindingDependencies?.forEach((bindingDependency: string) => {
-        const varC = data?.COLLECTED?.[bindingDependency]?.COLLECTED;
-        const variableCollected = varC ?? value?.[bindingDependency];
-        variables.set(bindingDependency, variableCollected);
+        const varC = dataBdd?.COLLECTED?.[bindingDependency]?.COLLECTED;
+        const varE = dataBdd?.COLLECTED?.[bindingDependency]?.EDITED;
+        let variable = isReviewerMode ? varE ?? varC : varC;
+        variables.set(bindingDependency, variable);
     });
     return variables;
 };
