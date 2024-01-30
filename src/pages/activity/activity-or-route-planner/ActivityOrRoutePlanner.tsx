@@ -900,10 +900,6 @@ const ActivityOrRoutePlannerPage = () => {
     );
 };
 
-const styleSurveyPageBoxTabletWhenIOS = (isOpen: boolean) => {
-    return isOpen ? "80vh" : "87vh";
-};
-
 const useStyles = makeStylesEdt<{ isIOS: boolean; modifiable: boolean; isOpen: boolean }>({
     "name": { ActivityOrRoutePlannerPage },
 })((theme, { isIOS, modifiable, isOpen }) => ({
