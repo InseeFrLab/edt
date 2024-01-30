@@ -63,7 +63,7 @@ const KindOfWeekPage = () => {
         <SurveyPage
             idSurvey={idSurvey}
             validate={useCallback(
-                () => validateWithAlertAndNav(idSurvey, false, setIsAlertDisplayed, undefined, routeEnd),
+                () => validateWithAlertAndNav(idSurvey, true, setIsAlertDisplayed, undefined, routeEnd),
                 [setIsAlertDisplayed],
             )}
             onNavigateBack={useCallback(
