@@ -207,7 +207,7 @@ const getDataInterviewer = (getData: any, data: LunaticData | undefined, source?
             const dataOfField = dataCollected[prop];
             //set values edited with values in bdd, because we don't recover the edited part with lunatic
             if (dataOfField) {
-                dataOfField.COLLECTED = dataOfField.COLLECTED ?? data?.COLLECTED?.[prop].EDITED;
+                dataOfField.COLLECTED = dataOfField.COLLECTED ?? data?.COLLECTED?.[prop]?.EDITED;
             }
         });
     }

@@ -1,6 +1,6 @@
 {
     "name": "edt",
-    "version": "3.10.10",
+    "version": "3.10.11",
     "dateVersion": "30/01/2024",
     "licence": "MIT",
     "dependencies": {
@@ -91,28 +91,8 @@
         "test:e2e": "env-cmd -f .env.development jest --testPathPattern=e2e --detectOpenHandles",
         "test:e2e:production": "env-cmd -f .env.production jest --testPathPattern=e2e --detectOpenHandles",
         "eject": "react-scripts eject",
-        "lint:check": "eslint . --ext .ts,.tsx",
-        "lint": "npm run lint:check -- --fix",
-        "_format": "prettier \"**/*.{ts,tsx,json,md}\"",
-        "format": "npm run _format -- --write",
-        "format:check": "npm run _format -- --list-different",
-        "prepare": "husky install",
         "serve-build": "npm run build && npx serve -s build",
         "start-with-lib": "concurrently \"yarn start-rewired\"  \"cd ./node_modules/@inseefrlab/lunatic-edt && tsc-watch\""
-    },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "react-app/jest"
-        ]
-    },
-    "lint-staged": {
-        "*.{ts,tsx}": [
-            "eslint --fix"
-        ],
-        "*.{ts,tsx,json,md}": [
-            "prettier --write"
-        ]
     },
     "browserslist": {
         "production": [
