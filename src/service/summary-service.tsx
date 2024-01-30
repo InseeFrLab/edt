@@ -474,7 +474,7 @@ const getQualityScore = (
     substractPoint = missingVariables(activitiesRoutesOrGaps, substractPoint, missingPropArray);
     addArrayToSession("missingPropArray", missingPropArray);
 
-    const score = substractPoint <= 20 ? MAX_SCORE - substractPoint : 20;
+    const score = substractPoint <= 20 ? MAX_SCORE - substractPoint : 0;
     const group = groupScore(score, t);
     const points = substractPoint + "";
     return { group, points };
