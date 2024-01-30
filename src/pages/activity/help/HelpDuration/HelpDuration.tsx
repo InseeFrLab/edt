@@ -51,7 +51,11 @@ const HelpDuration = () => {
         helpImage: imageHelp,
         arrowDownIcon: arrowDown,
         arrowDownIconAlt: t("accessibility.asset.mui-icon.expand-more"),
-        ariaLabelTimepicker: t("accessibility.asset.timepicker-alt"),
+        labels: {
+            ariaLabelTimepicker: t("accessibility.asset.timepicker-alt"),
+            cancelLabel: t("page.activity-duration.cancel"),
+            validateLabel: t("page.activity-duration.validate"),
+        },
         defaultLanguage: "fr",
     };
 
