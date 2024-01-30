@@ -7,7 +7,7 @@
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",
         "@inseefr/lunatic": "2.0.7-v2",
-        "@inseefrlab/lunatic-edt": "^0.11.9",
+        "@inseefrlab/lunatic-edt": "^0.11.8",
         "@mui/material": "^5.10.7",
         "@mui/styles": "^5.12.0",
         "@react-pdf/fns": "2.0.1",
@@ -37,7 +37,8 @@
         "web-vitals": "^3.0.2",
         "workbox-core": "^6.5.4",
         "workbox-precaching": "^6.5.4",
-        "workbox-routing": "^6.5.4"
+        "workbox-routing": "^6.5.4",
+        "yoga-layout": "^2.0.1"
     },
     "resolutions": {
         "@react-pdf/font": "2.2.0",

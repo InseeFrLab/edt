@@ -50,42 +50,39 @@ const HelpMenuInner = (props: HelpMenuInnerProps) => {
                 <Box className={getClassIconBox()}>
                     <img src={mail} alt={t("accessibility.asset.help-menu.contact-alt")} />
                 </Box>
-                <Divider light />
-                {getDeviceNavigatorIsAvaiableForInstall() && (
-                    <>
-                        <Box id="install" className={getClassNavigateBox()} onClick={onClickInstall}>
-                            <Box className={getClassIconBox()}>
-                                <img
-                                    src={download}
-                                    alt={t("accessibility.asset.help-menu.install-alt")}
-                                />
-                            </Box>
-                            <Box className={getClassTextBox()}>
-                                <p>{t("component.help-menu.install-label")}</p>
-                            </Box>
-                            <Box className={getClassNavIconBox()}>
-                                <img
-                                    src={arrowForwardIos}
-                                    alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
-                                />
-                            </Box>
+                <Box className={getClassTextBox()}>
+                    <p>{t("component.help-menu.contact-label")}</p>
+                </Box>
+                <Box className={getClassNavIconBox()}>
+                    <img
+                        src={arrowForwardIos}
+                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                    />
+                </Box>
+            </Box>
+            <Divider light />
+            {getDeviceNavigatorIsAvaiableForInstall() && (
+                <>
+                    <Box id="install" className={getClassNavigateBox()} onClick={onClickInstall}>
+                        <Box className={getClassIconBox()}>
+                            <img src={download} alt={t("accessibility.asset.help-menu.install-alt")} />
                         </Box>
-                        <Divider light />
-                    </>
-                )}
-                <Box id="help" className={getClassNavigateBox()} onClick={onClickHelp}>
-                    <Box className={getClassIconBox()}>
-                        <img src={rebaseEdit} alt={t("accessibility.asset.help-menu.help-alt")} />
+                        <Box className={getClassTextBox()}>
+                            <p>{t("component.help-menu.install-label")}</p>
+                        </Box>
+                        <Box className={getClassNavIconBox()}>
+                            <img
+                                src={arrowForwardIos}
+                                alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                            />
+                        </Box>
                     </Box>
-                    <Box className={getClassTextBox()}>
-                        <p>{t("component.help-menu.help-label")}</p>
-                    </Box>
-                    <Box className={getClassNavIconBox()}>
-                        <img
-                            src={arrowForwardIos}
-                            alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
-                        />
-                    </Box>
+                    <Divider light />
+                </>
+            )}
+            <Box id="help" className={getClassNavigateBox()} onClick={onClickHelp}>
+                <Box className={getClassIconBox()}>
+                    <img src={rebaseEdit} alt={t("accessibility.asset.help-menu.help-alt")} />
                 </Box>
                 <Box className={getClassTextBox()}>
                     <p>{t("component.help-menu.help-label")}</p>
