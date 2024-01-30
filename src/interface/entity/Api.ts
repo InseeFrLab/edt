@@ -4,7 +4,7 @@ import { LunaticData } from "interface/lunatic/Lunatic";
 export interface UserSurveys {
     id?: number;
     campaignId: string;
-    subCampaignId: string;
+    subCampaignId?: string;
     interviewerId: string;
     questionnaireModelId: string;
     reviewerId?: string;
