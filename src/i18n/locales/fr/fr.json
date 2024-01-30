@@ -340,7 +340,9 @@
             "what-to-edit": "Que souhaitez-vous modifier ?"
         },
         "activity-duration": {
-            "hour-alert": "Attention! L'heure de fin est antérieure à l'heure de début"
+            "hour-alert": "Attention! L'heure de fin est antérieure à l'heure de début",
+            "cancel": "Annuler",
+            "validate": "OK"
         },
         "weekly-planner": {
             "info-light": "Pour remplir votre calendrier de travail de la semaine, indiquez chaque jour les moments de la journée où vous travaillez.",

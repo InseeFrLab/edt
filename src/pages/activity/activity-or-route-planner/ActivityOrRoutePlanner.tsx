@@ -943,8 +943,9 @@ const useStyles = makeStylesEdt<{ isIOS: boolean; modifiable: boolean; isOpen: b
         maxHeight: "100vh",
     },
     surveyPageBoxTablet: {
-        height: "100vh",
-        maxHeight: isIOS ? styleSurveyPageBoxTabletWhenIOS(isOpen) : "94vh",
+        height: "100%",
+        maxHeight: isIOS ? (isOpen ? "80vh" : "87vh") : "100vh",
+        marginTop: "4rem",
     },
     outletBoxDesktop: {
         flexGrow: "12",

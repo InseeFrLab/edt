@@ -42,14 +42,14 @@ import {
 import { getUniquesValues } from "utils/utils";
 
 const getListCampaigns = (dataHouseholds: Household[], t: TFunction<"translation", undefined>) => {
-    const subCampaignIds = getUniquesValues(
-        dataHouseholds.map(household => household.subCampaignId),
-    ).map(household => {
-        return {
-            value: household,
-            label: household,
-        };
-    });
+    const subCampaignIds = getUniquesValues(dataHouseholds.map(household => household.campaingId)).map(
+        household => {
+            return {
+                value: household,
+                label: household,
+            };
+        },
+    );
     return [{ value: "all", label: t("page.surveys-overview.all-campaigns") }].concat(subCampaignIds);
 };
 
@@ -146,7 +146,7 @@ const SurveysOverviewPage = () => {
     };
 
     const isToFilterCampaing = (houseHoldData: any, value: string): boolean => {
-        return houseHoldData.subCampaignId.toLowerCase() == value.toLowerCase();
+        return houseHoldData.campaingId.toLowerCase() == value.toLowerCase();
     };
 
     const isToFilterNameOrIdentifiant = (houseHoldData: any, value: string): boolean => {

@@ -1,7 +1,5 @@
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Location } from "react-router-dom";
-import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import {
     isAndroid,
     isChrome,
@@ -10,8 +8,12 @@ import {
     isFirefox,
     isIOS,
     isMacOs,
+    isMobile,
     isSafari,
 } from "react-device-detect";
+import { Location } from "react-router-dom";
+import { getCurrentSurveyRootPage } from "service/orchestrator-service";
+import { isPwa } from "service/responsive";
 
 function groupBy<T>(arr: T[], fn: (item: T) => any) {
     return arr.reduce<Record<string, T[]>>((prev, curr) => {
@@ -135,18 +137,29 @@ function getCookie(name: string): string | null {
     );
 }
 
+function sumAllOfArray(array: number[]): number {
+    return array.reduce((a, b) => a + b, 0);
+}
+
+function isAndroidNav() {
+    console.log(isPwa, isMobile, isAndroid);
+    return !isPwa() && isMobile && isAndroid;
+}
+
 export {
     addArrayToSession,
     addItemToSession,
     getArrayFromSession,
+    getClassCondition,
     getCookie,
     getDevice,
     getDeviceNavigatorIsAvaiableForInstall,
-    getClassCondition,
     getItemFromSession,
     getNavigator,
     getSurveyIdFromUrl,
     getUniquesValues,
     groupBy,
+    isAndroidNav,
     objectEquals,
+    sumAllOfArray,
 };
