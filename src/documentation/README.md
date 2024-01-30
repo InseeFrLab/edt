@@ -340,11 +340,11 @@ Those states have been defined to ease the visibility of the ongoing current sur
 
 ## Lifecycle state
 
-![](https://imgur.com/Y3bjnVs.png)
+![](./images/lifecycle_state.png)
 
 ### Project structure
 
-![](https://i.imgur.com/Jt1FrnR.png)
+![](./images/projet_structure.png)
 
 `src` : Contains all the source code of the application. It also has the 2 surveys sources required by Lunatic and used by EDT.
 
@@ -392,7 +392,7 @@ SSO is available using INSEE LDAP only with users with reviewer role. The review
 
 #### Architecture schema
 
-![](https://i.imgur.com/Q3sKoCe.png)
+![](./images/schema_architecture.png)
 
 #### API Edt-pilotage
 
@@ -1019,7 +1019,7 @@ Even if you create a path, it never passes through this component, so we cannot 
 
 The callbackHolder function recovers the data and the errors which give us lunatic.
 
-![](https://imgur.com/SNpbvje.png)
+![](./images/orchestrator_code.png)
 
 The getData() function provided by lunatic, instead of returning it within callbackHolder, we proceed to process the data recovered by lunatic, to be able to transform that data, along with that of the database and obtain our data model filled with the COLLECTED and EDITED.
 
@@ -1038,9 +1038,7 @@ For each existing property :
 - **value of COLLECTED:** data of lunatic *(callbackholder.getData()[prop].COLLECTED)*;
 
 
-
-![](https://imgur.com/JCtEcUC.png)
-
+![](./images/orchestrator_code_interviewer.png)
 
 If the user is a reviewer, the data is treated as follows:
 
@@ -1076,11 +1074,11 @@ value of lunatic for value[iteration], other -> value of bdd (EDITED)
     - **value of EDITED:** data of bbdd *(data[prop].EDITED)*;
     - **value of COLLECTED:** data of bbdd *(data[prop].COLLECTED)*;
 
-![](https://imgur.com/PNZL2hu.png)
+![](./images/orchestrator_code_reviewer.png)
 
 Here a diagram of the flow of orchestrator data
 
-![Orchestrator data flow](https://imgur.com/yYYqvSJ.png)
+![Orchestrator data flow](./images/orchestrator_flow.png)
 
 
 ## Maintenance and evolution

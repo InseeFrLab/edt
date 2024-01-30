@@ -340,11 +340,11 @@ Those states have been defined to ease the visibility of the ongoing current sur
 
 ## Lifecycle state
 
-![](https://imgur.com/Y3bjnVs.png)
+![](./src/documentation/images/lifecycle_state.png)
 
 ### Project structure
 
-![](https://i.imgur.com/Jt1FrnR.png)
+![](./src/documentation/images/projet_structure.png)
 
 `src` : Contains all the source code of the application. It also has the 2 surveys sources required by Lunatic and used by EDT.
 
@@ -392,7 +392,7 @@ SSO is available using INSEE LDAP only with users with reviewer role. The review
 
 #### Architecture schema
 
-![](https://i.imgur.com/Q3sKoCe.png)
+![](./src/documentation/images/schema_architecture.png)
 
 #### API Edt-pilotage
 
@@ -976,7 +976,7 @@ The `.env.production` file is used when the builded app is hosted.
 REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL=https://stromae-edt-kc.demo.insee.io/
 REACT_APP_EDT_ORGANISATION_API_BASE_URL=https://edt-api-kc.demo.insee.io/
 REACT_APP_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
-REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/?kc_idp_hint=insee-ssp
+REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/
 REACT_APP_KEYCLOAK_CLIENT_ID=client-edt
 REACT_APP_KEYCLOAK_REDIRECT_URI=https://insee-recette-edt.k8s.keyconsulting.fr/
 REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION=.\$
@@ -1019,7 +1019,7 @@ Even if you create a path, it never passes through this component, so we cannot 
 
 The callbackHolder function recovers the data and the errors which give us lunatic.
 
-![](https://imgur.com/SNpbvje.png)
+![](./src/documentation/images/orchestrator_code.png)
 
 The getData() function provided by lunatic, instead of returning it within callbackHolder, we proceed to process the data recovered by lunatic, to be able to transform that data, along with that of the database and obtain our data model filled with the COLLECTED and EDITED.
 
@@ -1038,9 +1038,7 @@ For each existing property :
 - **value of COLLECTED:** data of lunatic *(callbackholder.getData()[prop].COLLECTED)*;
 
 
-
-![](https://imgur.com/JCtEcUC.png)
-
+![](./src/documentation/images/orchestrator_code_interviewer.png)
 
 If the user is a reviewer, the data is treated as follows:
 
@@ -1076,11 +1074,11 @@ value of lunatic for value[iteration], other -> value of bdd (EDITED)
     - **value of EDITED:** data of bbdd *(data[prop].EDITED)*;
     - **value of COLLECTED:** data of bbdd *(data[prop].COLLECTED)*;
 
-![](https://imgur.com/PNZL2hu.png)
+![](./src/documentation/images/orchestrator_code_reviewer.png)
 
 Here a diagram of the flow of orchestrator data
 
-![Orchestrator data flow](https://imgur.com/yYYqvSJ.png)
+![Orchestrator data flow](./src/documentation/images/orchestrator_flow.png)
 
 
 ## Maintenance and evolution
