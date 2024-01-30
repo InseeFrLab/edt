@@ -1,7 +1,19 @@
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import {
+    isAndroid,
+    isChrome,
+    isDesktop,
+    isEdge,
+    isFirefox,
+    isIOS,
+    isMacOs,
+    isMobile,
+    isSafari,
+} from "react-device-detect";
 import { Location } from "react-router-dom";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
+import { isPwa } from "service/responsive";
 
 function groupBy<T>(arr: T[], fn: (item: T) => any) {
     return arr.reduce<Record<string, T[]>>((prev, curr) => {
@@ -68,17 +80,6 @@ function getUniquesValues(listValues: any[]): any[] {
     return listValues.filter((value, index, self) => self.indexOf(value) === index);
 }
 
-import {
-    isAndroid,
-    isChrome,
-    isDesktop,
-    isEdge,
-    isFirefox,
-    isIOS,
-    isMacOs,
-    isSafari,
-} from "react-device-detect";
-
 const getDevice = () => {
     if (isIOS || isMacOs) {
         return "ios";
@@ -127,6 +128,15 @@ function getCookie(name: string): string | null {
     );
 }
 
+function sumAllOfArray(array: number[]): number {
+    return array.reduce((a, b) => a + b, 0);
+}
+
+function isAndroidNav() {
+    console.log(isPwa, isMobile, isAndroid);
+    return !isPwa() && isMobile && isAndroid;
+}
+
 export {
     addArrayToSession,
     addItemToSession,
@@ -139,5 +149,7 @@ export {
     getSurveyIdFromUrl,
     getUniquesValues,
     groupBy,
+    isAndroidNav,
     objectEquals,
+    sumAllOfArray,
 };
