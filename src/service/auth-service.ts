@@ -6,13 +6,14 @@ const authUrlSS0 = process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER ?? "";
 const authUrl = process.env.REACT_APP_KEYCLOAK_AUTHORITY ?? "";
 const clientId = process.env.REACT_APP_KEYCLOAK_CLIENT_ID ?? "";
 const redirectUri = process.env.REACT_APP_KEYCLOAK_REDIRECT_URI ?? "";
-const protocol = process.env.REACT_APP_KEYCLOAK_PROTOCOL ?? "";
-const attributeSSO = process.env.REACT_APP_KEYCLOAK_ATTRIBUTE_SSO;
-const isSSO = attributeSSO && window.location.search.includes(attributeSSO);
+const protocol = "protocol/openid-connect/auth" ?? "";
+const attributes = window.location.search;
+const isSSO = attributes.includes("kc_idp_hint");
 const url = isSSO ? authUrlSS0 : authUrl;
+const attributeSSO = attributes.substring(1, attributes.length);
 
 const createUserManager = () => {
-    console.log("create new usermanager");
+    console.log("create new usermanager for : ", attributeSSO);
     const IDENTITY_CONFIG = {
         authority: url, //(string): The URL of the OIDC provider.
         client_id: clientId, //(string): Your client application's identifier as registered with the OIDC provider.
@@ -83,7 +84,7 @@ const createUserManager = () => {
     });
 
     userManager.metadataService.getMetadata().then(data => {
-        console.log("metadata of new userManager");
+        console.log("metadata of new userManager", data);
     });
 
     return userManager;
