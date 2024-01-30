@@ -19,7 +19,6 @@
         "dexie": "^3.2.2",
         "env-cmd": "^10.1.0",
         "i18next": "^21.9.2",
-        "jwt-decode": "3.1.2",
         "oidc-react": "^2.1.0",
         "puppeteer": "^5.5.0",
         "puppeteer-core": "^5.5.0",
@@ -114,6 +113,11 @@
         "*.{ts,tsx,json,md}": [
             "prettier --write"
         ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged -v"
+        }
     },
     "browserslist": {
         "production": [
