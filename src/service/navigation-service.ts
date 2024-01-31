@@ -319,13 +319,15 @@ const emptyDataSetFirstName = (
     if (dataCollected) {
         for (let prop in FieldNameEnum as any) {
             if (prop == FieldNameEnum.SURVEYDATE) continue;
-            dataCollected[prop] = {
-                COLLECTED: null,
-                EDITED: null,
-                FORCED: null,
-                INPUTED: null,
-                PREVIOUS: null,
-            };
+            if (dataCollected[prop] == null) {
+                dataCollected[prop] = {
+                    COLLECTED: null,
+                    EDITED: null,
+                    FORCED: null,
+                    INPUTED: null,
+                    PREVIOUS: null,
+                };
+            }
         }
         dataCollected[FieldNameEnum.FIRSTNAME] = {
             COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,
