@@ -131,19 +131,17 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         modifiable: modifiable,
     };
 
-    const nextRouteNav = useCallback(() => {
-        if (validateButton) {
-            return validateButton;
-        } else {
-            nextRoute
-                ? saveAndNavFullPath(idSurvey, nextRoute)
-                : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage);
-        }
-    }, []);
-
     const surveyPageNotStepProps = {
         idSurvey: idSurvey,
-        validate: nextRouteNav,
+        validate:
+            validateButton ??
+            useCallback(
+                () =>
+                    nextRoute
+                        ? saveAndNavFullPath(idSurvey, nextRoute)
+                        : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage),
+                [],
+            ),
         srcIcon: errorIcon,
         altIcon: errorAltIcon ? t(errorAltIcon) : undefined,
         onNavigateBack: useCallback(() => saveAndNav(idSurvey), []),
