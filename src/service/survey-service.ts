@@ -44,7 +44,8 @@ import { NavigateFunction } from "react-router-dom";
 import { fetchReviewerSurveysAssignments } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrator-service";
-import dataEmpty from "utils/dataEmpty.json";
+import dataEmptyActivity from "utils/dataEmptyActivity.json";
+import dataEmptyWorkTime from "utils/dataEmptyWeeklyPlanner.json";
 import {
     addArrayToSession,
     addItemToSession,
@@ -416,11 +417,10 @@ const initializeData = (remoteSurveyData: SurveyData, surveyId: string) => {
         id: "",
         lastLocalSaveDate: Date.now(),
     };
-
     surveyData.houseReference = surveyId?.replace(regexp, "");
     surveyData.CALCULATED = {};
     surveyData.EXTERNAL = {};
-    surveyData.COLLECTED = remoteSurveyData.data?.COLLECTED ?? dataEmpty;
+    surveyData.COLLECTED = remoteSurveyData.data?.COLLECTED ?? getDataEmpty(surveyId);
     surveyData.lastLocalSaveDate = remoteSurveyData.data?.lastLocalSaveDate ?? 0;
 
     return surveyData;
@@ -616,6 +616,14 @@ const setData = (idSurvey: string, data: LunaticData) => {
     addItemToSession(idSurvey, data);
 };
 
+const getDataEmpty = (idSurvey: string) => {
+    if (surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].includes(idSurvey)) {
+        return dataEmptyActivity;
+    } else {
+        return dataEmptyWorkTime;
+    }
+};
+
 const createDataEmpty = (idSurvey: string): LunaticData => {
     const householdId = "";
 
@@ -627,7 +635,7 @@ const createDataEmpty = (idSurvey: string): LunaticData => {
         id: idSurvey,
         lastLocalSaveDate: Date.now(),
     };
-    data.COLLECTED = dataEmpty;
+    data.COLLECTED = getDataEmpty(idSurvey);
     return data;
 };
 
@@ -636,13 +644,12 @@ const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
     const currentDataCollected = currentDataSurvey && currentDataSurvey.COLLECTED;
     const dataCollected = dataAct && dataAct.COLLECTED;
     let isChange = false;
-
     if (dataCollected && currentDataCollected) {
         const keys = Object.keys(dataCollected);
+
         keys?.forEach(key => {
             const data = getValueOfData(dataAct, key) ?? [];
             const currentData = getValueOfData(currentDataSurvey, key) ?? [];
-
             if (data != currentData) {
                 if (Array.isArray(data)) {
                     const currentDataCollectedArray = currentData as string[];
@@ -668,6 +675,10 @@ const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
                 }
             }
         });
+        if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurvey)) {
+            isChange = true;
+            console.log("isWorktime");
+        }
     } else {
         isChange = true;
     }
@@ -800,6 +811,7 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
     fixConditionals(data);
     const isChange = dataIsChange(idSurvey, data);
+    console.log(isChange, data);
     return lunaticDatabase.save(idSurvey, data).then(() => {
         const promisesToWait: Promise<any>[] = [];
         datas.set(idSurvey, data);
@@ -870,6 +882,7 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
     //set the last remote save date inside local database to be able to compare it later with remote data
     lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
+        console.log(data);
         addItemToSession(idSurvey, data);
         oldDatas.set(idSurvey, Object.assign({}, data));
     });
@@ -1698,7 +1711,6 @@ const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum 
     const isLocked = (data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED as boolean) == true;
     const variableEdited = existVariableEdited(undefined, data);
     const isWorkTime = data?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER];
-
     return isReviewerMode || isLocked || variableEdited
         ? ModePersistenceEnum.EDITED
         : ModePersistenceEnum.COLLECTED;
@@ -1761,19 +1773,10 @@ const getSurveysAct = () => {
     return surveys;
 };
 
-const validateAllGroup = (navigate: NavigateFunction, idSurvey: string, inputNameAct: string) => {
-    const surveys = getSurveysAct();
-
-    const personAct = surveys?.find(survey => survey.data.surveyUnitId == idSurvey);
-
-    const idsSurveysFromGroupAct = surveys
-        ?.filter(survey => survey.num == personAct?.num)
-        .map(survey => survey.data.surveyUnitId);
-    const surveyRootPage =
-        personAct?.data?.questionnaireModelId == SourcesEnum.WORK_TIME_SURVEY
-            ? EdtRoutesNameEnum.WORK_TIME
-            : EdtRoutesNameEnum.ACTIVITY;
-
+const navToPlanner = (
+    idSurvey: string,
+    surveyRootPage: EdtRoutesNameEnum.ACTIVITY | EdtRoutesNameEnum.WORK_TIME,
+) => {
     const dayOfSurvey = getValue(idSurvey, FieldNameEnum.SURVEYDATE) as string;
     let route = "";
 
@@ -1793,8 +1796,35 @@ const validateAllGroup = (navigate: NavigateFunction, idSurvey: string, inputNam
     } else {
         route = getFullNavigatePath(idSurvey, EdtRoutesNameEnum.DAY_OF_SURVEY, surveyRootPage);
     }
+    return route;
+};
 
-    setAllNamesOfGroupAndNav(navigate, route, idSurvey, idsSurveysFromGroupAct, inputNameAct);
+const getPerson = (idSurvey: string) => {
+    const surveys = getSurveysAct();
+    const personAct = surveys?.find(survey => survey.data.surveyUnitId == idSurvey);
+    return personAct;
+};
+
+const getGroupOfPerson = (idSurvey: string) => {
+    const surveys = getSurveysAct();
+    const personAct = surveys?.find(survey => survey.data.surveyUnitId == idSurvey);
+    const idsSurveysFromGroupAct = surveys
+        ?.filter(survey => survey.num == personAct?.num)
+        .map(survey => survey.data.surveyUnitId);
+    return idsSurveysFromGroupAct;
+};
+
+const validateAllGroup = (navigate: NavigateFunction, idSurvey: string, inputNameAct: string) => {
+    const personAct = getPerson(idSurvey);
+
+    const surveyRootPage =
+        personAct?.data?.questionnaireModelId == SourcesEnum.WORK_TIME_SURVEY
+            ? EdtRoutesNameEnum.WORK_TIME
+            : EdtRoutesNameEnum.ACTIVITY;
+
+    const route = navToPlanner(idSurvey, surveyRootPage);
+
+    setAllNamesOfGroupAndNav(navigate, route, idSurvey, getGroupOfPerson(idSurvey), inputNameAct);
 };
 
 export {
@@ -1818,6 +1848,7 @@ export {
     getListSurveysHousehold,
     getModePersistence,
     getNewSecondaryActivities,
+    getPerson,
     getPrintedFirstName,
     getPrintedSurveyDate,
     getReferentiel,
@@ -1846,6 +1877,7 @@ export {
     lockSurvey,
     nameSurveyGroupMap,
     nameSurveyMap,
+    navToPlanner,
     refreshSurvey,
     refreshSurveyData,
     saveData,

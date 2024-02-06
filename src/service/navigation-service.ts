@@ -1,10 +1,17 @@
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { FieldNameEnum, FieldNameEnumActivity } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
+import {
+    Collected,
+    LunaticData,
+    LunaticModel,
+    MultiCollected,
+    OrchestratorContext,
+} from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction } from "react";
@@ -15,6 +22,7 @@ import {
     getCurrentPage,
     getData,
     getModePersistence,
+    getSource,
     getValue,
     saveData,
     setValue,
@@ -30,11 +38,11 @@ let _callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] 
 const setEnviro = (
     context: OrchestratorContext,
     navigate: NavigateFunction,
-    callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } },
+    callbackHolder?: { getData(): LunaticData; getErrors(): { [key: string]: [] } },
 ) => {
     _context = context;
     _navigate = navigate;
-    _callbackHolder = callbackHolder;
+    if (callbackHolder) _callbackHolder = callbackHolder;
 };
 
 const getNavigatePath = (page: EdtRoutesNameEnum): string => {
@@ -203,7 +211,7 @@ const saveAndNav = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
-    saveData(idSurvey, _callbackHolder.getData()).then(() => {
+    saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey)).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
@@ -225,8 +233,8 @@ const closeFormularieAndNav = (idSurvey: string, route: string) => {
  * we need to make the call twice to be able to retrieve the current state of the database
  */
 const validate = (idSurvey: string): Promise<void | LunaticData> => {
-    return saveData(idSurvey, _callbackHolder.getData(), true).then(() => {
-        return saveData(idSurvey, _callbackHolder.getData(), false);
+    return saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), true).then(() => {
+        return saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), false);
     });
 };
 
@@ -292,24 +300,64 @@ const setNamesOfGroup = (idSurvey: string, idsSurveysOfGroup: string[], nameAct:
     const promises: any[] = [];
     const nameOfGroup = listNames.length > 0 && !replaceName ? listNames[0] : nameAct;
     const date = callbackHolder.getData().COLLECTED?.[FieldNameEnum.SURVEYDATE].COLLECTED as string;
+
     idsSurveysOfGroup.forEach(idSurvey => {
         let firstname = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
         if (firstname == null || replaceName) {
             let dataActuel = Object.assign({}, getData(idSurvey));
             const datasirv = { ...dataActuel };
             const emptydata = emptyDataSetFirstName(
+                idSurvey,
                 datasirv,
                 getModePersistence(datasirv),
                 nameOfGroup,
-                date,
             );
+            console.log("save data named", emptydata);
             promises.push(saveData(idSurvey, emptydata));
         }
     });
     return promises;
 };
 
+const propsWorkTime = () => {
+    const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
+    const bindingDependenciesOfComponent = source.components.map(
+        component => component.bindingDependencies ?? [],
+    );
+    // array of arrays to array
+    const bindingDependencies = ([] as string[]).concat(...bindingDependenciesOfComponent);
+    //unique values
+    const uniqueBindingDependencies = bindingDependencies?.filter(
+        (value, index, array) => array.indexOf(value) === index,
+    );
+    return uniqueBindingDependencies;
+};
+
+const setPropsEmpty = (
+    dataCollected: {
+        [x: string]: Collected | MultiCollected;
+    },
+    array: any,
+) => {
+    console.log(dataCollected, array);
+    for (let prop in array) {
+        console.log(prop);
+        if (prop == FieldNameEnum.SURVEYDATE) continue;
+        if (dataCollected[prop] == null) {
+            dataCollected[prop] = {
+                COLLECTED: null,
+                EDITED: null,
+                FORCED: null,
+                INPUTED: null,
+                PREVIOUS: null,
+            };
+        }
+    }
+    return dataCollected;
+};
+
 const emptyDataSetFirstName = (
+    idSurvey: string,
     data: LunaticData,
     modePersistence: ModePersistenceEnum,
     firstName: string,
@@ -317,29 +365,43 @@ const emptyDataSetFirstName = (
 ) => {
     let dataCollected = { ...data.COLLECTED };
     if (dataCollected) {
-        for (let prop in FieldNameEnum as any) {
-            if (prop == FieldNameEnum.SURVEYDATE) continue;
-            if (dataCollected[prop] == null) {
-                dataCollected[prop] = {
-                    COLLECTED: null,
-                    EDITED: null,
-                    FORCED: null,
-                    INPUTED: null,
-                    PREVIOUS: null,
-                };
+        if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurvey)) {
+            propsWorkTime().forEach(prop => {
+                console.log(prop);
+                if (dataCollected[prop] == null) {
+                    dataCollected[prop] = {
+                        COLLECTED: null,
+                        EDITED: null,
+                        FORCED: null,
+                        INPUTED: null,
+                        PREVIOUS: null,
+                    };
+                }
+            });
+
+            dataCollected[FieldNameEnum.FIRSTNAME] = {
+                COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,
+                EDITED: modePersistence == ModePersistenceEnum.EDITED ? firstName : null,
+                FORCED: null,
+                INPUTED: null,
+                PREVIOUS: null,
+            };
+        } else {
+            for (let prop in FieldNameEnumActivity as any) {
+                if (prop == FieldNameEnum.SURVEYDATE) continue;
+                if (dataCollected[prop] == null) {
+                    dataCollected[prop] = {
+                        COLLECTED: null,
+                        EDITED: null,
+                        FORCED: null,
+                        INPUTED: null,
+                        PREVIOUS: null,
+                    };
+                }
             }
-        }
-        dataCollected[FieldNameEnum.FIRSTNAME] = {
-            COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,
-            EDITED: modePersistence == ModePersistenceEnum.EDITED ? firstName : null,
-            FORCED: null,
-            INPUTED: null,
-            PREVIOUS: null,
-        };
-        if (surveyDate) {
-            dataCollected[FieldNameEnum.SURVEYDATE] = {
-                COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? surveyDate : null,
-                EDITED: modePersistence == ModePersistenceEnum.EDITED ? surveyDate : null,
+            dataCollected[FieldNameEnum.FIRSTNAME] = {
+                COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,
+                EDITED: modePersistence == ModePersistenceEnum.EDITED ? firstName : null,
                 FORCED: null,
                 INPUTED: null,
                 PREVIOUS: null,

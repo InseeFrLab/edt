@@ -60,27 +60,28 @@ const WeeklyPlannerPage = () => {
     const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
 
     const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
-        const callbackData = callbackHolder.getData();
-        let dataWeeklyCallback = callbackData?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER]
-            .COLLECTED as any[];
+        const dataBdd = getData(idSurvey);
+        let dataWeeklyCallback = dataBdd?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER]?.COLLECTED as any[];
         if (data && data[1].length > 0) {
             dataWeeklyCallback = data;
-            if (callbackData.COLLECTED) {
+            if (dataBdd.COLLECTED) {
                 if (isReviewer()) {
-                    callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data[0];
-                    callbackData.COLLECTED[FieldNameEnum.DATES].EDITED = data[1];
-                    callbackData.COLLECTED[FieldNameEnum.DATES_STARTED].EDITED = data[2];
+                    dataBdd.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data[0];
+                    dataBdd.COLLECTED[FieldNameEnum.DATES].EDITED = data[1];
+                    dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].EDITED = data[2];
                 } else {
-                    callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data[0];
-                    callbackData.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
-                    callbackData.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
+                    dataBdd.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data[0];
+                    dataBdd.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
+                    dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
                 }
                 const dataResponse = getData(idSurvey);
                 if (
                     dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
-                    callbackData.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
+                    dataBdd.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
                 ) {
-                    saveData(idSurvey, callbackData).then(() => console.log("save"));
+                    saveData(idSurvey, dataBdd).then(() =>
+                        console.log("save data", dataResponse, data, dataBdd),
+                    );
                 }
             }
         }
@@ -89,26 +90,47 @@ const WeeklyPlannerPage = () => {
     const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
         const promisesToWait: Promise<any>[] = [];
 
-        const callbackData = callbackHolder.getData();
+        const callbackData = getData(idSurvey);
         const dataCopy = Object.assign({}, callbackData);
         const dates = (dataCopy?.COLLECTED?.["DATES"].COLLECTED ??
             getArrayFromSession("DATES")) as string[];
         const currentDateIndex = dates.indexOf(response.date);
         const dataResponse = getData(idSurveyResponse);
         if (
+            !isReviewer() &&
             dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
-            dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
+                dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
         ) {
             response.names.forEach(name => {
-                console.log(dataCopy?.COLLECTED?.[name]);
-                let quartier = Object.assign(dataCopy?.COLLECTED?.[name].COLLECTED as string[]);
+                let quartier = Object.assign(dataCopy?.COLLECTED?.[name]?.COLLECTED as string[]);
                 quartier[currentDateIndex] = response.values[name] + "";
 
                 if (dataCopy && dataCopy.COLLECTED) {
                     dataCopy.COLLECTED[name].COLLECTED = quartier;
                 }
             });
-            console.log("save data copy", dataCopy);
+            saveData(idSurveyResponse, dataCopy);
+        }
+
+        if (
+            isReviewer() &&
+            (dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].EDITED ==
+                dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].EDITED ||
+                dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
+                    dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED)
+        ) {
+            response.names.forEach(name => {
+                const responsesValues: string[] =
+                    dataCopy?.COLLECTED?.[name]?.EDITED ?? dataCopy?.COLLECTED?.[name]?.COLLECTED;
+                let quartier = Object.assign(responsesValues ?? []);
+
+                quartier[currentDateIndex] = response.values[name] + "";
+
+                if (dataCopy && dataCopy.COLLECTED) {
+                    console.log(dataCopy);
+                    dataCopy.COLLECTED[name].EDITED = quartier;
+                }
+            });
             saveData(idSurveyResponse, dataCopy);
         }
     };
@@ -152,6 +174,7 @@ const WeeklyPlannerPage = () => {
         workIcon: work,
         workIconAlt: t("accessibility.asset.mui-icon.work"),
         saveHours: (idSurvey: string, response: responsesHourChecker) => {
+            console.log(idSurvey, response);
             saveDuration(idSurvey, response);
         },
         optionsIcons: {

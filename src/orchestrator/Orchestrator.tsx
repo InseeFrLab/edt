@@ -127,9 +127,11 @@ const setDataOfWorkTimeReviewer = (
         let dataOfField = dataCollected[prop];
         const collected = dataOfField?.COLLECTED;
         const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
-        const edited = data?.COLLECTED?.[prop]?.EDITED;
-        dataOfField.COLLECTED = collected ?? collectedSaved;
-        dataOfField.EDITED = edited;
+        const edited = dataOfField?.EDITED;
+        const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
+
+        dataOfField.EDITED = editedSaved;
+        dataOfField.COLLECTED = collectedSaved;
     });
 
     return dataCollected;
@@ -270,8 +272,13 @@ const getVariablesWeeklyPlanner = (
     bindingDependencies?.forEach((bindingDependency: string) => {
         const varC = dataBdd?.COLLECTED?.[bindingDependency]?.COLLECTED;
         const varE = dataBdd?.COLLECTED?.[bindingDependency]?.EDITED;
-        const variableCollected = varE ?? varC ?? value?.[bindingDependency];
-        variables.set(bindingDependency, variableCollected);
+        let variable = varC;
+        if (isReviewerMode) {
+            variable = varE ?? varC;
+        } else {
+            variable = varC ?? value?.[bindingDependency];
+        }
+        variables.set(bindingDependency, variable);
     });
     return variables;
 };
