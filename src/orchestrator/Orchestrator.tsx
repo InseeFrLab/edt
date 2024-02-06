@@ -4,10 +4,9 @@ import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { FieldNameEnum, FieldNameEnumActivity } from "enumerations/FieldNameEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
 import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import React from "react";
-import { getSource } from "service/survey-service";
+import { getCurrentPageSource } from "service/orchestrator-service";
 import { isReviewer } from "service/user-service";
 
 const { ...edtComponents } = lunaticEDT;
@@ -96,8 +95,8 @@ const copyObject = (object: any) => {
     return Array.isArray(object) ? [...object] : JSON.parse(JSON.stringify(object));
 };
 
-const isWorkTime = (data: LunaticData) => {
-    return data?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER] != null;
+const isWorkTime = () => {
+    return getCurrentPageSource().label == "WorkTime";
 };
 
 const propsWorkTime = (source: LunaticModel) => {
@@ -112,22 +111,23 @@ const propsWorkTime = (source: LunaticModel) => {
     );
     return uniqueBindingDependencies;
 };
+
 //if weekly planner, doesn't distinction edited/collected, so edited/collected get value of collected
 const setDataOfWorkTimeReviewer = (
     source: LunaticModel | undefined,
-    dataCollected: any,
     data: LunaticData | undefined,
+    dataCollected: any,
 ) => {
     if (!source) {
-        source = getSource(SourcesEnum.WORK_TIME_SURVEY);
+        source = getCurrentPageSource();
     }
 
     const weeklyPlannerProps = propsWorkTime(source);
     weeklyPlannerProps.forEach(prop => {
         let dataOfField = dataCollected[prop];
         const collected = dataOfField?.COLLECTED;
-        const edited = data?.COLLECTED?.[prop]?.EDITED;
         const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
+        const edited = data?.COLLECTED?.[prop]?.EDITED;
         dataOfField.COLLECTED = collected ?? collectedSaved;
         dataOfField.EDITED = edited;
     });
@@ -186,10 +186,13 @@ const getDataReviewer = (
     const callbackholder = getData();
     let dataCollected = callbackholder.COLLECTED;
 
+    if (!source) {
+        source = getCurrentPageSource();
+    }
     // data -> get data of bdd, callbackholder -> lunatic / current data
     if (callbackholder && dataCollected) {
-        if (isWorkTime(callbackholder)) {
-            dataCollected = setDataOfWorkTimeReviewer(source, dataCollected, data);
+        if (isWorkTime()) {
+            dataCollected = setDataOfWorkTimeReviewer(source, data, dataCollected);
         } else {
             dataCollected = setDataOfActivityReviewer(dataCollected, data, components, iteration);
         }
@@ -215,8 +218,8 @@ const getDataInterviewer = (getData: any, data: LunaticData | undefined, source?
             const dataOfField = dataCollected[prop];
             //set values edited with values in bdd, because we don't recover the edited part with lunatic
             if (dataOfField) {
-                dataOfField.COLLECTED = dataOfField.COLLECTED ?? data?.COLLECTED?.[prop]?.EDITED;
-                dataOfField.EDTED = data?.COLLECTED?.[prop]?.EDITED;
+                //dataOfField.COLLECTED = dataOfField.COLLECTED ?? data?.COLLECTED?.[prop].EDITED;
+                dataOfField.EDITED = data?.COLLECTED?.[prop]?.EDITED;
             }
         });
     }
@@ -267,8 +270,8 @@ const getVariablesWeeklyPlanner = (
     bindingDependencies?.forEach((bindingDependency: string) => {
         const varC = dataBdd?.COLLECTED?.[bindingDependency]?.COLLECTED;
         const varE = dataBdd?.COLLECTED?.[bindingDependency]?.EDITED;
-        let variable = isReviewerMode ? varE ?? varC : varC;
-        variables.set(bindingDependency, variable);
+        const variableCollected = varE ?? varC ?? value?.[bindingDependency];
+        variables.set(bindingDependency, variableCollected);
     });
     return variables;
 };
@@ -280,7 +283,7 @@ const getVariables = (
     bindingDependencies: string[],
     value: any,
 ) => {
-    if (bindingDependencies.find((bindingDependency: string) => bindingDependency == "WEEKLYPLANNER")) {
+    if (isWorkTime()) {
         const variables = getVariablesWeeklyPlanner(data, dataBdd, bindingDependencies, value);
         return variables;
     } else {
@@ -289,7 +292,7 @@ const getVariables = (
 };
 
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    const { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
+    let { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
         props;
     const { classes, cx } = useStyles();
     const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
@@ -312,6 +315,10 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
 
     cbHolder.getData = getDataLocal;
     cbHolder.getErrors = getCurrentErrors;
+
+    if (!source) {
+        source = getCurrentPageSource();
+    }
 
     const renderComponent = () => {
         return (

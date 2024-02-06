@@ -38,6 +38,7 @@ import {
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { getData, getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
+import { isReviewer } from "service/user-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
 const WeeklyPlannerPage = () => {
@@ -65,20 +66,22 @@ const WeeklyPlannerPage = () => {
         if (data && data[1].length > 0) {
             dataWeeklyCallback = data;
             if (callbackData.COLLECTED) {
-                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data[0];
-                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data[0];
-                callbackData.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
-                callbackData.COLLECTED[FieldNameEnum.DATES].EDITED = data[1];
-                callbackData.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
-                callbackData.COLLECTED[FieldNameEnum.DATES_STARTED].EDITED = data[2];
-            }
-
-            const dataResponse = getData(idSurvey);
-            if (
-                dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
-                callbackData.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
-            ) {
-                saveData(idSurvey, callbackData).then(() => console.log("save"));
+                if (isReviewer()) {
+                    callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data[0];
+                    callbackData.COLLECTED[FieldNameEnum.DATES].EDITED = data[1];
+                    callbackData.COLLECTED[FieldNameEnum.DATES_STARTED].EDITED = data[2];
+                } else {
+                    callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data[0];
+                    callbackData.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
+                    callbackData.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
+                }
+                const dataResponse = getData(idSurvey);
+                if (
+                    dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
+                    callbackData.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
+                ) {
+                    saveData(idSurvey, callbackData).then(() => console.log("save"));
+                }
             }
         }
     };
@@ -97,13 +100,15 @@ const WeeklyPlannerPage = () => {
             dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
         ) {
             response.names.forEach(name => {
-                let quartier = dataCopy?.COLLECTED?.[name].COLLECTED as string[];
+                console.log(dataCopy?.COLLECTED?.[name]);
+                let quartier = Object.assign(dataCopy?.COLLECTED?.[name].COLLECTED as string[]);
                 quartier[currentDateIndex] = response.values[name] + "";
 
                 if (dataCopy && dataCopy.COLLECTED) {
                     dataCopy.COLLECTED[name].COLLECTED = quartier;
                 }
             });
+            console.log("save data copy", dataCopy);
             saveData(idSurveyResponse, dataCopy);
         }
     };
