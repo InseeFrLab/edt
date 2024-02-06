@@ -35,8 +35,6 @@ const App = () => {
             getCookie("KC_RESTART") == null &&
             localStorage.getItem("setauth") == null
         ) {
-            console.log(window.location.search);
-            console.log("reset state");
             localStorage.setItem("setauth", "yes");
             window.location.search = "";
         }

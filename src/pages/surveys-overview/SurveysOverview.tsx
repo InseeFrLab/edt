@@ -80,10 +80,8 @@ const SurveysOverviewPage = () => {
         dataHouseholds = getListSurveysHousehold();
         if (searchResult == null || searchResult.length == 0) {
             setSearchResult(dataHouseholds);
-            console.log("set search result");
         }
         campaingsList = getListCampaigns(dataHouseholds, t);
-        console.log(campaingsList);
     };
 
     useEffect(() => {
@@ -172,7 +170,6 @@ const SurveysOverviewPage = () => {
 
     const filterNameOrIdentifiant = (listStart: any[], value: string): Household[] => {
         if (value != "") {
-            console.log(value);
             return listStart?.filter(
                 (houseHoldData: any) => !isToFilterNameOrIdentifiant(houseHoldData, value),
             );

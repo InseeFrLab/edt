@@ -6,6 +6,7 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { FieldNameEnum, FieldNameEnumActivity } from "enumerations/FieldNameEnum";
 import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import React from "react";
+import { getCurrentPageSource } from "service/orchestrator-service";
 import { isReviewer } from "service/user-service";
 
 const { ...edtComponents } = lunaticEDT;
@@ -63,6 +64,7 @@ const getDataOfCurrentBinding = (
 ) => {
     // partie collected dejà set (mode enquete) -> set values of collected (value current lunawtic) to edited
     // and collected remains with the collected value on bdd
+
     if (collected) {
         if (editedSaved && Array.isArray(collected)) {
             collected = getDataOfLoop(collected, editedSaved, iteration);
@@ -93,8 +95,8 @@ const copyObject = (object: any) => {
     return Array.isArray(object) ? [...object] : JSON.parse(JSON.stringify(object));
 };
 
-const isWorkTime = (data: LunaticData) => {
-    return data?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER] != null;
+const isWorkTime = () => {
+    return getCurrentPageSource().label == "WorkTime";
 };
 
 const propsWorkTime = (source: LunaticModel) => {
@@ -109,16 +111,28 @@ const propsWorkTime = (source: LunaticModel) => {
     );
     return uniqueBindingDependencies;
 };
+
 //if weekly planner, doesn't distinction edited/collected, so edited/collected get value of collected
-const setDataOfWorkTimeReviewer = (source: LunaticModel | undefined, dataCollected: any) => {
-    if (source) {
-        const weeklyPlannerProps = propsWorkTime(source);
-        weeklyPlannerProps.forEach(prop => {
-            let dataOfField = dataCollected[prop];
-            const collected = dataOfField?.COLLECTED;
-            dataOfField.COLLECTED = collected;
-        });
+const setDataOfWorkTimeReviewer = (
+    source: LunaticModel | undefined,
+    data: LunaticData | undefined,
+    dataCollected: any,
+) => {
+    if (!source) {
+        source = getCurrentPageSource();
     }
+
+    const weeklyPlannerProps = propsWorkTime(source);
+    weeklyPlannerProps.forEach(prop => {
+        let dataOfField = dataCollected[prop];
+        const collected = dataOfField?.COLLECTED;
+        const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
+        const edited = dataOfField?.EDITED;
+        const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
+
+        dataOfField.EDITED = editedSaved;
+        dataOfField.COLLECTED = collectedSaved;
+    });
 
     return dataCollected;
 };
@@ -144,6 +158,7 @@ const setDataOfActivityReviewer = (
             //get data of current prop ->
             //COLLECTED : value of bdd (COLLECTED)
             //EDITED: if exist EDITED -> value of lunatic for value[iteration], other -> value of bdd (EDITED)
+
             dataOfField = getDataOfCurrentBinding(
                 copyObject(collected),
                 copyObject(edited),
@@ -173,10 +188,13 @@ const getDataReviewer = (
     const callbackholder = getData();
     let dataCollected = callbackholder.COLLECTED;
 
+    if (!source) {
+        source = getCurrentPageSource();
+    }
     // data -> get data of bdd, callbackholder -> lunatic / current data
     if (callbackholder && dataCollected) {
-        if (isWorkTime(callbackholder)) {
-            dataCollected = setDataOfWorkTimeReviewer(source, dataCollected);
+        if (isWorkTime()) {
+            dataCollected = setDataOfWorkTimeReviewer(source, data, dataCollected);
         } else {
             dataCollected = setDataOfActivityReviewer(dataCollected, data, components, iteration);
         }
@@ -202,7 +220,8 @@ const getDataInterviewer = (getData: any, data: LunaticData | undefined, source?
             const dataOfField = dataCollected[prop];
             //set values edited with values in bdd, because we don't recover the edited part with lunatic
             if (dataOfField) {
-                dataOfField.COLLECTED = dataOfField.COLLECTED ?? data?.COLLECTED?.[prop].EDITED;
+                //dataOfField.COLLECTED = dataOfField.COLLECTED ?? data?.COLLECTED?.[prop].EDITED;
+                dataOfField.EDITED = data?.COLLECTED?.[prop]?.EDITED;
             }
         });
     }
@@ -248,11 +267,18 @@ const getVariablesWeeklyPlanner = (
     value: any,
 ) => {
     let variables = new Map<string, any>();
+    const isReviewerMode = isReviewer();
 
     bindingDependencies?.forEach((bindingDependency: string) => {
-        const varC = data?.COLLECTED?.[bindingDependency]?.COLLECTED;
-        const variableCollected = varC ?? value?.[bindingDependency];
-        variables.set(bindingDependency, variableCollected);
+        const varC = dataBdd?.COLLECTED?.[bindingDependency]?.COLLECTED;
+        const varE = dataBdd?.COLLECTED?.[bindingDependency]?.EDITED;
+        let variable = varC;
+        if (isReviewerMode) {
+            variable = varE ?? varC;
+        } else {
+            variable = varC ?? value?.[bindingDependency];
+        }
+        variables.set(bindingDependency, variable);
     });
     return variables;
 };
@@ -264,7 +290,7 @@ const getVariables = (
     bindingDependencies: string[],
     value: any,
 ) => {
-    if (bindingDependencies.find((bindingDependency: string) => bindingDependency == "WEEKLYPLANNER")) {
+    if (isWorkTime()) {
         const variables = getVariablesWeeklyPlanner(data, dataBdd, bindingDependencies, value);
         return variables;
     } else {
@@ -273,7 +299,7 @@ const getVariables = (
 };
 
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    const { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
+    let { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
         props;
     const { classes, cx } = useStyles();
     const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
@@ -296,6 +322,10 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
 
     cbHolder.getData = getDataLocal;
     cbHolder.getErrors = getCurrentErrors;
+
+    if (!source) {
+        source = getCurrentPageSource();
+    }
 
     const renderComponent = () => {
         return (

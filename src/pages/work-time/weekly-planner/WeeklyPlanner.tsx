@@ -38,6 +38,7 @@ import {
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { getData, getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
+import { isReviewer } from "service/user-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
 const WeeklyPlannerPage = () => {
@@ -59,44 +60,75 @@ const WeeklyPlannerPage = () => {
     const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
 
     const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
-        const callbackData = callbackHolder.getData();
+        const dataBdd = getData(idSurvey);
+        let dataWeeklyCallback = dataBdd?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER]?.COLLECTED as any[];
         if (data && data[1].length > 0) {
-            if (callbackData.COLLECTED) {
-                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data[0];
-                callbackData.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data[0];
-                callbackData.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
-                callbackData.COLLECTED[FieldNameEnum.DATES].EDITED = data[1];
-                callbackData.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
-                callbackData.COLLECTED[FieldNameEnum.DATES_STARTED].EDITED = data[2];
-            }
-
-            const dataResponse = getData(idSurvey);
-            if (
-                dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
-                callbackData.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
-            ) {
-                saveData(idSurvey, callbackData).then(() => console.log("save"));
+            dataWeeklyCallback = data;
+            if (dataBdd.COLLECTED) {
+                if (isReviewer()) {
+                    dataBdd.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data[0];
+                    dataBdd.COLLECTED[FieldNameEnum.DATES].EDITED = data[1];
+                    dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].EDITED = data[2];
+                } else {
+                    dataBdd.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data[0];
+                    dataBdd.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
+                    dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
+                }
+                const dataResponse = getData(idSurvey);
+                if (
+                    dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
+                    dataBdd.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
+                ) {
+                    saveData(idSurvey, dataBdd).then(() =>
+                        console.log("save data", dataResponse, data, dataBdd),
+                    );
+                }
             }
         }
     };
 
     const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
-        const callbackData = callbackHolder.getData();
-        const dataCopy = { ...callbackData };
+        const promisesToWait: Promise<any>[] = [];
+
+        const callbackData = getData(idSurvey);
+        const dataCopy = Object.assign({}, callbackData);
         const dates = (dataCopy?.COLLECTED?.["DATES"].COLLECTED ??
             getArrayFromSession("DATES")) as string[];
         const currentDateIndex = dates.indexOf(response.date);
         const dataResponse = getData(idSurveyResponse);
         if (
+            !isReviewer() &&
             dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
-            dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
+                dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
         ) {
             response.names.forEach(name => {
-                let quartier = dataCopy?.COLLECTED?.[name].COLLECTED as string[];
+                let quartier = Object.assign(dataCopy?.COLLECTED?.[name]?.COLLECTED as string[]);
                 quartier[currentDateIndex] = response.values[name] + "";
 
                 if (dataCopy?.COLLECTED) {
                     dataCopy.COLLECTED[name].COLLECTED = quartier;
+                }
+            });
+            saveData(idSurveyResponse, dataCopy);
+        }
+
+        if (
+            isReviewer() &&
+            (dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].EDITED ==
+                dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].EDITED ||
+                dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
+                    dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED)
+        ) {
+            response.names.forEach(name => {
+                const responsesValues: string[] =
+                    dataCopy?.COLLECTED?.[name]?.EDITED ?? dataCopy?.COLLECTED?.[name]?.COLLECTED;
+                let quartier = Object.assign(responsesValues ?? []);
+
+                quartier[currentDateIndex] = response.values[name] + "";
+
+                if (dataCopy && dataCopy.COLLECTED) {
+                    console.log(dataCopy);
+                    dataCopy.COLLECTED[name].EDITED = quartier;
                 }
             });
             saveData(idSurveyResponse, dataCopy);
@@ -142,6 +174,7 @@ const WeeklyPlannerPage = () => {
         workIcon: work,
         workIconAlt: t("accessibility.asset.mui-icon.work"),
         saveHours: (idSurvey: string, response: responsesHourChecker) => {
+            console.log(idSurvey, response);
             saveDuration(idSurvey, response);
         },
         optionsIcons: {

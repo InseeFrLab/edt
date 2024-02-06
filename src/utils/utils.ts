@@ -142,7 +142,6 @@ function sumAllOfArray(array: number[]): number {
 }
 
 function isAndroidNav() {
-    console.log(isPwa, isMobile, isAndroid);
     return !isPwa() && isMobile && isAndroid;
 }
 
