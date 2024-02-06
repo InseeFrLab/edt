@@ -221,7 +221,7 @@ const useStyles = makeStylesEdt<{
     },
     pageMobileTablet: {
         height: "100%",
-        //maxHeight: isIOS ? stylePageMobileTabletWhenIOS(isOpen) : "94vh",
+        maxHeight: isIOS ? stylePageMobileTabletWhenIOS(isOpen) : "94vh",
     },
 }));
 
