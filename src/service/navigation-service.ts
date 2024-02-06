@@ -5,13 +5,7 @@ import { LoopEnum } from "enumerations/LoopEnum";
 import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import {
-    Collected,
-    LunaticData,
-    LunaticModel,
-    MultiCollected,
-    OrchestratorContext,
-} from "interface/lunatic/Lunatic";
+import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction } from "react";
@@ -331,29 +325,6 @@ const propsWorkTime = () => {
         (value, index, array) => array.indexOf(value) === index,
     );
     return uniqueBindingDependencies;
-};
-
-const setPropsEmpty = (
-    dataCollected: {
-        [x: string]: Collected | MultiCollected;
-    },
-    array: any,
-) => {
-    console.log(dataCollected, array);
-    for (let prop in array) {
-        console.log(prop);
-        if (prop == FieldNameEnum.SURVEYDATE) continue;
-        if (dataCollected[prop] == null) {
-            dataCollected[prop] = {
-                COLLECTED: null,
-                EDITED: null,
-                FORCED: null,
-                INPUTED: null,
-                PREVIOUS: null,
-            };
-        }
-    }
-    return dataCollected;
 };
 
 const emptyDataSetFirstName = (
