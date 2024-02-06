@@ -101,7 +101,9 @@ const DayOfSurveyPage = () => {
                 ? EdtRoutesNameEnum.WORK_TIME
                 : EdtRoutesNameEnum.ACTIVITY;
         const dataUpdated = setSurveyDate(input);
+        console.log(dataUpdated);
         saveData(idSurvey, dataUpdated, false, true).then(data => {
+            console.log(data);
             navigate(navToPlanner(idSurvey, surveyRootPage));
         });
     }, []);

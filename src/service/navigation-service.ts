@@ -297,6 +297,7 @@ const setNamesOfGroup = (idSurvey: string, idsSurveysOfGroup: string[], nameAct:
 
     idsSurveysOfGroup.forEach(idSurvey => {
         let firstname = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
+        const newSurvey = firstname == null;
         if (firstname == null || replaceName) {
             let dataActuel = Object.assign({}, getData(idSurvey));
             const datasirv = { ...dataActuel };
@@ -305,6 +306,7 @@ const setNamesOfGroup = (idSurvey: string, idsSurveysOfGroup: string[], nameAct:
                 datasirv,
                 getModePersistence(datasirv),
                 nameOfGroup,
+                newSurvey,
             );
             console.log("save data named", emptydata);
             promises.push(saveData(idSurvey, emptydata));
@@ -332,14 +334,14 @@ const emptyDataSetFirstName = (
     data: LunaticData,
     modePersistence: ModePersistenceEnum,
     firstName: string,
-    surveyDate?: string,
+    newSurvey: boolean,
 ) => {
     let dataCollected = { ...data.COLLECTED };
     if (dataCollected) {
         if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurvey)) {
             propsWorkTime().forEach(prop => {
                 console.log(prop);
-                if (dataCollected[prop] == null) {
+                if (dataCollected[prop] == null || newSurvey) {
                     dataCollected[prop] = {
                         COLLECTED: null,
                         EDITED: null,
@@ -360,7 +362,7 @@ const emptyDataSetFirstName = (
         } else {
             for (let prop in FieldNameEnumActivity as any) {
                 if (prop == FieldNameEnum.SURVEYDATE) continue;
-                if (dataCollected[prop] == null) {
+                if (dataCollected[prop] == null || newSurvey) {
                     dataCollected[prop] = {
                         COLLECTED: null,
                         EDITED: null,

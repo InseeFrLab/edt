@@ -275,7 +275,7 @@ const getVariablesWeeklyPlanner = (
         if (isReviewerMode) {
             variable = varE ?? varC;
         } else {
-            variable = varC ?? value?.[bindingDependency];
+            variable = varE ?? varC ?? value?.[bindingDependency];
         }
         variables.set(bindingDependency, variable);
     });

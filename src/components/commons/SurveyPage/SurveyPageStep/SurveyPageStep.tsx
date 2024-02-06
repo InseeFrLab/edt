@@ -63,7 +63,12 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setEnviro(context, navigate, callbackHolder);
+        if (context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME) {
+            console.log(callbackHolder.getData(), getData(idSurvey));
+            setEnviro(context, navigate);
+        } else {
+            setEnviro(context, navigate, callbackHolder);
+        }
     });
 
     const { classes, cx } = useStyles({
@@ -201,10 +206,6 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     );
 };
 
-const stylePageMobileTabletWhenIOS = (isOpen: boolean) => {
-    return isOpen ? "80vh" : "87vh";
-};
-
 const useStyles = makeStylesEdt<{
     isMobile: boolean;
     isIOS: boolean;
@@ -221,7 +222,7 @@ const useStyles = makeStylesEdt<{
     },
     pageMobileTablet: {
         height: "100%",
-        maxHeight: isIOS ? stylePageMobileTabletWhenIOS(isOpen) : "94vh",
+        maxHeight: isIOS ? (isOpen ? "80vh" : "87vh") : "94vh",
     },
 }));
 
