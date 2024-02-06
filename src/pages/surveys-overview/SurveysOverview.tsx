@@ -74,6 +74,7 @@ const SurveysOverviewPage = () => {
         React.useState<Household[]>(emptyArray);
 
     let [initialized, setInitialized] = React.useState(false);
+    let [refreshing, setRefreshing] = React.useState(false);
     const [error, setError] = React.useState<ErrorCodeEnum | undefined>(undefined);
 
     const initHouseholds = () => {
@@ -84,14 +85,32 @@ const SurveysOverviewPage = () => {
         campaingsList = getListCampaigns(dataHouseholds, t);
     };
 
+    const refreshHouseholds = useCallback(() => {
+        setRefreshing(true);
+        return initializeListSurveys(setError)
+            .then(() => {
+                return refreshSurveyData(setError).then(() => {
+                    initHouseholds();
+                    setSearchResult(dataHouseholds);
+                });
+            })
+            .then(() => {
+                setRefreshing(false);
+            });
+    }, []);
+
     useEffect(() => {
         initializeSurveysIdsDataModeReviewer(setError)
             .then(() => {
                 dataHouseholds = getListSurveysHousehold();
                 if (dataHouseholds.length == 0) {
-                    refreshHouseholds();
+                    setInitialized(false);
+                    return refreshHouseholds().then(() => {
+                        initHouseholds();
+                    });
+                } else {
+                    initHouseholds();
                 }
-                initHouseholds();
             })
             .catch(err => {
                 console.log(err);
@@ -123,16 +142,6 @@ const SurveysOverviewPage = () => {
 
     const navToReviewerHome = useCallback(() => {
         navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_HOME));
-    }, []);
-
-    const refreshHouseholds = useCallback(() => {
-        setInitialized(false);
-        initializeListSurveys(setError).then(() => {
-            refreshSurveyData(setError).finally(() => {
-                initHouseholds();
-                setInitialized(true);
-            });
-        });
     }, []);
 
     const isToFilterValidate = (houseHoldData: any): boolean => {
@@ -273,7 +282,7 @@ const SurveysOverviewPage = () => {
     }, [searchResult]);
 
     const renderPageOrLoadingOrError = (page: any) => {
-        if (initialized && searchResult != null) {
+        if (initialized && !refreshing && searchResult != null) {
             return page;
         } else {
             return !error ? (
