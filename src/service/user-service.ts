@@ -4,6 +4,7 @@ import { AuthContextProps, User } from "oidc-react";
 let user: any;
 let userToken: string;
 let auth: AuthContextProps;
+let isSSO: boolean;
 
 export const setUser = (loggedUser: User | null): void => {
     user = loggedUser;
@@ -26,7 +27,7 @@ export const setUserToken = (token: string): void => {
 };
 
 export const getUserRights = (): EdtUserRightsEnum => {
-    if (user?.profile?.inseegroupedefaut?.includes(EdtUserRightsEnum.REVIEWER)) {
+    if (user?.profile?.inseegroupedefaut?.includes(EdtUserRightsEnum.REVIEWER) || isSSO) {
         return EdtUserRightsEnum.REVIEWER;
     } else if (user?.profile?.inseegroupedefaut?.includes(EdtUserRightsEnum.SURVEYED)) {
         return EdtUserRightsEnum.SURVEYED;
@@ -36,3 +37,11 @@ export const getUserRights = (): EdtUserRightsEnum => {
 };
 
 export const isReviewer = (): boolean => getUserRights() === EdtUserRightsEnum.REVIEWER;
+
+export const setUserSSO = (_isSSO: boolean): void => {
+    isSSO = _isSSO;
+};
+
+export const isUserSSO = (): boolean => {
+    return isSSO;
+};

@@ -17,7 +17,9 @@ const getAuthority = () => {
     return authority;
 };
 
-const userManagerCustom = isSSO ? { userManager: createUserManager() } : {};
+const oidcConfigSSO = {
+    userManager: createUserManager(),
+};
 
 const oidcConfig = {
     onSignIn: () => {
@@ -27,11 +29,12 @@ const oidcConfig = {
     authority: getAuthority(),
     clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID,
     redirectUri: process.env.REACT_APP_KEYCLOAK_REDIRECT_URI,
-    ...{ userManagerCustom },
 };
 
+const oidcProps = isSSO ? Object.assign(oidcConfig, oidcConfigSSO) : oidcConfig;
+
 root.render(
-    <AuthProvider {...oidcConfig}>
+    <AuthProvider {...oidcProps}>
         <React.StrictMode>
             <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={theme}>
