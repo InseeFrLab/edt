@@ -819,7 +819,12 @@ const saveQualityScore = (idSurvey: string, data: LunaticData) => {
     return data;
 };
 
-const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): Promise<LunaticData> => {
+const saveData = (
+    idSurvey: string,
+    data: LunaticData,
+    localSaveOnly = false,
+    forceUpdate = false,
+): Promise<LunaticData> => {
     data.lastLocalSaveDate = Date.now();
     if (!data.houseReference) {
         const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
@@ -828,7 +833,7 @@ const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): P
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
     fixConditionals(data);
-    const isChange = dataIsChange(idSurvey, data);
+    const isChange = forceUpdate || dataIsChange(idSurvey, data);
     console.log(isChange, data);
     return lunaticDatabase.save(idSurvey, data).then(() => {
         const promisesToWait: Promise<any>[] = [];
