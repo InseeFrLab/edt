@@ -99,7 +99,7 @@ const isWorkTime = () => {
     return getCurrentPageSource().label == "WorkTime";
 };
 
-const propsWorkTime = (source: LunaticModel) => {
+const propsWorkTime = (source: LunaticModel): string[] => {
     const bindingDependenciesOfComponent = source.components.map(
         component => component.bindingDependencies ?? [],
     );
@@ -125,13 +125,12 @@ const setDataOfWorkTimeReviewer = (
     const weeklyPlannerProps = propsWorkTime(source);
     weeklyPlannerProps.forEach(prop => {
         let dataOfField = dataCollected[prop];
-        const collected = dataOfField?.COLLECTED;
         const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
-        const edited = dataOfField?.EDITED;
         const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
-
-        dataOfField.EDITED = editedSaved;
-        dataOfField.COLLECTED = collectedSaved;
+        if (dataOfField) {
+            dataOfField.EDITED = editedSaved;
+            dataOfField.COLLECTED = collectedSaved;
+        }
     });
 
     return dataCollected;
