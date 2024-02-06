@@ -212,15 +212,22 @@ const HelpActivity = () => {
 
     const heightClass = isPwa() ? classes.fullHeight : classes.fullHeightNav;
 
+    const isMobileApp = () => {
+        return !isPwa() && isMobileNav && (isIOS || isAndroid);
+    };
+
+    function getClassCondition(condition: boolean, classNameYes: any, classNameNo: any) {
+        return condition ? classNameYes : classNameNo;
+    }
+
     return (
         <Box className={classes.root}>
             {renderHelp()}
             <Box
-                className={
-                    !isPwa() && isMobileNav && (isIOS || isAndroid)
-                        ? classes.surveyPageBoxTablet
-                        : classes.surveyPageBox
-                }
+                className={cx(
+                    classes.surveyPageBox,
+                    getClassCondition(isMobileApp(), classes.surveyPageBoxTablet, ""),
+                )}
             >
                 {(isItDesktop || !isSubchildDisplayed) && (
                     <Box className={classes.innerSurveyPageBox}>
@@ -344,8 +351,10 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         display: "flex",
         alignItems: "flex-start",
         overflow: "hidden",
-        height: "100vh",
-        maxHeight: "94vh",
+        height: "100%",
+        maxHeight: isIOS ? "87vh" : "100vh",
+        marginTop: isIOS ? "4rem" : "",
+        //maxHeight: "94vh",
     },
     innerContentBox: {
         border: "1px solid transparent",
