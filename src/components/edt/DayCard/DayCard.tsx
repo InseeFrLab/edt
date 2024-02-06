@@ -83,16 +83,12 @@ const DayCard = (props: DayCardProps) => {
                 >
                     {modeReviewer && (
                         <Box className={classes.qualityScoreBox}>
-                            {isClosed && (
-                                <>
-                                    <Box id="group-text" className={classes.qualityScoreText}>
-                                        {t("page.activity-summary.quality-score.label")}
-                                    </Box>
-                                    <Box id="group-score" className={classes.qualityScore}>
-                                        {qualityScore}
-                                    </Box>
-                                </>
-                            )}
+                            <Box id="group-text" className={classes.qualityScoreText}>
+                                {t("page.activity-summary.quality-score.label")}
+                            </Box>
+                            <Box id="group-score" className={classes.qualityScore}>
+                                {qualityScore}
+                            </Box>
                         </Box>
                     )}
                     <Box
