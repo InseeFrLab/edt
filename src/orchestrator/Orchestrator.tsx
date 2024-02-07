@@ -222,6 +222,7 @@ const getDataInterviewer = (getData: any, data: LunaticData | undefined, source?
                 //dataOfField.COLLECTED = dataOfField.COLLECTED ?? data?.COLLECTED?.[prop].EDITED;
                 dataOfField.EDITED = data?.COLLECTED?.[prop]?.EDITED;
             }
+            console.log(prop, dataOfField);
         });
     }
     callbackholder.COLLECTED = dataCollected;
@@ -275,7 +276,11 @@ const getVariablesWeeklyPlanner = (
         if (isReviewerMode) {
             variable = varE ?? varC;
         } else {
-            variable = varE ?? varC ?? value?.[bindingDependency];
+            if (Array.isArray(varE) && varE.length > 0 && varE[0] != null) {
+                variable = varE;
+            } else {
+                variable = varC ?? value?.[bindingDependency];
+            }
         }
         variables.set(bindingDependency, variable);
     });
