@@ -61,9 +61,7 @@ const WeeklyPlannerPage = () => {
 
     const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
         const dataBdd = getData(idSurvey);
-        let dataWeeklyCallback = dataBdd?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER]?.COLLECTED as any[];
         if (data && data[1].length > 0) {
-            dataWeeklyCallback = data;
             if (dataBdd.COLLECTED) {
                 if (isReviewer()) {
                     dataBdd.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data[0];
@@ -86,8 +84,6 @@ const WeeklyPlannerPage = () => {
     };
 
     const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
-        const promisesToWait: Promise<any>[] = [];
-
         const callbackData = getData(idSurvey);
         const dataCopy = Object.assign({}, callbackData);
         const dates = (dataCopy?.COLLECTED?.["DATES"].COLLECTED ??

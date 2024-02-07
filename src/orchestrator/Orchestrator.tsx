@@ -222,7 +222,6 @@ const getDataInterviewer = (getData: any, data: LunaticData | undefined, source?
                 //dataOfField.COLLECTED = dataOfField.COLLECTED ?? data?.COLLECTED?.[prop].EDITED;
                 dataOfField.EDITED = data?.COLLECTED?.[prop]?.EDITED;
             }
-            console.log(prop, dataOfField);
         });
     }
     callbackholder.COLLECTED = dataCollected;

@@ -64,7 +64,6 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 
     useEffect(() => {
         if (context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME) {
-            console.log(callbackHolder.getData(), getData(idSurvey));
             setEnviro(context, navigate);
         } else {
             setEnviro(context, navigate, callbackHolder);

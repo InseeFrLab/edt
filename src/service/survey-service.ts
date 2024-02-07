@@ -1231,7 +1231,6 @@ const getSurveyDate = (idSurvey: string) => {
 
 // return survey firstname if exist or default value
 const getPrintedFirstName = (idSurvey: string): string => {
-    const firstname = getFirstName(idSurvey);
     return getFirstName(idSurvey) || t("common.user.person") + " " + getPersonNumber(idSurvey);
 };
 
@@ -1744,7 +1743,6 @@ const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum 
     const isReviewerMode = isReviewer();
     const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED as boolean;
     const variableEdited = existVariableEdited(undefined, data);
-    const isWorkTime = data?.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER];
     return isReviewerMode || isLocked || variableEdited
         ? ModePersistenceEnum.EDITED
         : ModePersistenceEnum.COLLECTED;

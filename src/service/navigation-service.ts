@@ -7,7 +7,6 @@ import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
-import { callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction } from "react";
 import { NavigateFunction, To } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
@@ -293,7 +292,6 @@ const setNamesOfGroup = (idSurvey: string, idsSurveysOfGroup: string[], nameAct:
 
     const promises: any[] = [];
     const nameOfGroup = listNames.length > 0 && !replaceName ? listNames[0] : nameAct;
-    const date = callbackHolder.getData().COLLECTED?.[FieldNameEnum.SURVEYDATE].COLLECTED as string;
 
     idsSurveysOfGroup.forEach(idSurvey => {
         let firstname = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
