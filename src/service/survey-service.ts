@@ -691,7 +691,6 @@ const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
         });
         if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurvey)) {
             isChange = true;
-            console.log("isWorktime");
         }
     } else {
         isChange = true;
@@ -834,7 +833,6 @@ const saveData = (
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
     fixConditionals(data);
     const isChange = forceUpdate || dataIsChange(idSurvey, data);
-    console.log(isChange, data);
     return lunaticDatabase.save(idSurvey, data).then(() => {
         const promisesToWait: Promise<any>[] = [];
         datas.set(idSurvey, data);
@@ -905,7 +903,6 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
     //set the last remote save date inside local database to be able to compare it later with remote data
     lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
-        console.log(data);
         addItemToSession(idSurvey, data);
         oldDatas.set(idSurvey, data);
     });

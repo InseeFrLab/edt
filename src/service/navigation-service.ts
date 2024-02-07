@@ -308,7 +308,6 @@ const setNamesOfGroup = (idSurvey: string, idsSurveysOfGroup: string[], nameAct:
                 nameOfGroup,
                 newSurvey,
             );
-            console.log("save data named", emptydata);
             promises.push(saveData(idSurvey, emptydata));
         }
     });
@@ -340,7 +339,6 @@ const emptyDataSetFirstName = (
     if (dataCollected) {
         if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurvey)) {
             propsWorkTime().forEach(prop => {
-                console.log(prop);
                 if (dataCollected[prop] == null && newSurvey) {
                     if (prop in FieldNameEnumWorkTIme) {
                         dataCollected[prop] = {

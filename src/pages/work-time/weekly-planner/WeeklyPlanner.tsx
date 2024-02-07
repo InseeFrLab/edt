@@ -79,9 +79,7 @@ const WeeklyPlannerPage = () => {
                     dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
                     dataBdd.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
                 ) {
-                    saveData(idSurvey, dataBdd).then(() =>
-                        console.log("save data", dataResponse, data, dataBdd),
-                    );
+                    saveData(idSurvey, dataBdd).then(() => console.log("save data"));
                 }
             }
         }
@@ -127,7 +125,6 @@ const WeeklyPlannerPage = () => {
                 quartier[currentDateIndex] = response.values[name] + "";
 
                 if (dataCopy && dataCopy.COLLECTED) {
-                    console.log(dataCopy);
                     dataCopy.COLLECTED[name].EDITED = quartier;
                 }
             });
@@ -174,7 +171,6 @@ const WeeklyPlannerPage = () => {
         workIcon: work,
         workIconAlt: t("accessibility.asset.mui-icon.work"),
         saveHours: (idSurvey: string, response: responsesHourChecker) => {
-            console.log(idSurvey, response);
             saveDuration(idSurvey, response);
         },
         optionsIcons: {
