@@ -749,11 +749,11 @@
         "PREVIOUS": [null]
     },
     "OTHER": {
-        "EDITED": null,
-        "FORCED": null,
-        "INPUTED": null,
-        "PREVIOUS": null,
-        "COLLECTED": null
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null],
+        "COLLECTED": [null]
     },
     "CLIENT": {
         "COLLECTED": [null],

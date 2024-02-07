@@ -1,5 +1,5 @@
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { FieldNameEnum, FieldNameEnumActivity } from "enumerations/FieldNameEnum";
+import { FieldNameEnum, FieldNameEnumActivity, FieldNameEnumWorkTIme } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
@@ -341,14 +341,24 @@ const emptyDataSetFirstName = (
         if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurvey)) {
             propsWorkTime().forEach(prop => {
                 console.log(prop);
-                if (dataCollected[prop] == null || newSurvey) {
-                    dataCollected[prop] = {
-                        COLLECTED: null,
-                        EDITED: null,
-                        FORCED: null,
-                        INPUTED: null,
-                        PREVIOUS: null,
-                    };
+                if (dataCollected[prop] == null && newSurvey) {
+                    if (prop in FieldNameEnumWorkTIme) {
+                        dataCollected[prop] = {
+                            COLLECTED: null,
+                            EDITED: null,
+                            FORCED: null,
+                            INPUTED: null,
+                            PREVIOUS: null,
+                        };
+                    } else {
+                        dataCollected[prop] = {
+                            COLLECTED: [null],
+                            EDITED: [null],
+                            FORCED: [null],
+                            INPUTED: [null],
+                            PREVIOUS: [null],
+                        };
+                    }
                 }
             });
 
