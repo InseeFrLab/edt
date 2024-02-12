@@ -1,6 +1,6 @@
 import { WebStorageStateStore } from "oidc-client-ts";
 import { UserManager } from "oidc-react";
-import { setUserToken } from "./user-service";
+import { setUserSSO, setUserToken } from "./user-service";
 
 const url = process.env.REACT_APP_KEYCLOAK_AUTHORITY ?? "";
 const clientId = process.env.REACT_APP_KEYCLOAK_CLIENT_ID ?? "";
@@ -69,6 +69,7 @@ const createUserManager = () => {
     userManager.events.addUserLoaded(user => {
         if (window.location.href.indexOf("signin-oidc") !== -1) {
             setUserToken(user?.access_token || "");
+            setUserSSO(isSSO);
         }
     });
 
