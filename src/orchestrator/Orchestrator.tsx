@@ -166,7 +166,7 @@ const setDataOfActivityReviewer = (
                 dataOfField,
                 iteration,
             );
-        } else if (isPropActivity(prop, dataOfField)) {
+        } else if (dataOfField) {
             //prop activity + prop not currently being edited,
             //so edited get value of edited in bdd, and collected get value of partie collected in bdd
             dataOfField.EDITED = copyObject(editedSaved);
@@ -253,7 +253,6 @@ const getVariablesActivity = (
         variableCollected = variableCollected ?? value?.[bindingDependency];
         let variable =
             isReviewerMode || isLocked ? variableEdited ?? variableCollected : variableCollected;
-
         variables.set(bindingDependency, variable);
     });
     return variables;

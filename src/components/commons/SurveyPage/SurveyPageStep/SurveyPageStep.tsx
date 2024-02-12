@@ -63,11 +63,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (context.surveyRootPage == EdtRoutesNameEnum.WORK_TIME) {
-            setEnviro(context, navigate);
-        } else {
-            setEnviro(context, navigate, callbackHolder);
-        }
+        setEnviro(context, navigate, callbackHolder);
     });
 
     const { classes, cx } = useStyles({

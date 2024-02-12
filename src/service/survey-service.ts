@@ -1217,10 +1217,6 @@ const getDataModePersist = (
     return dataAct;
 };
 
-const getLastName = (idSurvey: string) => {
-    return getValue(idSurvey, FieldNameEnum.LASTNAME)?.toString();
-};
-
 const getFirstName = (idSurvey: string) => {
     return getValue(idSurvey, FieldNameEnum.FIRSTNAME)?.toString();
 };
@@ -1875,7 +1871,6 @@ export {
     getFullFrenchDate,
     getIdSurveyActivity,
     getIdSurveyWorkTime,
-    getLastName,
     getListSurveys,
     getListSurveysHousehold,
     getModePersistence,
