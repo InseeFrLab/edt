@@ -1,6 +1,6 @@
 {
     "name": "edt",
-    "version": "3.11.19",
+    "version": "3.12.0",
     "dateVersion": "13/02/2024",
     "licence": "MIT",
     "dependencies": {
