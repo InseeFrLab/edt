@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { useCallback } from "react";
-import { isMobile as isMobileDevice, isIOS } from "react-device-detect";
+import { isIOS, isMobile as isMobileDevice } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
