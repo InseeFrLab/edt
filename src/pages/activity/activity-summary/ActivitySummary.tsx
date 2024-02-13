@@ -148,10 +148,6 @@ const addActivityOrRoute = (
         : onAddActivity(idSurvey, isRoute);
 };
 
-const isDemo = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
-const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
-const isReviewerMode = isReviewer && !isDemo;
-
 const renderPageOrLoadingOrError = (
     initialized: boolean,
     error: ErrorCodeEnum | undefined,
@@ -219,6 +215,10 @@ const ActivitySummaryPage = () => {
 
     const modifiable = !surveyReadOnly(context.rightsSurvey);
     const { classes } = useStyles({ "modifiable": modifiable });
+
+    const isDemo = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+    const isReviewer = getUserRights() == EdtUserRightsEnum.REVIEWER;
+    const isReviewerMode = isReviewer && !isDemo;
 
     useEffect(() => {
         setScore(getScore(idSurvey, t));
