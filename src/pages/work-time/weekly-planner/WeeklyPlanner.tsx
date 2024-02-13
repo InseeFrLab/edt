@@ -77,7 +77,7 @@ const WeeklyPlannerPage = () => {
                     dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
                     dataBdd.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
                 ) {
-                    saveData(idSurvey, dataBdd).then(() => console.log("save data"));
+                    saveData(idSurvey, dataBdd);
                 }
             }
         }

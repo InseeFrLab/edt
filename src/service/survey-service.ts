@@ -429,11 +429,7 @@ const getRemoteSavedSurveysDatas = (
     const promises: Promise<any>[] = [];
     const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
     surveysIds.forEach(surveyId => {
-        promises.push(
-            lunaticDatabase.get(surveyId).then(() => {
-                //console.log(data)
-            }),
-        );
+        promises.push(lunaticDatabase.get(surveyId));
         if (navigator.onLine) {
             promises.push(
                 urlRemote(surveyId, setError, withoutState ?? true).then(

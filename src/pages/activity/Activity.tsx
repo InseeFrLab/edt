@@ -73,7 +73,6 @@ const ActivityPage = () => {
     }, []);
 
     const isNotMobile = useMediaQuery({ minWidth: tabletMinWidth });
-    console.log(isNotMobile, tabletMinWidth);
     return (
         <>
             <>
