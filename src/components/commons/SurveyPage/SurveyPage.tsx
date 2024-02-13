@@ -109,13 +109,13 @@ const SurveyPage = (props: SurveyPageProps) => {
             {!simpleHeader && firstName && surveyDate && onNavigateBack && (
                 <SurveyPageHeader
                     surveyDate={surveyDate}
-                    firstName={firstName + window.innerHeight + " " + document.body.clientHeight + " "}
+                    firstName={firstName}
                     onNavigateBack={onNavigateBack}
                 />
             )}
             {!simpleHeader && firstName && firstNamePrefix && (onEdit || onHelp) && onPrevious && (
                 <SurveyPageEditHeader
-                    firstName={firstName + window.innerHeight + " " + document.body.clientHeight + " "}
+                    firstName={firstName}
                     firstNamePrefix={firstNamePrefix}
                     onNavigateBack={onPrevious}
                     onEdit={onEdit}
@@ -125,12 +125,7 @@ const SurveyPage = (props: SurveyPageProps) => {
             )}
             {simpleHeader && onNavigateBack && (
                 <SurveyPageSimpleHeader
-                    simpleHeaderLabel={
-                        simpleHeaderLabel
-                            ? simpleHeaderLabel +
-                              (window.innerHeight + " " + document.body.clientHeight + " ")
-                            : undefined
-                    }
+                    simpleHeaderLabel={simpleHeaderLabel}
                     onNavigateBack={onNavigateBack}
                     backgroundWhite={backgroundWhiteHeader}
                 />
