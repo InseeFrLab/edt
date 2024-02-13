@@ -71,6 +71,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         "isIOS": isIOS,
         "isOpen": context.isOpenHeader ?? false,
         "withStepper": isStep,
+        "innerHeight": window.innerHeight,
     });
 
     const stepData = getStepData(currentPage);
@@ -178,26 +179,12 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 
     const surveyPageProps = isStep ? surveyPageStepProps : surveyPageNotStepProps;
 
-    console.log(
-        "height",
-        window.screen.height,
-        "availHeight",
-        window.screen.availHeight,
-        "innerHeight",
-        window.innerHeight,
-        "outerHeight",
-        window.outerHeight,
-    );
-
     return (
         <Box
             className={cx(
                 !isPwa() && (isIOS || isAndroid) ? classes.pageMobileTablet : classes.pageDesktop,
             )}
         >
-            <Box>
-                {window.screen.availHeight} {window.innerHeight}
-            </Box>
             <SurveyPage {...surveyPageProps}>
                 <FlexCenter className={withBottomPadding ? classes.bottomPadding : ""}>
                     <FelicitationModal
@@ -220,6 +207,7 @@ const useStyles = makeStylesEdt<{
     isIOS: boolean;
     isOpen: boolean;
     withStepper: boolean;
+    innerHeight: number;
 }>({
     "name": { SurveyPageStep },
 })((theme, { isIOS, isOpen, withStepper }) => ({
@@ -230,9 +218,8 @@ const useStyles = makeStylesEdt<{
         height: withStepper ? "90%" : "100%",
     },
     pageMobileTablet: {
-        //height: "100%",
-        maxHeight: isIOS ? (isOpen ? "80vh" : "87vh") : innerHeight - 58 + "px",
-        height: innerHeight - 58 + "px",
+        maxHeight: isIOS ? (isOpen ? "80vh" : "87vh") : innerHeight + "px",
+        height: innerHeight + "px",
     },
 }));
 
