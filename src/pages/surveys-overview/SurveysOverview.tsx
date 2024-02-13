@@ -124,6 +124,7 @@ const SurveysOverviewPage = () => {
 
     const initHouseholds = () => {
         dataHouseholds = getListSurveysHousehold();
+
         if (searchResult == null || searchResult.length == 0) {
             setSearchResult(dataHouseholds);
         }
@@ -142,7 +143,7 @@ const SurveysOverviewPage = () => {
             .then(() => {
                 setRefreshing(false);
             });
-    }, []);
+    }, [searchResult]);
 
     useEffect(() => {
         initializeSurveysIdsDataModeReviewer(setError)
@@ -150,18 +151,19 @@ const SurveysOverviewPage = () => {
                 dataHouseholds = getListSurveysHousehold();
                 if (dataHouseholds.length == 0) {
                     setInitialized(false);
-                    return refreshHouseholds().then(() => {
+                    setRefreshing(true);
+                    refreshHouseholds().then(() => {
                         initHouseholds();
                     });
-                } else {
-                    initHouseholds();
                 }
             })
             .catch(err => {
                 console.log(err);
             })
             .finally(() => {
+                initHouseholds();
                 setInitialized(true);
+                setRefreshing(false);
             });
     });
 
