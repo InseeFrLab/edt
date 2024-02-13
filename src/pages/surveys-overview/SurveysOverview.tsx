@@ -53,6 +53,51 @@ const getListCampaigns = (dataHouseholds: Household[], t: TFunction<"translation
     return [{ value: "all", label: t("page.surveys-overview.all-campaigns") }].concat(subCampaignIds);
 };
 
+const isToFilterValidate = (houseHoldData: any): boolean => {
+    return (
+        houseHoldData.stats?.numHouseholdsInProgress == 0 &&
+        houseHoldData.stats?.numHouseholdsClosed == 0 &&
+        houseHoldData.stats?.numHouseholdsValidated == houseHoldData.stats?.numHouseholds
+    );
+};
+
+const isToFilterCampaing = (houseHoldData: any, value: string): boolean => {
+    return houseHoldData.campaingId.toLowerCase() == value.toLowerCase();
+};
+
+const isToFilterNameOrIdentifiant = (houseHoldData: any, value: string): boolean => {
+    return (
+        houseHoldData?.userName?.toLowerCase().includes(value.toLowerCase()) ||
+        houseHoldData?.idHousehold?.toLowerCase().includes(value.toLowerCase())
+    );
+};
+
+const isToFilter = (listOfElements: Household[], houseHoldData: Household): boolean => {
+    return listOfElements.findIndex(hh => hh.idHousehold == houseHoldData.idHousehold) >= 0;
+};
+
+const filterValidate = (listStart: any[], value: boolean): Household[] => {
+    if (value) {
+        return getUniquesValues(
+            listStart?.filter((houseHoldData: any) => isToFilterValidate(houseHoldData)),
+        );
+    } else return [];
+};
+
+const filterCampaign = (listStart: any[], value: string): Household[] => {
+    if (value != "all") {
+        return listStart?.filter((houseHoldData: any) => !isToFilterCampaing(houseHoldData, value));
+    } else return [];
+};
+
+const filterNameOrIdentifiant = (listStart: any[], value: string): Household[] => {
+    if (value != "") {
+        return listStart?.filter(
+            (houseHoldData: any) => !isToFilterNameOrIdentifiant(houseHoldData, value),
+        );
+    } else return [];
+};
+
 const SurveysOverviewPage = () => {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
@@ -143,51 +188,6 @@ const SurveysOverviewPage = () => {
     const navToReviewerHome = useCallback(() => {
         navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_HOME));
     }, []);
-
-    const isToFilterValidate = (houseHoldData: any): boolean => {
-        return (
-            houseHoldData.stats?.numHouseholdsInProgress == 0 &&
-            houseHoldData.stats?.numHouseholdsClosed == 0 &&
-            houseHoldData.stats?.numHouseholdsValidated == houseHoldData.stats?.numHouseholds
-        );
-    };
-
-    const isToFilterCampaing = (houseHoldData: any, value: string): boolean => {
-        return houseHoldData.campaingId.toLowerCase() == value.toLowerCase();
-    };
-
-    const isToFilterNameOrIdentifiant = (houseHoldData: any, value: string): boolean => {
-        return (
-            houseHoldData?.userName?.toLowerCase().includes(value.toLowerCase()) ||
-            houseHoldData?.idHousehold?.toLowerCase().includes(value.toLowerCase())
-        );
-    };
-
-    const filterValidate = (listStart: any[], value: boolean): Household[] => {
-        if (value) {
-            return getUniquesValues(
-                listStart?.filter((houseHoldData: any) => isToFilterValidate(houseHoldData)),
-            );
-        } else return [];
-    };
-
-    const filterCampaign = (listStart: any[], value: string): Household[] => {
-        if (value != "all") {
-            return listStart?.filter((houseHoldData: any) => !isToFilterCampaing(houseHoldData, value));
-        } else return [];
-    };
-
-    const filterNameOrIdentifiant = (listStart: any[], value: string): Household[] => {
-        if (value != "") {
-            return listStart?.filter(
-                (houseHoldData: any) => !isToFilterNameOrIdentifiant(houseHoldData, value),
-            );
-        } else return [];
-    };
-
-    const isToFilter = (listOfElements: Household[], houseHoldData: Household): boolean => {
-        return listOfElements.findIndex(hh => hh.idHousehold == houseHoldData.idHousehold) >= 0;
-    };
 
     useEffect(() => {
         const allFiltres = filterNameOrIdentiantResult

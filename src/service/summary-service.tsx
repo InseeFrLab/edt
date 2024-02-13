@@ -544,8 +544,7 @@ const missingVariablesPlace = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => 
     const activitesMissingPlace = activitesMandatory
         .map(act => {
             return (
-                !act.isRoute &&
-                (act.place == null || act.place.placeLabel == null || act.place.placeLabel.length == 0)
+                !act.isRoute && (act?.place?.placeLabel == null || act?.place?.placeLabel?.length == 0)
             );
         })
         .filter(act => act);

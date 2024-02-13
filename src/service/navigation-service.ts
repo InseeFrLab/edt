@@ -5,7 +5,13 @@ import { LoopEnum } from "enumerations/LoopEnum";
 import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
+import {
+    Collected,
+    LunaticData,
+    LunaticModel,
+    MultiCollected,
+    OrchestratorContext,
+} from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
 import { SetStateAction } from "react";
 import { NavigateFunction, To } from "react-router-dom";
@@ -302,7 +308,7 @@ const setNamesOfGroup = (
         let firstname = getValue(idSurveyOfGroup, FieldNameEnum.FIRSTNAME);
         const newSurvey = firstname == null;
         if (firstname == null || replaceName) {
-            let dataActuel = Object.assign({}, getData(idSurveyOfGroup));
+            let dataActuel = { ...getData(idSurveyOfGroup) };
             const datasirv = { ...dataActuel };
             const emptydata = emptyDataSetFirstName(
                 idSurveyOfGroup,
@@ -333,6 +339,71 @@ const propsWorkTime = () => {
     return uniqueBindingDependencies;
 };
 
+const initActivity = (
+    dataCollected: {
+        [x: string]: Collected | MultiCollected;
+    },
+    newSurvey: boolean,
+) => {
+    for (let prop in FieldNameEnumActivity as any) {
+        if (prop == FieldNameEnum.SURVEYDATE) continue;
+        if (dataCollected[prop] == null || newSurvey) {
+            dataCollected[prop] = {
+                COLLECTED: null,
+                EDITED: null,
+                FORCED: null,
+                INPUTED: null,
+                PREVIOUS: null,
+            };
+        }
+    }
+    return dataCollected;
+};
+
+const initWorkTime = (
+    dataCollected: {
+        [x: string]: Collected | MultiCollected;
+    },
+    newSurvey: boolean,
+) => {
+    propsWorkTime().forEach(prop => {
+        if (dataCollected[prop] == null && newSurvey) {
+            if (prop in FieldNameEnumWorkTIme) {
+                dataCollected[prop] = {
+                    COLLECTED: null,
+                    EDITED: null,
+                    FORCED: null,
+                    INPUTED: null,
+                    PREVIOUS: null,
+                };
+            } else {
+                dataCollected[prop] = {
+                    COLLECTED: [null],
+                    EDITED: [null],
+                    FORCED: [null],
+                    INPUTED: [null],
+                    PREVIOUS: [null],
+                };
+            }
+        }
+    });
+    return dataCollected;
+};
+
+const initPropsData = (
+    dataCollected: {
+        [x: string]: Collected | MultiCollected;
+    },
+    idSurveyOfGroup: string,
+    newSurvey: boolean,
+) => {
+    if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurveyOfGroup)) {
+        return initWorkTime(dataCollected, newSurvey);
+    } else {
+        return initActivity(dataCollected, newSurvey);
+    }
+};
+
 const emptyDataSetFirstName = (
     idSurveyOfGroup: string,
     idSurvey: string,
@@ -344,42 +415,7 @@ const emptyDataSetFirstName = (
 ) => {
     let dataCollected = { ...data.COLLECTED };
     if (dataCollected) {
-        if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurveyOfGroup)) {
-            propsWorkTime().forEach(prop => {
-                if (dataCollected[prop] == null && newSurvey) {
-                    if (prop in FieldNameEnumWorkTIme) {
-                        dataCollected[prop] = {
-                            COLLECTED: null,
-                            EDITED: null,
-                            FORCED: null,
-                            INPUTED: null,
-                            PREVIOUS: null,
-                        };
-                    } else {
-                        dataCollected[prop] = {
-                            COLLECTED: [null],
-                            EDITED: [null],
-                            FORCED: [null],
-                            INPUTED: [null],
-                            PREVIOUS: [null],
-                        };
-                    }
-                }
-            });
-        } else {
-            for (let prop in FieldNameEnumActivity as any) {
-                if (prop == FieldNameEnum.SURVEYDATE) continue;
-                if (dataCollected[prop] == null || newSurvey) {
-                    dataCollected[prop] = {
-                        COLLECTED: null,
-                        EDITED: null,
-                        FORCED: null,
-                        INPUTED: null,
-                        PREVIOUS: null,
-                    };
-                }
-            }
-        }
+        dataCollected = initPropsData(dataCollected, idSurveyOfGroup, newSurvey);
 
         dataCollected[FieldNameEnum.FIRSTNAME] = {
             COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,

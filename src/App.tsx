@@ -82,20 +82,18 @@ const App = () => {
         }
     }, [auth]);
 
-    return (
-        <>
-            {initialized && !error ? (
-                <EdtRoutes />
-            ) : !error ? (
-                <LoadingFull
-                    message={t("page.home.loading.message")}
-                    thanking={t("page.home.loading.thanking")}
-                />
-            ) : (
-                <ErrorPage errorCode={error} atInit={true} />
-            )}
-        </>
-    );
+    const errorOrLoadingPage = () => {
+        return !error ? (
+            <LoadingFull
+                message={t("page.home.loading.message")}
+                thanking={t("page.home.loading.thanking")}
+            />
+        ) : (
+            <ErrorPage errorCode={error} atInit={true} />
+        );
+    };
+
+    return <>{initialized && !error ? <EdtRoutes /> : errorOrLoadingPage()}</>;
 };
 
 export default App;

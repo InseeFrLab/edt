@@ -167,6 +167,7 @@ const setDataOfActivityReviewer = (
             dataOfField.EDITED = copyObject(editedSaved);
             dataOfField.COLLECTED = copyObject(collectedSaved);
         }
+        dataCollected[prop] = dataOfField;
     }
     return dataCollected;
 };
@@ -214,7 +215,6 @@ const getDataInterviewer = (getData: any, data: LunaticData | undefined, source?
             const dataOfField = dataCollected[prop];
             //set values edited with values in bdd, because we don't recover the edited part with lunatic
             if (dataOfField) {
-                //dataOfField.COLLECTED = dataOfField.COLLECTED ?? data?.COLLECTED?.[prop].EDITED;
                 dataOfField.EDITED = data?.COLLECTED?.[prop]?.EDITED;
             }
         });
@@ -253,6 +253,19 @@ const getVariablesActivity = (
     return variables;
 };
 
+const getVariableOfWeeklyPlannerInterviewer = (
+    varCollected: any,
+    varEdited: any,
+    value: any,
+    bindingDependency: string,
+) => {
+    if (Array.isArray(varEdited) && varEdited.length > 0 && varEdited[0] != null) {
+        return varEdited;
+    } else {
+        return varCollected ?? value?.[bindingDependency];
+    }
+};
+
 const getVariablesWeeklyPlanner = (
     data: LunaticData | undefined,
     dataBdd: LunaticData | undefined,
@@ -265,15 +278,11 @@ const getVariablesWeeklyPlanner = (
     bindingDependencies?.forEach((bindingDependency: string) => {
         const varC = dataBdd?.COLLECTED?.[bindingDependency]?.COLLECTED;
         const varE = dataBdd?.COLLECTED?.[bindingDependency]?.EDITED;
-        let variable = varC;
+        let variable = null;
         if (isReviewerMode) {
             variable = varE ?? varC;
         } else {
-            if (Array.isArray(varE) && varE.length > 0 && varE[0] != null) {
-                variable = varE;
-            } else {
-                variable = varC ?? value?.[bindingDependency];
-            }
+            variable = getVariableOfWeeklyPlannerInterviewer(varC, varE, value, bindingDependency);
         }
         variables.set(bindingDependency, variable);
     });

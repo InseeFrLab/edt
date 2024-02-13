@@ -85,7 +85,7 @@ const WeeklyPlannerPage = () => {
 
     const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
         const callbackData = getData(idSurvey);
-        const dataCopy = Object.assign({}, callbackData);
+        const dataCopy = { ...callbackData };
         const dates = (dataCopy?.COLLECTED?.["DATES"].COLLECTED ??
             getArrayFromSession("DATES")) as string[];
         const currentDateIndex = dates.indexOf(response.date);
@@ -120,7 +120,7 @@ const WeeklyPlannerPage = () => {
 
                 quartier[currentDateIndex] = response.values[name] + "";
 
-                if (dataCopy && dataCopy.COLLECTED) {
+                if (dataCopy?.COLLECTED) {
                     dataCopy.COLLECTED[name].EDITED = quartier;
                 }
             });

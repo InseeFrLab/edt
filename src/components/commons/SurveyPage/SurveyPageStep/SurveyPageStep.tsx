@@ -69,7 +69,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const { classes, cx } = useStyles({
         "isMobile": !isPwa(),
         "isIOS": isIOS,
-        "isOpen": context.isOpenHeader ?? false,
+        "iosHeight": context.isOpenHeader ? "80vh" : "87vh",
         "withStepper": isStep,
         "innerHeight": window.innerHeight,
     });
@@ -211,12 +211,12 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 const useStyles = makeStylesEdt<{
     isMobile: boolean;
     isIOS: boolean;
-    isOpen: boolean;
+    iosHeight: string;
     withStepper: boolean;
     innerHeight: number;
 }>({
     "name": { SurveyPageStep },
-})((theme, { isIOS, isOpen, withStepper }) => ({
+})((theme, { isIOS, iosHeight, withStepper, innerHeight }) => ({
     bottomPadding: {
         paddingBottom: "4rem",
     },
@@ -224,7 +224,7 @@ const useStyles = makeStylesEdt<{
         height: withStepper ? "90%" : "100%",
     },
     pageMobileTablet: {
-        maxHeight: isIOS ? (isOpen ? "80vh" : "87vh") : innerHeight + "px",
+        maxHeight: isIOS ? iosHeight : innerHeight + "px",
         height: isIOS ? "100%" : innerHeight + "px",
     },
 }));

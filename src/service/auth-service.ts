@@ -5,7 +5,7 @@ import { setUserSSO, setUserToken } from "./user-service";
 const url = process.env.REACT_APP_KEYCLOAK_AUTHORITY ?? "";
 const clientId = process.env.REACT_APP_KEYCLOAK_CLIENT_ID ?? "";
 const redirectUri = process.env.REACT_APP_KEYCLOAK_REDIRECT_URI ?? "";
-const protocol = "protocol/openid-connect/auth" ?? "";
+const protocol = "protocol/openid-connect/auth";
 const attributes = window.location.search;
 const isSSO = attributes.includes("kc_idp_hint");
 const attributeSSO = attributes.substring(1, attributes.length);

@@ -73,11 +73,10 @@ const DayOfSurveyPage = () => {
     }, [callbackHolder]);
 
     const setSurveyDate = (input: string) => {
-        let dataSurveyDate = callbackHolder.getData().COLLECTED?.[FieldNameEnum.SURVEYDATE];
         const dataBdd = getData(idSurvey);
         dayjs.extend(customParseFormat);
         const inputFormatted = dayjs(input, "DD/MM/YYYY").format("YYYY-MM-DD");
-        dataSurveyDate = {
+        let dataSurveyDate = {
             COLLECTED:
                 getModePersistence(dataBdd) == ModePersistenceEnum.COLLECTED ? inputFormatted : null,
             EDITED: getModePersistence(dataBdd) == ModePersistenceEnum.EDITED ? inputFormatted : null,
@@ -107,16 +106,14 @@ const DayOfSurveyPage = () => {
     }, []);
 
     return (
-        <>
-            <SurveyPageStep
-                currentPage={EdtRoutesNameEnum.DAY_OF_SURVEY}
-                errorIcon={day_of_survey}
-                errorAltIcon={"accessibility.asset.day-of-survey-alt"}
-                isStep={false}
-                disableButton={modifiable ? disabledButton : true}
-                validateButton={validate}
-            />
-        </>
+        <SurveyPageStep
+            currentPage={EdtRoutesNameEnum.DAY_OF_SURVEY}
+            errorIcon={day_of_survey}
+            errorAltIcon={"accessibility.asset.day-of-survey-alt"}
+            isStep={false}
+            disableButton={modifiable ? disabledButton : true}
+            validateButton={validate}
+        />
     );
 };
 
