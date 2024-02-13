@@ -218,7 +218,7 @@ const useStyles = makeStylesEdt<{
         height: withStepper ? "90%" : "100%",
     },
     pageMobileTablet: {
-        maxHeight: isIOS ? (isOpen ? "80vh" : "87vh") : innerHeight + "px",
+        maxHeight: isIOS ? (isOpen ? "80vh" : innerHeight + "px") : innerHeight + "px",
         height: innerHeight + "px",
     },
 }));
