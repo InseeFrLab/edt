@@ -1,9 +1,11 @@
 import {
     WeeklyPlannerSpecificProps,
     getArrayFromSession,
+    makeStylesEdt,
     responsesHourChecker,
 } from "@inseefrlab/lunatic-edt";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
+import { Box } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
 import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";
 import expandLess from "assets/illustration/mui-icon/expand-less.svg";
@@ -25,6 +27,7 @@ import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
+import { isAndroid, isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import {
@@ -37,6 +40,7 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
+import { isPwa } from "service/responsive";
 import { getData, getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 import { isReviewer } from "service/user-service";
 import { getSurveyIdFromUrl } from "utils/utils";
@@ -50,6 +54,13 @@ const WeeklyPlannerPage = () => {
     const idSurvey = getSurveyIdFromUrl(context, location);
 
     setEnviro(context, useNavigate(), callbackHolder);
+
+    const { classes, cx } = useStyles({
+        "isMobile": !isPwa(),
+        "isIOS": isIOS,
+        "iosHeight": context.isOpenHeader ? "80vh" : "87vh",
+        "innerHeight": window.innerHeight,
+    });
 
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
     let [isPlaceWorkDisplayed, setIsPlaceWorkDisplayed] = React.useState<boolean>(false);
@@ -251,7 +262,11 @@ const WeeklyPlannerPage = () => {
     }, []);
 
     return (
-        <>
+        <Box
+            className={cx(
+                !isPwa() && (isIOS || isAndroid) ? classes.pageMobileTablet : classes.pageDesktop,
+            )}
+        >
             {renderMenuHelp()}
             <SurveyPage
                 idSurvey={idSurvey}
@@ -276,8 +291,25 @@ const WeeklyPlannerPage = () => {
                     ></OrchestratorForStories>
                 </FlexCenter>
             </SurveyPage>
-        </>
+        </Box>
     );
 };
+
+const useStyles = makeStylesEdt<{
+    isMobile: boolean;
+    isIOS: boolean;
+    iosHeight: string;
+    innerHeight: number;
+}>({
+    "name": { WeeklyPlannerPage },
+})((theme, { isIOS, iosHeight, innerHeight }) => ({
+    pageDesktop: {
+        height: "100%",
+    },
+    pageMobileTablet: {
+        maxHeight: isIOS ? iosHeight : innerHeight + "px",
+        height: isIOS ? "100%" : innerHeight + "px",
+    },
+}));
 
 export default WeeklyPlannerPage;
