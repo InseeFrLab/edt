@@ -84,11 +84,6 @@ const isPropCurrent = (prop: string, bindings: string[]) => {
     return bindings != null && bindings.includes(prop);
 };
 
-//prop is a activity
-const isPropActivity = (prop: string, dataOfField: any) => {
-    return prop != FieldNameEnum.WEEKLYPLANNER && dataOfField;
-};
-
 //return a copy of a object
 const copyObject = (object: any) => {
     if (object == null) return object;

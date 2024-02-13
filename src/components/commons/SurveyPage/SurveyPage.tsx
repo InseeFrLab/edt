@@ -11,10 +11,8 @@ import ValidateButton from "components/commons/SurveyPage/ValidateButton/Validat
 import EndActivityStepper from "components/edt/EndActivityStepper/EndActivityStepper";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import React, { useEffect } from "react";
-import { isAndroid } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { getLastCompletedStep } from "service/navigation-service";
-import { isPwa } from "service/responsive";
 import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
 import { getScore } from "service/survey-activity-service";
 
@@ -83,10 +81,7 @@ const SurveyPage = (props: SurveyPageProps) => {
         modifiable = true,
     } = props;
     const { t } = useTranslation();
-    const { classes, cx } = useStyles({
-        "innerHeight": window.innerHeight,
-        "isMobile": !isPwa() && isAndroid,
-    });
+    const { classes, cx } = useStyles();
     const [scoreAct, setScoreAct] = React.useState<number | undefined>(score);
 
     useEffect(() => {
@@ -184,9 +179,7 @@ const SurveyPage = (props: SurveyPageProps) => {
     );
 };
 
-const useStyles = makeStylesEdt<{ innerHeight: number; isMobile: boolean }>({
-    "name": { NavButton: SurveyPage },
-})((theme, { isMobile, innerHeight }) => ({
+const useStyles = makeStylesEdt({ "name": { NavButton: SurveyPage } })(theme => ({
     page: {
         flexGrow: "1",
         display: "flex",
