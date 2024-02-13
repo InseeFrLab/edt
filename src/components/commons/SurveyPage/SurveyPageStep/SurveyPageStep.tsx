@@ -150,7 +150,13 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             () => (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNav(idSurvey)),
             [],
         ),
-        firstName: getPrintedFirstName(idSurvey),
+        firstName:
+            getPrintedFirstName(idSurvey) +
+            window.screen.availHeight +
+            " " +
+            window.innerHeight +
+            " " +
+            document.body.clientHeight,
         surveyDate: getPrintedSurveyDate(idSurvey, context.surveyRootPage),
         disableNav: disableButton,
         modifiable: modifiable,
