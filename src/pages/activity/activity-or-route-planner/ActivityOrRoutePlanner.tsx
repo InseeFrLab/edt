@@ -648,7 +648,10 @@ const ActivityOrRoutePlannerPage = () => {
     }, [idSurvey]);
 
     const lockActivity = useCallback(() => setIsAlertLockDisplayed(true), []);
+    const heightBody = document.body.clientHeight;
+    const heightScroll = document.body.scrollHeight;
 
+    console.log(window.innerHeight, heightBody, heightScroll);
     return renderPageOrLoadingOrError(
         initialized,
         error,
@@ -662,6 +665,7 @@ const ActivityOrRoutePlannerPage = () => {
             {(isItDesktop || !isSubChildDisplayed) && (
                 <Box className={classes.innerSurveyPageBox}>
                     {renderMenuHelp()}
+                    <Box></Box>
                     <SurveyPage
                         onNavigateBack={navToActivityRouteHome}
                         onPrevious={navToActivityRouteHome}
