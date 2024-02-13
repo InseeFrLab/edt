@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import {
@@ -145,9 +147,16 @@ function isAndroidNav() {
     return !isPwa() && isMobile && isAndroid;
 }
 
+function formatDate(input: string) {
+    dayjs.extend(customParseFormat);
+    const inputFormatted = dayjs(input, "DD/MM/YYYY").format("YYYY-MM-DD");
+    return inputFormatted;
+}
+
 export {
     addArrayToSession,
     addItemToSession,
+    formatDate,
     getArrayFromSession,
     getClassCondition,
     getCookie,

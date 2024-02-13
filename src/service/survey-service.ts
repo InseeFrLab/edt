@@ -1842,7 +1842,12 @@ const getGroupOfPerson = (idSurvey: string) => {
     return idsSurveysFromGroupAct;
 };
 
-const validateAllGroup = (navigate: NavigateFunction, idSurvey: string, inputNameAct: string) => {
+const validateAllGroup = (
+    navigate: NavigateFunction,
+    idSurvey: string,
+    inputNameAct: string,
+    inputDate?: string,
+) => {
     const personAct = getPerson(idSurvey);
 
     const surveyRootPage =
@@ -1852,7 +1857,14 @@ const validateAllGroup = (navigate: NavigateFunction, idSurvey: string, inputNam
 
     const route = navToPlanner(idSurvey, surveyRootPage);
 
-    setAllNamesOfGroupAndNav(navigate, route, idSurvey, getGroupOfPerson(idSurvey), inputNameAct);
+    setAllNamesOfGroupAndNav(
+        navigate,
+        route,
+        idSurvey,
+        getGroupOfPerson(idSurvey),
+        inputNameAct,
+        inputDate,
+    );
 };
 
 export {

@@ -280,7 +280,12 @@ const navToActivityRoutePlanner = (idSurvey: string, source: LunaticModel) => {
     );
 };
 
-const setNamesOfGroup = (idSurvey: string, idsSurveysOfGroup: string[], nameAct: string) => {
+const setNamesOfGroup = (
+    idSurvey: string,
+    idsSurveysOfGroup: string[],
+    nameAct: string,
+    dateAct?: string,
+) => {
     let listNames = idsSurveysOfGroup
         ?.map(id => {
             const firstName = getValue(id, FieldNameEnum.FIRSTNAME) as string;
@@ -293,18 +298,20 @@ const setNamesOfGroup = (idSurvey: string, idsSurveysOfGroup: string[], nameAct:
     const promises: any[] = [];
     const nameOfGroup = listNames.length > 0 && !replaceName ? listNames[0] : nameAct;
 
-    idsSurveysOfGroup.forEach(idSurvey => {
-        let firstname = getValue(idSurvey, FieldNameEnum.FIRSTNAME);
+    idsSurveysOfGroup.forEach(idSurveyOfGroup => {
+        let firstname = getValue(idSurveyOfGroup, FieldNameEnum.FIRSTNAME);
         const newSurvey = firstname == null;
         if (firstname == null || replaceName) {
-            let dataActuel = Object.assign({}, getData(idSurvey));
+            let dataActuel = Object.assign({}, getData(idSurveyOfGroup));
             const datasirv = { ...dataActuel };
             const emptydata = emptyDataSetFirstName(
+                idSurveyOfGroup,
                 idSurvey,
                 datasirv,
                 getModePersistence(datasirv),
                 nameOfGroup,
                 newSurvey,
+                dateAct,
             );
             promises.push(saveData(idSurvey, emptydata));
         }
@@ -327,15 +334,17 @@ const propsWorkTime = () => {
 };
 
 const emptyDataSetFirstName = (
+    idSurveyOfGroup: string,
     idSurvey: string,
     data: LunaticData,
     modePersistence: ModePersistenceEnum,
     firstName: string,
     newSurvey: boolean,
+    dateAct?: string,
 ) => {
     let dataCollected = { ...data.COLLECTED };
     if (dataCollected) {
-        if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurvey)) {
+        if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurveyOfGroup)) {
             propsWorkTime().forEach(prop => {
                 if (dataCollected[prop] == null && newSurvey) {
                     if (prop in FieldNameEnumWorkTIme) {
@@ -357,14 +366,6 @@ const emptyDataSetFirstName = (
                     }
                 }
             });
-
-            dataCollected[FieldNameEnum.FIRSTNAME] = {
-                COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,
-                EDITED: modePersistence == ModePersistenceEnum.EDITED ? firstName : null,
-                FORCED: null,
-                INPUTED: null,
-                PREVIOUS: null,
-            };
         } else {
             for (let prop in FieldNameEnumActivity as any) {
                 if (prop == FieldNameEnum.SURVEYDATE) continue;
@@ -378,9 +379,20 @@ const emptyDataSetFirstName = (
                     };
                 }
             }
-            dataCollected[FieldNameEnum.FIRSTNAME] = {
-                COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,
-                EDITED: modePersistence == ModePersistenceEnum.EDITED ? firstName : null,
+        }
+
+        dataCollected[FieldNameEnum.FIRSTNAME] = {
+            COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,
+            EDITED: modePersistence == ModePersistenceEnum.EDITED ? firstName : null,
+            FORCED: null,
+            INPUTED: null,
+            PREVIOUS: null,
+        };
+
+        if (dateAct && idSurvey == idSurveyOfGroup) {
+            dataCollected[FieldNameEnum.SURVEYDATE] = {
+                COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? dateAct : null,
+                EDITED: modePersistence == ModePersistenceEnum.EDITED ? dateAct : null,
                 FORCED: null,
                 INPUTED: null,
                 PREVIOUS: null,
@@ -396,8 +408,9 @@ const setAllNamesOfGroupAndNav = (
     idSurvey: string,
     idsSurveysOfGroup: string[],
     nameAct: string,
+    dateAct?: string,
 ) => {
-    const promises = setNamesOfGroup(idSurvey, idsSurveysOfGroup, nameAct);
+    const promises = setNamesOfGroup(idSurvey, idsSurveysOfGroup, nameAct, dateAct);
     Promise.all(promises).then(() => {
         navigate(route);
     });
