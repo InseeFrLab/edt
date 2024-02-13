@@ -313,7 +313,7 @@ const setNamesOfGroup = (
                 newSurvey,
                 dateAct,
             );
-            promises.push(saveData(idSurvey, emptydata));
+            promises.push(saveData(idSurveyOfGroup, emptydata));
         }
     });
     return promises;
