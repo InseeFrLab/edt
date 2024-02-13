@@ -90,8 +90,8 @@ const copyObject = (object: any) => {
     return Array.isArray(object) ? [...object] : JSON.parse(JSON.stringify(object));
 };
 
-const isWorkTime = () => {
-    return getCurrentPageSource().label == "WorkTime";
+const isWorkTime = (source: LunaticModel | undefined) => {
+    return source ? source.label == "WorkTime" : getCurrentPageSource().label == "WorkTime";
 };
 
 const propsWorkTime = (source: LunaticModel): string[] => {
@@ -188,7 +188,7 @@ const getDataReviewer = (
     }
     // data -> get data of bdd, callbackholder -> lunatic / current data
     if (callbackholder && dataCollected) {
-        if (isWorkTime()) {
+        if (isWorkTime(source)) {
             dataCollected = setDataOfWorkTimeReviewer(source, data, dataCollected);
         } else {
             dataCollected = setDataOfActivityReviewer(dataCollected, data, components, iteration);
@@ -295,8 +295,9 @@ const getVariables = (
     iteration: number | undefined | null,
     bindingDependencies: string[],
     value: any,
+    source: LunaticModel | undefined,
 ) => {
-    if (isWorkTime()) {
+    if (isWorkTime(source)) {
         const variables = getVariablesWeeklyPlanner(data, dataBdd, bindingDependencies, value);
         return variables;
     } else {
@@ -364,6 +365,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                         iteration,
                                         getBindingDependencies(components),
                                         value,
+                                        source,
                                     )}
                                     bindingDependencies={getBindingDependencies(components)}
                                     value={value}
