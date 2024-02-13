@@ -81,7 +81,7 @@ const SurveyPage = (props: SurveyPageProps) => {
         modifiable = true,
     } = props;
     const { t } = useTranslation();
-    const { classes, cx } = useStyles();
+    const { classes, cx } = useStyles({ "innerHeight": window.innerHeight });
     const [scoreAct, setScoreAct] = React.useState<number | undefined>(score);
 
     useEffect(() => {
@@ -104,13 +104,13 @@ const SurveyPage = (props: SurveyPageProps) => {
             {!simpleHeader && firstName && surveyDate && onNavigateBack && (
                 <SurveyPageHeader
                     surveyDate={surveyDate}
-                    firstName={firstName}
+                    firstName={firstName + window.innerHeight + " " + document.body.clientHeight + " "}
                     onNavigateBack={onNavigateBack}
                 />
             )}
             {!simpleHeader && firstName && firstNamePrefix && (onEdit || onHelp) && onPrevious && (
                 <SurveyPageEditHeader
-                    firstName={firstName}
+                    firstName={firstName + window.innerHeight + " " + document.body.clientHeight + " "}
                     firstNamePrefix={firstNamePrefix}
                     onNavigateBack={onPrevious}
                     onEdit={onEdit}
@@ -120,7 +120,12 @@ const SurveyPage = (props: SurveyPageProps) => {
             )}
             {simpleHeader && onNavigateBack && (
                 <SurveyPageSimpleHeader
-                    simpleHeaderLabel={simpleHeaderLabel}
+                    simpleHeaderLabel={
+                        simpleHeaderLabel
+                            ? simpleHeaderLabel +
+                              (window.innerHeight + " " + document.body.clientHeight + " ")
+                            : undefined
+                    }
                     onNavigateBack={onNavigateBack}
                     backgroundWhite={backgroundWhiteHeader}
                 />
@@ -179,28 +184,30 @@ const SurveyPage = (props: SurveyPageProps) => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { NavButton: SurveyPage } })(theme => ({
-    page: {
-        flexGrow: "1",
-        display: "flex",
-        flexDirection: "column",
-        overflow: "hidden !important",
-        height: "100%",
-    },
-    content: {
-        flexGrow: "1",
-        overflow: "auto",
-        minHeight: "0",
-        overflowX: "hidden",
-        overflowY: "auto",
-        display: "flex",
-        flexDirection: "column",
-    },
-    progressBar: {
-        padding: "1rem 0.5rem",
-        backgroundColor: theme.variables.white,
-        overflow: "hidden",
-    },
-}));
+const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { NavButton: SurveyPage } })(
+    theme => ({
+        page: {
+            flexGrow: "1",
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden !important",
+            height: innerHeight,
+        },
+        content: {
+            flexGrow: "1",
+            overflow: "auto",
+            minHeight: "0",
+            overflowX: "hidden",
+            overflowY: "auto",
+            display: "flex",
+            flexDirection: "column",
+        },
+        progressBar: {
+            padding: "1rem 0.5rem",
+            backgroundColor: theme.variables.white,
+            overflow: "hidden",
+        },
+    }),
+);
 
 export default SurveyPage;
