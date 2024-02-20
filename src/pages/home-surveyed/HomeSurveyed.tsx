@@ -247,7 +247,7 @@ const HomeSurveyedPage = () => {
         );
         initializeSurveysIdsDemo().then(() => {
             setState(getData(getIdSurveyActivity(interviewers[0], 0)));
-            initializeSurveysDatasCache().then(() => {
+            return initializeSurveysDatasCache().then(() => {
                 interviewers = getUserDatasActivity().map(data => data.interviewerId);
                 interviewersUniques = interviewers.filter(
                     (value, index, self) => self.indexOf(value) === index,
