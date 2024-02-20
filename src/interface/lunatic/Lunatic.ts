@@ -9,7 +9,7 @@ import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
-import { UserSurveys } from "interface/entity/Api";
+import { StateData, UserSurveys } from "interface/entity/Api";
 
 export const REFERENTIELS_ID = "referentiels";
 export const SOURCES_MODELS = "sources";
@@ -41,6 +41,7 @@ export interface LunaticData {
     CALCULATED?: any;
     COLLECTED?: { [key: string]: Collected | MultiCollected }; // TOFIX : good var type with collected array
     EDITED?: { [key: string]: Collected | MultiCollected };
+    stateData?: StateData;
 }
 
 export interface ReferentielData extends LunaticData {
