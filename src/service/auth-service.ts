@@ -67,10 +67,8 @@ const createUserManager = () => {
     });
 
     userManager.events.addUserLoaded(user => {
-        if (window.location.href.indexOf("signin-oidc") !== -1) {
-            setUserToken(user?.access_token || "");
-            setUserSSO(isSSO);
-        }
+        setUserToken(user?.access_token || "");
+        setUserSSO(isSSO);
     });
 
     userManager.events.addSilentRenewError(e => {
