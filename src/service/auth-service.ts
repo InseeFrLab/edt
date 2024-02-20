@@ -161,6 +161,5 @@ export {
     signinRedirect,
     signinSilent,
     signinSilentCallback,
-    signoutRedirectCallback
+    signoutRedirectCallback,
 };
-
