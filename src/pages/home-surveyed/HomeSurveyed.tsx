@@ -91,6 +91,11 @@ const HomeSurveyedPage = () => {
             initializeDatas(setError).then(() => {
                 setInitialized(true);
             });
+        } else if (getUserRights() === EdtUserRightsEnum.SURVEYED) {
+            initializeDatas(setError).then(() => {
+                setInitialized(true);
+                setState({});
+            });
         }
 
         if (getUserRights() == EdtUserRightsEnum.REVIEWER && !isDemo) {
@@ -102,9 +107,11 @@ const HomeSurveyedPage = () => {
                         !survey.startsWith("activitySurvey") && !survey.startsWith("workTimeSurvey"),
                 );
             if (navigator.onLine) {
-                getRemoteSavedSurveysDatas(idsSurveysSelected, setError, false).then(() => {
+                getRemoteSavedSurveysDatas(idsSurveysSelected, setError).then(() => {
                     initHome(idsSurveysSelected);
                 });
+            } else {
+                initHome(idsSurveysSelected);
             }
         }
     }, []);
@@ -271,7 +278,6 @@ const HomeSurveyedPage = () => {
     const renderHomeInterviewer = () => {
         let userDataGroupedInterv = nameSurveyGroupMap();
         let groups = Object.keys(userDataGroupedInterv);
-
         return (
             <>
                 {renderReminderNote()}
