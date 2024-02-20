@@ -40,7 +40,7 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
-import { isPwa } from "service/responsive";
+import { isMobile, isPwa } from "service/responsive";
 import { getData, getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 import { isReviewer } from "service/user-service";
 import { getSurveyIdFromUrl } from "utils/utils";
@@ -264,7 +264,9 @@ const WeeklyPlannerPage = () => {
     return (
         <Box
             className={cx(
-                !isPwa() && (isIOS || isAndroid) ? classes.pageMobileTablet : classes.pageDesktop,
+                !isPwa() && (isIOS || isAndroid || isMobile())
+                    ? classes.pageMobileTablet
+                    : classes.pageDesktop,
             )}
         >
             {renderMenuHelp()}
@@ -305,6 +307,7 @@ const useStyles = makeStylesEdt<{
 })((theme, { isIOS, iosHeight, innerHeight }) => ({
     pageDesktop: {
         height: "100%",
+        maxHeight: isIOS ? iosHeight : "80vh",
     },
     pageMobileTablet: {
         maxHeight: isIOS ? iosHeight : innerHeight + "px",
