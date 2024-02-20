@@ -13,7 +13,6 @@ const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
 const getAuthority = () => {
     const authority = process.env.REACT_APP_KEYCLOAK_AUTHORITY;
-    console.log("oidc authority: ", authority);
     return authority;
 };
 
