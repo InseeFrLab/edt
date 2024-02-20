@@ -1,22 +1,22 @@
-import chromeAndroid1 from "assets/illustration/install/android/chrome1.svg";
-import chromeAndroid2 from "assets/illustration/install/android/chrome2.svg";
-import chromeAndroid3 from "assets/illustration/install/android/chrome3.svg";
-import edgeAndroid1 from "assets/illustration/install/android/edge1.svg";
-import edgeAndroid2 from "assets/illustration/install/android/edge2.svg";
-import edgeAndroid3 from "assets/illustration/install/android/edge3.svg";
-import mozillaAndroid1 from "assets/illustration/install/android/mozilla1.svg";
-import mozillaAndroid2 from "assets/illustration/install/android/mozilla2.svg";
-import mozillaAndroid3 from "assets/illustration/install/android/mozilla3.svg";
+import chromeAndroid1 from "assets/illustration/install/android/chrome1.png";
+import chromeAndroid2 from "assets/illustration/install/android/chrome2.png";
+import chromeAndroid3 from "assets/illustration/install/android/chrome3.png";
+import edgeAndroid1 from "assets/illustration/install/android/edge1.png";
+import edgeAndroid2 from "assets/illustration/install/android/edge2.png";
+import edgeAndroid3 from "assets/illustration/install/android/edge3.png";
+import mozillaAndroid1 from "assets/illustration/install/android/mozilla1.png";
+import mozillaAndroid2 from "assets/illustration/install/android/mozilla2.png";
+import mozillaAndroid3 from "assets/illustration/install/android/mozilla3.png";
 
-import chromeIOS1 from "assets/illustration/install/ios/chrome1.svg";
-import chromeIOS2 from "assets/illustration/install/ios/chrome2.svg";
-import chromeIOS3 from "assets/illustration/install/ios/chrome3.svg";
-import edgeIOS1 from "assets/illustration/install/ios/edge1.svg";
-import edgeIOS2 from "assets/illustration/install/ios/edge2.svg";
-import edgeIOS3 from "assets/illustration/install/ios/edge3.svg";
-import safariIOS1 from "assets/illustration/install/ios/safari1.svg";
-import safariIOS2 from "assets/illustration/install/ios/safari2.svg";
-import safariIOS3 from "assets/illustration/install/ios/safari3.svg";
+import chromeIOS1 from "assets/illustration/install/ios/chrome1.png";
+import chromeIOS2 from "assets/illustration/install/ios/chrome2.png";
+import chromeIOS3 from "assets/illustration/install/ios/chrome3.png";
+import edgeIOS1 from "assets/illustration/install/ios/edge1.png";
+import edgeIOS2 from "assets/illustration/install/ios/edge2.png";
+import edgeIOS3 from "assets/illustration/install/ios/edge3.png";
+import safariIOS1 from "assets/illustration/install/ios/safari1.png";
+import safariIOS2 from "assets/illustration/install/ios/safari2.png";
+import safariIOS3 from "assets/illustration/install/ios/safari3.png";
 
 import {
     isAndroid,
