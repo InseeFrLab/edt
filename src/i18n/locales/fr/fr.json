@@ -221,7 +221,8 @@
             "closeds-survey-label": "Carnets clôturés",
             "validated-survey-label": "Carnet validé",
             "validateds-survey-label": "Carnets validés",
-            "refresh-button": "Actualiser la liste"
+            "refresh-button": "Actualiser la liste",
+            "all-campaigns": "Toutes les vagues"
         },
         "reviewer-home": {
             "welcome": "Bienvenue dans votre espace",
@@ -339,7 +340,9 @@
             "what-to-edit": "Que souhaitez-vous modifier ?"
         },
         "activity-duration": {
-            "hour-alert": "Attention! L'heure de fin est antérieure à l'heure de début"
+            "hour-alert": "Attention! L'heure de fin est antérieure à l'heure de début",
+            "cancel": "Annuler",
+            "validate": "OK"
         },
         "weekly-planner": {
             "info-light": "Pour remplir votre calendrier de travail de la semaine, indiquez chaque jour les moments de la journée où vous travaillez.",
@@ -452,7 +455,7 @@
                 "button": "Revenir à l’accueil",
                 "alt-icon": "Illustration enquête envoyée",
                 "survey-content": "Vous avez complété votre semainier.",
-                "activity-content": "Vous avez complété votre 1ère journée."
+                "activity-content": "Vous avez complété votre journée."
             }
         },
         "day-characteristic": {
@@ -544,7 +547,7 @@
                     },
                     "edge": {
                         "step-2": "Cliquez sur le menu en bas à droite",
-                        "step-3": "Sélectionnez << Ajouter au appareil >>"
+                        "step-3": "Sélectionnez << Ajouter au téléphone >>"
                     }
                 },
                 "step-final": "Votre application Carnet EDT est installée"

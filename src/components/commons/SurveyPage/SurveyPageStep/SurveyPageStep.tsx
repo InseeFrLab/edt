@@ -69,8 +69,9 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const { classes, cx } = useStyles({
         "isMobile": !isPwa(),
         "isIOS": isIOS,
-        "isOpen": context.isOpenHeader ?? false,
+        "iosHeight": context.isOpenHeader ? "80vh" : "87vh",
         "withStepper": isStep,
+        "innerHeight": window.innerHeight,
     });
 
     const stepData = getStepData(currentPage);
@@ -131,19 +132,17 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         modifiable: modifiable,
     };
 
-    const nextRouteNav = useCallback(() => {
-        if (validateButton) {
-            return validateButton;
-        } else {
-            nextRoute
-                ? saveAndNavFullPath(idSurvey, nextRoute)
-                : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage);
-        }
-    }, []);
-
     const surveyPageNotStepProps = {
         idSurvey: idSurvey,
-        validate: nextRouteNav,
+        validate:
+            validateButton ??
+            useCallback(
+                () =>
+                    nextRoute
+                        ? saveAndNavFullPath(idSurvey, nextRoute)
+                        : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage),
+                [],
+            ),
         srcIcon: errorIcon,
         altIcon: errorAltIcon ? t(errorAltIcon) : undefined,
         onNavigateBack: useCallback(() => saveAndNav(idSurvey), []),
@@ -203,18 +202,15 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     );
 };
 
-const stylePageMobileTabletWhenIOS = (isOpen: boolean) => {
-    return isOpen ? "80vh" : "87vh";
-};
-
 const useStyles = makeStylesEdt<{
     isMobile: boolean;
     isIOS: boolean;
-    isOpen: boolean;
+    iosHeight: string;
     withStepper: boolean;
+    innerHeight: number;
 }>({
     "name": { SurveyPageStep },
-})((theme, { isIOS, isOpen, withStepper }) => ({
+})((theme, { isIOS, iosHeight, withStepper, innerHeight }) => ({
     bottomPadding: {
         paddingBottom: "4rem",
     },
@@ -222,8 +218,8 @@ const useStyles = makeStylesEdt<{
         height: withStepper ? "90%" : "100%",
     },
     pageMobileTablet: {
-        height: "100%",
-        maxHeight: isIOS ? stylePageMobileTabletWhenIOS(isOpen) : "94vh",
+        maxHeight: isIOS ? iosHeight : innerHeight + "px",
+        height: isIOS ? "100%" : innerHeight + "px",
     },
 }));
 

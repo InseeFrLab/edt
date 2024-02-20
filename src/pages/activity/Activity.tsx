@@ -1,4 +1,3 @@
-import { Default } from "components/commons/Responsive/Responsive";
 import SurveySelecter from "components/edt/SurveySelecter/SurveySelecter";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
@@ -8,6 +7,7 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useMediaQuery } from "react-responsive";
 import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import {
     getParameterizedNavigatePath,
@@ -16,6 +16,7 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getCurrentSurveyRootPage } from "service/orchestrator-service";
+import { tabletMinWidth } from "service/responsive";
 import { getData, getSource, getSurveyRights, getTabsData } from "service/survey-service";
 
 const ActivityPage = () => {
@@ -71,20 +72,23 @@ const ActivityPage = () => {
         }
     }, []);
 
+    const isNotMobile = useMediaQuery({ minWidth: tabletMinWidth });
     return (
         <>
-            <Default>
-                <SurveySelecter
-                    id={t("accessibility.component.survey-selecter.id")}
-                    tabsData={tabsData}
-                    ariaLabel={t("accessibility.component.survey-selecter.aria-label")}
-                    selectedTab={selectedTab}
-                    onChangeSelected={handleTabSelecterChange}
-                    isDefaultOpen={selectedTab >= maxTabsPerRow}
-                    maxTabsPerRow={maxTabsPerRow}
-                    maxTabIndex={200}
-                />
-            </Default>
+            <>
+                {isNotMobile && (
+                    <SurveySelecter
+                        id={t("accessibility.component.survey-selecter.id")}
+                        tabsData={tabsData}
+                        ariaLabel={t("accessibility.component.survey-selecter.aria-label")}
+                        selectedTab={selectedTab}
+                        onChangeSelected={handleTabSelecterChange}
+                        isDefaultOpen={selectedTab >= maxTabsPerRow}
+                        maxTabsPerRow={maxTabsPerRow}
+                        maxTabIndex={200}
+                    />
+                )}
+            </>
             <Outlet
                 context={{
                     source: source,

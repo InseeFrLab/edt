@@ -26,9 +26,17 @@ export const setUserToken = (token: string): void => {
 };
 
 export const getUserRights = (): EdtUserRightsEnum => {
-    if (user?.profile?.inseegroupedefaut?.includes(EdtUserRightsEnum.REVIEWER)) {
+    if (
+        user?.profile?.inseegroupedefaut?.includes(
+            process.env.REACT_APP_REVIEWER_ROLE ?? EdtUserRightsEnum.REVIEWER,
+        )
+    ) {
         return EdtUserRightsEnum.REVIEWER;
-    } else if (user?.profile?.inseegroupedefaut?.includes(EdtUserRightsEnum.SURVEYED)) {
+    } else if (
+        user?.profile?.inseegroupedefaut?.includes(
+            process.env.REACT_APP_SURVEYED_ROLE ?? EdtUserRightsEnum.SURVEYED,
+        )
+    ) {
         return EdtUserRightsEnum.SURVEYED;
     } else {
         return EdtUserRightsEnum.NO_RIGHTS;

@@ -45,7 +45,7 @@ const DayCard = (props: DayCardProps) => {
     const progressActivity = getScore(idSurvey, t);
     const modeReviewer = getIsModeReviewer();
     const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
-    const qualityScore = getQualityScore(activitiesRoutesOrGaps, overlaps, t);
+    const qualityScore = getQualityScore(idSurvey, activitiesRoutesOrGaps, overlaps, t).group;
     const stateSurvey = getStatutSurvey(idSurvey);
     const isItMobile = isMobile();
 
@@ -229,6 +229,8 @@ const useStyles = makeStylesEdt({ "name": { DayCard } })(theme => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        textAlign: "center",
+        minWidth: "67px",
     },
     qualityScoreText: {
         color: theme.palette.secondary.main,

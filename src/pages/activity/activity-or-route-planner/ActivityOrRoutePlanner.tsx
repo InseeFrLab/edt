@@ -86,7 +86,8 @@ const propsUseStyles = (context: OrchestratorContext, modifiable: boolean) => {
     return {
         "isIOS": isIOS,
         "modifiable": modifiable,
-        "isOpen": context.isOpenHeader ?? false,
+        "iosHeight": context.isOpenHeader ? "80vh" : "87vh",
+        "innerHeight": window.innerHeight,
     };
 };
 
@@ -900,13 +901,14 @@ const ActivityOrRoutePlannerPage = () => {
     );
 };
 
-const styleSurveyPageBoxTabletWhenIOS = (isOpen: boolean) => {
-    return isOpen ? "80vh" : "87vh";
-};
-
-const useStyles = makeStylesEdt<{ isIOS: boolean; modifiable: boolean; isOpen: boolean }>({
+const useStyles = makeStylesEdt<{
+    isIOS: boolean;
+    modifiable: boolean;
+    iosHeight: string;
+    innerHeight: number;
+}>({
     "name": { ActivityOrRoutePlannerPage },
-})((theme, { isIOS, modifiable, isOpen }) => ({
+})((theme, { isIOS, modifiable, iosHeight }) => ({
     snackbar: {
         bottom: "90px !important",
         "& .MuiSnackbarContent-root": {
@@ -943,8 +945,8 @@ const useStyles = makeStylesEdt<{ isIOS: boolean; modifiable: boolean; isOpen: b
         maxHeight: "100vh",
     },
     surveyPageBoxTablet: {
-        height: "100vh",
-        maxHeight: isIOS ? styleSurveyPageBoxTabletWhenIOS(isOpen) : "94vh",
+        height: innerHeight + "px",
+        maxHeight: isIOS ? iosHeight : innerHeight + "px",
     },
     outletBoxDesktop: {
         flexGrow: "12",
@@ -953,7 +955,7 @@ const useStyles = makeStylesEdt<{ isIOS: boolean; modifiable: boolean; isOpen: b
         width: "100%",
     },
     outletBoxMobileTablet: {
-        flexGrow: "1",
+        flexGrow: "12",
         display: "flex",
         height: "100%",
     },

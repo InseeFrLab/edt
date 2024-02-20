@@ -1,7 +1,7 @@
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { Location } from "react-router-dom";
-import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import {
     isAndroid,
     isChrome,
@@ -10,8 +10,12 @@ import {
     isFirefox,
     isIOS,
     isMacOs,
+    isMobile,
     isSafari,
 } from "react-device-detect";
+import { Location } from "react-router-dom";
+import { getCurrentSurveyRootPage } from "service/orchestrator-service";
+import { isPwa } from "service/responsive";
 
 function groupBy<T>(arr: T[], fn: (item: T) => any) {
     return arr.reduce<Record<string, T[]>>((prev, curr) => {
@@ -120,17 +124,50 @@ function getClassCondition(condition: boolean, classNameYes: any, classNameNo: a
     return condition ? classNameYes : classNameNo;
 }
 
+function getCookie(name: string): string | null {
+    const nameLenPlus = name.length + 1;
+    return (
+        document.cookie
+            .split(";")
+            .map(c => c.trim())
+            .filter(cookie => {
+                return cookie.substring(0, nameLenPlus) === `${name}=`;
+            })
+            .map(cookie => {
+                return decodeURIComponent(cookie.substring(nameLenPlus));
+            })[0] || null
+    );
+}
+
+function sumAllOfArray(array: number[]): number {
+    return array.reduce((a, b) => a + b, 0);
+}
+
+function isAndroidNav() {
+    return !isPwa() && isMobile && isAndroid;
+}
+
+function formatDate(input: string) {
+    dayjs.extend(customParseFormat);
+    const inputFormatted = dayjs(input, "DD/MM/YYYY").format("YYYY-MM-DD");
+    return inputFormatted;
+}
+
 export {
     addArrayToSession,
     addItemToSession,
+    formatDate,
     getArrayFromSession,
+    getClassCondition,
+    getCookie,
     getDevice,
     getDeviceNavigatorIsAvaiableForInstall,
-    getClassCondition,
     getItemFromSession,
     getNavigator,
     getSurveyIdFromUrl,
     getUniquesValues,
     groupBy,
+    isAndroidNav,
     objectEquals,
+    sumAllOfArray,
 };

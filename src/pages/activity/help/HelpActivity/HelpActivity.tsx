@@ -48,7 +48,7 @@ const HelpActivity = () => {
     const isItTablet = isTablet();
     const isItMobile = isMobile();
 
-    const { classes, cx } = useStyles();
+    const { classes, cx } = useStyles({ "innerHeight": window.innerHeight });
 
     const activitiesRoutesOrGaps = mockActivitiesRoutesOrGaps();
     const surveyDate = "2023-03-29";
@@ -212,15 +212,22 @@ const HelpActivity = () => {
 
     const heightClass = isPwa() ? classes.fullHeight : classes.fullHeightNav;
 
+    const isMobileApp = () => {
+        return !isPwa() && isMobileNav && (isIOS || isAndroid);
+    };
+
+    function getClassCondition(condition: boolean, classNameYes: any, classNameNo: any) {
+        return condition ? classNameYes : classNameNo;
+    }
+
     return (
         <Box className={classes.root}>
             {renderHelp()}
             <Box
-                className={
-                    !isPwa() && isMobileNav && (isIOS || isAndroid)
-                        ? classes.surveyPageBoxTablet
-                        : classes.surveyPageBox
-                }
+                className={cx(
+                    classes.surveyPageBox,
+                    getClassCondition(isMobileApp(), classes.surveyPageBoxTablet, ""),
+                )}
             >
                 {(isItDesktop || !isSubchildDisplayed) && (
                     <Box className={classes.innerSurveyPageBox}>
@@ -313,7 +320,7 @@ const HelpActivity = () => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
+const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { HelpActivity } })(theme => ({
     root: {
         height: important("100vh"),
         maxHeight: important("100vh"),
@@ -344,8 +351,8 @@ const useStyles = makeStylesEdt({ "name": { HelpActivity } })(theme => ({
         display: "flex",
         alignItems: "flex-start",
         overflow: "hidden",
-        height: "100vh",
-        maxHeight: "94vh",
+        height: "100%",
+        maxHeight: isIOS ? "87vh" : innerHeight + "px",
     },
     innerContentBox: {
         border: "1px solid transparent",

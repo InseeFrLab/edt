@@ -64,6 +64,7 @@ const HomeSurveyedPage = () => {
     const [initialized, setInitialized] = React.useState<boolean>(false);
     const [state, setState] = React.useState<LunaticData | undefined>(undefined);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
+    const [datas, setDatas] = React.useState<Person[]>([]);
 
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const isDemo = isDemoMode();
@@ -80,6 +81,7 @@ const HomeSurveyedPage = () => {
                     setState(getData(idsSurveysSelected[0]));
                     setInitialized(true);
                 }
+                setDatas(userDatas);
             });
         });
     };
@@ -295,18 +297,33 @@ const HomeSurveyedPage = () => {
 
     const lockSurveys = useCallback(() => {
         lockAllSurveys(idHousehold ?? "").then(() => {
-            setInitialized(true);
+            userDatas = userDatasMap();
+            const idsSurveysSelected = userDatas
+                .map(data => data.data.surveyUnitId)
+                .filter(
+                    (survey: string) =>
+                        !survey.startsWith("activitySurvey") && !survey.startsWith("workTimeSurvey"),
+                );
+            initHome(idsSurveysSelected);
         });
     }, []);
 
     const validateSurveys = useCallback(() => {
-        validateAllEmptySurveys(idHousehold ?? "");
+        validateAllEmptySurveys(idHousehold ?? "").then(() => {
+            userDatas = userDatasMap();
+            const idsSurveysSelected = userDatas
+                .map(data => data.data.surveyUnitId)
+                .filter(
+                    (survey: string) =>
+                        !survey.startsWith("activitySurvey") && !survey.startsWith("workTimeSurvey"),
+                );
+            initHome(idsSurveysSelected);
+        });
     }, []);
 
     const renderHomeReviewer = () => {
         let userDatas = groupBy(userDatasMap(), nameSurveyData => nameSurveyData.num);
         let groups = Object.keys(userDatas);
-
         return renderPageOrLoadingOrError(
             <>
                 {renderReminderNote()}
@@ -361,6 +378,10 @@ const HomeSurveyedPage = () => {
             return renderHomeInterviewer();
         }
     };
+
+    const renderData = useCallback(() => {
+        return isDemo ? renderHomeDemo() : renderHome();
+    }, [datas]);
 
     return (
         <>
@@ -451,7 +472,7 @@ const HomeSurveyedPage = () => {
                 </Box>
             </Box>
 
-            <Box className={classes.cardsBox}>{isDemo ? renderHomeDemo() : renderHome()}</Box>
+            <Box className={classes.cardsBox}>{renderData()}</Box>
 
             {renderMenuHelp()}
         </>

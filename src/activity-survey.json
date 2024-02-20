@@ -514,6 +514,30 @@
             "componentRef": ""
         },
         {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "QUALITY_SCORE",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "QUALITY_SCORE_SUBSTRACT_POINTS",
+            "componentRef": ""
+        },
+        {
             "variableType": "CALCULATED",
             "expression": "true",
             "name": "FILTER_RESULT_INPUTTEXT",
@@ -907,7 +931,7 @@
                                 "name": "OTHERPRIVATE"
                             },
                             "id": "5",
-                            "label": "\"Autre moyen privé (monorue,kk trottinette ou skate, bateau, électrique ou non...)\""
+                            "label": "\"Autre moyen privé (monoroue, trottinette ou skate, bateau, électrique ou non...)\""
                         },
                         {
                             "response": {

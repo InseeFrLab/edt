@@ -58,6 +58,7 @@ const HomeReviewerPage = () => {
                 localStorage.clear();
             })
             .then(() => auth.userManager.clearStaleState())
+            .then(() => localStorage.removeItem("auth"))
             .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""));
     }, []);
 
@@ -90,6 +91,7 @@ const HomeReviewerPage = () => {
                     </>
                 </Box>
                 <Button
+                    className={classes.logoutBox}
                     color="secondary"
                     startIcon={
                         <img
@@ -156,6 +158,9 @@ const useStyles = makeStylesEdt({ "name": { HomeReviewerPage } })(theme => ({
     logoBox: {
         paddingLeft: "1rem",
         paddingTop: "0.5rem",
+    },
+    logoutBox: {
+        height: "4rem",
     },
     logoImg: {
         width: "40px",

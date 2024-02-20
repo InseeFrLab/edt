@@ -3,6 +3,7 @@ import { CssBaseline, StyledEngineProvider, ThemeProvider } from "@mui/material"
 import { AuthProvider } from "oidc-react";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createUserManager, isSSO } from "service/auth-service";
 import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
@@ -11,11 +12,13 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
 const getAuthority = () => {
-    const authority = window.location.search.includes("kc_idp_hint=insee-ssp")
-        ? process.env.REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER
-        : process.env.REACT_APP_KEYCLOAK_AUTHORITY;
+    const authority = process.env.REACT_APP_KEYCLOAK_AUTHORITY;
     console.log("oidc authority: ", authority);
     return authority;
+};
+
+const oidcConfigSSO = {
+    userManager: createUserManager(),
 };
 
 const oidcConfig = {
@@ -28,8 +31,10 @@ const oidcConfig = {
     redirectUri: process.env.REACT_APP_KEYCLOAK_REDIRECT_URI,
 };
 
+const oidcProps = isSSO ? Object.assign(oidcConfig, oidcConfigSSO) : oidcConfig;
+
 root.render(
-    <AuthProvider {...oidcConfig}>
+    <AuthProvider {...oidcProps}>
         <React.StrictMode>
             <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={theme}>

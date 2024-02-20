@@ -296,8 +296,7 @@ It contains all the survey "fields" components and an associated storybook docum
 
 ### Initial survey state
 
-A surveyed, when loggin in the first time, will be able to see REACT_APP_NUM_ACTIVITY_SURVEYS (total amount of activity surveys, accessible in env file) activity surveys and
-REACT_APP_NUM_WORKTIME_SURVEYS work time surveys.
+A surveyed, when loggin in the first time, will be able to see all of activity surveys and work time surveys recovered by the API.
 
 When a survey has never been started, no data are visible in the indexedDB.
 
@@ -340,11 +339,11 @@ Those states have been defined to ease the visibility of the ongoing current sur
 
 ## Lifecycle state
 
-![](https://imgur.com/Y3bjnVs.png)
+![](./images/lifecycle_state.png)
 
 ### Project structure
 
-![](https://i.imgur.com/Jt1FrnR.png)
+![](./images/projet_structure.png)
 
 `src` : Contains all the source code of the application. It also has the 2 surveys sources required by Lunatic and used by EDT.
 
@@ -374,12 +373,12 @@ Those states have been defined to ease the visibility of the ongoing current sur
 
 EDT is using a Keycloak for authentification. It uses `oidc-react` (https://github.com/bjerkio/oidc-react) to manage the connection between the Keycloak and the app. You can find the oidc config inside the `src/index.tsx` file.
 
-These two environment variables are used to setup the connection :
+These three environment variables are used to setup the connection :
 
 ```
 REACT_APP_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
-REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/?kc_idp_hint=insee-ssp
 REACT_APP_KEYCLOAK_CLIENT_ID=client-edt
+REACT_APP_KEYCLOAK_REDIRECT_URI=https://insee-recette-edt.k8s.keyconsulting.fr/
 ```
 
 The user bearer token is used to call the secured APIs.
@@ -392,7 +391,7 @@ SSO is available using INSEE LDAP only with users with reviewer role. The review
 
 #### Architecture schema
 
-![](https://i.imgur.com/Q3sKoCe.png)
+![](./images/schema_architecture.png)
 
 #### API Edt-pilotage
 
@@ -565,6 +564,8 @@ https://github.com/InseeFr/Queen-Back-Office
 ## Services
 `alert-service.ts` : Used to get alert content.
 
+`auth-service.ts` : Contains config for SSO authentification.
+
 `api-service.ts` : Contains all API calls.
 
 `loop-service.ts` : Used to handle loop size and loop data to recover the current state of the navigation.
@@ -652,48 +653,79 @@ Usage : this enumeration is used to define the nomenclature ids that are used by
 ```
 
 export enum FieldNameEnum {
-LASTNAME = "LASTNAME",
 FIRSTNAME = "FIRSTNAME",
 SURVEYDATE = "SURVEYDATE",
-START_TIME = "START_TIME",
-END_TIME = "END_TIME",
-MAINACTIVITY_ID = "MAINACTIVITY_ID",
-MAINACTIVITY_SUGGESTERID = "MAINACTIVITY_SUGGESTERID",
-MAINACTIVITY_ISFULLYCOMPLETED = "MAINACTIVITY_ISFULLYCOMPLETED",
-MAINACTIVITY_LABEL = "MAINACTIVITY_LABEL",
-INPUT_SUGGESTER = "INPUT_SUGGESTER",
-ACTIVITY_SELECTER_HISTORY = "ACTIVITY_SELECTER_HISTORY",
-ROUTE = "ROUTE",
-GOAL = "GOAL",
-WITHSECONDARYACTIVITY = "WITHSECONDARYACTIVITY",
-SECONDARYACTIVITY = "SECONDARYACTIVITY",
-SECONDARYACTIVITY_LABEL = "SECONDARYACTIVITY_LABEL",
-MEANOFTRANSPORT = "MEANOFTRANSPORT",
-PLACE = "PLACE",
-WITHSOMEONE = "WITHSOMEONE",
-COUPLE = "COUPLE",
-PARENTS = "PARENTS",
-CHILD = "CHILD",
-OTHERKNOWN = "OTHERKNOWN",
-OTHER = "OTHER",
-WITHSCREEN = "WITHSCREEN",
-WEEKLYPLANNER = "WEEKLYPLANNER",
-WEEKTYPE = "WEEKTYPE",
-WORKINGWEEK = "WORKINGWEEK",
-HOLIDAYWEEK = "HOLIDAYWEEK",
-OTHERWEEK = "OTHERWEEK",
-GREATESTACTIVITYDAY = "GREATESTACTIVITYDAY",
-WORSTACTIVITYDAY = "WORSTACTIVITYDAY",
-KINDOFDAY = "KINDOFDAY",
-EXCEPTIONALDAY = "EXCEPTIONALDAY",
-TRAVELTIME = "TRAVELTIME",
-PHONETIME = "PHONETIME",
-ISCLOSED = "ISCLOSED",
-ISENVOYED = "ISENVOYED",
-ISROUTE = "ISROUTE",
-ISCOMPLETED = "ISCOMPLETED",
-ISVALIDATED = "ISVALIDATED",
-ISLOCKED = "ISLOCKED",
+
+    //TIME
+    START_TIME = "START_TIME",
+    END_TIME = "END_TIME",
+
+    //SUGGESTER
+    INPUT_SUGGESTER = "INPUT_SUGGESTER",
+
+    //PLACE
+    PLACE = "PLACE",
+
+    //WITH SOMEONE
+    WITHSOMEONE = "WITHSOMEONE",
+    COUPLE = "COUPLE",
+    PARENTS = "PARENTS",
+    CHILD = "CHILD",
+    OTHERKNOWN = "OTHERKNOWN",
+    OTHER = "OTHER",
+    WITHSCREEN = "WITHSCREEN",
+
+    // VARIABLES CLOTURE
+
+    GREATESTACTIVITYDAY = "GREATESTACTIVITYDAY",
+    WORSTACTIVITYDAY = "WORSTACTIVITYDAY",
+    KINDOFDAY = "KINDOFDAY",
+    EXCEPTIONALDAY = "EXCEPTIONALDAY",
+    TRAVELTIME = "TRAVELTIME",
+    PHONETIME = "PHONETIME",
+
+    ISCLOSED = "ISCLOSED", //SURVEY CLOSED
+    ISENVOYED = "ISENVOYED", //SURVEY ENVOYED
+    ISROUTE = "ISROUTE", // IS ROUTE
+    ISCOMPLETED = "ISCOMPLETED", // ALL VARIABLES SET FOR SURVEY
+    ISVALIDATED = "ISVALIDATED", //SURVEY VALIDATED
+    ISLOCKED = "ISLOCKED", //SURVEY LOCKED
+
+    //ACTIVITY
+
+    //MAIN ACTIVITY
+    ACTIVITY_SELECTER_HISTORY = "ACTIVITY_SELECTER_HISTORY",
+    MAINACTIVITY_ID = "MAINACTIVITY_ID",
+    MAINACTIVITY_SUGGESTERID = "MAINACTIVITY_SUGGESTERID",
+    MAINACTIVITY_ISFULLYCOMPLETED = "MAINACTIVITY_ISFULLYCOMPLETED",
+    MAINACTIVITY_LABEL = "MAINACTIVITY_LABEL",
+    GOAL = "GOAL",
+
+    //SECONDARY ACTIVITY
+    WITHSECONDARYACTIVITY = "WITHSECONDARYACTIVITY",
+    SECONDARYACTIVITY = "SECONDARYACTIVITY",
+    SECONDARYACTIVITY_LABEL = "SECONDARYACTIVITY_LABEL",
+    SECONDARYACTIVITY_SUGGESTERID = "SECONDARYACTIVITY_SUGGESTERID",
+
+    //SCORE
+    QUALITY_SCORE = "QUALITY_SCORE", //QUALITY SCORE
+    QUALITY_SCORE_SUBSTRACT_POINTS = "QUALITY_SCORE_SUBSTRACT_POINTS", //POINT TO SUBSTRACT FOR CALCULATE SCORE
+
+    //ROUTE
+    ROUTE = "ROUTE",
+    FOOT = "FOOT",
+    BICYCLE = "BICYCLE",
+    TWOWHEELSMOTORIZED = "TWOWHEELSMOTORIZED",
+    PRIVATECAR = "PRIVATECAR",
+    OTHERPRIVATE = "OTHERPRIVATE",
+    PUBLIC = "PUBLIC",
+
+    //WEEKLY PLANNER
+    WEEKLYPLANNER = "WEEKLYPLANNER",
+    DATES = "DATES",
+    DATES_STARTED = "DATES_STARTED",
+    WEEKTYPE = "WEEKTYPE",
+
 }
 
 ```
@@ -777,25 +809,25 @@ let mappingPageOrchestrator: OrchestratorEdtNavigation[] = [
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY,
 page: EdtRoutesNameEnum.WHO_ARE_YOU,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: "1",
 },
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY,
 page: EdtRoutesNameEnum.DAY_OF_SURVEY,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: "2",
 },
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY,
 page: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: "3",
 },
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
 page: EdtRoutesNameEnum.ACTIVITY_DURATION,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
 surveySubPage: "2",
 surveyStep: 1,
@@ -803,7 +835,7 @@ surveyStep: 1,
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
 page: EdtRoutesNameEnum.MAIN_ACTIVITY,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
 surveySubPage: "3",
 surveyStep: 2,
@@ -811,7 +843,7 @@ surveyStep: 2,
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
 page: EdtRoutesNameEnum.ROUTE,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
 surveySubPage: "4",
 surveyStep: 2,
@@ -819,7 +851,7 @@ surveyStep: 2,
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
 page: EdtRoutesNameEnum.MEAN_OF_TRANSPORT,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
 surveySubPage: "5",
 surveyStep: 3,
@@ -827,7 +859,7 @@ surveyStep: 3,
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
 page: EdtRoutesNameEnum.SECONDARY_ACTIVITY,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
 surveySubPage: "6",
 surveyStep: 3,
@@ -835,7 +867,7 @@ surveyStep: 3,
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
 page: EdtRoutesNameEnum.ACTIVITY_LOCATION,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
 surveySubPage: "7",
 surveyStep: 4,
@@ -843,7 +875,7 @@ surveyStep: 4,
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
 page: EdtRoutesNameEnum.WITH_SOMEONE,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
 surveySubPage: "8",
 surveyStep: 5,
@@ -851,7 +883,7 @@ surveyStep: 5,
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
 page: EdtRoutesNameEnum.WITH_SCREEN,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
 surveySubPage: "9",
 surveyStep: 6,
@@ -859,7 +891,7 @@ surveyStep: 6,
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
 page: EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
 surveySubPage: "10",
 surveyStep: 2,
@@ -867,7 +899,7 @@ surveyStep: 2,
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
 page: EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
 surveySubPage: "11",
 surveyStep: 3,
@@ -875,7 +907,7 @@ surveyStep: 3,
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
 page: EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
 surveySubPage: "12",
 surveyStep: 5,
@@ -883,73 +915,73 @@ surveyStep: 5,
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY,
 page: EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: "5",
 },
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY,
 page: EdtRoutesNameEnum.WORST_ACTIVITY_DAY,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: "6",
 },
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY,
 page: EdtRoutesNameEnum.KIND_OF_DAY,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: "7",
 },
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY,
 page: EdtRoutesNameEnum.EXCEPTIONAL_DAY,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: "8",
 },
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY,
 page: EdtRoutesNameEnum.TRAVEL_TIME,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: "9",
 },
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY,
 page: EdtRoutesNameEnum.PHONE_TIME,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: "10",
 },
 {
 parentPage: EdtRoutesNameEnum.ACTIVITY,
 page: EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
-surveySource: "activity-survey.json",
+surveySource: SourcesEnum.ACTIVITY_SURVEY,
 surveyPage: "3",
 },
 {
 parentPage: EdtRoutesNameEnum.WORK_TIME,
 page: EdtRoutesNameEnum.WHO_ARE_YOU,
-surveySource: "work-time-survey.json",
+surveySource: SourcesEnum.WORK_TIME_SURVEY,
 surveyPage: "1",
 },
 {
 parentPage: EdtRoutesNameEnum.WORK_TIME,
 page: EdtRoutesNameEnum.DAY_OF_SURVEY,
-surveySource: "work-time-survey.json",
+surveySource: SourcesEnum.WORK_TIME_SURVEY,
 surveyPage: "2",
 },
 {
 parentPage: EdtRoutesNameEnum.WORK_TIME,
 page: EdtRoutesNameEnum.WEEKLY_PLANNER,
-surveySource: "work-time-survey.json",
+surveySource: SourcesEnum.WORK_TIME_SURVEY,
 surveyPage: "3",
 },
 {
 parentPage: EdtRoutesNameEnum.WORK_TIME,
 page: EdtRoutesNameEnum.KIND_OF_WEEK,
-surveySource: "work-time-survey.json",
+surveySource: SourcesEnum.WORK_TIME_SURVEY,
 surveyPage: "4",
 },
 {
 parentPage: EdtRoutesNameEnum.WORK_TIME,
 page: EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION,
-surveySource: "work-time-survey.json",
+surveySource: SourcesEnum.WORK_TIME_SURVEY,
 surveyPage: "5",
 },
 ];
@@ -1019,7 +1051,7 @@ Even if you create a path, it never passes through this component, so we cannot 
 
 The callbackHolder function recovers the data and the errors which give us lunatic.
 
-![](https://imgur.com/SNpbvje.png)
+![](./images/orchestrator_code.png)
 
 The getData() function provided by lunatic, instead of returning it within callbackHolder, we proceed to process the data recovered by lunatic, to be able to transform that data, along with that of the database and obtain our data model filled with the COLLECTED and EDITED.
 
@@ -1038,9 +1070,7 @@ For each existing property :
 - **value of COLLECTED:** data of lunatic *(callbackholder.getData()[prop].COLLECTED)*;
 
 
-
-![](https://imgur.com/JCtEcUC.png)
-
+![](./images/orchestrator_code_interviewer.png)
 
 If the user is a reviewer, the data is treated as follows:
 
@@ -1076,11 +1106,14 @@ value of lunatic for value[iteration], other -> value of bdd (EDITED)
     - **value of EDITED:** data of bbdd *(data[prop].EDITED)*;
     - **value of COLLECTED:** data of bbdd *(data[prop].COLLECTED)*;
 
-![](https://imgur.com/PNZL2hu.png)
+![](./images/orchestrator_code_reviewer.png)
 
 Here a diagram of the flow of orchestrator data
 
-![Orchestrator data flow](https://imgur.com/yYYqvSJ.png)
+![Orchestrator data flow](./images/orchestrator_flow.png)
+
+#### Examples
+
 
 
 ## Maintenance and evolution

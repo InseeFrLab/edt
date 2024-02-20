@@ -98,7 +98,7 @@ const useStyles = makeStylesEdt({ "name": { WorkTimePage } })(() => ({
     },
     pageMobileTablet: {
         height: "100%",
-        maxHeight: "94vh",
+        //maxHeight: "94vh",
         display: "flex",
         flexDirection: "column",
     },

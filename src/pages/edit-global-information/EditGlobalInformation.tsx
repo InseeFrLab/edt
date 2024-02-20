@@ -9,7 +9,7 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { getComponentsOfVariable, setValue, validateAllGroup } from "service/survey-service";
-import { getSurveyIdFromUrl } from "utils/utils";
+import { formatDate, getSurveyIdFromUrl } from "utils/utils";
 
 const EditGlobalInformationPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -49,9 +49,13 @@ const EditGlobalInformationPage = () => {
     }, [callbackHolder]);
 
     const validate = useCallback(() => {
-        const input = (document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement)
-            ?.value;
-        validateAllGroup(idSurvey, input, navigate);
+        const inputName = (
+            document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement
+        )?.value;
+        const inputDate = (
+            document.getElementsByClassName("MuiInputBase-input")?.[1] as HTMLInputElement
+        )?.value;
+        validateAllGroup(navigate, idSurvey, inputName, formatDate(inputDate));
     }, []);
 
     return (

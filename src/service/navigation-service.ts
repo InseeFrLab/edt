@@ -1,12 +1,18 @@
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { FieldNameEnum, FieldNameEnumActivity, FieldNameEnumWorkTIme } from "enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
+import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
+import {
+    Collected,
+    LunaticData,
+    LunaticModel,
+    MultiCollected,
+    OrchestratorContext,
+} from "interface/lunatic/Lunatic";
 import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
-import { callbackHolder } from "orchestrator/Orchestrator";
 import { SetStateAction } from "react";
 import { NavigateFunction, To } from "react-router-dom";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
@@ -15,6 +21,7 @@ import {
     getCurrentPage,
     getData,
     getModePersistence,
+    getSource,
     getValue,
     saveData,
     setValue,
@@ -30,11 +37,11 @@ let _callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] 
 const setEnviro = (
     context: OrchestratorContext,
     navigate: NavigateFunction,
-    callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } },
+    callbackHolder?: { getData(): LunaticData; getErrors(): { [key: string]: [] } },
 ) => {
     _context = context;
     _navigate = navigate;
-    _callbackHolder = callbackHolder;
+    if (callbackHolder) _callbackHolder = callbackHolder;
 };
 
 const getNavigatePath = (page: EdtRoutesNameEnum): string => {
@@ -203,7 +210,7 @@ const saveAndNav = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
-    saveData(idSurvey, _callbackHolder.getData()).then(() => {
+    saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey)).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
@@ -225,8 +232,8 @@ const closeFormularieAndNav = (idSurvey: string, route: string) => {
  * we need to make the call twice to be able to retrieve the current state of the database
  */
 const validate = (idSurvey: string): Promise<void | LunaticData> => {
-    return saveData(idSurvey, _callbackHolder.getData(), true).then(() => {
-        return saveData(idSurvey, _callbackHolder.getData(), false);
+    return saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), true).then(() => {
+        return saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), false);
     });
 };
 
@@ -279,73 +286,167 @@ const navToActivityRoutePlanner = (idSurvey: string, source: LunaticModel) => {
     );
 };
 
-const setNamesOfGroup = (idSurvey: string, nameAct: string, idsSurveysOfGroup?: string[]) => {
+const setNamesOfGroup = (
+    idSurvey: string,
+    idsSurveysOfGroup: string[],
+    nameAct: string,
+    dateAct?: string,
+) => {
     let listNames = idsSurveysOfGroup
         ?.map(id => {
             const firstName = getValue(id, FieldNameEnum.FIRSTNAME) as string;
             return firstName;
         })
         .filter(firstname => firstname != null);
+    const nameSaved = getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string;
+    const replaceName = nameSaved != null && nameSaved.length > 0;
 
     const promises: any[] = [];
-    if (nameAct ?? (listNames && listNames?.length > 0)) {
-        idsSurveysOfGroup?.forEach(id => {
-            let firstname = getValue(id, FieldNameEnum.FIRSTNAME);
-            if (firstname == null) {
-                const name = nameAct ?? listNames?.[0];
-                let dataAct = setValue(id, FieldNameEnum.FIRSTNAME, name);
-                if (dataAct.COLLECTED == null || dataAct.COLLECTED?.[FieldNameEnum.FIRSTNAME] == null) {
-                    dataAct = emptyDataSetFirstName(
-                        callbackHolder.getData(),
-                        name,
-                        getModePersistence(callbackHolder.getData()),
-                    );
-                }
-                promises.push(saveData(id, dataAct));
-            }
-        });
-    }
+    const nameOfGroup = listNames.length > 0 && !replaceName ? listNames[0] : nameAct;
+
+    idsSurveysOfGroup.forEach(idSurveyOfGroup => {
+        let firstname = getValue(idSurveyOfGroup, FieldNameEnum.FIRSTNAME);
+        const newSurvey = firstname == null;
+        if (firstname == null || replaceName) {
+            let dataActuel = { ...getData(idSurveyOfGroup) };
+            const datasirv = { ...dataActuel };
+            const emptydata = emptyDataSetFirstName(
+                idSurveyOfGroup,
+                idSurvey,
+                datasirv,
+                getModePersistence(datasirv),
+                nameOfGroup,
+                newSurvey,
+                dateAct,
+            );
+            promises.push(saveData(idSurveyOfGroup, emptydata));
+        }
+    });
     return promises;
 };
 
-const emptyDataSetFirstName = (
-    data: LunaticData,
-    firstName: string,
-    modePersistence: ModePersistenceEnum,
+const propsWorkTime = () => {
+    const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
+    const bindingDependenciesOfComponent = source.components.map(
+        component => component.bindingDependencies ?? [],
+    );
+    // array of arrays to array
+    const bindingDependencies = ([] as string[]).concat(...bindingDependenciesOfComponent);
+    //unique values
+    const uniqueBindingDependencies = bindingDependencies?.filter(
+        (value, index, array) => array.indexOf(value) === index,
+    );
+    return uniqueBindingDependencies;
+};
+
+const initActivity = (
+    dataCollected: {
+        [x: string]: Collected | MultiCollected;
+    },
+    newSurvey: boolean,
 ) => {
-    const dataCollected = data.COLLECTED;
-    if (dataCollected) {
-        for (let prop in FieldNameEnum as any) {
-            if (prop == FieldNameEnum.SURVEYDATE) continue;
+    for (let prop in FieldNameEnumActivity as any) {
+        if (prop == FieldNameEnum.SURVEYDATE) continue;
+        if (dataCollected[prop] == null || newSurvey) {
             dataCollected[prop] = {
                 COLLECTED: null,
                 EDITED: null,
-                FORCED: {},
-                INPUTED: {},
-                PREVIOUS: {},
+                FORCED: null,
+                INPUTED: null,
+                PREVIOUS: null,
             };
         }
+    }
+    return dataCollected;
+};
+
+const initWorkTime = (
+    dataCollected: {
+        [x: string]: Collected | MultiCollected;
+    },
+    newSurvey: boolean,
+) => {
+    propsWorkTime().forEach(prop => {
+        if (dataCollected[prop] == null && newSurvey) {
+            if (prop in FieldNameEnumWorkTIme) {
+                dataCollected[prop] = {
+                    COLLECTED: null,
+                    EDITED: null,
+                    FORCED: null,
+                    INPUTED: null,
+                    PREVIOUS: null,
+                };
+            } else {
+                dataCollected[prop] = {
+                    COLLECTED: [null],
+                    EDITED: [null],
+                    FORCED: [null],
+                    INPUTED: [null],
+                    PREVIOUS: [null],
+                };
+            }
+        }
+    });
+    return dataCollected;
+};
+
+const initPropsData = (
+    dataCollected: {
+        [x: string]: Collected | MultiCollected;
+    },
+    idSurveyOfGroup: string,
+    newSurvey: boolean,
+) => {
+    if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurveyOfGroup)) {
+        return initWorkTime(dataCollected, newSurvey);
+    } else {
+        return initActivity(dataCollected, newSurvey);
+    }
+};
+
+const emptyDataSetFirstName = (
+    idSurveyOfGroup: string,
+    idSurvey: string,
+    data: LunaticData,
+    modePersistence: ModePersistenceEnum,
+    firstName: string,
+    newSurvey: boolean,
+    dateAct?: string,
+) => {
+    let dataCollected = { ...data.COLLECTED };
+    if (dataCollected) {
+        dataCollected = initPropsData(dataCollected, idSurveyOfGroup, newSurvey);
 
         dataCollected[FieldNameEnum.FIRSTNAME] = {
             COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,
             EDITED: modePersistence == ModePersistenceEnum.EDITED ? firstName : null,
-            FORCED: {},
-            INPUTED: {},
-            PREVIOUS: {},
+            FORCED: null,
+            INPUTED: null,
+            PREVIOUS: null,
         };
+
+        if (dateAct && idSurvey == idSurveyOfGroup) {
+            dataCollected[FieldNameEnum.SURVEYDATE] = {
+                COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? dateAct : null,
+                EDITED: modePersistence == ModePersistenceEnum.EDITED ? dateAct : null,
+                FORCED: null,
+                INPUTED: null,
+                PREVIOUS: null,
+            };
+        }
     }
     data.COLLECTED = dataCollected;
     return data;
 };
 const setAllNamesOfGroupAndNav = (
+    navigate: NavigateFunction,
+    route: string,
     idSurvey: string,
     idsSurveysOfGroup: string[],
     nameAct: string,
-    route: string,
-    navigate: any,
+    dateAct?: string,
 ) => {
-    const promises = setNamesOfGroup(idSurvey, nameAct, idsSurveysOfGroup);
-    console.log(route);
+    const promises = setNamesOfGroup(idSurvey, idsSurveysOfGroup, nameAct, dateAct);
     Promise.all(promises).then(() => {
         navigate(route);
     });
@@ -529,27 +630,6 @@ const validateAndNextStep = (idSurvey: string, source: LunaticModel, page: EdtRo
     });
 };
 
-const validateAndNextLoopStep = (
-    idSurvey: string,
-    source: LunaticModel,
-    page: EdtRoutesNameEnum,
-    iteration: number,
-    value?: FieldNameEnum,
-    routeNotSelection?: EdtRoutesNameEnum,
-) => {
-    validate(idSurvey).then(() => {
-        saveAndLoopNavigate(
-            idSurvey,
-            source,
-            page,
-            LoopEnum.ACTIVITY_OR_ROUTE,
-            iteration,
-            value,
-            routeNotSelection,
-        );
-    });
-};
-
 const loopNavigate = (idSurvey: string, page: EdtRoutesNameEnum, loop: LoopEnum, iteration: number) => {
     _navigate(getLoopParameterizedNavigatePath(idSurvey, page, loop, iteration));
 };
@@ -654,7 +734,6 @@ export {
     setAllNamesOfGroupAndNav,
     setEnviro,
     validate,
-    validateAndNextLoopStep,
     validateAndNextStep,
     validateWithAlertAndNav,
 };

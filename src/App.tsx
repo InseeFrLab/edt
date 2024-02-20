@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { EdtRoutes } from "routes/EdtRoutes";
 import { getDatas, initializeDatas, initializeListSurveys } from "service/survey-service";
 import { getUserRights, setAuth, setUser, setUserToken } from "service/user-service";
-
+import { getCookie } from "utils/utils";
 const App = () => {
     const { t } = useTranslation();
     const [initialized, setInitialized] = useState(false);
@@ -30,53 +30,46 @@ const App = () => {
     };
 
     useEffect(() => {
+        if (
+            window.location.search &&
+            getCookie("KC_RESTART") == null &&
+            localStorage.getItem("setauth") == null
+        ) {
+            localStorage.setItem("setauth", "yes");
+            window.location.search = "";
+        }
+
         if (auth?.userData?.access_token && getDatas().size === 0 && error === undefined) {
             setUserToken(auth.userData?.access_token);
             setUser(auth.userData);
-        }
-
-        setAuth(auth);
-        //keeps user token up to date after session renewal
-        auth.userManager?.events.addUserLoaded(() => {
-            auth.userManager.getUser().then(user => {
-                setUserToken(user?.access_token || "");
+            setAuth(auth);
+            //keeps user token up to date after session renewal
+            auth.userManager.events.addUserLoaded(() => {
+                auth.userManager.getUser().then(user => {
+                    setUserToken(user?.access_token || "");
+                });
             });
-        });
 
-        auth.userManager?.events.addSilentRenewError(() => {
-            if (navigator.onLine) {
-                auth.userManager
-                    .signoutRedirect({
-                        id_token_hint: getTokenHint(),
-                    })
-                    .then(() => auth.userManager.clearStaleState())
-                    .then(() => auth.userManager.signoutRedirectCallback())
-                    .then(() => {
-                        sessionStorage.clear();
-                        localStorage.clear();
-                    })
-                    .then(() => auth.userManager.clearStaleState())
-                    .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""))
-                    .catch(err => {
-                        setErrorType(err);
-                    });
-            }
-        });
-
-        auth.userManager?.settings.userStore.getAllKeys().then(keys => {
-            auth.userManager.settings.stateStore.getAllKeys().then(keysState => {
-                if (
-                    window.location.search.includes("state") &&
-                    auth.userData == null &&
-                    keys.length == 0 &&
-                    keysState.length == 0
-                ) {
-                    window.location.search = "";
+            auth.userManager.events.addSilentRenewError(() => {
+                if (navigator.onLine) {
+                    auth.userManager
+                        .signoutRedirect({
+                            id_token_hint: getTokenHint(),
+                        })
+                        .then(() => auth.userManager.clearStaleState())
+                        .then(() => auth.userManager.signoutRedirectCallback())
+                        .then(() => {
+                            sessionStorage.clear();
+                            localStorage.clear();
+                        })
+                        .then(() => auth.userManager.clearStaleState())
+                        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""))
+                        .catch(err => {
+                            setErrorType(err);
+                        });
                 }
             });
-        });
 
-        if (auth.userData) {
             initializeDatas(setError).then(() => {
                 setInitialized(true);
             });
@@ -89,7 +82,7 @@ const App = () => {
         }
     }, [auth]);
 
-    const renderErrorOrLoadingPage = () => {
+    const errorOrLoadingPage = () => {
         return !error ? (
             <LoadingFull
                 message={t("page.home.loading.message")}
@@ -100,7 +93,7 @@ const App = () => {
         );
     };
 
-    return <>{initialized && !error ? <EdtRoutes /> : renderErrorOrLoadingPage()}</>;
+    return <>{initialized && !error ? <EdtRoutes /> : errorOrLoadingPage()}</>;
 };
 
 export default App;

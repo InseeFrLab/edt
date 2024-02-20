@@ -458,7 +458,7 @@ const getActivityLabel = (activity: SelectedActivity | undefined): string | unde
     if (activity.label) {
         return activity.label;
     } else {
-        findLabelNotInputed(activity);
+        return findLabelNotInputed(activity);
     }
 };
 
