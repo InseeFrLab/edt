@@ -27,11 +27,9 @@ export const setUserToken = (token: string): void => {
 };
 
 export const getUserRights = (): EdtUserRightsEnum => {
-    const rights = user?.profile?.inseegroupedefaut;
-    console.log("rights", rights, "isSSO", isSSO);
-    if (user?.profile?.inseegroupedefaut?.includes(EdtUserRightsEnum.REVIEWER) || isSSO) {
+    if (user?.profile?.inseegroupedefaut?.includes(process.env.REACT_APP_REVIEWER_ROLE ?? EdtUserRightsEnum.REVIEWER)) {
         return EdtUserRightsEnum.REVIEWER;
-    } else if (user?.profile?.inseegroupedefaut?.includes(EdtUserRightsEnum.SURVEYED)) {
+    } else if (user?.profile?.inseegroupedefaut?.includes(process.env.REACT_APP_SURVEYED_ROLE ?? EdtUserRightsEnum.SURVEYED)) {
         return EdtUserRightsEnum.SURVEYED;
     } else {
         return EdtUserRightsEnum.NO_RIGHTS;
@@ -40,10 +38,3 @@ export const getUserRights = (): EdtUserRightsEnum => {
 
 export const isReviewer = (): boolean => getUserRights() === EdtUserRightsEnum.REVIEWER;
 
-export const setUserSSO = (_isSSO: boolean): void => {
-    isSSO = _isSSO;
-};
-
-export const isUserSSO = (): boolean => {
-    return isSSO;
-};
