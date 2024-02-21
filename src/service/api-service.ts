@@ -378,7 +378,7 @@ const getStateIfNeeded = (
     if (withState) {
         return requestGetStateReviewer(idSurvey, setError);
     } else {
-        return new Promise(resolve => resolve(undefined));
+        return Promise.resolve(undefined);
     }
 };
 
