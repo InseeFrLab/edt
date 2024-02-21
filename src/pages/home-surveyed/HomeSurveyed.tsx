@@ -113,6 +113,9 @@ const HomeSurveyedPage = () => {
             } else {
                 initHome(idsSurveysSelected);
             }
+        } else if (getUserRights() == EdtUserRightsEnum.REVIEWER && isDemo) {
+            let userDatas = userDatasMap();
+            setDatas(userDatas);
         }
     }, []);
 
@@ -226,6 +229,7 @@ const HomeSurveyedPage = () => {
     };
 
     const renderPageOrLoadingOrError = (page: any) => {
+        console.log(initialized, state);
         if (initialized && state != null) {
             return page;
         } else {
@@ -256,7 +260,7 @@ const HomeSurveyedPage = () => {
             });
         });
 
-        return renderPageOrLoadingOrError(
+        return (
             <>
                 {renderReminderNote()}
                 <Box className={classes.groupCardBox}>
@@ -271,7 +275,7 @@ const HomeSurveyedPage = () => {
                         );
                     })}
                 </Box>
-            </>,
+            </>
         );
     };
 
