@@ -191,7 +191,10 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
 const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     const promises: Promise<any>[] = [];
     return lunaticDatabase.get(SURVEYS_IDS).then(data => {
-        if (!data) {
+        const surveyIdsData = data as SurveysIds;
+        const existSurveysIds = surveyIdsData?.[SurveysIdsEnum.ALL_SURVEYS_IDS].length > 0;
+
+        if (!existSurveysIds) {
             promises.push(initDataForSurveys(setError));
         } else {
             surveysIds = data as SurveysIds;
@@ -215,7 +218,6 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
             if (navigator.onLine) {
                 promises.push(
                     getRemoteSavedSurveysDatas(surveysIdsAct, setError).then(() => {
-                        console.log("initializeSurveysIdsAndSources");
                         return initializeSurveysDatasCache();
                     }),
                 );
@@ -380,7 +382,6 @@ const refreshSurveyData = (
         specifiquesSurveysIds ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS],
         setError,
     ).then(() => {
-        console.log("refreshSurveyData");
         return initializeSurveysDatasCache();
     });
 };
@@ -388,7 +389,6 @@ const refreshSurveyData = (
 const refreshSurvey = (idSurvey: string, setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     initData = false;
     return getRemoteSavedSurveysDatas([idSurvey], setError).then(() => {
-        console.log("refreshSurvey");
         return initializeSurveysDatasCache([idSurvey]);
     });
 };
@@ -690,11 +690,9 @@ const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
             }
         });
         if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurvey)) {
-            console.log("work time");
             isChange = true;
         }
     } else {
-        console.log("not data", dataCollected, currentDataCollected);
         isChange = true;
     }
 
@@ -835,7 +833,6 @@ const saveData = (
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
     fixConditionals(data);
     const isChange = forceUpdate || dataIsChange(idSurvey, data);
-    console.log("bdd change", forceUpdate, dataIsChange(idSurvey, data));
     return lunaticDatabase.save(idSurvey, data).then(() => {
         const promisesToWait: Promise<any>[] = [];
         datas.set(idSurvey, data);

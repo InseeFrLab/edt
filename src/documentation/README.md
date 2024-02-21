@@ -1114,6 +1114,105 @@ Here a diagram of the flow of orchestrator data
 
 #### Examples
 
+##### Example 1
+
+1 - Connect with one user surveyer
+
+2 - Create one survey
+
+In this step, the values of variables FIRSTNAME, SURVEYDATE are set in COLLECTED part, EDITED rest empty.
+
+3 - Create activity complete
+
+    3.1 - DURATION ACITVITY
+
+    The variables START_TIME and END_TIME are set in first element of array situate in COLLECTED part, EDITED rest empty.
+
+    3.2 - MAIN ACTIVITY
+
+    The variables ACTIVITY_SELECTER_HISTORY, MAINACTIVITY_ID, MAINACTIVITY_SUGGESTERID, MAINACTIVITY_ISFULLYCOMPLETED, MAINACTIVITY_LABEL, GOAL are updated in this step.
+
+    Selected category -> update variables ACTIVITY_SELECTER_HISTORY, MAINACTIVITY_ID, MAINACTIVITY_ISFULLYCOMPLETED in first element of array situate in COLLECTED part.
+
+    3.3 - SECONDARY ACTIVITY
+
+    3.3.1 SECONDARY ACTIVITY CHOICE
+
+    The variable WITHSECONDARYACTIVITY are updated first element of array situate in COLLECTED part, EDITED rest empty.
+
+    3.3.2 SECONDARY ACTIVITY
+
+    The variable SECONDARYACTIVITY are updated in first element of array situate in COLLECTED part, EDITED rest empty.
+
+    3.4 - PLACE
+
+    The variable PLACE are updated in first element of array situate in COLLECTED part, EDITED rest empty.
+
+    3.5 - WITH SOMEONE
+
+    3.5.1 SOMEONE CHOICE
+
+    The variable WITHSOMEONE are updated first element of array situate in COLLECTED part, EDITED rest empty.
+
+    3.5.2 SOMEONE
+
+    The variable COUPLE, PARENTS, CHILD, OTHERKNOW, OTHER are updated in first element of array situate in COLLECTED part, EDITED rest empty.
+
+    3.6 - WITH SCREEN
+
+    The variable WITHSCREEN are updated first element of array situate in COLLECTED part, EDITED rest empty.
+
+4 - Create route complete
+
+    4.1 - DURATION ROUTE
+
+    The variables START_TIME and END_TIME are set in second element of array situate in COLLECTED part, EDITED rest empty.
+
+    3.2 - ROUTE
+
+    The variable ROUTE are updated in second element of array situate in COLLECTED part, EDITED rest empty.
+
+    4.3 - MEAN OF TRANSPORT
+
+    The variableS FOOT, BICYCLE, TWOWHEELSMOTORIZED, PRIVATECAR, OTHERPRIVATE, PUBLIC are updated in second element of array situate in COLLECTED part, EDITED rest empty.
+
+    4.4 - SECONDARY ACTIVITY
+
+    4.4.1 SECONDARY ACTIVITY CHOICE
+
+    The variable WITHSECONDARYACTIVITY are updated second element of array situate in COLLECTED part, EDITED rest empty.
+
+    4.4.2 SECONDARY ACTIVITY
+
+    The variable SECONDARYACTIVITY are updated in second element of array situate in COLLECTED part, EDITED rest empty.
+
+    4.5 - PLACE
+
+    The variable PLACE are updated in second element of array situate in COLLECTED part, EDITED rest empty.
+
+    4.6 WITH SOMEONE
+
+    4.6.1 SOMEONE CHOICE
+
+    The variable WITHSOMEONE are updated second element of array situate in COLLECTED part, EDITED rest empty.
+
+    4.6.2 SOMEONE
+
+    The variable COUPLE, PARENTS, CHILD, OTHERKNOW, OTHER are updated in second element of array situate in COLLECTED part, EDITED rest empty.
+
+    4.7 WITH SCREEN
+
+    The variable WITHSCREEN are updated second element of array situate in COLLECTED part, EDITED rest empty.
+
+5 - Create activity - parcial
+
+    5.1 - DURATION ACITVITY
+
+    The variables START_TIME and END_TIME are set in third element of array situate in COLLECTED part, EDITED rest empty.
+
+
+
+
 
 
 ## Maintenance and evolution
