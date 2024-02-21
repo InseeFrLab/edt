@@ -4,7 +4,6 @@ import { AuthContextProps, User } from "oidc-react";
 let user: any;
 let userToken: string;
 let auth: AuthContextProps;
-let isSSO: boolean;
 
 export const setUser = (loggedUser: User | null): void => {
     user = loggedUser;
@@ -27,9 +26,17 @@ export const setUserToken = (token: string): void => {
 };
 
 export const getUserRights = (): EdtUserRightsEnum => {
-    if (user?.profile?.inseegroupedefaut?.includes(process.env.REACT_APP_REVIEWER_ROLE ?? EdtUserRightsEnum.REVIEWER)) {
+    if (
+        user?.profile?.inseegroupedefaut?.includes(
+            process.env.REACT_APP_REVIEWER_ROLE ?? EdtUserRightsEnum.REVIEWER,
+        )
+    ) {
         return EdtUserRightsEnum.REVIEWER;
-    } else if (user?.profile?.inseegroupedefaut?.includes(process.env.REACT_APP_SURVEYED_ROLE ?? EdtUserRightsEnum.SURVEYED)) {
+    } else if (
+        user?.profile?.inseegroupedefaut?.includes(
+            process.env.REACT_APP_SURVEYED_ROLE ?? EdtUserRightsEnum.SURVEYED,
+        )
+    ) {
         return EdtUserRightsEnum.SURVEYED;
     } else {
         return EdtUserRightsEnum.NO_RIGHTS;
@@ -37,4 +44,7 @@ export const getUserRights = (): EdtUserRightsEnum => {
 };
 
 export const isReviewer = (): boolean => getUserRights() === EdtUserRightsEnum.REVIEWER;
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
