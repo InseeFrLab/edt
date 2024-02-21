@@ -1114,106 +1114,280 @@ Here a diagram of the flow of orchestrator data
 
 #### Examples
 
-##### Example 1
+**1. Connect with one user surveyer**
 
-1 - Connect with one user surveyer
+![Authentification](./images/auth_interviewer.png)
+![HOME](./images/home_interviewer.png)
 
-2 - Create one survey
+**2. Create one survey**
+
+Click in one of day one, person one.
+
+![FIRSTNAME PAGE](./images/create_survey_one_interviewer.png)
 
 In this step, the values of variables FIRSTNAME, SURVEYDATE are set in COLLECTED part, EDITED rest empty.
 
-3 - Create activity complete
+![FIRSTNAME VALUE](./images/create_survey_one_interviewer_value_firstname.png)
+
+**3. Create activity complete**
 
     3.1 - DURATION ACITVITY
 
+![DURATION PAGE](./images/create_survey_one_interviewer_first_activity_duration_page.png)
+
     The variables START_TIME and END_TIME are set in first element of array situate in COLLECTED part, EDITED rest empty.
+
+![DURATION START_TIME VALUE](./images/create_survey_one_interviewer_first_activity_duration_value_starttime.png)
+![DURATION END_TIME VALUE](./images/create_survey_one_interviewer_first_activity_duration_value_endtime.png)
 
     3.2 - MAIN ACTIVITY
 
     The variables ACTIVITY_SELECTER_HISTORY, MAINACTIVITY_ID, MAINACTIVITY_SUGGESTERID, MAINACTIVITY_ISFULLYCOMPLETED, MAINACTIVITY_LABEL, GOAL are updated in this step.
 
-    Selected category -> update variables ACTIVITY_SELECTER_HISTORY, MAINACTIVITY_ID, MAINACTIVITY_ISFULLYCOMPLETED in first element of array situate in COLLECTED part.
+![MAIN ACTIVITY CATEGORIES](./images/create_survey_one_interviewer_first_activity_main_activity_categories.png)
+![MAIN ACTIVITY SUBCATEGORIES](./images/create_survey_one_interviewer_first_activity_main_activity_subcategories.png)
+
+    Selected category "EAT" -> update variables ACTIVITY_SELECTER_HISTORY, MAINACTIVITY_ID, MAINACTIVITY_ISFULLYCOMPLETED in first element of array situate in COLLECTED part.
+
+![ACTIVITY_SELECTER_HISTORY](./images/create_survey_one_interviewer_first_activity_activityselecterhistory_values.png)
+![MAINACTIVITY_ID, MAINACTIVITY_ISFULLYCOMPLETED](./images/create_survey_one_interviewer_first_activity_main_activity_values.png)
 
     3.3 - SECONDARY ACTIVITY
 
-    3.3.1 SECONDARY ACTIVITY CHOICE
+    3.3.1 WITH SECONDARY ACTIVITY
+
+![WITH SECONDARY ACTIVITY PAGE](./images/create_survey_one_interviewer_first_activity_secondaryActivity_page.png)
+
+    Select "YES".
 
     The variable WITHSECONDARYACTIVITY are updated first element of array situate in COLLECTED part, EDITED rest empty.
 
+![WITH SECONDARY ACTIVITY VALUE](./images/create_survey_one_interviewer_first_activity_withsecondaryActivity_value.png)
+
     3.3.2 SECONDARY ACTIVITY
 
-    The variable SECONDARYACTIVITY are updated in first element of array situate in COLLECTED part, EDITED rest empty.
+![SECONDARY ACTIVITY PAGE](./images/create_survey_one_interviewer_first_activity_withSecondaryActivity_page.png)
+
+    Select "Conversation".
+
+    The variable SECONDARYACTIVITY are updated with id of value in first element of array situate in COLLECTED part, EDITED rest empty.
+
+![SECONDARY ACTIVITY VALUE](./images/create_survey_one_interviewer_first_activity_secondaryActivity_value.png)
 
     3.4 - PLACE
 
-    The variable PLACE are updated in first element of array situate in COLLECTED part, EDITED rest empty.
+![PLACE PAGE](./images/create_survey_one_interviewer_first_activity_place_page.png)
 
-    3.5 - WITH SOMEONE
+    Select "Place of travail and study"
+
+    The variable PLACE are updated with id of value in first element of array situate in COLLECTED part, EDITED rest empty.
+
+![PLACE VALUE](./images/create_survey_one_interviewer_first_activity_place_value.png)
+
+    3.5 - SOMEONE
 
     3.5.1 SOMEONE CHOICE
 
+![WITH SOMEONE PAGE](./images/create_survey_one_interviewer_first_activity_withsomeone_page.png)
+
+    Select "YES"
+
     The variable WITHSOMEONE are updated first element of array situate in COLLECTED part, EDITED rest empty.
+
+![WITH SOMEONE VALUE](./images/create_survey_one_interviewer_first_activity_withsomeone_value.png)
 
     3.5.2 SOMEONE
 
+![SOMEONE PAGE](./images/create_survey_one_interviewer_first_activity_someone_page.png)
+
+    Select "your couple", "your mother, your father".
+
     The variable COUPLE, PARENTS, CHILD, OTHERKNOW, OTHER are updated in first element of array situate in COLLECTED part, EDITED rest empty.
+
+![COUPLE, CHILD VALUES](./images/create_survey_one_interviewer_first_activity_someone_value_1.png)
+![PARENTS, OTHER, OTHERKNOW VALUES](./images/create_survey_one_interviewer_first_activity_someone_value_2.png)
 
     3.6 - WITH SCREEN
 
+![WITH SCREEN PAGE](./images/create_survey_one_interviewer_first_activity_withscreen_page.png)
+
+    Select "YES"
+
     The variable WITHSCREEN are updated first element of array situate in COLLECTED part, EDITED rest empty.
 
-4 - Create route complete
+![WITH SCREEN VALUE](./images/create_survey_one_interviewer_first_activity_withscreen_page.png)
+
+**4. Create route complete**
 
     4.1 - DURATION ROUTE
 
+![DURATION VALUE](./images/create_survey_one_interviewer_first_route_duration_page.png)
+
     The variables START_TIME and END_TIME are set in second element of array situate in COLLECTED part, EDITED rest empty.
+
+![STARTTIME VALUE](./images/create_survey_one_interviewer_first_route_duration_starttime_value.png)
+![ENDTIME VALUE](./images/create_survey_one_interviewer_first_route_duration_endtime_value.png)
 
     3.2 - ROUTE
 
+![ROUTE PAGE](create_survey_one_interviewer_first_route_route_page.png)
+
+    Select "route home - work"
+
     The variable ROUTE are updated in second element of array situate in COLLECTED part, EDITED rest empty.
+
+![ROUTE VALUE](./images/create_survey_one_interviewer_first_route_route_value.png)
 
     4.3 - MEAN OF TRANSPORT
 
+![MEANOFTRANSPORT PAGE](./images/create_survey_one_interviewer_first_route_meanOfTransport_page.png)
+
+    Select "foot", "bicycle", "private car".
+
     The variableS FOOT, BICYCLE, TWOWHEELSMOTORIZED, PRIVATECAR, OTHERPRIVATE, PUBLIC are updated in second element of array situate in COLLECTED part, EDITED rest empty.
+
+![BICYCLE, FOOT](./images/create_survey_one_interviewer_first_route_meanOfTransport_value_1.png)
+![OTHERPRIVATE, PUBLIC, PRIVATECAR, TWOWHEELSMOTORIZED](./images/create_survey_one_interviewer_first_route_meanOfTransport_value_2.png)
 
     4.4 - SECONDARY ACTIVITY
 
-    4.4.1 SECONDARY ACTIVITY CHOICE
+    4.4.1 WITH SECONDARY ACTIVITY
+
+![WITH SECONDARY ACTIVITY PAGE](./images/create_survey_one_interviewer_first_activity_secondaryActivity_page.png)
+
+    Select "YES".
 
     The variable WITHSECONDARYACTIVITY are updated second element of array situate in COLLECTED part, EDITED rest empty.
 
+![WITH SECONDARY ACTIVITY VALUE](./images/create_survey_one_interviewer_first_route_secondaryActivity_value.png)
+
     4.4.2 SECONDARY ACTIVITY
+
+![SECONDARY ACTIVITY PAGE](./images/create_survey_one_interviewer_first_activity_withSecondaryActivity_page.png)
+
+    Select "Conversation".
 
     The variable SECONDARYACTIVITY are updated in second element of array situate in COLLECTED part, EDITED rest empty.
 
-    4.5 - PLACE
+![SECONDARY ACTIVITY VALUE](./images/create_survey_one_interviewer_first_route_secondaryActivity_value_1.png)
 
-    The variable PLACE are updated in second element of array situate in COLLECTED part, EDITED rest empty.
+    4.5 WITH SOMEONE
 
-    4.6 WITH SOMEONE
+    4.5.1 SOMEONE CHOICE
 
-    4.6.1 SOMEONE CHOICE
+![WITH SOMEONE PAGE](./images/create_survey_one_interviewer_first_activity_withsomeone_page.png)
+
+    Select "YES".
 
     The variable WITHSOMEONE are updated second element of array situate in COLLECTED part, EDITED rest empty.
 
-    4.6.2 SOMEONE
+![WITH SOMEONE VALUE](./images/create_survey_one_interviewer_first_route_withsomeone_value.png)
+
+    4.5.2 SOMEONE
+
+![SOMEONE PAGE](./images/create_survey_one_interviewer_first_activity_someone_page.png)
+
+    Select "your couple", "other person of household".
 
     The variable COUPLE, PARENTS, CHILD, OTHERKNOW, OTHER are updated in second element of array situate in COLLECTED part, EDITED rest empty.
 
+    As we selected COUPLE and OTHERKNOW, these 2 elements are updated with their value, and the rest with a null on the corresponding index.
+
+![CHILD, COUPLE VALUE](./images/create_survey_one_interviewer_first_route_someone_value_1.png)
+![PARENTS, OTHER, OTHERKNOW VALUE](./images/create_survey_one_interviewer_first_route_someone_value_2.png)
+
     4.7 WITH SCREEN
+
+![WITH SCREEN PAGE](./images/create_survey_one_interviewer_first_activity_withscreen_page.png)
+
+    Select "NO".
 
     The variable WITHSCREEN are updated second element of array situate in COLLECTED part, EDITED rest empty.
 
-5 - Create activity - parcial
+![WITH SCREEN VALUE](./images/create_survey_one_interviewer_first_route_screen_value.png)
+
+**5. Create activity - parcial**
 
     5.1 - DURATION ACITVITY
 
+![DURATION PAGE](./images/create_survey_one_interviewer_second_activity_duration_page.png)
+
     The variables START_TIME and END_TIME are set in third element of array situate in COLLECTED part, EDITED rest empty.
 
+    The rest of variables aren't updated of size. Ex: variable of main_Activity
 
+![STARTTIME VALUE](./images/create_survey_one_interviewer_second_activity_duration_endtime_value.png)
+![ENDTIME VALUE](./images/create_survey_one_interviewer_second_activity_duration_starttime_value.png)
+![MAIN_ACTIVITY_ID VALUE](./images/create_survey_one_interviewer_second_activity_main_Activity_value.png)
 
+    The variables are updated only in the related component.
 
+**6. Quit step, go to planner**
 
+![PLANNER PAGE](./images/planner_interviewer.png)
+
+**7. Disconnect and connect with one user reviewer**
+
+![HOME REVIEWER](./images/reviewer_home.png)
+
+**8. Get all households**
+
+![HOUSEHOLDS LIST](./images/housheholds_list.png)
+
+**9. Go to household**
+
+![HOUSEHOLD](./images/household_home.png)
+
+**10. Click to first day**
+
+![PLANNER REVIEWR](./images/planner_reviewer.png)
+
+**11. Click last activity**
+
+![MAIN ACTIVITY CATEGORIES PAGE](./images/update_survey_main_activity_categories_page.png)
+
+**12. Select subcategory**
+
+![MAIN ACTIVITY SUBCATEGORIES PAGE](./images/update_survey_main_activity_subcategories_page.png)
+
+**13. Select "SLEEP"**
+
+![MAIN ACTIVITY VALUES](./images/update_survey_main_activity_values.png)
+
+The variables related of component ActivitySelected (component in this page) are updated.
+The variables MAINACTIVITY_ID, MAINACTIVITY_ISFULLYCOMPLETED are updated EDITED part, COLLECTED part rest without change. THe value of EDTED part is an array of size equal to the number of surveys. In this case, the index of surveys the type ROUTE are undefined values.
+
+The variables MAINACTIVITY_lABEL and MAINACTIVIY_SUGGESTERID aren't value, so EDITED part is updated with null values.
+
+**14. PLACE PAGE**
+
+Select "Restaurant, coffee, bar".
+
+![PLACE VALUE](./images/update_survey_place_values.png)
+
+The variable PLACE is updated EDITED part, COLLECTED part rest without change. THe value of EDTED part is an array of size equal to the number of surveys. In this case, the index of surveys the type ROUTE are undefined values.
+
+**15. Create new activity**
+
+SET only duration step.
+
+![DURATION PAGE](./images/update_survey_new_activity_duration_page.png)
+
+The variable ENDTIME is updated EDITED part, COLLECTED part rest without change. THe value of EDTED part is an array of size equal to the number of surveys. In this case, EDITED part rest with 4 elements and COLLECTED part reste with 3 elements which are surveys created by the surveyed.
+
+![DURATION ENDTIME VALUE](./images/update_survey_new_activity_duration_endtime_value.png)
+
+**16. QUIT step**
+
+**17. Delete third activity**
+
+All variables update EDITED part by removing third element of array.
+
+Ex: ENDTIME value
+
+The variable ENDTIME is updated EDITED part by removing the ancient third element. COLLECTED rest without change, so always 3 elements which are created by the surveyed.
+
+![DURATION ENDTIME VALUE](./images/update_survey_delete_activity_duration_endtime_value.png)
 
 ## Maintenance and evolution
 
