@@ -880,7 +880,6 @@ const saveData = (
                 );
             }
         }
-        const stateData = getSurveyStateData(data, idSurvey);
 
         return new Promise(resolve => {
             Promise.all(promisesToWait).finally(() => {
@@ -1640,7 +1639,6 @@ const validateSurvey = (idSurvey: string) => {
     const promisesToWait: Promise<any>[] = [];
     const data = getData(idSurvey || "");
 
-    const dataremote = getDataCache(idSurvey) as LunaticData;
     const stateData: StateData = {
         idStateData: data.stateData?.idStateData,
         state: StateDataStateEnum.VALIDATED,
@@ -1648,7 +1646,7 @@ const validateSurvey = (idSurvey: string) => {
         currentPage: getCurrentPage(data),
     };
 
-    remotePutSurveyDataReviewer(idSurvey, stateData, data).then(surveydata => {
+    remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
         data.stateData = stateData;
         promisesToWait.push(saveData(idSurvey, data));
     });
