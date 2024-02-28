@@ -27,7 +27,7 @@
         "react-i18next": "^11.18.6",
         "react-responsive": "^9.0.0",
         "react-router-dom": "^6.4.2",
-        "react-scripts": "4.0.3",
+        "react-scripts": "3.4.4",
         "scss": "^0.2.4",
         "ts-node": "^10.9.1",
         "tss-react": "^4.8.3",
