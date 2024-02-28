@@ -219,7 +219,7 @@ const useStyles = makeStylesEdt<{
     },
     pageMobileTablet: {
         maxHeight: isIOS ? iosHeight : innerHeight + "px",
-        height: isIOS ? "100%" : innerHeight + "px",
+        height: isIOS ? "100%" : "100%",
     },
 }));
 

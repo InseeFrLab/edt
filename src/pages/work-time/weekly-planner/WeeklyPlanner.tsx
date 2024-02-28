@@ -54,12 +54,17 @@ const WeeklyPlannerPage = () => {
     const idSurvey = getSurveyIdFromUrl(context, location);
 
     setEnviro(context, useNavigate(), callbackHolder);
+    const isMobileNav = !isPwa() && (isIOS || isAndroid || isMobile());
+    const headerHeight = document.getElementById(
+        t("accessibility.component.survey-selecter.id"),
+    )?.clientHeight;
+    const windowHeight = isMobileNav ? window.innerHeight : window.innerHeight - (headerHeight ?? 72);
 
     const { classes, cx } = useStyles({
         "isMobile": !isPwa(),
         "isIOS": isIOS,
         "iosHeight": context.isOpenHeader ? "80vh" : "87vh",
-        "innerHeight": window.innerHeight,
+        "innerHeight": windowHeight,
     });
 
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
@@ -307,7 +312,7 @@ const useStyles = makeStylesEdt<{
 })((theme, { isIOS, iosHeight, innerHeight }) => ({
     pageDesktop: {
         height: "100%",
-        maxHeight: isIOS ? iosHeight : "80vh",
+        maxHeight: isIOS ? iosHeight : innerHeight,
     },
     pageMobileTablet: {
         maxHeight: isIOS ? iosHeight : innerHeight + "px",
