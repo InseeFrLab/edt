@@ -33,7 +33,7 @@ export interface SurveyPageStepProps {
     backRoute?: EdtRoutesNameEnum;
     nextRoute?: EdtRoutesNameEnum;
     isStep?: boolean;
-    errorIcon?: React.FunctionComponent<React.SVGProps<SVGSVGElement> & { title?: string }>;
+    errorIcon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     errorAltIcon?: string;
     specifiquesProps?: any;
     disableButton?: boolean;

@@ -1,6 +1,6 @@
 import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button } from "@mui/material";
-import disconnectIcon from "assets/illustration/disconnect.svg";
+import { ReactComponent as DisconnectIcon } from "assets/illustration/disconnect.svg";
 import logo from "assets/illustration/logo.png";
 import { ReactComponent as HelpIcon } from "assets/illustration/mui-icon/help.svg";
 import { ReactComponent as HomeIcon } from "assets/illustration/mui-icon/home.svg";
@@ -127,8 +127,7 @@ const HomeSurveyedPage = () => {
             cancel: t("common.navigation.cancel"),
             complete: t("page.home.navigation.logout"),
         },
-        icon: disconnectIcon,
-        errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
+        icon: <DisconnectIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />,
     };
 
     const resetDataAndReload = useCallback(() => {

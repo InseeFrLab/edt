@@ -1,6 +1,6 @@
 import { Alert, CheckboxOneSpecificProps } from "@inseefrlab/lunatic-edt";
 import calendarWeek from "assets/illustration/kind-of-week-categories/calendar-week.svg";
-import kindOfWeek, { ReactComponent as KindOfWeekImg } from "assets/illustration/kind-of-week.svg";
+import { ReactComponent as KindOfWeekImg } from "assets/illustration/kind-of-week.svg";
 import extension from "assets/illustration/mui-icon/extension.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
@@ -96,8 +96,7 @@ const KindOfWeekPage = () => {
                         [isAlertDisplayed],
                     )}
                     labels={alertLabels}
-                    icon={kindOfWeek}
-                    errorIconAlt={t("page.activity-duration.alt-alert-icon")}
+                    icon={<KindOfWeekImg aria-label={t("page.alert-when-quit.alt-alert-icon")} />}
                 ></Alert>
                 <OrchestratorForStories
                     source={context.source}

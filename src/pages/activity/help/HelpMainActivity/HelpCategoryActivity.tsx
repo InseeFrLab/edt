@@ -14,7 +14,7 @@ import catIcon440 from "assets/illustration/activity-categories/5.svg";
 import catIcon500 from "assets/illustration/activity-categories/6.svg";
 import catIcon650 from "assets/illustration/activity-categories/7.svg";
 import catIcon600 from "assets/illustration/activity-categories/8.svg";
-import errorIcon from "assets/illustration/error/activity.svg";
+import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
 import addLightBlue from "assets/illustration/mui-icon/add-light-blue.svg";
 import addWhite from "assets/illustration/mui-icon/add.svg";
 import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
@@ -103,7 +103,7 @@ const HelpCategoryActivity = () => {
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-650-alt"),
             },
         },
-        clickableListIconNoResult: errorIcon,
+        clickableListIconNoResult: <ErrorIcon />,
         activitesAutoCompleteRef: getAutoCompleteRef(),
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
@@ -144,7 +144,7 @@ const HelpCategoryActivity = () => {
             saveButton: t("component.activity-selecter.save-button"),
             validateButton: t("component.activity-selecter.validate-button"),
         },
-        errorIcon: errorIcon,
+        errorIcon: <ErrorIcon />,
         addToReferentielCallBack: (newItem: AutoCompleteActiviteOption) => {
             addToAutocompleteActivityReferentiel(newItem);
         },
@@ -290,8 +290,7 @@ const HelpCategoryActivity = () => {
                             [isAlertDisplayed],
                         )}
                         labels={getLabelsWhenQuit()}
-                        icon={errorIcon}
-                        errorIconAlt={t("page.activity-duration.alt-alert-icon")}
+                        icon={<ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />}
                     ></Alert>
                     <OrchestratorForStories
                         source={source}

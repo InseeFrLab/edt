@@ -9,7 +9,7 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider, Switch, Typography } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { default as errorIcon } from "assets/illustration/error/activity.svg";
+import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
 import { ReactComponent as InfoAlertIcon } from "assets/illustration/info-alert.svg";
 import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
 import { ReactComponent as CheckIcon } from "assets/illustration/mui-icon/check.svg";
@@ -513,8 +513,11 @@ const ActivitySummaryPage = () => {
                                         onCompleteCallBack={lock}
                                         onCancelCallBack={displayAlert(setIsAlertLockDisplayed, false)}
                                         labels={getAlertLabelsLock(isLocked, variableEdited, t)}
-                                        icon={errorIcon}
-                                        errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                                        icon={
+                                            <ErrorIcon
+                                                aria-label={t("page.alert-when-quit.alt-alert-icon")}
+                                            />
+                                        }
                                     ></Alert>
                                     <Box className={classes.headerActivityBox}>
                                         <Typography className={classes.label}>
@@ -625,8 +628,9 @@ const ActivitySummaryPage = () => {
                                 onCompleteCallBack={validate}
                                 onCancelCallBack={displayAlert(setIsAlertValidateDisplayed, false)}
                                 labels={alertValidateLabels}
-                                icon={errorIcon}
-                                errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                                icon={
+                                    <ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />
+                                }
                             ></Alert>
                             <Button variant="outlined" onClick={back} className={classes.buttonNav}>
                                 {t("common.navigation.back")}

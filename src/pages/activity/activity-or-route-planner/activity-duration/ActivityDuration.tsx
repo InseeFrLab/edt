@@ -1,6 +1,6 @@
 import { Alert, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
 import { IconButton, Snackbar } from "@mui/material";
-import errorIcon from "assets/illustration/error/activity.svg";
+import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
 import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
 import arrowDown from "assets/illustration/mui-icon/expand-more.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -228,8 +228,7 @@ const ActivityDurationPage = () => {
                     )}
                     onCancelCallBack={useCallback(cancel => onClose(cancel), [])}
                     labels={getLabelsWhenQuit(isRoute)}
-                    icon={errorIcon}
-                    errorIconAlt={t("page.activity-duration.alt-alert-icon")}
+                    icon={<ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />}
                 ></Alert>
                 <Snackbar
                     className={isDesktop() ? classes.snackbarDesktop : classes.snackbar}
