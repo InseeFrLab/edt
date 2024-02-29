@@ -1,19 +1,19 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
+import { ReactElement } from "react";
 import { isMobile } from "service/responsive";
 import BreadcrumbsReviewer from "../BreadcrumbsReviewer/BreadcrumbsReviewer";
 
 interface ReviewerPageProps {
     onClickHome: () => void;
-    homeIcon: string;
-    homeIconAlt: string;
+    icon: ReactElement<any>;
     children: JSX.Element[] | JSX.Element;
     className?: string;
 }
 
 const ReviewerPage = (props: ReviewerPageProps) => {
-    const { onClickHome, homeIcon, homeIconAlt, children, className } = props;
+    const { onClickHome, icon, children, className } = props;
     const { classes, cx } = useStyles();
     const isItMobile = isMobile();
 
@@ -22,7 +22,7 @@ const ReviewerPage = (props: ReviewerPageProps) => {
             <Box className={classes.headerBox}>
                 <Box>
                     <Button color="primary" variant="contained" onClick={onClickHome}>
-                        <img src={homeIcon} alt={homeIconAlt} />
+                        {icon}
                     </Button>
                 </Box>
                 <BreadcrumbsReviewer

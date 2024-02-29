@@ -10,9 +10,9 @@ import {
     Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import arrowForwardIosGrey from "assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
-import home from "assets/illustration/mui-icon/home.svg";
-import person from "assets/illustration/mui-icon/person-white.svg";
+import { ReactComponent as ArrowForwardIosGreyIcon } from "assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
+import { ReactComponent as HomeIcon } from "assets/illustration/mui-icon/home.svg";
+import { ReactComponent as PersonIcon } from "assets/illustration/mui-icon/person-white.svg";
 import { ReactComponent as RefreshIcon } from "assets/illustration/mui-icon/refresh-white.svg";
 import { ReactComponent as SearchIcon } from "assets/illustration/mui-icon/search.svg";
 import { ReactComponent as StatsImg } from "assets/illustration/stats.svg";
@@ -248,10 +248,12 @@ const SurveysOverviewPage = () => {
                     key={"household-card-" + index}
                     idHousehold={dataHousehold?.idHousehold}
                     householdStaticLabel={t("page.surveys-overview.household-static-label")}
-                    iconPerson={person}
-                    iconPersonAlt={t("accessibility.asset.mui-icon.person")}
-                    iconArrow={arrowForwardIosGrey}
-                    iconArrowAlt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                    iconPerson={<PersonIcon aria-label={t("accessibility.asset.mui-icon.person")} />}
+                    iconArrow={
+                        <ArrowForwardIosGreyIcon
+                            aria-label={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                        />
+                    }
                     startedSurveyLabel={
                         dataHousehold?.stats?.numHouseholdsInProgress > 1
                             ? t("page.surveys-overview.starteds-survey-label")
@@ -302,8 +304,7 @@ const SurveysOverviewPage = () => {
         <ReviewerPage
             className={classes.reviewerPage}
             onClickHome={navToReviewerHome}
-            homeIcon={home}
-            homeIconAlt={t("accessibility.asset.mui-icon.home")}
+            icon={<HomeIcon aria-label={t("accessibility.asset.mui-icon.home")} />}
         >
             <Box className={cx(classes.title, isItMobile ? classes.titleMobile : "")}>
                 <StatsImg aria-label={t("accessibility.asset.stats-alt")} />

@@ -1,8 +1,8 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Modal } from "@mui/material";
-import activity from "assets/illustration/activity.svg";
-import route from "assets/illustration/route.svg";
-import yellow_plus from "assets/illustration/yellow-plus.svg";
+import { ReactComponent as ActivityIcon } from "assets/illustration/activity.svg";
+import { ReactComponent as RouteIcon } from "assets/illustration/route.svg";
+import { ReactComponent as YellowPlusIcon } from "assets/illustration/yellow-plus.svg";
 import { Default, Mobile } from "components/commons/Responsive/Responsive";
 import { LunaticModel } from "interface/lunatic/Lunatic";
 import React from "react";
@@ -44,9 +44,9 @@ const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
                                 onClickActivity={onClickActivity}
                                 onClickRoute={onClickRoute}
                                 className={classes.modal}
-                                iconTitle={yellow_plus}
-                                iconActivity={activity}
-                                iconRoute={route}
+                                iconTitle={YellowPlusIcon}
+                                iconActivity={ActivityIcon}
+                                iconRoute={RouteIcon}
                             />
                         </Default>
                         <Mobile>
@@ -55,9 +55,9 @@ const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
                                 onClickActivity={onClickActivity}
                                 onClickRoute={onClickRoute}
                                 className={classes.modal}
-                                iconTitle={yellow_plus}
-                                iconActivity={activity}
-                                iconRoute={route}
+                                iconTitle={YellowPlusIcon}
+                                iconActivity={ActivityIcon}
+                                iconRoute={RouteIcon}
                             />
                         </Mobile>
                     </>

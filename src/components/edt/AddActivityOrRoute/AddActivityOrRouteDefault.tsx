@@ -4,15 +4,16 @@ import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-i
 import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { useTranslation } from "react-i18next";
+import Icon from "../Icon/Icon";
 
 interface AddActivityOrRouteDefaultProps {
     handleClose(): void;
     onClickActivity(idSurvey?: any, source?: any): void;
     onClickRoute(idSurvey?: any, source?: any): void;
     className: string;
-    iconTitle: string;
-    iconActivity: string;
-    iconRoute: string;
+    iconTitle: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    iconActivity: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    iconRoute: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 }
 
 const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
@@ -24,7 +25,7 @@ const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
         <Box className={cx(className, classes.modalDefault)}>
             <Box id="modal-title" className={classes.titleBox}>
                 <Box className={classes.iconBox}>
-                    <img src={iconTitle} alt={t("accessibility.asset.yellow-plus-alt")} />
+                    <Icon icon={iconTitle} alt={t("accessibility.asset.yellow-plus-alt")} />
                 </Box>
                 <Box className={classes.modalTitleBox}>
                     <h1>{t("component.add-activity-or-route.title")}</h1>
@@ -32,7 +33,7 @@ const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
             </Box>
             <Box id="add-activity" className={classes.navigateBox} onClick={onClickActivity}>
                 <Box className={classes.iconBox}>
-                    <img src={iconActivity} alt={t("accessibility.asset.activity-alt")} />
+                    <Icon icon={iconActivity} alt={t("accessibility.asset.activity-alt")} />
                 </Box>
                 <Box className={classes.textBox}>
                     <h2>{t("component.add-activity-or-route.activity-label")}</h2>
@@ -45,7 +46,7 @@ const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
             <Divider light />
             <Box id="add-route" className={classes.navigateBox} onClick={onClickRoute}>
                 <Box className={classes.iconBox}>
-                    <img src={iconRoute} alt={t("accessibility.asset.route-alt")} />
+                    <Icon icon={iconRoute} alt={t("accessibility.asset.route-alt")} />
                 </Box>
                 <Box className={classes.textBox}>
                     <h2>{t("component.add-activity-or-route.route-label")}</h2>

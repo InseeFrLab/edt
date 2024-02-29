@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
 import { useTranslation } from "react-i18next";
 import { StepData } from "service/loop-stepper-service";
+import Icon from "../Icon/Icon";
 
 interface StepNavCardProps {
     onClick(): void;
@@ -23,7 +24,7 @@ const StepNavCard = (props: StepNavCardProps) => {
             aria-describedby={describedBy}
         >
             <Box className={classes.stepInfoBox}>
-                <img className={classes.stepIcon} src={stepData.stepIcon} alt={stepData.stepIconAlt} />
+                <Icon className={classes.stepIcon} icon={stepData.stepIcon} alt={stepData.stepIconAlt} />
                 <Typography>{stepData.stepLabel}</Typography>
             </Box>
             <ArrowForwardIosIcon

@@ -13,7 +13,6 @@ import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import HelpMenu from "components/edt/HelpMenu/HelpMenu";
 import PersonCard from "components/edt/PersonCard/PersonCard";
-
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
@@ -70,7 +69,6 @@ const HomeSurveyedPage = () => {
     const isDemo = isDemoMode();
     const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
     const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
-
     let userDatas: Person[];
 
     const initHome = (idsSurveysSelected: string[]) => {

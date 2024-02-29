@@ -1,11 +1,11 @@
-import step1Icon from "assets/illustration/stepper/step-activity-duration.svg";
-import step4Icon from "assets/illustration/stepper/step-activity-location.svg";
-import step2Icon from "assets/illustration/stepper/step-main-activity.svg";
-import step3BisIcon from "assets/illustration/stepper/step-mean-of-transport.svg";
-import step2BisIcon from "assets/illustration/stepper/step-route.svg";
-import step3Icon from "assets/illustration/stepper/step-secondary-activity.svg";
-import step6Icon from "assets/illustration/stepper/step-with-screen.svg";
-import step5Icon from "assets/illustration/stepper/step-with-someone.svg";
+import { ReactComponent as step1Icon } from "assets/illustration/stepper/step-activity-duration.svg";
+import { ReactComponent as step4Icon } from "assets/illustration/stepper/step-activity-location.svg";
+import { ReactComponent as step2Icon } from "assets/illustration/stepper/step-main-activity.svg";
+import { ReactComponent as step3BisIcon } from "assets/illustration/stepper/step-mean-of-transport.svg";
+import { ReactComponent as step2BisIcon } from "assets/illustration/stepper/step-route.svg";
+import { ReactComponent as step3Icon } from "assets/illustration/stepper/step-secondary-activity.svg";
+import { ReactComponent as step6Icon } from "assets/illustration/stepper/step-with-screen.svg";
+import { ReactComponent as step5Icon } from "assets/illustration/stepper/step-with-someone.svg";
 import { t } from "i18next";
 import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
 
@@ -13,7 +13,7 @@ export interface StepData {
     page: EdtRoutesNameEnum;
     stepNumber: number;
     stepLabel: string;
-    stepIcon: string;
+    stepIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     stepIconAlt: string;
     isConditional?: boolean;
 }

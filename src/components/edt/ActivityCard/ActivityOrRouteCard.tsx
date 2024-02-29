@@ -1,11 +1,11 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider, Popover, Typography } from "@mui/material";
-import activityErrorIconSvg from "assets/illustration/error/activity.svg";
-import locationErrorIconSvg from "assets/illustration/error/location.svg";
-import meanOfTransportErrorIconSvg from "assets/illustration/error/mean-of-transport.svg";
-import peopleErrorIconSvg from "assets/illustration/error/people.svg";
-import routeErrorIconSvg from "assets/illustration/error/route.svg";
-import screenErrorIconSvg from "assets/illustration/error/screen.svg";
+import { ReactComponent as activityErrorIconSvg } from "assets/illustration/error/activity.svg";
+import { ReactComponent as locationErrorIconSvg } from "assets/illustration/error/location.svg";
+import { ReactComponent as meanOfTransportErrorIconSvg } from "assets/illustration/error/mean-of-transport.svg";
+import { ReactComponent as peopleErrorIconSvg } from "assets/illustration/error/people.svg";
+import { ReactComponent as routeErrorIconSvg } from "assets/illustration/error/route.svg";
+import { ReactComponent as screenErrorIconSvg } from "assets/illustration/error/screen.svg";
 import { ReactComponent as MoreHorizontalImage } from "assets/illustration/mui-icon/more-horizontal.svg";
 import { InsideAlertTypes } from "enumerations/InsideAlertTypesEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
@@ -13,6 +13,7 @@ import React, { useCallback } from "react";
 import { TFunction, useTranslation } from "react-i18next";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { filtrePage } from "service/loop-service";
+import Icon from "../Icon/Icon";
 
 interface ActivityOrRouteCardProps {
     labelledBy: string;
@@ -236,11 +237,11 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const renderInsideAlert = (type: InsideAlertTypes) => {
         return (
             <Box className={classes.insideAlertBox}>
-                <img
-                    className={classes.insideAlertIcon}
-                    src={insideAlertLabels[type].icon}
+                <Icon
+                    icon={insideAlertLabels[type].icon}
                     alt={insideAlertLabels[type].altIcon}
-                ></img>
+                    className={classes.insideAlertIcon}
+                />
                 <Typography className={classes.insideAlertText}>
                     {" "}
                     {insideAlertLabels[type].label}{" "}
