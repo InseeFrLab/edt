@@ -227,7 +227,6 @@ const HomeSurveyedPage = () => {
     };
 
     const renderPageOrLoadingOrError = (page: any) => {
-        console.log(initialized, state);
         if (initialized && state != null) {
             return page;
         } else {

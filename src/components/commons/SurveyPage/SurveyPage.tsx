@@ -86,8 +86,8 @@ const SurveyPage = (props: SurveyPageProps) => {
     const headerHeight = document.getElementById(
         t("accessibility.component.survey-selecter.id"),
     )?.clientHeight;
-    const windowHeight = isMobileNav ? window.innerHeight : window.innerHeight - (headerHeight ?? 72);
-    console.log(windowHeight, window.innerHeight, headerHeight);
+
+    const windowHeight = isMobileNav ? window.innerHeight : window.innerHeight - (headerHeight ?? 0);
 
     const { classes, cx } = useStyles({
         "innerHeight": windowHeight,
@@ -108,7 +108,6 @@ const SurveyPage = (props: SurveyPageProps) => {
             )
         );
     };
-
     return (
         <Box className={cx(classes.page, className)}>
             {!simpleHeader && firstName && surveyDate && onNavigateBack && (
