@@ -1,6 +1,6 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Paper, Typography } from "@mui/material";
-import contact from "assets/illustration/contact.svg";
+import { ReactComponent as ContactImg } from "assets/illustration/contact.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -35,7 +35,7 @@ const ContactPage = () => {
                         backgroundWhite={false}
                     />
                     <FlexCenter>
-                        <img src={contact} alt={t("accessibility.asset.mui-icon.download")} />
+                        <ContactImg aria-label={t("accessibility.asset.mui-icon.download")} />
                     </FlexCenter>
                     <Box className={classes.innerBox}>
                         <Box

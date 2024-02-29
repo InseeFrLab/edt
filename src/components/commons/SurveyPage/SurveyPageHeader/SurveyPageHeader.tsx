@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Typography } from "@mui/material";
-import close from "assets/illustration/mui-icon/close.svg";
+import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
 import { useTranslation } from "react-i18next";
 
 interface SurveyPageHeaderProps {
@@ -20,9 +20,8 @@ const SurveyPageHeader = (props: SurveyPageHeaderProps) => {
                 <Typography className={classes.infoText}>{surveyDate + " - " + firstName}</Typography>
             </Box>
             <Box onClick={onNavigateBack} onKeyUp={onNavigateBack}>
-                <img
-                    src={close}
-                    alt={t("accessibility.asset.mui-icon.close")}
+                <CloseIcon
+                    aria-label={t("accessibility.asset.mui-icon.close")}
                     className={classes.actionIcon}
                 />
             </Box>

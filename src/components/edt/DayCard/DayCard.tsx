@@ -1,7 +1,7 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import Box from "@mui/material/Box";
-import PersonSunCloseIcon from "assets/illustration/card/person-sun-close.svg";
-import PersonSunIcon from "assets/illustration/card/person-sun.svg";
+import { ReactComponent as PersonSunCloseIcon } from "assets/illustration/card/person-sun-close.svg";
+import { ReactComponent as PersonSunIcon } from "assets/illustration/card/person-sun.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
 import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
@@ -77,14 +77,13 @@ const DayCard = (props: DayCardProps) => {
             >
                 <Box className={getLeftBoxClass()}>
                     <Box className={cx(classes.iconBox, getClassClose(isClose, classes.closeIconBox))}>
-                        <img
-                            src={isClose ? PersonSunCloseIcon : PersonSunIcon}
-                            alt={
-                                isClose
-                                    ? t("accessibility.asset.card.person-sun-close-alt")
-                                    : t("accessibility.asset.card.person-sun-alt")
-                            }
-                        />
+                        {isClose ? (
+                            <PersonSunCloseIcon
+                                aria-label={t("accessibility.asset.card.person-sun-close-alt")}
+                            />
+                        ) : (
+                            <PersonSunIcon aria-label={t("accessibility.asset.card.person-sun-alt")} />
+                        )}
                     </Box>
                     <Box className={classes.textBox}>
                         <Box id="surveyDate-text" className={classes.breakWordBox}>

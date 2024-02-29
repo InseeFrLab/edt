@@ -8,9 +8,9 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
-import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
-import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
-import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
+import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
+import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
+import { ReactComponent as ArrowForwardIcon } from "assets/illustration/mui-icon/arrow-forward.svg";
 import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
@@ -127,9 +127,8 @@ const HelpActivity = () => {
                                     variant="outlined"
                                     onClick={previousHelpStep}
                                     startIcon={
-                                        <img
-                                            src={arrowBackIos}
-                                            alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                                        <ArrowBackIosIcon
+                                            aria-label={t("accessibility.asset.mui-icon.arrow-back-ios")}
                                         />
                                     }
                                 >
@@ -142,9 +141,10 @@ const HelpActivity = () => {
                                     variant="outlined"
                                     onClick={nextHelpStep}
                                     endIcon={
-                                        <img
-                                            src={arrowForwardIos}
-                                            alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                        <ArrowForwardIosIcon
+                                            aria-label={t(
+                                                "accessibility.asset.mui-icon.arrow-forward-ios",
+                                            )}
                                         />
                                     }
                                 >
@@ -158,9 +158,8 @@ const HelpActivity = () => {
                                 variant="outlined"
                                 onClick={navToActivityRouteHome}
                                 endIcon={
-                                    <img
-                                        src={arrowForward}
-                                        alt={t("accessibility.asset.mui-icon.arrow-forward")}
+                                    <ArrowForwardIcon
+                                        aria-label={t("accessibility.asset.mui-icon.arrow-forward")}
                                     />
                                 }
                             >

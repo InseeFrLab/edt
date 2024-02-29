@@ -1,6 +1,6 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
-import expandMore from "assets/illustration/mui-icon/expand-more-white.svg";
+import { ReactComponent as ExpandMoreIcon } from "assets/illustration/mui-icon/expand-more-white.svg";
 import cat from "assets/illustration/person/cat.svg";
 import owl from "assets/illustration/person/owl.svg";
 import zebra from "assets/illustration/person/zebra.svg";
@@ -155,7 +155,7 @@ const PersonCard = (props: PersonCardProps) => {
         return (
             <Accordion className={classes.personCardBox}>
                 <AccordionSummary
-                    expandIcon={<img src={expandMore} alt={t("accessibility.asset.mui-icon.close")} />}
+                    expandIcon={<ExpandMoreIcon aria-label={t("accessibility.asset.mui-icon.close")} />}
                     aria-controls="panel-content"
                     id="panel-header"
                     className={classes.headerPersonCard}

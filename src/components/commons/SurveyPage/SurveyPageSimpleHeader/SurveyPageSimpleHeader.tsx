@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import close from "assets/illustration/mui-icon/close.svg";
+import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
 import { useTranslation } from "react-i18next";
 
 interface SurveyPageSimpleHeaderProps {
@@ -18,9 +18,8 @@ const SurveyPageSimpleHeader = (props: SurveyPageSimpleHeaderProps) => {
         <Box className={cx(classes.headerBox, backgroundWhite ? classes.headerWhiteBox : "")}>
             <Box>{simpleHeaderLabel}</Box>
             <Box onClick={onNavigateBack} onKeyUp={onNavigateBack}>
-                <img
-                    src={close}
-                    alt={t("accessibility.asset.mui-icon.close")}
+                <CloseIcon
+                    aria-label={t("accessibility.asset.mui-icon.close")}
                     className={classes.actionIcon}
                     id="close-button"
                 />

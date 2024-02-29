@@ -3,10 +3,10 @@ import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import disconnectIcon from "assets/illustration/disconnect.svg";
 import logo from "assets/illustration/logo.png";
-import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-blue.svg";
-import powerSettings from "assets/illustration/mui-icon/power-settings.svg";
-import visibility from "assets/illustration/mui-icon/visibility.svg";
-import reviewer from "assets/illustration/reviewer.svg";
+import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-blue.svg";
+import { ReactComponent as PowerSettingsIcon } from "assets/illustration/mui-icon/power-settings.svg";
+import { ReactComponent as VisibilityIcon } from "assets/illustration/mui-icon/visibility.svg";
+import { ReactComponent as ReviewerImg } from "assets/illustration/reviewer.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
@@ -94,9 +94,8 @@ const HomeReviewerPage = () => {
                     className={classes.logoutBox}
                     color="secondary"
                     startIcon={
-                        <img
-                            src={powerSettings}
-                            alt={t("accessibility.asset.mui-icon.power-settings")}
+                        <PowerSettingsIcon
+                            aria-label={t("accessibility.asset.mui-icon.power-settings")}
                         />
                     }
                     onClick={onDisconnect}
@@ -106,7 +105,7 @@ const HomeReviewerPage = () => {
                 </Button>
             </Box>
             <FlexCenter>
-                <img src={reviewer} alt={t("accessibility.assets.reviewer-alt")} />
+                <ReviewerImg aria-label={t("accessibility.assets.reviewer-alt")} />
             </FlexCenter>
             <FlexCenter>
                 <Box className={classes.titleBox}>
@@ -121,9 +120,8 @@ const HomeReviewerPage = () => {
                         className={classes.button}
                         variant="contained"
                         endIcon={
-                            <img
-                                src={arrowForwardIos}
-                                alt={t("accessibility.asset.mui-icon.arrow-forward")}
+                            <ArrowForwardIosIcon
+                                aria-label={t("accessibility.asset.mui-icon.arrow-forward")}
                             />
                         }
                         onClick={navToSurveysOverview}
@@ -135,7 +133,7 @@ const HomeReviewerPage = () => {
                         className={classes.button}
                         variant="contained"
                         startIcon={
-                            <img src={visibility} alt={t("accessibility.asset.mui-icon.visibility")} />
+                            <VisibilityIcon aria-label={t("accessibility.asset.mui-icon.visibility")} />
                         }
                         onClick={navToDemonstration}
                         id="button-demo"

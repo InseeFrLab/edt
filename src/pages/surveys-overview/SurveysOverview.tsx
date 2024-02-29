@@ -13,9 +13,9 @@ import { Box } from "@mui/system";
 import arrowForwardIosGrey from "assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
 import home from "assets/illustration/mui-icon/home.svg";
 import person from "assets/illustration/mui-icon/person-white.svg";
-import refresh from "assets/illustration/mui-icon/refresh-white.svg";
-import search from "assets/illustration/mui-icon/search.svg";
-import stats from "assets/illustration/stats.svg";
+import { ReactComponent as RefreshIcon } from "assets/illustration/mui-icon/refresh-white.svg";
+import { ReactComponent as SearchIcon } from "assets/illustration/mui-icon/search.svg";
+import { ReactComponent as StatsImg } from "assets/illustration/stats.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import ReviewerPage from "components/commons/ReviewerPage/ReviewerPage";
@@ -306,7 +306,7 @@ const SurveysOverviewPage = () => {
             homeIconAlt={t("accessibility.asset.mui-icon.home")}
         >
             <Box className={cx(classes.title, isItMobile ? classes.titleMobile : "")}>
-                <img src={stats} alt={t("accessibility.asset.stats-alt")} />
+                <StatsImg aria-label={t("accessibility.asset.stats-alt")} />
                 <Typography className={classes.label}>{t("page.surveys-overview.title")}</Typography>
             </Box>
             <Box className={classes.searchBox}>
@@ -322,7 +322,7 @@ const SurveysOverviewPage = () => {
                         placeholder={t("page.surveys-overview.search-placeholder")}
                         endAdornment={
                             <InputAdornment position="end">
-                                <img src={search} alt={t("accessibility.asset.mui-icon.search")} />
+                                <SearchIcon aria-label={t("accessibility.asset.mui-icon.search")} />
                             </InputAdornment>
                         }
                         inputProps={{
@@ -380,7 +380,9 @@ const SurveysOverviewPage = () => {
                         variant="contained"
                         onClick={refreshHouseholds}
                         aria-label={"refresh"}
-                        startIcon={<img src={refresh} alt={t("accessibility.asset.mui-icon.refresh")} />}
+                        startIcon={
+                            <RefreshIcon aria-label={t("accessibility.asset.mui-icon.refresh")} />
+                        }
                         disabled={!navigator.onLine}
                     >
                         <Box className={classes.labelButton}>
@@ -396,7 +398,7 @@ const SurveysOverviewPage = () => {
                             onClick={resetDataAndReload}
                             aria-label={"refresh"}
                             startIcon={
-                                <img src={refresh} alt={t("accessibility.asset.mui-icon.refresh")} />
+                                <RefreshIcon aria-label={t("accessibility.asset.mui-icon.refresh")} />
                             }
                             disabled={!navigator.onLine}
                         >

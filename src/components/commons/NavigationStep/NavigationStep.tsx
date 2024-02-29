@@ -1,7 +1,7 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button } from "@mui/material";
-import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
-import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios.svg";
+import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { useCallback } from "react";
 import { isIOS, isMobile } from "react-device-detect";
@@ -48,9 +48,8 @@ const NavigationStep = (props: NavigationStepProps) => {
                     <Button
                         variant="outlined"
                         startIcon={
-                            <img
-                                src={arrowBackIos}
-                                alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                            <ArrowBackIosIcon
+                                aria-label={t("accessibility.asset.mui-icon.arrow-back-ios")}
                             />
                         }
                         onClick={previousHelpStep}
@@ -69,9 +68,8 @@ const NavigationStep = (props: NavigationStepProps) => {
                     <Button
                         variant="outlined"
                         endIcon={
-                            <img
-                                src={arrowForwardIos}
-                                alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                            <ArrowForwardIosIcon
+                                aria-label={t("accessibility.asset.mui-icon.arrow-forward-ios")}
                             />
                         }
                         onClick={nextHelpStep}

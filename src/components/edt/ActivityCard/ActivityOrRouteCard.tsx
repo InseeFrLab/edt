@@ -6,7 +6,7 @@ import meanOfTransportErrorIconSvg from "assets/illustration/error/mean-of-trans
 import peopleErrorIconSvg from "assets/illustration/error/people.svg";
 import routeErrorIconSvg from "assets/illustration/error/route.svg";
 import screenErrorIconSvg from "assets/illustration/error/screen.svg";
-import moreHorizontal from "assets/illustration/mui-icon/more-horizontal.svg";
+import { ReactComponent as MoreHorizontalImage } from "assets/illustration/mui-icon/more-horizontal.svg";
 import { InsideAlertTypes } from "enumerations/InsideAlertTypesEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import React, { useCallback } from "react";
@@ -290,9 +290,7 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                 </Box>
                 {onEdit && onDelete && modifiable && (
                     <Box className={classes.editBox} onClick={onEditCard} onKeyUp={onEditCard}>
-                        <img
-                            src={moreHorizontal}
-                            alt={t("accessibility.asset.mui-icon.more-horizontal")}
+                        <MoreHorizontalImage
                             className={classes.actionIcon}
                             aria-label="editCardToggle"
                         />

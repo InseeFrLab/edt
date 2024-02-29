@@ -1,12 +1,12 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Divider, Popover, Typography } from "@mui/material";
-import addCircle from "assets/illustration/mui-icon/add-circle.svg";
-import commute from "assets/illustration/mui-icon/commute.svg";
-import event from "assets/illustration/mui-icon/event.svg";
-import moreHorizontal from "assets/illustration/mui-icon/more-horizontal.svg";
-import phoneAndroid from "assets/illustration/mui-icon/phone-android.svg";
-import removeCircle from "assets/illustration/mui-icon/remove-circle.svg";
-import work from "assets/illustration/mui-icon/work.svg";
+import { ReactComponent as AddCircleIcon } from "assets/illustration/mui-icon/add-circle.svg";
+import { ReactComponent as CommuteIcon } from "assets/illustration/mui-icon/commute.svg";
+import { ReactComponent as EventIcon } from "assets/illustration/mui-icon/event.svg";
+import { ReactComponent as MoreHorizontalImage } from "assets/illustration/mui-icon/more-horizontal.svg";
+import { ReactComponent as PhoneAndroidIcon } from "assets/illustration/mui-icon/phone-android.svg";
+import { ReactComponent as RemoveCircleIcon } from "assets/illustration/mui-icon/remove-circle.svg";
+import { ReactComponent as WorkIcon } from "assets/illustration/mui-icon/work.svg";
 import { UserActivitiesCharacteristics } from "interface/entity/ActivitiesSummary";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -52,9 +52,7 @@ const DayCharacteristics = (props: DayCharacteristicsProps) => {
                 </h2>
                 {onEdit && modifiable && (
                     <Box className={classes.editBox} onClick={onEditCard} onKeyUp={onEditCard}>
-                        <img
-                            src={moreHorizontal}
-                            alt={t("accessibility.asset.mui-icon.more-horizontal")}
+                        <MoreHorizontalImage
                             className={classes.actionIcon}
                             aria-label="editCardToggle"
                         />
@@ -78,27 +76,27 @@ const DayCharacteristics = (props: DayCharacteristicsProps) => {
             </Box>
             <Box className={classes.rowBox}>
                 <Box className={classes.iconBox}>
-                    <img src={addCircle} alt={t("accessibility.asset.mui-icon.add-circle")} />
+                    <AddCircleIcon aria-label={t("accessibility.asset.mui-icon.add-circle")} />
                 </Box>
                 <Typography>{userActivitiesCharacteristics?.greatestActivityLabel}</Typography>
             </Box>
             <Box className={classes.rowBox}>
                 <Box className={classes.iconBox}>
-                    <img src={removeCircle} alt={t("accessibility.asset.mui-icon.remove-circle")} />
+                    <RemoveCircleIcon aria-label={t("accessibility.asset.mui-icon.remove-circle")} />
                 </Box>
                 <Typography>{userActivitiesCharacteristics?.worstActivityLabel}</Typography>
             </Box>
             <Divider variant="middle" flexItem />
             <Box className={classes.rowBox}>
                 <Box className={classes.iconBox}>
-                    <img src={work} alt={t("accessibility.asset.mui-icon.work")} />
+                    <WorkIcon aria-label={t("accessibility.asset.mui-icon.work")} />
                 </Box>
                 <Typography>{userActivitiesCharacteristics?.kindOfDayLabel}</Typography>
             </Box>
             <Divider variant="middle" flexItem />
             <Box className={classes.rowBox}>
                 <Box className={classes.iconBox}>
-                    <img src={event} alt={t("accessibility.asset.mui-icon.event")} />
+                    <EventIcon aria-label={t("accessibility.asset.mui-icon.event")} />
                 </Box>
                 <Typography>
                     {userActivitiesCharacteristics?.isExceptionalDay
@@ -109,7 +107,7 @@ const DayCharacteristics = (props: DayCharacteristicsProps) => {
             <Divider variant="middle" flexItem />
             <Box className={classes.rowBox}>
                 <Box className={classes.iconBox}>
-                    <img src={commute} alt={t("accessibility.asset.mui-icon.commute")} />
+                    <CommuteIcon aria-label={t("accessibility.asset.mui-icon.commute")} />
                 </Box>
                 <Typography>
                     {userActivitiesCharacteristics?.routeTimeLabel +
@@ -119,7 +117,7 @@ const DayCharacteristics = (props: DayCharacteristicsProps) => {
             <Divider variant="middle" flexItem />
             <Box className={classes.rowBox}>
                 <Box className={classes.iconBox}>
-                    <img src={phoneAndroid} alt={t("accessibility.asset.mui-icon.phone-android")} />
+                    <PhoneAndroidIcon aria-label={t("accessibility.asset.mui-icon.phone-android")} />
                 </Box>
                 <Typography>
                     {userActivitiesCharacteristics?.phoneTimeLabel +

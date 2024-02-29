@@ -11,7 +11,7 @@ import { Box, Divider, IconButton, Snackbar, Switch, Typography } from "@mui/mat
 import empty_activity from "assets/illustration/empty-activity.svg";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
 import InfoIcon from "assets/illustration/info.svg";
-import close from "assets/illustration/mui-icon/close.svg";
+import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
 import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
@@ -566,7 +566,7 @@ const ActivityOrRoutePlannerPage = () => {
 
     const snackbarAction = (
         <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
-            <img src={close} alt={t("accessibility.asset.mui-icon.close")} />
+            <CloseIcon aria-label={t("accessibility.asset.mui-icon.close")} />
         </IconButton>
     );
 

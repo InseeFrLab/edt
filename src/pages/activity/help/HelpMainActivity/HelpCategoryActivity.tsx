@@ -17,12 +17,10 @@ import catIcon600 from "assets/illustration/activity-categories/8.svg";
 import errorIcon from "assets/illustration/error/activity.svg";
 import addLightBlue from "assets/illustration/mui-icon/add-light-blue.svg";
 import addWhite from "assets/illustration/mui-icon/add.svg";
-import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
-import {
-    default as arrowForwardIos,
-    default as chevronRight,
-} from "assets/illustration/mui-icon/arrow-forward-ios.svg";
-import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
+import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
+import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
+import { default as chevronRight } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import { ReactComponent as ArrowForwardIcon } from "assets/illustration/mui-icon/arrow-forward.svg";
 import extension from "assets/illustration/mui-icon/extension.svg";
 import search from "assets/illustration/mui-icon/search.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -197,9 +195,8 @@ const HelpCategoryActivity = () => {
                                 variant="outlined"
                                 onClick={previousHelpStep}
                                 startIcon={
-                                    <img
-                                        src={arrowBackIos}
-                                        alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                                    <ArrowBackIosIcon
+                                        aria-label={t("accessibility.asset.mui-icon.arrow-back-ios")}
                                     />
                                 }
                             >
@@ -212,9 +209,8 @@ const HelpCategoryActivity = () => {
                                 variant="outlined"
                                 onClick={nextHelpStep}
                                 endIcon={
-                                    <img
-                                        src={arrowForwardIos}
-                                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                    <ArrowForwardIosIcon
+                                        aria-label={t("accessibility.asset.mui-icon.arrow-forward-ios")}
                                     />
                                 }
                             >
@@ -228,9 +224,8 @@ const HelpCategoryActivity = () => {
                             variant="outlined"
                             onClick={navToActivityRouteHome}
                             endIcon={
-                                <img
-                                    src={arrowForward}
-                                    alt={t("accessibility.asset.mui-icon.arrow-forward")}
+                                <ArrowForwardIcon
+                                    aria-label={t("accessibility.asset.mui-icon.arrow-forward")}
                                 />
                             }
                         >

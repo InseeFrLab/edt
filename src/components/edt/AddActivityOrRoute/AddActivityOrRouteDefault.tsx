@@ -1,7 +1,7 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider } from "@mui/material";
-import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
-import close from "assets/illustration/mui-icon/close.svg";
+import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { useTranslation } from "react-i18next";
 
@@ -39,10 +39,7 @@ const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
                     <p>{t("component.add-activity-or-route.activity-description")}</p>
                 </Box>
                 <Box className={classes.navIconBox}>
-                    <img
-                        src={arrowForwardIos}
-                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
-                    />
+                    <ArrowForwardIosIcon aria-label={t("accessibility.asset.mui-icon.arrow-back-ios")} />
                 </Box>
             </Box>
             <Divider light />
@@ -55,9 +52,8 @@ const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
                     <p>{t("component.add-activity-or-route.route-description")}</p>
                 </Box>
                 <Box className={classes.navIconBox}>
-                    <img
-                        src={arrowForwardIos}
-                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                    <ArrowForwardIosIcon
+                        aria-label={t("accessibility.asset.mui-icon.arrow-forward-ios")}
                     />
                 </Box>
             </Box>
@@ -65,7 +61,7 @@ const AddActivityOrRouteDefault = (props: AddActivityOrRouteDefaultProps) => {
                 <Button className={classes.closeButton} onClick={handleClose}>
                     <Box>
                         <Box>
-                            <img src={close} alt={t("accessibility.asset.mui-icon.close")} />
+                            <CloseIcon aria-label={t("accessibility.asset.mui-icon.close")} />
                         </Box>
                         <Box>{t("common.navigation.close")}</Box>
                     </Box>

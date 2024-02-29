@@ -12,8 +12,8 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
 import InfoAlertIcon from "assets/illustration/info-alert.svg";
 import InfoIcon from "assets/illustration/info.svg";
-import checkIcon from "assets/illustration/mui-icon/check.svg";
-import downloadIcon from "assets/illustration/mui-icon/download.svg";
+import { ReactComponent as CheckIcon } from "assets/illustration/mui-icon/check.svg";
+import { ReactComponent as DownloadIcon } from "assets/illustration/mui-icon/download.svg";
 import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
@@ -636,9 +636,8 @@ const ActivitySummaryPage = () => {
                                 variant="outlined"
                                 className={classes.buttonNav}
                                 startIcon={
-                                    <img
-                                        src={downloadIcon}
-                                        alt={t("accessibility.asset.mui-icon.download")}
+                                    <DownloadIcon
+                                        aria-label={t("accessibility.asset.mui-icon.download")}
                                         className={classes.midSizeButton}
                                     />
                                 }
@@ -664,9 +663,8 @@ const ActivitySummaryPage = () => {
                                 onClick={openPopup}
                                 disabled={!modifiable}
                                 startIcon={
-                                    <img
-                                        src={checkIcon}
-                                        alt={t("accessibility.asset.mui-icon.check")}
+                                    <CheckIcon
+                                        aria-label={t("accessibility.asset.mui-icon.check")}
                                         className={classes.midSizeButton}
                                     />
                                 }

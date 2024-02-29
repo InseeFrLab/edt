@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Typography } from "@mui/material";
-import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
 import { useTranslation } from "react-i18next";
 import { StepData } from "service/loop-stepper-service";
 
@@ -26,9 +26,8 @@ const StepNavCard = (props: StepNavCardProps) => {
                 <img className={classes.stepIcon} src={stepData.stepIcon} alt={stepData.stepIconAlt} />
                 <Typography>{stepData.stepLabel}</Typography>
             </Box>
-            <img
-                src={arrowForwardIos}
-                alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+            <ArrowForwardIosIcon
+                aria-label={t("accessibility.asset.mui-icon.arrow-forward-ios")}
                 className={classes.arrowIcon}
             />
         </Box>

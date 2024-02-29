@@ -1,10 +1,11 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider } from "@mui/material";
-import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios.svg";
-import close from "assets/illustration/mui-icon/close.svg";
-import download, { ReactComponent as DownloadObject } from "assets/illustration/mui-icon/download.svg";
-import expandLess from "assets/illustration/mui-icon/expand-less.svg";
-import mail, { ReactComponent as MailObject } from "assets/illustration/mui-icon/mail.svg";
+import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
+import { ReactComponent as DownloadIcon } from "assets/illustration/mui-icon/download.svg";
+import { ReactComponent as ExpandLessIcon } from "assets/illustration/mui-icon/expand-less.svg";
+import { ReactComponent as MailIcon } from "assets/illustration/mui-icon/mail.svg";
+import { ReactComponent as RebaseEditIcon } from "assets/illustration/mui-icon/rebase_edit.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { useTranslation } from "react-i18next";
 import { getDeviceNavigatorIsAvaiableForInstall } from "utils/utils";
@@ -47,16 +48,14 @@ const HelpMenuInner = (props: HelpMenuInnerProps) => {
         <Box className={cx(className, getClassDevice(classes.modalMobile, classes.modalDefault))}>
             <Box id="contact" className={getClassNavigateBox()} onClick={onClickContact}>
                 <Box className={getClassIconBox()}>
-                    <MailObject></MailObject>
-                    <img src={mail} alt={t("accessibility.asset.help-menu.contact-alt")} />
+                    <MailIcon aria-label={t("accessibility.asset.help-menu.contact-alt")} />
                 </Box>
                 <Box className={getClassTextBox()}>
                     <p>{t("component.help-menu.contact-label")}</p>
                 </Box>
                 <Box className={getClassNavIconBox()}>
-                    <img
-                        src={arrowForwardIos}
-                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                    <ArrowForwardIosIcon
+                        aria-label={t("accessibility.asset.mui-icon.arrow-forward-ios")}
                     />
                 </Box>
             </Box>
@@ -65,16 +64,14 @@ const HelpMenuInner = (props: HelpMenuInnerProps) => {
                 <>
                     <Box id="install" className={getClassNavigateBox()} onClick={onClickInstall}>
                         <Box className={getClassIconBox()}>
-                            <DownloadObject></DownloadObject>
-                            <img src={download} alt={t("accessibility.asset.help-menu.install-alt")} />
+                            <DownloadIcon aria-label={t("accessibility.asset.help-menu.install-alt")} />
                         </Box>
                         <Box className={getClassTextBox()}>
                             <p>{t("component.help-menu.install-label")}</p>
                         </Box>
                         <Box className={getClassNavIconBox()}>
-                            <img
-                                src={arrowForwardIos}
-                                alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                            <ArrowForwardIosIcon
+                                aria-label={t("accessibility.asset.mui-icon.arrow-forward-ios")}
                             />
                         </Box>
                     </Box>
@@ -83,19 +80,14 @@ const HelpMenuInner = (props: HelpMenuInnerProps) => {
             )}
             <Box id="help" className={getClassNavigateBox()} onClick={onClickHelp}>
                 <Box className={getClassIconBox()}>
-                    <img
-                        src="/assets/illustration/mui-icon/rebase_edit.svg"
-                        alt={t("accessibility.asset.help-menu.help-alt")}
-                    />
-                    <img src="/icons/contact.svg" alt={t("accessibility.asset.help-menu.help-alt")} />
+                    <RebaseEditIcon aria-label={t("accessibility.asset.help-menu.help-alt")} />
                 </Box>
                 <Box className={getClassTextBox()}>
                     <p>{t("component.help-menu.help-label")}</p>
                 </Box>
                 <Box className={getClassNavIconBox()}>
-                    <img
-                        src={arrowForwardIos}
-                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                    <ArrowForwardIosIcon
+                        aria-label={t("accessibility.asset.mui-icon.arrow-forward-ios")}
                     />
                 </Box>
             </Box>
@@ -106,10 +98,11 @@ const HelpMenuInner = (props: HelpMenuInnerProps) => {
                 >
                     <Box>
                         <Box>
-                            <img
-                                src={isMobile ? expandLess : close}
-                                alt={t("accessibility.asset.mui-icon.close")}
-                            />
+                            {isMobile ? (
+                                <ExpandLessIcon aria-label={t("accessibility.asset.mui-icon.close")} />
+                            ) : (
+                                <CloseIcon aria-label={t("accessibility.asset.mui-icon.close")} />
+                            )}
                         </Box>
                         {!isMobile && <Box>{t("common.navigation.close")}</Box>}
                     </Box>

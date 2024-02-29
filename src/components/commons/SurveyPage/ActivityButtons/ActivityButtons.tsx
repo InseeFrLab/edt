@@ -1,6 +1,6 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Button } from "@mui/material";
-import add from "assets/illustration/mui-icon/add.svg";
+import { ReactComponent as AddIcon } from "assets/illustration/mui-icon/add.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
@@ -48,7 +48,7 @@ const ActivityButtons = (props: ActivityButtonsProps) => {
                 id="add-button"
                 disabled={!modifiable}
             >
-                <img src={add} alt={t("accessibility.asset.mui-icon.add")} />
+                <AddIcon aria-label={t("accessibility.asset.mui-icon.add")} />
                 {addLabel}
             </Button>
         </FlexCenter>
