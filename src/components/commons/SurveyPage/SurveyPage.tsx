@@ -10,7 +10,7 @@ import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimp
 import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
 import EndActivityStepper from "components/edt/EndActivityStepper/EndActivityStepper";
 import { LunaticModel } from "interface/lunatic/Lunatic";
-import React, { useEffect } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { isAndroid, isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { getLastCompletedStep } from "service/navigation-service";
@@ -26,8 +26,7 @@ interface SurveyPageProps {
     onAdd?(): void;
     finishLabel?: string;
     addLabel?: string;
-    srcIcon?: string;
-    altIcon?: string;
+    icon?: ReactElement<any>;
     onNavigateBack?(): void;
     firstName?: string;
     firstNamePrefix?: string;
@@ -54,8 +53,7 @@ const SurveyPage = (props: SurveyPageProps) => {
     const {
         children,
         className,
-        srcIcon,
-        altIcon,
+        icon,
         validate,
         onFinish,
         onAdd,
@@ -151,7 +149,7 @@ const SurveyPage = (props: SurveyPageProps) => {
             )}
             {renderProgressBar()}
             <Box className={classes.content}>
-                {srcIcon && altIcon && <PageIcon srcIcon={srcIcon} altIcon={altIcon} />}
+                {icon && <PageIcon icon={icon} />}
                 {children}
             </Box>
 

@@ -1,4 +1,4 @@
-import location_error from "assets/illustration/error/location.svg";
+import { ReactComponent as LocationErrorImg } from "assets/illustration/error/location.svg";
 import Error from "components/commons/Error/Error";
 import { useTranslation } from "react-i18next";
 
@@ -16,8 +16,7 @@ const ErrorLocation = (props: ErrorLocationProps) => {
             labelledBy={""}
             describedBy={""}
             errorMessage={t("common.error.error-location.message")}
-            errorIcon={location_error}
-            errorIconAlt={t("asset.error.location-error-alt")}
+            icon={<LocationErrorImg aria-label={t("asset.error.location-error-alt")} />}
             onIgnore={onIgnore}
             onComplete={onComplete}
         />

@@ -2,7 +2,7 @@ import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Typography } from "@mui/material";
 import activitySurveySource from "activity-survey.json";
 import disconnectIcon from "assets/illustration/disconnect.svg";
-import defaultErrorIcon from "assets/illustration/error/error.svg";
+import { ReactComponent as DefaultErrorIcon } from "assets/illustration/error/error.svg";
 import { ReactComponent as HelpIcon } from "assets/illustration/mui-icon/help-white.svg";
 import { ReactComponent as HomeIcon } from "assets/illustration/mui-icon/home.svg";
 import { ReactComponent as PowerSettingsIcon } from "assets/illustration/mui-icon/power-settings-white.svg";
@@ -157,7 +157,7 @@ const ErrorPage = (props: ErrorPageProps) => {
             <FlexCenter>
                 <Alert {...alertProps} />
             </FlexCenter>
-            <PageIcon srcIcon={defaultErrorIcon} altIcon={t("accessibility.asset.error.default")} />
+            <PageIcon icon={<DefaultErrorIcon aria-label={t("accessibility.asset.error.default")} />} />
             <Box className={classes.textBox}>
                 <Typography>{t("common.error.error-default-title")}</Typography>
                 <br />

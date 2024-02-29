@@ -33,7 +33,7 @@ export interface SurveyPageStepProps {
     backRoute?: EdtRoutesNameEnum;
     nextRoute?: EdtRoutesNameEnum;
     isStep?: boolean;
-    errorIcon?: string;
+    errorIcon?: React.FunctionComponent<React.SVGProps<SVGSVGElement> & { title?: string }>;
     errorAltIcon?: string;
     specifiquesProps?: any;
     disableButton?: boolean;
@@ -100,6 +100,8 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         defaultLanguage: "fr",
     };
 
+    const IconError = errorIcon as React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+
     const surveyPageStepProps = {
         idSurvey: idSurvey,
         onNavigateBack: useCallback(
@@ -122,8 +124,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         ),
         simpleHeader: true,
         simpleHeaderLabel: t("page.complementary-questions.simple-header-label"),
-        srcIcon: errorIcon,
-        altIcon: errorAltIcon ? t(errorAltIcon) : undefined,
+        icon: errorIcon ? <IconError aria-label={t(errorAltIcon ?? "")} /> : undefined,
         displayStepper: true,
         currentStepNumber: stepData.stepNumber,
         currentStepLabel: stepData.stepLabel,
@@ -143,8 +144,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
                         : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage),
                 [],
             ),
-        srcIcon: errorIcon,
-        altIcon: errorAltIcon ? t(errorAltIcon) : undefined,
+        icon: errorIcon ? <IconError aria-label={t(errorAltIcon ?? "")} /> : undefined,
         onNavigateBack: useCallback(() => saveAndNav(idSurvey), []),
         onPrevious: useCallback(
             () => (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNav(idSurvey)),

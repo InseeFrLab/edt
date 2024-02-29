@@ -8,7 +8,7 @@ import {
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
 import { Box, Divider, IconButton, Snackbar, Switch, Typography } from "@mui/material";
-import empty_activity from "assets/illustration/empty-activity.svg";
+import { ReactComponent as EmptyActivityImg } from "assets/illustration/empty-activity.svg";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
 import InfoIcon from "assets/illustration/info.svg";
 import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
@@ -784,8 +784,13 @@ const ActivityOrRoutePlannerPage = () => {
                                     {activitiesRoutesOrGaps.length === 0 ? (
                                         <>
                                             <PageIcon
-                                                srcIcon={empty_activity}
-                                                altIcon={t("accessibility.asset.empty-activity-alt")}
+                                                icon={
+                                                    <EmptyActivityImg
+                                                        aria-label={t(
+                                                            "accessibility.asset.empty-activity-alt",
+                                                        )}
+                                                    />
+                                                }
                                             />
                                             <FlexCenter>
                                                 <Typography className={cx(classes.label)}>

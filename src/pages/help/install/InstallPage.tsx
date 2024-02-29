@@ -1,6 +1,6 @@
-import finalization from "assets/illustration/help.svg";
-import installation from "assets/illustration/installation.svg";
-import download from "assets/illustration/mui-icon/download.svg";
+import { ReactComponent as FinalizationIcon } from "assets/illustration/help.svg";
+import { ReactComponent as InstallationImg } from "assets/illustration/installation.svg";
+import { ReactComponent as DownloadIcon } from "assets/illustration/mui-icon/download.svg";
 import InstallPageStep from "components/commons/InstallPageStep/InstallPageStep";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,14 +26,22 @@ const InstallPage = () => {
         stepImage = mapSteps?.get(device)?.get(navigator)?.[step - 2] ?? "";
     }, [step]);
 
-    const getIconStep = () => {
-        return step < stepFinal ? download : finalization;
+    const altIcon = t("accessibility.asset.installation-alt");
+
+    const getIconStepOthers = () => {
+        return step < stepFinal ? (
+            <DownloadIcon aria-label={altIcon} />
+        ) : (
+            <FinalizationIcon aria-label={altIcon} />
+        );
     };
 
+    const getIconStepInit = () => {
+        return <InstallationImg aria-label={altIcon} />;
+    };
     return (
         <InstallPageStep
-            iconTitle={step == 1 ? installation : getIconStep()}
-            iconTitleAlt={t("accessibility.asset.installation-alt")}
+            icon={step == 1 ? getIconStepInit() : getIconStepOthers()}
             title={t("component.help.install.common.title")}
             description={
                 step == 1

@@ -2,22 +2,20 @@ import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FlexEvenly from "components/commons/FlexEvenly/FlexEvenly";
-import React, { useCallback } from "react";
+import React, { ReactElement, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 interface ErrorProps {
     labelledBy: string;
     describedBy: string;
     errorMessage: string;
-    errorIcon: string;
-    errorIconAlt: string;
+    icon: ReactElement<any>;
     onIgnore(): void;
     onComplete(): void;
 }
 
 const Error = (props: ErrorProps) => {
-    const { labelledBy, describedBy, errorMessage, errorIcon, errorIconAlt, onIgnore, onComplete } =
-        props;
+    const { labelledBy, describedBy, errorMessage, icon, onIgnore, onComplete } = props;
     const { t } = useTranslation();
     const { classes } = useStyles();
     const [open, setOpen] = React.useState(true);
@@ -42,9 +40,7 @@ const Error = (props: ErrorProps) => {
                     aria-describedby={describedBy}
                 >
                     <Box className={classes.errorBox}>
-                        <FlexCenter>
-                            <img src={errorIcon} alt={errorIconAlt} />
-                        </FlexCenter>
+                        <FlexCenter>{icon}</FlexCenter>
                         <FlexCenter className={classes.errorMessageBox}>
                             <p>{errorMessage}</p>
                         </FlexCenter>

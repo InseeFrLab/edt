@@ -2,7 +2,7 @@ import { Info, important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
 import InfoIcon from "assets/illustration/info.svg";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { useCallback } from "react";
+import { ReactElement, useCallback } from "react";
 import { isIOS, isMobile as isMobileDevice } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -13,8 +13,7 @@ import NavigationStep from "../NavigationStep/NavigationStep";
 import SurveyPageSimpleHeader from "../SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 
 interface InstallPageStepProps {
-    iconTitle: string;
-    iconTitleAlt: string;
+    icon: ReactElement<any>;
     title: string;
     description: string;
     stepTitle: string;
@@ -26,18 +25,8 @@ interface InstallPageStepProps {
 }
 
 const InstallPageStep = (props: InstallPageStepProps) => {
-    const {
-        iconTitle,
-        iconTitleAlt,
-        title,
-        description,
-        stepTitle,
-        stepImage,
-        stepImageAlt,
-        step,
-        stepFinal,
-        setStep,
-    } = props;
+    const { icon, title, description, stepTitle, stepImage, stepImageAlt, step, stepFinal, setStep } =
+        props;
 
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -60,9 +49,7 @@ const InstallPageStep = (props: InstallPageStepProps) => {
                         onNavigateBack={useCallback(() => navToHome(), [])}
                         backgroundWhite={false}
                     />
-                    <FlexCenter className={step > 1 ? classes.imgBox : undefined}>
-                        <img src={iconTitle} alt={t(iconTitleAlt)} />
-                    </FlexCenter>
+                    <FlexCenter className={step > 1 ? classes.imgBox : undefined}>{icon}</FlexCenter>
                     <Box className={classes.textBox}>
                         <Box
                             className={cx(
