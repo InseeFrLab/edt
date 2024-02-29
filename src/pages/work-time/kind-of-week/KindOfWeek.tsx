@@ -1,6 +1,6 @@
 import { Alert, CheckboxOneSpecificProps } from "@inseefrlab/lunatic-edt";
 import calendarWeek from "assets/illustration/kind-of-week-categories/calendar-week.svg";
-import kindOfWeek from "assets/illustration/kind-of-week.svg";
+import kindOfWeek, { ReactComponent as KindOfWeekImg } from "assets/illustration/kind-of-week.svg";
 import extension from "assets/illustration/mui-icon/extension.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
@@ -78,8 +78,7 @@ const KindOfWeekPage = () => {
                 [setIsAlertDisplayed],
             )}
             onPrevious={useCallback(() => navFullPath(idSurvey, EdtRoutesNameEnum.WEEKLY_PLANNER), [])}
-            srcIcon={kindOfWeek}
-            altIcon={t("accessibility.asset.kind-of-week-alt")}
+            icon={<KindOfWeekImg aria-label={t("accessibility.asset.kind-of-week-alt")} />}
             firstName={getPrintedFirstName(idSurvey)}
             firstNamePrefix={t("component.survey-page-edit-header.week-of")}
             simpleHeader={true}

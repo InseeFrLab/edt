@@ -12,7 +12,7 @@ import { ReactComponent as EmptyActivityImg } from "assets/illustration/empty-ac
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
 import InfoIcon from "assets/illustration/info.svg";
 import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
-import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
+import { ReactComponent as InfoTooltipIcon } from "assets/illustration/mui-icon/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import PageIcon from "components/commons/PageIcon/PageIcon";
@@ -628,10 +628,8 @@ const ActivityOrRoutePlannerPage = () => {
 
     const infoLabels: InfoProps = {
         boldText: t("page.activity-planner.info"),
-        infoIcon: InfoIcon,
-        infoIconAlt: t("accessibility.asset.info.info-alt"),
-        infoIconTooltip: InfoTooltipIcon,
-        infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
+        infoIcon: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
+        infoIconTooltip: <InfoTooltipIcon aria-label={t("accessibility.asset.info.info-alt")} />,
         border: true,
     };
 

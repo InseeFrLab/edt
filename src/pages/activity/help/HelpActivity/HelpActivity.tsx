@@ -7,11 +7,11 @@ import {
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal, Typography } from "@mui/material";
-import InfoIcon from "assets/illustration/info.svg";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
 import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
 import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
 import { ReactComponent as ArrowForwardIcon } from "assets/illustration/mui-icon/arrow-forward.svg";
-import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
+import { ReactComponent as InfoTooltipIcon } from "assets/illustration/mui-icon/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
@@ -84,11 +84,9 @@ const HelpActivity = () => {
 
     const infoLabels: InfoProps = {
         boldText: t("page.activity-planner.info"),
-        infoIcon: InfoIcon,
-        infoIconAlt: t("accessibility.asset.info.info-alt"),
+        infoIcon: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
+        infoIconTooltip: <InfoTooltipIcon aria-label={t("accessibility.asset.info.info-alt")} />,
         border: true,
-        infoIconTooltip: InfoTooltipIcon,
-        infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
     };
 
     const titleLabels = {

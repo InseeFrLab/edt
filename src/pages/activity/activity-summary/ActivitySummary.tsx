@@ -10,8 +10,8 @@ import {
 import { Box, Button, Divider, Switch, Typography } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { default as errorIcon } from "assets/illustration/error/activity.svg";
-import InfoAlertIcon from "assets/illustration/info-alert.svg";
-import InfoIcon from "assets/illustration/info.svg";
+import { ReactComponent as InfoAlertIcon } from "assets/illustration/info-alert.svg";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
 import { ReactComponent as CheckIcon } from "assets/illustration/mui-icon/check.svg";
 import { ReactComponent as DownloadIcon } from "assets/illustration/mui-icon/download.svg";
 import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
@@ -395,10 +395,8 @@ const ActivitySummaryPage = () => {
 
     const infoLabels: InfoProps = {
         boldText: t("page.activity-planner.info"),
-        infoIcon: InfoIcon,
-        infoIconAlt: t("accessibility.asset.info.info-alt"),
-        infoIconTooltip: InfoTooltipIcon,
-        infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
+        infoIcon: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
+        infoIconTooltip: <InfoTooltipIcon aria-label={t("accessibility.asset.info.info-alt")} />,
         border: true,
     };
 
@@ -601,8 +599,9 @@ const ActivitySummaryPage = () => {
                             <Info
                                 boldText={t("page.activity-summary.alert-tooltip-edit.alert-bold")}
                                 isAlertInfo={true}
-                                infoIconAlt={t("accessibility.asset.info.info-alt")}
-                                infoIcon={InfoAlertIcon}
+                                infoIcon={
+                                    <InfoAlertIcon aria-label={t("accessibility.asset.info.info-alt")} />
+                                }
                                 border={true}
                             />
                         </Box>

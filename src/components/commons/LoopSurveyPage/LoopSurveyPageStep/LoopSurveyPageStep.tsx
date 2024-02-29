@@ -169,8 +169,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
                     <Info
                         normalText={t(specifiquesProps?.infoLight)}
                         boldText={t(specifiquesProps?.infoBold)}
-                        infoIcon={InfoIcon}
-                        infoIconAlt={t("accessibility.asset.info.info-alt")}
+                        infoIcon={<InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />}
                     />
                 )}
             </FlexCenter>

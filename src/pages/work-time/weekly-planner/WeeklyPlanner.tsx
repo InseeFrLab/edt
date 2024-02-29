@@ -6,12 +6,12 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
 import { Box } from "@mui/material";
-import InfoIcon from "assets/illustration/info.svg";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
 import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";
 import expandLess from "assets/illustration/mui-icon/expand-less.svg";
 import expandMoreWhite from "assets/illustration/mui-icon/expand-more-white.svg";
 import expandMore from "assets/illustration/mui-icon/expand-more.svg";
-import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
+import { ReactComponent as InfoTooltipIcon } from "assets/illustration/mui-icon/info.svg";
 import moreHorizontal from "assets/illustration/mui-icon/more-horizontal.svg";
 import work from "assets/illustration/mui-icon/work-full.svg";
 import ClientIcon from "assets/illustration/place-work-categories/client.svg";
@@ -161,11 +161,9 @@ const WeeklyPlannerPage = () => {
             infoLabels: {
                 normalText: t("page.weekly-planner.info-light"),
                 boldText: t("page.weekly-planner.info-bold"),
-                infoIconAlt: t("accessibility.asset.info.info-alt"),
-                infoIcon: InfoIcon,
                 border: true,
-                infoIconTooltip: InfoTooltipIcon,
-                infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
+                infoIcon: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
+                infoIconTooltip: <InfoTooltipIcon aria-label={t("accessibility.asset.info.info-alt")} />,
             },
             dates: "DATES",
             datesStarted: "DATES_STARTED",

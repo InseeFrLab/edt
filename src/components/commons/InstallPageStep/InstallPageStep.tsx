@@ -1,6 +1,6 @@
 import { Info, important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import InfoIcon from "assets/illustration/info.svg";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ReactElement, useCallback } from "react";
 import { isIOS, isMobile as isMobileDevice } from "react-device-detect";
@@ -80,8 +80,7 @@ const InstallPageStep = (props: InstallPageStepProps) => {
                         <Info
                             normalText={t("component.help.install.common.info-text")}
                             boldText={t("component.help.install.common.info-bold")}
-                            infoIcon={InfoIcon}
-                            infoIconAlt={t("accessibility.asset.info.info-alt")}
+                            infoIcon={<InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />}
                             boldFirst={true}
                         />
                     </Box>
