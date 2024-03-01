@@ -6,23 +6,23 @@ import {
     makeStylesEdt,
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
-import catIcon100 from "assets/illustration/activity-categories/1.svg";
-import catIcon200 from "assets/illustration/activity-categories/2.svg";
-import catIcon300 from "assets/illustration/activity-categories/3.svg";
-import catIcon400 from "assets/illustration/activity-categories/4.svg";
-import catIcon440 from "assets/illustration/activity-categories/5.svg";
-import catIcon500 from "assets/illustration/activity-categories/6.svg";
-import catIcon650 from "assets/illustration/activity-categories/7.svg";
-import catIcon600 from "assets/illustration/activity-categories/8.svg";
+import { ReactComponent as CatIcon100 } from "assets/illustration/activity-categories/1.svg";
+import { ReactComponent as CatIcon200 } from "assets/illustration/activity-categories/2.svg";
+import { ReactComponent as CatIcon300 } from "assets/illustration/activity-categories/3.svg";
+import { ReactComponent as CatIcon400 } from "assets/illustration/activity-categories/4.svg";
+import { ReactComponent as CatIcon440 } from "assets/illustration/activity-categories/5.svg";
+import { ReactComponent as CatIcon500 } from "assets/illustration/activity-categories/6.svg";
+import { ReactComponent as CatIcon650 } from "assets/illustration/activity-categories/7.svg";
+import { ReactComponent as CatIcon600 } from "assets/illustration/activity-categories/8.svg";
 import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
-import addLightBlue from "assets/illustration/mui-icon/add-light-blue.svg";
-import addWhite from "assets/illustration/mui-icon/add.svg";
+import { ReactComponent as AddLightBlueIcon } from "assets/illustration/mui-icon/add-light-blue.svg";
+import { ReactComponent as AddWhiteIcon } from "assets/illustration/mui-icon/add.svg";
 import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
 import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
-import { default as chevronRight } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import { ReactComponent as ChevronRightIcon } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
 import { ReactComponent as ArrowForwardIcon } from "assets/illustration/mui-icon/arrow-forward.svg";
-import extension from "assets/illustration/mui-icon/extension.svg";
-import search from "assets/illustration/mui-icon/search.svg";
+import { ReactComponent as ExtensionIcon } from "assets/illustration/mui-icon/extension.svg";
+import { ReactComponent as SearchIcon } from "assets/illustration/mui-icon/search.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { SEPARATOR_DEFAUT } from "constants/constants";
@@ -71,35 +71,35 @@ const HelpCategoryActivity = () => {
     const specificProps: ActivitySelecterSpecificProps = {
         categoriesIcons: {
             "100": {
-                icon: catIcon100,
+                icon: CatIcon100,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-100-alt"),
             },
             "200": {
-                icon: catIcon200,
+                icon: CatIcon200,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-200-alt"),
             },
             "300": {
-                icon: catIcon300,
+                icon: CatIcon300,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-300-alt"),
             },
             "400": {
-                icon: catIcon400,
+                icon: CatIcon400,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-400-alt"),
             },
             "440": {
-                icon: catIcon440,
+                icon: CatIcon440,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-440-alt"),
             },
             "500": {
-                icon: catIcon500,
+                icon: CatIcon500,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-500-alt"),
             },
             "650": {
-                icon: catIcon600,
+                icon: CatIcon600,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-600-alt"),
             },
             "600": {
-                icon: catIcon650,
+                icon: CatIcon650,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-650-alt"),
             },
         },
@@ -125,7 +125,6 @@ const HelpCategoryActivity = () => {
             alertMessage: t("component.activity-selecter.alert-message"),
             alertIgnore: t("common.navigation.alert.ignore"),
             alertComplete: t("common.navigation.alert.complete"),
-            alertAlticon: t("common.navigation.alert.alt-icon"),
             clickableListPlaceholder: t("component.activity-selecter.clickable-list-placeholder"),
             clickableListNotFoundLabel: t("component.activity-selecter.clickable-list-not-found-label"),
             clickableListNotFoundComment: t(
@@ -133,9 +132,6 @@ const HelpCategoryActivity = () => {
             ),
             clickableListAddActivityButton: t(
                 "component.activity-selecter.clickable-list-add-activity-button",
-            ),
-            clickableListIconNoResultAlt: t(
-                "component.activity-selecter.clickable-list-icon-no-result-alt",
             ),
             clickableListNotSearchLabel: t(
                 "component.activity-selecter.clickable-list-not-search-label",
@@ -151,15 +147,14 @@ const HelpCategoryActivity = () => {
         widthGlobal: true,
         separatorSuggester: process.env.REACT_APP_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
         helpStep: helpStep,
-        chevronRightIcon: chevronRight,
+        chevronRightIcon: ChevronRightIcon,
         chevronRightIconAlt: t("accessibility.asset.mui-icon.arrow-right-ios"),
-        searchIcon: search,
+        searchIcon: SearchIcon,
         searchIconAlt: t("accessibility.asset.mui-icon.search"),
-        extensionIcon: extension,
+        extensionIcon: ExtensionIcon,
         extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
-        addLightBlueIcon: addLightBlue,
-        addWhiteIcon: addWhite,
-        addIconAlt: t("accessibility.asset.mui-icon.add"),
+        addLightBlueIcon: <AddLightBlueIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
+        addWhiteIcon: <AddWhiteIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
     };
 
     const navToActivityRouteHome = useCallback(() => {
