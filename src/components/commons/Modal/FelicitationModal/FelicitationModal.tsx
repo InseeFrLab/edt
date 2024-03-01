@@ -1,5 +1,5 @@
 import { ModalEdt } from "@inseefrlab/lunatic-edt";
-import felicitations from "assets/illustration/felicitations.svg";
+import { ReactComponent as FelicitationsIcon } from "assets/illustration/felicitations.svg";
 import { useTranslation } from "react-i18next";
 
 interface FelicitationModalProps {
@@ -24,8 +24,9 @@ const FelicitationModal = (props: FelicitationModalProps) => {
             isModalDisplayed={isModalDisplayed}
             onCompleteCallBack={onCompleteCallBack}
             labels={alertLabels}
-            icon={felicitations}
-            iconAlt={t("component.modal-edt.modal-felicitation.alt-icon")}
+            icon={
+                <FelicitationsIcon aria-label={t("component.modal-edt.modal-felicitation.alt-icon")} />
+            }
         ></ModalEdt>
     );
 };

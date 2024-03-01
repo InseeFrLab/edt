@@ -14,7 +14,7 @@ import { ReactComponent as InfoAlertIcon } from "assets/illustration/info-alert.
 import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
 import { ReactComponent as CheckIcon } from "assets/illustration/mui-icon/check.svg";
 import { ReactComponent as DownloadIcon } from "assets/illustration/mui-icon/download.svg";
-import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
+import { ReactComponent as InfoTooltipIcon } from "assets/illustration/mui-icon/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";

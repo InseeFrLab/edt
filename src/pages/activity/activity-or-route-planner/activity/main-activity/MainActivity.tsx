@@ -188,8 +188,11 @@ const MainActivityPage = () => {
         chevronRightIconAlt: chevronRightIconAlt,
         searchIcon: SearchIcon,
         searchIconAlt: t("accessibility.asset.mui-icon.search"),
-        extensionIcon: modifiable ? ExtensionIcon : ExtensionDisabledIcon,
-        extensionIconAlt: extensionIconAlt,
+        extensionIcon: modifiable ? (
+            <ExtensionIcon aria-label={extensionIconAlt} />
+        ) : (
+            <ExtensionDisabledIcon aria-label={extensionIconAlt} />
+        ),
         addLightBlueIcon: <AddLightBlueIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
         addWhiteIcon: <AddWhiteIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
         modifiable: modifiable,

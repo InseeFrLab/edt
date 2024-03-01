@@ -149,8 +149,7 @@ const HelpSubCategoryActivity = () => {
         chevronRightIconAlt: t("accessibility.asset.mui-icon.arrow-right-ios"),
         searchIcon: SearchIcon,
         searchIconAlt: t("accessibility.asset.mui-icon.search"),
-        extensionIcon: ExtensionIcon,
-        extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
+        extensionIcon: <ExtensionIcon aria-label={t("accessibility.asset.mui-icon.extension")} />,
         addLightBlueIcon: <AddLightBlueIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
         addWhiteIcon: <AddWhiteIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
     };

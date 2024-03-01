@@ -96,7 +96,7 @@ const useStyles = makeStylesEdt({ "name": { SurveyPageEditHeader } })(theme => (
         "& .MuiButton-startIcon": {
             marginLeft: important("0px"),
             marginRight: important("0px"),
-            width: important("10px"),
+            width: important("20px"),
         },
     },
     infoText: {
