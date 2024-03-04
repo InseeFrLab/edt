@@ -155,6 +155,7 @@ const useStyles = makeStylesEdt({ "name": { DayCharacteristics } })(theme => ({
             backgroundColor: theme.variables.white,
             padding: "0.5rem",
         },
+        top: "-23px",
     },
     clickableText: {
         cursor: "pointer",

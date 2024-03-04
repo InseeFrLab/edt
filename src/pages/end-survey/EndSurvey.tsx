@@ -1,6 +1,6 @@
 import { Info, InfoProps, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Typography } from "@mui/material";
-import InfoIcon from "assets/illustration/info.svg";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
 import { ReactComponent as SendIcon } from "assets/illustration/mui-icon/send.svg";
 import { ReactComponent as SubmitIcon } from "assets/illustration/submit.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
@@ -75,10 +75,8 @@ const EndSurveyPage = () => {
 
     const infoLabels: InfoProps = {
         boldText: t("page.end-survey.online-tooltip-text"),
-        infoIcon: InfoIcon,
-        infoIconAlt: t("accessibility.asset.info.info-alt"),
-        infoIconTooltip: InfoIcon,
-        infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
+        infoIcon: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
+        infoIconTooltip: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
         border: true,
     };
 

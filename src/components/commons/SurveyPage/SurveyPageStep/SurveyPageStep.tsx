@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import extension from "assets/illustration/mui-icon/extension.svg";
+import { ReactComponent as ExtensionIcon } from "assets/illustration/mui-icon/extension.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
@@ -33,7 +33,7 @@ export interface SurveyPageStepProps {
     backRoute?: EdtRoutesNameEnum;
     nextRoute?: EdtRoutesNameEnum;
     isStep?: boolean;
-    errorIcon?: React.FunctionComponent<React.SVGProps<SVGSVGElement> & { title?: string }>;
+    errorIcon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     errorAltIcon?: string;
     specifiquesProps?: any;
     disableButton?: boolean;
@@ -87,15 +87,13 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         options: specifiquesProps?.options,
         defaultIcon: specifiquesProps?.defaultIcon,
         icon: specifiquesProps?.icon,
-        altIcon: t(specifiquesProps?.altIconLabel),
         language: getLanguage(),
         constants: {
             START_TIME_DAY: START_TIME_DAY,
             FORMAT_TIME: FORMAT_TIME,
             MINUTE_LABEL: MINUTE_LABEL,
         },
-        extensionIcon: extension,
-        extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
+        extensionIcon: <ExtensionIcon aria-label={t("accessibility.asset.mui-icon.extension")} />,
         modifiable: modifiable,
         defaultLanguage: "fr",
     };

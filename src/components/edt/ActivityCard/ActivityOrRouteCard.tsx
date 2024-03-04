@@ -438,6 +438,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
             backgroundColor: theme.variables.white,
             padding: "0.5rem",
         },
+        top: "-132px",
     },
     clickableText: {
         cursor: "pointer",

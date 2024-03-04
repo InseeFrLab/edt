@@ -1,7 +1,7 @@
 import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
-import disconnectIcon from "assets/illustration/disconnect.svg";
+import { ReactComponent as DisconnectIcon } from "assets/illustration/disconnect.svg";
 import logo from "assets/illustration/logo.png";
 import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-blue.svg";
 import { ReactComponent as PowerSettingsIcon } from "assets/illustration/mui-icon/power-settings.svg";
@@ -34,8 +34,7 @@ const HomeReviewerPage = () => {
             cancel: t("common.navigation.cancel"),
             complete: t("page.home.navigation.logout"),
         },
-        icon: disconnectIcon,
-        errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
+        icon: <DisconnectIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />,
     };
 
     const onDisconnect = useCallback(() => {

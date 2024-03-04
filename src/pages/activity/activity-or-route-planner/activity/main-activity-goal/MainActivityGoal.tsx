@@ -1,19 +1,20 @@
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 
-import errorIcon from "assets/illustration/error/activity.svg";
-import help from "assets/illustration/goals/help.svg";
-import home from "assets/illustration/goals/home.svg";
-import solidarity from "assets/illustration/goals/solidarity.svg";
-import work from "assets/illustration/goals/work.svg";
+import { ReactComponent as errorIcon } from "assets/illustration/error/activity.svg";
+import { ReactComponent as help } from "assets/illustration/goals/help.svg";
+import { ReactComponent as home } from "assets/illustration/goals/home.svg";
+import { ReactComponent as solidarity } from "assets/illustration/goals/solidarity.svg";
+import { ReactComponent as work } from "assets/illustration/goals/work.svg";
 
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
+import { FunctionComponent, SVGProps } from "react";
 import { useTranslation } from "react-i18next";
 import { getActivityGoalRef } from "service/referentiel-service";
 
 const MainActivityGoalPage = () => {
     const { t } = useTranslation();
 
-    const getIcon = (iconName: string): string => {
+    const getIcon = (iconName: string): FunctionComponent<SVGProps<SVGSVGElement>> => {
         switch (iconName) {
             case "home": {
                 return home;
@@ -34,7 +35,9 @@ const MainActivityGoalPage = () => {
     };
 
     const referentiel = getActivityGoalRef();
-    const optionsIcons: { [key: string]: { icon: string; altIcon: string } } = {};
+    const optionsIcons: {
+        [key: string]: { icon: FunctionComponent<SVGProps<SVGSVGElement>>; altIcon: string };
+    } = {};
 
     referentiel.forEach(option => {
         optionsIcons[option.value] = {

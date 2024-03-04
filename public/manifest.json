@@ -134,6 +134,86 @@
         {
             "src": "icons/ios/1024.png",
             "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/logo.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/android/chrome1.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/android/chrome2.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/android/chrome3.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/android/edge1.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/android/edge2.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/android/edge3.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/android/mozilla1.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/android/mozilla2.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/android/mozilla3.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/ios/chrome1.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/ios/chrome2.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/ios/chrome3.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/ios/edge1.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/ios/edge2.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/ios/edge3.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/ios/edge4.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/ios/safari1.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/ios/safari2.png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "assets/illustration/install/ios/safari3.png",
+            "sizes": "1024x1024"
         }
     ],
     "start_url": ".",

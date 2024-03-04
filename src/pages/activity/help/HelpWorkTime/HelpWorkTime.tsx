@@ -5,16 +5,18 @@ import {
     WeeklyPlannerSpecificProps,
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
-import InfoIcon from "assets/illustration/info.svg";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
 import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
 import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
 import { ReactComponent as ArrowForwardIcon } from "assets/illustration/mui-icon/arrow-forward.svg";
-import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";
-import expandLess from "assets/illustration/mui-icon/expand-less.svg";
-import expandMoreWhite from "assets/illustration/mui-icon/expand-more-white.svg";
-import expandMore from "assets/illustration/mui-icon/expand-more.svg";
-import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
-import work from "assets/illustration/mui-icon/work-full.svg";
+import { ReactComponent as ExpandLessWhiteIcon } from "assets/illustration/mui-icon/expand-less-white.svg";
+import { ReactComponent as ExpandLessIcon } from "assets/illustration/mui-icon/expand-less.svg";
+import { ReactComponent as ExpandMoreWhiteIcon } from "assets/illustration/mui-icon/expand-more-white.svg";
+import { ReactComponent as ExpandMoreIcon } from "assets/illustration/mui-icon/expand-more.svg";
+import { ReactComponent as InfoTooltipIcon } from "assets/illustration/mui-icon/info.svg";
+import { ReactComponent as MoreHorizontalIcon } from "assets/illustration/mui-icon/more-horizontal.svg";
+import { ReactComponent as WorkFullIcon } from "assets/illustration/mui-icon/work-full.svg";
+import { ReactComponent as WorkIcon } from "assets/illustration/place-work-categories/work.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -92,10 +94,8 @@ const HelpWorkTime = () => {
             infoLabels: {
                 normalText: t("page.weekly-planner.info-light"),
                 boldText: t("page.weekly-planner.info-bold"),
-                infoIconAlt: t("accessibility.asset.info.info-alt"),
-                infoIcon: InfoIcon,
-                infoIconTooltip: InfoTooltipIcon,
-                infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
+                infoIcon: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
+                infoIconTooltip: <InfoTooltipIcon aria-label={t("accessibility.asset.info.info-alt")} />,
                 border: true,
             },
             dates: "DATES",
@@ -104,22 +104,22 @@ const HelpWorkTime = () => {
         saveAll: () => saveData(idSurvey, data),
         language: getLanguage(),
         helpStep: helpStep,
-        moreIcon: expandMore,
-        moreIconAlt: t("accessibility.asset.mui-icon.expand-more"),
-        expandLessIcon: expandLess,
-        expandLessIconAlt: t("accessibility.asset.mui-icon.expand-less"),
-        expandMoreIcon: expandMore,
-        expandMoreIconAlt: t("accessibility.asset.mui-icon.expand-more"),
-        expandLessWhiteIcon: expandLessWhite,
-        expandMoreWhiteIcon: expandMoreWhite,
-        workIcon: work,
-        workIconAlt: t("accessibility.asset.mui-icon.work"),
+        moreIcon: <MoreHorizontalIcon aria-label={t("accessibility.asset.mui-icon.more-horizontal")} />,
+        expandLessIcon: <ExpandLessIcon aria-label={t("accessibility.asset.mui-icon.expand-less")} />,
+        expandMoreIcon: <ExpandMoreIcon aria-label={t("accessibility.asset.mui-icon.expand-more")} />,
+        expandLessWhiteIcon: (
+            <ExpandLessWhiteIcon aria-label={t("accessibility.asset.mui-icon.expand-less")} />
+        ),
+        expandMoreWhiteIcon: (
+            <ExpandMoreWhiteIcon aria-label={t("accessibility.asset.mui-icon.expand-more")} />
+        ),
+        workIcon: <WorkFullIcon aria-label={t("accessibility.asset.mui-icon.work")} />,
         saveHours: (idSurvey: string, response: responsesHourChecker) => {
             console.log(idSurvey, response);
         },
         optionsIcons: {
             "1": {
-                icon: "",
+                icon: WorkIcon,
                 altIcon: "",
             },
         },

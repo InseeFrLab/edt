@@ -1,7 +1,7 @@
 import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Typography } from "@mui/material";
 import activitySurveySource from "activity-survey.json";
-import disconnectIcon from "assets/illustration/disconnect.svg";
+import { ReactComponent as DisconnectIcon } from "assets/illustration/disconnect.svg";
 import { ReactComponent as DefaultErrorIcon } from "assets/illustration/error/error.svg";
 import { ReactComponent as HelpIcon } from "assets/illustration/mui-icon/help-white.svg";
 import { ReactComponent as HomeIcon } from "assets/illustration/mui-icon/home.svg";
@@ -47,8 +47,7 @@ const ErrorPage = (props: ErrorPageProps) => {
             cancel: t("common.navigation.cancel"),
             complete: t("page.home.navigation.logout"),
         },
-        icon: disconnectIcon,
-        errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
+        icon: <DisconnectIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />,
     };
 
     let navigate: NavigateFunction = useNavigate();

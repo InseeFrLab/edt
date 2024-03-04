@@ -9,10 +9,10 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { Box, Divider, IconButton, Snackbar, Switch, Typography } from "@mui/material";
 import { ReactComponent as EmptyActivityImg } from "assets/illustration/empty-activity.svg";
-import { default as errorIcon } from "assets/illustration/error/activity.svg";
-import InfoIcon from "assets/illustration/info.svg";
+import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
 import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
-import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
+import { ReactComponent as InfoTooltipIcon } from "assets/illustration/mui-icon/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import PageIcon from "components/commons/PageIcon/PageIcon";
@@ -628,10 +628,8 @@ const ActivityOrRoutePlannerPage = () => {
 
     const infoLabels: InfoProps = {
         boldText: t("page.activity-planner.info"),
-        infoIcon: InfoIcon,
-        infoIconAlt: t("accessibility.asset.info.info-alt"),
-        infoIconTooltip: InfoTooltipIcon,
-        infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
+        infoIcon: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
+        infoIconTooltip: <InfoTooltipIcon aria-label={t("accessibility.asset.info.info-alt")} />,
         border: true,
     };
 
@@ -699,8 +697,11 @@ const ActivityOrRoutePlannerPage = () => {
                                             onCompleteCallBack={closeActivity(true, idSurvey)}
                                             onCancelCallBack={displayAlert(setIsAlertDisplayed, false)}
                                             labels={alertLabels}
-                                            icon={errorIcon}
-                                            errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                                            icon={
+                                                <ErrorIcon
+                                                    aria-label={t("page.alert-when-quit.alt-alert-icon")}
+                                                />
+                                            }
                                         ></Alert>
                                         <Box
                                             className={getClassCondition(
@@ -724,10 +725,13 @@ const ActivityOrRoutePlannerPage = () => {
                                                                 variableEdited,
                                                                 t,
                                                             )}
-                                                            icon={errorIcon}
-                                                            errorIconAlt={t(
-                                                                "page.alert-when-quit.alt-alert-icon",
-                                                            )}
+                                                            icon={
+                                                                <ErrorIcon
+                                                                    aria-label={t(
+                                                                        "page.alert-when-quit.alt-alert-icon",
+                                                                    )}
+                                                                />
+                                                            }
                                                         ></Alert>
                                                         <Box className={classes.headerActivityBox}>
                                                             <Typography className={classes.label}>

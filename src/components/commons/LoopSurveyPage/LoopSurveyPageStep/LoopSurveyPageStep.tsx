@@ -1,5 +1,5 @@
 import { Alert, Info } from "@inseefrlab/lunatic-edt";
-import InfoIcon from "assets/illustration/info.svg";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -23,7 +23,7 @@ import LoopSurveyPage from "../LoopSurveyPage";
 export interface LoopSurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
     labelOfPage: string;
-    errorIcon: string;
+    errorIcon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     backRoute?: EdtRoutesNameEnum;
     nextRoute?: EdtRoutesNameEnum;
     fieldConditionNext?: FieldNameEnum;
@@ -54,6 +54,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
     const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
     const stepData = getStepData(currentPage, isRoute);
     const modifiable = !surveyReadOnly(context.rightsSurvey);
+    const IconError = errorIcon as React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
@@ -88,7 +89,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
                 );
         },
         labels: getLabels(labelOfPage),
-        errorIcon: errorIcon,
+        errorIcon: IconError,
         onSelectValue: () => {
             validate(idSurvey).then(() => {
                 skipNextPage(
@@ -141,8 +142,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
             [isAlertDisplayed],
         ),
         labels: getLabelsWhenQuit(isRoute),
-        icon: errorIcon,
-        errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
+        icon: <IconError aria-label={t("page.alert-when-quit.alt-alert-icon")} />,
     };
 
     const specifiquesPropsOrchestrator = Object.assign(specifiquesProps, componentLunaticProps);
@@ -169,8 +169,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
                     <Info
                         normalText={t(specifiquesProps?.infoLight)}
                         boldText={t(specifiquesProps?.infoBold)}
-                        infoIcon={InfoIcon}
-                        infoIconAlt={t("accessibility.asset.info.info-alt")}
+                        infoIcon={<InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />}
                     />
                 )}
             </FlexCenter>

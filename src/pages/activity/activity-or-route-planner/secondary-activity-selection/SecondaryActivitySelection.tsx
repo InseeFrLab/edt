@@ -1,10 +1,10 @@
 import { CheckboxOneCustomOption } from "@inseefrlab/lunatic-edt";
-import errorIcon from "assets/illustration/error/activity.svg";
-import addLightBlue from "assets/illustration/mui-icon/add-light-blue.svg";
-import addWhite from "assets/illustration/mui-icon/add.svg";
-import extensionDisabled from "assets/illustration/mui-icon/extension-grey.svg";
-import extension from "assets/illustration/mui-icon/extension.svg";
-import search from "assets/illustration/mui-icon/search.svg";
+import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
+import { ReactComponent as AddLightBlueIcon } from "assets/illustration/mui-icon/add-light-blue.svg";
+import { ReactComponent as AddWhiteIcon } from "assets/illustration/mui-icon/add.svg";
+import { ReactComponent as ExtensionDisabledIcon } from "assets/illustration/mui-icon/extension-grey.svg";
+import { ReactComponent as ExtensionIcon } from "assets/illustration/mui-icon/extension.svg";
+import { ReactComponent as SearchIcon } from "assets/illustration/mui-icon/search.svg";
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
 import { SEPARATOR_DEFAUT } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -38,6 +38,9 @@ const SecondaryActivitySelectionPage = () => {
     const referentiel = isRoute ? getRouteSecondaryActivityRef() : getActivitySecondaryActivityRef();
     const newActivities = getNewSecondaryActivities(idSurvey, referentiel);
     const modifiable = !surveyReadOnly(context.rightsSurvey);
+
+    const iconAddAlt = t("accessibility.asset.mui-icon.add");
+    const iconExtensionAlt = t("accessibility.asset.mui-icon.extension");
 
     const specifiquesProps = {
         labelsSpecifics: {
@@ -82,17 +85,19 @@ const SecondaryActivitySelectionPage = () => {
             saveButton: t("component.activity-selecter.save-button"),
         },
         icons: {
-            clickableListIconNoResult: errorIcon,
-            clickableListIconNoResultAlt: t(
-                "component.activity-selecter.clickable-list-icon-no-result-alt",
+            clickableListIconNoResult: (
+                <ErrorIcon
+                    aria-label={t("component.activity-selecter.clickable-list-icon-no-result-alt")}
+                />
             ),
-            iconAddWhite: addWhite,
-            iconAddLightBlue: addLightBlue,
-            iconAddAlt: t("accessibility.asset.mui-icon.add"),
-            iconExtension: modifiable ? extension : extensionDisabled,
-            iconExtensionAlt: t("accessibility.asset.mui-icon.extension"),
-            iconSearch: search,
-            iconSearchAlt: t("accessibility.asset.mui-icon.search"),
+            iconAddWhite: <AddWhiteIcon aria-label={iconAddAlt} />,
+            iconAddLightBlue: <AddLightBlueIcon aria-label={iconAddAlt} />,
+            iconExtension: modifiable ? (
+                <ExtensionIcon aria-label={iconExtensionAlt} />
+            ) : (
+                <ExtensionDisabledIcon aria-label={iconExtensionAlt} />
+            ),
+            iconSearch: <SearchIcon aria-label={t("accessibility.asset.mui-icon.search")} />,
         },
     };
 
@@ -100,7 +105,7 @@ const SecondaryActivitySelectionPage = () => {
         <LoopSurveyPageStep
             currentPage={EdtRoutesNameEnum.SECONDARY_ACTIVITY_SELECTION}
             labelOfPage={"secondary-activity-selecter"}
-            errorIcon={errorIcon}
+            errorIcon={ErrorIcon}
             backRoute={EdtRoutesNameEnum.SECONDARY_ACTIVITY}
             nextRoute={isRoute ? EdtRoutesNameEnum.WITH_SOMEONE : EdtRoutesNameEnum.ACTIVITY_LOCATION}
             fieldConditionBack={FieldNameEnum.WITHSECONDARYACTIVITY}
