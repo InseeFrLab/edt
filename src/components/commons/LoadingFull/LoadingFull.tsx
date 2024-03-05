@@ -1,5 +1,5 @@
 import { CircularProgress } from "@mui/material";
-import { ReactComponent as ReminderNoteImg } from "assets/illustration/reminder-note.svg";
+import ReminderNoteImg from "assets/illustration/reminder-note.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import { useTranslation } from "react-i18next";
@@ -19,7 +19,9 @@ const LoadingFull = (props: LoadingFullProps) => {
         <>
             <FlexCenter>
                 <PageIcon
-                    icon={<ReminderNoteImg aria-label={t("accessibility.asset.reminder-notes-alt")} />}
+                    icon={
+                        <img src={ReminderNoteImg} alt={t("accessibility.asset.reminder-notes-alt")} />
+                    }
                 />
             </FlexCenter>
             <FlexCenter>
