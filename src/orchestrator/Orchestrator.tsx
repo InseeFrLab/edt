@@ -280,7 +280,8 @@ const getVariablesWeeklyPlanner = (
         const varE = dataBdd?.COLLECTED?.[bindingDependency]?.EDITED;
         let variable = null;
         if (isReviewerMode) {
-            variable = varE ?? varC;
+            //variable = varE ?? varC;
+            variable = getVariableOfWeeklyPlannerInterviewer(varC, varE, value, bindingDependency);
         } else {
             variable = getVariableOfWeeklyPlannerInterviewer(varC, varE, value, bindingDependency);
         }

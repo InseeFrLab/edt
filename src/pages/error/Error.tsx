@@ -1,12 +1,12 @@
 import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Typography } from "@mui/material";
 import activitySurveySource from "activity-survey.json";
-import disconnectIcon from "assets/illustration/disconnect.svg";
-import defaultErrorIcon from "assets/illustration/error/error.svg";
-import help from "assets/illustration/mui-icon/help-white.svg";
-import home from "assets/illustration/mui-icon/home.svg";
-import powerSettings from "assets/illustration/mui-icon/power-settings-white.svg";
-import replay from "assets/illustration/mui-icon/replay.svg";
+import { ReactComponent as DisconnectIcon } from "assets/illustration/disconnect.svg";
+import { ReactComponent as DefaultErrorIcon } from "assets/illustration/error/error.svg";
+import { ReactComponent as HelpIcon } from "assets/illustration/mui-icon/help-white.svg";
+import { ReactComponent as HomeIcon } from "assets/illustration/mui-icon/home.svg";
+import { ReactComponent as PowerSettingsIcon } from "assets/illustration/mui-icon/power-settings-white.svg";
+import { ReactComponent as ReplayIcon } from "assets/illustration/mui-icon/replay.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -47,8 +47,7 @@ const ErrorPage = (props: ErrorPageProps) => {
             cancel: t("common.navigation.cancel"),
             complete: t("page.home.navigation.logout"),
         },
-        icon: disconnectIcon,
-        errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
+        icon: <DisconnectIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />,
     };
 
     let navigate: NavigateFunction = useNavigate();
@@ -89,7 +88,7 @@ const ErrorPage = (props: ErrorPageProps) => {
                 <Button
                     className={classes.button}
                     variant="contained"
-                    startIcon={<img src={replay} alt={t("accessibility.asset.mui-icon.replay")} />}
+                    startIcon={<ReplayIcon aria-label={t("accessibility.asset.mui-icon.replay")} />}
                     onClick={retryInitialize}
                 >
                     {t("common.navigation.retry")}
@@ -101,7 +100,7 @@ const ErrorPage = (props: ErrorPageProps) => {
                     <Button
                         className={classes.button}
                         variant="contained"
-                        startIcon={<img src={help} alt={t("accessibility.asset.mui-icon.help")} />}
+                        startIcon={<HelpIcon aria-label={t("accessibility.asset.mui-icon.help")} />}
                         onClick={navToHelp}
                     >
                         {t("page.home.navigation.link-help-label")}
@@ -109,7 +108,7 @@ const ErrorPage = (props: ErrorPageProps) => {
                     <Button
                         className={classes.button}
                         variant="contained"
-                        startIcon={<img src={home} alt={t("accessibility.asset.mui-icon.home")} />}
+                        startIcon={<HomeIcon aria-label={t("accessibility.asset.mui-icon.home")} />}
                         onClick={navToHome}
                     >
                         {t("common.navigation.back-to-home")}
@@ -157,7 +156,7 @@ const ErrorPage = (props: ErrorPageProps) => {
             <FlexCenter>
                 <Alert {...alertProps} />
             </FlexCenter>
-            <PageIcon srcIcon={defaultErrorIcon} altIcon={t("accessibility.asset.error.default")} />
+            <PageIcon icon={<DefaultErrorIcon aria-label={t("accessibility.asset.error.default")} />} />
             <Box className={classes.textBox}>
                 <Typography>{t("common.error.error-default-title")}</Typography>
                 <br />
@@ -174,9 +173,8 @@ const ErrorPage = (props: ErrorPageProps) => {
                         className={classes.button}
                         variant="contained"
                         startIcon={
-                            <img
-                                src={powerSettings}
-                                alt={t("accessibility.asset.mui-icon.power-settings")}
+                            <PowerSettingsIcon
+                                aria-label={t("accessibility.asset.mui-icon.power-settings")}
                             />
                         }
                         onClick={onDisconnect}

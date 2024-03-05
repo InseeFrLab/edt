@@ -1,8 +1,8 @@
 import { Info, InfoProps, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Typography } from "@mui/material";
-import InfoIcon from "assets/illustration/info.svg";
-import sendIcon from "assets/illustration/mui-icon/send.svg";
-import submit_icon from "assets/illustration/submit.svg";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
+import { ReactComponent as SendIcon } from "assets/illustration/mui-icon/send.svg";
+import { ReactComponent as SubmitIcon } from "assets/illustration/submit.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
 import PageIcon from "components/commons/PageIcon/PageIcon";
@@ -75,10 +75,8 @@ const EndSurveyPage = () => {
 
     const infoLabels: InfoProps = {
         boldText: t("page.end-survey.online-tooltip-text"),
-        infoIcon: InfoIcon,
-        infoIconAlt: t("accessibility.asset.info.info-alt"),
-        infoIconTooltip: InfoIcon,
-        infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
+        infoIcon: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
+        infoIconTooltip: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
         border: true,
     };
 
@@ -161,8 +159,7 @@ const EndSurveyPage = () => {
         >
             <PageIcon
                 withMargin={false}
-                srcIcon={submit_icon}
-                altIcon={t("accessibility.asset.submit-alt")}
+                icon={<SubmitIcon aria-label={t("accessibility.asset.submit-alt")} />}
             />
             <Box className={cx(classes.endContentBox, isNavMobile ? classes.endContentBoxMobile : "")}>
                 <Box>
@@ -193,7 +190,7 @@ const EndSurveyPage = () => {
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
-                                    <img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />
+                                    <SendIcon aria-label={t("accessibility.asset.mui-icon.send")} />
                                 }
                                 id="send-button"
                                 disabled={
@@ -210,7 +207,7 @@ const EndSurveyPage = () => {
                                 variant="contained"
                                 onClick={remoteSaveSurveyAndGoBackHome}
                                 endIcon={
-                                    <img src={sendIcon} alt={t("accessibility.asset.mui-icon.send")} />
+                                    <SendIcon aria-label={t("accessibility.asset.mui-icon.send")} />
                                 }
                                 disabled={!isDemoMode}
                                 id="send-button"

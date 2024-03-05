@@ -1,4 +1,4 @@
-import day_of_survey from "assets/illustration/day-of-survey.svg";
+import { ReactComponent as DayOfSurveyImg } from "assets/illustration/day-of-survey.svg";
 import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -108,7 +108,7 @@ const DayOfSurveyPage = () => {
     return (
         <SurveyPageStep
             currentPage={EdtRoutesNameEnum.DAY_OF_SURVEY}
-            errorIcon={day_of_survey}
+            errorIcon={DayOfSurveyImg}
             errorAltIcon={"accessibility.asset.day-of-survey-alt"}
             isStep={false}
             disableButton={modifiable ? disabledButton : true}

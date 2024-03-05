@@ -1,7 +1,7 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider, Popover, Typography } from "@mui/material";
-import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
-import moreHorizontal from "assets/illustration/mui-icon/more-horizontal.svg";
+import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios.svg";
+import { ReactComponent as MoreHorizontalImage } from "assets/illustration/mui-icon/more-horizontal.svg";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -36,9 +36,8 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
                     <Button
                         variant="outlined"
                         startIcon={
-                            <img
-                                src={arrowBackIos}
-                                alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                            <ArrowBackIosIcon
+                                aria-label={t("accessibility.asset.mui-icon.arrow-back-ios")}
                             />
                         }
                         onClick={onNavigateBack}
@@ -48,9 +47,8 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
                     <Typography className={classes.infoText}>{firstNamePrefix + firstName}</Typography>
                 </Box>
                 <Box onClick={onEditSurvey} onKeyUp={onEditSurvey}>
-                    <img
-                        src={moreHorizontal}
-                        alt={t("accessibility.asset.mui-icon.more-horizontal")}
+                    <MoreHorizontalImage
+                        aria-label={t("accessibility.asset.mui-icon.more-horizontal")}
                         className={classes.actionIcon}
                     />
                     <Popover
@@ -98,7 +96,7 @@ const useStyles = makeStylesEdt({ "name": { SurveyPageEditHeader } })(theme => (
         "& .MuiButton-startIcon": {
             marginLeft: important("0px"),
             marginRight: important("0px"),
-            width: important("10px"),
+            width: important("20px"),
         },
     },
     infoText: {

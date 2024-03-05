@@ -2,11 +2,12 @@ import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useTranslation } from "react-i18next";
+import Icon from "../Icon/Icon";
 
 interface AddActivityOrRouteStepperStepperProps {
     numberOfSteps: number;
     lastCompletedStepNumber: number;
-    currentStepIcon: string;
+    currentStepIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     currentStepIconAlt: string;
     currentStepNumber: number;
     currentStepLabel: string;
@@ -33,7 +34,7 @@ const AddActivityOrRouteStepper = (props: AddActivityOrRouteStepperStepperProps)
             </Box>
             <Box className={classes.stepBox}>
                 <Box>
-                    <img src={currentStepIcon} alt={currentStepIconAlt} />
+                    <Icon icon={currentStepIcon} alt={currentStepIconAlt} />
                 </Box>
                 <Box className={classes.textBox}>
                     <Box className={classes.textStepNumber}>

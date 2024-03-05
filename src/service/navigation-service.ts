@@ -689,11 +689,12 @@ const onClose = (
         getOrchestratorPage(EdtRoutesNameEnum.WEEKLY_PLANNER),
         source,
     );
+    const route = isActivity ? pathNav : weeklyPlannerRoute;
 
     if (hasRights) {
-        validateWithAlertAndNav(idSurvey, forceQuit, setIsAlertDisplayed, iteration, pathNav);
+        validateWithAlertAndNav(idSurvey, forceQuit, setIsAlertDisplayed, iteration, route);
     } else {
-        isActivity ? _navigate(pathNav) : _navigate(weeklyPlannerRoute);
+        _navigate(route);
     }
 };
 

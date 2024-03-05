@@ -6,25 +6,23 @@ import {
     makeStylesEdt,
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
-import catIcon100 from "assets/illustration/activity-categories/1.svg";
-import catIcon200 from "assets/illustration/activity-categories/2.svg";
-import catIcon300 from "assets/illustration/activity-categories/3.svg";
-import catIcon400 from "assets/illustration/activity-categories/4.svg";
-import catIcon440 from "assets/illustration/activity-categories/5.svg";
-import catIcon500 from "assets/illustration/activity-categories/6.svg";
-import catIcon650 from "assets/illustration/activity-categories/7.svg";
-import catIcon600 from "assets/illustration/activity-categories/8.svg";
-import errorIcon from "assets/illustration/error/activity.svg";
-import addLightBlue from "assets/illustration/mui-icon/add-light-blue.svg";
-import addWhite from "assets/illustration/mui-icon/add.svg";
-import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios.svg";
-import {
-    default as arrowForwardIos,
-    default as chevronRight,
-} from "assets/illustration/mui-icon/arrow-forward-ios.svg";
-import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
-import extension from "assets/illustration/mui-icon/extension.svg";
-import search from "assets/illustration/mui-icon/search.svg";
+import { ReactComponent as CatIcon100 } from "assets/illustration/activity-categories/1.svg";
+import { ReactComponent as CatIcon200 } from "assets/illustration/activity-categories/2.svg";
+import { ReactComponent as CatIcon300 } from "assets/illustration/activity-categories/3.svg";
+import { ReactComponent as CatIcon400 } from "assets/illustration/activity-categories/4.svg";
+import { ReactComponent as CatIcon440 } from "assets/illustration/activity-categories/5.svg";
+import { ReactComponent as CatIcon500 } from "assets/illustration/activity-categories/6.svg";
+import { ReactComponent as CatIcon650 } from "assets/illustration/activity-categories/7.svg";
+import { ReactComponent as CatIcon600 } from "assets/illustration/activity-categories/8.svg";
+import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
+import { ReactComponent as AddLightBlueIcon } from "assets/illustration/mui-icon/add-light-blue.svg";
+import { ReactComponent as AddWhiteIcon } from "assets/illustration/mui-icon/add.svg";
+import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
+import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
+import { ReactComponent as ChevronRightIcon } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import { ReactComponent as ArrowForwardIcon } from "assets/illustration/mui-icon/arrow-forward.svg";
+import { ReactComponent as ExtensionIcon } from "assets/illustration/mui-icon/extension.svg";
+import { ReactComponent as SearchIcon } from "assets/illustration/mui-icon/search.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { SEPARATOR_DEFAUT } from "constants/constants";
@@ -71,39 +69,39 @@ const HelpSubCategoryActivity = () => {
     const specificProps: ActivitySelecterSpecificProps = {
         categoriesIcons: {
             "100": {
-                icon: catIcon100,
+                icon: CatIcon100,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-100-alt"),
             },
             "200": {
-                icon: catIcon200,
+                icon: CatIcon200,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-200-alt"),
             },
             "300": {
-                icon: catIcon300,
+                icon: CatIcon300,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-300-alt"),
             },
             "400": {
-                icon: catIcon400,
+                icon: CatIcon400,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-400-alt"),
             },
             "440": {
-                icon: catIcon440,
+                icon: CatIcon440,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-440-alt"),
             },
             "500": {
-                icon: catIcon500,
+                icon: CatIcon500,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-500-alt"),
             },
             "650": {
-                icon: catIcon600,
+                icon: CatIcon600,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-600-alt"),
             },
             "600": {
-                icon: catIcon650,
+                icon: CatIcon650,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-650-alt"),
             },
         },
-        clickableListIconNoResult: errorIcon,
+        clickableListIconNoResult: <ErrorIcon />,
         activitesAutoCompleteRef: getAutoCompleteRef(),
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
@@ -125,7 +123,6 @@ const HelpSubCategoryActivity = () => {
             alertMessage: t("component.activity-selecter.alert-message"),
             alertIgnore: t("common.navigation.alert.ignore"),
             alertComplete: t("common.navigation.alert.complete"),
-            alertAlticon: t("common.navigation.alert.alt-icon"),
             clickableListPlaceholder: t("component.activity-selecter.clickable-list-placeholder"),
             clickableListNotFoundLabel: t("component.activity-selecter.clickable-list-not-found-label"),
             clickableListNotFoundComment: t(
@@ -134,9 +131,6 @@ const HelpSubCategoryActivity = () => {
             clickableListAddActivityButton: t(
                 "component.activity-selecter.clickable-list-add-activity-button",
             ),
-            clickableListIconNoResultAlt: t(
-                "component.activity-selecter.clickable-list-icon-no-result-alt",
-            ),
             clickableListNotSearchLabel: t(
                 "component.activity-selecter.clickable-list-not-search-label",
             ),
@@ -144,22 +138,20 @@ const HelpSubCategoryActivity = () => {
             saveButton: t("component.activity-selecter.save-button"),
             validateButton: t("component.activity-selecter.validate-button"),
         },
-        errorIcon: errorIcon,
+        errorIcon: <ErrorIcon />,
         addToReferentielCallBack: (newItem: AutoCompleteActiviteOption) => {
             addToAutocompleteActivityReferentiel(newItem);
         },
         widthGlobal: true,
         separatorSuggester: process.env.REACT_APP_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
         helpStep: 3,
-        chevronRightIcon: chevronRight,
+        chevronRightIcon: ChevronRightIcon,
         chevronRightIconAlt: t("accessibility.asset.mui-icon.arrow-right-ios"),
-        searchIcon: search,
+        searchIcon: SearchIcon,
         searchIconAlt: t("accessibility.asset.mui-icon.search"),
-        extensionIcon: extension,
-        extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
-        addLightBlueIcon: addLightBlue,
-        addWhiteIcon: addWhite,
-        addIconAlt: t("accessibility.asset.mui-icon.add"),
+        extensionIcon: <ExtensionIcon aria-label={t("accessibility.asset.mui-icon.extension")} />,
+        addLightBlueIcon: <AddLightBlueIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
+        addWhiteIcon: <AddWhiteIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
     };
 
     const navToActivityRouteHome = useCallback(() => {
@@ -196,9 +188,8 @@ const HelpSubCategoryActivity = () => {
                                 variant="outlined"
                                 onClick={previousHelpStep}
                                 startIcon={
-                                    <img
-                                        src={arrowBackIos}
-                                        alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                                    <ArrowBackIosIcon
+                                        aria-label={t("accessibility.asset.mui-icon.arrow-back-ios")}
                                     />
                                 }
                             >
@@ -211,9 +202,8 @@ const HelpSubCategoryActivity = () => {
                                 variant="outlined"
                                 onClick={nextHelpStep}
                                 endIcon={
-                                    <img
-                                        src={arrowForwardIos}
-                                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                    <ArrowForwardIosIcon
+                                        aria-label={t("accessibility.asset.mui-icon.arrow-forward-ios")}
                                     />
                                 }
                             >
@@ -227,9 +217,8 @@ const HelpSubCategoryActivity = () => {
                             variant="outlined"
                             onClick={navToActivityRouteHome}
                             endIcon={
-                                <img
-                                    src={arrowForward}
-                                    alt={t("accessibility.asset.mui-icon.arrow-forward")}
+                                <ArrowForwardIcon
+                                    aria-label={t("accessibility.asset.mui-icon.arrow-forward")}
                                 />
                             }
                         >
@@ -291,8 +280,7 @@ const HelpSubCategoryActivity = () => {
                             [isAlertDisplayed],
                         )}
                         labels={getLabelsWhenQuit()}
-                        icon={errorIcon}
-                        errorIconAlt={t("page.activity-duration.alt-alert-icon")}
+                        icon={<ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />}
                     ></Alert>
                     <OrchestratorForStories
                         source={source}

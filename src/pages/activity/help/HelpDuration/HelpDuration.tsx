@@ -1,10 +1,10 @@
 import { important, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
-import imageHelp from "assets/illustration/hourpicker.svg";
-import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
-import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
-import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
-import arrowDown from "assets/illustration/mui-icon/expand-more.svg";
+import { ReactComponent as ImageHelpIcon } from "assets/illustration/hourpicker.svg";
+import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
+import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
+import { ReactComponent as ArrowForwardIcon } from "assets/illustration/mui-icon/arrow-forward.svg";
+import { ReactComponent as ArrowDownIcon } from "assets/illustration/mui-icon/expand-more.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
@@ -48,9 +48,8 @@ const HelpDuration = () => {
             MINUTE_LABEL: MINUTE_LABEL,
         },
         helpStep: 1,
-        helpImage: imageHelp,
-        arrowDownIcon: arrowDown,
-        arrowDownIconAlt: t("accessibility.asset.mui-icon.expand-more"),
+        helpImage: <ImageHelpIcon />,
+        arrowDownIcon: <ArrowDownIcon aria-label={t("accessibility.asset.mui-icon.expand-more")} />,
         labels: {
             ariaLabelTimepicker: t("accessibility.asset.timepicker-alt"),
             cancelLabel: t("page.activity-duration.cancel"),
@@ -82,9 +81,8 @@ const HelpDuration = () => {
                                 variant="outlined"
                                 onClick={previousHelpStep}
                                 startIcon={
-                                    <img
-                                        src={arrowBackIos}
-                                        alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                                    <ArrowBackIosIcon
+                                        aria-label={t("accessibility.asset.mui-icon.arrow-back-ios")}
                                     />
                                 }
                             >
@@ -97,9 +95,8 @@ const HelpDuration = () => {
                                 variant="outlined"
                                 onClick={nextHelpStep}
                                 endIcon={
-                                    <img
-                                        src={arrowForwardIos}
-                                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                    <ArrowForwardIosIcon
+                                        aria-label={t("accessibility.asset.mui-icon.arrow-forward-ios")}
                                     />
                                 }
                             >
@@ -113,9 +110,8 @@ const HelpDuration = () => {
                             variant="outlined"
                             onClick={navToActivityRouteHome}
                             endIcon={
-                                <img
-                                    src={arrowForward}
-                                    alt={t("accessibility.asset.mui-icon.arrow-forward")}
+                                <ArrowForwardIcon
+                                    aria-label={t("accessibility.asset.mui-icon.arrow-forward")}
                                 />
                             }
                         >

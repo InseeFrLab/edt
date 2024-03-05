@@ -1,8 +1,8 @@
 import { Alert, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
 import { IconButton, Snackbar } from "@mui/material";
-import errorIcon from "assets/illustration/error/activity.svg";
-import close from "assets/illustration/mui-icon/close.svg";
-import arrowDown from "assets/illustration/mui-icon/expand-more.svg";
+import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
+import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
+import { ReactComponent as ArrowDownIcon } from "assets/illustration/mui-icon/expand-more.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
@@ -60,8 +60,7 @@ const ActivityDurationPage = () => {
             FORMAT_TIME: FORMAT_TIME,
             MINUTE_LABEL: MINUTE_LABEL,
         },
-        arrowDownIcon: arrowDown,
-        arrowDownIconAlt: t("accessibility.asset.mui-icon.expand-more"),
+        arrowDownIcon: <ArrowDownIcon aria-label={t("accessibility.asset.mui-icon.expand-more")} />,
         modifiable: !surveyReadOnly(context.rightsSurvey),
         defaultLanguage: "fr",
         labels: {
@@ -203,7 +202,7 @@ const ActivityDurationPage = () => {
     const snackbarAction = (
         <Fragment>
             <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
-                <img src={close} alt={t("accessibility.asset.mui-icon.close")} />
+                <CloseIcon aria-label={t("accessibility.asset.mui-icon.close")} />
             </IconButton>
             <></>
         </Fragment>
@@ -228,8 +227,7 @@ const ActivityDurationPage = () => {
                     )}
                     onCancelCallBack={useCallback(cancel => onClose(cancel), [])}
                     labels={getLabelsWhenQuit(isRoute)}
-                    icon={errorIcon}
-                    errorIconAlt={t("page.activity-duration.alt-alert-icon")}
+                    icon={<ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />}
                 ></Alert>
                 <Snackbar
                     className={isDesktop() ? classes.snackbarDesktop : classes.snackbar}

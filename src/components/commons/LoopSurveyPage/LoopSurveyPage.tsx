@@ -23,7 +23,7 @@ interface LoopSurveyPageProps {
     displayHeader?: boolean;
     className?: string;
     children: JSX.Element[] | JSX.Element;
-    currentStepIcon?: string;
+    currentStepIcon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     currentStepIconAlt?: string;
     currentStepNumber?: number;
     currentStepLabel?: string;

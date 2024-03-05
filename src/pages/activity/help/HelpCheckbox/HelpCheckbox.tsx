@@ -1,13 +1,13 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
-import arrowBackIos from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
-import arrowForwardIos from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
-import arrowForward from "assets/illustration/mui-icon/arrow-forward.svg";
-import childIcon from "assets/illustration/with-someone-categories/child.svg";
-import coupleIcon from "assets/illustration/with-someone-categories/couple.svg";
-import otherKnownIcon from "assets/illustration/with-someone-categories/other-known.svg";
-import otherIcon from "assets/illustration/with-someone-categories/other.svg";
-import parentsIcon from "assets/illustration/with-someone-categories/parents.svg";
+import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
+import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
+import { ReactComponent as ArrowForwardIcon } from "assets/illustration/mui-icon/arrow-forward.svg";
+import { ReactComponent as childIcon } from "assets/illustration/with-someone-categories/child.svg";
+import { ReactComponent as coupleIcon } from "assets/illustration/with-someone-categories/couple.svg";
+import { ReactComponent as otherKnownIcon } from "assets/illustration/with-someone-categories/other-known.svg";
+import { ReactComponent as otherIcon } from "assets/illustration/with-someone-categories/other.svg";
+import { ReactComponent as parentsIcon } from "assets/illustration/with-someone-categories/parents.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -87,9 +87,8 @@ const HelpCheckbox = () => {
                                 variant="outlined"
                                 onClick={previousHelpStep}
                                 startIcon={
-                                    <img
-                                        src={arrowBackIos}
-                                        alt={t("accessibility.asset.mui-icon.arrow-back-ios")}
+                                    <ArrowBackIosIcon
+                                        aria-label={t("accessibility.asset.mui-icon.arrow-back-ios")}
                                     />
                                 }
                             >
@@ -103,9 +102,8 @@ const HelpCheckbox = () => {
                                 variant="outlined"
                                 onClick={nextHelpStep}
                                 endIcon={
-                                    <img
-                                        src={arrowForwardIos}
-                                        alt={t("accessibility.asset.mui-icon.arrow-forward-ios")}
+                                    <ArrowForwardIosIcon
+                                        aria-label={t("accessibility.asset.mui-icon.arrow-forward-ios")}
                                     />
                                 }
                             >
@@ -119,9 +117,8 @@ const HelpCheckbox = () => {
                             variant="outlined"
                             onClick={navToActivityRouteHome}
                             endIcon={
-                                <img
-                                    src={arrowForward}
-                                    alt={t("accessibility.asset.mui-icon.arrow-forward")}
+                                <ArrowForwardIcon
+                                    aria-label={t("accessibility.asset.mui-icon.arrow-forward")}
                                 />
                             }
                         >

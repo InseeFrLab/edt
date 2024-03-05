@@ -9,12 +9,12 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider, Switch, Typography } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { default as errorIcon } from "assets/illustration/error/activity.svg";
-import InfoAlertIcon from "assets/illustration/info-alert.svg";
-import InfoIcon from "assets/illustration/info.svg";
-import checkIcon from "assets/illustration/mui-icon/check.svg";
-import downloadIcon from "assets/illustration/mui-icon/download.svg";
-import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
+import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
+import { ReactComponent as InfoAlertIcon } from "assets/illustration/info-alert.svg";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
+import { ReactComponent as CheckIcon } from "assets/illustration/mui-icon/check.svg";
+import { ReactComponent as DownloadIcon } from "assets/illustration/mui-icon/download.svg";
+import { ReactComponent as InfoTooltipIcon } from "assets/illustration/mui-icon/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
@@ -395,10 +395,8 @@ const ActivitySummaryPage = () => {
 
     const infoLabels: InfoProps = {
         boldText: t("page.activity-planner.info"),
-        infoIcon: InfoIcon,
-        infoIconAlt: t("accessibility.asset.info.info-alt"),
-        infoIconTooltip: InfoTooltipIcon,
-        infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
+        infoIcon: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
+        infoIconTooltip: <InfoTooltipIcon aria-label={t("accessibility.asset.info.info-alt")} />,
         border: true,
     };
 
@@ -515,8 +513,11 @@ const ActivitySummaryPage = () => {
                                         onCompleteCallBack={lock}
                                         onCancelCallBack={displayAlert(setIsAlertLockDisplayed, false)}
                                         labels={getAlertLabelsLock(isLocked, variableEdited, t)}
-                                        icon={errorIcon}
-                                        errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                                        icon={
+                                            <ErrorIcon
+                                                aria-label={t("page.alert-when-quit.alt-alert-icon")}
+                                            />
+                                        }
                                     ></Alert>
                                     <Box className={classes.headerActivityBox}>
                                         <Typography className={classes.label}>
@@ -601,8 +602,9 @@ const ActivitySummaryPage = () => {
                             <Info
                                 boldText={t("page.activity-summary.alert-tooltip-edit.alert-bold")}
                                 isAlertInfo={true}
-                                infoIconAlt={t("accessibility.asset.info.info-alt")}
-                                infoIcon={InfoAlertIcon}
+                                infoIcon={
+                                    <InfoAlertIcon aria-label={t("accessibility.asset.info.info-alt")} />
+                                }
                                 border={true}
                             />
                         </Box>
@@ -626,8 +628,9 @@ const ActivitySummaryPage = () => {
                                 onCompleteCallBack={validate}
                                 onCancelCallBack={displayAlert(setIsAlertValidateDisplayed, false)}
                                 labels={alertValidateLabels}
-                                icon={errorIcon}
-                                errorIconAlt={t("page.alert-when-quit.alt-alert-icon")}
+                                icon={
+                                    <ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />
+                                }
                             ></Alert>
                             <Button variant="outlined" onClick={back} className={classes.buttonNav}>
                                 {t("common.navigation.back")}
@@ -636,9 +639,8 @@ const ActivitySummaryPage = () => {
                                 variant="outlined"
                                 className={classes.buttonNav}
                                 startIcon={
-                                    <img
-                                        src={downloadIcon}
-                                        alt={t("accessibility.asset.mui-icon.download")}
+                                    <DownloadIcon
+                                        aria-label={t("accessibility.asset.mui-icon.download")}
                                         className={classes.midSizeButton}
                                     />
                                 }
@@ -664,9 +666,8 @@ const ActivitySummaryPage = () => {
                                 onClick={openPopup}
                                 disabled={!modifiable}
                                 startIcon={
-                                    <img
-                                        src={checkIcon}
-                                        alt={t("accessibility.asset.mui-icon.check")}
+                                    <CheckIcon
+                                        aria-label={t("accessibility.asset.mui-icon.check")}
                                         className={classes.midSizeButton}
                                     />
                                 }

@@ -1,4 +1,4 @@
-import who_are_you from "assets/illustration/who-are-you.svg";
+import { ReactComponent as WhoAreYouImg } from "assets/illustration/who-are-you.svg";
 import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -71,7 +71,7 @@ const EditGlobalInformationPage = () => {
                     ? EdtRoutesNameEnum.WEEKLY_PLANNER
                     : EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER
             }
-            errorIcon={who_are_you}
+            errorIcon={WhoAreYouImg}
             errorAltIcon={"accessibility.asset.who-are-you-alt"}
             isStep={false}
             disableButton={disabledButton}

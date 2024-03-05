@@ -1,9 +1,9 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
-import expandMore from "assets/illustration/mui-icon/expand-more-white.svg";
-import cat from "assets/illustration/person/cat.svg";
-import owl from "assets/illustration/person/owl.svg";
-import zebra from "assets/illustration/person/zebra.svg";
+import { ReactComponent as ExpandMoreIcon } from "assets/illustration/mui-icon/expand-more-white.svg";
+import { ReactComponent as CatIcon } from "assets/illustration/person/cat.svg";
+import { ReactComponent as OwlIcon } from "assets/illustration/person/owl.svg";
+import { ReactComponent as ZebraIcon } from "assets/illustration/person/zebra.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import DayCard from "components/edt/DayCard/DayCard";
 import WeekCard from "components/edt/WeekCard/WeekCard";
@@ -30,6 +30,7 @@ import {
     getSurveyRights,
     getValue,
 } from "service/survey-service";
+import Icon from "../Icon/Icon";
 
 interface PersonCardProps {
     values: Person[];
@@ -44,7 +45,7 @@ const PersonCard = (props: PersonCardProps) => {
     const isItMobile = isMobile();
     const { classes, cx } = useStyles({ "isMobileScreen": isItMobile });
 
-    const imagesArray = [zebra, owl, cat];
+    const imagesArray = [ZebraIcon, OwlIcon, CatIcon];
     const numGroup = values[0].num;
 
     const getFirstNameOfGroup = () => {
@@ -155,14 +156,14 @@ const PersonCard = (props: PersonCardProps) => {
         return (
             <Accordion className={classes.personCardBox}>
                 <AccordionSummary
-                    expandIcon={<img src={expandMore} alt={t("accessibility.asset.mui-icon.close")} />}
+                    expandIcon={<ExpandMoreIcon aria-label={t("accessibility.asset.mui-icon.close")} />}
                     aria-controls="panel-content"
                     id="panel-header"
                     className={classes.headerPersonCard}
                 >
                     <Box className={cx(classes.iconBox)}>
-                        <img
-                            src={imagesArray[numPerson]}
+                        <Icon
+                            icon={imagesArray[numPerson]}
                             alt={t("accessibility.asset.card.person-alt")}
                         />
                     </Box>

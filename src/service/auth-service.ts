@@ -11,7 +11,6 @@ const isSSO = attributes.includes("kc_idp_hint");
 const attributeSSO = attributes.substring(1, attributes.length);
 
 const createUserManager = () => {
-    console.log("create new usermanager for : ", attributeSSO);
     const IDENTITY_CONFIG = {
         authority: url, //(string): The URL of the OIDC provider.
         client_id: clientId, //(string): Your client application's identifier as registered with the OIDC provider.
@@ -69,18 +68,8 @@ const createUserManager = () => {
     userManager.events.addUserLoaded(user => {
         setUserToken(user?.access_token || "");
     });
-
-    userManager.events.addSilentRenewError(e => {
-        console.log("silent renew error", e.message);
-    });
-
     userManager.events.addAccessTokenExpired(() => {
-        console.log("token expired");
         signinSilent(userManager);
-    });
-
-    userManager.metadataService.getMetadata().then(data => {
-        console.log("metadata of new userManager", data);
     });
 
     return userManager;

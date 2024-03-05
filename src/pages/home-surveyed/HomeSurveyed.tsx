@@ -1,19 +1,18 @@
 import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button } from "@mui/material";
-import disconnectIcon from "assets/illustration/disconnect.svg";
+import { ReactComponent as DisconnectIcon } from "assets/illustration/disconnect.svg";
 import logo from "assets/illustration/logo.png";
-import help from "assets/illustration/mui-icon/help.svg";
-import home from "assets/illustration/mui-icon/home.svg";
-import lock from "assets/illustration/mui-icon/lock.svg";
-import powerSettings from "assets/illustration/mui-icon/power-settings.svg";
-import removeCircle from "assets/illustration/mui-icon/remove-circle.svg";
-import reminder_note from "assets/illustration/reminder-note.svg";
+import { ReactComponent as HelpIcon } from "assets/illustration/mui-icon/help.svg";
+import { ReactComponent as HomeIcon } from "assets/illustration/mui-icon/home.svg";
+import { ReactComponent as LockIcon } from "assets/illustration/mui-icon/lock.svg";
+import { ReactComponent as PowerSettingsIcon } from "assets/illustration/mui-icon/power-settings.svg";
+import { ReactComponent as RemoveCircleIcon } from "assets/illustration/mui-icon/remove-circle.svg";
+import { ReactComponent as ReminderNoteImg } from "assets/illustration/reminder-note.svg";
 import BreadcrumbsReviewer from "components/commons/BreadcrumbsReviewer/BreadcrumbsReviewer";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import HelpMenu from "components/edt/HelpMenu/HelpMenu";
 import PersonCard from "components/edt/PersonCard/PersonCard";
-
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
@@ -70,7 +69,6 @@ const HomeSurveyedPage = () => {
     const isDemo = isDemoMode();
     const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
     const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
-
     let userDatas: Person[];
 
     const initHome = (idsSurveysSelected: string[]) => {
@@ -91,6 +89,11 @@ const HomeSurveyedPage = () => {
             initializeDatas(setError).then(() => {
                 setInitialized(true);
             });
+        } else if (getUserRights() === EdtUserRightsEnum.SURVEYED) {
+            initializeDatas(setError).then(() => {
+                setInitialized(true);
+                setState({});
+            });
         }
 
         if (getUserRights() == EdtUserRightsEnum.REVIEWER && !isDemo) {
@@ -102,10 +105,15 @@ const HomeSurveyedPage = () => {
                         !survey.startsWith("activitySurvey") && !survey.startsWith("workTimeSurvey"),
                 );
             if (navigator.onLine) {
-                getRemoteSavedSurveysDatas(idsSurveysSelected, setError, false).then(() => {
+                getRemoteSavedSurveysDatas(idsSurveysSelected, setError).then(() => {
                     initHome(idsSurveysSelected);
                 });
+            } else {
+                initHome(idsSurveysSelected);
             }
+        } else if (getUserRights() == EdtUserRightsEnum.REVIEWER && isDemo) {
+            let userDatas = userDatasMap();
+            setDatas(userDatas);
         }
     }, []);
 
@@ -119,8 +127,7 @@ const HomeSurveyedPage = () => {
             cancel: t("common.navigation.cancel"),
             complete: t("page.home.navigation.logout"),
         },
-        icon: disconnectIcon,
-        errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
+        icon: <DisconnectIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />,
     };
 
     const resetDataAndReload = useCallback(() => {
@@ -213,7 +220,7 @@ const HomeSurveyedPage = () => {
     const renderReminderNote = () => {
         return (
             <FlexCenter className={classes.spacing}>
-                <img src={reminder_note} alt={t("accessibility.asset.reminder-notes-alt")} />
+                <ReminderNoteImg aria-label={t("accessibility.asset.reminder-notes-alt")} />
             </FlexCenter>
         );
     };
@@ -240,7 +247,7 @@ const HomeSurveyedPage = () => {
         );
         initializeSurveysIdsDemo().then(() => {
             setState(getData(getIdSurveyActivity(interviewers[0], 0)));
-            initializeSurveysDatasCache().then(() => {
+            return initializeSurveysDatasCache().then(() => {
                 interviewers = getUserDatasActivity().map(data => data.interviewerId);
                 interviewersUniques = interviewers.filter(
                     (value, index, self) => self.indexOf(value) === index,
@@ -249,7 +256,7 @@ const HomeSurveyedPage = () => {
             });
         });
 
-        return renderPageOrLoadingOrError(
+        return (
             <>
                 {renderReminderNote()}
                 <Box className={classes.groupCardBox}>
@@ -264,14 +271,13 @@ const HomeSurveyedPage = () => {
                         );
                     })}
                 </Box>
-            </>,
+            </>
         );
     };
 
     const renderHomeInterviewer = () => {
         let userDataGroupedInterv = nameSurveyGroupMap();
         let groups = Object.keys(userDataGroupedInterv);
-
         return (
             <>
                 {renderReminderNote()}
@@ -361,9 +367,8 @@ const HomeSurveyedPage = () => {
                             variant="contained"
                             onClick={lockSurveys}
                             className={cx(classes.navButton)}
-                            disabled={!navigator.onLine}
                         >
-                            <img src={lock} alt={t("accessibility.asset.mui-icon.padlock")} />
+                            <LockIcon aria-label={t("accessibility.asset.mui-icon.padlock")} />
                         </Button>
                     </FlexCenter>
                 </Box>
@@ -397,7 +402,7 @@ const HomeSurveyedPage = () => {
                             onClick={navToReviewerHome}
                             id="button-home-reviewer"
                         >
-                            <img src={home} alt={t("accessibility.asset.mui-icon.home")} />
+                            <HomeIcon aria-label={t("accessibility.asset.mui-icon.home")} />
                         </Button>
                         <BreadcrumbsReviewer
                             labelBreadcrumbPrincipal={t("page.breadcrumbs-reviewer.home")}
@@ -424,9 +429,8 @@ const HomeSurveyedPage = () => {
                         <Button
                             color="secondary"
                             startIcon={
-                                <img
-                                    src={removeCircle}
-                                    alt={t("accessibility.asset.mui-icon.remove-circle")}
+                                <RemoveCircleIcon
+                                    aria-label={t("accessibility.asset.mui-icon.remove-circle")}
                                 />
                             }
                             onClick={resetDataAndReload}
@@ -438,9 +442,8 @@ const HomeSurveyedPage = () => {
                         <Button
                             color="primary"
                             startIcon={
-                                <img
-                                    src={removeCircle}
-                                    alt={t("accessibility.asset.mui-icon.remove-circle")}
+                                <RemoveCircleIcon
+                                    aria-label={t("accessibility.asset.mui-icon.remove-circle")}
                                 />
                             }
                             onClick={resetDemoDataAndReload}
@@ -450,7 +453,7 @@ const HomeSurveyedPage = () => {
                     )}
                     <Button
                         color="secondary"
-                        startIcon={<img src={help} alt={t("accessibility.asset.mui-icon.help")} />}
+                        startIcon={<HelpIcon aria-label={t("accessibility.asset.mui-icon.help")} />}
                         onClick={navToHelp}
                     >
                         {t("page.home.navigation.link-help-label")}
@@ -459,9 +462,8 @@ const HomeSurveyedPage = () => {
                     <Button
                         color="secondary"
                         startIcon={
-                            <img
-                                src={powerSettings}
-                                alt={t("accessibility.asset.mui-icon.power-settings")}
+                            <PowerSettingsIcon
+                                aria-label={t("accessibility.asset.mui-icon.power-settings")}
                             />
                         }
                         onClick={onDisconnect}

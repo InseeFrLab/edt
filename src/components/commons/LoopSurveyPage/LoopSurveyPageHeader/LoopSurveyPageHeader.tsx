@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Typography } from "@mui/material";
-import close from "assets/illustration/mui-icon/close.svg";
+import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
 import { useTranslation } from "react-i18next";
 
 interface LoopSurveyPageHeaderProps {
@@ -20,9 +20,8 @@ const LoopSurveyPageHeader = (props: LoopSurveyPageHeaderProps) => {
                     <Typography className={classes.infoText}>{label}</Typography>
                 </Box>
                 <Box onClick={onClose} onKeyUp={onClose}>
-                    <img
-                        src={close}
-                        alt={t("accessibility.asset.mui-icon.close")}
+                    <CloseIcon
+                        aria-label={t("accessibility.asset.mui-icon.close")}
                         className={classes.actionIcon}
                     />
                 </Box>

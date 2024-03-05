@@ -2,17 +2,15 @@ import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Divider, Typography } from "@mui/material";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
-import { useCallback } from "react";
+import { ReactElement, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
 import { isMobile } from "service/responsive";
 
 interface HouseholdCardProps {
     idHousehold: string;
-    iconPerson: string;
-    iconPersonAlt: string;
-    iconArrow: string;
-    iconArrowAlt: string;
+    iconPerson: ReactElement<any>;
+    iconArrow: ReactElement<any>;
     householdStaticLabel: string;
     startedSurveyLabel: string;
     closedSurveyLabel: string;
@@ -25,9 +23,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
     const {
         idHousehold,
         iconPerson,
-        iconPersonAlt,
         iconArrow,
-        iconArrowAlt,
         householdStaticLabel,
         startedSurveyLabel,
         closedSurveyLabel,
@@ -70,9 +66,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
     const renderCard = () => {
         return (
             <>
-                <Box className={cx(classes.iconBox, getType())}>
-                    <img src={iconPerson} alt={iconPersonAlt} />
-                </Box>
+                <Box className={cx(classes.iconBox, getType())}>{iconPerson}</Box>
                 <Box className={classes.identityBox}>
                     <Typography className={classes.label}>{householdStaticLabel}</Typography>
                     <Typography className={classes.labelBold}>{dataHousehold.idHousehold}</Typography>
@@ -124,9 +118,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
                 <Box className={classes.dateBox}>
                     <Typography>{dataHousehold.surveyDate}</Typography>
                 </Box>
-                <Box className={classes.arrowBox}>
-                    <img src={iconArrow} alt={iconArrowAlt} />
-                </Box>
+                <Box className={classes.arrowBox}>{iconArrow}</Box>
             </>
         );
     };
@@ -143,7 +135,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
                                 isItMobile ? classes.iconBoxMobile : "",
                             )}
                         >
-                            <img src={iconPerson} alt={iconPersonAlt} />
+                            {iconPerson}
                         </Box>
                         <Box className={classes.identityBox}>
                             <Typography className={classes.label}>{householdStaticLabel}</Typography>
@@ -197,9 +189,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
                         <Typography>{dataHousehold.surveyDate}</Typography>
                     </Box>
                 </Box>
-                <Box className={classes.arrowBox}>
-                    <img src={iconArrow} alt={iconArrowAlt} />
-                </Box>
+                <Box className={classes.arrowBox}>{iconArrow}</Box>
             </>
         );
     };

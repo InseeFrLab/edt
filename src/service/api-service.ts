@@ -370,31 +370,33 @@ const requestGetStateReviewer = (
     });
 };
 
+const getStateIfNeeded = (
+    idSurvey: string,
+    setError: (error: ErrorCodeEnum) => void,
+    withState?: boolean,
+): Promise<StateData | undefined> => {
+    if (withState) {
+        return requestGetStateReviewer(idSurvey, setError);
+    } else {
+        return Promise.resolve(undefined);
+    }
+};
+
 const requestGetSurveyDataReviewer = (
     idSurvey: string,
     setError: (error: ErrorCodeEnum) => void,
     withState?: boolean,
 ): Promise<SurveyData> => {
-    return requestGetDataReviewer(idSurvey, setError).then(data => {
-        if (withState) {
-            return requestGetStateReviewer(idSurvey, setError).then(stateData => {
-                return new Promise(resolve => {
-                    const surveyData: SurveyData = {
-                        stateData: stateData,
-                        data: data,
-                    };
-                    resolve(surveyData);
-                });
-            });
-        } else {
+    return getStateIfNeeded(idSurvey, setError, withState).then((stateData: StateData | undefined) => {
+        return requestGetDataReviewer(idSurvey, setError).then(data => {
             return new Promise(resolve => {
                 const surveyData: SurveyData = {
-                    stateData: undefined,
+                    stateData: stateData,
                     data: data,
                 };
                 resolve(surveyData);
             });
-        }
+        });
     });
 };
 
@@ -405,7 +407,6 @@ const remoteGetSurveyDataReviewer = (
 ): Promise<SurveyData> => {
     const isReviewerMode = isReviewer();
     if (!isReviewerMode) setError?.(ErrorCodeEnum.NO_RIGHTS);
-
     return requestGetSurveyDataReviewer(idSurvey, setError, withState).catch(err => {
         if (err.response?.status === 403) {
             setError?.(ErrorCodeEnum.NO_RIGHTS);

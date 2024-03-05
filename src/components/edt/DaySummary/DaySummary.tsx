@@ -2,9 +2,10 @@ import { makeStylesEdt, TooltipInfo } from "@inseefrlab/lunatic-edt";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import InfoIcon from "assets/illustration/info.svg";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
 import { UserActivitiesSummary } from "interface/entity/ActivitiesSummary";
 import { useTranslation } from "react-i18next";
+
 interface DaySummaryProps {
     userActivitiesSummary?: UserActivitiesSummary;
 }
@@ -15,11 +16,8 @@ const DaySummary = (props: DaySummaryProps) => {
     const { t } = useTranslation();
     const tooltipTitleLabels = {
         boldText: t("component.day-summary.tooltip-summary"),
-        infoIconAlt: t("accessibility.asset.info.info-alt"),
-        infoIcon: InfoIcon,
-        infoIconTooltip: InfoIcon,
-        infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
-
+        infoIcon: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
+        infoIconTooltip: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
         border: true,
     };
     const titleLabels = {

@@ -10,9 +10,11 @@ import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimp
 import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
 import EndActivityStepper from "components/edt/EndActivityStepper/EndActivityStepper";
 import { LunaticModel } from "interface/lunatic/Lunatic";
-import React, { useEffect } from "react";
+import React, { ReactElement, useEffect } from "react";
+import { isAndroid, isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { getLastCompletedStep } from "service/navigation-service";
+import { isMobile, isPwa } from "service/responsive";
 import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
 import { getScore } from "service/survey-activity-service";
 
@@ -24,8 +26,7 @@ interface SurveyPageProps {
     onAdd?(): void;
     finishLabel?: string;
     addLabel?: string;
-    srcIcon?: string;
-    altIcon?: string;
+    icon?: ReactElement<any>;
     onNavigateBack?(): void;
     firstName?: string;
     firstNamePrefix?: string;
@@ -52,8 +53,7 @@ const SurveyPage = (props: SurveyPageProps) => {
     const {
         children,
         className,
-        srcIcon,
-        altIcon,
+        icon,
         validate,
         onFinish,
         onAdd,
@@ -81,7 +81,17 @@ const SurveyPage = (props: SurveyPageProps) => {
         modifiable = true,
     } = props;
     const { t } = useTranslation();
-    const { classes, cx } = useStyles();
+
+    const isMobileNav = !isPwa && (isIOS || isAndroid || isMobile());
+    const headerHeight = document.getElementById(
+        t("accessibility.component.survey-selecter.id"),
+    )?.clientHeight;
+
+    const windowHeight = isMobileNav ? window.innerHeight : window.innerHeight - (headerHeight ?? 0);
+
+    const { classes, cx } = useStyles({
+        "innerHeight": windowHeight,
+    });
     const [scoreAct, setScoreAct] = React.useState<number | undefined>(score);
 
     useEffect(() => {
@@ -98,7 +108,6 @@ const SurveyPage = (props: SurveyPageProps) => {
             )
         );
     };
-
     return (
         <Box className={cx(classes.page, className)}>
             {!simpleHeader && firstName && surveyDate && onNavigateBack && (
@@ -139,7 +148,7 @@ const SurveyPage = (props: SurveyPageProps) => {
             )}
             {renderProgressBar()}
             <Box className={classes.content}>
-                {srcIcon && altIcon && <PageIcon srcIcon={srcIcon} altIcon={altIcon} />}
+                {icon && <PageIcon icon={icon} />}
                 {children}
             </Box>
 
@@ -179,13 +188,15 @@ const SurveyPage = (props: SurveyPageProps) => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { NavButton: SurveyPage } })(theme => ({
+const useStyles = makeStylesEdt<{
+    innerHeight: number;
+}>({ "name": { NavButton: SurveyPage } })((theme, { innerHeight }) => ({
     page: {
         flexGrow: "1",
         display: "flex",
         flexDirection: "column",
         overflow: "hidden !important",
-        height: "100%",
+        height: innerHeight,
     },
     content: {
         flexGrow: "1",

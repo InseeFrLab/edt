@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import Box from "@mui/material/Box";
-import calendarMonth from "assets/illustration/mui-icon/calendar-month.svg";
+import { ReactComponent as CalendarMonthIcon } from "assets/illustration/mui-icon/calendar-month.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "service/responsive";
@@ -55,9 +55,8 @@ const WeekCard = (props: WeekCardProps) => {
             >
                 <Box className={getLeftBoxClass()}>
                     <Box className={cx(classes.iconBox, isClose ? classes.closeIconBox : "")}>
-                        <img
-                            src={calendarMonth}
-                            alt={t("accessibility.asset.mui-icon.calendar-month")}
+                        <CalendarMonthIcon
+                            aria-label={t("accessibility.asset.mui-icon.calendar-month")}
                         />
                     </Box>
                     <Box className={classes.textBox}>

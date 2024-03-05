@@ -6,19 +6,19 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
 import { Box } from "@mui/material";
-import InfoIcon from "assets/illustration/info.svg";
-import expandLessWhite from "assets/illustration/mui-icon/expand-less-white.svg";
-import expandLess from "assets/illustration/mui-icon/expand-less.svg";
-import expandMoreWhite from "assets/illustration/mui-icon/expand-more-white.svg";
-import expandMore from "assets/illustration/mui-icon/expand-more.svg";
-import InfoTooltipIcon from "assets/illustration/mui-icon/info.svg";
-import moreHorizontal from "assets/illustration/mui-icon/more-horizontal.svg";
-import work from "assets/illustration/mui-icon/work-full.svg";
-import ClientIcon from "assets/illustration/place-work-categories/client.svg";
-import HomeIcon from "assets/illustration/place-work-categories/home.svg";
-import NotWorkIcon from "assets/illustration/place-work-categories/notwork.svg";
-import OtherIcon from "assets/illustration/place-work-categories/other.svg";
-import WorkIcon from "assets/illustration/place-work-categories/work.svg";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
+import { ReactComponent as ExpandLessWhiteIcon } from "assets/illustration/mui-icon/expand-less-white.svg";
+import { ReactComponent as ExpandLessIcon } from "assets/illustration/mui-icon/expand-less.svg";
+import { ReactComponent as ExpandMoreWhiteIcon } from "assets/illustration/mui-icon/expand-more-white.svg";
+import { ReactComponent as ExpandMoreIcon } from "assets/illustration/mui-icon/expand-more.svg";
+import { ReactComponent as InfoTooltipIcon } from "assets/illustration/mui-icon/info.svg";
+import { ReactComponent as MoreHorizontalIcon } from "assets/illustration/mui-icon/more-horizontal.svg";
+import { ReactComponent as WorkFullIcon } from "assets/illustration/mui-icon/work-full.svg";
+import { ReactComponent as ClientIcon } from "assets/illustration/place-work-categories/client.svg";
+import { ReactComponent as HomeIcon } from "assets/illustration/place-work-categories/home.svg";
+import { ReactComponent as NotWorkIcon } from "assets/illustration/place-work-categories/notwork.svg";
+import { ReactComponent as OtherIcon } from "assets/illustration/place-work-categories/other.svg";
+import { ReactComponent as WorkIcon } from "assets/illustration/place-work-categories/work.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import HelpMenu from "components/edt/HelpMenu/HelpMenu";
@@ -40,7 +40,7 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
-import { isPwa } from "service/responsive";
+import { isMobile, isPwa } from "service/responsive";
 import { getData, getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
 import { isReviewer } from "service/user-service";
 import { getSurveyIdFromUrl } from "utils/utils";
@@ -54,12 +54,17 @@ const WeeklyPlannerPage = () => {
     const idSurvey = getSurveyIdFromUrl(context, location);
 
     setEnviro(context, useNavigate(), callbackHolder);
+    const isMobileNav = !isPwa() && (isIOS || isAndroid || isMobile());
+    const headerHeight = document.getElementById(
+        t("accessibility.component.survey-selecter.id"),
+    )?.clientHeight;
+    const windowHeight = isMobileNav ? window.innerHeight : window.innerHeight - (headerHeight ?? 72);
 
     const { classes, cx } = useStyles({
         "isMobile": !isPwa(),
         "isIOS": isIOS,
         "iosHeight": context.isOpenHeader ? "80vh" : "87vh",
-        "innerHeight": window.innerHeight,
+        "innerHeight": windowHeight,
     });
 
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
@@ -156,27 +161,25 @@ const WeeklyPlannerPage = () => {
             infoLabels: {
                 normalText: t("page.weekly-planner.info-light"),
                 boldText: t("page.weekly-planner.info-bold"),
-                infoIconAlt: t("accessibility.asset.info.info-alt"),
-                infoIcon: InfoIcon,
                 border: true,
-                infoIconTooltip: InfoTooltipIcon,
-                infoIconTooltipAlt: t("accessibility.asset.info.info-alt"),
+                infoIcon: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
+                infoIconTooltip: <InfoTooltipIcon aria-label={t("accessibility.asset.info.info-alt")} />,
             },
             dates: "DATES",
             datesStarted: "DATES_STARTED",
         },
         saveAll: save,
         language: getLanguage(),
-        moreIcon: moreHorizontal,
-        moreIconAlt: t("accessibility.asset.mui-icon.more-horizontal"),
-        expandLessIcon: expandLess,
-        expandLessIconAlt: t("accessibility.asset.mui-icon.expand-less"),
-        expandMoreIcon: expandMore,
-        expandMoreIconAlt: t("accessibility.asset.mui-icon.expand-more"),
-        expandLessWhiteIcon: expandLessWhite,
-        expandMoreWhiteIcon: expandMoreWhite,
-        workIcon: work,
-        workIconAlt: t("accessibility.asset.mui-icon.work"),
+        moreIcon: <MoreHorizontalIcon aria-label={t("accessibility.asset.mui-icon.more-horizontal")} />,
+        expandLessIcon: <ExpandLessIcon aria-label={t("accessibility.asset.mui-icon.expand-less")} />,
+        expandMoreIcon: <ExpandMoreIcon aria-label={t("accessibility.asset.mui-icon.expand-more")} />,
+        expandLessWhiteIcon: (
+            <ExpandLessWhiteIcon aria-label={t("accessibility.asset.mui-icon.expand-less")} />
+        ),
+        expandMoreWhiteIcon: (
+            <ExpandMoreWhiteIcon aria-label={t("accessibility.asset.mui-icon.expand-more")} />
+        ),
+        workIcon: <WorkFullIcon aria-label={t("accessibility.asset.mui-icon.work")} />,
         saveHours: (idSurvey: string, response: responsesHourChecker) => {
             saveDuration(idSurvey, response);
         },
@@ -264,7 +267,9 @@ const WeeklyPlannerPage = () => {
     return (
         <Box
             className={cx(
-                !isPwa() && (isIOS || isAndroid) ? classes.pageMobileTablet : classes.pageDesktop,
+                !isPwa() && (isIOS || isAndroid || isMobile())
+                    ? classes.pageMobileTablet
+                    : classes.pageDesktop,
             )}
         >
             {renderMenuHelp()}
@@ -305,6 +310,7 @@ const useStyles = makeStylesEdt<{
 })((theme, { isIOS, iosHeight, innerHeight }) => ({
     pageDesktop: {
         height: "100%",
+        maxHeight: isIOS ? iosHeight : innerHeight,
     },
     pageMobileTablet: {
         maxHeight: isIOS ? iosHeight : innerHeight + "px",

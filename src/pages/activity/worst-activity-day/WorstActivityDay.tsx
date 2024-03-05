@@ -1,4 +1,4 @@
-import worstActivityDay from "assets/illustration/worst-activity-day.svg";
+import { ReactComponent as WorstActivityDayImg } from "assets/illustration/worst-activity-day.svg";
 import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
@@ -31,7 +31,7 @@ const WorstActivityDayPage = () => {
         <SurveyPageStep
             currentPage={EdtRoutesNameEnum.WORST_ACTIVITY_DAY}
             backRoute={EdtRoutesNameEnum.GREATEST_ACTIVITY_DAY}
-            errorIcon={worstActivityDay}
+            errorIcon={WorstActivityDayImg}
             errorAltIcon={"accessibility.asset.worst-activity-day-alt"}
             specifiquesProps={specifiquesProps}
             withBottomPadding={true}

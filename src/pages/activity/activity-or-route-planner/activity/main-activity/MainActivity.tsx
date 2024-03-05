@@ -25,22 +25,22 @@ import {
     Alert,
     AutoCompleteActiviteOption,
 } from "@inseefrlab/lunatic-edt";
-import catIcon100 from "assets/illustration/activity-categories/1.svg";
-import catIcon200 from "assets/illustration/activity-categories/2.svg";
-import catIcon300 from "assets/illustration/activity-categories/3.svg";
-import catIcon400 from "assets/illustration/activity-categories/4.svg";
-import catIcon440 from "assets/illustration/activity-categories/5.svg";
-import catIcon500 from "assets/illustration/activity-categories/6.svg";
-import catIcon650 from "assets/illustration/activity-categories/7.svg";
-import catIcon600 from "assets/illustration/activity-categories/8.svg";
-import errorIcon from "assets/illustration/error/activity.svg";
-import addLightBlue from "assets/illustration/mui-icon/add-light-blue.svg";
-import addWhite from "assets/illustration/mui-icon/add.svg";
-import chevronRightDisabled from "assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
-import chevronRight from "assets/illustration/mui-icon/arrow-forward-ios.svg";
-import extensionDisabled from "assets/illustration/mui-icon/extension-grey.svg";
-import extension from "assets/illustration/mui-icon/extension.svg";
-import search from "assets/illustration/mui-icon/search.svg";
+import { ReactComponent as CatIcon100 } from "assets/illustration/activity-categories/1.svg";
+import { ReactComponent as CatIcon200 } from "assets/illustration/activity-categories/2.svg";
+import { ReactComponent as CatIcon300 } from "assets/illustration/activity-categories/3.svg";
+import { ReactComponent as CatIcon400 } from "assets/illustration/activity-categories/4.svg";
+import { ReactComponent as CatIcon440 } from "assets/illustration/activity-categories/5.svg";
+import { ReactComponent as CatIcon500 } from "assets/illustration/activity-categories/6.svg";
+import { ReactComponent as CatIcon650 } from "assets/illustration/activity-categories/7.svg";
+import { ReactComponent as CatIcon600 } from "assets/illustration/activity-categories/8.svg";
+import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
+import { ReactComponent as AddLightBlueIcon } from "assets/illustration/mui-icon/add-light-blue.svg";
+import { ReactComponent as AddWhiteIcon } from "assets/illustration/mui-icon/add.svg";
+import { ReactComponent as ChevronRightDisabledIcon } from "assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
+import { ReactComponent as ChevronRightIcon } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
+import { ReactComponent as ExtensionDisabledIcon } from "assets/illustration/mui-icon/extension-grey.svg";
+import { ReactComponent as ExtensionIcon } from "assets/illustration/mui-icon/extension.svg";
+import { ReactComponent as SearchIcon } from "assets/illustration/mui-icon/search.svg";
 import { SEPARATOR_DEFAUT } from "constants/constants";
 import { LoopEnum } from "enumerations/LoopEnum";
 import React, { useCallback, useState } from "react";
@@ -64,6 +64,9 @@ const MainActivityPage = () => {
     const currentIteration = paramIteration ? +paramIteration : 0;
     const modifiable = !surveyReadOnly(context.rightsSurvey);
 
+    const chevronRightIconAlt = t("accessibility.asset.mui-icon.arrow-right-ios");
+    const extensionIconAlt = t("accessibility.asset.mui-icon.extension");
+
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
     const [displayStepper, setDisplayStepper] = useState<boolean>(true);
@@ -73,39 +76,41 @@ const MainActivityPage = () => {
     const specificProps: ActivitySelecterSpecificProps = {
         categoriesIcons: {
             "100": {
-                icon: catIcon100,
+                icon: CatIcon100,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-100-alt"),
             },
             "200": {
-                icon: catIcon200,
+                icon: CatIcon200,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-200-alt"),
             },
             "300": {
-                icon: catIcon300,
+                icon: CatIcon300,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-300-alt"),
             },
             "400": {
-                icon: catIcon400,
+                icon: CatIcon400,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-400-alt"),
             },
             "440": {
-                icon: catIcon440,
+                icon: CatIcon440,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-440-alt"),
             },
             "500": {
-                icon: catIcon500,
+                icon: CatIcon500,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-500-alt"),
             },
             "650": {
-                icon: catIcon600,
+                icon: CatIcon600,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-600-alt"),
             },
             "600": {
-                icon: catIcon650,
+                icon: CatIcon650,
                 altIcon: t("accessibility.asset.activities.categories.cat-icon-650-alt"),
             },
         },
-        clickableListIconNoResult: errorIcon,
+        clickableListIconNoResult: (
+            <ErrorIcon aria-label={t("component.activity-selecter.clickable-list-icon-no-result-alt")} />
+        ),
         activitesAutoCompleteRef: getAutoCompleteRef(),
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
@@ -154,7 +159,6 @@ const MainActivityPage = () => {
             alertMessage: t("component.activity-selecter.alert-message"),
             alertIgnore: t("common.navigation.alert.ignore"),
             alertComplete: t("common.navigation.alert.complete"),
-            alertAlticon: t("common.navigation.alert.alt-icon"),
             clickableListPlaceholder: t("component.activity-selecter.clickable-list-placeholder"),
             clickableListNotFoundLabel: t("component.activity-selecter.clickable-list-not-found-label"),
             clickableListNotFoundComment: t(
@@ -163,9 +167,6 @@ const MainActivityPage = () => {
             clickableListAddActivityButton: t(
                 "component.activity-selecter.clickable-list-add-activity-button",
             ),
-            clickableListIconNoResultAlt: t(
-                "component.activity-selecter.clickable-list-icon-no-result-alt",
-            ),
             clickableListNotSearchLabel: t(
                 "component.activity-selecter.clickable-list-not-search-label",
             ),
@@ -173,7 +174,7 @@ const MainActivityPage = () => {
             saveButton: t("component.activity-selecter.save-button"),
             validateButton: t("component.activity-selecter.validate-button"),
         },
-        errorIcon: errorIcon,
+        errorIcon: <ErrorIcon aria-label={t("common.navigation.alert.alt-icon")} />,
         addToReferentielCallBack: (
             newItem: AutoCompleteActiviteOption,
             categoryId: string,
@@ -183,15 +184,17 @@ const MainActivityPage = () => {
         },
         widthGlobal: true,
         separatorSuggester: process.env.REACT_APP_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
-        chevronRightIcon: modifiable ? chevronRight : chevronRightDisabled,
-        chevronRightIconAlt: t("accessibility.asset.mui-icon.arrow-right-ios"),
-        searchIcon: search,
+        chevronRightIcon: modifiable ? ChevronRightIcon : ChevronRightDisabledIcon,
+        chevronRightIconAlt: chevronRightIconAlt,
+        searchIcon: SearchIcon,
         searchIconAlt: t("accessibility.asset.mui-icon.search"),
-        extensionIcon: modifiable ? extension : extensionDisabled,
-        extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
-        addLightBlueIcon: addLightBlue,
-        addWhiteIcon: addWhite,
-        addIconAlt: t("accessibility.asset.mui-icon.add"),
+        extensionIcon: modifiable ? (
+            <ExtensionIcon aria-label={extensionIconAlt} />
+        ) : (
+            <ExtensionDisabledIcon aria-label={extensionIconAlt} />
+        ),
+        addLightBlueIcon: <AddLightBlueIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
+        addWhiteIcon: <AddWhiteIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
         modifiable: modifiable,
     };
 
@@ -232,8 +235,7 @@ const MainActivityPage = () => {
                         [isAlertDisplayed],
                     )}
                     labels={getLabelsWhenQuit()}
-                    icon={errorIcon}
-                    errorIconAlt={t("page.activity-duration.alt-alert-icon")}
+                    icon={<ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />}
                 ></Alert>
                 <OrchestratorForStories
                     source={context.source}

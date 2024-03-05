@@ -1,5 +1,5 @@
 import { Alert, CheckboxBooleanEdtSpecificProps } from "@inseefrlab/lunatic-edt";
-import screenErrorIcon from "assets/illustration/error/screen.svg";
+import { ReactComponent as ErrorIcon } from "assets/illustration/error/screen.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -93,7 +93,7 @@ const WithScreenPage = () => {
             });
         },
         labels: getLabels("with-screen-selecter"),
-        errorIcon: screenErrorIcon,
+        errorIcon: <ErrorIcon />,
     };
 
     return (
@@ -132,8 +132,7 @@ const WithScreenPage = () => {
                         [isAlertDisplayed],
                     )}
                     labels={getLabelsWhenQuit(isRoute)}
-                    icon={screenErrorIcon}
-                    errorIconAlt={t("page.activity-duration.alt-alert-icon")}
+                    icon={<ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />}
                 ></Alert>
                 <OrchestratorForStories
                     source={context.source}

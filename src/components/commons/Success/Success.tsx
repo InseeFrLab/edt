@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import done from "assets/illustration/mui-icon/done.svg";
+import { ReactComponent as DoneIcon } from "assets/illustration/mui-icon/done.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { useTranslation } from "react-i18next";
 
@@ -23,11 +23,7 @@ const Success = (props: SuccessProps) => {
                 aria-describedby={describedBy}
             >
                 <Box>
-                    <img
-                        className={classes.icon}
-                        src={done}
-                        alt={t("accessibility.asset.mui-icon.done")}
-                    />
+                    <DoneIcon aria-label={t("accessibility.asset.mui-icon.done")} />
                 </Box>
                 <Box>
                     <h3>{successMessage}</h3>

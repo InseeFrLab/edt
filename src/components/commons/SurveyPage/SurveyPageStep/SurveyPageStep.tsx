@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import extension from "assets/illustration/mui-icon/extension.svg";
+import { ReactComponent as ExtensionIcon } from "assets/illustration/mui-icon/extension.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
@@ -33,7 +33,7 @@ export interface SurveyPageStepProps {
     backRoute?: EdtRoutesNameEnum;
     nextRoute?: EdtRoutesNameEnum;
     isStep?: boolean;
-    errorIcon?: string;
+    errorIcon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     errorAltIcon?: string;
     specifiquesProps?: any;
     disableButton?: boolean;
@@ -87,18 +87,18 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         options: specifiquesProps?.options,
         defaultIcon: specifiquesProps?.defaultIcon,
         icon: specifiquesProps?.icon,
-        altIcon: t(specifiquesProps?.altIconLabel),
         language: getLanguage(),
         constants: {
             START_TIME_DAY: START_TIME_DAY,
             FORMAT_TIME: FORMAT_TIME,
             MINUTE_LABEL: MINUTE_LABEL,
         },
-        extensionIcon: extension,
-        extensionIconAlt: t("accessibility.asset.mui-icon.extension"),
+        extensionIcon: <ExtensionIcon aria-label={t("accessibility.asset.mui-icon.extension")} />,
         modifiable: modifiable,
         defaultLanguage: "fr",
     };
+
+    const IconError = errorIcon as React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 
     const surveyPageStepProps = {
         idSurvey: idSurvey,
@@ -122,8 +122,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         ),
         simpleHeader: true,
         simpleHeaderLabel: t("page.complementary-questions.simple-header-label"),
-        srcIcon: errorIcon,
-        altIcon: errorAltIcon ? t(errorAltIcon) : undefined,
+        icon: errorIcon ? <IconError aria-label={t(errorAltIcon ?? "")} /> : undefined,
         displayStepper: true,
         currentStepNumber: stepData.stepNumber,
         currentStepLabel: stepData.stepLabel,
@@ -143,8 +142,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
                         : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage),
                 [],
             ),
-        srcIcon: errorIcon,
-        altIcon: errorAltIcon ? t(errorAltIcon) : undefined,
+        icon: errorIcon ? <IconError aria-label={t(errorAltIcon ?? "")} /> : undefined,
         onNavigateBack: useCallback(() => saveAndNav(idSurvey), []),
         onPrevious: useCallback(
             () => (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNav(idSurvey)),
@@ -219,7 +217,7 @@ const useStyles = makeStylesEdt<{
     },
     pageMobileTablet: {
         maxHeight: isIOS ? iosHeight : innerHeight + "px",
-        height: isIOS ? "100%" : innerHeight + "px",
+        height: isIOS ? "100%" : "100%",
     },
 }));
 

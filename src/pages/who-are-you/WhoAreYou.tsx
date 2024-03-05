@@ -1,4 +1,4 @@
-import who_are_you from "assets/illustration/who-are-you.svg";
+import { ReactComponent as WhoAreYouImg } from "assets/illustration/who-are-you.svg";
 import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
@@ -60,7 +60,7 @@ const WhoAreYouPage = () => {
     return (
         <SurveyPageStep
             currentPage={EdtRoutesNameEnum.WHO_ARE_YOU}
-            errorIcon={who_are_you}
+            errorIcon={WhoAreYouImg}
             errorAltIcon={"accessibility.asset.who-are-you-alt"}
             isStep={false}
             disableButton={modifiable ? disabledButton : true}
