@@ -73,8 +73,10 @@ const HomeSurveyedPage = () => {
 
     const initHome = (idsSurveysSelected: string[]) => {
         initializeHomeSurveys(idHousehold ?? "").then(() => {
+            console.log("init home");
             initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
                 userDatas = userDatasMap();
+                console.log(userDatas);
                 if (getData(idsSurveysSelected[0]) != undefined) {
                     setState(getData(idsSurveysSelected[0]));
                     setInitialized(true);
@@ -90,6 +92,7 @@ const HomeSurveyedPage = () => {
                 setInitialized(true);
             });
         } else if (getUserRights() === EdtUserRightsEnum.SURVEYED) {
+            console.log("SURVEYED");
             initializeDatas(setError).then(() => {
                 setInitialized(true);
                 setState({});
@@ -97,6 +100,7 @@ const HomeSurveyedPage = () => {
         }
 
         if (getUserRights() == EdtUserRightsEnum.REVIEWER && !isDemo) {
+            console.log("REVIEWER");
             userDatas = userDatasMap();
             const idsSurveysSelected = userDatas
                 .map(data => data.data.surveyUnitId)
@@ -105,10 +109,12 @@ const HomeSurveyedPage = () => {
                         !survey.startsWith("activitySurvey") && !survey.startsWith("workTimeSurvey"),
                 );
             if (navigator.onLine) {
+                console.log("REMOTE SAVED SURVEY");
                 getRemoteSavedSurveysDatas(idsSurveysSelected, setError).then(() => {
                     initHome(idsSurveysSelected);
                 });
             } else {
+                console.log("OFFLINE INIT HOME");
                 initHome(idsSurveysSelected);
             }
         } else if (getUserRights() == EdtUserRightsEnum.REVIEWER && isDemo) {
@@ -226,6 +232,7 @@ const HomeSurveyedPage = () => {
     };
 
     const renderPageOrLoadingOrError = (page: any) => {
+        console.log(initialized, state);
         if (initialized && state != null) {
             return page;
         } else {
@@ -330,6 +337,7 @@ const HomeSurveyedPage = () => {
     const renderHomeReviewer = () => {
         let userDatas = groupBy(userDatasMap(), nameSurveyData => nameSurveyData.num);
         let groups = Object.keys(userDatas);
+        console.log(userDatas, groups);
         return renderPageOrLoadingOrError(
             <>
                 {renderReminderNote()}
@@ -377,6 +385,7 @@ const HomeSurveyedPage = () => {
     };
 
     const renderHome = () => {
+        console.log("user rights", getUserRights());
         if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
             return renderHomeReviewer();
         } else {

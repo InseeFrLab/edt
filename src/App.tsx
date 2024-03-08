@@ -3,12 +3,18 @@ import LoadingFull from "components/commons/LoadingFull/LoadingFull";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import "i18n/i18n";
-import { useAuth } from "oidc-react";
+import { User, useAuth } from "oidc-react";
 import ErrorPage from "pages/error/Error";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EdtRoutes } from "routes/EdtRoutes";
-import { getDatas, initializeDatas, initializeListSurveys } from "service/survey-service";
+import {
+    getAuthCache,
+    getDatas,
+    initPropsAuth,
+    initializeDatas,
+    initializeListSurveys,
+} from "service/survey-service";
 import { getUserRights, setAuth, setUser, setUserToken } from "service/user-service";
 import { getCookie } from "utils/utils";
 const App = () => {
@@ -28,6 +34,7 @@ const App = () => {
             setError(ErrorCodeEnum.COMMON);
         }
     };
+    const promisesToWait: Promise<any>[] = [];
 
     useEffect(() => {
         if (
@@ -38,19 +45,21 @@ const App = () => {
             localStorage.setItem("setauth", "yes");
             window.location.search = "";
         }
-
+        console.log(auth);
         if (auth?.userData?.access_token && getDatas().size === 0 && error === undefined) {
             setUserToken(auth.userData?.access_token);
             setUser(auth.userData);
             setAuth(auth);
             //keeps user token up to date after session renewal
             auth.userManager.events.addUserLoaded(() => {
+                console.log("user loaded");
                 auth.userManager.getUser().then(user => {
                     setUserToken(user?.access_token || "");
                 });
             });
 
             auth.userManager.events.addSilentRenewError(() => {
+                console.log("user addSilentRenewError");
                 if (navigator.onLine) {
                     auth.userManager
                         .signoutRedirect({
@@ -67,18 +76,70 @@ const App = () => {
                         .catch(err => {
                             setErrorType(err);
                         });
+                } else {
+                    console.log(auth, "user add silen offline");
                 }
             });
-
-            initializeDatas(setError).then(() => {
-                setInitialized(true);
+            auth.userManager.events.addUserSignedIn(() => {
+                console.log("user signed in");
             });
 
-            if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
-                initializeListSurveys(setError).then(() => {
+            //auth.userManager.startSilentRenew();
+            promisesToWait.push(
+                initializeDatas(setError).then(data => {
+                    console.log("init datas");
                     setInitialized(true);
-                });
+                    return initPropsAuth(auth).then(() => setInitialized(true));
+                }),
+            );
+
+            if (getUserRights() === EdtUserRightsEnum.REVIEWER && navigator.onLine) {
+                promisesToWait.push(
+                    initializeListSurveys(setError).then(() => {
+                        console.log("init list surveys");
+                        setInitialized(true);
+                    }),
+                );
             }
+            Promise.all(promisesToWait);
+        } else if (!navigator.onLine) {
+            console.log(auth, initialized);
+
+            getAuthCache().then(auth => {
+                if (auth?.data.userData?.access_token) {
+                    const user: User = {
+                        access_token: auth.data.userData?.access_token,
+                        expires_at: auth.data.userData?.expires_at,
+                        id_token: auth.data.userData?.id_token,
+                        profile: auth.data.userData?.profile,
+                        refresh_token: auth.data.userData?.refresh_token,
+                        scope: auth.data.userData?.scope,
+                        session_state: auth.data.userData?.session_state ?? "",
+                        token_type: auth.data.userData?.token_type ?? "",
+                        state: auth.data.userData.state,
+                        expires_in: auth.data.userData.expires_in,
+                        expired: auth.data.userData.expired,
+                        scopes: auth.data.userData.scopes ?? [],
+                        toStorageString: () => "",
+                    };
+                    setUserToken(auth.data.userData?.access_token);
+                    setUser(user);
+                }
+
+                promisesToWait.push(
+                    initializeDatas(setError).then(() => {
+                        console.log("offline - init datas");
+                        if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
+                            return initializeListSurveys(setError).then(() => {
+                                console.log("offline - init list surveys");
+                                setInitialized(true);
+                            });
+                        } else setInitialized(true);
+                    }),
+                );
+
+                Promise.all(promisesToWait);
+            });
         }
     }, [auth]);
 
