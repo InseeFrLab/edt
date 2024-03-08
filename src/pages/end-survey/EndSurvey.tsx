@@ -101,7 +101,7 @@ const EndSurveyPage = () => {
             data: dataWithIsEnvoyed ?? callbackHolder.getData(),
         };
 
-        if (!isDemoMode && !isReviewer()) {
+        if (!isDemoMode && !isReviewer() && navigator.onLine) {
             remotePutSurveyData(idSurvey, surveyData)
                 .then(surveyDataAnswer => {
                     surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
@@ -110,7 +110,7 @@ const EndSurveyPage = () => {
                 .catch(() => {
                     setErrorSubmit(true);
                 });
-        } else if (!isDemoMode && isReviewer()) {
+        } else if (!isDemoMode && isReviewer() && navigator.onLine) {
             remotePutSurveyDataReviewer(idSurvey, stateData, surveyData.data)
                 .then(surveyDataAnswer => {
                     surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;

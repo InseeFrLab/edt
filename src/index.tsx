@@ -28,6 +28,7 @@ const oidcConfig = {
     authority: getAuthority(),
     clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID,
     redirectUri: process.env.REACT_APP_KEYCLOAK_REDIRECT_URI,
+    automaticSilentRenew: !navigator.onLine,
 };
 
 const oidcProps = isSSO ? Object.assign(oidcConfig, oidcConfigSSO) : oidcConfig;
