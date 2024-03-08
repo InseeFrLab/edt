@@ -25,7 +25,6 @@ axios.interceptors.response.use(
 );
 
 export const getHeader = (origin?: string, userToken?: string) => {
-    console.log(getUserToken());
     return {
         headers: {
             "Authorization": "Bearer " + (userToken ?? getUserToken()),
