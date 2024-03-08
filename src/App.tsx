@@ -45,21 +45,18 @@ const App = () => {
             localStorage.setItem("setauth", "yes");
             window.location.search = "";
         }
-        console.log(auth);
         if (auth?.userData?.access_token && getDatas().size === 0 && error === undefined) {
             setUserToken(auth.userData?.access_token);
             setUser(auth.userData);
             setAuth(auth);
             //keeps user token up to date after session renewal
             auth.userManager.events.addUserLoaded(() => {
-                console.log("user loaded");
                 auth.userManager.getUser().then(user => {
                     setUserToken(user?.access_token || "");
                 });
             });
 
             auth.userManager.events.addSilentRenewError(() => {
-                console.log("user addSilentRenewError");
                 if (navigator.onLine) {
                     auth.userManager
                         .signoutRedirect({
@@ -76,18 +73,12 @@ const App = () => {
                         .catch(err => {
                             setErrorType(err);
                         });
-                } else {
-                    console.log(auth, "user add silen offline");
                 }
-            });
-            auth.userManager.events.addUserSignedIn(() => {
-                console.log("user signed in");
             });
 
             //auth.userManager.startSilentRenew();
             promisesToWait.push(
                 initializeDatas(setError).then(data => {
-                    console.log("init datas");
                     setInitialized(true);
                     return initPropsAuth(auth).then(() => setInitialized(true));
                 }),
@@ -96,15 +87,12 @@ const App = () => {
             if (getUserRights() === EdtUserRightsEnum.REVIEWER && navigator.onLine) {
                 promisesToWait.push(
                     initializeListSurveys(setError).then(() => {
-                        console.log("init list surveys");
                         setInitialized(true);
                     }),
                 );
             }
             Promise.all(promisesToWait);
         } else if (!navigator.onLine) {
-            console.log(auth, initialized);
-
             getAuthCache().then(auth => {
                 if (auth?.data.userData?.access_token) {
                     const user: User = {
@@ -128,10 +116,8 @@ const App = () => {
 
                 promisesToWait.push(
                     initializeDatas(setError).then(() => {
-                        console.log("offline - init datas");
                         if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
                             return initializeListSurveys(setError).then(() => {
-                                console.log("offline - init list surveys");
                                 setInitialized(true);
                             });
                         } else setInitialized(true);

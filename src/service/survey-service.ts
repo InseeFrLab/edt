@@ -150,7 +150,6 @@ const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
     };
     return lunaticDatabase.save(DATA_STATE, dataState).then(() => {
         authData = dataState.data.userData;
-        console.log(authData);
         return dataState;
     });
 };
@@ -165,12 +164,10 @@ const getAuthCache = (): Promise<DataState> => {
 const initializeRefs = (setError: (error: ErrorCodeEnum) => void) => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
         if (!refData && navigator.onLine) {
-            console.log("refs online", refData);
             return fetchReferentiels(setError).then(refs => {
                 return saveReferentiels(refs);
             });
         } else {
-            console.log("refs", refData);
             referentielsData = refData as ReferentielData;
         }
     });
@@ -210,7 +207,6 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             };
             const innerPromises: Promise<any>[] = [
                 getRemoteSavedSurveysDatas(allSurveysIds, setError).then(() => {
-                    console.log("remote saved surveys");
                     return initializeSurveysDatasCache(allSurveysIds);
                 }),
                 saveSurveysIds(surveysIds),
@@ -260,7 +256,6 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                 [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
                 [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
             };
-            console.log("offline");
             const innerPromisesOffline: Promise<any>[] = [
                 initializeSurveysDatasCache(allSurveysIds),
                 saveSurveysIds(surveysIds),
@@ -278,11 +273,9 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
         const existSurveysIds = surveyIdsData?.[SurveysIdsEnum.ALL_SURVEYS_IDS].length > 0;
 
         if (!existSurveysIds) {
-            console.log("not exist surveys", surveyIdsData);
             promises.push(initDataForSurveys(setError));
         } else {
             surveysIds = data as SurveysIds;
-            console.log("exist surveys", surveysIds);
             const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
             const listSurveysOfHousehold =
                 getListSurveysHousehold()
@@ -295,7 +288,6 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
 
             promises.push(
                 lunaticDatabase.get(SOURCES_MODELS).then(data => {
-                    console.log("sources", data);
                     if (sourcesData == undefined) {
                         sourcesData = data as SourceData;
                     }
@@ -464,12 +456,15 @@ const refreshSurveyData = (
     specifiquesSurveysIds?: string[],
 ): Promise<any> => {
     initData = false;
-    return getRemoteSavedSurveysDatas(
-        specifiquesSurveysIds ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS],
-        setError,
-    ).then(() => {
-        return initializeSurveysDatasCache();
-    });
+    const promisesToWait: Promise<any>[] = [];
+    promisesToWait.push(
+        getRemoteSavedSurveysDatas(
+            specifiquesSurveysIds ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS],
+            setError,
+        ),
+        initializeSurveysDatasCache(),
+    );
+    return Promise.all(promisesToWait);
 };
 
 const refreshSurvey = (idSurvey: string, setError: (error: ErrorCodeEnum) => void): Promise<any> => {
@@ -520,7 +515,6 @@ const getRemoteSavedSurveysDatas = (
     if (navigator.onLine) {
         const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
         surveysIds.forEach(surveyId => {
-            promises.push(lunaticDatabase.get(surveyId));
             promises.push(
                 urlRemote(surveyId, setError, withoutState ?? true).then(
                     (remoteSurveyData: SurveyData) => {
@@ -535,6 +529,8 @@ const getRemoteSavedSurveysDatas = (
                                         (localSurveyData.lastLocalSaveDate ?? 0) <
                                             remoteSurveyData.stateData.date))
                             ) {
+                                const stateData = getSurveyStateData(surveyData, surveyId);
+                                setLocalOrRemoteData(surveyId, remoteSurveyData, surveyData, stateData);
                                 return lunaticDatabase.save(surveyId, surveyData);
                             }
                         });
@@ -561,7 +557,6 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
                 );
             }
             return Promise.all(promises).finally(() => {
-                console.log("init survey data cache");
                 resolve(true);
             });
         });
@@ -589,7 +584,6 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
     if (navigator.onLine) {
         return fetchReviewerSurveysAssignments(setError)
             .then(data => {
-                console.log("fetchReviewerSurveysAssignments", data);
                 surveysData = data;
                 addArrayToSession("surveysData", surveysData);
                 data.forEach((surveyData: UserSurveys) => {
@@ -608,7 +602,6 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
     } else {
         return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {
             let datas = data as UserSurveysData;
-            console.log("offline - fetchReviewerSurveysAssignments", datas.data);
             surveysData = datas.data;
             addArrayToSession("surveysData", surveysData);
             datas.data.forEach((surveyData: UserSurveys) => {
@@ -1017,12 +1010,14 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
 
 const getStateOfSurvey = (idSurvey: string): StateDataStateEnum => {
     const isSent = getValue(idSurvey, FieldNameEnum.ISENVOYED) as boolean;
+    const isValidated = surveyValidated(idSurvey);
     let state: StateDataStateEnum = StateDataStateEnum.INIT;
-    const data = getDataCache(idSurvey) as LunaticData;
+
     if (isSent) {
         state = StateDataStateEnum.COMPLETED;
+    } else if (isValidated) {
+        state = StateDataStateEnum.VALIDATED;
     }
-    state = data.stateData?.state ?? state;
     return state;
 };
 
@@ -1622,8 +1617,7 @@ const surveyLocked = (idSurvey: string) => {
 };
 
 const surveyValidated = (idSurvey: string) => {
-    const data = getDataCache(idSurvey) as LunaticData;
-    const isValidated = StateDataStateEnum.VALIDATED == data?.stateData?.state;
+    const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
     return isValidated != null && isValidated;
 };
 
