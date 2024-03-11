@@ -4,6 +4,7 @@ import { ReactComponent as DisconnectIcon } from "assets/illustration/disconnect
 import logo from "assets/illustration/logo.png";
 import { ReactComponent as HelpIcon } from "assets/illustration/mui-icon/help.svg";
 import { ReactComponent as HomeIcon } from "assets/illustration/mui-icon/home.svg";
+import { ReactComponent as LockIcon } from "assets/illustration/mui-icon/lock.svg";
 import { ReactComponent as PowerSettingsIcon } from "assets/illustration/mui-icon/power-settings.svg";
 import { ReactComponent as RemoveCircleIcon } from "assets/illustration/mui-icon/remove-circle.svg";
 import { ReactComponent as ReminderNoteImg } from "assets/illustration/reminder-note.svg";
@@ -344,6 +345,33 @@ const HomeSurveyedPage = () => {
                             />
                         );
                     })}
+                </Box>
+                <Box className={classes.navButtonsBox}>
+                    <FlexCenter className={classes.innerButtonsBox}>
+                        <Button
+                            variant="outlined"
+                            onClick={navBack}
+                            className={cx(classes.navButton, classes.navBackButton)}
+                            id="return-button"
+                        >
+                            <Box className={classes.label}>{t("common.navigation.back")}</Box>
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={validateSurveys}
+                            className={cx(classes.navButton, classes.validAllSurveysButton)}
+                        >
+                            {t("page.reviewer-home.validate-all-empties-surveys")}
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={lockSurveys}
+                            className={cx(classes.navButton)}
+                            disabled={!navigator.onLine}
+                        >
+                            <LockIcon aria-label={t("accessibility.asset.mui-icon.padlock")} />
+                        </Button>
+                    </FlexCenter>
                 </Box>
             </>,
         );
