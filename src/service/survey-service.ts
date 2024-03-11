@@ -91,7 +91,6 @@ let userDatasWorkTime: UserSurveys[] = [];
 let userDatas: UserSurveys[] = [];
 let surveysData: UserSurveys[] = [];
 let initData = false;
-let authData = null;
 
 const toIgnoreForRoute = [
     FieldNameEnum.PLACE,
@@ -149,7 +148,6 @@ const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
         },
     };
     return lunaticDatabase.save(DATA_STATE, dataState).then(() => {
-        authData = dataState.data.userData;
         return dataState;
     });
 };

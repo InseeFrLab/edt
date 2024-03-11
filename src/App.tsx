@@ -78,7 +78,7 @@ const App = () => {
 
             //auth.userManager.startSilentRenew();
             promisesToWait.push(
-                initializeDatas(setError).then(data => {
+                initializeDatas(setError).then(() => {
                     setInitialized(true);
                     return initPropsAuth(auth).then(() => setInitialized(true));
                 }),

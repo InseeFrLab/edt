@@ -133,7 +133,6 @@ const SurveysOverviewPage = () => {
 
     const refreshHouseholds = useCallback(() => {
         setRefreshing(true);
-        const promisesToWait: Promise<any>[] = [];
         return initializeListSurveys(setError).then(() => {
             return refreshSurveyData(setError).finally(() => {
                 setRefreshing(true);
