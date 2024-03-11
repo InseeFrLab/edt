@@ -231,16 +231,19 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             let userSurveyDataActivity: UserSurveys[] = [];
             let workingTimeSurveysIds: string[] = [];
             let userSurveyDataWorkTime: UserSurveys[] = [];
+
             userSurveyData.forEach(surveyData => {
                 if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
                     activitySurveysIds.push(surveyData.surveyUnitId);
                     userSurveyDataActivity.push(surveyData);
-                    userDatas.push(surveyData);
+                    if (!userDatas.find(survey => survey.surveyUnitId == surveyData.surveyUnitId))
+                        userDatas.push(surveyData);
                 }
                 if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
                     workingTimeSurveysIds.push(surveyData.surveyUnitId);
                     userSurveyDataWorkTime.push(surveyData);
-                    userDatas.push(surveyData);
+                    if (!userDatas.find(survey => survey.surveyUnitId == surveyData.surveyUnitId))
+                        userDatas.push(surveyData);
                 }
             });
             userDatasActivity = userSurveyDataActivity;
@@ -606,10 +609,12 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             addArrayToSession("surveysData", surveysData);
             datas.data.forEach((surveyData: UserSurveys) => {
                 if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
-                    userDatas.push(surveyData);
+                    if (!userDatas.find(survey => survey.surveyUnitId == surveyData.surveyUnitId))
+                        userDatas.push(surveyData);
                 }
                 if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
-                    userDatas.push(surveyData);
+                    if (!userDatas.find(survey => survey.surveyUnitId == surveyData.surveyUnitId))
+                        userDatas.push(surveyData);
                 }
             });
             return saveUserSurveysData({ data: userDatas });
