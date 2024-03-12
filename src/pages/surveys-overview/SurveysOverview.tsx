@@ -133,16 +133,14 @@ const SurveysOverviewPage = () => {
 
     const refreshHouseholds = useCallback(() => {
         setRefreshing(true);
-        return initializeListSurveys(setError)
-            .then(() => {
-                return refreshSurveyData(setError).then(() => {
-                    initHouseholds();
-                    setSearchResult(dataHouseholds);
-                });
-            })
-            .then(() => {
+        return initializeListSurveys(setError).then(() => {
+            return refreshSurveyData(setError).finally(() => {
+                setRefreshing(true);
+                initHouseholds();
+                setSearchResult(dataHouseholds);
                 setRefreshing(false);
             });
+        });
     }, [searchResult]);
 
     useEffect(() => {
@@ -163,7 +161,6 @@ const SurveysOverviewPage = () => {
             .finally(() => {
                 initHouseholds();
                 setInitialized(true);
-                setRefreshing(false);
             });
     });
 

@@ -34,7 +34,7 @@ const ContactPage = () => {
                         onNavigateBack={useCallback(() => navToHome(), [])}
                         backgroundWhite={false}
                     />
-                    <FlexCenter>
+                    <FlexCenter className={classes.imageBox}>
                         <ContactImg aria-label={t("accessibility.asset.mui-icon.download")} />
                     </FlexCenter>
                     <Box className={classes.innerBox}>
@@ -71,26 +71,29 @@ const ContactPage = () => {
 
 const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { ContactPage } })(theme => ({
     installBox: {
-        padding: "1rem",
+        padding: "0rem 1rem",
     },
     contentBox: {
-        height: "100vh",
+        height: innerHeight + "px",
+        maxHeight: innerHeight + "px",
     },
     contentBoxMobile: {
         height: "95vh",
+        maxHeight: "95vh",
     },
     innerContentBox: {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         height: innerHeight - 78 + "px",
+        maxHeight: innerHeight - 78 + "px",
     },
     innerBox: {
         display: "flex",
         justifyContent: "center",
     },
     textBox: { textAlign: "center", width: "50%", fontSize: "14px" },
-    textBoxMobile: { textAlign: "center", width: "100%", fontSize: "14px" },
+    textBoxMobile: { textAlign: "center", width: "100%", fontSize: "74%" },
     actionsBox: { display: "flex", flexDirection: "column", alignItems: "center" },
     actionBox: { maxWidth: "300px", margin: "0.5rem 0", width: "90%" },
     button: { width: "100%", backgroundColor: theme.palette.text.primary },
@@ -110,6 +113,12 @@ const useStyles = makeStylesEdt<{ innerHeight: number }>({ "name": { ContactPage
     },
     paddingBox: {
         marginBottom: "2rem",
+    },
+    imageBox: {
+        height: "15%",
+        svg: {
+            height: "100%",
+        },
     },
 }));
 

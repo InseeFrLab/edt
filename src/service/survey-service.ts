@@ -28,6 +28,8 @@ import { Person } from "interface/entity/Person";
 import { StatsHousehold } from "interface/entity/StatsHouseHold";
 import {
     Collected,
+    DATA_STATE,
+    DataState,
     LunaticModel,
     LunaticModelComponent,
     LunaticModelVariable,
@@ -41,6 +43,7 @@ import {
     USER_SURVEYS_DATA,
     UserSurveysData,
 } from "interface/lunatic/Lunatic";
+import { AuthContextProps } from "oidc-react";
 import { NavigateFunction } from "react-router-dom";
 import { fetchReviewerSurveysAssignments } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
@@ -125,9 +128,40 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     });
 };
 
+const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
+    const dataState: DataState = {
+        data: {
+            userData: {
+                access_token: auth.userData?.access_token,
+                expires_at: auth.userData?.expires_at,
+                id_token: auth.userData?.id_token,
+                profile: auth.userData?.profile,
+                refresh_token: auth.userData?.refresh_token,
+                scope: auth.userData?.scope,
+                session_state: auth.userData?.session_state ?? "",
+                token_type: auth.userData?.token_type,
+                state: auth.userData?.state,
+                expires_in: auth.userData?.expires_in,
+                expired: auth.userData?.expired,
+                scopes: auth.userData?.scopes,
+            },
+        },
+    };
+    return lunaticDatabase.save(DATA_STATE, dataState).then(() => {
+        return dataState;
+    });
+};
+
+const getAuthCache = (): Promise<DataState> => {
+    return lunaticDatabase.get(DATA_STATE).then(data => {
+        let dataState = data as DataState;
+        return dataState;
+    });
+};
+
 const initializeRefs = (setError: (error: ErrorCodeEnum) => void) => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
-        if (!refData) {
+        if (!refData && navigator.onLine) {
             return fetchReferentiels(setError).then(refs => {
                 return saveReferentiels(refs);
             });
@@ -138,54 +172,99 @@ const initializeRefs = (setError: (error: ErrorCodeEnum) => void) => {
 };
 
 const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
-    return fetchUserSurveysInfo(setError).then(userSurveyData => {
-        let activitySurveysIds: string[] = [];
-        let userSurveyDataActivity: UserSurveys[] = [];
-        let workingTimeSurveysIds: string[] = [];
-        let userSurveyDataWorkTime: UserSurveys[] = [];
-        userSurveyData.forEach(surveyData => {
-            if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
-                activitySurveysIds.push(surveyData.surveyUnitId);
-                userSurveyDataActivity.push(surveyData);
-                userDatas.push(surveyData);
-            }
-            if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
-                workingTimeSurveysIds.push(surveyData.surveyUnitId);
-                userSurveyDataWorkTime.push(surveyData);
-                userDatas.push(surveyData);
-            }
+    if (navigator.onLine) {
+        return fetchUserSurveysInfo(setError).then(userSurveyData => {
+            let activitySurveysIds: string[] = [];
+            let userSurveyDataActivity: UserSurveys[] = [];
+            let workingTimeSurveysIds: string[] = [];
+            let userSurveyDataWorkTime: UserSurveys[] = [];
+            userSurveyData.forEach(surveyData => {
+                if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
+                    activitySurveysIds.push(surveyData.surveyUnitId);
+                    userSurveyDataActivity.push(surveyData);
+                    userDatas.push(surveyData);
+                }
+                if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
+                    workingTimeSurveysIds.push(surveyData.surveyUnitId);
+                    userSurveyDataWorkTime.push(surveyData);
+                    userDatas.push(surveyData);
+                }
+            });
+            userDatasActivity = userSurveyDataActivity;
+            userDatasWorkTime = userSurveyDataWorkTime;
+
+            addArrayToSession("userDatasWorkTime", userDatasWorkTime);
+            addArrayToSession("userDatasActivity", userDatasActivity);
+            addArrayToSession("userDatas", userDatas);
+
+            let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
+            const surveysIds: SurveysIds = {
+                [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+                [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
+                [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
+            };
+            const innerPromises: Promise<any>[] = [
+                getRemoteSavedSurveysDatas(allSurveysIds, setError).then(() => {
+                    return initializeSurveysDatasCache(allSurveysIds);
+                }),
+                saveSurveysIds(surveysIds),
+                fetchSurveysSourcesByIds(
+                    [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY],
+                    setError,
+                ).then(sources => {
+                    const inerFetchPromises: Promise<any>[] = [
+                        saveSources(sources),
+                        saveUserSurveysData({ data: userDatas }),
+                    ];
+                    return Promise.all(inerFetchPromises);
+                }),
+            ];
+            return Promise.all(innerPromises);
         });
-        userDatasActivity = userSurveyDataActivity;
-        userDatasWorkTime = userSurveyDataWorkTime;
+    } else {
+        return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {
+            let userDaras = data as UserSurveysData;
+            let userSurveyData = userDaras.data;
+            let activitySurveysIds: string[] = [];
+            let userSurveyDataActivity: UserSurveys[] = [];
+            let workingTimeSurveysIds: string[] = [];
+            let userSurveyDataWorkTime: UserSurveys[] = [];
 
-        addArrayToSession("userDatasWorkTime", userDatasWorkTime);
-        addArrayToSession("userDatasActivity", userDatasActivity);
-        addArrayToSession("userDatas", userDatas);
+            userSurveyData.forEach(surveyData => {
+                if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
+                    activitySurveysIds.push(surveyData.surveyUnitId);
+                    userSurveyDataActivity.push(surveyData);
+                    if (!userDatas.find(survey => survey.surveyUnitId == surveyData.surveyUnitId))
+                        userDatas.push(surveyData);
+                }
+                if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
+                    workingTimeSurveysIds.push(surveyData.surveyUnitId);
+                    userSurveyDataWorkTime.push(surveyData);
+                    if (!userDatas.find(survey => survey.surveyUnitId == surveyData.surveyUnitId))
+                        userDatas.push(surveyData);
+                }
+            });
+            userDatasActivity = userSurveyDataActivity;
+            userDatasWorkTime = userSurveyDataWorkTime;
 
-        let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
-        const surveysIds: SurveysIds = {
-            [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
-            [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
-            [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
-        };
-        const innerPromises: Promise<any>[] = [
-            getRemoteSavedSurveysDatas(allSurveysIds, setError).then(() => {
-                return initializeSurveysDatasCache(allSurveysIds);
-            }),
-            saveSurveysIds(surveysIds),
-            fetchSurveysSourcesByIds(
-                [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY],
-                setError,
-            ).then(sources => {
-                const inerFetchPromises: Promise<any>[] = [
-                    saveSources(sources),
-                    saveUserSurveysData({ data: userDatas }),
-                ];
-                return Promise.all(inerFetchPromises);
-            }),
-        ];
-        return Promise.all(innerPromises);
-    });
+            addArrayToSession("userDatasWorkTime", userDatasWorkTime);
+            addArrayToSession("userDatasActivity", userDatasActivity);
+            addArrayToSession("userDatas", userDatas);
+
+            let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
+            const surveysIds: SurveysIds = {
+                [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+                [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
+                [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
+            };
+            const innerPromisesOffline: Promise<any>[] = [
+                initializeSurveysDatasCache(allSurveysIds),
+                saveSurveysIds(surveysIds),
+                saveUserSurveysData({ data: userDatas }),
+            ];
+            return Promise.all(innerPromisesOffline);
+        });
+    }
 };
 
 const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
@@ -378,12 +457,15 @@ const refreshSurveyData = (
     specifiquesSurveysIds?: string[],
 ): Promise<any> => {
     initData = false;
-    return getRemoteSavedSurveysDatas(
-        specifiquesSurveysIds ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS],
-        setError,
-    ).then(() => {
-        return initializeSurveysDatasCache();
-    });
+    const promisesToWait: Promise<any>[] = [];
+    promisesToWait.push(
+        getRemoteSavedSurveysDatas(
+            specifiquesSurveysIds ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS],
+            setError,
+        ),
+        initializeSurveysDatasCache(),
+    );
+    return Promise.all(promisesToWait);
 };
 
 const refreshSurvey = (idSurvey: string, setError: (error: ErrorCodeEnum) => void): Promise<any> => {
@@ -431,10 +513,9 @@ const getRemoteSavedSurveysDatas = (
     withoutState?: boolean,
 ): Promise<any> => {
     const promises: Promise<any>[] = [];
-    const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
-    surveysIds.forEach(surveyId => {
-        promises.push(lunaticDatabase.get(surveyId));
-        if (navigator.onLine) {
+    if (navigator.onLine) {
+        const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
+        surveysIds.forEach(surveyId => {
             promises.push(
                 urlRemote(surveyId, setError, withoutState ?? true).then(
                     (remoteSurveyData: SurveyData) => {
@@ -449,14 +530,16 @@ const getRemoteSavedSurveysDatas = (
                                         (localSurveyData.lastLocalSaveDate ?? 0) <
                                             remoteSurveyData.stateData.date))
                             ) {
+                                const stateData = getSurveyStateData(surveyData, surveyId);
+                                setLocalOrRemoteData(surveyId, remoteSurveyData, surveyData, stateData);
                                 return lunaticDatabase.save(surveyId, surveyData);
                             }
                         });
                     },
                 ),
             );
-        }
-    });
+        });
+    }
     return Promise.all(promises);
 };
 
@@ -474,7 +557,7 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
                     }),
                 );
             }
-            Promise.all(promises).finally(() => {
+            return Promise.all(promises).finally(() => {
                 resolve(true);
             });
         });
@@ -499,23 +582,42 @@ const initializeDatasCache = (idSurvey: string) => {
 };
 
 const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
-    return fetchReviewerSurveysAssignments(setError)
-        .then(data => {
-            surveysData = data;
+    if (navigator.onLine) {
+        return fetchReviewerSurveysAssignments(setError)
+            .then(data => {
+                surveysData = data;
+                addArrayToSession("surveysData", surveysData);
+                data.forEach((surveyData: UserSurveys) => {
+                    if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
+                        userDatas.push(surveyData);
+                    }
+                    if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
+                        userDatas.push(surveyData);
+                    }
+                });
+                return saveUserSurveysData({ data: userDatas });
+            })
+            .catch(() => {
+                return lunaticDatabase.get(USER_SURVEYS_DATA);
+            });
+    } else {
+        return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {
+            let datas = data as UserSurveysData;
+            surveysData = datas.data;
             addArrayToSession("surveysData", surveysData);
-            data.forEach((surveyData: UserSurveys) => {
+            datas.data.forEach((surveyData: UserSurveys) => {
                 if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
-                    userDatas.push(surveyData);
+                    if (!userDatas.find(survey => survey.surveyUnitId == surveyData.surveyUnitId))
+                        userDatas.push(surveyData);
                 }
                 if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
-                    userDatas.push(surveyData);
+                    if (!userDatas.find(survey => survey.surveyUnitId == surveyData.surveyUnitId))
+                        userDatas.push(surveyData);
                 }
             });
             return saveUserSurveysData({ data: userDatas });
-        })
-        .catch(() => {
-            return lunaticDatabase.get(USER_SURVEYS_DATA);
         });
+    }
 };
 
 const getListSurveys = () => {
@@ -911,12 +1013,14 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
 
 const getStateOfSurvey = (idSurvey: string): StateDataStateEnum => {
     const isSent = getValue(idSurvey, FieldNameEnum.ISENVOYED) as boolean;
+    const isValidated = surveyValidated(idSurvey);
     let state: StateDataStateEnum = StateDataStateEnum.INIT;
-    const data = getDataCache(idSurvey) as LunaticData;
+
     if (isSent) {
         state = StateDataStateEnum.COMPLETED;
+    } else if (isValidated) {
+        state = StateDataStateEnum.VALIDATED;
     }
-    state = data.stateData?.state ?? state;
     return state;
 };
 
@@ -1516,8 +1620,7 @@ const surveyLocked = (idSurvey: string) => {
 };
 
 const surveyValidated = (idSurvey: string) => {
-    const data = getDataCache(idSurvey) as LunaticData;
-    const isValidated = StateDataStateEnum.VALIDATED == data?.stateData?.state;
+    const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
     return isValidated != null && isValidated;
 };
 
@@ -1858,6 +1961,7 @@ export {
     createDataEmpty,
     createNewActivityInCategory,
     existVariableEdited,
+    getAuthCache,
     getComponentId,
     getComponentsOfVariable,
     getCurrentPage,
@@ -1888,6 +1992,7 @@ export {
     getValueOfData,
     getValueWithData,
     getVariable,
+    initPropsAuth,
     initializeDatas,
     initializeHomeSurveys,
     initializeListSurveys,

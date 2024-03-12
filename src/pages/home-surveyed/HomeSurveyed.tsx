@@ -367,6 +367,7 @@ const HomeSurveyedPage = () => {
                             variant="contained"
                             onClick={lockSurveys}
                             className={cx(classes.navButton)}
+                            disabled={!navigator.onLine}
                         >
                             <LockIcon aria-label={t("accessibility.asset.mui-icon.padlock")} />
                         </Button>
