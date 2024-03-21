@@ -2,6 +2,7 @@ import { NomenclatureActivityOption } from "@inseefrlab/lunatic-edt";
 import axios from "axios";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
+import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
 import { LunaticData, ReferentielData, SourceData } from "interface/lunatic/Lunatic";
 import jwt, { JwtPayload } from "jwt-decode";
@@ -259,6 +260,16 @@ const requestPutStateReviewer = (
             )
             .then(() => {
                 resolve(data);
+            })
+            .catch(err => {
+                if (err.response?.statut == 404) {
+                    console.log(err);
+                    return {
+                        state: StateDataStateEnum.INIT,
+                        date: Date.now(),
+                        currentPage: 0,
+                    };
+                }
             });
     });
 };
@@ -365,6 +376,13 @@ const requestGetStateReviewer = (
                     setError(ErrorCodeEnum.NO_RIGHTS);
                 } else if (err.response?.status != 404) {
                     setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
+                } else if (err.response?.statut == 404) {
+                    console.log(err);
+                    return {
+                        state: StateDataStateEnum.INIT,
+                        date: Date.now(),
+                        currentPage: 0,
+                    };
                 }
             });
     });
