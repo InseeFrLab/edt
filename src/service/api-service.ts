@@ -262,12 +262,13 @@ const requestPutStateReviewer = (
                 resolve(data);
             })
             .catch(err => {
-                if (err.response?.statut == 404) {
-                    return {
+                if (err.response?.status == 404) {
+                    const stateData = {
                         state: StateDataStateEnum.INIT,
                         date: Date.now(),
                         currentPage: 0,
                     };
+                    resolve(stateData);
                 }
             });
     });
@@ -375,12 +376,13 @@ const requestGetStateReviewer = (
                     setError(ErrorCodeEnum.NO_RIGHTS);
                 } else if (err.response?.status != 404) {
                     setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
-                } else if (err.response?.statut == 404) {
-                    return {
+                } else if (err.response?.status == 404) {
+                    const stateData = {
                         state: StateDataStateEnum.INIT,
                         date: Date.now(),
                         currentPage: 0,
                     };
+                    resolve(stateData);
                 }
             });
     });
