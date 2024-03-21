@@ -263,7 +263,6 @@ const requestPutStateReviewer = (
             })
             .catch(err => {
                 if (err.response?.statut == 404) {
-                    console.log(err);
                     return {
                         state: StateDataStateEnum.INIT,
                         date: Date.now(),
@@ -377,7 +376,6 @@ const requestGetStateReviewer = (
                 } else if (err.response?.status != 404) {
                     setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
                 } else if (err.response?.statut == 404) {
-                    console.log(err);
                     return {
                         state: StateDataStateEnum.INIT,
                         date: Date.now(),
