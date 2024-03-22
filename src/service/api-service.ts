@@ -7,6 +7,7 @@ import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
 import { LunaticData, ReferentielData, SourceData } from "interface/lunatic/Lunatic";
 import jwt, { JwtPayload } from "jwt-decode";
 import { AuthContextProps, User } from "oidc-react";
+import { initStateData, initSurveyData } from "./survey-service";
 import { getAuth, getUserToken, isReviewer } from "./user-service";
 
 export const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
@@ -153,7 +154,7 @@ const fetchReviewerSurveysAssignments = (setError: (error: ErrorCodeEnum) => voi
                 resolve(response.data);
             })
             .catch(err => {
-                if (err.response.status === 403) {
+                if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
                 } else {
                     setError(ErrorCodeEnum.UNREACHABLE_SOURCE);
@@ -326,7 +327,7 @@ const remoteGetSurveyData = (
             .catch(err => {
                 if (err.response?.status === 403) {
                     setError?.(ErrorCodeEnum.NO_RIGHTS);
-                } else {
+                } else if (err.response?.status != 404) {
                     setError?.(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
                 }
             });
@@ -353,6 +354,8 @@ const requestGetDataReviewer = (
             .catch(err => {
                 if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
+                } else {
+                    return resolve(initSurveyData(idSurvey));
                 }
             });
     });
@@ -374,15 +377,8 @@ const requestGetStateReviewer = (
             .catch(err => {
                 if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
-                } else if (err.response?.status != 404) {
-                    setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
-                } else if (err.response?.status == 404) {
-                    const stateData = {
-                        state: StateDataStateEnum.INIT,
-                        date: Date.now(),
-                        currentPage: 0,
-                    };
-                    resolve(stateData);
+                } else {
+                    resolve(initStateData());
                 }
             });
     });
@@ -429,7 +425,10 @@ const remoteGetSurveyDataReviewer = (
         if (err.response?.status === 403) {
             setError?.(ErrorCodeEnum.NO_RIGHTS);
         } else {
-            setError?.(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
+            return {
+                data: initSurveyData(idSurvey),
+                stateData: initStateData(),
+            };
         }
         return Promise.reject(err);
     });

@@ -920,6 +920,19 @@ const saveQualityScore = (idSurvey: string, data: LunaticData) => {
     return data;
 };
 
+const updateLocked = (idSurvey: string, data: LunaticData) => {
+    if (existVariableEdited(idSurvey, data) && data.COLLECTED) {
+        data.COLLECTED[FieldNameEnum.ISLOCKED] = {
+            COLLECTED: true,
+            EDITED: true,
+            FORCED: null,
+            INPUTED: null,
+            PREVIOUS: null,
+        };
+    }
+    return data;
+};
+
 const saveData = (
     idSurvey: string,
     data: LunaticData,
@@ -935,6 +948,7 @@ const saveData = (
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
     fixConditionals(data);
     const isChange = forceUpdate || dataIsChange(idSurvey, data);
+    data = updateLocked(idSurvey, data);
     return lunaticDatabase.save(idSurvey, data).then(() => {
         const promisesToWait: Promise<any>[] = [];
         datas.set(idSurvey, data);
@@ -1954,6 +1968,34 @@ const validateAllGroup = (
     );
 };
 
+const initStateData = () => {
+    const stateData = {
+        state: StateDataStateEnum.INIT,
+        date: Date.now(),
+        currentPage: 0,
+    };
+    return stateData;
+};
+
+const initSurveyData = (surveyId: string): LunaticData => {
+    const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+    let surveyData: LunaticData = {
+        COLLECTED: {},
+        CALCULATED: {},
+        EXTERNAL: {},
+        houseReference: "",
+        id: "",
+        lastLocalSaveDate: Date.now(),
+    };
+    surveyData.houseReference = surveyId?.replace(regexp, "");
+    surveyData.CALCULATED = {};
+    surveyData.EXTERNAL = {};
+    surveyData.COLLECTED = getDataEmpty(surveyId);
+    surveyData.lastLocalSaveDate = Date.now();
+    surveyData.stateData = initStateData();
+    return surveyData;
+};
+
 export {
     addToAutocompleteActivityReferentiel,
     addToSecondaryActivityReferentiel,
@@ -1993,6 +2035,8 @@ export {
     getValueWithData,
     getVariable,
     initPropsAuth,
+    initStateData,
+    initSurveyData,
     initializeDatas,
     initializeHomeSurveys,
     initializeListSurveys,
