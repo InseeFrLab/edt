@@ -63,7 +63,6 @@ const ErrorPage = (props: ErrorPageProps) => {
     }, []);
 
     const getErrorText = (errorCode: ErrorCodeEnum | undefined): string => {
-        console.error(`Type d'erreur: ${errorCode}`);
         switch (errorCode) {
             case ErrorCodeEnum.NO_RIGHTS:
                 return t("common.error.error-no-rights");

@@ -772,14 +772,14 @@ const ActivityOrRoutePlannerPage = () => {
                                                     <Typography className={classes.label}>
                                                         {t("page.activity-planner.activity-for-day")}
                                                     </Typography>
-                                                    <Typography className={classes.date}>
+                                                    <Box className={classes.date}>
                                                         <h1 className={classes.h1}>
                                                             {formateDateToFrenchFormat(
                                                                 generateDateFromStringInput(surveyDate),
                                                                 getLanguage(),
                                                             )}
                                                         </h1>
-                                                    </Typography>
+                                                    </Box>
                                                 </>
                                             )}
                                         </Box>
