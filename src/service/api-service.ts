@@ -448,5 +448,6 @@ export {
     remoteGetSurveyData,
     remoteGetSurveyDataReviewer,
     remotePutSurveyData,
-    remotePutSurveyDataReviewer,
+    remotePutSurveyDataReviewer
 };
+

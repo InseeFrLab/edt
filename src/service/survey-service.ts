@@ -205,7 +205,6 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             };
             const innerPromises: Promise<any>[] = [
                 getRemoteSavedSurveysDatas(allSurveysIds, setError, false).then(() => {
-                    console.log("init data for surveys");
                     return initializeSurveysDatasCache(allSurveysIds);
                 }),
                 saveSurveysIds(surveysIds),
@@ -230,7 +229,6 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             let userSurveyDataActivity: UserSurveys[] = [];
             let workingTimeSurveysIds: string[] = [];
             let userSurveyDataWorkTime: UserSurveys[] = [];
-            console.log("userDatasOffline", userSurveyData);
             userSurveyData.forEach(surveyData => {
                 if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
                     activitySurveysIds.push(surveyData.surveyUnitId);
@@ -253,11 +251,6 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             addArrayToSession("userDatas", userDatas);
 
             let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
-            const surveysIds: SurveysIds = {
-                [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
-                [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
-                [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
-            };
             const innerPromisesOffline: Promise<any>[] = [initializeSurveysDatasCache(allSurveysIds)];
             return Promise.all(innerPromisesOffline);
         });
@@ -294,7 +287,6 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
             if (navigator.onLine) {
                 promises.push(
                     getRemoteSavedSurveysDatas(surveysIdsAct, setError, false).then(() => {
-                        console.log("init surveys ids and sources");
                         return initializeSurveysDatasCache(surveysIdsAct);
                     }),
                 );
@@ -462,7 +454,6 @@ const refreshSurveyData = (
             setError,
         ),
         initializeSurveysDatasCache(),
-        //initializeSurveysDatasCache(specifiquesSurveysIds ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]),
     );
     return Promise.all(promisesToWait);
 };
@@ -512,7 +503,6 @@ const getRemoteSavedSurveysDatas = (
     withoutState?: boolean,
 ): Promise<any> => {
     const promises: Promise<any>[] = [];
-    console.log(withoutState);
     if (navigator.onLine) {
         const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
         surveysIds.forEach(surveyId => {
