@@ -17,11 +17,11 @@ import {
 } from "service/survey-service";
 import { getUserRights, setAuth, setUser, setUserToken } from "service/user-service";
 import { getCookie } from "utils/utils";
+
 const App = () => {
     const { t } = useTranslation();
     const [initialized, setInitialized] = useState(false);
     const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
-    const auth = useAuth();
 
     const getTokenHint = () => {
         return localStorage.getItem("id_token") ?? undefined;
@@ -35,6 +35,10 @@ const App = () => {
         }
     };
     const promisesToWait: Promise<any>[] = [];
+
+    const auth = useAuth();
+
+    console.log(auth);
 
     useEffect(() => {
         if (
@@ -80,13 +84,16 @@ const App = () => {
             promisesToWait.push(
                 initializeDatas(setError).then(() => {
                     setInitialized(true);
-                    return initPropsAuth(auth).then(() => setInitialized(true));
+                    return initPropsAuth(auth).then(() => {
+                        setInitialized(true);
+                    });
                 }),
             );
 
             if (getUserRights() === EdtUserRightsEnum.REVIEWER && navigator.onLine) {
                 promisesToWait.push(
                     initializeListSurveys(setError).then(() => {
+                        console.log("initialized");
                         setInitialized(true);
                     }),
                 );
@@ -118,6 +125,7 @@ const App = () => {
                     initializeDatas(setError).then(() => {
                         if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
                             return initializeListSurveys(setError).then(() => {
+                                console.log("initializeListSurveys");
                                 setInitialized(true);
                             });
                         } else setInitialized(true);
