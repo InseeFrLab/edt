@@ -40,8 +40,6 @@ const oidcConfig = navigator.onLine ? oidcConfigOnline : oidcConfigOffline;
 
 const oidcProps = isSSO ? Object.assign(oidcConfig, oidcConfigSSO) : oidcConfig;
 
-console.log(oidcProps);
-
 root.render(
     <AuthProvider {...oidcProps}>
         <React.StrictMode>

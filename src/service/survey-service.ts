@@ -258,11 +258,7 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                 [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
             };
 
-            const innerPromisesOffline: Promise<any>[] = [
-                initializeSurveysDatasCache(allSurveysIds),
-                //saveSurveysIds(surveysIds),
-                //saveUserSurveysData({ data: userDatas }),
-            ];
+            const innerPromisesOffline: Promise<any>[] = [initializeSurveysDatasCache(allSurveysIds)];
             return Promise.all(innerPromisesOffline);
         });
     }
@@ -616,8 +612,6 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                         userDatas.push(surveyData);
                 }
             });
-            console.log("user surveys datas gets", data);
-            //return saveUserSurveysData({ data: userDatas });
         });
     }
 };

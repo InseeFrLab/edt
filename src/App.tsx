@@ -38,8 +38,6 @@ const App = () => {
 
     const auth = useAuth();
 
-    console.log(auth);
-
     useEffect(() => {
         if (
             window.location.search &&
@@ -93,7 +91,6 @@ const App = () => {
             if (getUserRights() === EdtUserRightsEnum.REVIEWER && navigator.onLine) {
                 promisesToWait.push(
                     initializeListSurveys(setError).then(() => {
-                        console.log("initialized");
                         setInitialized(true);
                     }),
                 );
@@ -125,7 +122,6 @@ const App = () => {
                     initializeDatas(setError).then(() => {
                         if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
                             return initializeListSurveys(setError).then(() => {
-                                console.log("initializeListSurveys");
                                 setInitialized(true);
                             });
                         } else setInitialized(true);
