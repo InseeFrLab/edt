@@ -66,7 +66,7 @@ const createUserManager = () => {
     });
 
     userManager.events.addUserLoaded(user => {
-        console.log("add user", user);
+        console.log("add user");
         setUserToken(user?.access_token || "");
     });
 
@@ -151,5 +151,6 @@ export {
     signinRedirect,
     signinSilent,
     signinSilentCallback,
-    signoutRedirectCallback,
+    signoutRedirectCallback
 };
+
