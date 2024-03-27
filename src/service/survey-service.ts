@@ -257,10 +257,11 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                 [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
                 [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
             };
+
             const innerPromisesOffline: Promise<any>[] = [
                 initializeSurveysDatasCache(allSurveysIds),
-                saveSurveysIds(surveysIds),
-                saveUserSurveysData({ data: userDatas }),
+                //saveSurveysIds(surveysIds),
+                //saveUserSurveysData({ data: userDatas }),
             ];
             return Promise.all(innerPromisesOffline);
         });
@@ -615,7 +616,8 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                         userDatas.push(surveyData);
                 }
             });
-            return saveUserSurveysData({ data: userDatas });
+            console.log("user surveys datas gets", data);
+            //return saveUserSurveysData({ data: userDatas });
         });
     }
 };
@@ -1063,11 +1065,19 @@ const saveSources = (data: SourceData): Promise<SourceData> => {
     });
 };
 
+const setSurveysIds = (data: SurveysIds) => {
+    surveysIds = data;
+};
+
 const saveSurveysIds = (data: SurveysIds): Promise<SurveysIds> => {
     return lunaticDatabase.save(SURVEYS_IDS, data).then(() => {
         surveysIds = data;
         return data;
     });
+};
+
+const setUserSurveysData = (data: UserSurveysData) => {
+    userDatas = data.data;
 };
 
 const saveUserSurveysData = (data: UserSurveysData): Promise<UserSurveys[]> => {
@@ -2054,6 +2064,8 @@ export {
     refreshSurveyData,
     saveData,
     setData,
+    setSurveysIds,
+    setUserSurveysData,
     setValue,
     surveyLocked,
     surveyValidated,
