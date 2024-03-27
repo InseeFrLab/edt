@@ -80,7 +80,7 @@ export const fetchReferentiels = (
                 resolve(refs);
             })
             .catch(err => {
-                if (err.response.status === 403) {
+                if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
                 } else {
                     setError(ErrorCodeEnum.UNREACHABLE_NOMENCLATURES);
@@ -101,7 +101,7 @@ const fetchUserSurveysInfo = (setError: (error: ErrorCodeEnum) => void): Promise
                 resolve(data);
             })
             .catch(err => {
-                if (err.response.status === 403) {
+                if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
                 } else {
                     setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_ASSIGNMENTS);
@@ -134,7 +134,7 @@ const fetchSurveysSourcesByIds = (
                 resolve(sources as SourceData);
             })
             .catch(err => {
-                if (err.response.status === 403) {
+                if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
                 } else {
                     setError(ErrorCodeEnum.UNREACHABLE_SOURCE);
