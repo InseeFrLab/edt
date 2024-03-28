@@ -15,6 +15,7 @@ export const REFERENTIELS_ID = "referentiels";
 export const SOURCES_MODELS = "sources";
 export const SURVEYS_IDS = "surveysIds";
 export const USER_SURVEYS_DATA = "userSurveysData";
+export const DATA_STATE = "dataState";
 
 export interface Collected {
     COLLECTED: string | boolean | null;
@@ -70,6 +71,27 @@ export interface SurveysIds extends LunaticData {
 
 export interface UserSurveysData extends LunaticData {
     data: UserSurveys[];
+}
+
+export interface DataState extends LunaticData {
+    data: {
+        userData: AuthData | undefined;
+    };
+}
+
+export interface AuthData {
+    access_token?: string;
+    expires_at?: number;
+    id_token?: string;
+    profile?: any;
+    refresh_token?: string;
+    scope?: string;
+    session_state?: string;
+    token_type?: string;
+    state?: any;
+    expires_in?: number;
+    expired?: boolean;
+    scopes?: string[];
 }
 
 export interface LunaticModel {

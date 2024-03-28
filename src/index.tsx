@@ -20,7 +20,9 @@ const oidcConfigSSO = {
     userManager: createUserManager(),
 };
 
-const oidcConfig = {
+const currentHost = `${window.location.protocol}//${window.location.hostname}`;
+
+const oidcConfigOnline = {
     onSignIn: () => {
         //to remove keycloak params in url
         window.history.replaceState(null, "", window.location.pathname);
@@ -28,7 +30,15 @@ const oidcConfig = {
     authority: getAuthority(),
     clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID,
     redirectUri: process.env.REACT_APP_KEYCLOAK_REDIRECT_URI,
+    automaticSilentRenew: !navigator.onLine,
 };
+
+const oidcConfigOffline = {
+    automaticSilentRenew: !navigator.onLine,
+    silent_redirect_uri: currentHost,
+};
+
+const oidcConfig = navigator.onLine ? oidcConfigOnline : oidcConfigOffline;
 
 const oidcProps = isSSO ? Object.assign(oidcConfig, oidcConfigSSO) : oidcConfig;
 

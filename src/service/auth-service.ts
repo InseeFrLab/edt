@@ -66,10 +66,14 @@ const createUserManager = () => {
     });
 
     userManager.events.addUserLoaded(user => {
+        console.log("add user", user);
         setUserToken(user?.access_token || "");
     });
+
     userManager.events.addAccessTokenExpired(() => {
-        signinSilent(userManager);
+        if (navigator.onLine) {
+            signinSilent(userManager);
+        }
     });
 
     return userManager;
@@ -90,12 +94,9 @@ export const parseJwt = (token: string) => {
 };
 
 const signinRedirect = (userManager: UserManager) => {
+    console.log("signinredirect");
     localStorage.setItem("redirectUri", window.location.pathname);
     userManager.signinRedirect({});
-};
-
-const navigateToScreen = () => {
-    window.location.replace("/en/dashboard");
 };
 
 const isAuthenticated = () => {
@@ -122,6 +123,7 @@ const signinSilent = (userManager: UserManager) => {
 };
 
 const signinSilentCallback = (userManager: UserManager) => {
+    console.log("signinSilentCallback");
     userManager.signinSilentCallback();
 };
 
@@ -146,7 +148,6 @@ export {
     isAuthenticated,
     isSSO,
     logout,
-    navigateToScreen,
     signinRedirect,
     signinSilent,
     signinSilentCallback,
