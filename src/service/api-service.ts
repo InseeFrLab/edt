@@ -168,7 +168,7 @@ const requestPutSurveyData = (
     data: SurveyData,
     token?: string,
 ): Promise<SurveyData> => {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         setTimeout(() => {
             axios
                 .put(
@@ -291,7 +291,7 @@ const requestPutSurveyDataReviewer = (
         requestPutDataReviewer(idSurvey, data, token);
     });
 
-    return new Promise(resolve => {
+    return new Promise(() => {
         const surveyData: SurveyData = {
             stateData: stateData,
             data: data,
