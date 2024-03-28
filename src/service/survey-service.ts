@@ -943,23 +943,20 @@ const saveData = (
     fixConditionals(data);
     const isChange = forceUpdate || dataIsChange(idSurvey, data);
     const promisesToWait: Promise<any>[] = [];
+
+    data = updateLocked(idSurvey, data);
     datas.set(idSurvey, data);
     let stateData: StateData = initStateData();
-    let dataRemote: SurveyData;
 
     if (isChange) {
         data = saveQualityScore(idSurvey, data);
         if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
             stateData = getSurveyStateData(data, idSurvey);
             promisesToWait.push(
-                remotePutSurveyDataReviewer(idSurvey, stateData, data)
-                    .then(dataR => {
-                        dataRemote = dataR;
-                    })
-                    .catch(() => {
-                        //return Promise.reject({});
-                        //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
-                    }),
+                remotePutSurveyDataReviewer(idSurvey, stateData, data).catch(() => {
+                    //return Promise.reject({});
+                    //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
+                }),
             );
         }
         //We try to submit each time the local database is updated if the user is online
@@ -970,14 +967,10 @@ const saveData = (
                 data: data,
             };
             promisesToWait.push(
-                remotePutSurveyData(idSurvey, surveyData)
-                    .then(dataR => {
-                        dataRemote = dataR;
-                    })
-                    .catch(() => {
-                        //return Promise.reject({});
-                        //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
-                    }),
+                remotePutSurveyData(idSurvey, surveyData).catch(() => {
+                    //return Promise.reject({});
+                    //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
+                }),
             );
         } else if (isDemoMode || localSaveOnly) {
             stateData = getSurveyStateData(data, idSurvey);
