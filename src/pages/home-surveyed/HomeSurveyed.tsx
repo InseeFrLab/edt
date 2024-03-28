@@ -105,7 +105,7 @@ const HomeSurveyedPage = () => {
                         !survey.startsWith("activitySurvey") && !survey.startsWith("workTimeSurvey"),
                 );
             if (navigator.onLine) {
-                getRemoteSavedSurveysDatas(idsSurveysSelected, setError).then(() => {
+                getRemoteSavedSurveysDatas(idsSurveysSelected, setError, false).then(() => {
                     initHome(idsSurveysSelected);
                 });
             } else {

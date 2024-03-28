@@ -22,6 +22,7 @@ const App = () => {
     const { t } = useTranslation();
     const [initialized, setInitialized] = useState(false);
     const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
+    const auth = useAuth();
 
     const getTokenHint = () => {
         return localStorage.getItem("id_token") ?? undefined;
@@ -35,8 +36,6 @@ const App = () => {
         }
     };
     const promisesToWait: Promise<any>[] = [];
-
-    const auth = useAuth();
 
     useEffect(() => {
         if (

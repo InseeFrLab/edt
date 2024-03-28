@@ -168,16 +168,18 @@ const requestPutSurveyData = (
     data: SurveyData,
     token?: string,
 ): Promise<SurveyData> => {
-    return new Promise<SurveyData>(resolve => {
-        axios
-            .put(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
-                data,
-                getHeader(stromaeBackOfficeApiBaseUrl, token),
-            )
-            .then(() => {
-                resolve(data);
-            });
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            axios
+                .put(
+                    stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
+                    data,
+                    getHeader(stromaeBackOfficeApiBaseUrl, token),
+                )
+                .then(() => {
+                    resolve(data);
+                });
+        }, 1000);
     });
 };
 
@@ -235,15 +237,17 @@ const requestPutDataReviewer = (
     token?: string,
 ): Promise<LunaticData> => {
     return new Promise<LunaticData>(resolve => {
-        axios
-            .put(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
-                data,
-                getHeader(stromaeBackOfficeApiBaseUrl, token),
-            )
-            .then(() => {
-                resolve(data);
-            });
+        setTimeout(() => {
+            axios
+                .put(
+                    stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
+                    data,
+                    getHeader(stromaeBackOfficeApiBaseUrl, token),
+                )
+                .then(() => {
+                    resolve(data);
+                });
+        }, 1000);
     });
 };
 
@@ -253,25 +257,27 @@ const requestPutStateReviewer = (
     token?: string,
 ): Promise<StateData> => {
     return new Promise<StateData>(resolve => {
-        axios
-            .put(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
-                data,
-                getHeader(stromaeBackOfficeApiBaseUrl, token),
-            )
-            .then(() => {
-                resolve(data);
-            })
-            .catch(err => {
-                if (err.response?.status == 404) {
-                    const stateData = {
-                        state: StateDataStateEnum.INIT,
-                        date: Date.now(),
-                        currentPage: 0,
-                    };
-                    resolve(stateData);
-                }
-            });
+        setTimeout(() => {
+            axios
+                .put(
+                    stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
+                    data,
+                    getHeader(stromaeBackOfficeApiBaseUrl, token),
+                )
+                .then(() => {
+                    resolve(data);
+                })
+                .catch(err => {
+                    if (err.response?.status == 404) {
+                        const stateData = {
+                            state: StateDataStateEnum.INIT,
+                            date: Date.now(),
+                            currentPage: 0,
+                        };
+                        resolve(stateData);
+                    }
+                });
+        }, 1000);
     });
 };
 
@@ -281,18 +287,17 @@ const requestPutSurveyDataReviewer = (
     stateData: StateData,
     token?: string,
 ): Promise<SurveyData> => {
-    const promises = requestPutDataReviewer(idSurvey, data, token).then(() => {
-        return requestPutStateReviewer(idSurvey, stateData, token).then(() => {
-            return new Promise<SurveyData>(resolve => {
-                const surveyData: SurveyData = {
-                    stateData: stateData,
-                    data: data,
-                };
-                resolve(surveyData);
-            });
-        });
+    requestPutStateReviewer(idSurvey, stateData, token).then(() => {
+        requestPutDataReviewer(idSurvey, data, token);
     });
-    return promises;
+
+    return new Promise(resolve => {
+        const surveyData: SurveyData = {
+            stateData: stateData,
+            data: data,
+        };
+        return surveyData;
+    });
 };
 
 const logout = () => {

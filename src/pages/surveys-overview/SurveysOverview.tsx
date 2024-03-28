@@ -124,7 +124,6 @@ const SurveysOverviewPage = () => {
 
     const initHouseholds = () => {
         dataHouseholds = getListSurveysHousehold();
-
         if (searchResult == null || searchResult.length == 0) {
             setSearchResult(dataHouseholds);
         }
