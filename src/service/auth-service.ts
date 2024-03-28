@@ -66,7 +66,7 @@ const createUserManager = () => {
     });
 
     userManager.events.addUserLoaded(user => {
-        console.log("add user");
+        console.log("add user", user);
         setUserToken(user?.access_token || "");
     });
 
@@ -94,7 +94,6 @@ export const parseJwt = (token: string) => {
 };
 
 const signinRedirect = (userManager: UserManager) => {
-    console.log("signinredirect");
     localStorage.setItem("redirectUri", window.location.pathname);
     userManager.signinRedirect({});
 };
@@ -123,7 +122,6 @@ const signinSilent = (userManager: UserManager) => {
 };
 
 const signinSilentCallback = (userManager: UserManager) => {
-    console.log("signinSilentCallback");
     userManager.signinSilentCallback();
 };
 

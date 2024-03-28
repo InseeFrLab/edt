@@ -106,7 +106,6 @@ const HomeSurveyedPage = () => {
                 );
             if (navigator.onLine) {
                 getRemoteSavedSurveysDatas(idsSurveysSelected, setError, false).then(() => {
-                    console.log("init surveyd");
                     initHome(idsSurveysSelected);
                 });
             } else {
