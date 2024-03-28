@@ -20,6 +20,8 @@ const oidcConfigSSO = {
     userManager: createUserManager(),
 };
 
+const currentHost = `${window.location.protocol}//${window.location.hostname}`;
+
 const oidcConfigOnline = {
     onSignIn: () => {
         //to remove keycloak params in url
@@ -33,7 +35,7 @@ const oidcConfigOnline = {
 
 const oidcConfigOffline = {
     automaticSilentRenew: !navigator.onLine,
-    silent_redirect_uri: "https://insee-edt.k8s.keyconsulting.fr/",
+    silent_redirect_uri: currentHost,
 };
 
 const oidcConfig = navigator.onLine ? oidcConfigOnline : oidcConfigOffline;

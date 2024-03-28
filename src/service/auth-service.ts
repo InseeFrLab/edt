@@ -66,9 +66,10 @@ const createUserManager = () => {
     });
 
     userManager.events.addUserLoaded(user => {
-        console.log("add user");
+        console.log("add user", user);
         setUserToken(user?.access_token || "");
     });
+
     userManager.events.addAccessTokenExpired(() => {
         if (navigator.onLine) {
             signinSilent(userManager);
