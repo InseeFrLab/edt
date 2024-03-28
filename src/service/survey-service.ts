@@ -399,6 +399,7 @@ const initializeHomeSurveys = (idHousehold: string) => {
         addArrayToSession("userDatasActivity", userDatasActivity);
         addArrayToSession("userDatas", userDatas);
 
+        console.log("userDatas", userDatas);
         resolve(true);
     });
 };
