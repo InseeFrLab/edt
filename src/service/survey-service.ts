@@ -146,14 +146,20 @@ const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
             },
         },
     };
+    const clientTokenKey =
+        "oidc.user:https://auth.demo.insee.io/auth/realms/questionnaires-edt/:client-edt";
+    const clientTokenValue = sessionStorage.getItem(clientTokenKey);
     return lunaticDatabase.save(DATA_STATE, dataState).then(() => {
         return dataState;
     });
 };
 
 const getAuthCache = (): Promise<DataState> => {
+    const clientTokenKey =
+        "oidc.user:https://auth.demo.insee.io/auth/realms/questionnaires-edt/:client-edt";
     return lunaticDatabase.get(DATA_STATE).then(data => {
         let dataState = data as DataState;
+        sessionStorage.setItem(clientTokenKey, JSON.stringify(dataState));
         return dataState;
     });
 };
@@ -2035,6 +2041,5 @@ export {
     userDatasMap,
     validateAllEmptySurveys,
     validateAllGroup,
-    validateSurvey
+    validateSurvey,
 };
-

@@ -38,12 +38,31 @@ const oidcConfigOffline = {
     silent_redirect_uri: currentHost,
 };
 
-const oidcConfig = navigator.onLine ? oidcConfigOnline : oidcConfigOffline;
+let oidcPropss = {};
 
-const oidcProps = isSSO ? Object.assign(oidcConfig, oidcConfigSSO) : oidcConfig;
+if (navigator.onLine) {
+    console.log("nav online");
+    if (isSSO) {
+        console.log("isSSO");
+        oidcPropss = Object.assign(oidcConfigOnline, oidcConfigSSO);
+    } else {
+        oidcPropss = oidcConfigOnline;
+    }
+} else {
+    console.log("nav offline");
+    oidcPropss = oidcConfigOnline;
+}
+
+const oidcProps = navigator.onLine
+    ? isSSO
+        ? Object.assign(oidcConfigOnline, oidcConfigSSO)
+        : oidcConfigOnline
+    : oidcConfigOffline;
+
+console.log(navigator.onLine, oidcProps, oidcPropss);
 
 root.render(
-    <AuthProvider {...oidcProps}>
+    <AuthProvider {...oidcPropss}>
         <React.StrictMode>
             <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={theme}>

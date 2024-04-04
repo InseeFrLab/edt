@@ -58,13 +58,13 @@ const createUserManager = () => {
             "client_secret_jwt",
         ],
     };
-
     const userManager = new UserManager({
         ...IDENTITY_CONFIG,
         userStore: new WebStorageStateStore({ store: window.sessionStorage }),
-        metadata: METADATA_OIDC,
+        metadata: navigator.onLine ? METADATA_OIDC : undefined,
     });
 
+    console.log("create userManager", userManager);
     userManager.events.addUserLoaded(user => {
         console.log("add user", user);
         setUserToken(user?.access_token || "");
@@ -149,6 +149,5 @@ export {
     signinRedirect,
     signinSilent,
     signinSilentCallback,
-    signoutRedirectCallback
+    signoutRedirectCallback,
 };
-
