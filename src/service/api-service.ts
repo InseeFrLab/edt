@@ -359,8 +359,10 @@ const requestGetDataReviewer = (
             .catch(err => {
                 if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
-                } else {
+                } else if ([401, 404].includes(err.response?.status)) {
                     return resolve(initSurveyData(idSurvey));
+                } else {
+                    //requestGetDataReviewer(idSurvey, setError);
                 }
             });
     });
@@ -448,6 +450,5 @@ export {
     remoteGetSurveyData,
     remoteGetSurveyDataReviewer,
     remotePutSurveyData,
-    remotePutSurveyDataReviewer
+    remotePutSurveyDataReviewer,
 };
-

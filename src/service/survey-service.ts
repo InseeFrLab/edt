@@ -580,8 +580,8 @@ const initializeDatasCache = (idSurvey: string) => {
 
 const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
     if (navigator.onLine) {
-        if (userDatas.length > 0) {
-            return lunaticDatabase.get(USER_SURVEYS_DATA);
+        if (userDatas?.length > 0) {
+            return lunaticDatabase.get(USER_SURVEYS_DATA).then(data => console.log(data));
         } else {
             return fetchReviewerSurveysAssignments(setError)
                 .then(data => {
@@ -595,6 +595,7 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                             userDatas.push(surveyData);
                         }
                     });
+                    console.log(userDatas);
                     return saveUserSurveysData({ data: userDatas });
                 })
                 .catch(() => {
@@ -603,6 +604,7 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
         }
     } else {
         return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {
+            console.log("offline");
             let datas = data as UserSurveysData;
             surveysData = datas.data;
             addArrayToSession("surveysData", surveysData);
@@ -932,6 +934,25 @@ const updateLocked = (idSurvey: string, data: LunaticData) => {
     return data;
 };
 
+const getDataUpdatedOffline = () => {
+    let surveysToUpdated = new Map<string, LunaticData>();
+    surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
+        let data = getDataCache(idSurvey);
+        if (data.lastLocalSaveDate > data.lastRemoteSaveDate) {
+            surveysToUpdated.set(idSurvey, data);
+        }
+    });
+    return surveysToUpdated;
+};
+
+const saveDatas = () => {
+    const promisesToWait: Promise<any>[] = [];
+    getDataUpdatedOffline().forEach((value, key) => {
+        promisesToWait.push(saveData(key, value));
+    });
+    return Promise.all(promisesToWait);
+};
+
 const saveData = (
     idSurvey: string,
     data: LunaticData,
@@ -977,7 +998,7 @@ const saveData = (
                     //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
                 }),
             );
-        } else if (isDemoMode || localSaveOnly) {
+        } else if (isDemoMode || localSaveOnly || !navigator.onLine) {
             stateData = getSurveyStateData(data, idSurvey);
         }
     }
@@ -1023,9 +1044,10 @@ const getStateOfSurvey = (idSurvey: string): StateDataStateEnum => {
 };
 
 const getSurveyStateData = (data: LunaticData, idSurvey: string): StateData => {
+    const lastRemoteDate = data.lastRemoteSaveDate ?? Date.now() - 1;
     const stateData: StateData = {
         state: getStateOfSurvey(idSurvey),
-        date: Date.now(),
+        date: lastRemoteDate,
         currentPage: getCurrentPage(data),
     };
     return stateData;
@@ -1986,6 +2008,7 @@ export {
     getComponentsOfVariable,
     getCurrentPage,
     getData,
+    getDataUpdatedOffline,
     getDatas,
     getFirstName,
     getFullFrenchDate,
@@ -2031,6 +2054,7 @@ export {
     refreshSurvey,
     refreshSurveyData,
     saveData,
+    saveDatas,
     setData,
     setValue,
     surveyLocked,

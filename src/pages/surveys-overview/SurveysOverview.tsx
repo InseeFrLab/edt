@@ -37,6 +37,7 @@ import {
     initializeListSurveys,
     initializeSurveysIdsDataModeReviewer,
     refreshSurveyData,
+    saveDatas,
     surveysIds,
 } from "service/survey-service";
 import { getUniquesValues } from "utils/utils";
@@ -132,12 +133,26 @@ const SurveysOverviewPage = () => {
 
     const refreshHouseholds = useCallback(() => {
         setRefreshing(true);
-        return initializeListSurveys(setError).then(() => {
+        return initializeListSurveys(setError).then(surveys => {
+            console.log(surveys);
             return refreshSurveyData(setError).finally(() => {
                 setRefreshing(true);
                 initHouseholds();
                 setSearchResult(dataHouseholds);
                 setRefreshing(false);
+            });
+        });
+    }, [searchResult]);
+
+    const saveAllAndUpdate = useCallback(() => {
+        setRefreshing(true);
+        saveDatas().then(result => {
+            return initializeListSurveys(setError).then(surveys => {
+                return refreshSurveyData(setError).then(refresh => {
+                    initHouseholds();
+                    setSearchResult(dataHouseholds);
+                    setRefreshing(false);
+                });
             });
         });
     }, [searchResult]);
@@ -375,7 +390,7 @@ const SurveysOverviewPage = () => {
                     <Button
                         color="primary"
                         variant="contained"
-                        onClick={refreshHouseholds}
+                        onClick={saveAllAndUpdate}
                         aria-label={"refresh"}
                         startIcon={
                             <RefreshIcon aria-label={t("accessibility.asset.mui-icon.refresh")} />
