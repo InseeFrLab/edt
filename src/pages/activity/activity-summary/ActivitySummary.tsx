@@ -248,7 +248,10 @@ const ActivitySummaryPage = () => {
         context.idSurvey = idSurvey;
     });
 
-    const navToCard = useCallback((iteration: number) => () => navToActivityOrRoute(iteration), []);
+    const navToCard = useCallback(
+        (iteration: number) => () => navToActivityOrRoute(iteration),
+        [idSurvey],
+    );
 
     const navToActivityOrRoute = (iteration: number): void => {
         const isEditedSummary: { [key: string]: string } = {

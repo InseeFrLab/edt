@@ -594,24 +594,25 @@ const ActivityOrRoutePlannerPage = () => {
     const onDeleteActivity = useCallback(
         (idSurvey: string, source: LunaticModel, iteration: number) => () =>
             onDeleteActivityOrRoute(idSurvey, source, iteration),
-        [],
+        [idSurvey],
     );
 
     const onAddActivity = useCallback(
         (idSurvey: string, isRoute: boolean) => () => onAddActivityOrRoute(isRoute, idSurvey),
-        [],
+        [idSurvey],
     );
 
     const onAddActivityGap = useCallback(
         (idSurvey: string, isRoute: boolean, startTime?: string, endTime?: string) => () =>
             onAddActivityOrRouteFromGap(idSurvey, isRoute, startTime, endTime),
-        [],
+        [idSurvey],
     );
 
     const navToCard = useCallback(
-        (iteration: number, isRoute?: boolean) => () =>
-            navToActivityOrRoute(idSurvey, iteration, isRoute),
-        [],
+        (iteration: number, isRoute?: boolean) => () => {
+            navToActivityOrRoute(idSurvey, iteration, isRoute);
+        },
+        [idSurvey],
     );
 
     const closeActivity = useCallback(
