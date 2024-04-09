@@ -1707,17 +1707,10 @@ const lockSurvey = (idSurvey: string) => {
 
     if (data.COLLECTED?.[FieldNameEnum.ISLOCKED]) {
         data.COLLECTED[FieldNameEnum.ISLOCKED] = variable;
-        promisesToWait.push(saveData(idSurvey, data));
     } else if (data.COLLECTED) {
         data.COLLECTED.ISLOCKED = variable;
-        promisesToWait.push(saveData(idSurvey, data));
     }
-
-    return new Promise(resolve => {
-        Promise.all(promisesToWait).then(() => {
-            resolve(isLocked);
-        });
-    });
+    return saveData(idSurvey, data);
 };
 
 const lockAllSurveys = (idHousehold: string) => {
