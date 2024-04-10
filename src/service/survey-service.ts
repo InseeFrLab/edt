@@ -188,17 +188,16 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                 if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
                     activitySurveysIds.push(surveyData.surveyUnitId);
                     userSurveyDataActivity.push(surveyData);
-                    userDatas.push(surveyData);
                 }
                 if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
                     workingTimeSurveysIds.push(surveyData.surveyUnitId);
                     userSurveyDataWorkTime.push(surveyData);
-                    userDatas.push(surveyData);
                 }
+                userDatas.push(surveyData);
             });
             userDatasActivity = userSurveyDataActivity;
             userDatasWorkTime = userSurveyDataWorkTime;
-
+            console.log(userDatas);
             addArrayToSession("userDatasWorkTime", userDatasWorkTime);
             addArrayToSession("userDatasActivity", userDatasActivity);
             addArrayToSession("userDatas", userDatas);
@@ -551,6 +550,7 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
             }
             promises.push(
                 lunaticDatabase.get(USER_SURVEYS_DATA).then(data => {
+                    console.log(data);
                     userDatas = (data as UserSurveysData)?.data;
                 }),
             );
@@ -1077,10 +1077,16 @@ const saveSurveysIds = (data: SurveysIds): Promise<SurveysIds> => {
 };
 
 const saveUserSurveysData = (data: UserSurveysData): Promise<UserSurveys[]> => {
-    return lunaticDatabase.save(USER_SURVEYS_DATA, data).then(() => {
-        userDatas = data.data;
-        return data.data;
-    });
+    console.log(data, userDatas);
+    return data.data?.length > 0
+        ? lunaticDatabase.save(USER_SURVEYS_DATA, data).then(() => {
+              userDatas = data.data;
+              return data.data;
+          })
+        : lunaticDatabase.get(USER_SURVEYS_DATA).then(userDatas => {
+              let userDatasLocal = userDatas as UserSurveysData;
+              return userDatasLocal.data;
+          });
 };
 
 const getUserDatasActivity = (): UserSurveys[] => {
