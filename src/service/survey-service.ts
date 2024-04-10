@@ -958,6 +958,7 @@ const saveData = (
     data: LunaticData,
     localSaveOnly = false,
     forceUpdate = false,
+    stateDataForced?: StateData,
 ): Promise<LunaticData> => {
     data.lastLocalSaveDate = Date.now();
     if (!data.houseReference) {
@@ -972,7 +973,7 @@ const saveData = (
 
     data = updateLocked(idSurvey, data);
     datas.set(idSurvey, data);
-    let stateData: StateData = initStateData();
+    let stateData: StateData = stateDataForced ?? initStateData();
 
     if (isChange) {
         data = saveQualityScore(idSurvey, data);
@@ -1003,6 +1004,7 @@ const saveData = (
         }
     }
     Promise.all(promisesToWait);
+    console.log(data, stateData);
     return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
 };
 
@@ -1752,8 +1754,20 @@ const lockAllSurveys = (idHousehold: string) => {
 };
 
 const validateSurvey = (idSurvey: string) => {
-    const promisesToWait: Promise<any>[] = [];
     const data = getData(idSurvey || "");
+    const variable: Collected = {
+        COLLECTED: true,
+        EDITED: true,
+        FORCED: null,
+        INPUTED: null,
+        PREVIOUS: null,
+    };
+
+    if (data.COLLECTED?.[FieldNameEnum.ISVALIDATED]) {
+        data.COLLECTED[FieldNameEnum.ISVALIDATED] = variable;
+    } else if (data.COLLECTED) {
+        data.COLLECTED.ISVALIDATED = variable;
+    }
 
     const stateData: StateData = {
         idStateData: data.stateData?.idStateData,
@@ -1761,22 +1775,24 @@ const validateSurvey = (idSurvey: string) => {
         date: Date.now(),
         currentPage: getCurrentPage(data),
     };
-
+    console.log(data, stateData);
     remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
         data.stateData = stateData;
-        promisesToWait.push(saveData(idSurvey, data));
+        console.log(data);
     });
-
-    return new Promise(resolve => {
-        Promise.all(promisesToWait).then(() => {
-            resolve(true);
-        });
-    });
+    return saveData(idSurvey, data, false, false, stateData);
 };
 
 const validateAllEmptySurveys = (idHousehold: string) => {
     const idSurveys = getSurveysIdsForHousehold(idHousehold);
     const promisesToWait: Promise<any>[] = [];
+    const variable: Collected = {
+        COLLECTED: true,
+        EDITED: true,
+        FORCED: null,
+        INPUTED: null,
+        PREVIOUS: null,
+    };
 
     idSurveys.forEach(idSurvey => {
         const data = getData(idSurvey || "");
@@ -1786,6 +1802,13 @@ const validateAllEmptySurveys = (idHousehold: string) => {
             date: Date.now(),
             currentPage: getCurrentPage(data),
         };
+
+        if (data.COLLECTED?.[FieldNameEnum.ISVALIDATED]) {
+            data.COLLECTED[FieldNameEnum.ISVALIDATED] = variable;
+        } else if (data.COLLECTED) {
+            data.COLLECTED.ISVALIDATED = variable;
+        }
+
         const value = getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string;
         if (value == null || value.length == 0) {
             data.stateData = stateData;

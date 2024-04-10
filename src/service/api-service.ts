@@ -291,12 +291,12 @@ const requestPutSurveyDataReviewer = (
         requestPutDataReviewer(idSurvey, data, token);
     });
 
-    return new Promise(() => {
+    return new Promise(resolve => {
         const surveyData: SurveyData = {
             stateData: stateData,
             data: data,
         };
-        return surveyData;
+        resolve(surveyData);
     });
 };
 
