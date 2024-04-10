@@ -28,7 +28,6 @@ import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
 import { TFunction, useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { remotePutSurveyDataReviewer } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getNavigatePath } from "service/navigation-service";
 import { isMobile } from "service/responsive";
@@ -37,6 +36,7 @@ import {
     initializeListSurveys,
     initializeSurveysIdsDataModeReviewer,
     refreshSurveyData,
+    saveData,
     saveDatas,
     surveysIds,
 } from "service/survey-service";
@@ -134,7 +134,6 @@ const SurveysOverviewPage = () => {
     const refreshHouseholds = useCallback(() => {
         setRefreshing(true);
         return initializeListSurveys(setError).then(surveys => {
-            console.log(surveys);
             return refreshSurveyData(setError).finally(() => {
                 setRefreshing(true);
                 initHouseholds();
@@ -183,7 +182,7 @@ const SurveysOverviewPage = () => {
         let surveys = surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS];
         surveys.forEach(idSurvey => {
             const stateData = { state: null, date: Date.now(), currentPage: 1 };
-            promises.push(remotePutSurveyDataReviewer(idSurvey, stateData, {}));
+            promises.push(saveData(idSurvey, {}, false, true, stateData));
         });
         Promise.all(promises)
             .then(() => {

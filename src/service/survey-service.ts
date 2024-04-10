@@ -197,7 +197,6 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             });
             userDatasActivity = userSurveyDataActivity;
             userDatasWorkTime = userSurveyDataWorkTime;
-            console.log(userDatas);
             addArrayToSession("userDatasWorkTime", userDatasWorkTime);
             addArrayToSession("userDatasActivity", userDatasActivity);
             addArrayToSession("userDatas", userDatas);
@@ -254,7 +253,6 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             addArrayToSession("userDatasWorkTime", userDatasWorkTime);
             addArrayToSession("userDatasActivity", userDatasActivity);
             addArrayToSession("userDatas", userDatas);
-
             let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
             const innerPromisesOffline: Promise<any>[] = [initializeSurveysDatasCache(allSurveysIds)];
             return Promise.all(innerPromisesOffline);
@@ -403,7 +401,6 @@ const initializeHomeSurveys = (idHousehold: string) => {
         addArrayToSession("userDatasWorkTime", userDatasWorkTime);
         addArrayToSession("userDatasActivity", userDatasActivity);
         addArrayToSession("userDatas", userDatas);
-
         resolve(true);
     });
 };
@@ -518,12 +515,8 @@ const getRemoteSavedSurveysDatas = (
                         return lunaticDatabase.get(surveyId).then(localSurveyData => {
                             if (
                                 localSurveyData == null ||
-                                remoteSurveyData.stateData?.date == null ||
-                                (remoteSurveyData.stateData?.date &&
-                                    remoteSurveyData.stateData?.date > 0 &&
-                                    (localSurveyData === undefined ||
-                                        (localSurveyData.lastLocalSaveDate ?? 0) <
-                                            remoteSurveyData.stateData.date))
+                                (remoteSurveyData.data.lastLocalSaveDate ?? 0) <
+                                    (remoteSurveyData.data.lastRemoteSaveDate ?? 1)
                             ) {
                                 const stateData = getSurveyStateData(surveyData, surveyId);
                                 setLocalOrRemoteData(surveyId, remoteSurveyData, surveyData, stateData);
@@ -550,7 +543,6 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
             }
             promises.push(
                 lunaticDatabase.get(USER_SURVEYS_DATA).then(data => {
-                    console.log(data);
                     userDatas = (data as UserSurveysData)?.data;
                 }),
             );
@@ -580,31 +572,26 @@ const initializeDatasCache = (idSurvey: string) => {
 
 const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
     if (navigator.onLine) {
-        if (userDatas?.length > 0) {
-            return lunaticDatabase.get(USER_SURVEYS_DATA).then(data => console.log(data));
-        } else {
-            return fetchReviewerSurveysAssignments(setError)
-                .then(data => {
-                    surveysData = data;
-                    addArrayToSession("surveysData", surveysData);
-                    data.forEach((surveyData: UserSurveys) => {
-                        if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
-                            userDatas.push(surveyData);
-                        }
-                        if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
-                            userDatas.push(surveyData);
-                        }
-                    });
-                    console.log(userDatas);
-                    return saveUserSurveysData({ data: userDatas });
-                })
-                .catch(() => {
-                    return lunaticDatabase.get(USER_SURVEYS_DATA);
+        return fetchReviewerSurveysAssignments(setError)
+            .then(data => {
+                surveysData = data;
+                addArrayToSession("surveysData", surveysData);
+                data.forEach((surveyData: UserSurveys) => {
+                    if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
+                        userDatas.push(surveyData);
+                    }
+                    if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
+                        userDatas.push(surveyData);
+                    }
                 });
-        }
+                //console.log(userDatas);
+                return saveUserSurveysData({ data: userDatas });
+            })
+            .catch(() => {
+                return lunaticDatabase.get(USER_SURVEYS_DATA);
+            });
     } else {
         return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {
-            console.log("offline");
             let datas = data as UserSurveysData;
             surveysData = datas.data;
             addArrayToSession("surveysData", surveysData);
@@ -960,7 +947,7 @@ const saveData = (
     forceUpdate = false,
     stateDataForced?: StateData,
 ): Promise<LunaticData> => {
-    data.lastLocalSaveDate = Date.now();
+    data.lastLocalSaveDate = Date.now() + 1;
     if (!data.houseReference) {
         const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
         data.houseReference = idSurvey.replace(regexp, "");
@@ -969,7 +956,6 @@ const saveData = (
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
     fixConditionals(data);
     const isChange = forceUpdate || dataIsChange(idSurvey, data);
-    const promisesToWait: Promise<any>[] = [];
 
     data = updateLocked(idSurvey, data);
     datas.set(idSurvey, data);
@@ -979,12 +965,9 @@ const saveData = (
         data = saveQualityScore(idSurvey, data);
         if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
             stateData = getSurveyStateData(data, idSurvey);
-            promisesToWait.push(
-                remotePutSurveyDataReviewer(idSurvey, stateData, data).catch(() => {
-                    //return Promise.reject({});
-                    //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
-                }),
-            );
+            return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(remoteData => {
+                return setLocalOrRemoteData(idSurvey, remoteData, data, stateData);
+            });
         }
         //We try to submit each time the local database is updated if the user is online
         else if (!isDemoMode && !localSaveOnly && navigator.onLine) {
@@ -993,19 +976,18 @@ const saveData = (
                 stateData: stateData,
                 data: data,
             };
-            promisesToWait.push(
-                remotePutSurveyData(idSurvey, surveyData).catch(() => {
-                    //return Promise.reject({});
-                    //We ignore the error because user is stuck on EndSurveyPage if he couldn't submit in any moment his survey.
-                }),
-            );
+            return remotePutSurveyData(idSurvey, surveyData).then(remoteData => {
+                return setLocalOrRemoteData(idSurvey, remoteData, data, stateData);
+            });
         } else if (isDemoMode || localSaveOnly || !navigator.onLine) {
             stateData = getSurveyStateData(data, idSurvey);
+            return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
+        } else {
+            return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
         }
+    } else {
+        return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
     }
-    Promise.all(promisesToWait);
-    console.log(data, stateData);
-    return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
 };
 
 const setLocalOrRemoteData = (
@@ -1079,7 +1061,6 @@ const saveSurveysIds = (data: SurveysIds): Promise<SurveysIds> => {
 };
 
 const saveUserSurveysData = (data: UserSurveysData): Promise<UserSurveys[]> => {
-    console.log(data, userDatas);
     return data.data?.length > 0
         ? lunaticDatabase.save(USER_SURVEYS_DATA, data).then(() => {
               userDatas = data.data;
@@ -1775,12 +1756,8 @@ const validateSurvey = (idSurvey: string) => {
         date: Date.now(),
         currentPage: getCurrentPage(data),
     };
-    console.log(data, stateData);
-    remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
-        data.stateData = stateData;
-        console.log(data);
-    });
-    return saveData(idSurvey, data, false, false, stateData);
+
+    return saveData(idSurvey, data, false, true, stateData);
 };
 
 const validateAllEmptySurveys = (idHousehold: string) => {
