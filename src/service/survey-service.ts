@@ -1787,14 +1787,15 @@ const validateAllEmptySurveys = (idHousehold: string) => {
         }
 
         const value = getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string;
+
         if (value == null || value.length == 0) {
             data.stateData = stateData;
-            promisesToWait.push(saveData(idSurvey, data));
+            promisesToWait.push(saveData(idSurvey, data, false, true));
         }
     });
 
     return new Promise(resolve => {
-        Promise.all(promisesToWait).then(() => {
+        Promise.all(promisesToWait).then(saves => {
             resolve(true);
         });
     });
