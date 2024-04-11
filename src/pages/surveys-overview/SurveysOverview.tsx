@@ -133,7 +133,7 @@ const SurveysOverviewPage = () => {
 
     const refreshHouseholds = useCallback(() => {
         setRefreshing(true);
-        return initializeListSurveys(setError).then(surveys => {
+        return initializeListSurveys(setError).then(() => {
             return refreshSurveyData(setError).finally(() => {
                 setRefreshing(true);
                 initHouseholds();
@@ -145,9 +145,9 @@ const SurveysOverviewPage = () => {
 
     const saveAllAndUpdate = useCallback(() => {
         setRefreshing(true);
-        saveDatas().then(result => {
-            return initializeListSurveys(setError).then(surveys => {
-                return refreshSurveyData(setError).then(refresh => {
+        saveDatas().then(() => {
+            return initializeListSurveys(setError).then(() => {
+                return refreshSurveyData(setError).then(() => {
                     initHouseholds();
                     setSearchResult(dataHouseholds);
                     setRefreshing(false);

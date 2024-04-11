@@ -146,9 +146,6 @@ const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
             },
         },
     };
-    const clientTokenKey =
-        "oidc.user:https://auth.demo.insee.io/auth/realms/questionnaires-edt/:client-edt";
-    const clientTokenValue = sessionStorage.getItem(clientTokenKey);
     return lunaticDatabase.save(DATA_STATE, dataState).then(() => {
         return dataState;
     });
@@ -220,7 +217,7 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                         saveSources(sources),
                         saveUserSurveysData({ data: userDatas }),
                     ];
-                    return Promise.all(inerFetchPromises);
+                    return Promise.all(inerFetchPromises).then(saved => console.log(saved));
                 }),
             ];
             return Promise.all(innerPromises);
@@ -584,8 +581,7 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                         userDatas.push(surveyData);
                     }
                 });
-                //console.log(userDatas);
-                return saveUserSurveysData({ data: userDatas });
+                return saveUserSurveysData({ data: userDatas }).then(saved => console.log(saved, data));
             })
             .catch(() => {
                 return lunaticDatabase.get(USER_SURVEYS_DATA);
@@ -1068,7 +1064,7 @@ const saveUserSurveysData = (data: UserSurveysData): Promise<UserSurveys[]> => {
           })
         : lunaticDatabase.get(USER_SURVEYS_DATA).then(userDatas => {
               let userDatasLocal = userDatas as UserSurveysData;
-              return userDatasLocal.data;
+              return userDatasLocal?.data;
           });
 };
 
@@ -1683,9 +1679,7 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
 };
 
 const lockSurvey = (idSurvey: string) => {
-    const promisesToWait: Promise<any>[] = [];
     const data = getData(idSurvey || "");
-    const isLocked = surveyLocked(idSurvey);
     const variable: Collected = {
         COLLECTED: true,
         EDITED: true,
@@ -1795,7 +1789,7 @@ const validateAllEmptySurveys = (idHousehold: string) => {
     });
 
     return new Promise(resolve => {
-        Promise.all(promisesToWait).then(saves => {
+        Promise.all(promisesToWait).then(() => {
             resolve(true);
         });
     });
