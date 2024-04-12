@@ -105,7 +105,7 @@ const HomeSurveyedPage = () => {
                         !survey.startsWith("activitySurvey") && !survey.startsWith("workTimeSurvey"),
                 );
             if (navigator.onLine) {
-                getRemoteSavedSurveysDatas(idsSurveysSelected, setError).then(() => {
+                getRemoteSavedSurveysDatas(idsSurveysSelected, setError, false).then(() => {
                     initHome(idsSurveysSelected);
                 });
             } else {
@@ -367,6 +367,7 @@ const HomeSurveyedPage = () => {
                             variant="contained"
                             onClick={lockSurveys}
                             className={cx(classes.navButton)}
+                            disabled={!navigator.onLine}
                         >
                             <LockIcon aria-label={t("accessibility.asset.mui-icon.padlock")} />
                         </Button>

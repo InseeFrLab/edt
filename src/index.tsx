@@ -20,7 +20,9 @@ const oidcConfigSSO = {
     userManager: createUserManager(),
 };
 
-const oidcConfig = {
+const currentHost = `${window.location.protocol}//${window.location.hostname}`;
+
+const oidcConfigOnline = {
     onSignIn: () => {
         //to remove keycloak params in url
         window.history.replaceState(null, "", window.location.pathname);
@@ -28,12 +30,39 @@ const oidcConfig = {
     authority: getAuthority(),
     clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID,
     redirectUri: process.env.REACT_APP_KEYCLOAK_REDIRECT_URI,
+    automaticSilentRenew: !navigator.onLine,
 };
 
-const oidcProps = isSSO ? Object.assign(oidcConfig, oidcConfigSSO) : oidcConfig;
+const oidcConfigOffline = {
+    automaticSilentRenew: !navigator.onLine,
+    silent_redirect_uri: currentHost,
+};
+
+let oidcPropss = {};
+
+if (navigator.onLine) {
+    console.log("nav online");
+    if (isSSO) {
+        console.log("isSSO");
+        oidcPropss = Object.assign(oidcConfigOnline, oidcConfigSSO);
+    } else {
+        oidcPropss = oidcConfigOnline;
+    }
+} else {
+    console.log("nav offline");
+    oidcPropss = oidcConfigOnline;
+}
+
+const oidcProps = navigator.onLine
+    ? isSSO
+        ? Object.assign(oidcConfigOnline, oidcConfigSSO)
+        : oidcConfigOnline
+    : oidcConfigOffline;
+
+console.log(navigator.onLine, oidcProps, oidcPropss);
 
 root.render(
-    <AuthProvider {...oidcProps}>
+    <AuthProvider {...oidcPropss}>
         <React.StrictMode>
             <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={theme}>

@@ -594,24 +594,25 @@ const ActivityOrRoutePlannerPage = () => {
     const onDeleteActivity = useCallback(
         (idSurvey: string, source: LunaticModel, iteration: number) => () =>
             onDeleteActivityOrRoute(idSurvey, source, iteration),
-        [],
+        [idSurvey],
     );
 
     const onAddActivity = useCallback(
         (idSurvey: string, isRoute: boolean) => () => onAddActivityOrRoute(isRoute, idSurvey),
-        [],
+        [idSurvey],
     );
 
     const onAddActivityGap = useCallback(
         (idSurvey: string, isRoute: boolean, startTime?: string, endTime?: string) => () =>
             onAddActivityOrRouteFromGap(idSurvey, isRoute, startTime, endTime),
-        [],
+        [idSurvey],
     );
 
     const navToCard = useCallback(
-        (iteration: number, isRoute?: boolean) => () =>
-            navToActivityOrRoute(idSurvey, iteration, isRoute),
-        [],
+        (iteration: number, isRoute?: boolean) => () => {
+            navToActivityOrRoute(idSurvey, iteration, isRoute);
+        },
+        [idSurvey],
     );
 
     const closeActivity = useCallback(
@@ -772,14 +773,14 @@ const ActivityOrRoutePlannerPage = () => {
                                                     <Typography className={classes.label}>
                                                         {t("page.activity-planner.activity-for-day")}
                                                     </Typography>
-                                                    <Typography className={classes.date}>
+                                                    <Box className={classes.date}>
                                                         <h1 className={classes.h1}>
                                                             {formateDateToFrenchFormat(
                                                                 generateDateFromStringInput(surveyDate),
                                                                 getLanguage(),
                                                             )}
                                                         </h1>
-                                                    </Typography>
+                                                    </Box>
                                                 </>
                                             )}
                                         </Box>

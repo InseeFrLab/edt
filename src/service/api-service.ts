@@ -2,10 +2,12 @@ import { NomenclatureActivityOption } from "@inseefrlab/lunatic-edt";
 import axios from "axios";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
+import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
 import { LunaticData, ReferentielData, SourceData } from "interface/lunatic/Lunatic";
 import jwt, { JwtPayload } from "jwt-decode";
 import { AuthContextProps, User } from "oidc-react";
+import { initStateData, initSurveyData } from "./survey-service";
 import { getAuth, getUserToken, isReviewer } from "./user-service";
 
 export const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
@@ -78,7 +80,7 @@ export const fetchReferentiels = (
                 resolve(refs);
             })
             .catch(err => {
-                if (err.response.status === 403) {
+                if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
                 } else {
                     setError(ErrorCodeEnum.UNREACHABLE_NOMENCLATURES);
@@ -99,7 +101,7 @@ const fetchUserSurveysInfo = (setError: (error: ErrorCodeEnum) => void): Promise
                 resolve(data);
             })
             .catch(err => {
-                if (err.response.status === 403) {
+                if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
                 } else {
                     setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_ASSIGNMENTS);
@@ -132,7 +134,7 @@ const fetchSurveysSourcesByIds = (
                 resolve(sources as SourceData);
             })
             .catch(err => {
-                if (err.response.status === 403) {
+                if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
                 } else {
                     setError(ErrorCodeEnum.UNREACHABLE_SOURCE);
@@ -152,7 +154,7 @@ const fetchReviewerSurveysAssignments = (setError: (error: ErrorCodeEnum) => voi
                 resolve(response.data);
             })
             .catch(err => {
-                if (err.response.status === 403) {
+                if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
                 } else {
                     setError(ErrorCodeEnum.UNREACHABLE_SOURCE);
@@ -166,16 +168,18 @@ const requestPutSurveyData = (
     data: SurveyData,
     token?: string,
 ): Promise<SurveyData> => {
-    return new Promise<SurveyData>(resolve => {
-        axios
-            .put(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
-                data,
-                getHeader(stromaeBackOfficeApiBaseUrl, token),
-            )
-            .then(() => {
-                resolve(data);
-            });
+    return new Promise(resolve => {
+        setTimeout(() => {
+            axios
+                .put(
+                    stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
+                    data,
+                    getHeader(stromaeBackOfficeApiBaseUrl, token),
+                )
+                .then(() => {
+                    resolve(data);
+                });
+        }, 1000);
     });
 };
 
@@ -233,15 +237,17 @@ const requestPutDataReviewer = (
     token?: string,
 ): Promise<LunaticData> => {
     return new Promise<LunaticData>(resolve => {
-        axios
-            .put(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
-                data,
-                getHeader(stromaeBackOfficeApiBaseUrl, token),
-            )
-            .then(() => {
-                resolve(data);
-            });
+        setTimeout(() => {
+            axios
+                .put(
+                    stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
+                    data,
+                    getHeader(stromaeBackOfficeApiBaseUrl, token),
+                )
+                .then(() => {
+                    resolve(data);
+                });
+        }, 1000);
     });
 };
 
@@ -251,15 +257,27 @@ const requestPutStateReviewer = (
     token?: string,
 ): Promise<StateData> => {
     return new Promise<StateData>(resolve => {
-        axios
-            .put(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
-                data,
-                getHeader(stromaeBackOfficeApiBaseUrl, token),
-            )
-            .then(() => {
-                resolve(data);
-            });
+        setTimeout(() => {
+            axios
+                .put(
+                    stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
+                    data,
+                    getHeader(stromaeBackOfficeApiBaseUrl, token),
+                )
+                .then(() => {
+                    resolve(data);
+                })
+                .catch(err => {
+                    if (err.response?.status == 404) {
+                        const stateData = {
+                            state: StateDataStateEnum.INIT,
+                            date: Date.now(),
+                            currentPage: 0,
+                        };
+                        resolve(stateData);
+                    }
+                });
+        }, 1000);
     });
 };
 
@@ -269,18 +287,17 @@ const requestPutSurveyDataReviewer = (
     stateData: StateData,
     token?: string,
 ): Promise<SurveyData> => {
-    const promises = requestPutDataReviewer(idSurvey, data, token).then(() => {
-        return requestPutStateReviewer(idSurvey, stateData, token).then(() => {
-            return new Promise<SurveyData>(resolve => {
-                const surveyData: SurveyData = {
-                    stateData: stateData,
-                    data: data,
-                };
-                resolve(surveyData);
-            });
-        });
+    requestPutStateReviewer(idSurvey, stateData, token).then(() => {
+        requestPutDataReviewer(idSurvey, data, token);
     });
-    return promises;
+
+    return new Promise(resolve => {
+        const surveyData: SurveyData = {
+            stateData: stateData,
+            data: data,
+        };
+        resolve(surveyData);
+    });
 };
 
 const logout = () => {
@@ -315,7 +332,7 @@ const remoteGetSurveyData = (
             .catch(err => {
                 if (err.response?.status === 403) {
                     setError?.(ErrorCodeEnum.NO_RIGHTS);
-                } else {
+                } else if (err.response?.status != 404) {
                     setError?.(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
                 }
             });
@@ -342,6 +359,10 @@ const requestGetDataReviewer = (
             .catch(err => {
                 if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
+                } else if ([401, 404].includes(err.response?.status)) {
+                    return resolve(initSurveyData(idSurvey));
+                } else {
+                    //requestGetDataReviewer(idSurvey, setError);
                 }
             });
     });
@@ -363,8 +384,8 @@ const requestGetStateReviewer = (
             .catch(err => {
                 if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
-                } else if (err.response?.status != 404) {
-                    setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
+                } else {
+                    resolve(initStateData());
                 }
             });
     });
@@ -411,7 +432,10 @@ const remoteGetSurveyDataReviewer = (
         if (err.response?.status === 403) {
             setError?.(ErrorCodeEnum.NO_RIGHTS);
         } else {
-            setError?.(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
+            return {
+                data: initSurveyData(idSurvey),
+                stateData: initStateData(),
+            };
         }
         return Promise.reject(err);
     });

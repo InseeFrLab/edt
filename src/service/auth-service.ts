@@ -58,18 +58,22 @@ const createUserManager = () => {
             "client_secret_jwt",
         ],
     };
-
     const userManager = new UserManager({
         ...IDENTITY_CONFIG,
         userStore: new WebStorageStateStore({ store: window.sessionStorage }),
-        metadata: METADATA_OIDC,
+        metadata: navigator.onLine ? METADATA_OIDC : undefined,
     });
 
+    console.log("create userManager", userManager);
     userManager.events.addUserLoaded(user => {
+        console.log("add user", user);
         setUserToken(user?.access_token || "");
     });
+
     userManager.events.addAccessTokenExpired(() => {
-        signinSilent(userManager);
+        if (navigator.onLine) {
+            signinSilent(userManager);
+        }
     });
 
     return userManager;
@@ -92,10 +96,6 @@ export const parseJwt = (token: string) => {
 const signinRedirect = (userManager: UserManager) => {
     localStorage.setItem("redirectUri", window.location.pathname);
     userManager.signinRedirect({});
-};
-
-const navigateToScreen = () => {
-    window.location.replace("/en/dashboard");
 };
 
 const isAuthenticated = () => {
@@ -146,7 +146,6 @@ export {
     isAuthenticated,
     isSSO,
     logout,
-    navigateToScreen,
     signinRedirect,
     signinSilent,
     signinSilentCallback,

@@ -28,7 +28,6 @@ import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
 import { TFunction, useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { remotePutSurveyDataReviewer } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getNavigatePath } from "service/navigation-service";
 import { isMobile } from "service/responsive";
@@ -37,6 +36,8 @@ import {
     initializeListSurveys,
     initializeSurveysIdsDataModeReviewer,
     refreshSurveyData,
+    saveData,
+    saveDatas,
     surveysIds,
 } from "service/survey-service";
 import { getUniquesValues } from "utils/utils";
@@ -124,7 +125,6 @@ const SurveysOverviewPage = () => {
 
     const initHouseholds = () => {
         dataHouseholds = getListSurveysHousehold();
-
         if (searchResult == null || searchResult.length == 0) {
             setSearchResult(dataHouseholds);
         }
@@ -133,16 +133,27 @@ const SurveysOverviewPage = () => {
 
     const refreshHouseholds = useCallback(() => {
         setRefreshing(true);
-        return initializeListSurveys(setError)
-            .then(() => {
+        return initializeListSurveys(setError).then(() => {
+            return refreshSurveyData(setError).finally(() => {
+                setRefreshing(true);
+                initHouseholds();
+                setSearchResult(dataHouseholds);
+                setRefreshing(false);
+            });
+        });
+    }, [searchResult]);
+
+    const saveAllAndUpdate = useCallback(() => {
+        setRefreshing(true);
+        saveDatas().then(() => {
+            return initializeListSurveys(setError).then(() => {
                 return refreshSurveyData(setError).then(() => {
                     initHouseholds();
                     setSearchResult(dataHouseholds);
+                    setRefreshing(false);
                 });
-            })
-            .then(() => {
-                setRefreshing(false);
             });
+        });
     }, [searchResult]);
 
     useEffect(() => {
@@ -163,7 +174,6 @@ const SurveysOverviewPage = () => {
             .finally(() => {
                 initHouseholds();
                 setInitialized(true);
-                setRefreshing(false);
             });
     });
 
@@ -172,7 +182,7 @@ const SurveysOverviewPage = () => {
         let surveys = surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS];
         surveys.forEach(idSurvey => {
             const stateData = { state: null, date: Date.now(), currentPage: 1 };
-            promises.push(remotePutSurveyDataReviewer(idSurvey, stateData, {}));
+            promises.push(saveData(idSurvey, {}, false, true, stateData));
         });
         Promise.all(promises)
             .then(() => {
@@ -379,7 +389,7 @@ const SurveysOverviewPage = () => {
                     <Button
                         color="primary"
                         variant="contained"
-                        onClick={refreshHouseholds}
+                        onClick={saveAllAndUpdate}
                         aria-label={"refresh"}
                         startIcon={
                             <RefreshIcon aria-label={t("accessibility.asset.mui-icon.refresh")} />

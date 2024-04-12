@@ -89,7 +89,9 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
                 );
         },
         labels: getLabels(labelOfPage),
-        errorIcon: IconError,
+        errorIcon: (
+            <IconError aria-label={t("component.activity-selecter.clickable-list-icon-no-result-alt")} />
+        ),
         onSelectValue: () => {
             validate(idSurvey).then(() => {
                 skipNextPage(
