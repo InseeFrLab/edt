@@ -47,6 +47,7 @@ import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
+import { CreateIndexation, getIndexSuggester } from "service/suggester-service";
 import { surveyReadOnly } from "service/survey-activity-service";
 import { createNewActivityInCategory, getData } from "service/survey-service";
 import { getSurveyIdFromUrl } from "utils/utils";
@@ -196,6 +197,8 @@ const MainActivityPage = () => {
         addLightBlueIcon: <AddLightBlueIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
         addWhiteIcon: <AddWhiteIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
         modifiable: modifiable,
+        indexSuggester: getIndexSuggester(),
+        CreateIndex: CreateIndexation,
     };
 
     return (

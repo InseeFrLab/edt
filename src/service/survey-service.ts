@@ -574,11 +574,13 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                 surveysData = data;
                 addArrayToSession("surveysData", surveysData);
                 data.forEach((surveyData: UserSurveys) => {
-                    if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
-                        userDatas.push(surveyData);
-                    }
-                    if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
-                        userDatas.push(surveyData);
+                    if (!userDatas?.find(user => user.surveyUnitId == surveyData.surveyUnitId)) {
+                        if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
+                            userDatas.push(surveyData);
+                        }
+                        if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
+                            userDatas.push(surveyData);
+                        }
                     }
                 });
                 return saveUserSurveysData({ data: userDatas }).then(saved => console.log(saved, data));

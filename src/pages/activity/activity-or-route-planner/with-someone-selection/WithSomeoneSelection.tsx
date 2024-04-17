@@ -7,6 +7,7 @@ import { ReactComponent as parentsIcon } from "assets/illustration/with-someone-
 import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { useTranslation } from "react-i18next";
+import { CreateIndexation, getIndexSuggester } from "service/suggester-service";
 
 const WithSomeoneSelectionPage = () => {
     const { t } = useTranslation();
@@ -35,6 +36,8 @@ const WithSomeoneSelectionPage = () => {
             },
         },
         displayStepper: false,
+        indexSuggester: getIndexSuggester(),
+        CreateIndex: CreateIndexation,
     };
 
     return (

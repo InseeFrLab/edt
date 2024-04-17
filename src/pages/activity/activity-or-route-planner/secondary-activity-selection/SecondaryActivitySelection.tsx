@@ -18,6 +18,7 @@ import {
     getAutoCompleteRef,
     getRouteSecondaryActivityRef,
 } from "service/referentiel-service";
+import { CreateIndexation, getIndexSuggester } from "service/suggester-service";
 import { surveyReadOnly } from "service/survey-activity-service";
 import {
     addToSecondaryActivityReferentiel,
@@ -99,6 +100,8 @@ const SecondaryActivitySelectionPage = () => {
             ),
             iconSearch: <SearchIcon aria-label={t("accessibility.asset.mui-icon.search")} />,
         },
+        indexSuggester: getIndexSuggester(),
+        CreateIndex: CreateIndexation,
     };
 
     return (
