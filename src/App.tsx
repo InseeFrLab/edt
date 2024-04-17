@@ -1,5 +1,7 @@
+import { AutoCompleteActiviteOption } from "@inseefrlab/lunatic-edt";
 import "App.scss";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
+import { Index } from "elasticlunrjs";
 import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import "i18n/i18n";
@@ -8,6 +10,8 @@ import ErrorPage from "pages/error/Error";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EdtRoutes } from "routes/EdtRoutes";
+import { getAutoCompleteRef } from "service/referentiel-service";
+import { CreateIndex, optionsFiltered, setIndexSuggester } from "service/suggester-service";
 import {
     getAuthCache,
     getDatas,
@@ -23,6 +27,8 @@ const App = () => {
     const [initialized, setInitialized] = useState(false);
     const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
     const auth = useAuth();
+
+    const [index, setIndex] = useState<Index<AutoCompleteActiviteOption>>();
 
     const getTokenHint = () => {
         return localStorage.getItem("id_token") ?? undefined;
@@ -82,6 +88,9 @@ const App = () => {
                 initializeDatas(setError).then(() => {
                     setInitialized(true);
                     return initPropsAuth(auth).then(() => {
+                        const options = optionsFiltered(getAutoCompleteRef());
+                        const indexSuggester = CreateIndex(options, index, setIndex);
+                        setIndexSuggester(indexSuggester);
                         setInitialized(true);
                     });
                 }),

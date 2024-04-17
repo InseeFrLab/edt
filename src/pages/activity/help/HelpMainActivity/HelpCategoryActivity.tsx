@@ -46,6 +46,7 @@ import {
     onPrevious,
 } from "service/navigation-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
+import { CreateIndexation, getIndexSuggester } from "service/suggester-service";
 import { mockData } from "service/survey-activity-service";
 import { addToAutocompleteActivityReferentiel, getSource } from "service/survey-service";
 
@@ -154,6 +155,8 @@ const HelpCategoryActivity = () => {
         extensionIcon: <ExtensionIcon aria-label={t("accessibility.asset.mui-icon.extension")} />,
         addLightBlueIcon: <AddLightBlueIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
         addWhiteIcon: <AddWhiteIcon aria-label={t("accessibility.asset.mui-icon.add")} />,
+        indexSuggester: getIndexSuggester(),
+        CreateIndex: CreateIndexation,
     };
 
     const navToActivityRouteHome = useCallback(() => {
