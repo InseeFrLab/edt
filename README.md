@@ -1357,6 +1357,16 @@ The variable ENDTIME is updated EDITED part by removing the ancient third elemen
 
 ![DURATION ENDTIME VALUE](./src/documentation/images/update_survey_delete_activity_duration_endtime_value.png)
 
+## Offline
+
+The application is completely functional offline in browser or in the application, you can exit the application and when you return you will be able to use it without any problem and all the cached data will be used.
+
+Once in offline mode, authentication is not performed or the token is reviewed until the next online connection. Likewise, there is no requirement for the released API, everything is cached.
+
+As there is no requirement with the API, the local data will not be sent until we go online and : either click on the "update the list" button, or modify the corresponding survey.
+
+If we click the "update list" button after having been in offline mode and having made modifications, we will send all the households that have been modified in offline.
+
 ## Maintenance and evolution
 
 ### Install local development environment
