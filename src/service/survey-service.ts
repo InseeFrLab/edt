@@ -217,7 +217,7 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                         saveSources(sources),
                         saveUserSurveysData({ data: userDatas }),
                     ];
-                    return Promise.all(inerFetchPromises).then(saved => console.log(saved));
+                    return Promise.all(inerFetchPromises);
                 }),
             ];
             return Promise.all(innerPromises);
@@ -510,10 +510,22 @@ const getRemoteSavedSurveysDatas = (
                     (remoteSurveyData: SurveyData) => {
                         const surveyData = initializeData(remoteSurveyData, surveyId);
                         return lunaticDatabase.get(surveyId).then(localSurveyData => {
+                            /*
+                            localSurveyData == null ||
+                                remoteSurveyData.stateData?.date == null ||
+                                (remoteSurveyData.stateData?.date &&
+                                    remoteSurveyData.stateData?.date > 0 &&
+                                    (localSurveyData === undefined ||
+                                        (localSurveyData.lastLocalSaveDate ?? 0) <
+                                            remoteSurveyData.stateData.date))
+                                            */
                             if (
                                 localSurveyData == null ||
                                 (remoteSurveyData.data.lastLocalSaveDate ?? 0) <
-                                    (remoteSurveyData.data.lastRemoteSaveDate ?? 1)
+                                    (remoteSurveyData.data.lastRemoteSaveDate ?? 1) ||
+                                remoteSurveyData?.stateData?.date == null ||
+                                (localSurveyData.lastLocalSaveDate ?? 0) <
+                                    remoteSurveyData?.stateData?.date
                             ) {
                                 const stateData = getSurveyStateData(surveyData, surveyId);
                                 setLocalOrRemoteData(surveyId, remoteSurveyData, surveyData, stateData);
@@ -583,7 +595,7 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                         }
                     }
                 });
-                return saveUserSurveysData({ data: userDatas }).then(saved => console.log(saved, data));
+                return saveUserSurveysData({ data: userDatas });
             })
             .catch(() => {
                 return lunaticDatabase.get(USER_SURVEYS_DATA);
@@ -758,6 +770,7 @@ const getIfArrayIsChange = (
     }
     return isChangeArray;
 };
+
 const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
     const currentDataSurvey = oldDatas.get(idSurvey);
     const currentDataCollected = currentDataSurvey?.COLLECTED;
@@ -800,6 +813,7 @@ const getVarBooleanModepersistance = (
         : dataCollected[variableName].EDITED;
     return data as (boolean | null)[];
 };
+
 const undefineVarSomeone = (data: LunaticData, modePersistence: ModePersistenceEnum, index: number) => {
     const dataCollected = data.COLLECTED;
     if (dataCollected) {
@@ -923,7 +937,9 @@ const getDataUpdatedOffline = () => {
     let surveysToUpdated = new Map<string, LunaticData>();
     surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
         let data = getDataCache(idSurvey);
-        if (data.lastLocalSaveDate > data.lastRemoteSaveDate) {
+        console.log(idSurvey, data.lastLocalSaveDate, data.lastRemoteSaveDate);
+        if (data.lastLocalSaveDate > 0) {
+            console.log("data offline", idSurvey, surveysToUpdated);
             surveysToUpdated.set(idSurvey, data);
         }
     });
@@ -933,9 +949,11 @@ const getDataUpdatedOffline = () => {
 const saveDatas = () => {
     const promisesToWait: Promise<any>[] = [];
     getDataUpdatedOffline().forEach((value, key) => {
-        promisesToWait.push(saveData(key, value));
+        promisesToWait.push(saveData(key, value, false, true));
     });
-    return Promise.all(promisesToWait);
+    return Promise.all(promisesToWait).then(result => {
+        console.log(result);
+    });
 };
 
 const saveData = (
@@ -975,6 +993,7 @@ const saveData = (
                 data: data,
             };
             return remotePutSurveyData(idSurvey, surveyData).then(remoteData => {
+                console.log(remoteData);
                 return setLocalOrRemoteData(idSurvey, remoteData, data, stateData);
             });
         } else if (isDemoMode || localSaveOnly || !navigator.onLine) {
@@ -984,6 +1003,7 @@ const saveData = (
             return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
         }
     } else {
+        console.log(data);
         return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
     }
 };
