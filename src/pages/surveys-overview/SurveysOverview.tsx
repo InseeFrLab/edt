@@ -134,9 +134,8 @@ const SurveysOverviewPage = () => {
 
     const refreshHouseholds = useCallback(() => {
         setRefreshing(true);
-        return initializeListSurveys(setError).then(userSurveys => {
-            console.log(userSurveys);
-            return refreshSurveyData(setError).finally(() => {
+        return refreshSurveyData(setError).then(surves => {
+            return initializeListSurveys(setError).then(userSurveys => {
                 setRefreshing(true);
                 initHouseholds();
                 setSearchResult(dataHouseholds);
