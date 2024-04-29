@@ -492,7 +492,9 @@ const initializeData = (remoteSurveyData: SurveyData, surveyId: string) => {
     surveyData.CALCULATED = {};
     surveyData.EXTERNAL = {};
     surveyData.COLLECTED = remoteSurveyData.data?.COLLECTED ?? getDataEmpty(surveyId);
-    surveyData.lastLocalSaveDate = remoteSurveyData.data?.lastLocalSaveDate ?? 0;
+    surveyData.lastLocalSaveDate =
+        remoteSurveyData.data?.lastLocalSaveDate ?? remoteSurveyData.data.stateData?.date;
+    //console.log(remoteSurveyData.data.lastLocalSaveDate, remoteSurveyData.stateData?.date );
     surveyData.stateData = remoteSurveyData.stateData;
     return surveyData;
 };
@@ -505,6 +507,7 @@ const getRemoteSavedSurveysDatas = (
     const promises: Promise<any>[] = [];
     if (navigator.onLine) {
         const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
+        console.log("url remote");
         surveysIds.forEach(surveyId => {
             promises.push(
                 urlRemote(surveyId, setError, withoutState ?? true)
@@ -937,9 +940,7 @@ const getDataUpdatedOffline = () => {
     let surveysToUpdated = new Map<string, LunaticData>();
     surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
         let data = getDataCache(idSurvey);
-        console.log(idSurvey, data.lastLocalSaveDate, data.lastRemoteSaveDate);
-        if (data.lastLocalSaveDate > 0) {
-            console.log("data offline", idSurvey, surveysToUpdated);
+        if (data.lastLocalSaveDate > (data.stateData?.date ?? data.lastRemoteSaveDate)) {
             surveysToUpdated.set(idSurvey, data);
         }
     });
@@ -963,7 +964,7 @@ const saveData = (
     forceUpdate = false,
     stateDataForced?: StateData,
 ): Promise<LunaticData> => {
-    data.lastLocalSaveDate = Date.now() + 1;
+    data.lastLocalSaveDate = Date.now();
     if (!data.houseReference) {
         const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
         data.houseReference = idSurvey.replace(regexp, "");
@@ -1046,7 +1047,7 @@ const getStateOfSurvey = (idSurvey: string): StateDataStateEnum => {
 };
 
 const getSurveyStateData = (data: LunaticData, idSurvey: string): StateData => {
-    const lastRemoteDate = data.lastRemoteSaveDate ?? Date.now() - 1;
+    const lastRemoteDate = Date.now();
     const stateData: StateData = {
         state: getStateOfSurvey(idSurvey),
         date: lastRemoteDate,
