@@ -566,7 +566,7 @@ const initializeDatasCache = (idSurvey: string) => {
             data.houseReference = idSurvey.replace(regexp, "");
             datas.set(idSurvey, data);
             addItemToSession(idSurvey, data);
-            oldDatas.set(idSurvey, data);
+            //oldDatas.set(idSurvey, data);
             initData = true;
         } else {
             datas.set(idSurvey, createDataEmpty(idSurvey ?? ""));
@@ -774,8 +774,8 @@ const getIfArrayIsChange = (
     return isChangeArray;
 };
 
-const dataIsChange = (idSurvey: string, dataAct: LunaticData) => {
-    const currentDataSurvey = oldDatas.get(idSurvey);
+const dataIsChange = (idSurvey: string, dataAct: LunaticData, lastData: LunaticData) => {
+    const currentDataSurvey = lastData;
     const currentDataCollected = currentDataSurvey?.COLLECTED;
     const dataCollected = dataAct?.COLLECTED;
     let isChange = false;
@@ -972,10 +972,11 @@ const saveData = (
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
     fixConditionals(data);
-    const isChange = forceUpdate || dataIsChange(idSurvey, data);
+    let oldDataSurvey = datas.get(idSurvey) ?? {};
+    const dataIsChanged = dataIsChange(idSurvey, data, oldDataSurvey); //dataIsChange(idSurvey, data, oldDatas.get(idSurvey) ?? {});
+    const isChange = forceUpdate || dataIsChanged;
 
     data = updateLocked(idSurvey, data);
-    datas.set(idSurvey, data);
     let stateData: StateData = stateDataForced ?? initStateData();
 
     if (isChange) {
@@ -1004,7 +1005,6 @@ const saveData = (
             return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
         }
     } else {
-        console.log(data);
         return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
     }
 };
@@ -1024,11 +1024,13 @@ const setLocalOrRemoteData = (
 
 const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: string) => {
     data.lastRemoteSaveDate = stateData.date;
+    let oldDataSurvey = datas.get(idSurvey) ?? {};
+    oldDatas.set(idSurvey, oldDataSurvey);
+
     //set the last remote save date inside local database to be able to compare it later with remote data
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
         addItemToSession(idSurvey, data);
-        oldDatas.set(idSurvey, data);
         return data;
     });
 };
