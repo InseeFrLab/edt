@@ -506,19 +506,10 @@ const getRemoteSavedSurveysDatas = (
         const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
         surveysIds.forEach(surveyId => {
             promises.push(
-                urlRemote(surveyId, setError, withoutState ?? true).then(
-                    (remoteSurveyData: SurveyData) => {
+                urlRemote(surveyId, setError, withoutState ?? true)
+                    .then((remoteSurveyData: SurveyData) => {
                         const surveyData = initializeData(remoteSurveyData, surveyId);
                         return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                            /*
-                            localSurveyData == null ||
-                                remoteSurveyData.stateData?.date == null ||
-                                (remoteSurveyData.stateData?.date &&
-                                    remoteSurveyData.stateData?.date > 0 &&
-                                    (localSurveyData === undefined ||
-                                        (localSurveyData.lastLocalSaveDate ?? 0) <
-                                            remoteSurveyData.stateData.date))
-                                            */
                             if (
                                 localSurveyData == null ||
                                 (remoteSurveyData.data.lastLocalSaveDate ?? 0) <
@@ -532,8 +523,10 @@ const getRemoteSavedSurveysDatas = (
                                 return lunaticDatabase.save(surveyId, surveyData);
                             }
                         });
-                    },
-                ),
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    }),
             );
         });
     }
@@ -587,6 +580,7 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                 addArrayToSession("surveysData", surveysData);
                 data.forEach((surveyData: UserSurveys) => {
                     if (!userDatas?.find(user => user.surveyUnitId == surveyData.surveyUnitId)) {
+                        if (userDatas == null) userDatas = [];
                         if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
                             userDatas.push(surveyData);
                         }
@@ -597,7 +591,8 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                 });
                 return saveUserSurveysData({ data: userDatas });
             })
-            .catch(() => {
+            .catch(err => {
+                console.log(err);
                 return lunaticDatabase.get(USER_SURVEYS_DATA);
             });
     } else {
