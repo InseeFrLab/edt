@@ -206,6 +206,7 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             };
             const innerPromises: Promise<any>[] = [
                 getRemoteSavedSurveysDatas(allSurveysIds, setError, false).then(() => {
+                    console.log("remote saved init data survyes");
                     return initializeSurveysDatasCache(allSurveysIds);
                 }),
                 saveSurveysIds(surveysIds),
@@ -577,6 +578,7 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
         return fetchReviewerSurveysAssignments(setError)
             .then(data => {
                 surveysData = data;
+                console.log(surveysData);
                 addArrayToSession("surveysData", surveysData);
                 data.forEach((surveyData: UserSurveys) => {
                     if (!userDatas?.find(user => user.surveyUnitId == surveyData.surveyUnitId)) {
@@ -593,7 +595,10 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             })
             .catch(err => {
                 console.log(err);
-                return lunaticDatabase.get(USER_SURVEYS_DATA);
+                return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {
+                    let datas = data as UserSurveysData;
+                    return datas.data;
+                });
             });
     } else {
         return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {

@@ -125,6 +125,7 @@ const SurveysOverviewPage = () => {
 
     const initHouseholds = () => {
         dataHouseholds = getListSurveysHousehold();
+        console.log(dataHouseholds);
         if (searchResult == null || searchResult.length == 0) {
             setSearchResult(dataHouseholds);
         }
@@ -133,7 +134,8 @@ const SurveysOverviewPage = () => {
 
     const refreshHouseholds = useCallback(() => {
         setRefreshing(true);
-        return initializeListSurveys(setError).then(() => {
+        return initializeListSurveys(setError).then(userSurveys => {
+            console.log(userSurveys);
             return refreshSurveyData(setError).finally(() => {
                 setRefreshing(true);
                 initHouseholds();
