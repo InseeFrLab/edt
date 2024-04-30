@@ -165,7 +165,7 @@ const onFinish = (
 ) => {
     if (closed) {
         const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
-        saveData(idSurvey, data ?? callbackHolder.getData()).then(() => {
+        saveData(idSurvey, data ?? callbackHolder.getData(), false, true).then(() => {
             navigate(
                 getCurrentNavigatePath(
                     idSurvey,

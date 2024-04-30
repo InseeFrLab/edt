@@ -209,7 +209,6 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             };
             const innerPromises: Promise<any>[] = [
                 getRemoteSavedSurveysDatas(allSurveysIds, setError, false).then(() => {
-                    console.log("remote saved init data survyes");
                     return initializeSurveysDatasCache(allSurveysIds);
                 }),
                 saveSurveysIds(surveysIds),
@@ -497,7 +496,6 @@ const initializeData = (remoteSurveyData: SurveyData, surveyId: string) => {
     surveyData.COLLECTED = remoteSurveyData.data?.COLLECTED ?? getDataEmpty(surveyId);
     surveyData.lastLocalSaveDate =
         remoteSurveyData.data?.lastLocalSaveDate ?? remoteSurveyData.data.stateData?.date;
-    //console.log(remoteSurveyData.data.lastLocalSaveDate, remoteSurveyData.stateData?.date );
     surveyData.stateData = remoteSurveyData.stateData;
     return surveyData;
 };
@@ -510,7 +508,6 @@ const getRemoteSavedSurveysDatas = (
     const promises: Promise<any>[] = [];
     if (navigator.onLine) {
         const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
-        console.log("url remote");
         surveysIds.forEach(surveyId => {
             promises.push(
                 urlRemote(surveyId, setError, withoutState ?? true)
@@ -520,10 +517,10 @@ const getRemoteSavedSurveysDatas = (
                             if (
                                 localSurveyData == null ||
                                 (remoteSurveyData.data.lastLocalSaveDate ?? 0) <
-                                    (remoteSurveyData.data.lastRemoteSaveDate ?? 1) ||
-                                remoteSurveyData?.stateData?.date == null ||
-                                (localSurveyData.lastLocalSaveDate ?? 0) <
-                                    remoteSurveyData?.stateData?.date
+                                    (remoteSurveyData.data.lastRemoteSaveDate ?? 1) //||
+                                //remoteSurveyData?.stateData?.date == null ||
+                                //(localSurveyData.lastLocalSaveDate ?? 0) <
+                                //    (remoteSurveyData?.stateData?.date ?? -1)
                             ) {
                                 const stateData = getSurveyStateData(surveyData, surveyId);
                                 setLocalOrRemoteData(surveyId, remoteSurveyData, surveyData, stateData);
@@ -584,7 +581,6 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
         return fetchReviewerSurveysAssignments(setError)
             .then(data => {
                 surveysData = data;
-                console.log(surveysData);
                 addArrayToSession("surveysData", surveysData);
                 data.forEach((surveyData: UserSurveys) => {
                     if (!userDatas?.find(user => user.surveyUnitId == surveyData.surveyUnitId)) {
@@ -998,7 +994,6 @@ const saveData = (
                 data: data,
             };
             return remotePutSurveyData(idSurvey, surveyData).then(remoteData => {
-                console.log(remoteData);
                 return setLocalOrRemoteData(idSurvey, remoteData, data, stateData);
             });
         } else if (isDemoMode || localSaveOnly || !navigator.onLine) {
@@ -1169,10 +1164,8 @@ const updateReferentielAutoComplete = (
 ) => {
     return saveReferentiels(currentData).then(() => {
         addToAutocompleteActivityReferentiel(newItem).then(referentielData => {
-            console.log(referentielData);
             const newAutocompleteRef = referentielData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE];
             localStorage.setItem("selectedIdNewActivity", newActivity);
-            console.log(newAutocompleteRef);
             updateIndexAutoComplete(newAutocompleteRef, index, setIndex);
         });
     });
