@@ -524,11 +524,7 @@ const getRemoteSavedSurveysDatas = (
                                 remoteSurveyData?.stateData?.date != null &&
                                 (localSurveyData == null ||
                                     (remoteSurveyData.data.lastLocalSaveDate ?? 0) <
-                                        (remoteSurveyData.data.lastRemoteSaveDate ?? 1))
-                                //||
-                                //remoteSurveyData?.stateData?.date == null ||
-                                //(localSurveyData.lastLocalSaveDate ?? 0) <
-                                //    (remoteSurveyData?.stateData?.date ?? -1)
+                                        (remoteSurveyData.data.lastRemoteSaveDate ?? 0))
                             ) {
                                 const stateData = getSurveyStateData(surveyData, surveyId);
                                 setLocalOrRemoteData(surveyId, remoteSurveyData, surveyData, stateData);
@@ -691,6 +687,11 @@ const getData = (idSurvey: string): LunaticData => {
 
 const getDataCache = (idSurvey: string) => {
     return datas.get(idSurvey) ?? getItemFromSession(idSurvey);
+};
+
+const setDataCache = (idSurvey: string, data: LunaticData) => {
+    datas.set(idSurvey, data);
+    addItemToSession(idSurvey, data);
 };
 
 const modifyIndividualCollected = (idSurvey: string) => {
@@ -982,6 +983,7 @@ const saveData = (
     let oldDataSurvey = datas.get(idSurvey) ?? {};
     const dataIsChanged = dataIsChange(idSurvey, data, oldDataSurvey); //dataIsChange(idSurvey, data, oldDatas.get(idSurvey) ?? {});
     const isChange = forceUpdate || dataIsChanged;
+    datas.set(idSurvey, data);
 
     data = updateLocked(idSurvey, data);
     let stateData: StateData = stateDataForced ?? initStateData();
@@ -1022,7 +1024,7 @@ const setLocalOrRemoteData = (
     stateData: StateData,
 ) => {
     if (dataRemote != data && (data == null || data.COLLECTED == undefined)) {
-        return setLocalDatabase(stateData, dataRemote.data, idSurvey);
+        return setLocalDatabase(stateData, data, idSurvey);
     } else {
         return setLocalDatabase(stateData, data, idSurvey);
     }
@@ -1032,7 +1034,7 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
     data.lastRemoteSaveDate = stateData.date;
     let oldDataSurvey = datas.get(idSurvey) ?? {};
     oldDatas.set(idSurvey, oldDataSurvey);
-
+    setDataCache(idSurvey, data);
     //set the last remote save date inside local database to be able to compare it later with remote data
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);

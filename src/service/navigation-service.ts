@@ -442,7 +442,7 @@ const setAllNamesOfGroupAndNav = (
     dateAct?: string,
 ) => {
     const promises = setNamesOfGroup(idSurvey, idsSurveysOfGroup, nameAct, dateAct);
-    Promise.all(promises).then(result => {
+    Promise.all(promises).then(() => {
         navigate(route);
     });
 };
