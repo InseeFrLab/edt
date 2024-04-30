@@ -362,6 +362,8 @@ const requestGetDataReviewer = (
                 } else if ([401, 404].includes(err.response?.status)) {
                     return resolve(initSurveyData(idSurvey));
                 } else {
+                    console.error(err);
+                    setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
                     //requestGetDataReviewer(idSurvey, setError);
                 }
             });
