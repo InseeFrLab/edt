@@ -143,7 +143,10 @@ const EndSurveyPage = () => {
         setIsModalDisplayed: (value: SetStateAction<boolean>) => void,
     ): void => {
         if (forceQuit) {
-            navToHome();
+            const dataWithIsEnvoyed = setValue(idSurvey, FieldNameEnum.ISENVOYED, true);
+            saveData(idSurvey, dataWithIsEnvoyed, false, true).then(remoteData => {
+                navToHome();
+            });
         } else {
             setIsModalDisplayed(true);
         }

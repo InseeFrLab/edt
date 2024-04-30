@@ -412,7 +412,6 @@ const emptyDataSetFirstName = (
     let dataCollected = { ...data.COLLECTED };
     if (dataCollected) {
         dataCollected = initPropsData(dataCollected, idSurveyOfGroup, newSurvey);
-
         dataCollected[FieldNameEnum.FIRSTNAME] = {
             COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,
             EDITED: modePersistence == ModePersistenceEnum.EDITED ? firstName : null,
@@ -443,7 +442,7 @@ const setAllNamesOfGroupAndNav = (
     dateAct?: string,
 ) => {
     const promises = setNamesOfGroup(idSurvey, idsSurveysOfGroup, nameAct, dateAct);
-    Promise.all(promises).then(() => {
+    Promise.all(promises).then(result => {
         navigate(route);
     });
 };

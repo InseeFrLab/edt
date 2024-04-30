@@ -290,6 +290,12 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
             if (navigator.onLine) {
                 promises.push(
                     getRemoteSavedSurveysDatas(surveysIdsAct, setError, false).then(() => {
+                        console.log(
+                            "surveysIdsAct ids",
+                            surveysIdsAct,
+                            listSurveysOfHousehold,
+                            surveysIds,
+                        );
                         return initializeSurveysDatasCache(surveysIdsAct);
                     }),
                 );
@@ -515,9 +521,11 @@ const getRemoteSavedSurveysDatas = (
                         const surveyData = initializeData(remoteSurveyData, surveyId);
                         return lunaticDatabase.get(surveyId).then(localSurveyData => {
                             if (
-                                localSurveyData == null ||
-                                (remoteSurveyData.data.lastLocalSaveDate ?? 0) <
-                                    (remoteSurveyData.data.lastRemoteSaveDate ?? 1) //||
+                                remoteSurveyData?.stateData?.date != null &&
+                                (localSurveyData == null ||
+                                    (remoteSurveyData.data.lastLocalSaveDate ?? 0) <
+                                        (remoteSurveyData.data.lastRemoteSaveDate ?? 1))
+                                //||
                                 //remoteSurveyData?.stateData?.date == null ||
                                 //(localSurveyData.lastLocalSaveDate ?? 0) <
                                 //    (remoteSurveyData?.stateData?.date ?? -1)
