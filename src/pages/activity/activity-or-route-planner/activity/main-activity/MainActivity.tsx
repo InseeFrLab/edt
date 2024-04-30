@@ -42,6 +42,7 @@ import { ReactComponent as ExtensionDisabledIcon } from "assets/illustration/mui
 import { ReactComponent as ExtensionIcon } from "assets/illustration/mui-icon/extension.svg";
 import { ReactComponent as SearchIcon } from "assets/illustration/mui-icon/search.svg";
 import { SEPARATOR_DEFAUT } from "constants/constants";
+import { Index } from "elasticlunrjs";
 import { LoopEnum } from "enumerations/LoopEnum";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -73,6 +74,8 @@ const MainActivityPage = () => {
     const [displayStepper, setDisplayStepper] = useState<boolean>(true);
     const [displayHeader, setDisplayHeader] = useState<boolean>(true);
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
+    const [index, setIndex] = useState<Index<AutoCompleteActiviteOption>>();
+
     const referentiel = getNomenclatureRef();
     const specificProps: ActivitySelecterSpecificProps = {
         categoriesIcons: {
@@ -181,7 +184,7 @@ const MainActivityPage = () => {
             categoryId: string,
             newActivity: string,
         ) => {
-            createNewActivityInCategory(newItem, categoryId, newActivity, referentiel);
+            createNewActivityInCategory(newItem, categoryId, newActivity, referentiel, index, setIndex);
         },
         widthGlobal: true,
         separatorSuggester: process.env.REACT_APP_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,

@@ -44,6 +44,7 @@ import {
     UserSurveysData,
 } from "interface/lunatic/Lunatic";
 import { AuthContextProps } from "oidc-react";
+import { Dispatch, SetStateAction } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { fetchReviewerSurveysAssignments, remotePutSurveyData } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
@@ -72,6 +73,8 @@ import {
 } from "./api-service";
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getFullNavigatePath, setAllNamesOfGroupAndNav } from "./navigation-service";
+import { getAutoCompleteRef } from "./referentiel-service";
+import { CreateIndex, optionsFiltered, setIndexSuggester } from "./suggester-service";
 import { getQualityScore } from "./summary-service";
 import { getActivitiesOrRoutes, getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
@@ -1138,12 +1141,40 @@ const getNewSecondaryActivities = (idSurvey: string, referentiel: CheckboxOneCus
 };
 
 const addToAutocompleteActivityReferentiel = (newItem: AutoCompleteActiviteOption) => {
-    lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
+    return lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
         const ref = currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE];
         if (!ref.find((opt: any) => opt.label == newItem.label)) {
             currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE].push(newItem);
-            saveReferentiels(currentData);
-        }
+            return saveReferentiels(currentData);
+        } else return currentData;
+    });
+};
+
+const updateIndexAutoComplete = (
+    referentiel: AutoCompleteActiviteOption[],
+    index: elasticlunr.Index<AutoCompleteActiviteOption> | undefined,
+    setIndex: Dispatch<SetStateAction<elasticlunr.Index<AutoCompleteActiviteOption> | undefined>>,
+) => {
+    const options = optionsFiltered(getAutoCompleteRef());
+    const indexSuggester = CreateIndex(options, index, setIndex);
+    setIndexSuggester(indexSuggester);
+};
+
+const updateReferentielAutoComplete = (
+    currentData: any,
+    newItem: AutoCompleteActiviteOption,
+    newActivity: string,
+    index: elasticlunr.Index<AutoCompleteActiviteOption> | undefined,
+    setIndex: Dispatch<SetStateAction<elasticlunr.Index<AutoCompleteActiviteOption> | undefined>>,
+) => {
+    return saveReferentiels(currentData).then(() => {
+        addToAutocompleteActivityReferentiel(newItem).then(referentielData => {
+            console.log(referentielData);
+            const newAutocompleteRef = referentielData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE];
+            localStorage.setItem("selectedIdNewActivity", newActivity);
+            console.log(newAutocompleteRef);
+            updateIndexAutoComplete(newAutocompleteRef, index, setIndex);
+        });
     });
 };
 
@@ -1151,14 +1182,17 @@ const createNewActivityInCategory = (
     newItem: AutoCompleteActiviteOption,
     categoryId: string | undefined,
     newActivity: string,
-    reeferentiel: NomenclatureActivityOption[],
+    referentiel: NomenclatureActivityOption[],
+    index: elasticlunr.Index<AutoCompleteActiviteOption> | undefined,
+    setIndex: Dispatch<SetStateAction<elasticlunr.Index<AutoCompleteActiviteOption> | undefined>>,
 ) => {
     lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
         const ref = currentData[ReferentielsEnum.ACTIVITYNOMENCLATURE];
-        const category = findItemInCategoriesNomenclature(categoryId, reeferentiel);
+        const category = findItemInCategoriesNomenclature(categoryId, referentiel);
         const categoryParent = category?.parent ?? category?.item;
         const parentCategoryId = categoryParent?.id;
         const existCategory = category?.item.subs.find((cat: any) => cat.label == newItem.label);
+
         if (!existCategory) {
             category?.item.subs.push({
                 id: newItem.id,
@@ -1168,17 +1202,11 @@ const createNewActivityInCategory = (
             const indexParentCategory = ref.findIndex((opt: any) => opt.id == parentCategoryId);
 
             ref[indexParentCategory] = categoryParent;
-            return saveReferentiels(currentData).then(() => {
-                addToAutocompleteActivityReferentiel(newItem);
-                localStorage.setItem("selectedIdNewActivity", newActivity);
-            });
+            return updateReferentielAutoComplete(currentData, newItem, newActivity, index, setIndex);
         }
 
         if (!categoryId) {
-            return saveReferentiels(currentData).then(() => {
-                addToAutocompleteActivityReferentiel(newItem);
-                localStorage.setItem("selectedIdNewActivity", newActivity);
-            });
+            return updateReferentielAutoComplete(currentData, newItem, newActivity, index, setIndex);
         }
     });
 };
