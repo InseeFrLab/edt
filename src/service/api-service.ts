@@ -169,17 +169,15 @@ const requestPutSurveyData = (
     token?: string,
 ): Promise<SurveyData> => {
     return new Promise(resolve => {
-        setTimeout(() => {
-            axios
-                .put(
-                    stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
-                    data,
-                    getHeader(stromaeBackOfficeApiBaseUrl, token),
-                )
-                .then(() => {
-                    resolve(data);
-                });
-        }, 1000);
+        axios
+            .put(
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
+                data,
+                getHeader(stromaeBackOfficeApiBaseUrl, token),
+            )
+            .then(() => {
+                return resolve(data);
+            });
     });
 };
 
@@ -237,17 +235,15 @@ const requestPutDataReviewer = (
     token?: string,
 ): Promise<LunaticData> => {
     return new Promise<LunaticData>(resolve => {
-        setTimeout(() => {
-            axios
-                .put(
-                    stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
-                    data,
-                    getHeader(stromaeBackOfficeApiBaseUrl, token),
-                )
-                .then(() => {
-                    resolve(data);
-                });
-        }, 1000);
+        axios
+            .put(
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
+                data,
+                getHeader(stromaeBackOfficeApiBaseUrl, token),
+            )
+            .then(() => {
+                return resolve(data);
+            });
     });
 };
 
@@ -257,27 +253,25 @@ const requestPutStateReviewer = (
     token?: string,
 ): Promise<StateData> => {
     return new Promise<StateData>(resolve => {
-        setTimeout(() => {
-            axios
-                .put(
-                    stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
-                    data,
-                    getHeader(stromaeBackOfficeApiBaseUrl, token),
-                )
-                .then(() => {
-                    resolve(data);
-                })
-                .catch(err => {
-                    if (err.response?.status == 404) {
-                        const stateData = {
-                            state: StateDataStateEnum.INIT,
-                            date: Date.now(),
-                            currentPage: 0,
-                        };
-                        resolve(stateData);
-                    }
-                });
-        }, 1000);
+        axios
+            .put(
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
+                data,
+                getHeader(stromaeBackOfficeApiBaseUrl, token),
+            )
+            .then(() => {
+                return resolve(data);
+            })
+            .catch(err => {
+                if (err.response?.status == 404) {
+                    const stateData = {
+                        state: StateDataStateEnum.INIT,
+                        date: Date.now(),
+                        currentPage: 0,
+                    };
+                    return resolve(stateData);
+                }
+            });
     });
 };
 

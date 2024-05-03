@@ -22,7 +22,6 @@ import ReviewerPage from "components/commons/ReviewerPage/ReviewerPage";
 import HouseholdCard from "components/edt/HouseholdCard/HouseholdCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { Household } from "interface/entity/Household";
 import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
@@ -31,15 +30,11 @@ import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "service/navigation-service";
 import { isMobile } from "service/responsive";
 import {
-    createDataEmpty,
-    getData,
     getListSurveysHousehold,
     initializeListSurveys,
     initializeSurveysIdsDataModeReviewer,
     refreshSurveyData,
-    saveData,
     saveDatas,
-    surveysIds,
 } from "service/survey-service";
 import { getUniquesValues } from "utils/utils";
 
@@ -177,26 +172,6 @@ const SurveysOverviewPage = () => {
                 setInitialized(true);
             });
     });
-
-    const resetDataAndReload = useCallback(() => {
-        const promises: any[] = [];
-        let surveys = surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS];
-        surveys.forEach(idSurvey => {
-            const stateData = { state: null, date: Date.now(), currentPage: 1 };
-            const data = createDataEmpty(idSurvey);
-            data.lastRemoteSaveDate = Date.now();
-            if (getData(idSurvey).lastLocalSaveDate != null) {
-                promises.push(saveData(idSurvey, {}, false, true, stateData));
-            }
-        });
-        Promise.all(promises)
-            .then(results => {
-                navigate(0);
-            })
-            .catch(() => {
-                navigate(0);
-            });
-    }, []);
 
     const navToReviewerHome = useCallback(() => {
         navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_HOME));
@@ -402,22 +377,6 @@ const SurveysOverviewPage = () => {
                         </Box>
                     </Button>
                 </Box>
-                {process.env.REACT_APP_NODE_ENV !== "production" && (
-                    <Box className={cx(classes.refreshBox, isItMobile ? classes.refreshMobileBox : "")}>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            onClick={resetDataAndReload}
-                            aria-label={"refresh"}
-                            startIcon={
-                                <RefreshIcon aria-label={t("accessibility.asset.mui-icon.refresh")} />
-                            }
-                            disabled={!navigator.onLine}
-                        >
-                            <Box className={classes.labelButton}>reset all menages</Box>
-                        </Button>
-                    </Box>
-                )}
             </Box>
 
             <FlexCenter className={classes.searchResultBox}>{renderResults()}</FlexCenter>

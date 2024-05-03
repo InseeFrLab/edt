@@ -513,14 +513,20 @@ const getRemoteSavedSurveysDatas = (
                 urlRemote(surveyId, setError, withoutState ?? true)
                     .then((remoteSurveyData: SurveyData) => {
                         const surveyData = initializeData(remoteSurveyData, surveyId);
+
                         return lunaticDatabase.get(surveyId).then(localSurveyData => {
+                            const lastRemoteSaveDate = remoteSurveyData.data.lastRemoteSaveDate ?? 1;
+                            const lastLocalSaveDate =
+                                remoteSurveyData.data.lastLocalSaveDate ??
+                                localSurveyData?.lastLocalSaveDate ??
+                                0;
+                            const remoteStateData = remoteSurveyData?.stateData?.date ?? 1;
                             if (
                                 remoteSurveyData?.stateData?.date != null &&
                                 (localSurveyData == null ||
-                                    ((remoteSurveyData.data.lastLocalSaveDate ?? 0) !=
-                                        (remoteSurveyData.data.lastRemoteSaveDate ?? 0) &&
-                                        (remoteSurveyData.data.lastLocalSaveDate ?? 0) <=
-                                            remoteSurveyData.stateData.date))
+                                    ((localSurveyData.lastLocalSaveDate ?? 0) <= lastRemoteSaveDate &&
+                                        remoteSurveyData.data.lastRemoteSaveDate != null &&
+                                        lastLocalSaveDate <= remoteStateData))
                             ) {
                                 const stateData = getSurveyStateData(surveyData, surveyId);
                                 setLocalOrRemoteData(surveyId, remoteSurveyData, surveyData, stateData);
@@ -983,7 +989,10 @@ const saveData = (
     datas.set(idSurvey, data);
 
     data = updateLocked(idSurvey, data);
-    let stateData: StateData = stateDataForced ?? initStateData();
+    let stateData: StateData = stateDataForced ?? initStateData(data);
+
+    if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
+
     if (isChange) {
         data = saveQualityScore(idSurvey, data);
         if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
@@ -994,21 +1003,20 @@ const saveData = (
                         ? data.lastLocalSaveDate ?? 0
                         : stateData.date;
                 data.stateData = stateData;
+                data.lastRemoteSaveDate = stateData.date;
                 return setLocalOrRemoteData(idSurvey, remoteData, data, stateData);
             });
         }
         //We try to submit each time the local database is updated if the user is online
         else if (!isDemoMode && !localSaveOnly && navigator.onLine) {
             stateData = getSurveyStateData(data, idSurvey);
+            stateData.date = data.lastLocalSaveDate ?? Date.now();
             const surveyData: SurveyData = {
                 stateData: stateData,
                 data: data,
             };
+            data.lastRemoteSaveDate = stateData.date;
             return remotePutSurveyData(idSurvey, surveyData).then(remoteData => {
-                stateData.date =
-                    stateData.date < (data.lastLocalSaveDate ?? 0)
-                        ? data.lastLocalSaveDate ?? 0
-                        : stateData.date;
                 data.stateData = stateData;
                 return setLocalOrRemoteData(idSurvey, remoteData, data, stateData);
             });
@@ -1040,11 +1048,9 @@ const setLocalOrRemoteData = (
 };
 
 const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: string) => {
-    data.lastRemoteSaveDate = stateData.date;
     let oldDataSurvey = datas.get(idSurvey) ?? {};
     oldDatas.set(idSurvey, oldDataSurvey);
     setDataCache(idSurvey, data);
-    //console.log(idSurvey, data);
     //set the last remote save date inside local database to be able to compare it later with remote data
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
@@ -2028,10 +2034,10 @@ const validateAllGroup = (
     );
 };
 
-const initStateData = () => {
+const initStateData = (data?: LunaticData) => {
     const stateData = {
         state: StateDataStateEnum.INIT,
-        date: Date.now(),
+        date: data?.lastLocalSaveDate ?? Date.now(),
         currentPage: 0,
     };
     return stateData;
