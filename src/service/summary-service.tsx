@@ -35,7 +35,7 @@ import {
     getActivityOrRouteDurationLabelFromDurationMinutes,
     getLabelFromTime,
 } from "service/survey-activity-service";
-import { addArrayToSession, sumAllOfArray } from "utils/utils";
+import { sumAllOfArray } from "utils/utils";
 import { filtrePage, getAllCodesFromActivitiesCodes } from "./loop-service";
 import { getValue } from "./survey-service";
 
@@ -226,7 +226,6 @@ const getAloneTime = (activitiesRoutesOrGaps: ActivityRouteOrGap[]) => {
 const missingHoursSleepOrEat = (
     activitiesRoutesOrGaps: ActivityRouteOrGap[],
     substractPoint: number,
-    missingPropArray: string[],
 ) => {
     // 1 - num sleep (111,114) < 5h -> 3
     const sleepActivities = activitiesRoutesOrGaps
@@ -238,7 +237,6 @@ const missingHoursSleepOrEat = (
 
     if (minutesSleep < 60 * MIN_THRESHOLD.MIN_THRESHOLD_SLEEP_ACTIVITES_HOURS) {
         substractPoint += POINTS_REMOVE.POINTS_REMOVE_SLEEP_ACTIVITES_HOURS;
-        missingPropArray.push("missing sleep hours");
     }
 
     // 2 - num eat (140) < 2h -> 3
@@ -249,17 +247,12 @@ const missingHoursSleepOrEat = (
         .map(activityOrRoute => activityOrRoute.durationMinutes ?? 0);
     if (getAllTime(eatActivities) < 60 * MIN_THRESHOLD.MIN_THRESHOLD_EAT_ACTIVITES_HOURS) {
         substractPoint += POINTS_REMOVE.POINTS_REMOVE_EAT_ACTIVITES_HOURS;
-        missingPropArray.push("missing eat hours");
     }
 
     return substractPoint;
 };
 
-const missingRoutes = (
-    activitiesRoutesOrGaps: ActivityRouteOrGap[],
-    substractPoint: number,
-    missingPropArray: string[],
-) => {
+const missingRoutes = (activitiesRoutesOrGaps: ActivityRouteOrGap[], substractPoint: number) => {
     // 3  - num routes <2 -> 2
     //insufficient number of routes (at least MIN_THRESHOLD_ROUTE_HOURS)
     if (
@@ -267,7 +260,6 @@ const missingRoutes = (
         MIN_THRESHOLD.MIN_THRESHOLD_ROUTES
     ) {
         substractPoint += POINTS_REMOVE.POINTS_REMOVE_ROUTES;
-        missingPropArray.push("missing routes");
     }
     return substractPoint;
 };
@@ -275,7 +267,6 @@ const missingRoutes = (
 const missingActivitiesOutsidePersonalTime = (
     activitiesRoutesOrGaps: ActivityRouteOrGap[],
     substractPoint: number,
-    missingPropArray: string[],
 ) => {
     // 4 - pas d'activité en dehors du temps perso ou temps travail/etudes (codes commence par 3,4,5,6) -> aucune -> 3
     const activitiesOutsidePersonalTime = activitiesRoutesOrGaps
@@ -286,16 +277,11 @@ const missingActivitiesOutsidePersonalTime = (
 
     if (activitiesOutsidePersonalTime.length == 0) {
         substractPoint += POINTS_REMOVE.POINTS_REMOVE_MANDATORY_START_CODES_ACTIVIY;
-        missingPropArray.push("no activity outside of personal time");
     }
     return substractPoint;
 };
 
-const missingLoops = (
-    activitiesRoutesOrGaps: ActivityRouteOrGap[],
-    substractPoint: number,
-    missingPropArray: string[],
-) => {
+const missingLoops = (activitiesRoutesOrGaps: ActivityRouteOrGap[], substractPoint: number) => {
     const numActivities = activitiesRoutesOrGaps.filter(act => !act.isGap).length;
     if (
         numActivities >= MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES &&
@@ -307,23 +293,17 @@ const missingLoops = (
             numActivities < MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES_2
                 ? POINTS_REMOVE.POINTS_REMOVE_MIN_ACTIVITES_2
                 : 0;
-        missingPropArray.push("number of loops < 15");
     } else if (numActivities < MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES) {
         // 5  - nombre de boucles < 10 -> 5
         substractPoint +=
             numActivities < MIN_THRESHOLD.MIN_THRESHOLD_ACTIVITIES
                 ? POINTS_REMOVE.POINTS_REMOVE_MIN_ACTIVITES
                 : 0;
-        missingPropArray.push("number of loops < 10");
     }
     return substractPoint;
 };
 
-const missingHours = (
-    activitiesRoutesOrGaps: ActivityRouteOrGap[],
-    substractPoint: number,
-    missingPropArray: string[],
-) => {
+const missingHours = (activitiesRoutesOrGaps: ActivityRouteOrGap[], substractPoint: number) => {
     const activitesFiltred = activitiesRoutesOrGaps.map(act => act.durationMinutes ?? 0);
     const allMinutesActivites = getAllTime(activitesFiltred);
     const minutesUnderConsomed = MINUTES_DAY - allMinutesActivites;
@@ -334,7 +314,6 @@ const missingHours = (
             minutesUnderConsomed >= MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME_2
                 ? POINTS_REMOVE.POINTS_REMOVE_MISSING_TIME_3
                 : 0;
-        missingPropArray.push(">2 hours missing");
     } else if (
         minutesUnderConsomed > 0 &&
         minutesUnderConsomed >= MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME &&
@@ -346,7 +325,6 @@ const missingHours = (
             minutesUnderConsomed <= MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME_2
                 ? POINTS_REMOVE.POINTS_REMOVE_MISSING_TIME_2
                 : 0;
-        missingPropArray.push(">1 hours missing");
     } else if (
         minutesUnderConsomed > 0 &&
         minutesUnderConsomed > MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME
@@ -356,16 +334,11 @@ const missingHours = (
             minutesUnderConsomed > MIN_THRESHOLD.MIN_THRESHOLD_MISSING_TIME
                 ? POINTS_REMOVE.POINTS_REMOVE_MISSING_TIME
                 : 0;
-        missingPropArray.push("<=1 hours missing");
     }
     return substractPoint;
 };
 
-const moreHours = (
-    activitiesRoutesOrGaps: ActivityRouteOrGap[],
-    substractPoint: number,
-    missingPropArray: string[],
-) => {
+const moreHours = (activitiesRoutesOrGaps: ActivityRouteOrGap[], substractPoint: number) => {
     const activitesFiltred = activitiesRoutesOrGaps.map(act => act.durationMinutes ?? 0);
     const allMinutesActivites = getAllTime(activitesFiltred);
     const minutesOverConsomed =
@@ -376,23 +349,17 @@ const moreHours = (
             minutesOverConsomed > MIN_THRESHOLD.MIN_THRESHOLD_OVER_TIME
                 ? POINTS_REMOVE.POINTS_REMOVE_OVER_TIME_2
                 : 0;
-        missingPropArray.push(">3 hours more");
     } else if (minutesOverConsomed > 0 && minutesOverConsomed <= MIN_THRESHOLD.MIN_THRESHOLD_OVER_TIME) {
         // 10 - minutes totals <3h en plus -> 1
         substractPoint +=
             minutesOverConsomed <= MIN_THRESHOLD.MIN_THRESHOLD_OVER_TIME
                 ? POINTS_REMOVE.POINTS_REMOVE_OVER_TIME
                 : 0;
-        missingPropArray.push("<=3 hours more");
     }
     return substractPoint;
 };
 
-const missingTimeSlots = (
-    activitiesRoutesOrGaps: ActivityRouteOrGap[],
-    substractPoint: number,
-    missingPropArray: string[],
-) => {
+const missingTimeSlots = (activitiesRoutesOrGaps: ActivityRouteOrGap[], substractPoint: number) => {
     // 12 - nombre plages horaires manquants -> 1
     //missing at least MIN_THRESHOLD_MISSING_HOURS hours
     const activitesFiltred = activitiesRoutesOrGaps.map(act => act.durationMinutes ?? 0);
@@ -400,7 +367,6 @@ const missingTimeSlots = (
 
     if (MINUTES_DAY - allMinutesActivites > MIN_THRESHOLD.MIN_THRESHOLD_MISSING_HOURS * 60) {
         substractPoint += POINTS_REMOVE.POINTS_REMOVE_MISSING_HOURS;
-        missingPropArray.push("missing time slots");
     }
     return substractPoint;
 };
@@ -408,44 +374,34 @@ const missingTimeSlots = (
 const existOverlaps = (
     overlaps: { prev: string | undefined; current: string | undefined }[],
     substractPoint: number,
-    missingPropArray: string[],
 ) => {
     // 13 - nombre chauvechements -> 1
     //exist + MIN_THRESHOLD_OVERLAPS_HOURS overlaps
     if (overlaps.length >= MIN_THRESHOLD.MIN_THRESHOLD_OVERLAPS_HOURS) {
         substractPoint += POINTS_REMOVE.POINTS_REMOVE_OVERLAPS_HOURS;
-        missingPropArray.push("overlaps");
     }
     return substractPoint;
 };
 
-const missingVariables = (
-    activitiesRoutesOrGaps: ActivityRouteOrGap[],
-    substractPoint: number,
-    missingPropArray: string[],
-) => {
+const missingVariables = (activitiesRoutesOrGaps: ActivityRouteOrGap[], substractPoint: number) => {
     // 14 - variable presence manquante -> 1
     if (missingVariablesSomeone(activitiesRoutesOrGaps)) {
         substractPoint += POINTS_REMOVE.POINTS_REMOVE_MISSING_SOMEONE;
-        missingPropArray.push("missing presence variable");
     }
 
     // 15 - variable ecran manquante -> 1
     if (missingVariablesScreen(activitiesRoutesOrGaps)) {
         substractPoint += POINTS_REMOVE.POINTS_REMOVE_MISSING_SCREEN;
-        missingPropArray.push("missing screen variable");
     }
 
     // 16 - variable lieu manquante -> 1
     if (missingVariablesPlace(activitiesRoutesOrGaps)) {
         substractPoint += POINTS_REMOVE.POINTS_REMOVE_MISSING_PLACE;
-        missingPropArray.push("missing place variable");
     }
 
     // 17 - variable moyen de transport manquant - 1
     if (missingVariablesMeanOfTransport(activitiesRoutesOrGaps)) {
         substractPoint += POINTS_REMOVE.POINTS_REMOVE_MISSING_MEANOFTRANSPORT;
-        missingPropArray.push("missing meanoftransport variable");
     }
     return substractPoint;
 };
@@ -457,22 +413,16 @@ const getQualityScore = (
     t: TFunction<"translation", undefined>,
 ) => {
     let substractPoint = 0;
-    const missingPropArray: string[] = [];
 
-    substractPoint = missingHoursSleepOrEat(activitiesRoutesOrGaps, substractPoint, missingPropArray);
-    substractPoint = missingRoutes(activitiesRoutesOrGaps, substractPoint, missingPropArray);
-    substractPoint = missingActivitiesOutsidePersonalTime(
-        activitiesRoutesOrGaps,
-        substractPoint,
-        missingPropArray,
-    );
-    substractPoint = missingLoops(activitiesRoutesOrGaps, substractPoint, missingPropArray);
-    substractPoint = missingHours(activitiesRoutesOrGaps, substractPoint, missingPropArray);
-    substractPoint = moreHours(activitiesRoutesOrGaps, substractPoint, missingPropArray);
-    substractPoint = missingTimeSlots(activitiesRoutesOrGaps, substractPoint, missingPropArray);
-    substractPoint = existOverlaps(overlaps, substractPoint, missingPropArray);
-    substractPoint = missingVariables(activitiesRoutesOrGaps, substractPoint, missingPropArray);
-    addArrayToSession("missingPropArray", missingPropArray);
+    substractPoint = missingHoursSleepOrEat(activitiesRoutesOrGaps, substractPoint);
+    substractPoint = missingRoutes(activitiesRoutesOrGaps, substractPoint);
+    substractPoint = missingActivitiesOutsidePersonalTime(activitiesRoutesOrGaps, substractPoint);
+    substractPoint = missingLoops(activitiesRoutesOrGaps, substractPoint);
+    substractPoint = missingHours(activitiesRoutesOrGaps, substractPoint);
+    substractPoint = moreHours(activitiesRoutesOrGaps, substractPoint);
+    substractPoint = missingTimeSlots(activitiesRoutesOrGaps, substractPoint);
+    substractPoint = existOverlaps(overlaps, substractPoint);
+    substractPoint = missingVariables(activitiesRoutesOrGaps, substractPoint);
 
     const score = substractPoint <= 20 ? MAX_SCORE - substractPoint : 0;
     const group = groupScore(score, t);

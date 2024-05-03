@@ -28,10 +28,11 @@ import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
 import { TFunction, useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { lunaticDatabase } from "service/lunatic-database";
 import { getNavigatePath } from "service/navigation-service";
 import { isMobile } from "service/responsive";
 import {
+    createDataEmpty,
+    getData,
     getListSurveysHousehold,
     initializeListSurveys,
     initializeSurveysIdsDataModeReviewer,
@@ -182,18 +183,18 @@ const SurveysOverviewPage = () => {
         let surveys = surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS];
         surveys.forEach(idSurvey => {
             const stateData = { state: null, date: Date.now(), currentPage: 1 };
-            promises.push(saveData(idSurvey, {}, false, true, stateData));
+            const data = createDataEmpty(idSurvey);
+            data.lastRemoteSaveDate = Date.now();
+            if (getData(idSurvey).lastLocalSaveDate != null) {
+                promises.push(saveData(idSurvey, {}, false, true, stateData));
+            }
         });
         Promise.all(promises)
-            .then(() => {
-                lunaticDatabase.clear().then(() => {
-                    navigate(0);
-                });
+            .then(results => {
+                navigate(0);
             })
             .catch(() => {
-                lunaticDatabase.clear().then(() => {
-                    navigate(0);
-                });
+                navigate(0);
             });
     }, []);
 

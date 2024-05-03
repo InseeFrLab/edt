@@ -290,12 +290,6 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
             if (navigator.onLine) {
                 promises.push(
                     getRemoteSavedSurveysDatas(surveysIdsAct, setError, false).then(() => {
-                        console.log(
-                            "surveysIdsAct ids",
-                            surveysIdsAct,
-                            listSurveysOfHousehold,
-                            surveysIds,
-                        );
                         return initializeSurveysDatasCache(surveysIdsAct);
                     }),
                 );
@@ -523,8 +517,10 @@ const getRemoteSavedSurveysDatas = (
                             if (
                                 remoteSurveyData?.stateData?.date != null &&
                                 (localSurveyData == null ||
-                                    (remoteSurveyData.data.lastLocalSaveDate ?? 0) <
-                                        (remoteSurveyData.data.lastRemoteSaveDate ?? 0))
+                                    ((remoteSurveyData.data.lastLocalSaveDate ?? 0) !=
+                                        (remoteSurveyData.data.lastRemoteSaveDate ?? 0) &&
+                                        (remoteSurveyData.data.lastLocalSaveDate ?? 0) <=
+                                            remoteSurveyData.stateData.date))
                             ) {
                                 const stateData = getSurveyStateData(surveyData, surveyId);
                                 setLocalOrRemoteData(surveyId, remoteSurveyData, surveyData, stateData);
@@ -738,6 +734,7 @@ const createDataEmpty = (idSurvey: string): LunaticData => {
         houseReference: householdId,
         id: idSurvey,
         lastLocalSaveDate: Date.now(),
+        lastRemoteSaveDate: undefined,
     };
     data.COLLECTED = getDataEmpty(idSurvey);
     return data;
@@ -910,7 +907,7 @@ const saveQualityScore = (idSurvey: string, data: LunaticData) => {
     const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
     const qualityScore = getQualityScore(idSurvey, activitiesRoutesOrGaps, overlaps, t);
     const modePersistence = getModePersistence(data);
-    if (data.COLLECTED?.[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS]) {
+    if (data?.COLLECTED?.[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS]) {
         data.COLLECTED[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS] = {
             COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? qualityScore.points : null,
             EDITED: modePersistence == ModePersistenceEnum.EDITED ? qualityScore.points : null,
@@ -919,7 +916,7 @@ const saveQualityScore = (idSurvey: string, data: LunaticData) => {
             PREVIOUS: null,
         };
     }
-    if (data.COLLECTED?.[FieldNameEnum.QUALITY_SCORE]) {
+    if (data?.COLLECTED?.[FieldNameEnum.QUALITY_SCORE]) {
         data.COLLECTED[FieldNameEnum.QUALITY_SCORE] = {
             COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? qualityScore.group : null,
             EDITED: modePersistence == ModePersistenceEnum.EDITED ? qualityScore.group : null,
@@ -972,7 +969,7 @@ const saveData = (
     forceUpdate = false,
     stateDataForced?: StateData,
 ): Promise<LunaticData> => {
-    data.lastLocalSaveDate = Date.now();
+    data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
     if (!data.houseReference) {
         const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
         data.houseReference = idSurvey.replace(regexp, "");
@@ -987,12 +984,16 @@ const saveData = (
 
     data = updateLocked(idSurvey, data);
     let stateData: StateData = stateDataForced ?? initStateData();
-
     if (isChange) {
         data = saveQualityScore(idSurvey, data);
         if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
             stateData = getSurveyStateData(data, idSurvey);
             return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(remoteData => {
+                stateData.date =
+                    stateData.date < (data.lastLocalSaveDate ?? 0)
+                        ? data.lastLocalSaveDate ?? 0
+                        : stateData.date;
+                data.stateData = stateData;
                 return setLocalOrRemoteData(idSurvey, remoteData, data, stateData);
             });
         }
@@ -1004,15 +1005,23 @@ const saveData = (
                 data: data,
             };
             return remotePutSurveyData(idSurvey, surveyData).then(remoteData => {
+                stateData.date =
+                    stateData.date < (data.lastLocalSaveDate ?? 0)
+                        ? data.lastLocalSaveDate ?? 0
+                        : stateData.date;
+                data.stateData = stateData;
                 return setLocalOrRemoteData(idSurvey, remoteData, data, stateData);
             });
         } else if (isDemoMode || localSaveOnly || !navigator.onLine) {
             stateData = getSurveyStateData(data, idSurvey);
+            data.stateData = stateData;
             return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
         } else {
+            data.stateData = stateData;
             return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
         }
     } else {
+        data.stateData = stateData;
         return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
     }
 };
@@ -1035,6 +1044,7 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
     let oldDataSurvey = datas.get(idSurvey) ?? {};
     oldDatas.set(idSurvey, oldDataSurvey);
     setDataCache(idSurvey, data);
+    //console.log(idSurvey, data);
     //set the last remote save date inside local database to be able to compare it later with remote data
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
@@ -2058,6 +2068,7 @@ export {
     getComponentsOfVariable,
     getCurrentPage,
     getData,
+    getDataEmpty,
     getDataUpdatedOffline,
     getDatas,
     getFirstName,
