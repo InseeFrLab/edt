@@ -144,7 +144,7 @@ const EndSurveyPage = () => {
     ): void => {
         if (forceQuit) {
             const dataWithIsEnvoyed = setValue(idSurvey, FieldNameEnum.ISENVOYED, true);
-            saveData(idSurvey, dataWithIsEnvoyed, false, true).then(remoteData => {
+            saveData(idSurvey, dataWithIsEnvoyed, false, true).then(() => {
                 navToHome();
             });
         } else {

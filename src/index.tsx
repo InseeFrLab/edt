@@ -56,6 +56,8 @@ const oidcProps = navigator.onLine
         : oidcConfigOnline
     : oidcConfigOffline;
 
+console.log(navigator.onLine, oidcProps, oidcPropss);
+
 root.render(
     <AuthProvider {...oidcPropss}>
         <React.StrictMode>
