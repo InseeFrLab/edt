@@ -525,7 +525,9 @@ const getRemoteSavedSurveysDatas = (
                                 remoteSurveyData?.stateData?.date != null &&
                                 (localSurveyData == null ||
                                     ((localSurveyData.lastLocalSaveDate ?? 0) <= lastRemoteSaveDate &&
-                                        remoteSurveyData.data.lastRemoteSaveDate != null &&
+                                        (remoteSurveyData.data.lastRemoteSaveDate != null ||
+                                            (remoteSurveyData.data.lastLocalSaveDate == null &&
+                                                remoteSurveyData.data.lastRemoteSaveDate == null)) &&
                                         lastLocalSaveDate <= remoteStateData))
                             ) {
                                 const stateData = getSurveyStateData(surveyData, surveyId);
@@ -949,13 +951,21 @@ const updateLocked = (idSurvey: string, data: LunaticData) => {
 
 const getDataUpdatedOffline = () => {
     let surveysToUpdated = new Map<string, LunaticData>();
+    let surveysToUpdated2 = new Map<string, LunaticData>();
     surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
         let data = getDataCache(idSurvey);
         if (data.lastLocalSaveDate > (data.stateData?.date ?? data.lastRemoteSaveDate)) {
             surveysToUpdated.set(idSurvey, data);
         }
+
+        if (
+            data.lastLocalSaveDate > data.lastRemoteSaveDate ||
+            data.lastLocalSaveDate > data.stateData?.date
+        ) {
+            surveysToUpdated2.set(idSurvey, data);
+        }
     });
-    return surveysToUpdated;
+    return surveysToUpdated2;
 };
 
 const saveDatas = () => {
@@ -1022,6 +1032,8 @@ const saveData = (
             });
         } else if (isDemoMode || localSaveOnly || !navigator.onLine) {
             stateData = getSurveyStateData(data, idSurvey);
+
+            stateData.date = stateData.date - 1;
             data.stateData = stateData;
             return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
         } else {

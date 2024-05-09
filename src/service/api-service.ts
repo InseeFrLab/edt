@@ -378,6 +378,7 @@ const requestGetStateReviewer = (
                 resolve(response.data);
             })
             .catch(err => {
+                console.log(err);
                 if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
                 } else {
