@@ -531,6 +531,7 @@ const getRemoteSavedSurveysDatas = (
                                         lastLocalSaveDate <= remoteStateData))
                             ) {
                                 const stateData = getSurveyStateData(surveyData, surveyId);
+                                console.log("set remote data", stateData);
                                 setLocalOrRemoteData(surveyId, remoteSurveyData, surveyData, stateData);
                                 return lunaticDatabase.save(surveyId, surveyData);
                             }
@@ -965,6 +966,7 @@ const getDataUpdatedOffline = () => {
             surveysToUpdated2.set(idSurvey, data);
         }
     });
+    console.log(surveysToUpdated, surveysToUpdated2);
     return surveysToUpdated2;
 };
 
@@ -1032,8 +1034,7 @@ const saveData = (
             });
         } else if (isDemoMode || localSaveOnly || !navigator.onLine) {
             stateData = getSurveyStateData(data, idSurvey);
-
-            stateData.date = stateData.date - 1;
+            stateData.date = 0;
             data.stateData = stateData;
             return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
         } else {

@@ -281,16 +281,13 @@ const requestPutSurveyDataReviewer = (
     stateData: StateData,
     token?: string,
 ): Promise<SurveyData> => {
-    requestPutStateReviewer(idSurvey, stateData, token).then(() => {
-        requestPutDataReviewer(idSurvey, data, token);
-    });
-
-    return new Promise(resolve => {
+    return requestPutDataReviewer(idSurvey, data, token).then(() => {
+        requestPutStateReviewer(idSurvey, stateData, token);
         const surveyData: SurveyData = {
             stateData: stateData,
             data: data,
         };
-        resolve(surveyData);
+        return surveyData;
     });
 };
 
