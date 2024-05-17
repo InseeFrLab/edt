@@ -1361,7 +1361,31 @@ The variable ENDTIME is updated EDITED part by removing the ancient third elemen
 
 The application is completely functional offline in browser or in the application, you can exit the application and when you return you will be able to use it without any problem and all the cached data will be used.
 
+For the reviewer mode, the information recovered is done on two requetes:
+
+- To retrieve the data: REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/data"
+- To retrieve the stateData : REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/state-data"
+
+For the interviewer mode, the information retrieved is done on the following request:
+
+- REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey.
+
+Same mechanism used to save information relevant to surveys.
+
 Once in offline mode, authentication is not performed or the token is reviewed until the next online connection. Likewise, there is no requirement for the released API, everything is cached.
+
+### Data synchronization
+
+The information displayed will always be the most recent information found.
+The cached last modification date will always be compared (on object data -> lastLocalSaveDate), with the date of last modification in remote (on stateData -> date) and if the value in Remote is the most recent, the data will be updated by that of the remote.
+
+### Offline update data
+
+#### Interviewer mode
+
+As there is no requirement with the API, the local data will not be sent until we go online and made a modification to the survey.
+
+#### Reviewer mode
 
 As there is no requirement with the API, the local data will not be sent until we go online and : either click on the "update the list" button, or modify the corresponding survey.
 
