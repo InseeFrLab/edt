@@ -37,7 +37,7 @@ import { callbackHolder } from "orchestrator/Orchestrator";
 import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect, useState } from "react";
 import { TFunction, useTranslation } from "react-i18next";
-import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { getFlatLocalStorageValue, getLocalStorageValue } from "service/local-storage-service";
 import { getLoopSize, setLoopSize } from "service/loop-service";
 import {
@@ -62,10 +62,12 @@ import {
 } from "service/survey-activity-service";
 import {
     existVariableEdited,
+    getData,
     getFullFrenchDate,
     getPrintedFirstName,
     getSource,
     getSurveyDate,
+    getSurveyRights,
     getValue,
     isDemoMode,
     lockSurvey,
@@ -197,6 +199,10 @@ const ActivitySummaryPage = () => {
     const [gapEndTime, setGapEndTime] = React.useState<string>();
     const [initialized, setInitialized] = React.useState<boolean>(false);
     const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
+    const [isRoute, setIsRoute] = React.useState(false);
+    const [activityOrRoute, setActivityOrRoute] = React.useState<ActivityRouteOrGap | undefined>(
+        undefined,
+    );
 
     const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey, context.source);
     const surveyDate = getSurveyDatePlanner(idSurvey);
@@ -253,12 +259,14 @@ const ActivitySummaryPage = () => {
         [idSurvey],
     );
 
-    const navToActivityOrRoute = (iteration: number): void => {
+    const navToActivityOrRoute = (iteration: number, isItRoute?: boolean): void => {
         const isEditedSummary: { [key: string]: string } = {
             [LocalStorageVariableEnum.IS_EDITED_SUMMARY]: "true",
         };
         localStorage.setItem(idSurvey, JSON.stringify(isEditedSummary));
         setIsSummaryEdited(true);
+        setIsRoute(isItRoute ?? false);
+
         navigate(
             getCurrentNavigatePath(
                 idSurvey,
@@ -273,12 +281,13 @@ const ActivitySummaryPage = () => {
     };
 
     const onEditActivityOrRoute = useCallback(
-        (iteration: number) => {
+        (iteration: number, activity: ActivityRouteOrGap) => {
             const isEditedSummary: { [key: string]: string } = {
                 [LocalStorageVariableEnum.IS_EDITED_SUMMARY]: "true",
             };
             localStorage.setItem(idSurvey, JSON.stringify(isEditedSummary));
             setIsSummaryEdited(true);
+            setActivityOrRoute(activity);
             navToEditActivity(idSurvey, iteration);
         },
         [idSurvey],
@@ -299,7 +308,8 @@ const ActivitySummaryPage = () => {
     );
 
     const onEditActivity = useCallback(
-        (iteration: number) => () => onEditActivityOrRoute(iteration),
+        (iteration: number, activity: ActivityRouteOrGap) => () =>
+            onEditActivityOrRoute(iteration, activity),
         [],
     );
 
@@ -341,8 +351,10 @@ const ActivitySummaryPage = () => {
         setValueOrNull(idSurvey, FieldNameEnum.START_TIME, startTime, contextIteration);
         setValueOrNull(idSurvey, FieldNameEnum.END_TIME, endTime, contextIteration);
         const updatedData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
-        saveData(idSurvey, updatedData).then(() => {
+
+        saveData(idSurvey, updatedData, false, true).then(() => {
             onCloseAddActivityOrRoute();
+            setIsRoute(isRouteBool);
             navigate(
                 getLoopParameterizedNavigatePath(
                     idSurvey,
@@ -363,8 +375,9 @@ const ActivitySummaryPage = () => {
         );
         contextIteration = loopSize - 1;
         const routeData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
-        saveData(idSurvey, routeData).then(() => {
-            navToActivityOrRoute(contextIteration);
+        context.isRoute = isRouteBool;
+        saveData(idSurvey, routeData, false, true).then(() => {
+            navToActivityOrRoute(contextIteration, isRouteBool);
         });
     };
 
@@ -577,7 +590,7 @@ const ActivitySummaryPage = () => {
                                 onClick={navToCard(getIterationOrZero(activity))}
                                 onClickGap={onOpenAddActivityOrRoute}
                                 activityOrRoute={activity}
-                                onEdit={onEditActivity(getIterationOrZero(activity))}
+                                onEdit={onEditActivity(getIterationOrZero(activity), activity)}
                                 onDelete={onDeleteActivity(
                                     idSurvey,
                                     context.source,
@@ -722,6 +735,17 @@ const ActivitySummaryPage = () => {
                     open={isAddActivityOrRouteOpen}
                 />
             </SurveyPage>
+            <Outlet
+                context={{
+                    source: source,
+                    data: getData(idSurvey),
+                    idSurvey: idSurvey,
+                    surveyRootPage: context.surveyRootPage,
+                    isRoute: isRoute,
+                    activityOrRoute: activityOrRoute,
+                    rightsSurvey: getSurveyRights(idSurvey ?? ""),
+                }}
+            />
         </>,
     );
 };

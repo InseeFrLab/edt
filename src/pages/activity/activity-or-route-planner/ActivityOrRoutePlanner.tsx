@@ -107,7 +107,7 @@ const getAlertUnlockLabels = (variableEdited: boolean, t: TFunction<"translation
 };
 
 const isChildDisplayed = (path: string): boolean => {
-    return path.split(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)[1].length > 0;
+    return path?.split(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)[1]?.length > 0;
 };
 
 const isActivity = (location: Location) => {
@@ -165,7 +165,7 @@ const onFinish = (
 ) => {
     if (closed) {
         const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
-        saveData(idSurvey, data ?? callbackHolder.getData()).then(() => {
+        saveData(idSurvey, data ?? callbackHolder.getData(), false, true).then(() => {
             navigate(
                 getCurrentNavigatePath(
                     idSurvey,
@@ -434,6 +434,7 @@ const ActivityOrRoutePlannerPage = () => {
         );
         contextIteration = loopSize - 1;
         const routeData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
+        console.log(routeData, isRouteBool);
         saveData(idSurvey, routeData).then(() => {
             navToActivityOrRoute(idSurvey, contextIteration, isRouteBool);
         });

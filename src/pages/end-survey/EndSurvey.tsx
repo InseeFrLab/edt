@@ -80,8 +80,8 @@ const EndSurveyPage = () => {
         border: true,
     };
 
-    const saveDataAndInit = useCallback((surveyData: SurveyData) => {
-        saveData(idSurvey, surveyData.data).then(() => {
+    const saveDataAndInit = useCallback((surveyData: SurveyData, forceUpdate?: boolean) => {
+        saveData(idSurvey, surveyData.data, false, forceUpdate).then(() => {
             initializeSurveysDatasCache().finally(() => {
                 setIsModalDisplayed(true);
             });
@@ -102,25 +102,25 @@ const EndSurveyPage = () => {
         };
 
         if (!isDemoMode && !isReviewer() && navigator.onLine) {
-            remotePutSurveyData(idSurvey, surveyData)
+            return remotePutSurveyData(idSurvey, surveyData)
                 .then(surveyDataAnswer => {
                     surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
-                    saveDataAndInit(surveyData);
+                    return saveDataAndInit(surveyData, true);
                 })
                 .catch(() => {
                     setErrorSubmit(true);
                 });
         } else if (!isDemoMode && isReviewer() && navigator.onLine) {
-            remotePutSurveyDataReviewer(idSurvey, stateData, surveyData.data)
+            return remotePutSurveyDataReviewer(idSurvey, stateData, surveyData.data)
                 .then(surveyDataAnswer => {
                     surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
-                    saveDataAndInit(surveyData);
+                    return saveDataAndInit(surveyData, true);
                 })
                 .catch(() => {
                     setErrorSubmit(true);
                 });
         } else {
-            saveDataAndInit(surveyData);
+            return saveDataAndInit(surveyData, true);
         }
     }, []);
 
@@ -143,7 +143,10 @@ const EndSurveyPage = () => {
         setIsModalDisplayed: (value: SetStateAction<boolean>) => void,
     ): void => {
         if (forceQuit) {
-            navToHome();
+            const dataWithIsEnvoyed = setValue(idSurvey, FieldNameEnum.ISENVOYED, true);
+            saveData(idSurvey, dataWithIsEnvoyed, false, true).then(() => {
+                navToHome();
+            });
         } else {
             setIsModalDisplayed(true);
         }

@@ -30,26 +30,23 @@ const oidcConfigOnline = {
     authority: getAuthority(),
     clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID,
     redirectUri: process.env.REACT_APP_KEYCLOAK_REDIRECT_URI,
-    automaticSilentRenew: !navigator.onLine,
+    automaticSilentRenew: true,
 };
 
 const oidcConfigOffline = {
-    automaticSilentRenew: !navigator.onLine,
+    automaticSilentRenew: false,
     silent_redirect_uri: currentHost,
 };
 
 let oidcPropss = {};
 
 if (navigator.onLine) {
-    console.log("nav online");
     if (isSSO) {
-        console.log("isSSO");
         oidcPropss = Object.assign(oidcConfigOnline, oidcConfigSSO);
     } else {
         oidcPropss = oidcConfigOnline;
     }
 } else {
-    console.log("nav offline");
     oidcPropss = oidcConfigOnline;
 }
 

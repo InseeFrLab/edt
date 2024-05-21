@@ -169,17 +169,15 @@ const requestPutSurveyData = (
     token?: string,
 ): Promise<SurveyData> => {
     return new Promise(resolve => {
-        setTimeout(() => {
-            axios
-                .put(
-                    stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
-                    data,
-                    getHeader(stromaeBackOfficeApiBaseUrl, token),
-                )
-                .then(() => {
-                    resolve(data);
-                });
-        }, 1000);
+        axios
+            .put(
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
+                data,
+                getHeader(stromaeBackOfficeApiBaseUrl, token),
+            )
+            .then(() => {
+                return resolve(data);
+            });
     });
 };
 
@@ -237,17 +235,15 @@ const requestPutDataReviewer = (
     token?: string,
 ): Promise<LunaticData> => {
     return new Promise<LunaticData>(resolve => {
-        setTimeout(() => {
-            axios
-                .put(
-                    stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
-                    data,
-                    getHeader(stromaeBackOfficeApiBaseUrl, token),
-                )
-                .then(() => {
-                    resolve(data);
-                });
-        }, 1000);
+        axios
+            .put(
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
+                data,
+                getHeader(stromaeBackOfficeApiBaseUrl, token),
+            )
+            .then(() => {
+                return resolve(data);
+            });
     });
 };
 
@@ -257,27 +253,25 @@ const requestPutStateReviewer = (
     token?: string,
 ): Promise<StateData> => {
     return new Promise<StateData>(resolve => {
-        setTimeout(() => {
-            axios
-                .put(
-                    stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
-                    data,
-                    getHeader(stromaeBackOfficeApiBaseUrl, token),
-                )
-                .then(() => {
-                    resolve(data);
-                })
-                .catch(err => {
-                    if (err.response?.status == 404) {
-                        const stateData = {
-                            state: StateDataStateEnum.INIT,
-                            date: Date.now(),
-                            currentPage: 0,
-                        };
-                        resolve(stateData);
-                    }
-                });
-        }, 1000);
+        axios
+            .put(
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
+                data,
+                getHeader(stromaeBackOfficeApiBaseUrl, token),
+            )
+            .then(() => {
+                return resolve(data);
+            })
+            .catch(err => {
+                if (err.response?.status == 404) {
+                    const stateData = {
+                        state: StateDataStateEnum.INIT,
+                        date: Date.now(),
+                        currentPage: 0,
+                    };
+                    return resolve(stateData);
+                }
+            });
     });
 };
 
@@ -287,16 +281,13 @@ const requestPutSurveyDataReviewer = (
     stateData: StateData,
     token?: string,
 ): Promise<SurveyData> => {
-    requestPutStateReviewer(idSurvey, stateData, token).then(() => {
-        requestPutDataReviewer(idSurvey, data, token);
-    });
-
-    return new Promise(resolve => {
+    return requestPutDataReviewer(idSurvey, data, token).then(() => {
+        requestPutStateReviewer(idSurvey, stateData, token);
         const surveyData: SurveyData = {
             stateData: stateData,
             data: data,
         };
-        resolve(surveyData);
+        return surveyData;
     });
 };
 
@@ -362,6 +353,8 @@ const requestGetDataReviewer = (
                 } else if ([401, 404].includes(err.response?.status)) {
                     return resolve(initSurveyData(idSurvey));
                 } else {
+                    console.error(err);
+                    setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
                     //requestGetDataReviewer(idSurvey, setError);
                 }
             });
@@ -382,6 +375,7 @@ const requestGetStateReviewer = (
                 resolve(response.data);
             })
             .catch(err => {
+                console.log(err);
                 if (err.response?.status === 403) {
                     setError(ErrorCodeEnum.NO_RIGHTS);
                 } else {

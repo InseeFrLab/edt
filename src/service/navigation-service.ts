@@ -412,7 +412,6 @@ const emptyDataSetFirstName = (
     let dataCollected = { ...data.COLLECTED };
     if (dataCollected) {
         dataCollected = initPropsData(dataCollected, idSurveyOfGroup, newSurvey);
-
         dataCollected[FieldNameEnum.FIRSTNAME] = {
             COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? firstName : null,
             EDITED: modePersistence == ModePersistenceEnum.EDITED ? firstName : null,
