@@ -515,7 +515,7 @@ const getRemoteSavedSurveysDatas = (
                         const surveyData = initializeData(remoteSurveyData, surveyId);
 
                         return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                            const lastRemoteSaveDate = remoteSurveyData.data.lastRemoteSaveDate ?? 1;
+                            const lastRemoteSaveDate = remoteSurveyData.data.lastRemoteSaveDate ?? 1; //a supprimer
                             const lastLocalSaveDate =
                                 remoteSurveyData.data.lastLocalSaveDate ??
                                 localSurveyData?.lastLocalSaveDate ??
@@ -525,13 +525,13 @@ const getRemoteSavedSurveysDatas = (
                                 remoteSurveyData?.stateData?.date != null &&
                                 (localSurveyData == null ||
                                     ((localSurveyData.lastLocalSaveDate ?? 0) <= lastRemoteSaveDate &&
-                                        (remoteSurveyData.data.lastRemoteSaveDate != null ||
+                                        (remoteSurveyData.data.lastRemoteSaveDate != null || //quand existe des données en remote -> a suprrimer
                                             (remoteSurveyData.data.lastLocalSaveDate == null &&
                                                 remoteSurveyData.data.lastRemoteSaveDate == null)) &&
-                                        lastLocalSaveDate <= remoteStateData))
+                                        //quand local est vide and jamais saved des données, remoteSurveyData.data.lastRemoteSaveDate change par stateData
+                                        lastLocalSaveDate <= remoteStateData)) // local date moins recent que remote date
                             ) {
                                 const stateData = getSurveyStateData(surveyData, surveyId);
-                                console.log("set remote data", stateData);
                                 setLocalOrRemoteData(surveyId, remoteSurveyData, surveyData, stateData);
                                 return lunaticDatabase.save(surveyId, surveyData);
                             }
@@ -952,22 +952,18 @@ const updateLocked = (idSurvey: string, data: LunaticData) => {
 
 const getDataUpdatedOffline = () => {
     let surveysToUpdated = new Map<string, LunaticData>();
-    let surveysToUpdated2 = new Map<string, LunaticData>();
     surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
         let data = getDataCache(idSurvey);
-        if (data.lastLocalSaveDate > (data.stateData?.date ?? data.lastRemoteSaveDate)) {
-            surveysToUpdated.set(idSurvey, data);
-        }
-
+        //state data -> last data recuperée from stateData
+        //lastRemoteSaveDate -> a pouvoir supprimer (change lastRemoteSaveDate to stateData.date)
         if (
             data.lastLocalSaveDate > data.lastRemoteSaveDate ||
             data.lastLocalSaveDate > data.stateData?.date
         ) {
-            surveysToUpdated2.set(idSurvey, data);
+            surveysToUpdated.set(idSurvey, data);
         }
     });
-    console.log(surveysToUpdated, surveysToUpdated2);
-    return surveysToUpdated2;
+    return surveysToUpdated;
 };
 
 const saveDatas = () => {
@@ -996,7 +992,7 @@ const saveData = (
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
     fixConditionals(data);
     let oldDataSurvey = datas.get(idSurvey) ?? {};
-    const dataIsChanged = dataIsChange(idSurvey, data, oldDataSurvey); //dataIsChange(idSurvey, data, oldDatas.get(idSurvey) ?? {});
+    const dataIsChanged = dataIsChange(idSurvey, data, oldDataSurvey);
     const isChange = forceUpdate || dataIsChanged;
     datas.set(idSurvey, data);
 
@@ -1033,11 +1029,13 @@ const saveData = (
                 return setLocalOrRemoteData(idSurvey, remoteData, data, stateData);
             });
         } else if (isDemoMode || localSaveOnly || !navigator.onLine) {
+            //offline, always prio local, pour ça stateData 0
             stateData = getSurveyStateData(data, idSurvey);
             stateData.date = 0;
             data.stateData = stateData;
             return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
         } else {
+            //jamais
             data.stateData = stateData;
             return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
         }
