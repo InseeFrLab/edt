@@ -1245,8 +1245,16 @@ const getReferentiel = (refName: ReferentielsEnum) => {
     return referentielsData[refName];
 };
 
+const getActivitySource = () => {
+    return sourcesData != null ? sourcesData.edtActivitySurvey : activitySurveySource;
+};
+
+const getWorkTimeSource = () => {
+    return sourcesData != null ? sourcesData.edtWorkTimeSurvey : workTimeSource;
+};
+
 const getSource = (refName: SourcesEnum) => {
-    return refName == SourcesEnum.ACTIVITY_SURVEY ? activitySurveySource : workTimeSource;
+    return refName == SourcesEnum.ACTIVITY_SURVEY ? getActivitySource() : getWorkTimeSource();
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
