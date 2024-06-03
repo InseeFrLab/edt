@@ -296,8 +296,9 @@ It contains all the survey "fields" components and an associated storybook docum
 
 ### Initial survey state
 
-A surveyed, when loggin in the first time, will be able to see REACT_APP_NUM_ACTIVITY_SURVEYS (total amount of activity surveys, accessible in env file) activity surveys and
-REACT_APP_NUM_WORKTIME_SURVEYS work time surveys.
+A surveyed, when loggin in the first time, will be able to see le total of the surveys retrieved by the query _REACT_APP_EDT_ORGANISATION_API_BASE_URL + "api/survey-assigment/interviewer/my-surveys"_.
+
+In demo version, the surveys able to see are `REACT_APP_NUM_ACTIVITY_SURVEYS` (total amount of activity surveys, accessible in env file) activity surveys and `REACT_APP_NUM_WORKTIME_SURVEYS` work time surveys.
 
 When a survey has never been started, no data are visible in the indexedDB.
 
@@ -321,12 +322,14 @@ Currently corresponding to the ISENVOYED boolean variable. This state is to know
 
 ## Locked survey state
 
-ISLOCKED boolean variable is set to true when a surveyer change any of the surveyed data from the surveyer interface or if he locks the survey by using the lock button.
+`ISLOCKED` boolean variable is set to true when a surveyer change any of the surveyed data from the surveyer interface or if he locks the survey by using the lock button.
 This state is impacting the surveyed rights in the app. Any locked survey is not editable by the surveyed anymore (no more writting rights). The surveyer only can manage this state.
 
 ## Validated survey state
 
-This state is visible on the ISVALIDATED boolean variable. This state can be set only by the surveyer. When this state is set to true, the ISLOCKED boolean also take true as value. The surveyer can still edit the data, but the surveyed doesn't have writting rights anymore.
+This state is visible on the `ISVALIDATED` boolean variable. This state can be set only by the surveyer. When this state is set to true, the ISLOCKED boolean also take true as value. The surveyer can still edit the data, but the surveyed doesn't have writting rights anymore.
+
+Also, the `ISVALIDATED` variable is updated by the value state on state-data when loading data.
 
 ## Household surveys state
 
@@ -386,7 +389,19 @@ The user bearer token is used to call the secured APIs.
 
 The accounts are created and managed by INSEE. It is not possible to sign up by yourself.
 
-SSO is available using INSEE LDAP only with users with reviewer role. The reviewer is already authenticated when we enter with SSO, if he enter the url https://{URL_ENVIRO}/?kc_idp_hint=insee-ssp already authenticated, he is redirect to the main page of the app taking the current token and the information corresponding, without having to go through the authentication page again.
+SSO is available using INSEE LDAP only with users with reviewer role. The reviewer is already authenticated when we enter with SSO, if he enter the url https://{URL_ENVIRO}/?kc_idp_hint={IDP_ID} (or {IDP_ID} can be no value, defaults "insee-ssp") already authenticated, he is redirect to the main page of the app taking the current token and the information corresponding, without having to go through the authentication page again.
+
+#### Rights
+
+The different roles of the application are defined on the EdtUserRightsEnum enum.
+
+![EdtUserRightsEnum](./src/documentation/images/rights_1.png)
+
+The values of its variables are replaced by the environment variables `REACT_APP_REVIEWER_ROLE` and `REACT_APP_SURVEYED_ROLE` respectively.
+
+The rights check is done on the _getUserRights()_ method so that we always retrieve a value from the _EdtUserRightsEnum_ enum.
+
+![user rights](./src/documentation/images/rights_2.png)
 
 ### APIs usage
 
@@ -989,7 +1004,10 @@ REACT_APP_NUM_WORKTIME_SURVEYS=2
 ```
 </details>
 
-`REACT_APP_NUM_ACTIVITY_SURVEYS` and `REACT_APP_NUM_WORKTIME_SURVEYS` allows to change the amount of each survey kind for user.
+`REACT_APP_NUM_ACTIVITY_SURVEYS` and `REACT_APP_NUM_WORKTIME_SURVEYS` allows to change the surveys affichées pour le mode demo.
+
+Otherwise, the number of surveys displayed are retrieved by the request *"REACT_APP_EDT_ORGANISATION_API_BASE_URL + api/survey-assigment/interviewer/my-surveys"* or the distinction on each model is made from the variable *questionnaireModelId*.
+
 
 ## Orchestrator
 
@@ -1198,7 +1216,7 @@ In this step, the values of variables FIRSTNAME, SURVEYDATE are set in COLLECTED
 
     3.2 - ROUTE
 
-![ROUTE PAGE](create_survey_one_interviewer_first_route_route_page.png)
+![ROUTE PAGE](./src/documentation/images/create_survey_one_interviewer_first_route_route_page.png)
 
     Select "route home - work"
 
@@ -1379,17 +1397,26 @@ Once in offline mode, authentication is not performed or the token is reviewed u
 The information displayed will always be the most recent information found.
 The cached last modification date will always be compared (on object data -> lastLocalSaveDate), with the date of last modification in remote (on stateData -> date) and if the value in Remote is the most recent, the data will be updated by that of the remote.
 
+![GET DATA](./src/documentation/images/offline_get_data.png)
+
+
 ### Offline update data
-
-#### Interviewer mode
-
-As there is no requirement with the API, the local data will not be sent until we go online and made a modification to the survey.
 
 #### Reviewer mode
 
 As there is no requirement with the API, the local data will not be sent until we go online and : either click on the "update the list" button, or modify the corresponding survey.
 
 If we click the "update list" button after having been in offline mode and having made modifications, we will send all the households that have been modified in offline.
+
+![UPDATE DATA](./src/documentation/images/offline_save_offline_reviewer.png)
+
+#### Interviewer mode
+
+As there is no requirement with the API, the local data will not be sent until we go online and made a modification to the survey.
+
+> **REMAINS TO BE DONE**
+
+> Same behavior as reviewer, it will be necessary to call on the interviewer home page the *saveDatas()* method already used in reviewer mode (`saveAllAndUpdate` on *SurveysOverview*) when you go from offline to online.
 
 ## Maintenance and evolution
 
