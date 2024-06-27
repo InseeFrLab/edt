@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import React from "react";
-import { Typography } from '@mui/material';
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
+import ErrorPage from "./Error";
 
 class ErrorBoundary extends React.Component {
     // eslint-disable-next-line react/state-in-constructor
     state = { hasError: false };
+
 
     componentDidCatch(error: unknown) {
         console.error(error);
@@ -19,11 +20,7 @@ class ErrorBoundary extends React.Component {
         // eslint-disable-next-line react/destructuring-assignment
         if (this.state.hasError) {
             return (
-                <FlexCenter>
-                    <Typography variant="h1">
-                        Something went wrong. Please retry later
-                    </Typography>
-                </FlexCenter>
+                <ErrorPage errorCode={ErrorCodeEnum.COMMON} atInit={true} />
             );
         }
 
@@ -32,5 +29,8 @@ class ErrorBoundary extends React.Component {
         return this.props.children;
     }
 }
+
+
+
 
 export default ErrorBoundary;

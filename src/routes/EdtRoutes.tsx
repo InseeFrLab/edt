@@ -44,10 +44,12 @@ import KindOfWeekPage from "pages/work-time/kind-of-week/KindOfWeek";
 import WeeklyPlannerPage from "pages/work-time/weekly-planner/WeeklyPlanner";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { EdtRoutesNameEnum } from "./EdtRoutesMapping";
+import ErrorBoundary from "pages/error/ErrorProvider";
 
 const EdtRoutes = (): JSX.Element => {
     return (
         <BrowserRouter>
+            <ErrorBoundary>
             <Routes>
                 <Route path="*" element={<NotFoundPage />} />
                 <Route path="/" element={<HomePage />} />
@@ -149,7 +151,8 @@ const EdtRoutes = (): JSX.Element => {
                     />
                     <Route path={EdtRoutesNameEnum.END_SURVEY} element={<EndSurveyPage />} />
                 </Route>
-            </Routes>
+                </Routes>
+            </ErrorBoundary>
         </BrowserRouter>
     );
 };
