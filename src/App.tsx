@@ -106,7 +106,6 @@ const App = () => {
             Promise.all(promisesToWait);
         } else if (!navigator.onLine) {
             getAuthCache().then(auth => {
-                console.log(auth);
                 if (auth?.data.userData?.access_token) {
                     const user: User = {
                         access_token: auth.data.userData?.access_token,

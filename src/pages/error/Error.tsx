@@ -54,7 +54,6 @@ const ErrorPage = (props: ErrorPageProps) => {
     let navigate: NavigateFunction = useNavigate();
 
     const navToHome = useCallback(() => {
-        console.log("navigate to home");
         if (navigate) {
             navigate("/");
         }
