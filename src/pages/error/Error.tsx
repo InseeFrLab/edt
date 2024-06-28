@@ -26,10 +26,11 @@ import { getData, getSurveyRights, surveysIds } from "service/survey-service";
 export type ErrorPageProps = {
     errorCode?: ErrorCodeEnum;
     atInit?: boolean;
+    atBoundary?: boolean;
 };
 
 const ErrorPage = (props: ErrorPageProps) => {
-    const { errorCode, atInit = false } = props;
+    const { errorCode, atInit = false, atBoundary = false } = props;
     const { t } = useTranslation();
     const { classes } = useStyles();
     const auth = useAuth();
@@ -53,6 +54,7 @@ const ErrorPage = (props: ErrorPageProps) => {
     let navigate: NavigateFunction = useNavigate();
 
     const navToHome = useCallback(() => {
+        console.log("navigate to home");
         if (navigate) {
             navigate("/");
         }
@@ -165,23 +167,25 @@ const ErrorPage = (props: ErrorPageProps) => {
                     {t("common.error.error-user-info") + auth.userData?.profile?.preferred_username}
                 </Typography>
             </Box>
-            <FlexCenter>
-                <Box className={classes.buttonBox}>
-                    {getErrorActionButton(errorCode)}
-                    <Button
-                        className={classes.button}
-                        variant="contained"
-                        startIcon={
-                            <PowerSettingsIcon
-                                aria-label={t("accessibility.asset.mui-icon.power-settings")}
-                            />
-                        }
-                        onClick={onDisconnect}
-                    >
-                        {t("page.home.navigation.logout")}
-                    </Button>
-                </Box>
-            </FlexCenter>
+            {!atBoundary && (
+                <FlexCenter>
+                    <Box className={classes.buttonBox}>
+                        {getErrorActionButton(errorCode)}
+                        <Button
+                            className={classes.button}
+                            variant="contained"
+                            startIcon={
+                                <PowerSettingsIcon
+                                    aria-label={t("accessibility.asset.mui-icon.power-settings")}
+                                />
+                            }
+                            onClick={onDisconnect}
+                        >
+                            {t("page.home.navigation.logout")}
+                        </Button>
+                    </Box>
+                </FlexCenter>
+            )}
         </>
     );
 };

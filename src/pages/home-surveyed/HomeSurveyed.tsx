@@ -426,19 +426,6 @@ const HomeSurveyedPage = () => {
                 )}
 
                 <Box className={classes.helpBox}>
-                    {process.env.REACT_APP_NODE_ENV !== "production" && !isDemo && (
-                        <Button
-                            color="secondary"
-                            startIcon={
-                                <RemoveCircleIcon
-                                    aria-label={t("accessibility.asset.mui-icon.remove-circle")}
-                                />
-                            }
-                            onClick={resetDataAndReload}
-                        >
-                            {t("page.home.navigation.reset-data")}
-                        </Button>
-                    )}
                     {isDemo && (
                         <Button
                             color="primary"
