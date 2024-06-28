@@ -19,7 +19,6 @@ import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { SurveyData } from "interface/entity/Api";
 import { Person } from "interface/entity/Person";
 import { LunaticData, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
@@ -27,7 +26,7 @@ import ErrorPage from "pages/error/Error";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { logout, remotePutSurveyData, remotePutSurveyDataReviewer } from "service/api-service";
+import { logout } from "service/api-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getNavigatePath, setEnviro } from "service/navigation-service";
 import {
@@ -130,23 +129,23 @@ const HomeSurveyedPage = () => {
         icon: <DisconnectIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />,
     };
 
-    const resetDataAndReload = useCallback(() => {
-        const promises: any[] = [];
-        surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
-            const stateData = { state: null, date: Date.now(), currentPage: 1 };
-            const surveyData: SurveyData = {
-                stateData: stateData,
-                data: {},
-            };
-            promises.push(remotePutSurveyData(idSurvey, surveyData));
-            promises.push(remotePutSurveyDataReviewer(idSurvey, stateData, {}));
-        });
-        Promise.all(promises).then(() => {
-            lunaticDatabase.clear().then(() => {
-                navigate(0);
-            });
-        });
-    }, []);
+    // const resetDataAndReload = useCallback(() => {
+    //     const promises: any[] = [];
+    //     surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
+    //         const stateData = { state: null, date: Date.now(), currentPage: 1 };
+    //         const surveyData: SurveyData = {
+    //             stateData: stateData,
+    //             data: {},
+    //         };
+    //         promises.push(remotePutSurveyData(idSurvey, surveyData));
+    //         promises.push(remotePutSurveyDataReviewer(idSurvey, stateData, {}));
+    //     });
+    //     Promise.all(promises).then(() => {
+    //         lunaticDatabase.clear().then(() => {
+    //             navigate(0);
+    //         });
+    //     });
+    // }, []);
 
     const resetDemoDataAndReload = useCallback(() => {
         const promises: any[] = [];
