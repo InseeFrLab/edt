@@ -230,23 +230,29 @@ const missingHoursSleepOrEat = (
     // 1 - num sleep (111,114) < 5h -> 3
     const sleepActivities = activitiesRoutesOrGaps
         .filter(activityOrRoute =>
-            SLEEPING_CATEGORIES_ACTIVITES_LIST.includes(activityOrRoute.activity?.activityCode ?? ""),
+            SLEEPING_CATEGORIES_ACTIVITES_LIST.some(activityCode =>
+                (activityOrRoute.activity?.activityCode ?? "").includes(activityCode),
+            ),
         )
         .map(activityOrRoute => activityOrRoute.durationMinutes ?? 0);
+    console.log("sleepActivities", sleepActivities);
     const minutesSleep = sumAllOfArray(sleepActivities);
 
     if (minutesSleep < 60 * MIN_THRESHOLD.MIN_THRESHOLD_SLEEP_ACTIVITES_HOURS) {
         substractPoint += POINTS_REMOVE.POINTS_REMOVE_SLEEP_ACTIVITES_HOURS;
     }
-
+    console.log("minutesSleep", minutesSleep);
     // 2 - num eat (140) < 2h -> 3
     const eatActivities = activitiesRoutesOrGaps
         .filter(activityOrRoute =>
-            EAT_CATEGORIES_ACTIVITES_LIST.includes(activityOrRoute.activity?.activityCode ?? ""),
+            EAT_CATEGORIES_ACTIVITES_LIST.some(sleepActivityCode =>
+                (activityOrRoute.activity?.activityCode ?? "").includes(sleepActivityCode),
+            ),
         )
         .map(activityOrRoute => activityOrRoute.durationMinutes ?? 0);
     if (getAllTime(eatActivities) < 60 * MIN_THRESHOLD.MIN_THRESHOLD_EAT_ACTIVITES_HOURS) {
         substractPoint += POINTS_REMOVE.POINTS_REMOVE_EAT_ACTIVITES_HOURS;
+        console.log("eatActivities", getAllTime(eatActivities));
     }
 
     return substractPoint;
@@ -413,16 +419,25 @@ const getQualityScore = (
     t: TFunction<"translation", undefined>,
 ) => {
     let substractPoint = 0;
-
+    console.log("activitiesRoutesOrGaps", activitiesRoutesOrGaps);
     substractPoint = missingHoursSleepOrEat(activitiesRoutesOrGaps, substractPoint);
+    console.log("After missingHoursSleepOrEat, substractPoint:", substractPoint);
     substractPoint = missingRoutes(activitiesRoutesOrGaps, substractPoint);
+    //console.log("After missingRoutes, substractPoint:", substractPoint);
     substractPoint = missingActivitiesOutsidePersonalTime(activitiesRoutesOrGaps, substractPoint);
+    //console.log("After missingActivitiesOutsidePersonalTime, substractPoint:", substractPoint);
     substractPoint = missingLoops(activitiesRoutesOrGaps, substractPoint);
+    //console.log("After missingLoops, substractPoint:", substractPoint);
     substractPoint = missingHours(activitiesRoutesOrGaps, substractPoint);
+    //console.log("After missingHours, substractPoint:", substractPoint);
     substractPoint = moreHours(activitiesRoutesOrGaps, substractPoint);
+    //console.log("After moreHours, substractPoint:", substractPoint);
     substractPoint = missingTimeSlots(activitiesRoutesOrGaps, substractPoint);
+    //console.log("After missingTimeSlots, substractPoint:", substractPoint);
     substractPoint = existOverlaps(overlaps, substractPoint);
+    //console.log("After existOverlaps, substractPoint:", substractPoint);
     substractPoint = missingVariables(activitiesRoutesOrGaps, substractPoint);
+    //console.log("After missingVariables, substractPoint:", substractPoint);
 
     const score = substractPoint <= 20 ? MAX_SCORE - substractPoint : 0;
     const group = groupScore(score, t);
