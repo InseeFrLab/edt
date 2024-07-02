@@ -28,13 +28,23 @@ axios.interceptors.response.use(
 
 //TODO: fix any
 const transformCollectedArray = (dataAct: any) => {
-    if (Array.isArray(dataAct?.COLLECTED)) {
-        dataAct.COLLECTED = dataAct.COLLECTED.map((item: string) => {
-            if (item && typeof item === "string" && /^\d/.test(item)) {
-                return `S${item}`;
-            }
-            return item;
-        });
+    console.log("dataAct", dataAct);
+    for (const key in dataAct) {
+        const collected = dataAct[key]?.COLLECTED;
+        //console.log("collected", collected);
+        if (Array.isArray(collected)) {
+            dataAct[key].COLLECTED = collected.map((item: string) => {
+                if (item && typeof item === "string" && /^\d/.test(item)) {
+                    console.log("item to be modified", item);
+                    return `S${item}`;
+                }
+                console.log("item", item);
+                return item;
+            });
+        } else if (typeof collected === "string" && /^\d/.test(collected)) {
+            console.log("collected is a string", collected);
+            dataAct[key].COLLECTED = `S${collected}`;
+        }
     }
     return dataAct;
 };
@@ -182,10 +192,12 @@ const requestPutSurveyData = (
     token?: string,
 ): Promise<SurveyData> => {
     const lunaticData = transformCollectedArray(data.data?.COLLECTED);
+    console.log("requestPutSurveyData, with data: ", lunaticData);
     const surveyData: SurveyData = {
         data: lunaticData,
         stateData: data.stateData,
     };
+    console.log("requestPutSurveyData, with data: ", surveyData);
     return new Promise(resolve => {
         axios
             .put(
