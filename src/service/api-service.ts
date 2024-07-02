@@ -191,13 +191,14 @@ const requestPutSurveyData = (
     data: SurveyData,
     token?: string,
 ): Promise<SurveyData> => {
-    const lunaticData = transformCollectedArray(data.data?.COLLECTED);
-    console.log("requestPutSurveyData, with data: ", lunaticData);
+    const lunaticData = token ? transformCollectedArray(data.data?.COLLECTED) : data.data?.COLLECTED;
+    if (token) {
+        console.log("lunaticData has been converted");
+    }
     const surveyData: SurveyData = {
         data: lunaticData,
         stateData: data.stateData,
     };
-    console.log("requestPutSurveyData, with data: ", surveyData);
     return new Promise(resolve => {
         axios
             .put(
@@ -264,7 +265,10 @@ const requestPutDataReviewer = (
     data: LunaticData,
     token?: string,
 ): Promise<LunaticData> => {
-    const lunaticData: LunaticData = transformCollectedArray(data?.COLLECTED);
+    const lunaticData: LunaticData = token ? transformCollectedArray(data?.COLLECTED) : data?.COLLECTED;
+    if (token) {
+        console.log("lunaticData has been converted");
+    }
     return new Promise<LunaticData>(resolve => {
         axios
             .put(
