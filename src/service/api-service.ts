@@ -26,6 +26,19 @@ axios.interceptors.response.use(
     },
 );
 
+//TODO: fix any
+const transformCollectedArray = (dataAct: any) => {
+    if (Array.isArray(dataAct?.COLLECTED)) {
+        dataAct.COLLECTED = dataAct.COLLECTED.map((item: string) => {
+            if (item && typeof item === "string" && /^\d/.test(item)) {
+                return `S${item}`;
+            }
+            return item;
+        });
+    }
+    return dataAct;
+};
+
 export const getHeader = (origin?: string, userToken?: string) => {
     return {
         headers: {
@@ -168,11 +181,16 @@ const requestPutSurveyData = (
     data: SurveyData,
     token?: string,
 ): Promise<SurveyData> => {
+    const lunaticData = transformCollectedArray(data.data?.COLLECTED);
+    const surveyData: SurveyData = {
+        data: lunaticData,
+        stateData: data.stateData,
+    };
     return new Promise(resolve => {
         axios
             .put(
                 stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
-                data,
+                surveyData,
                 getHeader(stromaeBackOfficeApiBaseUrl, token),
             )
             .then(() => {
@@ -234,11 +252,12 @@ const requestPutDataReviewer = (
     data: LunaticData,
     token?: string,
 ): Promise<LunaticData> => {
+    const lunaticData: LunaticData = transformCollectedArray(data?.COLLECTED);
     return new Promise<LunaticData>(resolve => {
         axios
             .put(
                 stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
-                data,
+                lunaticData,
                 getHeader(stromaeBackOfficeApiBaseUrl, token),
             )
             .then(() => {
