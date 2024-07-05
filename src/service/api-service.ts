@@ -191,25 +191,35 @@ const requestPutSurveyData = (
     data: SurveyData,
     token?: string,
 ): Promise<SurveyData> => {
-    const lunaticData = token ? transformCollectedArray(data.data?.COLLECTED) : data.data?.COLLECTED;
+    console.log("data", data);
+    const collectedData = token ? transformCollectedArray(data.data?.COLLECTED) : data.data?.COLLECTED;
+    if (data.data) {
+        data.data.COLLECTED = collectedData;
+    }
+
     if (token) {
         console.log("lunaticData has been converted");
     }
-    const surveyData: SurveyData = {
-        data: lunaticData,
-        stateData: data.stateData,
-    };
-    return new Promise(resolve => {
-        axios
-            .put(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
-                surveyData,
-                getHeader(stromaeBackOfficeApiBaseUrl, token),
-            )
-            .then(() => {
-                return resolve(data);
-            });
-    });
+    const stateData = data.stateData;
+    const putLunaticData = axios.put(
+        `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/data`,
+        data,
+        getHeader(stromaeBackOfficeApiBaseUrl, token),
+    );
+
+    const putStateData = axios.put(
+        `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/state-data`,
+        stateData,
+        getHeader(stromaeBackOfficeApiBaseUrl, token),
+    );
+
+    return Promise.all([putLunaticData, putStateData])
+        .then(() => {
+            return data;
+        })
+        .catch(error => {
+            throw error;
+        });
 };
 
 const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<SurveyData> => {
@@ -349,7 +359,7 @@ const remoteGetSurveyData = (
     return new Promise(resolve => {
         axios
             .get(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey,
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
                 getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {

@@ -480,7 +480,7 @@ const initializeSurveysIdsDataModeReviewer = (
     });
 };
 
-const initializeData = (remoteSurveyData: SurveyData, surveyId: string) => {
+const initializeData = (remoteSurveyData: SurveyData, idSurvey: string) => {
     const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
     let surveyData: LunaticData = {
         COLLECTED: {},
@@ -490,10 +490,10 @@ const initializeData = (remoteSurveyData: SurveyData, surveyId: string) => {
         id: "",
         lastLocalSaveDate: Date.now(),
     };
-    surveyData.houseReference = surveyId?.replace(regexp, "");
+    surveyData.houseReference = idSurvey?.replace(regexp, "");
     surveyData.CALCULATED = {};
     surveyData.EXTERNAL = {};
-    surveyData.COLLECTED = remoteSurveyData.data?.COLLECTED ?? getDataEmpty(surveyId);
+    surveyData.COLLECTED = remoteSurveyData.data?.COLLECTED ?? getDataEmpty(idSurvey);
     surveyData.lastLocalSaveDate =
         remoteSurveyData.data?.lastLocalSaveDate ?? remoteSurveyData.data.stateData?.date;
     surveyData.stateData = remoteSurveyData.stateData;
