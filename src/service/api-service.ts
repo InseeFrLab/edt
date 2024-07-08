@@ -211,7 +211,7 @@ const requestPutSurveyData = (
     data: SurveyData,
     token?: string,
 ): Promise<SurveyData> => {
-    console.log("data", data);
+    //console.log("data", data);
     const collectedData = token ? transformCollectedArray(data.data?.COLLECTED) : data.data?.COLLECTED;
     if (data.data) {
         data.data.COLLECTED = collectedData;

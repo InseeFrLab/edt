@@ -23,7 +23,7 @@ import {
     getValue,
     getValueOfData,
     getVariable,
-    saveData,
+    saveDataLocally,
     setValue,
     toIgnoreForActivity,
     toIgnoreForRoute,
@@ -39,8 +39,8 @@ import {
     getCurrentNavigatePath,
     getLoopPage,
     getOrchestratorPage,
-    saveAndLoopNavigate,
-    saveAndNav,
+    saveAndLoopNavigateLocally,
+    saveAndNavLocally,
 } from "./navigation-service";
 import { getNomenclatureRef } from "./referentiel-service";
 
@@ -353,7 +353,7 @@ const skipNextPage = (
         nextPageRoute == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER ||
         (nextPageRoute == null && nextPageNextLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)
     ) {
-        saveAndNav(
+        saveAndNavLocally(
             idSurvey,
             getCurrentNavigatePath(
                 idSurvey,
@@ -363,7 +363,7 @@ const skipNextPage = (
             ),
         );
     } else {
-        saveAndLoopNavigate(
+        saveAndLoopNavigateLocally(
             idSurvey,
             source,
             nextPageRoute ?? nextPageNextLoop,
@@ -405,7 +405,7 @@ const skipBackPage = (
         backPageRoute == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER ||
         backPageBackLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER
     ) {
-        saveAndNav(
+        saveAndNavLocally(
             idSurvey,
             getCurrentNavigatePath(
                 idSurvey,
@@ -415,7 +415,7 @@ const skipBackPage = (
             ),
         );
     } else {
-        saveAndLoopNavigate(
+        saveAndLoopNavigateLocally(
             idSurvey,
             source,
             backPageRoute ?? backPageBackLoop,
@@ -633,7 +633,7 @@ const getCurrentLoopPage = (
 const setLoopCompleted = (idSurvey: string, iteration: number | undefined, isCompleted: boolean) => {
     const completed = setValue(idSurvey, FieldNameEnum.ISCOMPLETED, isCompleted, iteration);
     if (completed) {
-        saveData(idSurvey, completed);
+        saveDataLocally(idSurvey, completed);
     }
 };
 

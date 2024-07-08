@@ -21,8 +21,8 @@ import {
     onClose,
     onNext,
     onPrevious,
-    saveAndLoopNavigate,
-    saveAndNav,
+    saveAndLoopNavigateLocally,
+    saveAndNavLocally,
     setEnviro,
     validate,
 } from "service/navigation-service";
@@ -54,7 +54,7 @@ const WithScreenPage = () => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
-            saveAndLoopNavigate(
+            saveAndLoopNavigateLocally(
                 idSurvey,
                 context.source,
                 EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
@@ -65,7 +65,7 @@ const WithScreenPage = () => {
             );
         },
         nextClickCallback: () => {
-            saveAndNav(
+            saveAndNavLocally(
                 idSurvey,
                 isCloture
                     ? summaryRoutePath
@@ -79,7 +79,7 @@ const WithScreenPage = () => {
         },
         onSelectValue: () => {
             validate(idSurvey).then(() => {
-                saveAndNav(
+                saveAndNavLocally(
                     idSurvey,
                     isCloture
                         ? summaryRoutePath

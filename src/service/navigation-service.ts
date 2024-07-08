@@ -24,6 +24,7 @@ import {
     getSource,
     getValue,
     saveData,
+    saveDataLocally,
     setValue,
     surveysIds,
 } from "service/survey-service";
@@ -207,6 +208,20 @@ const saveAndNav = (
     currentIteration?: number,
 ): void => {
     saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey)).then(() => {
+        console.log("Save And Nav");
+        navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
+    });
+};
+
+const saveAndNavLocally = (
+    idSurvey: string,
+    route?: string,
+    value?: FieldNameEnum,
+    routeNotSelection?: string,
+    currentIteration?: number,
+): void => {
+    saveDataLocally(idSurvey, _callbackHolder.getData() ?? getData(idSurvey)).then(() => {
+        console.log("Save And Nav Locally");
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
@@ -564,6 +579,7 @@ const saveAndNextStep = (
     rootPage: EdtRoutesNameEnum,
     currentPage: EdtRoutesNameEnum,
 ) => {
+    console.log("Save and Next Step");
     saveAndNav(
         idSurvey ?? "",
         getCurrentNavigatePath(
@@ -606,6 +622,7 @@ const saveAndLoopNavigate = (
     value?: FieldNameEnum,
     routeNotSelection?: EdtRoutesNameEnum,
 ) => {
+    console.log("Save and Loop Navigate");
     const pathRoute = getLoopPageOrActivityPlanner(idSurvey, source, page, loop, iteration);
     if (value && routeNotSelection) {
         const pathRouteNotSelection = getLoopPageOrActivityPlanner(
@@ -619,14 +636,65 @@ const saveAndLoopNavigate = (
     } else saveAndNav(idSurvey, pathRoute);
 };
 
+const saveAndLoopNavigateLocally = (
+    idSurvey: string,
+    source: LunaticModel,
+    page: EdtRoutesNameEnum,
+    loop: LoopEnum,
+    iteration: number,
+    value?: FieldNameEnum,
+    routeNotSelection?: EdtRoutesNameEnum,
+) => {
+    console.log("Save and Loop Navigate Locally");
+    const pathRoute = getLoopPageOrActivityPlanner(idSurvey, source, page, loop, iteration);
+    if (value && routeNotSelection) {
+        const pathRouteNotSelection = getLoopPageOrActivityPlanner(
+            idSurvey,
+            source,
+            routeNotSelection,
+            loop,
+            iteration,
+        );
+        saveAndNavLocally(idSurvey, pathRoute, value, pathRouteNotSelection, iteration);
+    } else saveAndNavLocally(idSurvey, pathRoute);
+};
+
 const validateAndNextStep = (idSurvey: string, source: LunaticModel, page: EdtRoutesNameEnum) => {
     validate(idSurvey).then(() => {
         saveAndNextStep(idSurvey, source, EdtRoutesNameEnum.ACTIVITY, page);
     });
 };
 
-const loopNavigate = (idSurvey: string, page: EdtRoutesNameEnum, loop: LoopEnum, iteration: number) => {
+const loopNavigateTemp = (
+    idSurvey: string,
+    page: EdtRoutesNameEnum,
+    loop: LoopEnum,
+    iteration: number,
+) => {
     _navigate(getLoopParameterizedNavigatePath(idSurvey, page, loop, iteration));
+};
+
+const loopNavigate = (
+    idSurvey: string,
+    source: LunaticModel,
+    page: EdtRoutesNameEnum,
+    loop: LoopEnum,
+    iteration: number,
+    value?: FieldNameEnum,
+    routeNotSelection?: EdtRoutesNameEnum,
+) => {
+    console.log("Save and Loop Navigate");
+    const pathRoute = getLoopPageOrActivityPlanner(idSurvey, source, page, loop, iteration);
+    if (value && routeNotSelection) {
+        const pathRouteNotSelection = getLoopPageOrActivityPlanner(
+            idSurvey,
+            source,
+            routeNotSelection,
+            loop,
+            iteration,
+        );
+        navToRouteOrRouteNotSelection(idSurvey, pathRoute, value, pathRouteNotSelection, iteration);
+    } else navToRouteOrRouteNotSelection(idSurvey, pathRoute);
 };
 
 const navToEditActivity = (idSurvey: string, iteration: number) => {
@@ -710,6 +778,7 @@ export {
     isActivityPage,
     isPageGlobal,
     loopNavigate,
+    loopNavigateTemp,
     navFullPath,
     navToActivityOrPlannerOrSummary,
     navToActivityRoutePlanner,
@@ -719,11 +788,13 @@ export {
     navToHelp,
     navToHome,
     navToHomeReviewer,
+    navToRouteOrRouteNotSelection,
     navToWeeklyPlannerOrClose,
     onClose,
     onNext,
     onPrevious,
     saveAndLoopNavigate,
+    saveAndLoopNavigateLocally,
     saveAndNav,
     saveAndNavFullPath,
     saveAndNextStep,
@@ -732,4 +803,5 @@ export {
     validate,
     validateAndNextStep,
     validateWithAlertAndNav,
+    saveAndNavLocally,
 };

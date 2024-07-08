@@ -43,7 +43,7 @@ import {
     getPrintedFirstName,
     getSource,
     getSurveyDate,
-    saveData,
+    saveDataLocally,
 } from "service/survey-service";
 
 const HelpWorkTime = () => {
@@ -101,7 +101,7 @@ const HelpWorkTime = () => {
             dates: "DATES",
             datesStarted: "DATES_STARTED",
         },
-        saveAll: () => saveData(idSurvey, data),
+        saveAll: () => saveDataLocally(idSurvey, data),
         language: getLanguage(),
         helpStep: helpStep,
         moreIcon: <MoreHorizontalIcon aria-label={t("accessibility.asset.mui-icon.more-horizontal")} />,

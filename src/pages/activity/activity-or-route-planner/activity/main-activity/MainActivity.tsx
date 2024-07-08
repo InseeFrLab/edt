@@ -15,7 +15,7 @@ import {
     onClose,
     onNext,
     onPrevious,
-    saveAndLoopNavigate,
+    saveAndLoopNavigateLocally,
     setEnviro,
     validate,
 } from "service/navigation-service";
@@ -119,7 +119,7 @@ const MainActivityPage = () => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
-            saveAndLoopNavigate(
+            saveAndLoopNavigateLocally(
                 idSurvey,
                 context.source,
                 getPreviousLoopPage(currentPage),
@@ -131,7 +131,7 @@ const MainActivityPage = () => {
             const codeActivity = getValueOfActivity(callbackHolder.getData(), currentIteration) ?? "";
             const skip = filtrePage(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL, codeActivity);
             if (routeToGoal && !skip) {
-                saveAndLoopNavigate(
+                saveAndLoopNavigateLocally(
                     idSurvey,
                     context.source,
                     EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
@@ -140,7 +140,7 @@ const MainActivityPage = () => {
                 );
             } else {
                 const skip = filtrePage(EdtRoutesNameEnum.SECONDARY_ACTIVITY, codeActivity);
-                saveAndLoopNavigate(
+                saveAndLoopNavigateLocally(
                     idSurvey,
                     context.source,
                     skip ? EdtRoutesNameEnum.ACTIVITY_LOCATION : getNextLoopPage(currentPage),

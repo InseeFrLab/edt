@@ -16,6 +16,7 @@ import {
     getOrchestratorPage,
     saveAndNav,
     saveAndNavFullPath,
+    saveAndNavLocally,
     saveAndNextStep,
     setEnviro,
     validateAndNextStep,
@@ -106,7 +107,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             () =>
                 specifiquesProps?.displayModal
                     ? validateAndNav(false, setIsModalDisplayed)
-                    : saveAndNav(idSurvey),
+                    : saveAndNavLocally(idSurvey),
             [isModalDisplayed],
         ),
         onNext: useCallback(
@@ -117,7 +118,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             [isModalDisplayed],
         ),
         onPrevious: useCallback(
-            () => (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNav(idSurvey)),
+            () => (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNavLocally(idSurvey)),
             [],
         ),
         simpleHeader: true,
@@ -143,9 +144,9 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
                 [],
             ),
         icon: errorIcon ? <IconError aria-label={t(errorAltIcon ?? "")} /> : undefined,
-        onNavigateBack: useCallback(() => saveAndNav(idSurvey), []),
+        onNavigateBack: useCallback(() => saveAndNavLocally(idSurvey), []),
         onPrevious: useCallback(
-            () => (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNav(idSurvey)),
+            () => (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNavLocally(idSurvey)),
             [],
         ),
         firstName: getPrintedFirstName(idSurvey),
@@ -168,13 +169,14 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         forceQuit: boolean,
         setIsModalDisplayed: (value: SetStateAction<boolean>) => void,
     ): void => {
+        console.log("validateAndNav");
         if (forceQuit) {
             saveAndNav(idSurvey);
         } else {
             setIsModalDisplayed(true);
         }
     };
-
+    console.log("SurveyPageStep,", isStep);
     const surveyPageProps = isStep ? surveyPageStepProps : surveyPageNotStepProps;
 
     return (

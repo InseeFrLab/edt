@@ -495,7 +495,9 @@ const initializeData = (remoteSurveyData: SurveyData, idSurvey: string) => {
     surveyData.EXTERNAL = {};
     surveyData.COLLECTED = remoteSurveyData.data?.COLLECTED ?? getDataEmpty(idSurvey);
     surveyData.lastLocalSaveDate =
-        remoteSurveyData.data?.lastLocalSaveDate ?? remoteSurveyData.data.stateData?.date;
+        remoteSurveyData.data?.lastLocalSaveDate ??
+        remoteSurveyData.data?.stateData?.date ??
+        new Date(0).getTime();
     surveyData.stateData = remoteSurveyData.stateData;
     return surveyData;
 };
@@ -515,25 +517,34 @@ const getRemoteSavedSurveysDatas = (
                         const surveyData = initializeData(remoteSurveyData, surveyId);
 
                         return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                            const lastRemoteSaveDate = remoteSurveyData.data.lastRemoteSaveDate ?? 1; //a supprimer
-                            const lastLocalSaveDate =
-                                remoteSurveyData.data.lastLocalSaveDate ??
-                                localSurveyData?.lastLocalSaveDate ??
-                                0;
-                            const remoteStateData = remoteSurveyData?.stateData?.date ?? 1;
-                            if (
-                                remoteSurveyData?.stateData?.date != null &&
-                                (localSurveyData == null ||
-                                    ((localSurveyData.lastLocalSaveDate ?? 0) <= lastRemoteSaveDate &&
-                                        (remoteSurveyData.data.lastRemoteSaveDate != null || //quand existe des données en remote -> a suprrimer
-                                            (remoteSurveyData.data.lastLocalSaveDate == null &&
-                                                remoteSurveyData.data.lastRemoteSaveDate == null)) &&
-                                        //quand local est vide and jamais saved des données, remoteSurveyData.data.lastRemoteSaveDate change par stateData
-                                        lastLocalSaveDate <= remoteStateData)) // local date moins recent que remote date
-                            ) {
-                                const stateData = getSurveyStateData(surveyData, surveyId);
-                                setLocalOrRemoteData(surveyId, remoteSurveyData, surveyData, stateData);
-                                return lunaticDatabase.save(surveyId, surveyData);
+                            if (remoteSurveyData.data) {
+                                const lastRemoteSaveDate = remoteSurveyData.data.lastRemoteSaveDate ?? 1; //a supprimer
+                                const lastLocalSaveDate =
+                                    remoteSurveyData.data.lastLocalSaveDate ??
+                                    localSurveyData?.lastLocalSaveDate ??
+                                    0;
+                                const remoteStateData = remoteSurveyData?.stateData?.date ?? 1;
+
+                                if (
+                                    remoteSurveyData?.stateData?.date != null &&
+                                    (localSurveyData == null ||
+                                        ((localSurveyData.lastLocalSaveDate ?? 0) <=
+                                            lastRemoteSaveDate &&
+                                            (remoteSurveyData.data.lastRemoteSaveDate != null || //quand existe des données en remote -> a suprrimer
+                                                (remoteSurveyData.data.lastLocalSaveDate == null &&
+                                                    remoteSurveyData.data.lastRemoteSaveDate == null)) &&
+                                            //quand local est vide and jamais saved des données, remoteSurveyData.data.lastRemoteSaveDate change par stateData
+                                            lastLocalSaveDate <= remoteStateData)) // local date moins recent que remote date
+                                ) {
+                                    const stateData = getSurveyStateData(surveyData, surveyId);
+                                    setLocalOrRemoteData(
+                                        surveyId,
+                                        remoteSurveyData,
+                                        surveyData,
+                                        stateData,
+                                    );
+                                    return lunaticDatabase.save(surveyId, surveyData);
+                                }
                             }
                         });
                     })
@@ -1043,6 +1054,38 @@ const saveData = (
         data.stateData = stateData;
         return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
     }
+};
+
+const saveDataLocally = (
+    idSurvey: string,
+    data: LunaticData,
+    localSaveOnly = false,
+    forceUpdate = false,
+    stateDataForced?: StateData,
+): Promise<LunaticData> => {
+    data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
+    if (!data.houseReference) {
+        const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+        data.houseReference = idSurvey.replace(regexp, "");
+    }
+    const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+    //const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
+    fixConditionals(data);
+    let oldDataSurvey = datas.get(idSurvey) ?? {};
+    const dataIsChanged = dataIsChange(idSurvey, data, oldDataSurvey);
+    const isChange = forceUpdate || dataIsChanged;
+    datas.set(idSurvey, data);
+
+    data = updateLocked(idSurvey, data);
+    let stateData: StateData = stateDataForced ?? initStateData(data);
+
+    if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
+
+    if (isChange) {
+        data = saveQualityScore(idSurvey, data);
+    }
+    data.stateData = stateData;
+    return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
 };
 
 const setLocalOrRemoteData = (
@@ -2140,6 +2183,7 @@ export {
     refreshSurvey,
     refreshSurveyData,
     saveData,
+    saveDataLocally,
     saveDatas,
     setData,
     setValue,

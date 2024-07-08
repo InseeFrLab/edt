@@ -71,6 +71,7 @@ import {
     lockSurvey,
     refreshSurvey,
     saveData,
+    saveDataLocally,
     setValue,
     surveyLocked,
 } from "service/survey-service";
@@ -165,6 +166,7 @@ const onFinish = (
 ) => {
     if (closed) {
         const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
+        console.log("Save data on closed");
         saveData(idSurvey, data ?? callbackHolder.getData(), false, true).then(() => {
             navigate(
                 getCurrentNavigatePath(
@@ -435,7 +437,8 @@ const ActivityOrRoutePlannerPage = () => {
         contextIteration = loopSize - 1;
         const routeData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
         console.log(routeData, isRouteBool);
-        saveData(idSurvey, routeData).then(() => {
+        saveDataLocally(idSurvey, routeData).then(() => {
+            console.log("Save Data on Add Activity or Route");
             navToActivityOrRoute(idSurvey, contextIteration, isRouteBool);
         });
     };
@@ -455,7 +458,8 @@ const ActivityOrRoutePlannerPage = () => {
         setValueOrNull(idSurvey, FieldNameEnum.START_TIME, startTime, contextIteration);
         setValueOrNull(idSurvey, FieldNameEnum.END_TIME, endTime, contextIteration);
         const updatedData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
-        saveData(idSurvey, updatedData).then(() => {
+        saveDataLocally(idSurvey, updatedData).then(() => {
+            console.log("Save Data on Add Activity or Route from Gap");
             onCloseAddActivityOrRoute();
             setIsRoute(isRouteBool);
             navigate(

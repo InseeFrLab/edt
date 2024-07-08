@@ -11,7 +11,7 @@ import {
     getNavigatePath,
     getOrchestratorPage,
     getParameterizedNavigatePath,
-    saveAndNav,
+    saveAndNavLocally,
     saveAndNavFullPath,
     setEnviro,
     validateAndNextStep,
@@ -34,10 +34,10 @@ const PhoneTimePage = () => {
 
     const surveyPageStepProps = {
         idSurvey: idSurvey,
-        onNavigateBack: useCallback(() => saveAndNav(idSurvey), []),
+        onNavigateBack: useCallback(() => saveAndNavLocally(idSurvey), []),
         onNext: useCallback(
             () =>
-                saveAndNav(
+                saveAndNavLocally(
                     idSurvey,
                     getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
                         getNavigatePath(EdtRoutesNameEnum.END_SURVEY),
