@@ -28,7 +28,7 @@ axios.interceptors.response.use(
 
 //TODO: fix any
 const transformCollectedArray = (dataAct: any) => {
-    console.log("dataAct", dataAct);
+    console.log("dataAct before transformation", dataAct);
     for (const key in dataAct) {
         const collected = dataAct[key]?.COLLECTED;
         //console.log("collected", collected);
@@ -38,7 +38,7 @@ const transformCollectedArray = (dataAct: any) => {
                     console.log("item to be modified", item);
                     return `S${item}`;
                 }
-                console.log("item", item);
+                //console.log("item", item);
                 return item;
             });
         } else if (typeof collected === "string" && /^\d/.test(collected)) {
@@ -46,6 +46,26 @@ const transformCollectedArray = (dataAct: any) => {
             dataAct[key].COLLECTED = `S${collected}`;
         }
     }
+    return dataAct;
+};
+
+const revertTransformedArray = (dataAct: any) => {
+    for (const key in dataAct) {
+        const collected = dataAct[key]?.COLLECTED;
+        if (Array.isArray(collected)) {
+            dataAct[key].COLLECTED = collected.map((item: string) => {
+                if (item && typeof item === "string" && item.startsWith("S")) {
+                    console.log("item to be reverted", item);
+                    return item.substring(1);
+                }
+                return item;
+            });
+        } else if (typeof collected === "string" && collected.startsWith("S")) {
+            console.log("collected is a string to be reverted", collected);
+            dataAct[key].COLLECTED = collected.substring(1);
+        }
+    }
+    console.log("dataAct after reversion", dataAct);
     return dataAct;
 };
 
@@ -195,10 +215,6 @@ const requestPutSurveyData = (
     const collectedData = token ? transformCollectedArray(data.data?.COLLECTED) : data.data?.COLLECTED;
     if (data.data) {
         data.data.COLLECTED = collectedData;
-    }
-
-    if (token) {
-        console.log("lunaticData has been converted");
     }
     const stateData = data.stateData;
     const putLunaticData = axios.put(
@@ -363,6 +379,12 @@ const remoteGetSurveyData = (
                 getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {
+                console.log("response.data remoteGetSurveyData", response.data);
+                if (response.data?.data != null) {
+                    const revertedTranformedData = revertTransformedArray(response.data.data.COLLECTED);
+                    response.data.data.COLLECTED = revertedTranformedData;
+                    resolve(response.data.data);
+                }
                 resolve(response.data);
             })
             .catch(err => {
@@ -387,6 +409,9 @@ const requestGetDataReviewer = (
             )
             .then(response => {
                 if (response.data?.data != null) {
+                    console.log("response.data requestGetDataReviewer", response.data.data);
+                    const revertedTranformedData = revertTransformedArray(response.data.data.COLLECTED);
+                    response.data.data.COLLECTED = revertedTranformedData;
                     resolve(response.data.data);
                 } else {
                     resolve(response.data);
