@@ -17,7 +17,7 @@ import {
     onPrevious,
     saveAndLoopNavigateLocally,
     setEnviro,
-    validate,
+    validateLocally,
 } from "service/navigation-service";
 
 import {
@@ -150,7 +150,7 @@ const MainActivityPage = () => {
             }
         },
         onSelectValue: () => {
-            validate(idSurvey).then(() => {
+            validateLocally(idSurvey).then(() => {
                 skipNextPage(idSurvey, context.source, currentIteration, currentPage);
             });
         },

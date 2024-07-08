@@ -24,7 +24,7 @@ import {
     saveAndLoopNavigateLocally,
     saveAndNavLocally,
     setEnviro,
-    validate,
+    validateLocally,
 } from "service/navigation-service";
 import { getValue } from "service/survey-service";
 import { getSurveyIdFromUrl } from "utils/utils";
@@ -78,7 +78,7 @@ const WithScreenPage = () => {
             );
         },
         onSelectValue: () => {
-            validate(idSurvey).then(() => {
+            validateLocally(idSurvey).then(() => {
                 saveAndNavLocally(
                     idSurvey,
                     isCloture

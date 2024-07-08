@@ -248,6 +248,12 @@ const validate = (idSurvey: string): Promise<void | LunaticData> => {
     });
 };
 
+const validateLocally = (idSurvey: string): Promise<void | LunaticData> => {
+    return saveDataLocally(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), true).then(() => {
+        return saveDataLocally(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), false);
+    });
+};
+
 const navToRouteOrRouteNotSelection = (
     idSurvey: string,
     route?: string,
@@ -580,7 +586,7 @@ const saveAndNextStep = (
     currentPage: EdtRoutesNameEnum,
 ) => {
     console.log("Save and Next Step");
-    saveAndNav(
+    saveAndNavLocally(
         idSurvey ?? "",
         getCurrentNavigatePath(
             idSurvey,
@@ -803,5 +809,6 @@ export {
     validate,
     validateAndNextStep,
     validateWithAlertAndNav,
+    validateLocally,
     saveAndNavLocally,
 };
