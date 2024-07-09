@@ -22,8 +22,10 @@ import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { Person } from "interface/entity/Person";
 import { LunaticData, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
-import ErrorPage from "pages/error/Error";
+import ErrorPage from "pages/error/ErrorPage";
+import ErrorProvider from "pages/error/ErrorProvider";
 import React, { useCallback, useEffect } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { logout } from "service/api-service";
@@ -330,7 +332,7 @@ const HomeSurveyedPage = () => {
         let userDatas = groupBy(userDatasMap(), nameSurveyData => nameSurveyData.num);
         let groups = Object.keys(userDatas);
         return renderPageOrLoadingOrError(
-            <>
+            <ErrorBoundary FallbackComponent={ErrorProvider}>
                 {renderReminderNote()}
 
                 <Box className={classes.groupCardBox}>
@@ -372,7 +374,7 @@ const HomeSurveyedPage = () => {
                         </Button>
                     </FlexCenter>
                 </Box>
-            </>,
+            </ErrorBoundary>,
         );
     };
 

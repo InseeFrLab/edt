@@ -8,8 +8,6 @@ import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import { ErrorBoundary } from "react-error-boundary";
-import ErrorProvider from "pages/error/ErrorProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
@@ -66,9 +64,7 @@ root.render(
             <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={theme}>
                     <CssBaseline enableColorScheme />
-                    <ErrorBoundary FallbackComponent={ErrorProvider}>
-                        <App />
-                    </ErrorBoundary>
+                    <App />
                 </ThemeProvider>
             </StyledEngineProvider>
         </React.StrictMode>

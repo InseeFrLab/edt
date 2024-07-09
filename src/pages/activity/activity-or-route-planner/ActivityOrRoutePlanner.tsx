@@ -28,7 +28,7 @@ import { SourcesEnum } from "enumerations/SourcesEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
-import ErrorPage from "pages/error/Error";
+import ErrorPage from "pages/error/ErrorPage";
 import React, { useCallback, useEffect, useState } from "react";
 import { isAndroid, isIOS, isMobile } from "react-device-detect";
 import { TFunction, useTranslation } from "react-i18next";

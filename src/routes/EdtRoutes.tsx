@@ -29,7 +29,7 @@ import WorstActivityDayPage from "pages/activity/worst-activity-day/WorstActivit
 import DayOfSurveyPage from "pages/day-of-survey/DayOfSurvey";
 import EditGlobalInformationPage from "pages/edit-global-information/EditGlobalInformation";
 import EndSurveyPage from "pages/end-survey/EndSurvey";
-import ErrorPage from "pages/error/Error";
+import ErrorPage from "pages/error/ErrorPage";
 import HelpPage from "pages/help/Help";
 import ContactPage from "pages/help/contact/ContactPage";
 import InstallPage from "pages/help/install/InstallPage";

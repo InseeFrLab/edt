@@ -208,7 +208,6 @@ const saveAndNav = (
     currentIteration?: number,
 ): void => {
     saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey)).then(() => {
-        console.log("Save And Nav");
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
@@ -221,7 +220,6 @@ const saveAndNavLocally = (
     currentIteration?: number,
 ): void => {
     saveDataLocally(idSurvey, _callbackHolder.getData() ?? getData(idSurvey)).then(() => {
-        console.log("Save And Nav Locally");
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
@@ -585,7 +583,6 @@ const saveAndNextStep = (
     rootPage: EdtRoutesNameEnum,
     currentPage: EdtRoutesNameEnum,
 ) => {
-    console.log("Save and Next Step");
     saveAndNavLocally(
         idSurvey ?? "",
         getCurrentNavigatePath(

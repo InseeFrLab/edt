@@ -6,7 +6,7 @@ import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import "i18n/i18n";
 import { User, useAuth } from "oidc-react";
-import ErrorPage from "pages/error/Error";
+import ErrorPage from "pages/error/ErrorPage";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EdtRoutes } from "routes/EdtRoutes";
@@ -106,6 +106,7 @@ const App = () => {
             Promise.all(promisesToWait);
         } else if (!navigator.onLine) {
             getAuthCache().then(auth => {
+                console.log(auth);
                 if (auth?.data.userData?.access_token) {
                     const user: User = {
                         access_token: auth.data.userData?.access_token,
@@ -152,7 +153,13 @@ const App = () => {
         );
     };
 
-    return <>{initialized && !error ? <EdtRoutes /> : errorOrLoadingPage()}</>;
+    const loadingPage = () => {
+        return <LoadingFull message={t("page.home.loading.message")} />;
+    };
+
+    // return <>{initialized && !error ? <EdtRoutes /> : errorOrLoadingPage()}</>;
+
+    return <>{initialized ? <EdtRoutes /> : loadingPage()}</>;
 };
 
 export default App;

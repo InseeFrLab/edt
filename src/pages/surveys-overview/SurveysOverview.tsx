@@ -23,7 +23,7 @@ import HouseholdCard from "components/edt/HouseholdCard/HouseholdCard";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { Household } from "interface/entity/Household";
-import ErrorPage from "pages/error/Error";
+import ErrorPage from "pages/error/ErrorPage";
 import React, { useCallback, useEffect } from "react";
 import { TFunction, useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";

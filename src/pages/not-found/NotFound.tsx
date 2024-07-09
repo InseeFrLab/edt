@@ -2,7 +2,7 @@ import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Typography } from "@mui/material";
 import PageIcon from "components/commons/PageIcon/PageIcon";
 import { ReactComponent as DefaultErrorIcon } from "assets/illustration/error/error.svg";
-import ErrorPage from "pages/error/Error";
+import ErrorPage from "pages/error/ErrorPage";
 import { useTranslation } from "react-i18next";
 
 const NotFoundPage = () => {

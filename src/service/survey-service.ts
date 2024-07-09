@@ -21,6 +21,7 @@ import { StateHouseholdEnum } from "enumerations/StateHouseholdEnum";
 import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { t } from "i18next";
+import _ from "lodash";
 import { TabData } from "interface/component/Component";
 import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
 import { Household } from "interface/entity/Household";
@@ -537,12 +538,7 @@ const getRemoteSavedSurveysDatas = (
                                             lastLocalSaveDate <= remoteStateData)) // local date moins recent que remote date
                                 ) {
                                     const stateData = getSurveyStateData(surveyData, surveyId);
-                                    setLocalOrRemoteData(
-                                        surveyId,
-                                        remoteSurveyData,
-                                        surveyData,
-                                        stateData,
-                                    );
+                                    setLocalDatabase(stateData, surveyData, surveyId);
                                     return lunaticDatabase.save(surveyId, surveyData);
                                 }
                             }
@@ -799,33 +795,18 @@ const getIfArrayIsChange = (
     return isChangeArray;
 };
 
-const dataIsChange = (idSurvey: string, dataAct: LunaticData, lastData: LunaticData) => {
-    const currentDataSurvey = lastData;
-    const currentDataCollected = currentDataSurvey?.COLLECTED;
+const dataIsChange = (idSurvey: string, dataAct: LunaticData, lastData: LunaticData): boolean => {
     const dataCollected = dataAct?.COLLECTED;
-    let isChange = false;
-    if (dataCollected && currentDataCollected) {
-        const keys = Object.keys(dataCollected);
-
-        keys?.forEach(key => {
-            const data = getValueOfData(dataAct, key) ?? [];
-            const currentData = getValueOfData(currentDataSurvey, key) ?? [];
-            if (data != currentData) {
-                if (Array.isArray(data)) {
-                    isChange = getIfArrayIsChange(currentData, data, isChange);
-                } else {
-                    isChange = true;
-                }
-            }
-        });
-        if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurvey)) {
-            isChange = true;
-        }
-    } else {
-        isChange = true;
+    const currentDataCollected = lastData?.COLLECTED;
+    if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurvey)) {
+        return true;
     }
 
-    return isChange;
+    if (!dataCollected || !currentDataCollected) {
+        return true;
+    }
+
+    return !_.isEqual(dataCollected, currentDataCollected);
 };
 
 const getVarBooleanModepersistance = (
@@ -1016,14 +997,14 @@ const saveData = (
         data = saveQualityScore(idSurvey, data);
         if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
             stateData = getSurveyStateData(data, idSurvey);
-            return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(remoteData => {
+            return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
                 stateData.date =
                     stateData.date < (data.lastLocalSaveDate ?? 0)
                         ? data.lastLocalSaveDate ?? 0
                         : stateData.date;
                 data.stateData = stateData;
                 data.lastRemoteSaveDate = stateData.date;
-                return setLocalOrRemoteData(idSurvey, remoteData, data, stateData);
+                return setLocalDatabase(stateData, data, idSurvey);
             });
         }
         //We try to submit each time the local database is updated if the user is online
@@ -1035,24 +1016,24 @@ const saveData = (
                 data: data,
             };
             data.lastRemoteSaveDate = stateData.date;
-            return remotePutSurveyData(idSurvey, surveyData).then(remoteData => {
+            return remotePutSurveyData(idSurvey, surveyData).then(() => {
                 data.stateData = stateData;
-                return setLocalOrRemoteData(idSurvey, remoteData, data, stateData);
+                return setLocalDatabase(stateData, data, idSurvey);
             });
         } else if (isDemoMode || localSaveOnly || !navigator.onLine) {
             //offline, always prio local, pour ça stateData 0
             stateData = getSurveyStateData(data, idSurvey);
             stateData.date = 0;
             data.stateData = stateData;
-            return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
+            return setLocalDatabase(stateData, data, idSurvey);
         } else {
             //jamais
             data.stateData = stateData;
-            return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
+            return setLocalDatabase(stateData, data, idSurvey);
         }
     } else {
         data.stateData = stateData;
-        return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
+        return setLocalDatabase(stateData, data, idSurvey);
     }
 };
 
@@ -1085,20 +1066,7 @@ const saveDataLocally = (
         data = saveQualityScore(idSurvey, data);
     }
     data.stateData = stateData;
-    return setLocalOrRemoteData(idSurvey, { data: data }, data, stateData);
-};
-
-const setLocalOrRemoteData = (
-    idSurvey: string,
-    dataRemote: SurveyData,
-    data: LunaticData,
-    stateData: StateData,
-) => {
-    if (dataRemote != data && (data == null || data.COLLECTED == undefined)) {
-        return setLocalDatabase(stateData, data, idSurvey);
-    } else {
-        return setLocalDatabase(stateData, data, idSurvey);
-    }
+    return setLocalDatabase(stateData, data, idSurvey);
 };
 
 const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: string) => {

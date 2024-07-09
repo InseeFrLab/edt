@@ -54,7 +54,7 @@ const revertTransformedArray = (dataAct: any) => {
         const collected = dataAct[key]?.COLLECTED;
         if (Array.isArray(collected)) {
             dataAct[key].COLLECTED = collected.map((item: string) => {
-                if (item && typeof item === "string" && item.startsWith("S")) {
+                if (item && typeof item === "string" && /^S\d/.test(item)) {
                     console.log("item to be reverted", item);
                     return item.substring(1);
                 }
@@ -212,10 +212,11 @@ const requestPutSurveyData = (
     token?: string,
 ): Promise<SurveyData> => {
     //console.log("data", data);
-    const collectedData = token ? transformCollectedArray(data.data?.COLLECTED) : data.data?.COLLECTED;
-    if (data.data) {
-        data.data.COLLECTED = collectedData;
-    }
+    //const collectedData = transformCollectedArray(data?.data?.COLLECTED)
+    // const collectedData =  data?.data?.COLLECTED;
+    // if (data.data) {
+    //     data.data.COLLECTED = collectedData;
+    // }
     const stateData = data.stateData;
     const putLunaticData = axios.put(
         `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/data`,

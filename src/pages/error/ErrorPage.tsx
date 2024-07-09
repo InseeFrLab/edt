@@ -26,11 +26,10 @@ import { getData, getSurveyRights, surveysIds } from "service/survey-service";
 export type ErrorPageProps = {
     errorCode?: ErrorCodeEnum;
     atInit?: boolean;
-    atBoundary?: boolean;
 };
 
 const ErrorPage = (props: ErrorPageProps) => {
-    const { errorCode, atInit = false, atBoundary = false } = props;
+    const { errorCode, atInit = false } = props;
     const { t } = useTranslation();
     const { classes } = useStyles();
     const auth = useAuth();
@@ -166,25 +165,23 @@ const ErrorPage = (props: ErrorPageProps) => {
                     {t("common.error.error-user-info") + auth.userData?.profile?.preferred_username}
                 </Typography>
             </Box>
-            {!atBoundary && (
-                <FlexCenter>
-                    <Box className={classes.buttonBox}>
-                        {getErrorActionButton(errorCode)}
-                        <Button
-                            className={classes.button}
-                            variant="contained"
-                            startIcon={
-                                <PowerSettingsIcon
-                                    aria-label={t("accessibility.asset.mui-icon.power-settings")}
-                                />
-                            }
-                            onClick={onDisconnect}
-                        >
-                            {t("page.home.navigation.logout")}
-                        </Button>
-                    </Box>
-                </FlexCenter>
-            )}
+            <FlexCenter>
+                <Box className={classes.buttonBox}>
+                    {getErrorActionButton(errorCode)}
+                    <Button
+                        className={classes.button}
+                        variant="contained"
+                        startIcon={
+                            <PowerSettingsIcon
+                                aria-label={t("accessibility.asset.mui-icon.power-settings")}
+                            />
+                        }
+                        onClick={onDisconnect}
+                    >
+                        {t("page.home.navigation.logout")}
+                    </Button>
+                </Box>
+            </FlexCenter>
         </>
     );
 };
