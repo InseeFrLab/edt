@@ -30,39 +30,37 @@ const AddActivityOrRoute = (props: AddActivityOrRouteProps) => {
                 className={classes.shadowBackground}
                 sx={{ display: open ? "visible" : "none" }}
             ></Box>
-            <React.Fragment>
-                <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby={labelledBy}
-                    aria-describedby={describedBy}
-                >
-                    <>
-                        <Default>
-                            <AddActivityOrRouteDefault
-                                handleClose={handleClose}
-                                onClickActivity={onClickActivity}
-                                onClickRoute={onClickRoute}
-                                className={classes.modal}
-                                iconTitle={YellowPlusIcon}
-                                iconActivity={ActivityIcon}
-                                iconRoute={RouteIcon}
-                            />
-                        </Default>
-                        <Mobile>
-                            <AddActivityOrRouteMobile
-                                handleClose={handleClose}
-                                onClickActivity={onClickActivity}
-                                onClickRoute={onClickRoute}
-                                className={classes.modal}
-                                iconTitle={YellowPlusIcon}
-                                iconActivity={ActivityIcon}
-                                iconRoute={RouteIcon}
-                            />
-                        </Mobile>
-                    </>
-                </Modal>
-            </React.Fragment>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby={labelledBy}
+                aria-describedby={describedBy}
+            >
+                <>
+                    <Default>
+                        <AddActivityOrRouteDefault
+                            handleClose={handleClose}
+                            onClickActivity={onClickActivity}
+                            onClickRoute={onClickRoute}
+                            className={classes.modal}
+                            iconTitle={YellowPlusIcon}
+                            iconActivity={ActivityIcon}
+                            iconRoute={RouteIcon}
+                        />
+                    </Default>
+                    <Mobile>
+                        <AddActivityOrRouteMobile
+                            handleClose={handleClose}
+                            onClickActivity={onClickActivity}
+                            onClickRoute={onClickRoute}
+                            className={classes.modal}
+                            iconTitle={YellowPlusIcon}
+                            iconActivity={ActivityIcon}
+                            iconRoute={RouteIcon}
+                        />
+                    </Mobile>
+                </>
+            </Modal>
         </>
     );
 };

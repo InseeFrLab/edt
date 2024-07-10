@@ -134,15 +134,15 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 
     const surveyPageNotStepProps = {
         idSurvey: idSurvey,
-        validate:
-            validateButton ??
-            useCallback(
-                () =>
-                    nextRoute
+        validate: useCallback(
+            () =>
+                validateButton
+                    ? nextRoute
                         ? saveAndNavFullPath(idSurvey, nextRoute)
-                        : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage),
-                [],
-            ),
+                        : saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage)
+                    : null,
+            [],
+        ),
         icon: errorIcon ? <IconError aria-label={t(errorAltIcon ?? "")} /> : undefined,
         onNavigateBack: useCallback(() => saveAndNavLocally(idSurvey), []),
         onPrevious: useCallback(
@@ -176,7 +176,6 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             setIsModalDisplayed(true);
         }
     };
-    console.log("SurveyPageStep,", isStep);
     const surveyPageProps = isStep ? surveyPageStepProps : surveyPageNotStepProps;
 
     return (
@@ -219,7 +218,7 @@ const useStyles = makeStylesEdt<{
     },
     pageMobileTablet: {
         maxHeight: isIOS ? iosHeight : innerHeight + "px",
-        height: isIOS ? "100%" : "100%",
+        height: "100%",
     },
 }));
 

@@ -31,30 +31,29 @@ const Error = (props: ErrorProps) => {
                 className={classes.shadowBackground}
                 sx={{ display: open ? "visible" : "none" }}
             ></Box>
-            <React.Fragment>
-                <Modal
-                    hideBackdrop
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby={labelledBy}
-                    aria-describedby={describedBy}
-                >
-                    <Box className={classes.errorBox}>
-                        <FlexCenter>{icon}</FlexCenter>
-                        <FlexCenter className={classes.errorMessageBox}>
-                            <p>{errorMessage}</p>
-                        </FlexCenter>
-                        <FlexEvenly>
-                            <Button variant="outlined" onClick={onIgnore}>
-                                {t("common.navigation.ignore")}
-                            </Button>
-                            <Button variant="contained" onClick={onComplete}>
-                                {t("common.navigation.complete")}
-                            </Button>
-                        </FlexEvenly>
-                    </Box>
-                </Modal>
-            </React.Fragment>
+
+            <Modal
+                hideBackdrop
+                open={open}
+                onClose={handleClose}
+                aria-labelledby={labelledBy}
+                aria-describedby={describedBy}
+            >
+                <Box className={classes.errorBox}>
+                    <FlexCenter>{icon}</FlexCenter>
+                    <FlexCenter className={classes.errorMessageBox}>
+                        <p>{errorMessage}</p>
+                    </FlexCenter>
+                    <FlexEvenly>
+                        <Button variant="outlined" onClick={onIgnore}>
+                            {t("common.navigation.ignore")}
+                        </Button>
+                        <Button variant="contained" onClick={onComplete}>
+                            {t("common.navigation.complete")}
+                        </Button>
+                    </FlexEvenly>
+                </Box>
+            </Modal>
         </>
     );
 };

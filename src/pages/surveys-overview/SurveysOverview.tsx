@@ -196,7 +196,7 @@ const SurveysOverviewPage = () => {
         (type: string) => (event: any) => {
             if (type == "nameOrIdentifiant") {
                 const nameOrIdentifiant = event.target.value.toLowerCase();
-                setNameOrIdentiantFilter(nameOrIdentiantFilter);
+                //setNameOrIdentiantFilter(nameOrIdentiantFilter);
                 const filter = filterNameOrIdentifiant(dataHouseholds, nameOrIdentifiant);
                 setFilterNameOrIdentiantResult(filter);
             }

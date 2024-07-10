@@ -80,8 +80,8 @@ const getDataOfCurrentBinding = (
 };
 
 //prop is for activity and prop being modified
-const isPropCurrent = (prop: string, bindings: string[]) => {
-    return bindings != null && bindings.includes(prop);
+const isPropCurrent = (prop: string, bindings?: string[]) => {
+    return bindings?.includes(prop) ?? false;
 };
 
 //return a copy of a object
@@ -273,18 +273,12 @@ const getVariablesWeeklyPlanner = (
     value: any,
 ) => {
     let variables = new Map<string, any>();
-    const isReviewerMode = isReviewer();
 
     bindingDependencies?.forEach((bindingDependency: string) => {
         const varC = dataBdd?.COLLECTED?.[bindingDependency]?.COLLECTED;
         const varE = dataBdd?.COLLECTED?.[bindingDependency]?.EDITED;
         let variable = null;
-        if (isReviewerMode) {
-            //variable = varE ?? varC;
-            variable = getVariableOfWeeklyPlannerInterviewer(varC, varE, value, bindingDependency);
-        } else {
-            variable = getVariableOfWeeklyPlannerInterviewer(varC, varE, value, bindingDependency);
-        }
+        variable = getVariableOfWeeklyPlannerInterviewer(varC, varE, value, bindingDependency);
         variables.set(bindingDependency, variable);
     });
     return variables;

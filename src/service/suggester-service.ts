@@ -100,10 +100,10 @@ export function CreateIndex(
     setIndex: Dispatch<SetStateAction<elasticlunr.Index<AutoCompleteActiviteOption> | undefined>>,
 ) {
     const optionsFilteredMap = activitesFiltredMap(optionsFiltered);
-    index = CreateIndexation(optionsFilteredMap);
-    setIndex(index);
+    const newIndex = CreateIndexation(optionsFilteredMap);
+    setIndex(newIndex);
 
-    return index;
+    return newIndex;
 }
 
 export const activitesFiltredUnique = (activitesAutoCompleteRef: AutoCompleteActiviteOption[]) => {

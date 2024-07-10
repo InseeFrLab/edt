@@ -314,6 +314,7 @@ const init = (
     setError: React.Dispatch<React.SetStateAction<ErrorCodeEnum | undefined>>,
     setInitialized: (value: React.SetStateAction<boolean>) => void,
 ) => {
+    console.log("init");
     if (navigator.onLine && !isDemoMode()) {
         refreshSurvey(idSurvey, setError).finally(() => {
             setInitialized(true);
@@ -436,9 +437,7 @@ const ActivityOrRoutePlannerPage = () => {
         );
         contextIteration = loopSize - 1;
         const routeData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
-        console.log(routeData, isRouteBool);
         saveDataLocally(idSurvey, routeData).then(() => {
-            console.log("Save Data on Add Activity or Route");
             navToActivityOrRoute(idSurvey, contextIteration, isRouteBool);
         });
     };
@@ -459,7 +458,6 @@ const ActivityOrRoutePlannerPage = () => {
         setValueOrNull(idSurvey, FieldNameEnum.END_TIME, endTime, contextIteration);
         const updatedData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
         saveDataLocally(idSurvey, updatedData).then(() => {
-            console.log("Save Data on Add Activity or Route from Gap");
             onCloseAddActivityOrRoute();
             setIsRoute(isRouteBool);
             navigate(
@@ -583,6 +581,7 @@ const ActivityOrRoutePlannerPage = () => {
     }, [activitiesRoutesOrGaps]);
 
     useEffect(() => {
+        console.log("Init ActivityOrRoutePlannerPage useEffect");
         init(idSurvey, setError, setInitialized);
     }, []);
 

@@ -93,6 +93,7 @@ const WeeklyPlannerPage = () => {
                     dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
                     dataBdd.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
                 ) {
+                    console.log("saveData save function");
                     saveData(idSurvey, dataBdd);
                 }
             }
@@ -119,6 +120,7 @@ const WeeklyPlannerPage = () => {
                     dataCopy.COLLECTED[name].COLLECTED = quartier;
                 }
             });
+            console.log("saveData duration");
             saveData(idSurveyResponse, dataCopy);
         }
 
@@ -140,6 +142,7 @@ const WeeklyPlannerPage = () => {
                     dataCopy.COLLECTED[name].EDITED = quartier;
                 }
             });
+            console.log("saveData duration");
             saveData(idSurveyResponse, dataCopy);
         }
     };
@@ -211,11 +214,13 @@ const WeeklyPlannerPage = () => {
     const validateAndNav = (): void => {
         if (displayDayOverview) {
             if (isPlaceWorkDisplayed) {
+                console.log("isPlaceWorkDisplayed");
                 saveData(idSurvey, callbackHolder.getData());
                 setDisplayDayOverview(true);
                 setIsPlaceWorkDisplayed(false);
                 isPlaceWorkDisplayed = false;
             } else {
+                console.log("!isPlaceWorkDisplayed");
                 save(idSurvey);
                 setDisplayDayOverview(false);
             }

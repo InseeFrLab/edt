@@ -53,15 +53,15 @@ loopPageInfo.set(LoopEnum.ACTIVITY_OR_ROUTE, {
 });
 
 const getLoopInitialPage = (loop: LoopEnum): string => {
-    return loopPageInfo.get(loop)?.loopInitialPage || "";
+    return loopPageInfo.get(loop)?.loopInitialPage ?? "";
 };
 
 const getLoopInitialSubPage = (loop: LoopEnum): string => {
-    return loopPageInfo.get(loop)?.loopInitialSubpage || "";
+    return loopPageInfo.get(loop)?.loopInitialSubpage ?? "";
 };
 
 const getLoopInitialSequencePage = (loop: LoopEnum): string => {
-    return loopPageInfo.get(loop)?.loopInitialSequencePage || "";
+    return loopPageInfo.get(loop)?.loopInitialSequencePage ?? "";
 };
 
 const LOOP_PAGES_CONDITIONALS = ["4.7", "4.10"];

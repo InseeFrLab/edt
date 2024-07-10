@@ -5,11 +5,10 @@ interface IconProps {
 }
 
 const Icon = (props: IconProps) => {
-    const { icon, alt, className } = props;
+    const { icon: IconComponent, alt, className } = props;
 
     const renderIcon = () => {
-        const Icon = icon as React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
-        return <Icon aria-label={alt} className={className} />;
+        return <IconComponent aria-label={alt} className={className} />;
     };
 
     return renderIcon();

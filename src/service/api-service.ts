@@ -65,7 +65,6 @@ const revertTransformedArray = (dataAct: any) => {
             dataAct[key].COLLECTED = collected.substring(1);
         }
     }
-    console.log("dataAct after reversion", dataAct);
     return dataAct;
 };
 
@@ -380,7 +379,6 @@ const remoteGetSurveyData = (
                 getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {
-                console.log("response.data remoteGetSurveyData", response.data);
                 if (response.data?.data != null) {
                     const revertedTranformedData = revertTransformedArray(response.data.data.COLLECTED);
                     response.data.data.COLLECTED = revertedTranformedData;

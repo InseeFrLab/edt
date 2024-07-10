@@ -208,6 +208,7 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                 [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
                 [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
             };
+            console.log("initDataForSurveys");
             const innerPromises: Promise<any>[] = [
                 getRemoteSavedSurveysDatas(allSurveysIds, setError, false).then(() => {
                     return initializeSurveysDatasCache(allSurveysIds);
@@ -289,6 +290,7 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                 }),
             );
             if (navigator.onLine) {
+                console.log("initializeSurveysIdsAndSources");
                 promises.push(
                     getRemoteSavedSurveysDatas(surveysIdsAct, setError, false).then(() => {
                         return initializeSurveysDatasCache(surveysIdsAct);
@@ -451,6 +453,7 @@ const refreshSurveyData = (
 ): Promise<any> => {
     initData = false;
     const promisesToWait: Promise<any>[] = [];
+    console.log("refreshSurveyData");
     promisesToWait.push(
         getRemoteSavedSurveysDatas(
             specifiquesSurveysIds ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS],
@@ -463,6 +466,7 @@ const refreshSurveyData = (
 
 const refreshSurvey = (idSurvey: string, setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     initData = false;
+    console.log("refreshSurvey");
     return getRemoteSavedSurveysDatas([idSurvey], setError).then(() => {
         return initializeSurveysDatasCache([idSurvey]);
     });
@@ -518,29 +522,25 @@ const getRemoteSavedSurveysDatas = (
                         const surveyData = initializeData(remoteSurveyData, surveyId);
 
                         return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                            if (remoteSurveyData.data) {
-                                const lastRemoteSaveDate = remoteSurveyData.data.lastRemoteSaveDate ?? 1; //a supprimer
-                                const lastLocalSaveDate =
-                                    remoteSurveyData.data.lastLocalSaveDate ??
-                                    localSurveyData?.lastLocalSaveDate ??
-                                    0;
-                                const remoteStateData = remoteSurveyData?.stateData?.date ?? 1;
-
-                                if (
-                                    remoteSurveyData?.stateData?.date != null &&
-                                    (localSurveyData == null ||
-                                        ((localSurveyData.lastLocalSaveDate ?? 0) <=
-                                            lastRemoteSaveDate &&
-                                            (remoteSurveyData.data.lastRemoteSaveDate != null || //quand existe des données en remote -> a suprrimer
-                                                (remoteSurveyData.data.lastLocalSaveDate == null &&
-                                                    remoteSurveyData.data.lastRemoteSaveDate == null)) &&
-                                            //quand local est vide and jamais saved des données, remoteSurveyData.data.lastRemoteSaveDate change par stateData
-                                            lastLocalSaveDate <= remoteStateData)) // local date moins recent que remote date
-                                ) {
-                                    const stateData = getSurveyStateData(surveyData, surveyId);
-                                    setLocalDatabase(stateData, surveyData, surveyId);
-                                    return lunaticDatabase.save(surveyId, surveyData);
-                                }
+                            const lastRemoteSaveDate = remoteSurveyData.data.lastRemoteSaveDate ?? 1; //a supprimer
+                            const lastLocalSaveDate =
+                                remoteSurveyData.data.lastLocalSaveDate ??
+                                localSurveyData?.lastLocalSaveDate ??
+                                0;
+                            const remoteStateData = remoteSurveyData?.stateData?.date ?? 1;
+                            if (
+                                remoteSurveyData?.stateData?.date != null &&
+                                (localSurveyData == null ||
+                                    ((localSurveyData.lastLocalSaveDate ?? 0) <= lastRemoteSaveDate &&
+                                        (remoteSurveyData.data.lastRemoteSaveDate != null || //quand existe des données en remote -> a suprrimer
+                                            (remoteSurveyData.data.lastLocalSaveDate == null &&
+                                                remoteSurveyData.data.lastRemoteSaveDate == null)) &&
+                                        //quand local est vide and jamais saved des données, remoteSurveyData.data.lastRemoteSaveDate change par stateData
+                                        lastLocalSaveDate <= remoteStateData)) // local date moins recent que remote date
+                            ) {
+                                const stateData = getSurveyStateData(surveyData, surveyId);
+                                setLocalDatabase(stateData, remoteSurveyData, surveyId);
+                                return lunaticDatabase.save(surveyId, surveyData);
                             }
                         });
                     })
@@ -563,6 +563,7 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
             for (const idSurvey of idSurveysToInit) {
                 promises.push(initializeDatasCache(idSurvey));
             }
+            console.log("initializeSurveysDatasCache");
             promises.push(
                 lunaticDatabase.get(USER_SURVEYS_DATA).then(data => {
                     userDatas = (data as UserSurveysData)?.data;
@@ -754,45 +755,6 @@ const createDataEmpty = (idSurvey: string): LunaticData => {
     };
     data.COLLECTED = getDataEmpty(idSurvey);
     return data;
-};
-
-const getIfArrayIsChange = (
-    currentData:
-        | string
-        | boolean
-        | string[]
-        | boolean[]
-        | null[]
-        | {
-              [key: string]: string;
-          }[],
-    data:
-        | string
-        | boolean
-        | string[]
-        | boolean[]
-        | null[]
-        | {
-              [key: string]: string;
-          }[],
-    isChange: boolean,
-) => {
-    let isChangeArray = isChange;
-    const currentDataCollectedArray = currentData as string[];
-    const dataCollectedArray = data as string[];
-    dataCollectedArray?.forEach((data, i) => {
-        if (
-            (typeof data === "object" && !objectEquals(currentDataCollectedArray[i], data)) ||
-            (typeof data != "object" &&
-                (currentDataCollectedArray == null || currentDataCollectedArray[i] != data))
-        ) {
-            isChangeArray = true;
-        }
-    });
-    if (dataCollectedArray.length != currentDataCollectedArray.length) {
-        isChangeArray = true;
-    }
-    return isChangeArray;
 };
 
 const dataIsChange = (idSurvey: string, dataAct: LunaticData, lastData: LunaticData): boolean => {
@@ -1663,7 +1625,7 @@ const userDatasMap = () => {
         if (u1.num == u2.num) return u1.firstName.localeCompare(u2.firstName);
         else return u1.num > u2.num ? 1 : -1;
     });
-
+    console.log("User Data Map:", userMap);
     return userMap;
 };
 
