@@ -9,6 +9,7 @@ import jwt, { JwtPayload } from "jwt-decode";
 import { AuthContextProps, User } from "oidc-react";
 import { initStateData, initSurveyData } from "./survey-service";
 import { getAuth, getUserToken, isReviewer } from "./user-service";
+import { responsiveFontSizes } from "@mui/material";
 
 export const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
 export const stromaeBackOfficeApiBaseUrl = process.env.REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL;
@@ -219,7 +220,7 @@ const requestPutSurveyData = (
     const stateData = data.stateData;
     const putLunaticData = axios.put(
         `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/data`,
-        data,
+        data.data,
         getHeader(stromaeBackOfficeApiBaseUrl, token),
     );
 
@@ -292,9 +293,6 @@ const requestPutDataReviewer = (
     token?: string,
 ): Promise<LunaticData> => {
     const lunaticData: LunaticData = token ? transformCollectedArray(data?.COLLECTED) : data?.COLLECTED;
-    if (token) {
-        console.log("lunaticData has been converted");
-    }
     return new Promise<LunaticData>(resolve => {
         axios
             .put(
@@ -408,7 +406,7 @@ const requestGetDataReviewer = (
             )
             .then(response => {
                 if (response.data?.data != null) {
-                    console.log("response.data requestGetDataReviewer", response.data.data);
+                    console.log("response.data requestGetDataReviewer", response.data);
                     const revertedTranformedData = revertTransformedArray(response.data.data.COLLECTED);
                     response.data.data.COLLECTED = revertedTranformedData;
                     resolve(response.data.data);
@@ -454,30 +452,18 @@ const requestGetStateReviewer = (
     });
 };
 
-const getStateIfNeeded = (
-    idSurvey: string,
-    setError: (error: ErrorCodeEnum) => void,
-    withState?: boolean,
-): Promise<StateData | undefined> => {
-    if (withState) {
-        return requestGetStateReviewer(idSurvey, setError);
-    } else {
-        return Promise.resolve(undefined);
-    }
-};
-
 const requestGetSurveyDataReviewer = (
     idSurvey: string,
     setError: (error: ErrorCodeEnum) => void,
-    withState?: boolean,
 ): Promise<SurveyData> => {
-    return getStateIfNeeded(idSurvey, setError, withState).then((stateData: StateData | undefined) => {
+    return requestGetStateReviewer(idSurvey, setError).then((stateData: StateData) => {
         return requestGetDataReviewer(idSurvey, setError).then(data => {
             return new Promise(resolve => {
                 const surveyData: SurveyData = {
                     stateData: stateData,
                     data: data,
                 };
+                console.log("requestGetSurveyDataReviewer", surveyData);
                 resolve(surveyData);
             });
         });
@@ -487,21 +473,25 @@ const requestGetSurveyDataReviewer = (
 const remoteGetSurveyDataReviewer = (
     idSurvey: string,
     setError: (error: ErrorCodeEnum) => void,
-    withState?: boolean,
 ): Promise<SurveyData> => {
     const isReviewerMode = isReviewer();
     if (!isReviewerMode) setError?.(ErrorCodeEnum.NO_RIGHTS);
-    return requestGetSurveyDataReviewer(idSurvey, setError, withState).catch(err => {
-        if (err.response?.status === 403) {
-            setError?.(ErrorCodeEnum.NO_RIGHTS);
-        } else {
-            return {
-                data: initSurveyData(idSurvey),
-                stateData: initStateData(),
-            };
-        }
-        return Promise.reject(err);
-    });
+    return requestGetSurveyDataReviewer(idSurvey, setError)
+        .then(response => {
+            console.log("response remoteGetSurveyDataReviewer", response);
+            return response;
+        })
+        .catch(err => {
+            if (err.response?.status === 403) {
+                setError?.(ErrorCodeEnum.NO_RIGHTS);
+            } else {
+                return {
+                    data: initSurveyData(idSurvey),
+                    stateData: initStateData(),
+                };
+            }
+            return Promise.reject(err);
+        });
 };
 
 export {

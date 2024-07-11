@@ -81,6 +81,7 @@ const HomeSurveyedPage = () => {
                     setInitialized(true);
                 }
                 setDatas(userDatas);
+                console.log("userDatas", userDatas);
             });
         });
     };
@@ -106,7 +107,7 @@ const HomeSurveyedPage = () => {
                         !survey.startsWith("activitySurvey") && !survey.startsWith("workTimeSurvey"),
                 );
             if (navigator.onLine) {
-                getRemoteSavedSurveysDatas(idsSurveysSelected, setError, false).then(() => {
+                getRemoteSavedSurveysDatas(idsSurveysSelected, setError).then(() => {
                     initHome(idsSurveysSelected);
                 });
             } else {
@@ -278,6 +279,7 @@ const HomeSurveyedPage = () => {
 
     const renderHomeInterviewer = () => {
         let userDataGroupedInterv = nameSurveyGroupMap();
+        //console.log("userDataGroupedInterv", userDataGroupedInterv);
         let groups = Object.keys(userDataGroupedInterv);
         return (
             <>

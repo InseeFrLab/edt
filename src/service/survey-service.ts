@@ -210,7 +210,7 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             };
             console.log("initDataForSurveys");
             const innerPromises: Promise<any>[] = [
-                getRemoteSavedSurveysDatas(allSurveysIds, setError, false).then(() => {
+                getRemoteSavedSurveysDatas(allSurveysIds, setError).then(() => {
                     return initializeSurveysDatasCache(allSurveysIds);
                 }),
                 saveSurveysIds(surveysIds),
@@ -292,7 +292,7 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
             if (navigator.onLine) {
                 console.log("initializeSurveysIdsAndSources");
                 promises.push(
-                    getRemoteSavedSurveysDatas(surveysIdsAct, setError, false).then(() => {
+                    getRemoteSavedSurveysDatas(surveysIdsAct, setError).then(() => {
                         return initializeSurveysDatasCache(surveysIdsAct);
                     }),
                 );
@@ -453,7 +453,6 @@ const refreshSurveyData = (
 ): Promise<any> => {
     initData = false;
     const promisesToWait: Promise<any>[] = [];
-    console.log("refreshSurveyData");
     promisesToWait.push(
         getRemoteSavedSurveysDatas(
             specifiquesSurveysIds ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS],
@@ -466,7 +465,6 @@ const refreshSurveyData = (
 
 const refreshSurvey = (idSurvey: string, setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     initData = false;
-    console.log("refreshSurvey");
     return getRemoteSavedSurveysDatas([idSurvey], setError).then(() => {
         return initializeSurveysDatasCache([idSurvey]);
     });
@@ -485,7 +483,7 @@ const initializeSurveysIdsDataModeReviewer = (
     });
 };
 
-const initializeData = (remoteSurveyData: SurveyData, idSurvey: string) => {
+const initializeData = (remoteSurveyData: any, idSurvey: string) => {
     const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
     let surveyData: LunaticData = {
         COLLECTED: {},
@@ -498,11 +496,9 @@ const initializeData = (remoteSurveyData: SurveyData, idSurvey: string) => {
     surveyData.houseReference = idSurvey?.replace(regexp, "");
     surveyData.CALCULATED = {};
     surveyData.EXTERNAL = {};
-    surveyData.COLLECTED = remoteSurveyData.data?.COLLECTED ?? getDataEmpty(idSurvey);
+    surveyData.COLLECTED = remoteSurveyData.COLLECTED ?? getDataEmpty(idSurvey);
     surveyData.lastLocalSaveDate =
-        remoteSurveyData.data?.lastLocalSaveDate ??
-        remoteSurveyData.data?.stateData?.date ??
-        new Date(0).getTime();
+        remoteSurveyData.lastLocalSaveDate ?? remoteSurveyData.stateData?.date ?? new Date(0).getTime();
     surveyData.stateData = remoteSurveyData.stateData;
     return surveyData;
 };
@@ -510,37 +506,29 @@ const initializeData = (remoteSurveyData: SurveyData, idSurvey: string) => {
 const getRemoteSavedSurveysDatas = (
     surveysIds: string[],
     setError: (error: ErrorCodeEnum) => void,
-    withoutState?: boolean,
 ): Promise<any> => {
     const promises: Promise<any>[] = [];
     if (navigator.onLine) {
         const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
         surveysIds.forEach(surveyId => {
             promises.push(
-                urlRemote(surveyId, setError, withoutState ?? true)
-                    .then((remoteSurveyData: SurveyData) => {
+                urlRemote(surveyId, setError)
+                    .then((remoteSurveyData: any) => {
+                        //TODO: remove any and improve ts types
+                        //console.log("Remote Data", remoteSurveyData);
                         const surveyData = initializeData(remoteSurveyData, surveyId);
-
                         return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                            const lastRemoteSaveDate = remoteSurveyData.data.lastRemoteSaveDate ?? 1; //a supprimer
-                            const lastLocalSaveDate =
-                                remoteSurveyData.data.lastLocalSaveDate ??
-                                localSurveyData?.lastLocalSaveDate ??
-                                0;
-                            const remoteStateData = remoteSurveyData?.stateData?.date ?? 1;
-                            if (
-                                remoteSurveyData?.stateData?.date != null &&
-                                (localSurveyData == null ||
-                                    ((localSurveyData.lastLocalSaveDate ?? 0) <= lastRemoteSaveDate &&
-                                        (remoteSurveyData.data.lastRemoteSaveDate != null || //quand existe des données en remote -> a suprrimer
-                                            (remoteSurveyData.data.lastLocalSaveDate == null &&
-                                                remoteSurveyData.data.lastRemoteSaveDate == null)) &&
-                                        //quand local est vide and jamais saved des données, remoteSurveyData.data.lastRemoteSaveDate change par stateData
-                                        lastLocalSaveDate <= remoteStateData)) // local date moins recent que remote date
-                            ) {
+                            //console.log("Local Data", localSurveyData);
+                            if (shouldInitData(remoteSurveyData, localSurveyData)) {
                                 const stateData = getSurveyStateData(surveyData, surveyId);
-                                setLocalDatabase(stateData, remoteSurveyData, surveyId);
+                                setLocalDatabase(stateData, surveyData, surveyId);
                                 return lunaticDatabase.save(surveyId, surveyData);
+                            } else {
+                                if (shouldSaveRemoteData(remoteSurveyData, localSurveyData)) {
+                                    const stateData = getSurveyStateData(surveyData, surveyId);
+                                    setLocalDatabase(stateData, remoteSurveyData, surveyId);
+                                    return lunaticDatabase.save(surveyId, surveyData);
+                                }
                             }
                         });
                     })
@@ -551,6 +539,33 @@ const getRemoteSavedSurveysDatas = (
         });
     }
     return Promise.all(promises);
+};
+
+const shouldSaveRemoteData = (remoteSurveyData: any, localSurveyData: any): boolean => {
+    const lastRemoteSaveDate =
+        remoteSurveyData.lastRemoteSaveDate ?? remoteSurveyData.data?.lastRemoteSaveDate ?? 1;
+    const lastLocalSaveDate =
+        remoteSurveyData.lastLocalSaveDate ??
+        remoteSurveyData?.data?.lastLocalSaveDate ??
+        localSurveyData?.lastLocalSaveDate ??
+        0;
+    const remoteStateDataDate = remoteSurveyData?.stateData?.date ?? 1;
+    if (!localSurveyData) return true;
+    if (lastRemoteSaveDate >= lastLocalSaveDate) return true;
+    if (lastLocalSaveDate <= remoteStateDataDate) return true;
+    return false;
+};
+
+const shouldInitData = (remoteSurveyData: any, localSurveyData: any): boolean => {
+    if (!localSurveyData) {
+        if (remoteSurveyData && typeof remoteSurveyData === "object") {
+            const isCollectedEmpty =
+                "COLLECTED" in remoteSurveyData && Object.keys(remoteSurveyData.COLLECTED).length === 0;
+            console.log("shouldInitData", isCollectedEmpty);
+            return isCollectedEmpty;
+        }
+    }
+    return false;
 };
 
 const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
@@ -1035,7 +1050,6 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
     let oldDataSurvey = datas.get(idSurvey) ?? {};
     oldDatas.set(idSurvey, oldDataSurvey);
     setDataCache(idSurvey, data);
-    //set the last remote save date inside local database to be able to compare it later with remote data
     return lunaticDatabase.save(idSurvey, data).then(() => {
         datas.set(idSurvey, data);
         addItemToSession(idSurvey, data);

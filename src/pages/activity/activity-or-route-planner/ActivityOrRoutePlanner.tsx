@@ -581,7 +581,6 @@ const ActivityOrRoutePlannerPage = () => {
     }, [activitiesRoutesOrGaps]);
 
     useEffect(() => {
-        console.log("Init ActivityOrRoutePlannerPage useEffect");
         init(idSurvey, setError, setInitialized);
     }, []);
 
