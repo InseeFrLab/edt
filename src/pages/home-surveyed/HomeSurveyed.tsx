@@ -132,24 +132,6 @@ const HomeSurveyedPage = () => {
         icon: <DisconnectIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />,
     };
 
-    // const resetDataAndReload = useCallback(() => {
-    //     const promises: any[] = [];
-    //     surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
-    //         const stateData = { state: null, date: Date.now(), currentPage: 1 };
-    //         const surveyData: SurveyData = {
-    //             stateData: stateData,
-    //             data: {},
-    //         };
-    //         promises.push(remotePutSurveyData(idSurvey, surveyData));
-    //         promises.push(remotePutSurveyDataReviewer(idSurvey, stateData, {}));
-    //     });
-    //     Promise.all(promises).then(() => {
-    //         lunaticDatabase.clear().then(() => {
-    //             navigate(0);
-    //         });
-    //     });
-    // }, []);
-
     const resetDemoDataAndReload = useCallback(() => {
         const promises: any[] = [];
         surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {

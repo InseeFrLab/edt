@@ -9,7 +9,6 @@ import jwt, { JwtPayload } from "jwt-decode";
 import { AuthContextProps, User } from "oidc-react";
 import { initStateData, initSurveyData } from "./survey-service";
 import { getAuth, getUserToken, isReviewer } from "./user-service";
-import { responsiveFontSizes } from "@mui/material";
 
 export const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
 export const stromaeBackOfficeApiBaseUrl = process.env.REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL;
@@ -44,7 +43,7 @@ const transformCollectedArray = (dataAct: any) => {
             });
         } else if (typeof collected === "string" && /^\d/.test(collected)) {
             console.log("collected is a string", collected);
-            dataAct[key].COLLECTED = `S${collected}`;
+            dataAct[key].COLLECTED = `S_${collected}`;
         }
     }
     return dataAct;
@@ -61,7 +60,7 @@ const revertTransformedArray = (dataAct: any) => {
                 }
                 return item;
             });
-        } else if (typeof collected === "string" && collected.startsWith("S")) {
+        } else if (typeof collected === "string" && collected.startsWith("S_")) {
             console.log("collected is a string to be reverted", collected);
             dataAct[key].COLLECTED = collected.substring(1);
         }
@@ -240,8 +239,6 @@ const requestPutSurveyData = (
 };
 
 const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<SurveyData> => {
-    //Temporar check on token validity to avoid 401 error, if not valid, reload page
-    //#
     const now = new Date();
     const tokenExpiresAt = jwt<JwtPayload>(getUserToken() ?? "").exp;
     // * 1000 because tokenExpiresAt is in seconds and now.getTime() in milliseconds
@@ -377,10 +374,11 @@ const remoteGetSurveyData = (
                 getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {
-                if (response.data?.data != null) {
-                    const revertedTranformedData = revertTransformedArray(response.data.data.COLLECTED);
-                    response.data.data.COLLECTED = revertedTranformedData;
-                    resolve(response.data.data);
+                console.log("response.data", response.data);
+                if (response.data.COLLECTED != null) {
+                    const revertedTranformedData = revertTransformedArray(response.data.COLLECTED);
+                    response.data.COLLECTED = revertedTranformedData;
+                    resolve(response.data);
                 }
                 resolve(response.data);
             })
@@ -405,11 +403,11 @@ const requestGetDataReviewer = (
                 getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {
-                if (response.data?.data != null) {
+                if (response.data != null) {
                     console.log("response.data requestGetDataReviewer", response.data);
-                    const revertedTranformedData = revertTransformedArray(response.data.data.COLLECTED);
-                    response.data.data.COLLECTED = revertedTranformedData;
-                    resolve(response.data.data);
+                    const revertedTranformedData = revertTransformedArray(response.data.COLLECTED);
+                    response.data.COLLECTED = revertedTranformedData;
+                    resolve(response.data);
                 } else {
                     resolve(response.data);
                 }

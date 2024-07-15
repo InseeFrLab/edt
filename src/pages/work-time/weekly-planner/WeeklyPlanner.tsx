@@ -24,10 +24,12 @@ import SurveyPage from "components/commons/SurveyPage/SurveyPage";
 import HelpMenu from "components/edt/HelpMenu/HelpMenu";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { LunaticData, MultiCollected, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
+import ErrorProvider from "pages/error/ErrorProvider";
 import React, { useCallback } from "react";
 import { isAndroid, isIOS } from "react-device-detect";
+import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import {
@@ -41,7 +43,13 @@ import {
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { isMobile, isPwa } from "service/responsive";
-import { getData, getPrintedFirstName, getSurveyDate, saveData } from "service/survey-service";
+import {
+    getData,
+    getPrintedFirstName,
+    getSurveyDate,
+    saveData,
+    saveDataLocally,
+} from "service/survey-service";
 import { isReviewer } from "service/user-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
@@ -75,10 +83,36 @@ const WeeklyPlannerPage = () => {
 
     const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
 
+    // TODO: fix null check & move elsewhere  & fix questionnaire model (temp solution)
+    const initializeCollectedFields = (dataBdd: LunaticData, fieldsToInitialize: FieldNameEnum[]) => {
+        console.log("initializeCollectedFields");
+        if (dataBdd.COLLECTED !== undefined) {
+            fieldsToInitialize.forEach(field => {
+                if (!dataBdd.COLLECTED?.[field]) {
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    dataBdd.COLLECTED![field] = {
+                        COLLECTED: [],
+                        EDITED: [],
+                        FORCED: null,
+                        INPUTED: null,
+                        PREVIOUS: null,
+                    } as MultiCollected;
+                }
+            });
+        }
+    };
+
     const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
         const dataBdd = getData(idSurvey);
+        console.log("data", data);
         if (data && data[1].length > 0) {
             if (dataBdd.COLLECTED) {
+                console.log("DataBdd", dataBdd);
+                initializeCollectedFields(dataBdd, [
+                    FieldNameEnum.WEEKLYPLANNER,
+                    FieldNameEnum.DATES,
+                    FieldNameEnum.DATES_STARTED,
+                ]);
                 if (isReviewer()) {
                     dataBdd.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data[0];
                     dataBdd.COLLECTED[FieldNameEnum.DATES].EDITED = data[1];
@@ -88,14 +122,8 @@ const WeeklyPlannerPage = () => {
                     dataBdd.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
                     dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
                 }
-                const dataResponse = getData(idSurvey);
-                if (
-                    dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
-                    dataBdd.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
-                ) {
-                    console.log("saveData save function");
-                    saveData(idSurvey, dataBdd);
-                }
+
+                saveDataLocally(idSurvey, dataBdd);
             }
         }
     };
@@ -120,7 +148,6 @@ const WeeklyPlannerPage = () => {
                     dataCopy.COLLECTED[name].COLLECTED = quartier;
                 }
             });
-            console.log("saveData duration");
             saveData(idSurveyResponse, dataCopy);
         }
 
@@ -271,38 +298,40 @@ const WeeklyPlannerPage = () => {
     }, []);
 
     return (
-        <Box
-            className={cx(
-                !isPwa() && (isIOS || isAndroid || isMobile())
-                    ? classes.pageMobileTablet
-                    : classes.pageDesktop,
-            )}
-        >
-            {renderMenuHelp()}
-            <SurveyPage
-                idSurvey={idSurvey}
-                validate={useCallback(() => validateAndNav(), [displayDayOverview])}
-                onNavigateBack={useCallback(() => validateAndNav(), [displayDayOverview])}
-                onPrevious={useCallback(() => saveAndNav(idSurvey), [])}
-                onEdit={useCallback(() => onEdit(), [])}
-                onHelp={onHelp}
-                firstName={getPrintedFirstName(idSurvey)}
-                firstNamePrefix={t("component.survey-page-edit-header.week-of")}
-                simpleHeader={displayDayOverview}
-                simpleHeaderLabel={displayedDayHeader}
-                backgroundWhiteHeader={displayDayOverview}
+        <ErrorBoundary FallbackComponent={ErrorProvider}>
+            <Box
+                className={cx(
+                    !isPwa() && (isIOS || isAndroid || isMobile())
+                        ? classes.pageMobileTablet
+                        : classes.pageDesktop,
+                )}
             >
-                <FlexCenter>
-                    <OrchestratorForStories
-                        source={context.source}
-                        data={getData(idSurvey)}
-                        cbHolder={callbackHolder}
-                        page={getOrchestratorPage(currentPage)}
-                        componentSpecificProps={specificProps}
-                    ></OrchestratorForStories>
-                </FlexCenter>
-            </SurveyPage>
-        </Box>
+                {renderMenuHelp()}
+                <SurveyPage
+                    idSurvey={idSurvey}
+                    validate={useCallback(() => validateAndNav(), [displayDayOverview])}
+                    onNavigateBack={useCallback(() => validateAndNav(), [displayDayOverview])}
+                    onPrevious={useCallback(() => saveAndNav(idSurvey), [])}
+                    onEdit={useCallback(() => onEdit(), [])}
+                    onHelp={onHelp}
+                    firstName={getPrintedFirstName(idSurvey)}
+                    firstNamePrefix={t("component.survey-page-edit-header.week-of")}
+                    simpleHeader={displayDayOverview}
+                    simpleHeaderLabel={displayedDayHeader}
+                    backgroundWhiteHeader={displayDayOverview}
+                >
+                    <FlexCenter>
+                        <OrchestratorForStories
+                            source={context.source}
+                            data={getData(idSurvey)}
+                            cbHolder={callbackHolder}
+                            page={getOrchestratorPage(currentPage)}
+                            componentSpecificProps={specificProps}
+                        ></OrchestratorForStories>
+                    </FlexCenter>
+                </SurveyPage>
+            </Box>
+        </ErrorBoundary>
     );
 };
 

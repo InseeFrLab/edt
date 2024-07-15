@@ -58,7 +58,6 @@ import {
     getArrayFromSession,
     getItemFromSession,
     groupBy,
-    objectEquals,
 } from "utils/utils";
 import { validate } from "uuid";
 import workTimeSource from "work-time-survey.json";
@@ -966,11 +965,12 @@ const saveData = (
     datas.set(idSurvey, data);
 
     data = updateLocked(idSurvey, data);
-    let stateData: StateData = stateDataForced ?? initStateData(data);
+    let stateData: StateData = data?.stateData ?? stateDataForced ?? initStateData(data);
 
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
 
     if (isChange) {
+        console.log("Saved Data changed, data: ", data);
         data = saveQualityScore(idSurvey, data);
         if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
             stateData = getSurveyStateData(data, idSurvey);
