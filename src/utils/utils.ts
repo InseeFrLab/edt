@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { isArray, isEqual, isObject, transform } from "lodash";
 import {
     isAndroid,
     isChrome,
@@ -153,6 +154,52 @@ function formatDate(input: string) {
     return inputFormatted;
 }
 
+//TODO: Test function to be removed
+function difference(origObj: any, newObj: any) {
+    function changes(newObj: any, origObj: { [x: string]: any }) {
+        let arrayIndexCounter = 0;
+        return transform(
+            newObj,
+            function (result: { [x: string]: any }, value: any, key: string | number) {
+                if (!isEqual(value, origObj[key])) {
+                    let resultKey = isArray(origObj) ? arrayIndexCounter++ : key;
+                    result[resultKey] =
+                        isObject(value) && isObject(origObj[key]) ? changes(value, origObj[key]) : value;
+                }
+            },
+        );
+    }
+    console.log("Difference : ", changes(newObj, origObj));
+    return changes(newObj, origObj);
+}
+
+function mergeObjects(origObj: any, newObj: any): any {
+    // Validate input objects
+    if (!origObj || !newObj || typeof origObj !== "object" || typeof newObj !== "object") {
+        throw new Error("Both origObj and newObj must be valid objects.");
+    }
+
+    // Fields to merge
+    const fieldsToMerge = ["variables", "components"];
+
+    fieldsToMerge.forEach(field => {
+        // Check if the field exists and is an array in origObj
+        if (Array.isArray(origObj[field])) {
+            // Ensure the field exists in newObj; if not, initialize as an empty array
+            newObj[field] = newObj[field] || [];
+
+            // Merge the array from origObj into newObj without duplicates
+            origObj[field].forEach((item: any) => {
+                if (!newObj[field].some((newItem: any) => isEqual(newItem, item))) {
+                    newObj[field].push(item);
+                }
+            });
+        }
+    });
+
+    return newObj;
+}
+
 export {
     addArrayToSession,
     addItemToSession,
@@ -170,4 +217,6 @@ export {
     isAndroidNav,
     objectEquals,
     sumAllOfArray,
+    difference,
+    mergeObjects,
 };

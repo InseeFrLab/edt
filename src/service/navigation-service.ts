@@ -343,7 +343,7 @@ const setNamesOfGroup = (
 const propsWorkTime = () => {
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const bindingDependenciesOfComponent = source.components.map(
-        component => component.bindingDependencies ?? [],
+        (component: any) => component.bindingDependencies ?? [],
     );
     // array of arrays to array
     const bindingDependencies = ([] as string[]).concat(...bindingDependenciesOfComponent);

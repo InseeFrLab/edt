@@ -18,7 +18,7 @@ import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import { remotePutSurveyData, remotePutSurveyDataReviewer } from "service/api-service";
+import { remotePutSurveyData, remotePutSurveyDataReviewer } from "service/api-service/putRemoteData";
 import { getFlatLocalStorageValue } from "service/local-storage-service";
 import {
     getNavigatePath,

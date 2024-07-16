@@ -1,6 +1,6 @@
 import { WebStorageStateStore } from "oidc-client-ts";
 import { UserManager } from "oidc-react";
-import { setUserToken } from "./user-service";
+import { getAuth, setUserToken } from "./user-service";
 
 const url = process.env.REACT_APP_KEYCLOAK_AUTHORITY ?? "";
 const clientId = process.env.REACT_APP_KEYCLOAK_CLIENT_ID ?? "";
@@ -125,7 +125,7 @@ const signinSilentCallback = (userManager: UserManager) => {
     userManager.signinSilentCallback();
 };
 
-const logout = (userManager: UserManager) => {
+const logoutClearData = (userManager: UserManager) => {
     userManager.signoutRedirect({
         id_token_hint: localStorage.getItem("id_token") ?? "",
     });
@@ -140,11 +140,28 @@ const signoutRedirectCallback = (userManager: UserManager) => {
     userManager.clearStaleState();
 };
 
+const logout = () => {
+    let auth = getAuth();
+    auth.userManager
+        .signoutRedirect({
+            id_token_hint: localStorage.getItem("id_token") ?? undefined,
+        })
+        .then(() => auth.userManager.clearStaleState())
+        .then(() => auth.userManager.signoutRedirectCallback())
+        .then(() => {
+            sessionStorage.clear();
+            localStorage.clear();
+        })
+        .then(() => auth.userManager.clearStaleState())
+        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL ?? ""));
+};
+
 export {
     createUserManager,
     getUser,
     isAuthenticated,
     isSSO,
+    logoutClearData,
     logout,
     signinRedirect,
     signinSilent,

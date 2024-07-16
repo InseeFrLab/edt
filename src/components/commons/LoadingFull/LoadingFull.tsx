@@ -7,7 +7,7 @@ import { makeStyles } from "tss-react/mui";
 import { ReactComponent as PowerSettingsIcon } from "assets/illustration/mui-icon/power-settings.svg";
 import { useCallback } from "react";
 import { lunaticDatabase } from "service/lunatic-database";
-import { logout } from "service/api-service";
+import { logout } from "service/auth-service";
 
 interface LoadingFullProps {
     message: string;

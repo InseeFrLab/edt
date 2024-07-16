@@ -47,7 +47,7 @@ import {
 import { AuthContextProps } from "oidc-react";
 import { Dispatch, SetStateAction } from "react";
 import { NavigateFunction } from "react-router-dom";
-import { fetchReviewerSurveysAssignments, remotePutSurveyData } from "service/api-service";
+import { fetchReviewerSurveysAssignments } from "service/api-service/getRemoteData";
 import { lunaticDatabase } from "service/lunatic-database";
 import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrator-service";
 import dataEmptyActivity from "utils/dataEmptyActivity.json";
@@ -69,8 +69,7 @@ import {
     fetchUserSurveysInfo,
     remoteGetSurveyData,
     remoteGetSurveyDataReviewer,
-    remotePutSurveyDataReviewer,
-} from "./api-service";
+} from "./api-service/getRemoteData";
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getFullNavigatePath, setAllNamesOfGroupAndNav } from "./navigation-service";
 import { getAutoCompleteRef } from "./referentiel-service";
@@ -78,6 +77,7 @@ import { CreateIndex, optionsFiltered, setIndexSuggester } from "./suggester-ser
 import { getQualityScore } from "./summary-service";
 import { getActivitiesOrRoutes, getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
+import { remotePutSurveyData, remotePutSurveyDataReviewer } from "./api-service/putRemoteData";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();

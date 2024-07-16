@@ -2,13 +2,12 @@ import { NomenclatureActivityOption } from "@inseefrlab/lunatic-edt";
 import axios from "axios";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
-import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
 import { LunaticData, ReferentielData, SourceData } from "interface/lunatic/Lunatic";
-import jwt, { JwtPayload } from "jwt-decode";
-import { AuthContextProps, User } from "oidc-react";
-import { initStateData, initSurveyData } from "./survey-service";
-import { getAuth, getUserToken, isReviewer } from "./user-service";
+
+import { AuthContextProps } from "oidc-react";
+import { initStateData, initSurveyData } from "../survey-service";
+import { getAuth, getUserToken, isReviewer } from "../user-service";
 
 export const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
 export const stromaeBackOfficeApiBaseUrl = process.env.REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL;
@@ -26,48 +25,6 @@ axios.interceptors.response.use(
     },
 );
 
-//TODO: fix any
-const transformCollectedArray = (dataAct: any) => {
-    console.log("dataAct before transformation", dataAct);
-    for (const key in dataAct) {
-        const collected = dataAct[key]?.COLLECTED;
-        //console.log("collected", collected);
-        if (Array.isArray(collected)) {
-            dataAct[key].COLLECTED = collected.map((item: string) => {
-                if (item && typeof item === "string" && /^\d/.test(item)) {
-                    console.log("item to be modified", item);
-                    return `S${item}`;
-                }
-                //console.log("item", item);
-                return item;
-            });
-        } else if (typeof collected === "string" && /^\d/.test(collected)) {
-            console.log("collected is a string", collected);
-            dataAct[key].COLLECTED = `S_${collected}`;
-        }
-    }
-    return dataAct;
-};
-
-const revertTransformedArray = (dataAct: any) => {
-    for (const key in dataAct) {
-        const collected = dataAct[key]?.COLLECTED;
-        if (Array.isArray(collected)) {
-            dataAct[key].COLLECTED = collected.map((item: string) => {
-                if (item && typeof item === "string" && /^S\d/.test(item)) {
-                    console.log("item to be reverted", item);
-                    return item.substring(1);
-                }
-                return item;
-            });
-        } else if (typeof collected === "string" && collected.startsWith("S_")) {
-            console.log("collected is a string to be reverted", collected);
-            dataAct[key].COLLECTED = collected.substring(1);
-        }
-    }
-    return dataAct;
-};
-
 export const getHeader = (origin?: string, userToken?: string) => {
     return {
         headers: {
@@ -76,6 +33,15 @@ export const getHeader = (origin?: string, userToken?: string) => {
             "Content-type": "application/json",
         },
     };
+};
+
+const revertTransformedArray = (dataAct: any) => {
+    const revertedDataAct: { [key: string]: any } = {};
+    Object.keys(dataAct).forEach(key => {
+        const revertedKey = key.startsWith("S_") ? key.substring(2) : key;
+        revertedDataAct[revertedKey] = dataAct[key];
+    });
+    return revertedDataAct;
 };
 
 const fetchReferentiel = (auth: AuthContextProps, idReferentiel: ReferentielsEnum) => {
@@ -205,164 +171,6 @@ const fetchReviewerSurveysAssignments = (setError: (error: ErrorCodeEnum) => voi
     });
 };
 
-const requestPutSurveyData = (
-    idSurvey: string,
-    data: SurveyData,
-    token?: string,
-): Promise<SurveyData> => {
-    //console.log("data", data);
-    //const collectedData = transformCollectedArray(data?.data?.COLLECTED)
-    // const collectedData =  data?.data?.COLLECTED;
-    // if (data.data) {
-    //     data.data.COLLECTED = collectedData;
-    // }
-    const stateData = data.stateData;
-    const putLunaticData = axios.put(
-        `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/data`,
-        data.data,
-        getHeader(stromaeBackOfficeApiBaseUrl, token),
-    );
-
-    const putStateData = axios.put(
-        `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/state-data`,
-        stateData,
-        getHeader(stromaeBackOfficeApiBaseUrl, token),
-    );
-
-    return Promise.all([putLunaticData, putStateData])
-        .then(() => {
-            return data;
-        })
-        .catch(error => {
-            throw error;
-        });
-};
-
-const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<SurveyData> => {
-    const now = new Date();
-    const tokenExpiresAt = jwt<JwtPayload>(getUserToken() ?? "").exp;
-    // * 1000 because tokenExpiresAt is in seconds and now.getTime() in milliseconds
-    if (!tokenExpiresAt || tokenExpiresAt * 1000 < now.getTime()) {
-        let auth = getAuth();
-        return auth.userManager
-            .signinSilent()
-            .then((user: User | null) => {
-                return requestPutSurveyData(idSurvey, data, user?.access_token);
-            })
-            .catch(err => {
-                logout();
-                return Promise.reject(err);
-            });
-    } else {
-        return requestPutSurveyData(idSurvey, data);
-    }
-};
-
-const remotePutSurveyDataReviewer = (
-    idSurvey: string,
-    stateData: StateData,
-    data: LunaticData,
-): Promise<SurveyData> => {
-    //Temporar check on token validity to avoid 401 error, if not valid, reload page
-    //#
-    const now = new Date();
-    const tokenExpiresAt = jwt<JwtPayload>(getUserToken() ?? "").exp;
-    // * 1000 because tokenExpiresAt is in seconds and now.getTime() in milliseconds
-    if (!tokenExpiresAt || tokenExpiresAt * 1000 < now.getTime()) {
-        let auth = getAuth();
-        return auth.userManager
-            .signinSilent()
-            .then((user: User | null) => {
-                return requestPutSurveyDataReviewer(idSurvey, data, stateData, user?.access_token);
-            })
-            .catch(err => {
-                logout();
-                return Promise.reject(err);
-            });
-    } else {
-        return requestPutSurveyDataReviewer(idSurvey, data, stateData);
-    }
-};
-
-const requestPutDataReviewer = (
-    idSurvey: string,
-    data: LunaticData,
-    token?: string,
-): Promise<LunaticData> => {
-    const lunaticData: LunaticData = token ? transformCollectedArray(data?.COLLECTED) : data?.COLLECTED;
-    return new Promise<LunaticData>(resolve => {
-        axios
-            .put(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
-                lunaticData,
-                getHeader(stromaeBackOfficeApiBaseUrl, token),
-            )
-            .then(() => {
-                return resolve(data);
-            });
-    });
-};
-
-const requestPutStateReviewer = (
-    idSurvey: string,
-    data: StateData,
-    token?: string,
-): Promise<StateData> => {
-    return new Promise<StateData>(resolve => {
-        axios
-            .put(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
-                data,
-                getHeader(stromaeBackOfficeApiBaseUrl, token),
-            )
-            .then(() => {
-                return resolve(data);
-            })
-            .catch(err => {
-                if (err.response?.status == 404) {
-                    const stateData = {
-                        state: StateDataStateEnum.INIT,
-                        date: Date.now(),
-                        currentPage: 0,
-                    };
-                    return resolve(stateData);
-                }
-            });
-    });
-};
-
-const requestPutSurveyDataReviewer = (
-    idSurvey: string,
-    data: LunaticData,
-    stateData: StateData,
-    token?: string,
-): Promise<SurveyData> => {
-    return requestPutDataReviewer(idSurvey, data, token).then(() => {
-        requestPutStateReviewer(idSurvey, stateData, token);
-        const surveyData: SurveyData = {
-            stateData: stateData,
-            data: data,
-        };
-        return surveyData;
-    });
-};
-
-const logout = () => {
-    let auth = getAuth();
-    auth.userManager
-        .signoutRedirect({
-            id_token_hint: localStorage.getItem("id_token") ?? undefined,
-        })
-        .then(() => auth.userManager.clearStaleState())
-        .then(() => auth.userManager.signoutRedirectCallback())
-        .then(() => {
-            sessionStorage.clear();
-            localStorage.clear();
-        })
-        .then(() => auth.userManager.clearStaleState())
-        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL ?? ""));
-};
-
 const remoteGetSurveyData = (
     idSurvey: string,
     setError?: (error: ErrorCodeEnum) => void,
@@ -374,7 +182,6 @@ const remoteGetSurveyData = (
                 getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {
-                console.log("response.data", response.data);
                 if (response.data.COLLECTED != null) {
                     const revertedTranformedData = revertTransformedArray(response.data.COLLECTED);
                     response.data.COLLECTED = revertedTranformedData;
@@ -404,7 +211,6 @@ const requestGetDataReviewer = (
             )
             .then(response => {
                 if (response.data != null) {
-                    console.log("response.data requestGetDataReviewer", response.data);
                     const revertedTranformedData = revertTransformedArray(response.data.COLLECTED);
                     response.data.COLLECTED = revertedTranformedData;
                     resolve(response.data);
@@ -497,9 +303,6 @@ export {
     fetchReviewerSurveysAssignments,
     fetchSurveysSourcesByIds,
     fetchUserSurveysInfo,
-    logout,
     remoteGetSurveyData,
     remoteGetSurveyDataReviewer,
-    remotePutSurveyData,
-    remotePutSurveyDataReviewer,
 };
