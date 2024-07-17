@@ -85,7 +85,6 @@ const WeeklyPlannerPage = () => {
 
     // TODO: fix null check & move elsewhere  & fix questionnaire model (temp solution)
     const initializeCollectedFields = (dataBdd: LunaticData, fieldsToInitialize: FieldNameEnum[]) => {
-        console.log("initializeCollectedFields");
         if (dataBdd.COLLECTED !== undefined) {
             fieldsToInitialize.forEach(field => {
                 if (!dataBdd.COLLECTED?.[field]) {
@@ -104,10 +103,8 @@ const WeeklyPlannerPage = () => {
 
     const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
         const dataBdd = getData(idSurvey);
-        console.log("data", data);
         if (data && data[1].length > 0) {
             if (dataBdd.COLLECTED) {
-                console.log("DataBdd", dataBdd);
                 initializeCollectedFields(dataBdd, [
                     FieldNameEnum.WEEKLYPLANNER,
                     FieldNameEnum.DATES,
@@ -148,7 +145,7 @@ const WeeklyPlannerPage = () => {
                     dataCopy.COLLECTED[name].COLLECTED = quartier;
                 }
             });
-            saveData(idSurveyResponse, dataCopy);
+            saveDataLocally(idSurveyResponse, dataCopy);
         }
 
         if (
@@ -169,8 +166,7 @@ const WeeklyPlannerPage = () => {
                     dataCopy.COLLECTED[name].EDITED = quartier;
                 }
             });
-            console.log("saveData duration");
-            saveData(idSurveyResponse, dataCopy);
+            saveDataLocally(idSurveyResponse, dataCopy);
         }
     };
 
@@ -296,7 +292,6 @@ const WeeklyPlannerPage = () => {
     const onHelp = useCallback(() => {
         setIsHelpMenuOpen(true);
     }, []);
-
     return (
         <ErrorBoundary FallbackComponent={ErrorProvider}>
             <Box

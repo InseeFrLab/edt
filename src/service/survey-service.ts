@@ -61,6 +61,7 @@ import {
 } from "utils/utils";
 import { validate } from "uuid";
 import workTimeSource from "work-time-survey.json";
+import placeWorkSource from "utils/placeWork.json";
 import { EdtUserRightsEnum } from "./../enumerations/EdtUserRightsEnum";
 import { LunaticData } from "./../interface/lunatic/Lunatic";
 import {
@@ -1236,8 +1237,14 @@ const getActivitySource = () => {
     return sourcesData != null ? sourcesData.edtActivitySurvey : activitySurveySource;
 };
 
+//TODO: Temp solution as place work does not exist
 const getWorkTimeSource = () => {
-    return sourcesData != null ? sourcesData.edtWorkTimeSurvey : workTimeSource;
+    if (sourcesData?.edtWorkTimeSurvey) {
+        const data = { ...sourcesData.edtWorkTimeSurvey, ...placeWorkSource };
+        return data;
+    } else {
+        return workTimeSource;
+    }
 };
 
 const getSource = (refName: SourcesEnum) => {

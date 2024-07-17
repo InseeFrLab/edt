@@ -21,6 +21,7 @@ import { getData, getSource, getSurveyRights, getTabsData } from "service/survey
 
 const ActivityPage = () => {
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
+    console.log("source ActivityPage", source);
     const navigate = useNavigate();
 
     const context: OrchestratorContext = useOutletContext();
