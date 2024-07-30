@@ -23,6 +23,7 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { isMobile } from "service/responsive";
+import Icon from "../Icon/Icon";
 import {
     getData,
     getPrintedSurveyDate,
@@ -30,7 +31,6 @@ import {
     getSurveyRights,
     getValue,
 } from "service/survey-service";
-import Icon from "../Icon/Icon";
 
 interface PersonCardProps {
     values: Person[];

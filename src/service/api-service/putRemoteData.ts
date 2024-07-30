@@ -2,13 +2,14 @@
 
 import axios from "axios";
 import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
+import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { SurveyData, StateData } from "interface/entity/Api";
 import { LunaticData } from "interface/lunatic/Lunatic";
 import { User } from "oidc-react";
 import { getUserToken, getAuth } from "service/user-service";
 import { stromaeBackOfficeApiBaseUrl, getHeader } from "./getRemoteData";
 import jwt, { JwtPayload } from "jwt-decode";
-import { logout, logoutClearData } from "service/auth-service";
+import { logout } from "service/auth-service";
 
 const transformCollectedArray = (dataAct: any) => {
     const transformedDataAct: { [key: string]: any } = {};
@@ -24,12 +25,14 @@ const requestPutSurveyData = (
     data: SurveyData,
     token?: string,
 ): Promise<SurveyData> => {
-    //console.log("data", data);
-    //const collectedData = transformCollectedArray(data?.data?.COLLECTED)
-    // const collectedData =  data?.data?.COLLECTED;
-    // if (data.data) {
-    //     data.data.COLLECTED = collectedData;
-    // }
+    const collectedData = transformCollectedArray(data?.data?.COLLECTED);
+    if (data.data) {
+        if (data.data.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER]) {
+            delete data.data.COLLECTED[FieldNameEnum.WEEKLYPLANNER];
+        }
+        data.data.COLLECTED = collectedData;
+    }
+    console.log("Final data: ", data.data.COLLECTED);
     const stateData = data.stateData;
     const putLunaticData = axios.put(
         `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/data`,
@@ -103,6 +106,10 @@ const requestPutDataReviewer = (
     data: LunaticData,
     token?: string,
 ): Promise<LunaticData> => {
+    data.COLLECTED = transformCollectedArray(data?.COLLECTED);
+    if (data.COLLECTED?.[FieldNameEnum.WEEKLYPLANNER]) {
+        delete data.COLLECTED[FieldNameEnum.WEEKLYPLANNER];
+    }
     return new Promise<LunaticData>(resolve => {
         axios
             .put(

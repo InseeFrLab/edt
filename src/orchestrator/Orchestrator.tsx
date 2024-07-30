@@ -118,6 +118,7 @@ const setDataOfWorkTimeReviewer = (
     }
 
     const weeklyPlannerProps = propsWorkTime(source);
+    //console.log('weeklyPlannerProps', weeklyPlannerProps);
     weeklyPlannerProps.forEach(prop => {
         let dataOfField = dataCollected[prop];
         const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;

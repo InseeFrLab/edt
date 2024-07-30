@@ -971,41 +971,39 @@ const saveData = (
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
 
     if (isChange) {
-        console.log("Saved Data changed, data: ", data);
+        //console.log("Saved Data changed, data: ", data);
         data = saveQualityScore(idSurvey, data);
-        if (!isDemoMode && isReviewerMode && !localSaveOnly && navigator.onLine) {
-            stateData = getSurveyStateData(data, idSurvey);
-            return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
-                stateData.date =
-                    stateData.date < (data.lastLocalSaveDate ?? 0)
-                        ? data.lastLocalSaveDate ?? 0
-                        : stateData.date;
-                data.stateData = stateData;
-                data.lastRemoteSaveDate = stateData.date;
-                return setLocalDatabase(stateData, data, idSurvey);
-            });
+        stateData = getSurveyStateData(data, idSurvey);
+
+        if (!navigator.onLine) {
+            stateData.date = 0;
+            data.stateData = stateData;
+            return setLocalDatabase(stateData, data, idSurvey);
         }
-        //We try to submit each time the local database is updated if the user is online
-        else if (!isDemoMode && !localSaveOnly && navigator.onLine) {
-            stateData = getSurveyStateData(data, idSurvey);
+
+        if (!isDemoMode && !localSaveOnly) {
             stateData.date = data.lastLocalSaveDate ?? Date.now();
             const surveyData: SurveyData = {
                 stateData: stateData,
                 data: data,
             };
             data.lastRemoteSaveDate = stateData.date;
-            return remotePutSurveyData(idSurvey, surveyData).then(() => {
-                data.stateData = stateData;
-                return setLocalDatabase(stateData, data, idSurvey);
-            });
-        } else if (isDemoMode || localSaveOnly || !navigator.onLine) {
-            //offline, always prio local, pour ça stateData 0
-            stateData = getSurveyStateData(data, idSurvey);
-            stateData.date = 0;
-            data.stateData = stateData;
-            return setLocalDatabase(stateData, data, idSurvey);
+
+            if (isReviewerMode) {
+                return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
+                    stateData.date = Math.max(stateData.date, data.lastLocalSaveDate ?? 0);
+                    data.stateData = stateData;
+                    data.lastRemoteSaveDate = stateData.date;
+                    return setLocalDatabase(stateData, data, idSurvey);
+                });
+            } else {
+                return remotePutSurveyData(idSurvey, surveyData).then(() => {
+                    data.stateData = stateData;
+                    return setLocalDatabase(stateData, data, idSurvey);
+                });
+            }
         } else {
-            //jamais
+            stateData.date = 0;
             data.stateData = stateData;
             return setLocalDatabase(stateData, data, idSurvey);
         }
