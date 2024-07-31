@@ -120,7 +120,7 @@ const WeeklyPlannerPage = () => {
                     dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
                 }
 
-                saveDataLocally(idSurvey, dataBdd);
+                saveData(idSurvey, dataBdd);
             }
         }
     };
@@ -132,20 +132,21 @@ const WeeklyPlannerPage = () => {
             getArrayFromSession("DATES")) as string[];
         const currentDateIndex = dates.indexOf(response.date);
         const dataResponse = getData(idSurveyResponse);
+        //console.log("dataResponse", response);
         if (
             !isReviewer() &&
             dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
                 dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
         ) {
             response.names.forEach(name => {
-                let quartier = Object.assign(dataCopy?.COLLECTED?.["S_" + name]?.COLLECTED as string[]);
+                let quartier = Object.assign(dataCopy?.COLLECTED?.[name]?.COLLECTED as string[]);
                 quartier[currentDateIndex] = response.values[name] + "";
 
                 if (dataCopy?.COLLECTED) {
-                    dataCopy.COLLECTED["S_" + name].COLLECTED = quartier;
+                    dataCopy.COLLECTED[name].COLLECTED = quartier;
                 }
             });
-            saveData(idSurveyResponse, dataCopy);
+            saveDataLocally(idSurveyResponse, dataCopy);
         }
 
         if (
@@ -157,14 +158,13 @@ const WeeklyPlannerPage = () => {
         ) {
             response.names.forEach(name => {
                 const responsesValues: string[] =
-                    dataCopy?.COLLECTED?.["S_" + name]?.EDITED ??
-                    dataCopy?.COLLECTED?.["S_" + name]?.COLLECTED;
+                    dataCopy?.COLLECTED?.[name]?.EDITED ?? dataCopy?.COLLECTED?.[name]?.COLLECTED;
                 let quartier = Object.assign(responsesValues ?? []);
 
-                quartier[currentDateIndex] = response.values["S_" + name] + "";
+                quartier[currentDateIndex] = response.values[name] + "";
 
                 if (dataCopy?.COLLECTED) {
-                    dataCopy.COLLECTED["S_" + name].EDITED = quartier;
+                    dataCopy.COLLECTED[name].EDITED = quartier;
                 }
             });
             saveDataLocally(idSurveyResponse, dataCopy);
@@ -239,7 +239,7 @@ const WeeklyPlannerPage = () => {
         if (displayDayOverview) {
             if (isPlaceWorkDisplayed) {
                 console.log("isPlaceWorkDisplayed");
-                saveData(idSurvey, callbackHolder.getData());
+                saveDataLocally(idSurvey, callbackHolder.getData());
                 setDisplayDayOverview(true);
                 setIsPlaceWorkDisplayed(false);
                 isPlaceWorkDisplayed = false;

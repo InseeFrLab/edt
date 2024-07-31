@@ -515,16 +515,20 @@ const getRemoteSavedSurveysDatas = (
                 urlRemote(surveyId, setError)
                     .then((remoteSurveyData: any) => {
                         //TODO: remove any and improve ts types
-                        //console.log("Remote Data", remoteSurveyData);
                         const surveyData = initializeData(remoteSurveyData, surveyId);
                         return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                            //console.log("Local Data", localSurveyData);
                             if (shouldInitData(remoteSurveyData, localSurveyData)) {
                                 const stateData = getSurveyStateData(surveyData, surveyId);
                                 setLocalDatabase(stateData, surveyData, surveyId);
                                 return lunaticDatabase.save(surveyId, surveyData);
                             } else {
                                 if (shouldSaveRemoteData(remoteSurveyData, localSurveyData)) {
+                                    //TEMP: WeeklyPlanner stuff (to be removed)
+                                    const weeklyPlanner =
+                                        localSurveyData?.COLLECTED?.WEEKLYPLANNER ?? null;
+                                    weeklyPlanner &&
+                                        (remoteSurveyData.COLLECTED.WEEKLYPLANNER = weeklyPlanner);
+                                    //console.log("remoteSurveyData", remoteSurveyData);
                                     const stateData = getSurveyStateData(surveyData, surveyId);
                                     setLocalDatabase(stateData, remoteSurveyData, surveyId);
                                     return lunaticDatabase.save(surveyId, surveyData);
@@ -1237,12 +1241,13 @@ const getActivitySource = () => {
 
 //TODO: Temp solution as place work does not exist
 const getWorkTimeSource = () => {
-    if (sourcesData?.edtWorkTimeSurvey) {
-        const data = { ...sourcesData.edtWorkTimeSurvey, ...placeWorkSource };
-        return data;
-    } else {
-        return workTimeSource;
-    }
+    // if (sourcesData?.edtWorkTimeSurvey) {
+    //     const data = { ...sourcesData.edtWorkTimeSurvey, ...placeWorkSource };
+    //     return data;
+    // } else {
+    //     return workTimeSource;
+    // }
+    return workTimeSource;
 };
 
 const getSource = (refName: SourcesEnum) => {
