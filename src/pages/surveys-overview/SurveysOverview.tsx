@@ -107,7 +107,7 @@ const SurveysOverviewPage = () => {
     let campaingsList = getListCampaigns(dataHouseholds, t);
     let [isFilterValidatedSurvey, setIsFilterValidatedSurvey] = React.useState(false);
     let [campaingFilter, setCampaingFilter] = React.useState<string>("all");
-    let [nameOrIdentiantFilter, setNameOrIdentiantFilter] = React.useState<string>("");
+    let [nameOrIdentiantFilter] = React.useState<string>("");
 
     let [searchResult, setSearchResult] = React.useState<Household[] | undefined>(undefined);
     let [filterValidatedResult, setFilterValidatedResult] = React.useState<Household[]>(emptyArray);

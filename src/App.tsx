@@ -6,7 +6,6 @@ import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import "i18n/i18n";
 import { User, useAuth } from "oidc-react";
-import ErrorPage from "pages/error/ErrorPage";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EdtRoutes } from "routes/EdtRoutes";
@@ -142,16 +141,16 @@ const App = () => {
         }
     }, [auth]);
 
-    const errorOrLoadingPage = () => {
-        return !error ? (
-            <LoadingFull
-                message={t("page.home.loading.message")}
-                thanking={t("page.home.loading.thanking")}
-            />
-        ) : (
-            <ErrorPage errorCode={error} atInit={true} />
-        );
-    };
+    // const errorOrLoadingPage = () => {
+    //     return !error ? (
+    //         <LoadingFull
+    //             message={t("page.home.loading.message")}
+    //             thanking={t("page.home.loading.thanking")}
+    //         />
+    //     ) : (
+    //         <ErrorPage errorCode={error} atInit={true} />
+    //     );
+    // };
 
     const loadingPage = () => {
         return <LoadingFull message={t("page.home.loading.message")} />;

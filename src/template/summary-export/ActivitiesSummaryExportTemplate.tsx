@@ -12,12 +12,15 @@ interface ActivitiesSummaryExportTemplateProps {
     exportData: ActivitiesSummaryExportData;
 }
 
+const MyDocument: any = Document;
+const MyPage: any = Page;
+
 const ActivitiesSummaryExportTemplate = (props: ActivitiesSummaryExportTemplateProps) => {
     const { exportData } = props;
     const { t } = useTranslation();
     return (
-        <Document>
-            <Page orientation="landscape" wrap size="A4" style={classes.body}>
+        <MyDocument>
+            <MyPage orientation="landscape" wrap size="A4" style={classes.body}>
                 <View style={classes.headerBox}>
                     <View style={classes.headerRow}>
                         <View>
@@ -62,8 +65,8 @@ const ActivitiesSummaryExportTemplate = (props: ActivitiesSummaryExportTemplateP
                 <DayCharacteristicsExportTemplate exportData={exportData} />
 
                 <DaySummaryExportTemplate exportData={exportData} />
-            </Page>
-        </Document>
+            </MyPage>
+        </MyDocument>
     );
 };
 

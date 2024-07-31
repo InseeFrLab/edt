@@ -28,7 +28,7 @@ import React, { useCallback, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { logout, logoutClearData } from "service/auth-service";
+import { logout } from "service/auth-service";
 import { lunaticDatabase } from "service/lunatic-database";
 import { getNavigatePath, setEnviro } from "service/navigation-service";
 import {

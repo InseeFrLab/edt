@@ -10,8 +10,10 @@
         "@inseefrlab/lunatic-edt": "0.12.6",
         "@mui/material": "^5.10.7",
         "@mui/styles": "^5.12.0",
-        "@react-pdf/font": "2.2.0",
-        "@react-pdf/renderer": "2.1.2",
+        "@react-pdf/font": "2.2.1",
+        "@react-pdf/fontkit": "2.0.2",
+        "@react-pdf/pdfkit": "2.1.0",
+        "@react-pdf/renderer": "2.0.19",
         "@types/elasticlunrjs": "^1.0.0",
         "axios": "^1.2.2",
         "chrome-launcher": "^0.15.2",
@@ -39,9 +41,10 @@
         "workbox-routing": "^6.5.4"
     },
     "resolutions": {
-        "@react-pdf/font": "2.2.0",
-        "@react-pdf/pdfkit": "2.4.0",
-        "react-pdf/pdfjs-dist": "2.0.550"
+        "react-error-overlay": "6.0.9",
+        "@react-pdf/font": "2.2.1",
+        "@react-pdf/fontkit": "2.0.2",
+        "@react-pdf/pdfkit": "2.1.0"
     },
     "devDependencies": {
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
@@ -99,7 +102,9 @@
         "format:check": "npm run _format -- --list-different",
         "prepare": "husky install",
         "serve-build": "npm run build && npx serve -s build",
-        "start-with-lib": "concurrently \"yarn start-rewired\"  \"cd ./node_modules/@inseefrlab/lunatic-edt && tsc-watch\""
+        "start-with-lib": "concurrently \"yarn start-rewired\"  \"cd ./node_modules/@inseefrlab/lunatic-edt && tsc-watch\"",
+        "postinstall": "yarn run fix:react-pdf",
+        "fix:react-pdf": "mv ./node_modules/yoga-layout/src/generated/YGEnums.ts ./node_modules/yoga-layout/src/generated/YGEnums_bkp.ts || echo \"not found or already processed\""
     },
     "eslintConfig": {
         "extends": [

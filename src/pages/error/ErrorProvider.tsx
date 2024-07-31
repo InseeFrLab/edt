@@ -1,4 +1,3 @@
-import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import ErrorPage from "./ErrorPage";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { Box, Button, Typography } from "@mui/material";
@@ -13,13 +12,13 @@ import { useCallback } from "react";
 import { lunaticDatabase } from "service/lunatic-database";
 import { navToHome } from "service/navigation-service";
 
-export type ErrorProviderProps = {
-    errorCode?: ErrorCodeEnum;
-    error?: Error;
-    resetErrorBoundary?: () => void;
-};
+// export type ErrorProviderProps = {
+//     errorCode?: ErrorCodeEnum;
+//     error?: Error;
+//     resetErrorBoundary?: () => void;
+// };
 
-const ErrorProvider = ({ errorCode, error }: ErrorProviderProps) => {
+const ErrorProvider = () => {
     const { t } = useTranslation();
     const { classes } = useStyles();
     const auth = useAuth();

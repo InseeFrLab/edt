@@ -34,7 +34,7 @@ import { ActivitiesSummaryExportData } from "interface/entity/ActivitiesSummary"
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder } from "orchestrator/Orchestrator";
-import ErrorPage from "pages/error/Error";
+import ErrorPage from "pages/error/ErrorPage";
 import React, { useCallback, useEffect, useState } from "react";
 import { TFunction, useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
