@@ -2,7 +2,6 @@
 
 import axios from "axios";
 import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { SurveyData, StateData } from "interface/entity/Api";
 import { LunaticData } from "interface/lunatic/Lunatic";
 import { User } from "oidc-react";

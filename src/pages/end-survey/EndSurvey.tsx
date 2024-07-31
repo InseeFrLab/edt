@@ -101,24 +101,23 @@ const EndSurveyPage = () => {
             data: dataWithIsEnvoyed ?? callbackHolder.getData(),
         };
 
-        if (!isDemoMode && !isReviewer() && navigator.onLine) {
-            return remotePutSurveyData(idSurvey, surveyData)
-                .then(surveyDataAnswer => {
-                    surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
-                    return saveDataAndInit(surveyData, true);
-                })
-                .catch(() => {
-                    setErrorSubmit(true);
-                });
-        } else if (!isDemoMode && isReviewer() && navigator.onLine) {
-            return remotePutSurveyDataReviewer(idSurvey, stateData, surveyData.data)
-                .then(surveyDataAnswer => {
-                    surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
-                    return saveDataAndInit(surveyData, true);
-                })
-                .catch(() => {
-                    setErrorSubmit(true);
-                });
+        const handleSuccess = (surveyDataAnswer: any) => {
+            surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
+            return saveDataAndInit(surveyData, true);
+        };
+
+        const handleError = () => {
+            setErrorSubmit(true);
+        };
+
+        if (!isDemoMode && navigator.onLine) {
+            if (isReviewer()) {
+                return remotePutSurveyDataReviewer(idSurvey, stateData, surveyData.data)
+                    .then(handleSuccess)
+                    .catch(handleError);
+            } else {
+                return remotePutSurveyData(idSurvey, surveyData).then(handleSuccess).catch(handleError);
+            }
         } else {
             return saveDataAndInit(surveyData, true);
         }

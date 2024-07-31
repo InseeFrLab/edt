@@ -238,13 +238,11 @@ const WeeklyPlannerPage = () => {
     const validateAndNav = (): void => {
         if (displayDayOverview) {
             if (isPlaceWorkDisplayed) {
-                console.log("isPlaceWorkDisplayed");
                 saveDataLocally(idSurvey, callbackHolder.getData());
                 setDisplayDayOverview(true);
                 setIsPlaceWorkDisplayed(false);
                 isPlaceWorkDisplayed = false;
             } else {
-                console.log("!isPlaceWorkDisplayed");
                 save(idSurvey);
                 setDisplayDayOverview(false);
             }

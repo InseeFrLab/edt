@@ -7,7 +7,7 @@ import { LunaticData, ReferentielData, SourceData } from "interface/lunatic/Luna
 
 import { AuthContextProps } from "oidc-react";
 import { initStateData, initSurveyData } from "../survey-service";
-import { getAuth, getUserToken, isReviewer } from "../user-service";
+import { getUserToken, isReviewer } from "../user-service";
 
 export const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
 export const stromaeBackOfficeApiBaseUrl = process.env.REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL;

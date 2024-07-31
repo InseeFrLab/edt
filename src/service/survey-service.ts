@@ -61,7 +61,7 @@ import {
 } from "utils/utils";
 import { validate } from "uuid";
 import workTimeSource from "work-time-survey.json";
-import placeWorkSource from "utils/placeWork.json";
+//import placeWorkSource from "utils/placeWork.json";
 import { EdtUserRightsEnum } from "./../enumerations/EdtUserRightsEnum";
 import { LunaticData } from "./../interface/lunatic/Lunatic";
 import {
