@@ -208,7 +208,6 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                 [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
                 [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
             };
-            console.log("initDataForSurveys");
             const innerPromises: Promise<any>[] = [
                 getRemoteSavedSurveysDatas(allSurveysIds, setError).then(() => {
                     return initializeSurveysDatasCache(allSurveysIds);
@@ -290,7 +289,6 @@ const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void
                 }),
             );
             if (navigator.onLine) {
-                console.log("initializeSurveysIdsAndSources");
                 promises.push(
                     getRemoteSavedSurveysDatas(surveysIdsAct, setError).then(() => {
                         return initializeSurveysDatasCache(surveysIdsAct);
@@ -582,7 +580,6 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
             for (const idSurvey of idSurveysToInit) {
                 promises.push(initializeDatasCache(idSurvey));
             }
-            console.log("initializeSurveysDatasCache");
             promises.push(
                 lunaticDatabase.get(USER_SURVEYS_DATA).then(data => {
                     userDatas = (data as UserSurveysData)?.data;
@@ -975,7 +972,6 @@ const saveData = (
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
 
     if (isChange) {
-        //console.log("Saved Data changed, data: ", data);
         data = saveQualityScore(idSurvey, data);
         stateData = getSurveyStateData(data, idSurvey);
 
@@ -1649,7 +1645,6 @@ const userDatasMap = () => {
         if (u1.num == u2.num) return u1.firstName.localeCompare(u2.firstName);
         else return u1.num > u2.num ? 1 : -1;
     });
-    console.log("User Data Map:", userMap);
     return userMap;
 };
 

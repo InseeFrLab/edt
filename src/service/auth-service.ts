@@ -64,7 +64,6 @@ const createUserManager = () => {
         metadata: navigator.onLine ? METADATA_OIDC : undefined,
     });
 
-    console.log("create userManager", userManager);
     userManager.events.addUserLoaded(user => {
         console.log("add user", user);
         setUserToken(user?.access_token || "");

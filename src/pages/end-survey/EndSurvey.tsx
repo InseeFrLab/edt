@@ -109,7 +109,6 @@ const EndSurveyPage = () => {
         const handleError = () => {
             setErrorSubmit(true);
         };
-
         if (!isDemoMode && navigator.onLine) {
             if (isReviewer()) {
                 return remotePutSurveyDataReviewer(idSurvey, stateData, surveyData.data)

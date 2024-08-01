@@ -132,7 +132,6 @@ const WeeklyPlannerPage = () => {
             getArrayFromSession("DATES")) as string[];
         const currentDateIndex = dates.indexOf(response.date);
         const dataResponse = getData(idSurveyResponse);
-        //console.log("dataResponse", response);
         if (
             !isReviewer() &&
             dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==

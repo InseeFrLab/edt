@@ -39,7 +39,6 @@ interface PersonCardProps {
 
 const PersonCard = (props: PersonCardProps) => {
     const { values, numPerson } = props;
-    //console.log('Values', values);
     const { t } = useTranslation();
     const navigate = useNavigate();
 

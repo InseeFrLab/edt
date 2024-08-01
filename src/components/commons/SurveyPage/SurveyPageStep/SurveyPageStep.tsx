@@ -169,7 +169,6 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         forceQuit: boolean,
         setIsModalDisplayed: (value: SetStateAction<boolean>) => void,
     ): void => {
-        console.log("validateAndNav");
         if (forceQuit) {
             saveAndNav(idSurvey);
         } else {

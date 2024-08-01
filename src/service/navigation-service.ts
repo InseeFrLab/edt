@@ -207,7 +207,7 @@ const saveAndNav = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
-    saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey)).then(() => {
+    saveData(idSurvey, getData(idSurvey)).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
@@ -625,7 +625,6 @@ const saveAndLoopNavigate = (
     value?: FieldNameEnum,
     routeNotSelection?: EdtRoutesNameEnum,
 ) => {
-    console.log("Save and Loop Navigate");
     const pathRoute = getLoopPageOrActivityPlanner(idSurvey, source, page, loop, iteration);
     if (value && routeNotSelection) {
         const pathRouteNotSelection = getLoopPageOrActivityPlanner(
@@ -648,7 +647,6 @@ const saveAndLoopNavigateLocally = (
     value?: FieldNameEnum,
     routeNotSelection?: EdtRoutesNameEnum,
 ) => {
-    console.log("Save and Loop Navigate Locally");
     const pathRoute = getLoopPageOrActivityPlanner(idSurvey, source, page, loop, iteration);
     if (value && routeNotSelection) {
         const pathRouteNotSelection = getLoopPageOrActivityPlanner(
@@ -686,7 +684,6 @@ const loopNavigate = (
     value?: FieldNameEnum,
     routeNotSelection?: EdtRoutesNameEnum,
 ) => {
-    console.log("Save and Loop Navigate");
     const pathRoute = getLoopPageOrActivityPlanner(idSurvey, source, page, loop, iteration);
     if (value && routeNotSelection) {
         const pathRouteNotSelection = getLoopPageOrActivityPlanner(

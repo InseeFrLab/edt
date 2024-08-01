@@ -56,7 +56,6 @@ const KindOfWeekPage = () => {
         cancel: t("page.alert-when-quit.alert-cancel"),
         complete: t("page.alert-when-quit.alert-complete"),
     };
-
     return (
         <SurveyPage
             idSurvey={idSurvey}

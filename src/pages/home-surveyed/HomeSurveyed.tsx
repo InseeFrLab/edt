@@ -81,7 +81,6 @@ const HomeSurveyedPage = () => {
                     setInitialized(true);
                 }
                 setDatas(userDatas);
-                console.log("userDatas", userDatas);
             });
         });
     };
@@ -261,7 +260,6 @@ const HomeSurveyedPage = () => {
 
     const renderHomeInterviewer = () => {
         let userDataGroupedInterv = nameSurveyGroupMap();
-        //console.log("userDataGroupedInterv", userDataGroupedInterv);
         let groups = Object.keys(userDataGroupedInterv);
         return (
             <>

@@ -267,7 +267,6 @@ const requestGetSurveyDataReviewer = (
                     stateData: stateData,
                     data: data,
                 };
-                console.log("requestGetSurveyDataReviewer", surveyData);
                 resolve(surveyData);
             });
         });
@@ -282,7 +281,6 @@ const remoteGetSurveyDataReviewer = (
     if (!isReviewerMode) setError?.(ErrorCodeEnum.NO_RIGHTS);
     return requestGetSurveyDataReviewer(idSurvey, setError)
         .then(response => {
-            console.log("response remoteGetSurveyDataReviewer", response);
             return response;
         })
         .catch(err => {

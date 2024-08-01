@@ -166,7 +166,6 @@ const onFinish = (
 ) => {
     if (closed) {
         const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
-        console.log("Save data on closed");
         saveData(idSurvey, data ?? callbackHolder.getData(), false, true).then(() => {
             navigate(
                 getCurrentNavigatePath(
@@ -314,7 +313,6 @@ const init = (
     setError: React.Dispatch<React.SetStateAction<ErrorCodeEnum | undefined>>,
     setInitialized: (value: React.SetStateAction<boolean>) => void,
 ) => {
-    console.log("init");
     if (navigator.onLine && !isDemoMode()) {
         refreshSurvey(idSurvey, setError).finally(() => {
             setInitialized(true);
