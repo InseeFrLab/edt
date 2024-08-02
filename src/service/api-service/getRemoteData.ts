@@ -1,11 +1,7 @@
-import { NomenclatureActivityOption } from "@inseefrlab/lunatic-edt";
 import axios from "axios";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
-import { LunaticData, ReferentielData, SourceData } from "interface/lunatic/Lunatic";
-
-import { AuthContextProps } from "oidc-react";
+import { LunaticData, SourceData } from "interface/lunatic/Lunatic";
 import { initStateData, initSurveyData } from "../survey-service";
 import { getUserToken, isReviewer } from "../user-service";
 
@@ -42,59 +38,6 @@ const revertTransformedArray = (dataAct: any) => {
         revertedDataAct[revertedKey] = dataAct[key];
     });
     return revertedDataAct;
-};
-
-const fetchReferentiel = (auth: AuthContextProps, idReferentiel: ReferentielsEnum) => {
-    return axios.get<NomenclatureActivityOption[]>(
-        stromaeBackOfficeApiBaseUrl + "api/nomenclature/" + idReferentiel,
-        getHeader(stromaeBackOfficeApiBaseUrl),
-    );
-};
-
-export const fetchReferentiels = (
-    setError: (error: ErrorCodeEnum) => void,
-): Promise<ReferentielData> => {
-    let refs: ReferentielData = {
-        [ReferentielsEnum.ACTIVITYNOMENCLATURE]: [],
-        [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: [],
-        [ReferentielsEnum.ROUTE]: [],
-        [ReferentielsEnum.MEANOFTRANSPORT]: [],
-        [ReferentielsEnum.ACTIVITYSECONDARYACTIVITY]: [],
-        [ReferentielsEnum.ROUTESECONDARYACTIVITY]: [],
-        [ReferentielsEnum.LOCATION]: [],
-        [ReferentielsEnum.KINDOFWEEK]: [],
-        [ReferentielsEnum.KINDOFDAY]: [],
-        [ReferentielsEnum.ACTIVITYGOAL]: [],
-    };
-    let refsEndPoints: string[] = [];
-    Object.values(ReferentielsEnum).forEach(value => {
-        refsEndPoints.push("api/nomenclature/" + value);
-    });
-
-    return new Promise(resolve => {
-        axios
-            .all(
-                refsEndPoints.map(endPoint =>
-                    axios.get(
-                        stromaeBackOfficeApiBaseUrl + endPoint,
-                        getHeader(stromaeBackOfficeApiBaseUrl),
-                    ),
-                ),
-            )
-            .then(res => {
-                Object.values(ReferentielsEnum).forEach((key, index) => {
-                    refs[key as ReferentielsEnum] = res[index].data;
-                });
-                resolve(refs);
-            })
-            .catch(err => {
-                if (err.response?.status === 403) {
-                    setError(ErrorCodeEnum.NO_RIGHTS);
-                } else {
-                    setError(ErrorCodeEnum.UNREACHABLE_NOMENCLATURES);
-                }
-            });
-    });
 };
 
 const fetchUserSurveysInfo = (setError: (error: ErrorCodeEnum) => void): Promise<UserSurveys[]> => {
@@ -297,7 +240,6 @@ const remoteGetSurveyDataReviewer = (
 };
 
 export {
-    fetchReferentiel,
     fetchReviewerSurveysAssignments,
     fetchSurveysSourcesByIds,
     fetchUserSurveysInfo,

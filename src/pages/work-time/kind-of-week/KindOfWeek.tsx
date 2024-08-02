@@ -16,7 +16,7 @@ import {
     getParameterizedNavigatePath,
     navFullPath,
     onClose,
-    saveAndNav,
+    saveAndNavLocally,
     setEnviro,
     validate,
     validateWithAlertAndNav,
@@ -45,7 +45,7 @@ const KindOfWeekPage = () => {
     const specificProps: CheckboxOneSpecificProps = {
         icon: <CalendarWeekImg aria-label={t("accessibility.asset.kind-of-week-alt")} />,
         onSelectValue: () => {
-            validate(idSurvey).then(() => saveAndNav(idSurvey, routeEnd));
+            validate(idSurvey).then(() => saveAndNavLocally(idSurvey, routeEnd));
         },
         extensionIcon: <ExtensionIcon aria-label={t("accessibility.asset.mui-icon.extension")} />,
     };

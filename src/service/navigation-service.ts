@@ -206,8 +206,9 @@ const saveAndNav = (
     value?: FieldNameEnum,
     routeNotSelection?: string,
     currentIteration?: number,
+    forceUpdate?: boolean,
 ): void => {
-    saveData(idSurvey, getData(idSurvey)).then(() => {
+    saveData(idSurvey, getData(idSurvey), forceUpdate).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
@@ -230,7 +231,7 @@ const saveAndNavLocally = (
  */
 const closeFormularieAndNav = (idSurvey: string, route: string) => {
     const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
-    saveData(idSurvey, data ?? _callbackHolder.getData()).then(() => {
+    saveData(idSurvey, data).then(() => {
         _navigate(route);
     });
 };
@@ -241,6 +242,7 @@ const closeFormularieAndNav = (idSurvey: string, route: string) => {
  * we need to make the call twice to be able to retrieve the current state of the database
  */
 const validate = (idSurvey: string): Promise<void | LunaticData> => {
+    console.log("validate");
     return saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), true).then(() => {
         return saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), false);
     });
@@ -755,6 +757,7 @@ const onClose = (
     const route = isActivity ? pathNav : weeklyPlannerRoute;
 
     if (hasRights) {
+        console.log("hasRights");
         validateWithAlertAndNav(idSurvey, forceQuit, setIsAlertDisplayed, iteration, route);
     } else {
         _navigate(route);

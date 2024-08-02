@@ -435,7 +435,7 @@ const ActivityOrRoutePlannerPage = () => {
         );
         contextIteration = loopSize - 1;
         const routeData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
-        saveDataLocally(idSurvey, routeData).then(() => {
+        saveData(idSurvey, routeData).then(() => {
             navToActivityOrRoute(idSurvey, contextIteration, isRouteBool);
         });
     };
@@ -455,7 +455,7 @@ const ActivityOrRoutePlannerPage = () => {
         setValueOrNull(idSurvey, FieldNameEnum.START_TIME, startTime, contextIteration);
         setValueOrNull(idSurvey, FieldNameEnum.END_TIME, endTime, contextIteration);
         const updatedData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
-        saveDataLocally(idSurvey, updatedData).then(() => {
+        saveData(idSurvey, updatedData).then(() => {
             onCloseAddActivityOrRoute();
             setIsRoute(isRouteBool);
             navigate(

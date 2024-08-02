@@ -5,7 +5,7 @@ import {
     transformToWeeklyPlannerDataType,
 } from "@inseefrlab/lunatic-edt";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
-import activitySurveySource from "activity-survey.json";
+import { edtActivitySurvey } from "assets/surveyData";
 import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -174,7 +174,7 @@ const createActivitiesOrRoutes = (
     t: TFunction<"translation", undefined>,
 ) => {
     let activitiesRoutes: ActivityRouteOrGap[] = [];
-    const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE, activitySurveySource);
+    const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE, edtActivitySurvey);
 
     for (let i = 0; i < activityLoopSize; i++) {
         let activityOrRoute: ActivityRouteOrGap = {};
@@ -277,7 +277,7 @@ const getActivitiesOrRoutes = (
 } => {
     let overlaps = [];
     let activitiesRoutes: ActivityRouteOrGap[] = [];
-    if (source == null) source = activitySurveySource;
+    if (source == null) source = edtActivitySurvey;
 
     activitiesRoutes = createActivitiesOrRoutes(idSurvey, source, t);
     activitiesRoutes.sort(

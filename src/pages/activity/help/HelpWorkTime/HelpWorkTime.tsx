@@ -36,6 +36,7 @@ import {
     navToHelp,
     navToHome,
     saveAndNav,
+    saveAndNavLocally,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import {
@@ -234,7 +235,7 @@ const HelpWorkTime = () => {
                 idSurvey={idSurvey}
                 validate={useCallback(() => console.log(""), [])}
                 onNavigateBack={useCallback(() => console.log(""), [])}
-                onPrevious={useCallback(() => saveAndNav(idSurvey), [])}
+                onPrevious={useCallback(() => saveAndNavLocally(idSurvey), [])}
                 onEdit={useCallback(() => console.log(""), [])}
                 onHelp={navToHelp}
                 firstName={getPrintedFirstName(idSurvey)}

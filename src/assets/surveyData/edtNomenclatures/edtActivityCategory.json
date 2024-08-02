@@ -1,0 +1,863 @@
+[
+    {
+        "id": "100",
+        "rang": 1,
+        "subs": [
+            {
+                "id": "110",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "111",
+                        "rang": 3,
+                        "label": "Dormir (hors sieste)"
+                    },
+                    {
+                        "id": "114",
+                        "rang": 3,
+                        "label": "Sieste"
+                    },
+                    {
+                        "id": "112",
+                        "rang": 3,
+                        "label": "Au lit et malade"
+                    },
+                    {
+                        "id": "113",
+                        "rang": 3,
+                        "label": "Etre au lit sans dormir, insomnies"
+                    }
+                ],
+                "label": "Etre au lit"
+            },
+            {
+                "id": "120",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "121",
+                        "rang": 3,
+                        "label": "Se laver, hygiène (se maquiller, se raser)"
+                    },
+                    {
+                        "id": "122",
+                        "rang": 3,
+                        "label": "S’habiller, se déshabiller"
+                    },
+                    {
+                        "id": "125",
+                        "rang": 3,
+                        "label": "Soins professionnels  (coiffeur, esthétique)"
+                    }
+                ],
+                "label": "Prendre soin de son corps"
+            },
+            {
+                "id": "130",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "131",
+                        "rang": 3,
+                        "label": "Se soigner à domicile, prendre un médicament"
+                    },
+                    {
+                        "id": "135",
+                        "rang": 3,
+                        "label": "Soins par un médecin ou autre professionnel de santé"
+                    }
+                ],
+                "label": "Soins médicaux"
+            },
+            {
+                "id": "140",
+                "rang": 2,
+                "label": "Manger"
+            },
+            {
+                "id": "151",
+                "rang": 2,
+                "label": "Autres activités personnelles"
+            }
+        ],
+        "label": "Temps personnel (dormir, se laver, manger …)"
+    },
+    {
+        "id": "200",
+        "rang": 1,
+        "subs": [
+            {
+                "id": "210",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "215",
+                        "rang": 3,
+                        "label": "Travail rémunéré"
+                    },
+                    {
+                        "id": "213",
+                        "rang": 3,
+                        "label": "Déplacements pendant le travail"
+                    },
+                    {
+                        "id": "221",
+                        "rang": 3,
+                        "label": "Aide au travail d’un membre de sa famille"
+                    },
+                    {
+                        "id": "223",
+                        "rang": 3,
+                        "label": "Petits boulots (yc non déclaré)"
+                    },
+                    {
+                        "id": "231",
+                        "rang": 3,
+                        "label": "Pauses, cafés, pots, temps d’attente"
+                    },
+                    {
+                        "id": "232",
+                        "rang": 3,
+                        "label": "Grèves"
+                    },
+                    {
+                        "id": "233",
+                        "rang": 3,
+                        "label": "Se changer avant et après le travail, pannes"
+                    },
+                    {
+                        "id": "234",
+                        "rang": 3,
+                        "label": "Activités syndicales"
+                    },
+                    {
+                        "id": "241",
+                        "rang": 3,
+                        "label": "Recherche d’emploi"
+                    },
+                    {
+                        "id": "251",
+                        "rang": 3,
+                        "label": "Formation professionnelle"
+                    },
+                    {
+                        "id": "265",
+                        "rang": 3,
+                        "label": "Stage"
+                    }
+                ],
+                "label": "Travail (yc recherche d’emploi, formations)"
+            },
+            {
+                "id": "260",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "261",
+                        "rang": 3,
+                        "label": "Suivre ses cours"
+                    },
+                    {
+                        "id": "262",
+                        "rang": 3,
+                        "label": "Devoirs, révisions"
+                    },
+                    {
+                        "id": "263",
+                        "rang": 3,
+                        "label": "Récréations, temps d’attente, pauses"
+                    },
+                    {
+                        "id": "264",
+                        "rang": 3,
+                        "label": "Stage"
+                    },
+                    {
+                        "id": "271",
+                        "rang": 3,
+                        "label": "Formations (reconversions, congé formation)"
+                    },
+                    {
+                        "id": "272",
+                        "rang": 3,
+                        "label": "Autres cours extra-scolaires (auto-école)"
+                    }
+                ],
+                "label": "Etudes"
+            }
+        ],
+        "label": "Travail et études (recherche d’emploi, formations)"
+    },
+    {
+        "id": "300",
+        "rang": 1,
+        "subs": [
+            {
+                "id": "301",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "310",
+                        "rang": 3,
+                        "subs": [
+                            {
+                                "id": "311",
+                                "rang": 4,
+                                "label": "Cuisiner"
+                            },
+                            {
+                                "id": "313",
+                                "rang": 4,
+                                "label": "Mettre la table"
+                            },
+                            {
+                                "id": "312",
+                                "rang": 4,
+                                "label": "Débarrasser, faire la vaisselle, ranger"
+                            }
+                        ],
+                        "label": "Cuisine"
+                    },
+                    {
+                        "id": "322",
+                        "rang": 3,
+                        "label": "Ranger les courses"
+                    },
+                    {
+                        "id": "324",
+                        "rang": 3,
+                        "label": "Ménage et rangement du domicile"
+                    },
+                    {
+                        "id": "323",
+                        "rang": 3,
+                        "label": "Nettoyer et ranger à l’extérieur"
+                    },
+                    {
+                        "id": "341",
+                        "rang": 3,
+                        "label": "Couper du bois, allumer le feu"
+                    },
+                    {
+                        "id": "325",
+                        "rang": 3,
+                        "label": "Vider les poubelles"
+                    },
+                    {
+                        "id": "330",
+                        "rang": 3,
+                        "subs": [
+                            {
+                                "id": "331",
+                                "rang": 4,
+                                "label": "Trier pour la machine, laver, étendre"
+                            },
+                            {
+                                "id": "332",
+                                "rang": 4,
+                                "label": "Repasser"
+                            },
+                            {
+                                "id": "335",
+                                "rang": 4,
+                                "label": "Ranger ses vêtements, faire sa valise"
+                            },
+                            {
+                                "id": "334",
+                                "rang": 4,
+                                "label": "Repriser, raccommoder, tricoter, coudre"
+                            },
+                            {
+                                "id": "334",
+                                "rang": 4,
+                                "label": "Entretien des chaussures"
+                            }
+                        ],
+                        "label": "Linge"
+                    },
+                    {
+                        "id": "360",
+                        "rang": 3,
+                        "subs": [
+                            {
+                                "id": "342",
+                                "rang": 4,
+                                "label": "Faire ses comptes, faire ses papiers"
+                            },
+                            {
+                                "id": "352",
+                                "rang": 4,
+                                "label": "Acheter des services (ménage, train)"
+                            },
+                            {
+                                "id": "361",
+                                "rang": 4,
+                                "label": "Faire des démarches administratives"
+                            }
+                        ],
+                        "label": "Administratif"
+                    },
+                    {
+                        "id": "343",
+                        "rang": 3,
+                        "label": "Autres activités d’entretien de la maison"
+                    }
+                ],
+                "label": "Tâches ménagères"
+            },
+            {
+                "id": "344",
+                "rang": 2,
+                "label": "Déménagement"
+            },
+            {
+                "id": "351",
+                "rang": 2,
+                "label": "Faire les courses (shopping, marché, alimentaire, internet)"
+            },
+            {
+                "id": "370",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "371",
+                        "rang": 3,
+                        "label": "Gros travaux de construction"
+                    },
+                    {
+                        "id": "372",
+                        "rang": 3,
+                        "label": "Petits travaux de décoration et aménagement"
+                    },
+                    {
+                        "id": "373",
+                        "rang": 3,
+                        "label": "Entretien et réparation d’objets"
+                    }
+                ],
+                "label": "Travaux et bricolage"
+            },
+            {
+                "id": "382",
+                "rang": 2,
+                "label": "Jardinage"
+            },
+            {
+                "id": "374",
+                "rang": 2,
+                "label": "Entretien et réparation des véhicules, vélos"
+            },
+            {
+                "id": "380",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "384",
+                        "rang": 3,
+                        "label": "S’occuper des animaux de compagnie"
+                    },
+                    {
+                        "id": "385",
+                        "rang": 3,
+                        "label": "Promenade du chien"
+                    },
+                    {
+                        "id": "383",
+                        "rang": 3,
+                        "label": "S’occuper des animaux domestiques (usage productif comme les poules)"
+                    }
+                ],
+                "label": "S’occuper des animaux"
+            }
+        ],
+        "label": "Tâches domestiques (ménage, cuisine, courses …)"
+    },
+    {
+        "id": "400",
+        "rang": 1,
+        "subs": [
+            {
+                "id": "410",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "411",
+                        "rang": 3,
+                        "label": "Douche, habillage, repas, coucher"
+                    },
+                    {
+                        "id": "413",
+                        "rang": 3,
+                        "label": "Soins médicaux à l’enfant"
+                    },
+                    {
+                        "id": "414",
+                        "rang": 3,
+                        "label": "Câlin, bisous, berceuse, reproches"
+                    },
+                    {
+                        "id": "421",
+                        "rang": 3,
+                        "label": "Supervision des devoirs"
+                    },
+                    {
+                        "id": "412",
+                        "rang": 3,
+                        "label": "Accompagnement de l’enfant, attente (hors trajet)"
+                    },
+                    {
+                        "id": "425",
+                        "rang": 3,
+                        "label": "Jeux"
+                    },
+                    {
+                        "id": "422",
+                        "rang": 3,
+                        "label": "Conversation (non scolaire), lectures"
+                    }
+                ],
+                "label": "S’occuper de ses enfants"
+            },
+            {
+                "id": "430",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "431",
+                        "rang": 3,
+                        "label": "Douche, habillage, repas, coucher, toilette"
+                    },
+                    {
+                        "id": "432",
+                        "rang": 3,
+                        "label": "Accompagnement (médecin, activité), tenir compagnie (lecture, attente)"
+                    },
+                    {
+                        "id": "433",
+                        "rang": 3,
+                        "label": "Soins médicaux, autres aides"
+                    }
+                ],
+                "label": "S’occuper d’un adulte qui vit sous son toit"
+            }
+        ],
+        "label": "Soins aux enfants ou aux adultes de son logement"
+    },
+    {
+        "id": "440",
+        "rang": 1,
+        "subs": [
+            {
+                "id": "441",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "415",
+                        "rang": 3,
+                        "label": "S’occuper de ses enfants n’habitant pas chez soi"
+                    },
+                    {
+                        "id": "419",
+                        "rang": 3,
+                        "label": "S’occuper d’enfants d’une autre famille pour aider"
+                    },
+                    {
+                        "id": "416",
+                        "rang": 3,
+                        "label": "Garder ses petits-enfants"
+                    },
+                    {
+                        "id": "375",
+                        "rang": 3,
+                        "label": "Aider à des travaux de bricolage ou jardinage"
+                    },
+                    {
+                        "id": "437",
+                        "rang": 3,
+                        "label": "Aide au travail d’un membre de sa famille"
+                    },
+                    {
+                        "id": "438",
+                        "rang": 3,
+                        "label": "Aider ses parents âgés vivant ailleurs (toilette, soins, courses)"
+                    },
+                    {
+                        "id": "439",
+                        "rang": 3,
+                        "label": "Aider une personne adulte vivant ailleurs (toilette, soins, courses)"
+                    }
+                ],
+                "label": "Aider ses voisins, ses amis, sa famille"
+            },
+            {
+                "id": "450",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "420",
+                        "rang": 3,
+                        "label": "S’occuper d’enfants (yc instruction, jeux)"
+                    },
+                    {
+                        "id": "376",
+                        "rang": 3,
+                        "label": "Aider à des travaux de bricolage ou jardinage"
+                    },
+                    {
+                        "id": "543",
+                        "rang": 3,
+                        "label": "Aide aux personnes en difficulté"
+                    },
+                    {
+                        "id": "542",
+                        "rang": 3,
+                        "label": "Réunions et autres activités de bénévolat"
+                    }
+                ],
+                "label": "Donner du temps pour une association (sportive, caritative…), bénévolat "
+            }
+        ],
+        "label": "Aide non rémunérée à ses voisins, ses amis, bénévolat"
+    },
+    {
+        "id": "500",
+        "rang": 1,
+        "subs": [
+            {
+                "id": "520",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "521",
+                        "rang": 3,
+                        "label": "Parler, discuter, converser (hors travail) "
+                    },
+                    {
+                        "id": "522",
+                        "rang": 3,
+                        "label": "Communiquer par téléphone ou en audio/vidéo (skype, whatsapp, facetime)"
+                    },
+                    {
+                        "id": "523",
+                        "rang": 3,
+                        "label": "Communiquer par écrit (SMS, messages instantanés, courriel, carte postale…)"
+                    }
+                ],
+                "label": "Communication"
+            },
+            {
+                "id": "524",
+                "rang": 2,
+                "label": "Réseaux sociaux"
+            },
+            {
+                "id": "515",
+                "rang": 2,
+                "label": "Recevoir/visiter des amis, de la famille (hors repas)"
+            },
+            {
+                "id": "510",
+                "rang": 2,
+                "label": "Sorties et réceptions associatives"
+            },
+            {
+                "id": "516",
+                "rang": 2,
+                "label": "Sorties (café, bar, discothèque, hors repas)"
+            },
+            {
+                "id": "533",
+                "rang": 2,
+                "label": "Assister à une cérémonie, à une fête"
+            },
+            {
+                "id": "530",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "532",
+                        "rang": 3,
+                        "label": "Assister à un enterrement, aller au cimetière"
+                    },
+                    {
+                        "id": "531",
+                        "rang": 3,
+                        "label": "Pratiques et lectures religieuses"
+                    },
+                    {
+                        "id": "541",
+                        "rang": 3,
+                        "label": "Activités civiques (voter, donner son sang, réunions politiques, anciens combattants…)"
+                    }
+                ],
+                "label": "Activités civiques ou religieuses"
+            }
+        ],
+        "label": "Interaction sociale (communication, fêtes, religion, vote …)"
+    },
+    {
+        "id": "650",
+        "rang": 1,
+        "subs": [
+            {
+                "id": "652",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "653",
+                        "rang": 3,
+                        "label": "Aller au cinéma"
+                    },
+                    {
+                        "id": "654",
+                        "rang": 3,
+                        "label": "Visiter un musée, une exposition"
+                    },
+                    {
+                        "id": "655",
+                        "rang": 3,
+                        "label": "Aller au spectacle (théâtre, concerts, cirque)"
+                    },
+                    {
+                        "id": "651",
+                        "rang": 3,
+                        "label": "Assister à un événement sportif"
+                    }
+                ],
+                "label": "Sorties culturelles ou sportives"
+            },
+            {
+                "id": "656",
+                "rang": 2,
+                "label": "Aller à la médiathèque"
+            },
+            {
+                "id": "658",
+                "rang": 2,
+                "label": "Autres sorties (foire, zoo, château, …)"
+            }
+        ],
+        "label": "Sorties (culture, évènements, parc d’attraction)"
+    },
+    {
+        "id": "600",
+        "rang": 1,
+        "subs": [
+            {
+                "id": "610",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "626",
+                        "rang": 3,
+                        "label": "Se changer, attendre, nettoyer le matériel…"
+                    },
+                    {
+                        "id": "621",
+                        "rang": 3,
+                        "label": "Marche et randonnée"
+                    },
+                    {
+                        "id": "612",
+                        "rang": 3,
+                        "label": "Athlétisme, footing, course à pied"
+                    },
+                    {
+                        "id": "613",
+                        "rang": 3,
+                        "label": "Cyclisme, ski, skate, patinage"
+                    },
+                    {
+                        "id": "614",
+                        "rang": 3,
+                        "label": "Jeux de balle / ballon"
+                    },
+                    {
+                        "id": "618",
+                        "rang": 3,
+                        "label": "Gymnastique, fitness, yoga"
+                    },
+                    {
+                        "id": "611",
+                        "rang": 3,
+                        "label": "Danse"
+                    },
+                    {
+                        "id": "617",
+                        "rang": 3,
+                        "label": "Sports nautiques"
+                    },
+                    {
+                        "id": "619",
+                        "rang": 3,
+                        "label": "Autres sports (judo, équitation, escalade…)"
+                    }
+                ],
+                "label": "Pratiquer un sport"
+            },
+            {
+                "id": "601",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "620",
+                        "rang": 3,
+                        "label": "Randonnée, marche, promenade à pied"
+                    },
+                    {
+                        "id": "623",
+                        "rang": 3,
+                        "label": "Pêche, chasse"
+                    },
+                    {
+                        "id": "624",
+                        "rang": 3,
+                        "label": "Cueillette de baies, champignons ou plantes"
+                    },
+                    {
+                        "id": "625",
+                        "rang": 3,
+                        "label": "Plage"
+                    },
+                    {
+                        "id": "627",
+                        "rang": 3,
+                        "label": "Promenades motorisées"
+                    }
+                ],
+                "label": "Activités de plein air"
+            },
+            {
+                "id": "660",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "381",
+                        "rang": 3,
+                        "label": "Sculpture, peinture, écriture, modélisme"
+                    },
+                    {
+                        "id": "661",
+                        "rang": 3,
+                        "label": "Chanter, faire de la musique, de la danse, du théâtre"
+                    },
+                    {
+                        "id": "665",
+                        "rang": 3,
+                        "label": "Films, réalisation de vidéos, montage, photos, retouche des photos"
+                    },
+                    {
+                        "id": "666",
+                        "rang": 3,
+                        "label": "Enregistrer de la musique, éditer, arranger (y compris numérique)"
+                    },
+                    {
+                        "id": "664",
+                        "rang": 3,
+                        "label": "Collectionner (timbres, cartes pokemon…)"
+                    }
+                ],
+                "label": "Arts créatifs (yc danse)"
+            },
+            {
+                "id": "670",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "672",
+                        "rang": 3,
+                        "label": "Programmation, logiciels, réparation de l’ordinateur"
+                    },
+                    {
+                        "id": "673",
+                        "rang": 3,
+                        "label": "Rechercher des informations sur Internet, visite de sites"
+                    },
+                    {
+                        "id": "674",
+                        "rang": 3,
+                        "label": "Publier ou surfer sur les médias sociaux (Facebook, Instagram, Twitter, Tumblr, LinkedIn, ...)"
+                    },
+                    {
+                        "id": "675",
+                        "rang": 3,
+                        "label": "Jeux sur ordinateur, console, téléphone"
+                    }
+                ],
+                "label": "Réseaux sociaux, internet, informatique"
+            },
+            {
+                "id": "680",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "671",
+                        "rang": 3,
+                        "label": "Jeux sur ordinateur, console, téléphone"
+                    },
+                    {
+                        "id": "668",
+                        "rang": 3,
+                        "label": "Jeux solitaires (mots croisés, puzzle…)"
+                    },
+                    {
+                        "id": "662",
+                        "rang": 3,
+                        "label": "Jeux à plusieurs (jeux en plein air, cartes, jeux de société, billard…)"
+                    },
+                    {
+                        "id": "663",
+                        "rang": 3,
+                        "label": "Jeux d’argent ou de hasard, paris en ligne"
+                    }
+                ],
+                "label": "Jeux"
+            },
+            {
+                "id": "631",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "633",
+                        "rang": 3,
+                        "label": "Lecture de journaux, revues"
+                    },
+                    {
+                        "id": "632",
+                        "rang": 3,
+                        "label": "Lecture de livres (y compris sur liseuse)"
+                    }
+                ],
+                "label": "Lecture"
+            },
+            {
+                "id": "640",
+                "rang": 2,
+                "subs": [
+                    {
+                        "id": "649",
+                        "rang": 3,
+                        "label": "Regarder la télévision, des DVD, des vidéos en ligne"
+                    },
+                    {
+                        "id": "639",
+                        "rang": 3,
+                        "label": "Écouter la radio, des podcasts ou de la musique"
+                    }
+                ],
+                "label": "Télévision, radio"
+            },
+            {
+                "id": "641",
+                "rang": 2,
+                "label": "Ne rien faire, se détendre (fumer, réfléchir)"
+            },
+            {
+                "id": "991",
+                "rang": 2,
+                "label": "Enquête INSEE"
+            }
+        ],
+        "label": "Loisirs (sports, medias, arts, jeux)"
+    }
+]

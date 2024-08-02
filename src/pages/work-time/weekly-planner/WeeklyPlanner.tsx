@@ -39,6 +39,7 @@ import {
     getOrchestratorPage,
     navFullPath,
     saveAndNav,
+    saveAndNavLocally,
     setEnviro,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
@@ -304,7 +305,7 @@ const WeeklyPlannerPage = () => {
                     idSurvey={idSurvey}
                     validate={useCallback(() => validateAndNav(), [displayDayOverview])}
                     onNavigateBack={useCallback(() => validateAndNav(), [displayDayOverview])}
-                    onPrevious={useCallback(() => saveAndNav(idSurvey), [])}
+                    onPrevious={useCallback(() => saveAndNavLocally(idSurvey), [])}
                     onEdit={useCallback(() => onEdit(), [])}
                     onHelp={onHelp}
                     firstName={getPrintedFirstName(idSurvey)}

@@ -230,7 +230,7 @@ const HelpActivity = () => {
                     <Box className={classes.innerSurveyPageBox}>
                         <SurveyPage
                             onNavigateBack={navToActivityRouteHome}
-                            onPrevious={navToActivityRouteHome}
+                            onPrevious={navToHome}
                             onEdit={onEdit}
                             onHelp={onHelp}
                             firstName={" "}

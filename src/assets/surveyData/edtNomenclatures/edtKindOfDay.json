@@ -1,0 +1,18 @@
+[
+    {
+        "label": "Journée normale de travail",
+        "value": "1"
+    },
+    {
+        "label": "Journée semi-travaillée",
+        "value": "2"
+    },
+    {
+        "label": "Journée non travaillée (repos, férié, congé…)",
+        "value": "3"
+    },
+    {
+        "label": "Autre cas (pour les personnes n’exerçant pas d’activité professionnelle",
+        "value": "4"
+    }
+]

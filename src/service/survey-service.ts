@@ -6,7 +6,7 @@ import {
     generateDateFromStringInput,
     getFrenchDayFromDate,
 } from "@inseefrlab/lunatic-edt";
-import activitySurveySource from "activity-survey.json";
+import activitySurveySource from "assets/surveyData/edtActivitySurvey.json";
 import dayjs from "dayjs";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
@@ -60,12 +60,11 @@ import {
     groupBy,
 } from "utils/utils";
 import { validate } from "uuid";
-import workTimeSource from "work-time-survey.json";
+import { edtWorkTimeSurvey } from "assets/surveyData";
 //import placeWorkSource from "utils/placeWork.json";
 import { EdtUserRightsEnum } from "./../enumerations/EdtUserRightsEnum";
 import { LunaticData } from "./../interface/lunatic/Lunatic";
 import {
-    fetchReferentiels,
     fetchSurveysSourcesByIds,
     fetchUserSurveysInfo,
     remoteGetSurveyData,
@@ -79,6 +78,7 @@ import { getQualityScore } from "./summary-service";
 import { getActivitiesOrRoutes, getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
 import { remotePutSurveyData, remotePutSurveyDataReviewer } from "./api-service/putRemoteData";
+import { fetchReferentiels } from "./api-service/getLocalSurveyData";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -123,7 +123,7 @@ const toIgnoreForActivity = [
 const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<boolean> => {
     const promisesToWait: Promise<any>[] = [];
     return new Promise(resolve => {
-        promisesToWait.push(initializeRefs(setError));
+        promisesToWait.push(initializeRefs());
         promisesToWait.push(initializeSurveysIdsAndSources(setError));
         Promise.all(promisesToWait).then(() => {
             resolve(true);
@@ -165,10 +165,10 @@ const getAuthCache = (): Promise<DataState> => {
     });
 };
 
-const initializeRefs = (setError: (error: ErrorCodeEnum) => void) => {
+const initializeRefs = () => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
         if (!refData && navigator.onLine) {
-            return fetchReferentiels(setError).then(refs => {
+            return fetchReferentiels().then(refs => {
                 return saveReferentiels(refs);
             });
         } else {
@@ -501,45 +501,52 @@ const initializeData = (remoteSurveyData: any, idSurvey: string) => {
     return surveyData;
 };
 
+const getRemoteSavedSurveyData = (
+    surveyId: string,
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<any> => {
+    if (!navigator.onLine) {
+        return Promise.reject(new Error("Offline"));
+    }
+
+    const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
+
+    return urlRemote(surveyId, setError)
+        .then((remoteSurveyData: any) => {
+            // TODO: remove any and improve ts types
+            const surveyData = initializeData(remoteSurveyData, surveyId);
+            return lunaticDatabase.get(surveyId).then(localSurveyData => {
+                if (shouldInitData(remoteSurveyData, localSurveyData)) {
+                    const stateData = getSurveyStateData(surveyData, surveyId);
+                    setLocalDatabase(stateData, surveyData, surveyId);
+                    return lunaticDatabase.save(surveyId, surveyData);
+                } else {
+                    if (shouldSaveRemoteData(remoteSurveyData, localSurveyData)) {
+                        // TEMP: WeeklyPlanner stuff (to be removed)
+                        const weeklyPlanner = localSurveyData?.COLLECTED?.WEEKLYPLANNER ?? null;
+                        if (weeklyPlanner) {
+                            remoteSurveyData.COLLECTED.WEEKLYPLANNER = weeklyPlanner;
+                        }
+                        const stateData = getSurveyStateData(surveyData, surveyId);
+                        setLocalDatabase(stateData, remoteSurveyData, surveyId);
+                        return lunaticDatabase.save(surveyId, surveyData);
+                    }
+                }
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            setError(err);
+        });
+};
+
 const getRemoteSavedSurveysDatas = (
     surveysIds: string[],
     setError: (error: ErrorCodeEnum) => void,
-): Promise<any> => {
-    const promises: Promise<any>[] = [];
-    if (navigator.onLine) {
-        const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
-        surveysIds.forEach(surveyId => {
-            promises.push(
-                urlRemote(surveyId, setError)
-                    .then((remoteSurveyData: any) => {
-                        //TODO: remove any and improve ts types
-                        const surveyData = initializeData(remoteSurveyData, surveyId);
-                        return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                            if (shouldInitData(remoteSurveyData, localSurveyData)) {
-                                const stateData = getSurveyStateData(surveyData, surveyId);
-                                setLocalDatabase(stateData, surveyData, surveyId);
-                                return lunaticDatabase.save(surveyId, surveyData);
-                            } else {
-                                if (shouldSaveRemoteData(remoteSurveyData, localSurveyData)) {
-                                    //TEMP: WeeklyPlanner stuff (to be removed)
-                                    const weeklyPlanner =
-                                        localSurveyData?.COLLECTED?.WEEKLYPLANNER ?? null;
-                                    weeklyPlanner &&
-                                        (remoteSurveyData.COLLECTED.WEEKLYPLANNER = weeklyPlanner);
-                                    //console.log("remoteSurveyData", remoteSurveyData);
-                                    const stateData = getSurveyStateData(surveyData, surveyId);
-                                    setLocalDatabase(stateData, remoteSurveyData, surveyId);
-                                    return lunaticDatabase.save(surveyId, surveyData);
-                                }
-                            }
-                        });
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    }),
-            );
-        });
-    }
+): Promise<any[]> => {
+    const promises: Promise<any>[] = surveysIds.map(surveyId =>
+        getRemoteSavedSurveyData(surveyId, setError),
+    );
     return Promise.all(promises);
 };
 
@@ -563,7 +570,7 @@ const shouldInitData = (remoteSurveyData: any, localSurveyData: any): boolean =>
         if (remoteSurveyData && typeof remoteSurveyData === "object") {
             const isCollectedEmpty =
                 "COLLECTED" in remoteSurveyData && Object.keys(remoteSurveyData.COLLECTED).length === 0;
-            console.log("shouldInitData", isCollectedEmpty);
+            //console.log("shouldInitData", isCollectedEmpty);
             return isCollectedEmpty;
         }
     }
@@ -783,7 +790,7 @@ const dataIsChange = (idSurvey: string, dataAct: LunaticData, lastData: LunaticD
     if (!dataCollected || !currentDataCollected) {
         return true;
     }
-
+    console.log("dataIsChange", !_.isEqual(dataCollected, currentDataCollected));
     return !_.isEqual(dataCollected, currentDataCollected);
 };
 
@@ -953,6 +960,7 @@ const saveData = (
     forceUpdate = false,
     stateDataForced?: StateData,
 ): Promise<LunaticData> => {
+    console.log("saveData");
     data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
     if (!data.houseReference) {
         const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
@@ -972,6 +980,7 @@ const saveData = (
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
 
     if (isChange) {
+        console.log("isChange");
         data = saveQualityScore(idSurvey, data);
         stateData = getSurveyStateData(data, idSurvey);
 
@@ -1042,6 +1051,7 @@ const saveDataLocally = (
         data = saveQualityScore(idSurvey, data);
     }
     data.stateData = stateData;
+    console.log("saveDataLocally");
     return setLocalDatabase(stateData, data, idSurvey);
 };
 
@@ -1237,13 +1247,7 @@ const getActivitySource = () => {
 
 //TODO: Temp solution as place work does not exist
 const getWorkTimeSource = () => {
-    // if (sourcesData?.edtWorkTimeSurvey) {
-    //     const data = { ...sourcesData.edtWorkTimeSurvey, ...placeWorkSource };
-    //     return data;
-    // } else {
-    //     return workTimeSource;
-    // }
-    return workTimeSource;
+    return edtWorkTimeSurvey;
 };
 
 const getSource = (refName: SourcesEnum) => {

@@ -24,7 +24,7 @@ import {
     saveAndLoopNavigate,
     saveAndNav,
     setEnviro,
-    validateLocally,
+    validate,
 } from "service/navigation-service";
 import { getValue } from "service/survey-service";
 import { getSurveyIdFromUrl } from "utils/utils";
@@ -54,6 +54,7 @@ const WithScreenPage = () => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
+            console.log("backClickCallback");
             saveAndLoopNavigate(
                 idSurvey,
                 context.source,
@@ -65,6 +66,7 @@ const WithScreenPage = () => {
             );
         },
         nextClickCallback: () => {
+            console.log("nextClickCallback");
             saveAndNav(
                 idSurvey,
                 isCloture
@@ -78,7 +80,8 @@ const WithScreenPage = () => {
             );
         },
         onSelectValue: () => {
-            validateLocally(idSurvey).then(() => {
+            console.log("onSelectValue");
+            validate(idSurvey).then(() => {
                 saveAndNav(
                     idSurvey,
                     isCloture
@@ -95,7 +98,6 @@ const WithScreenPage = () => {
         labels: getLabels("with-screen-selecter"),
         errorIcon: <ErrorIcon />,
     };
-
     return (
         <LoopSurveyPage
             onNext={useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [nextClickEvent])}

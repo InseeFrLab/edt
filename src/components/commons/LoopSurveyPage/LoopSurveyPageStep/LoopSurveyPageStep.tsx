@@ -13,7 +13,7 @@ import { useLocation, useNavigate, useOutletContext, useParams } from "react-rou
 import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage, skipBackPage, skipNextPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
-import { onClose, onNext, onPrevious, setEnviro, validateLocally } from "service/navigation-service";
+import { onClose, onNext, onPrevious, setEnviro, validate } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
 import { surveyReadOnly } from "service/survey-activity-service";
 import { getData, getValue } from "service/survey-service";
@@ -77,33 +77,31 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
                 );
         },
         nextClickCallback: () => {
-            specifiquesProps?.nextClickback ??
-                skipNextPage(
-                    idSurvey,
-                    context.source,
-                    currentIteration,
-                    currentPage,
-                    fieldConditionNext,
-                    nextRoute,
-                    isRoute,
-                );
+            //specifiquesProps?.nextClickback ??
+            skipNextPage(
+                idSurvey,
+                context.source,
+                currentIteration,
+                currentPage,
+                fieldConditionNext,
+                nextRoute,
+                isRoute,
+            );
         },
         labels: getLabels(labelOfPage),
         errorIcon: (
             <IconError aria-label={t("component.activity-selecter.clickable-list-icon-no-result-alt")} />
         ),
         onSelectValue: () => {
-            validateLocally(idSurvey).then(() => {
-                skipNextPage(
-                    idSurvey,
-                    context.source,
-                    currentIteration,
-                    currentPage,
-                    fieldConditionNext,
-                    nextRoute,
-                    isRoute,
-                );
-            });
+            skipNextPage(
+                idSurvey,
+                context.source,
+                currentIteration,
+                currentPage,
+                fieldConditionNext,
+                nextRoute,
+                isRoute,
+            );
         },
         language: getLanguage(),
         constants: {

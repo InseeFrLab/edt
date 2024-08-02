@@ -1,6 +1,6 @@
 import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Typography } from "@mui/material";
-import activitySurveySource from "activity-survey.json";
+import { edtActivitySurvey } from "assets/surveyData";
 import { ReactComponent as DisconnectIcon } from "assets/illustration/disconnect.svg";
 import { ReactComponent as DefaultErrorIcon } from "assets/illustration/error/error.svg";
 import { ReactComponent as HelpIcon } from "assets/illustration/mui-icon/help-white.svg";
@@ -35,7 +35,7 @@ const ErrorPage = (props: ErrorPageProps) => {
     const auth = useAuth();
     const [isAlertDisplayed, setIsAlertDisplayed] = React.useState<boolean>(false);
     const onDisconnect = useCallback(() => setIsAlertDisplayed(true), [isAlertDisplayed]);
-    const source = activitySurveySource;
+    const source = edtActivitySurvey;
 
     const alertProps = {
         isAlertDisplayed: isAlertDisplayed,
