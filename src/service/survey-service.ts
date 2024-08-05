@@ -6,7 +6,6 @@ import {
     generateDateFromStringInput,
     getFrenchDayFromDate,
 } from "@inseefrlab/lunatic-edt";
-import activitySurveySource from "assets/surveyData/edtActivitySurvey.json";
 import dayjs from "dayjs";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
@@ -50,8 +49,6 @@ import { NavigateFunction } from "react-router-dom";
 import { fetchReviewerSurveysAssignments } from "service/api-service/getRemoteData";
 import { lunaticDatabase } from "service/lunatic-database";
 import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrator-service";
-import dataEmptyActivity from "utils/dataEmptyActivity.json";
-import dataEmptyWorkTime from "utils/dataEmptyWeeklyPlanner.json";
 import {
     addArrayToSession,
     addItemToSession,
@@ -60,8 +57,12 @@ import {
     groupBy,
 } from "utils/utils";
 import { validate } from "uuid";
-import { edtWorkTimeSurvey } from "assets/surveyData";
-//import placeWorkSource from "utils/placeWork.json";
+import {
+    edtWorkTimeSurvey,
+    edtActivitySurvey,
+    dataEmptyActivity,
+    dataEmptyWeeklyPlanner,
+} from "assets/surveyData";
 import { EdtUserRightsEnum } from "./../enumerations/EdtUserRightsEnum";
 import { LunaticData } from "./../interface/lunatic/Lunatic";
 import {
@@ -761,7 +762,7 @@ const getDataEmpty = (idSurvey: string) => {
     if (surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].includes(idSurvey)) {
         return dataEmptyActivity;
     } else {
-        return dataEmptyWorkTime;
+        return dataEmptyWeeklyPlanner;
     }
 };
 
@@ -1245,7 +1246,7 @@ const getReferentiel = (refName: ReferentielsEnum) => {
 };
 
 const getActivitySource = () => {
-    return sourcesData != null ? sourcesData.edtActivitySurvey : activitySurveySource;
+    return sourcesData != null ? sourcesData.edtActivitySurvey : edtActivitySurvey;
 };
 
 //TODO: Temp solution as place work does not exist

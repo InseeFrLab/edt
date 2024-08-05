@@ -1,47 +1,47 @@
 [
     {
         "label": "Écouter la radio, des podcasts ou de la musique",
-        "value": ""
+        "value": 1
     },
     {
         "label": "Regarder la télévision, des DVD, des vidéos en ligne",
-        "value": "2"
+        "value": 2
     },
     {
         "label": "Conversation",
-        "value": "3"
+        "value": 3
     },
     {
         "label": "Conversations téléphoniques",
-        "value": "4"
+        "value": 4
     },
     {
         "label": "Consulter mes mails personnels",
-        "value": "5"
+        "value": 5
     },
     {
         "label": "Consulter les notifications de mon téléphone",
-        "value": "6"
+        "value": 6
     },
     {
         "label": "Surf sur Internet, visite de sites pour m'informer (hors journaux)",
-        "value": "7"
+        "value": 7
     },
     {
         "label": "Publier ou surfer sur les médias sociaux (Facebook, Instagram, Twitter, ...)",
-        "value": "8"
+        "value": 9
     },
     {
         "label": "Jeux sur téléphone",
-        "value": "9"
+        "value": 9
     },
     {
         "label": "Lecture de journaux, revues",
-        "value": "10"
+        "value": 10
     },
     {
         "label": "Lecture de livres",
-        "value": "11"
+        "value": 11
     },
     {
         "label": "Manger",
