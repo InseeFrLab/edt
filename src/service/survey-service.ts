@@ -1,6 +1,5 @@
 import {
     AutoCompleteActiviteOption,
-    CheckboxOneCustomOption,
     NomenclatureActivityOption,
     findItemInCategoriesNomenclature,
     generateDateFromStringInput,
@@ -15,9 +14,7 @@ import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum"
 import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
-import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { StateHouseholdEnum } from "enumerations/StateHouseholdEnum";
-import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { t } from "i18next";
 import _ from "lodash";
@@ -56,7 +53,6 @@ import {
     getItemFromSession,
     groupBy,
 } from "utils/utils";
-import { validate } from "uuid";
 import {
     edtWorkTimeSurvey,
     edtActivitySurvey,
@@ -73,13 +69,22 @@ import {
 } from "./api-service/getRemoteData";
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { getFullNavigatePath, setAllNamesOfGroupAndNav } from "./navigation-service";
-import { getAutoCompleteRef } from "./referentiel-service";
+import { addToAutocompleteActivityReferentiel, getAutoCompleteRef } from "./referentiel-service";
 import { CreateIndex, optionsFiltered, setIndexSuggester } from "./suggester-service";
 import { getQualityScore } from "./summary-service";
 import { getActivitiesOrRoutes, getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
 import { remotePutSurveyData, remotePutSurveyDataReviewer } from "./api-service/putRemoteData";
 import { fetchReferentiels } from "./api-service/getLocalSurveyData";
+import {
+    getSurveyStateData,
+    initStateData,
+    isDemoMode,
+    isSurveyClosed,
+    isSurveyLocked,
+    isSurveyStarted,
+    isSurveyValidated,
+} from "./survey-state-service";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -1068,29 +1073,6 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
     });
 };
 
-const getStateOfSurvey = (idSurvey: string): StateDataStateEnum => {
-    const isSent = getValue(idSurvey, FieldNameEnum.ISENVOYED) as boolean;
-    const isValidated = surveyValidated(idSurvey);
-    let state: StateDataStateEnum = StateDataStateEnum.INIT;
-
-    if (isSent) {
-        state = StateDataStateEnum.COMPLETED;
-    } else if (isValidated) {
-        state = StateDataStateEnum.VALIDATED;
-    }
-    return state;
-};
-
-const getSurveyStateData = (data: LunaticData, idSurvey: string): StateData => {
-    const lastRemoteDate = Date.now();
-    const stateData: StateData = {
-        state: getStateOfSurvey(idSurvey),
-        date: lastRemoteDate,
-        currentPage: getCurrentPage(data),
-    };
-    return stateData;
-};
-
 const saveReferentiels = (data: ReferentielData): Promise<ReferentielData> => {
     return lunaticDatabase.save(REFERENTIELS_ID, data).then(() => {
         referentielsData = data;
@@ -1137,49 +1119,6 @@ const getUserDatasWorkTime = (): UserSurveys[] => {
 
 const getUserDatas = () => {
     return userDatas?.length > 0 ? userDatas : getArrayFromSession("userDatas");
-};
-
-const addToSecondaryActivityReferentiel = (
-    referentiel: ReferentielsEnum.ACTIVITYSECONDARYACTIVITY | ReferentielsEnum.ROUTESECONDARYACTIVITY,
-    newItem: CheckboxOneCustomOption,
-) => {
-    lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
-        currentData[referentiel].push(newItem);
-        currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE].push({
-            id: newItem.value,
-            label: newItem.label,
-        });
-        saveReferentiels(currentData);
-    });
-};
-
-const getNewSecondaryActivities = (idSurvey: string, referentiel: CheckboxOneCustomOption[]) => {
-    const listSecondaryActivitiesIds = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY);
-    const listSecondaryActivitiesLabel = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY_LABEL);
-
-    let listSecondaryActivities = referentiel;
-    listSecondaryActivitiesIds?.forEach((id: string, index: number) => {
-        console.log("id", id);
-        const existActivity = referentiel.find(ref => ref.value == id) != null;
-        if (validate(id) && !existActivity) {
-            const newActivity = {
-                value: id,
-                label: listSecondaryActivitiesLabel[index],
-            };
-            listSecondaryActivities.push(newActivity);
-        }
-    });
-    return listSecondaryActivities;
-};
-
-const addToAutocompleteActivityReferentiel = (newItem: AutoCompleteActiviteOption) => {
-    return lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
-        const ref = currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE];
-        if (!ref.find((opt: any) => opt.label == newItem.label)) {
-            currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE].push(newItem);
-            return saveReferentiels(currentData);
-        } else return currentData;
-    });
 };
 
 const updateIndexAutoComplete = (
@@ -1703,30 +1642,6 @@ const getPersonNumber = (idSurvey: string) => {
     return indexDemo;
 };
 
-const isDemoMode = () => {
-    return getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
-};
-
-const surveyLocked = (idSurvey: string) => {
-    const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
-    return (isLocked != null && isLocked) || existVariableEdited(idSurvey);
-};
-
-const surveyValidated = (idSurvey: string) => {
-    const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
-    return isValidated != null && isValidated;
-};
-
-const surveyClosed = (idSurvey: string) => {
-    const isClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
-    return isClosed != null && isClosed;
-};
-
-const surveyStarted = (idSurvey: string) => {
-    const surveyDate = getValue(idSurvey, FieldNameEnum.SURVEYDATE) as string;
-    return surveyDate != null && surveyDate.length > 0;
-};
-
 const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
     const surveysIdsHousehold = surveys
         .filter(survey => survey.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY)
@@ -1738,9 +1653,9 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
         numHouseholdsClosed = 0,
         numHouseholdsValidated = 0;
     surveysIdsHousehold.forEach(idSurvey => {
-        const isValidated = surveyValidated(idSurvey);
-        const isClosed = surveyClosed(idSurvey);
-        const isStarted = surveyStarted(idSurvey);
+        const isValidated = isSurveyValidated(idSurvey);
+        const isClosed = isSurveyClosed(idSurvey);
+        const isStarted = isSurveyStarted(idSurvey);
 
         if (isValidated) {
             numHouseholdsValidated++;
@@ -1769,139 +1684,18 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
     return stats;
 };
 
-const lockSurvey = (idSurvey: string) => {
-    const data = getData(idSurvey || "");
-    const variable: Collected = {
-        COLLECTED: true,
-        EDITED: true,
-        FORCED: null,
-        INPUTED: null,
-        PREVIOUS: null,
-    };
-
-    if (data.COLLECTED?.[FieldNameEnum.ISLOCKED]) {
-        data.COLLECTED[FieldNameEnum.ISLOCKED] = variable;
-    } else if (data.COLLECTED) {
-        data.COLLECTED.ISLOCKED = variable;
-    }
-    return saveData(idSurvey, data);
-};
-
-const lockAllSurveys = (idHousehold: string) => {
-    const idSurveys = getSurveysIdsForHousehold(idHousehold);
-    const promisesToWait: Promise<any>[] = [];
-    idSurveys.forEach(idSurvey => {
-        const data = getData(idSurvey || "");
-        const value = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
-        if (value == null || (value != null && !value)) {
-            const variable: Collected = {
-                COLLECTED: true,
-                EDITED: true,
-                FORCED: null,
-                INPUTED: null,
-                PREVIOUS: null,
-            };
-
-            if (data.COLLECTED?.[FieldNameEnum.ISLOCKED]) {
-                data.COLLECTED[FieldNameEnum.ISLOCKED] = variable;
-                promisesToWait.push(saveData(idSurvey, data));
-            } else if (data.COLLECTED) {
-                data.COLLECTED.ISLOCKED = variable;
-                promisesToWait.push(saveData(idSurvey, data));
-            }
-        }
-    });
-
-    return new Promise(resolve => {
-        Promise.all(promisesToWait).then(() => {
-            resolve(true);
-        });
-    });
-};
-
-const validateSurvey = (idSurvey: string) => {
-    const data = getData(idSurvey || "");
-    const variable: Collected = {
-        COLLECTED: true,
-        EDITED: true,
-        FORCED: null,
-        INPUTED: null,
-        PREVIOUS: null,
-    };
-
-    if (data.COLLECTED?.[FieldNameEnum.ISVALIDATED]) {
-        data.COLLECTED[FieldNameEnum.ISVALIDATED] = variable;
-    } else if (data.COLLECTED) {
-        data.COLLECTED.ISVALIDATED = variable;
-    }
-
-    const stateData: StateData = {
-        idStateData: data.stateData?.idStateData,
-        state: StateDataStateEnum.VALIDATED,
-        date: Date.now(),
-        currentPage: getCurrentPage(data),
-    };
-
-    return saveData(idSurvey, data, false, true, stateData);
-};
-
-const validateAllEmptySurveys = (idHousehold: string) => {
-    const idSurveys = getSurveysIdsForHousehold(idHousehold);
-    const promisesToWait: Promise<any>[] = [];
-    const variable: Collected = {
-        COLLECTED: true,
-        EDITED: true,
-        FORCED: null,
-        INPUTED: null,
-        PREVIOUS: null,
-    };
-
-    idSurveys.forEach(idSurvey => {
-        const data = getData(idSurvey || "");
-        const stateData: StateData = {
-            idStateData: data.stateData?.idStateData,
-            state: StateDataStateEnum.VALIDATED,
-            date: Date.now(),
-            currentPage: getCurrentPage(data),
-        };
-
-        if (data.COLLECTED?.[FieldNameEnum.ISVALIDATED]) {
-            data.COLLECTED[FieldNameEnum.ISVALIDATED] = variable;
-        } else if (data.COLLECTED) {
-            data.COLLECTED.ISVALIDATED = variable;
-        }
-
-        const value = getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string;
-
-        if (value == null || value.length == 0) {
-            data.stateData = stateData;
-            promisesToWait.push(saveData(idSurvey, data, false, true));
-        }
-    });
-
-    return new Promise(resolve => {
-        Promise.all(promisesToWait).then(() => {
-            resolve(true);
-        });
-    });
-};
-
 const getSurveyRights = (idSurvey: string) => {
     const isReviewerMode = isReviewer();
-    const isValidated = surveyValidated(idSurvey);
-    const isLocked = surveyLocked(idSurvey);
-
-    let rights: EdtSurveyRightsEnum;
+    const isValidated = isSurveyValidated(idSurvey);
+    const isLocked = isSurveyLocked(idSurvey);
 
     if (isReviewerMode) {
-        rights = EdtSurveyRightsEnum.WRITE_REVIEWER;
+        return EdtSurveyRightsEnum.WRITE_REVIEWER;
     } else {
-        rights =
-            isLocked || isValidated || existVariableEdited(idSurvey)
-                ? EdtSurveyRightsEnum.READ_INTERVIEWER
-                : EdtSurveyRightsEnum.WRITE_INTERVIEWER;
+        return isLocked || isValidated || existVariableEdited(idSurvey)
+            ? EdtSurveyRightsEnum.READ_INTERVIEWER
+            : EdtSurveyRightsEnum.WRITE_INTERVIEWER;
     }
-    return rights;
 };
 
 const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
@@ -1955,17 +1749,6 @@ const getValueOfData = (
         }
     }
     return null;
-};
-
-const getStatutSurvey = (idSurvey: string) => {
-    const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
-    const isValidated = surveyValidated(idSurvey);
-    const variableEdited = existVariableEdited(idSurvey);
-    if (isValidated != null && isValidated) {
-        return StateSurveyEnum.VALIDATED;
-    } else if ((isLocked != null && isLocked) || variableEdited) {
-        return StateSurveyEnum.LOCKED;
-    } else return StateSurveyEnum.INIT;
 };
 
 const getSurveysAct = () => {
@@ -2053,15 +1836,6 @@ const validateAllGroup = (
     );
 };
 
-const initStateData = (data?: LunaticData) => {
-    const stateData = {
-        state: StateDataStateEnum.INIT,
-        date: data?.lastLocalSaveDate ?? Date.now(),
-        currentPage: 0,
-    };
-    return stateData;
-};
-
 const initSurveyData = (surveyId: string): LunaticData => {
     const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
     let surveyData: LunaticData = {
@@ -2083,7 +1857,6 @@ const initSurveyData = (surveyId: string): LunaticData => {
 
 export {
     addToAutocompleteActivityReferentiel,
-    addToSecondaryActivityReferentiel,
     arrayOfSurveysPersonDemo,
     createDataEmpty,
     createNewActivityInCategory,
@@ -2103,16 +1876,16 @@ export {
     getListSurveys,
     getListSurveysHousehold,
     getModePersistence,
-    getNewSecondaryActivities,
     getPerson,
     getPrintedFirstName,
     getPrintedSurveyDate,
     getReferentiel,
     getRemoteSavedSurveysDatas,
     getSource,
-    getStatutSurvey,
     getSurveyDate,
+    getSurveysIdsForHousehold,
     getSurveyRights,
+    getSurveyStateData,
     getTabsData,
     getUserDatas,
     getUserDatasActivity,
@@ -2131,9 +1904,6 @@ export {
     initializeSurveysIdsDataModeReviewer,
     initializeSurveysIdsDemo,
     initializeSurveysIdsModeReviewer,
-    isDemoMode,
-    lockAllSurveys,
-    lockSurvey,
     nameSurveyGroupMap,
     nameSurveyMap,
     navToPlanner,
@@ -2142,15 +1912,12 @@ export {
     saveData,
     saveDataLocally,
     saveDatas,
+    saveReferentiels,
     setData,
     setValue,
-    surveyLocked,
-    surveyValidated,
     surveysIds,
     toIgnoreForActivity,
     toIgnoreForRoute,
     userDatasMap,
-    validateAllEmptySurveys,
     validateAllGroup,
-    validateSurvey,
 };

@@ -9,7 +9,10 @@ import {
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import i18n from "i18next";
-import { getReferentiel, getValue } from "./survey-service";
+import { getReferentiel, getValue, saveReferentiels } from "./survey-service";
+import { lunaticDatabase } from "./lunatic-database";
+import { validate } from "uuid";
+import { REFERENTIELS_ID } from "interface/lunatic/Lunatic";
 
 export const getAutoCompleteRef = (): AutoCompleteActiviteOption[] => {
     return getReferentiel(ReferentielsEnum.ACTIVITYAUTOCOMPLETE) as AutoCompleteActiviteOption[];
@@ -110,4 +113,47 @@ export const findKindOfDayInRef = (id: string): CheckboxOneCustomOption | undefi
 
 export const getLanguage = () => {
     return i18n.language || (typeof window !== "undefined" && window.localStorage.i18nextLng) || "fr";
+};
+
+export const addToSecondaryActivityReferentiel = (
+    referentiel: ReferentielsEnum.ACTIVITYSECONDARYACTIVITY | ReferentielsEnum.ROUTESECONDARYACTIVITY,
+    newItem: CheckboxOneCustomOption,
+) => {
+    lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
+        currentData[referentiel].push(newItem);
+        currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE].push({
+            id: newItem.value,
+            label: newItem.label,
+        });
+        saveReferentiels(currentData);
+    });
+};
+
+export const getNewSecondaryActivities = (idSurvey: string, referentiel: CheckboxOneCustomOption[]) => {
+    const listSecondaryActivitiesIds = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY);
+    const listSecondaryActivitiesLabel = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY_LABEL);
+
+    let listSecondaryActivities = referentiel;
+    listSecondaryActivitiesIds?.forEach((id: string, index: number) => {
+        console.log("id", id);
+        const existActivity = referentiel.find(ref => ref.value == id) != null;
+        if (validate(id) && !existActivity) {
+            const newActivity = {
+                value: id,
+                label: listSecondaryActivitiesLabel[index],
+            };
+            listSecondaryActivities.push(newActivity);
+        }
+    });
+    return listSecondaryActivities;
+};
+
+export const addToAutocompleteActivityReferentiel = (newItem: AutoCompleteActiviteOption) => {
+    return lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
+        const ref = currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE];
+        if (!ref.find((opt: any) => opt.label == newItem.label)) {
+            currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE].push(newItem);
+            return saveReferentiels(currentData);
+        } else return currentData;
+    });
 };
