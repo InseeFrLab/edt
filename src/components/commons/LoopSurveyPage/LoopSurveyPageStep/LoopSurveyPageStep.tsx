@@ -53,6 +53,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
     const currentIteration = paramIteration ? +paramIteration : 0;
     const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
     const stepData = getStepData(currentPage, isRoute);
+    console.log("stepData", stepData);
     const modifiable = !surveyReadOnly(context.rightsSurvey);
     const IconError = errorIcon as React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 
@@ -112,7 +113,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         modifiable: modifiable,
         idSurvey: idSurvey,
     };
-
+    console.log("Context", context);
     const loopSurveyPageProps = {
         onNext: useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [nextClickEvent]),
         onPrevious: useCallback(

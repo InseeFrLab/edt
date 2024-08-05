@@ -345,6 +345,18 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     {components.map(function (component: any) {
                         const { id, componentType, response, options, value, ...other } = component;
                         const Component = lunatic[componentType];
+                        console.log("response", response);
+                        console.log(
+                            "variables",
+                            getVariables(
+                                data,
+                                getDataLocal(),
+                                iteration,
+                                getBindingDependencies(components),
+                                value,
+                                source,
+                            ),
+                        );
                         return (
                             <div className="lunatic lunatic-component" key={`component-${id}`}>
                                 <Component

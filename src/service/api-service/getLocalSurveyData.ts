@@ -12,9 +12,10 @@ import {
     edtPlace,
     edtRoute,
     edtRouteSecondaryActivity,
-} from "assets/surveyData";
+} from "assets/surveyData/edtNomenclatures";
 
 const fetchReferentiel = (auth: AuthContextProps, idReferentiel: ReferentielsEnum) => {
+    console.log("fetchReferentiel", { data: idReferentiel });
     return Promise.resolve({ data: idReferentiel });
 };
 

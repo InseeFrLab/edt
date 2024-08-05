@@ -77,6 +77,10 @@ const WithScreenPage = () => {
                           getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
                           context.source,
                       ),
+                undefined,
+                undefined,
+                undefined,
+                true,
             );
         },
         onSelectValue: () => {
@@ -92,12 +96,17 @@ const WithScreenPage = () => {
                               getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
                               context.source,
                           ),
+                    undefined,
+                    undefined,
+                    undefined,
+                    true,
                 );
             });
         },
         labels: getLabels("with-screen-selecter"),
         errorIcon: <ErrorIcon />,
     };
+    console.log("Final data with screen : ", context.data);
     return (
         <LoopSurveyPage
             onNext={useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [nextClickEvent])}

@@ -169,6 +169,7 @@ const initializeRefs = () => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
         if (!refData && navigator.onLine) {
             return fetchReferentiels().then(refs => {
+                console.log("refs", refs);
                 return saveReferentiels(refs);
             });
         } else {
@@ -1092,6 +1093,7 @@ const getSurveyStateData = (data: LunaticData, idSurvey: string): StateData => {
 const saveReferentiels = (data: ReferentielData): Promise<ReferentielData> => {
     return lunaticDatabase.save(REFERENTIELS_ID, data).then(() => {
         referentielsData = data;
+        console.log("saveReferentiels", referentielsData);
         return data;
     });
 };
@@ -1156,6 +1158,7 @@ const getNewSecondaryActivities = (idSurvey: string, referentiel: CheckboxOneCus
 
     let listSecondaryActivities = referentiel;
     listSecondaryActivitiesIds?.forEach((id: string, index: number) => {
+        console.log("id", id);
         const existActivity = referentiel.find(ref => ref.value == id) != null;
         if (validate(id) && !existActivity) {
             const newActivity = {

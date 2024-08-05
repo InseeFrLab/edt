@@ -30,6 +30,7 @@ import {
 } from "service/survey-service";
 import { getLastPageStep } from "./stepper.service";
 import { surveyReadOnly } from "./survey-activity-service";
+import { get } from "lodash";
 
 let _context: OrchestratorContext;
 let _navigate: NavigateFunction;
@@ -208,6 +209,7 @@ const saveAndNav = (
     currentIteration?: number,
     forceUpdate?: boolean,
 ): void => {
+    forceUpdate ?? console.log("saveAndNav", getData(idSurvey));
     saveData(idSurvey, getData(idSurvey), forceUpdate).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
