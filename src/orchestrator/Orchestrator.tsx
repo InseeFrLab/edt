@@ -357,6 +357,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                 source,
                             ),
                         );
+                        console.log("Value", value);
                         return (
                             <div className="lunatic lunatic-component" key={`component-${id}`}>
                                 <Component

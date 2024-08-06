@@ -522,7 +522,7 @@ const ActivitySummaryPage = () => {
                         {activitiesRoutesOrGaps.length !== 0 &&
                             (isReviewerMode ? (
                                 <Box className={classes.headerActivityLockBox}>
-                                    {/* <Alert
+                                    <Alert
                                         isAlertDisplayed={isAlertLockDisplayed}
                                         onCompleteCallBack={lock}
                                         onCancelCallBack={displayAlert(setIsAlertLockDisplayed, false)}
@@ -532,7 +532,7 @@ const ActivitySummaryPage = () => {
                                                 aria-label={t("page.alert-when-quit.alt-alert-icon")}
                                             />
                                         }
-                                    ></Alert> */}
+                                    ></Alert>
                                     <Box className={classes.headerActivityBox}>
                                         <Typography className={classes.label}>
                                             {t("page.activity-planner.activity-for-day")}

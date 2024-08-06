@@ -69,7 +69,6 @@ import {
     getSurveyRights,
     refreshSurvey,
     saveData,
-    saveDataLocally,
     setValue,
 } from "service/survey-service";
 import { isDemoMode, isSurveyLocked, lockSurvey } from "service/survey-state-service";
@@ -692,7 +691,7 @@ const ActivityOrRoutePlannerPage = () => {
                             >
                                 <Box id="inner-content-scroll" className={classes.innerContentScroll}>
                                     <FlexCenter>
-                                        {/* <Alert
+                                        <Alert
                                             isAlertDisplayed={isAlertDisplayed}
                                             onCompleteCallBack={closeActivity(true, idSurvey)}
                                             onCancelCallBack={displayAlert(setIsAlertDisplayed, false)}
@@ -702,7 +701,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                     aria-label={t("page.alert-when-quit.alt-alert-icon")}
                                                 />
                                             }
-                                        ></Alert> */}
+                                        ></Alert>
                                         <Box
                                             className={getClassCondition(
                                                 isReviewerMode() && activitiesRoutesOrGaps.length !== 0,

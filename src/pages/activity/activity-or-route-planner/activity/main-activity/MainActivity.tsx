@@ -16,7 +16,6 @@ import {
     onNext,
     onPrevious,
     saveAndLoopNavigate,
-    saveAndLoopNavigateLocally,
     setEnviro,
     validateLocally,
 } from "service/navigation-service";

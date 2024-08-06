@@ -372,9 +372,9 @@ const HomeSurveyedPage = () => {
 
     return (
         <>
-            {/* <FlexCenter>
+            <FlexCenter>
                 <Alert {...alertProps} />
-            </FlexCenter> */}
+            </FlexCenter>
             <Box className={classes.headerBox}>
                 {isReviewer ? (
                     <Box className={classes.reviewerButtonBox}>

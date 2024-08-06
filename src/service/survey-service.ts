@@ -94,7 +94,11 @@ const NUM_MAX_WORKTIME_SURVEYS = 3;
 
 let referentielsData: ReferentielData;
 let sourcesData: SourceData;
-let surveysIds: SurveysIds;
+let surveysIds: SurveysIds = {
+    [SurveysIdsEnum.ALL_SURVEYS_IDS]: [],
+    [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: [],
+    [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: [],
+};
 let userDatasActivity: UserSurveys[] = [];
 let userDatasWorkTime: UserSurveys[] = [];
 let userDatas: UserSurveys[] = [];
@@ -175,7 +179,6 @@ const initializeRefs = () => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
         if (!refData && navigator.onLine) {
             return fetchReferentiels().then(refs => {
-                console.log("refs", refs);
                 return saveReferentiels(refs);
             });
         } else {
@@ -797,7 +800,7 @@ const dataIsChange = (idSurvey: string, dataAct: LunaticData, lastData: LunaticD
     if (!dataCollected || !currentDataCollected) {
         return true;
     }
-    console.log("dataIsChange", !_.isEqual(dataCollected, currentDataCollected));
+    //console.log("dataIsChange", !_.isEqual(dataCollected, currentDataCollected));
     return !_.isEqual(dataCollected, currentDataCollected);
 };
 
@@ -967,7 +970,6 @@ const saveData = (
     forceUpdate = false,
     stateDataForced?: StateData,
 ): Promise<LunaticData> => {
-    console.log("saveData");
     data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
     if (!data.houseReference) {
         const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
