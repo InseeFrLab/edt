@@ -27,14 +27,8 @@ import {
     getAutoCompleteRef,
     getLanguage,
 } from "service/referentiel-service";
-import {
-    getData,
-    getStatutSurvey,
-    getValue,
-    getValueOfData,
-    saveData,
-    surveysIds,
-} from "service/survey-service";
+import { getData, getValue, getValueOfData, saveData, surveysIds } from "service/survey-service";
+import { getStatutSurvey } from "./survey-state-service";
 
 const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
     const mainActivityId = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_ID, i) as string;

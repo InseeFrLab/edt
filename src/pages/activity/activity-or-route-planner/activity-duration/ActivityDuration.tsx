@@ -28,6 +28,7 @@ import {
 import { isDesktop } from "service/responsive";
 import { getActivitiesOrRoutes, surveyReadOnly } from "service/survey-activity-service";
 import { getData, getValue, getValueOfData, saveDataLocally } from "service/survey-service";
+import { isSurveyCompleted } from "service/survey-state-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
 const ActivityDurationPage = () => {
@@ -172,7 +173,7 @@ const ActivityDurationPage = () => {
     };
 
     const onClose = (forceQuit: boolean) => {
-        const isCompleted = getValue(idSurvey, FieldNameEnum.ISCOMPLETED, currentIteration);
+        const isCompleted = isSurveyCompleted(idSurvey);
         const isCloture = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
         if (!openSnackbar) {
             if (!isCompleted) {
@@ -219,7 +220,7 @@ const ActivityDurationPage = () => {
             isRoute={isRoute}
         >
             <FlexCenter>
-                <Alert
+                {/* <Alert
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={useCallback(
                         () => setIsAlertDisplayed(false),
@@ -228,7 +229,7 @@ const ActivityDurationPage = () => {
                     onCancelCallBack={useCallback(cancel => onClose(cancel), [])}
                     labels={getLabelsWhenQuit(isRoute)}
                     icon={<ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />}
-                ></Alert>
+                ></Alert> */}
                 <Snackbar
                     className={isDesktop() ? classes.snackbarDesktop : classes.snackbar}
                     open={openSnackbar}

@@ -43,14 +43,12 @@ import {
     initializeHomeSurveys,
     initializeSurveysDatasCache,
     initializeSurveysIdsDemo,
-    isDemoMode,
-    lockAllSurveys,
     nameSurveyGroupMap,
     saveData,
     surveysIds,
     userDatasMap,
-    validateAllEmptySurveys,
 } from "service/survey-service";
+import { isDemoMode, lockAllSurveys, validateAllEmptySurveys } from "service/survey-state-service";
 import { getUserRights } from "service/user-service";
 import { groupBy } from "utils/utils";
 
@@ -374,9 +372,9 @@ const HomeSurveyedPage = () => {
 
     return (
         <>
-            <FlexCenter>
+            {/* <FlexCenter>
                 <Alert {...alertProps} />
-            </FlexCenter>
+            </FlexCenter> */}
             <Box className={classes.headerBox}>
                 {isReviewer ? (
                     <Box className={classes.reviewerButtonBox}>

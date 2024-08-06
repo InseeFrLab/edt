@@ -70,13 +70,11 @@ import {
     getSurveyRights,
     getValue,
     isDemoMode,
-    lockSurvey,
     refreshSurvey,
     saveData,
     setValue,
-    surveyLocked,
-    validateSurvey,
 } from "service/survey-service";
+import { isSurveyLocked, lockSurvey, validateSurvey } from "service/survey-state-service";
 import { getUserRights } from "service/user-service";
 import ActivitiesSummaryExportTemplate from "template/summary-export/ActivitiesSummaryExportTemplate";
 import { getClassCondition, getSurveyIdFromUrl } from "utils/utils";
@@ -423,7 +421,7 @@ const ActivitySummaryPage = () => {
 
     const [isAlertLockDisplayed, setIsAlertLockDisplayed] = useState<boolean>(false);
     const [isAlertValidateDisplayed, setIsAlertValidateDisplayed] = useState<boolean>(false);
-    const [isLocked, setIsLocked] = useState<boolean>(surveyLocked(idSurvey));
+    const [isLocked, setIsLocked] = useState<boolean>(isSurveyLocked(idSurvey));
 
     const variableEdited = existVariableEdited(idSurvey);
 
@@ -524,7 +522,7 @@ const ActivitySummaryPage = () => {
                         {activitiesRoutesOrGaps.length !== 0 &&
                             (isReviewerMode ? (
                                 <Box className={classes.headerActivityLockBox}>
-                                    <Alert
+                                    {/* <Alert
                                         isAlertDisplayed={isAlertLockDisplayed}
                                         onCompleteCallBack={lock}
                                         onCancelCallBack={displayAlert(setIsAlertLockDisplayed, false)}
@@ -534,7 +532,7 @@ const ActivitySummaryPage = () => {
                                                 aria-label={t("page.alert-when-quit.alt-alert-icon")}
                                             />
                                         }
-                                    ></Alert>
+                                    ></Alert> */}
                                     <Box className={classes.headerActivityBox}>
                                         <Typography className={classes.label}>
                                             {t("page.activity-planner.activity-for-day")}
@@ -639,7 +637,7 @@ const ActivitySummaryPage = () => {
                 <FlexCenter className={classes.download}>
                     {isReviewerMode ? (
                         <>
-                            <Alert
+                            {/* <Alert
                                 isAlertDisplayed={isAlertValidateDisplayed}
                                 onCompleteCallBack={validate}
                                 onCancelCallBack={displayAlert(setIsAlertValidateDisplayed, false)}
@@ -647,7 +645,7 @@ const ActivitySummaryPage = () => {
                                 icon={
                                     <ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />
                                 }
-                            ></Alert>
+                            ></Alert> */}
                             <Button variant="outlined" onClick={back} className={classes.buttonNav}>
                                 {t("common.navigation.back")}
                             </Button>

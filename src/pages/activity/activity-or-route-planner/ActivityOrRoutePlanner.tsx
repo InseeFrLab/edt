@@ -67,14 +67,12 @@ import {
     getSource,
     getSurveyDate,
     getSurveyRights,
-    isDemoMode,
-    lockSurvey,
     refreshSurvey,
     saveData,
     saveDataLocally,
     setValue,
-    surveyLocked,
 } from "service/survey-service";
+import { isDemoMode, isSurveyLocked, lockSurvey } from "service/survey-state-service";
 import { isReviewer } from "service/user-service";
 import { getClassCondition, getSurveyIdFromUrl } from "utils/utils";
 import { v4 as uuidv4 } from "uuid";
@@ -376,7 +374,7 @@ const ActivityOrRoutePlannerPage = () => {
     const [score, setScore] = React.useState<number | undefined>(undefined);
 
     const [isAlertLockDisplayed, setIsAlertLockDisplayed] = useState<boolean>(false);
-    const [isLocked, setIsLocked] = useState<boolean>(surveyLocked(idSurvey));
+    const [isLocked, setIsLocked] = useState<boolean>(isSurveyLocked(idSurvey));
     const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
     const [menuActivityPlannerDisplayed, setMenuActivityPlannerDisplayed] = React.useState(
         isItDesktop && isSubChildDisplayed,
@@ -694,7 +692,7 @@ const ActivityOrRoutePlannerPage = () => {
                             >
                                 <Box id="inner-content-scroll" className={classes.innerContentScroll}>
                                     <FlexCenter>
-                                        <Alert
+                                        {/* <Alert
                                             isAlertDisplayed={isAlertDisplayed}
                                             onCompleteCallBack={closeActivity(true, idSurvey)}
                                             onCancelCallBack={displayAlert(setIsAlertDisplayed, false)}
@@ -704,7 +702,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                     aria-label={t("page.alert-when-quit.alt-alert-icon")}
                                                 />
                                             }
-                                        ></Alert>
+                                        ></Alert> */}
                                         <Box
                                             className={getClassCondition(
                                                 isReviewerMode() && activitiesRoutesOrGaps.length !== 0,
@@ -715,7 +713,7 @@ const ActivityOrRoutePlannerPage = () => {
                                             {activitiesRoutesOrGaps.length !== 0 &&
                                                 (isReviewerMode() ? (
                                                     <Box className={classes.headerActivityLockBox}>
-                                                        <Alert
+                                                        {/* <Alert
                                                             isAlertDisplayed={isAlertLockDisplayed}
                                                             onCompleteCallBack={lock}
                                                             onCancelCallBack={displayAlert(
@@ -734,7 +732,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                                     )}
                                                                 />
                                                             }
-                                                        ></Alert>
+                                                        ></Alert> */}
                                                         <Box className={classes.headerActivityBox}>
                                                             <Typography className={classes.label}>
                                                                 {t(

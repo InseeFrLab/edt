@@ -1,8 +1,7 @@
 import { AutoCompleteActiviteOption } from "@inseefrlab/lunatic-edt";
 import elasticlunr, { Index } from "elasticlunrjs";
 import { Dispatch, SetStateAction } from "react";
-import stopWords from "../utils/stop_words_french.json";
-import pairSynonymes from "../utils/synonymes-misspellings.json";
+import { stopWordsFrench, synonymesMisspellings } from "assets/surveyData";
 
 /**
  * Remove accents
@@ -43,7 +42,7 @@ export const skipApostrophes = (labelWithApostrophe: string) => {
 export const addMisspellings = (option: AutoCompleteActiviteOption) => {
     let labelWithMisspelling = "";
 
-    pairSynonymes.forEach(pairSynonyme => {
+    synonymesMisspellings.forEach((pairSynonyme: { termination: any[]; misspelling: any[] }) => {
         const term = pairSynonyme.termination[0];
         pairSynonyme.misspelling.forEach(misspelling => {
             if (option.label.includes(term)) {
@@ -81,7 +80,7 @@ export const CreateIndexation = (optionsFiltered: AutoCompleteActiviteOption[]) 
     const optionsFilteredMap = activitesFiltredMap(optionsFiltered);
 
     elasticlunr.clearStopWords();
-    elasticlunr.addStopWords(stopWords);
+    elasticlunr.addStopWords(stopWordsFrench);
 
     const temp: Index<AutoCompleteActiviteOption> = elasticlunr();
     temp.addField("label");

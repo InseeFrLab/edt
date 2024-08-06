@@ -1920,4 +1920,5 @@ export {
     toIgnoreForRoute,
     userDatasMap,
     validateAllGroup,
+    isDemoMode,
 };

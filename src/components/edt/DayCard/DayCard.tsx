@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { isMobile } from "service/responsive";
 import { getQualityScore } from "service/summary-service";
 import { getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
-import { getStatutSurvey, isDemoMode } from "service/survey-service";
+import { getStatutSurvey, isDemoMode } from "service/survey-state-service";
 import { isReviewer } from "service/user-service";
 
 interface DayCardProps {

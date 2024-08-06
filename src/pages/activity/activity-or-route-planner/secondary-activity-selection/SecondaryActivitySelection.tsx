@@ -14,17 +14,15 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { useTranslation } from "react-i18next";
 import { useLocation, useOutletContext, useParams } from "react-router-dom";
 import {
+    addToSecondaryActivityReferentiel,
     getActivitySecondaryActivityRef,
     getAutoCompleteRef,
+    getNewSecondaryActivities,
     getRouteSecondaryActivityRef,
 } from "service/referentiel-service";
 import { CreateIndexation, getIndexSuggester } from "service/suggester-service";
 import { surveyReadOnly } from "service/survey-activity-service";
-import {
-    addToSecondaryActivityReferentiel,
-    getNewSecondaryActivities,
-    getValue,
-} from "service/survey-service";
+import { getValue } from "service/survey-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
 const SecondaryActivitySelectionPage = () => {
