@@ -47,10 +47,14 @@ import { LoopEnum } from "enumerations/LoopEnum";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getLabelsWhenQuit } from "service/alert-service";
-import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
+import {
+    createNewActivityInCategory,
+    getAutoCompleteRef,
+    getNomenclatureRef,
+} from "service/referentiel-service";
 import { CreateIndexation, getIndexSuggester } from "service/suggester-service";
 import { surveyReadOnly } from "service/survey-activity-service";
-import { createNewActivityInCategory, getData } from "service/survey-service";
+import { getData } from "service/survey-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
 const MainActivityPage = () => {
