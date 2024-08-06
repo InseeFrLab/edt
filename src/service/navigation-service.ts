@@ -30,7 +30,6 @@ import {
 } from "service/survey-service";
 import { getLastPageStep } from "./stepper.service";
 import { surveyReadOnly } from "./survey-activity-service";
-import { get } from "lodash";
 
 let _context: OrchestratorContext;
 let _navigate: NavigateFunction;
@@ -764,6 +763,32 @@ const onClose = (
     }
 };
 
+const navToPlanner = (
+    idSurvey: string,
+    surveyRootPage: EdtRoutesNameEnum.ACTIVITY | EdtRoutesNameEnum.WORK_TIME,
+) => {
+    const dayOfSurvey = getValue(idSurvey, FieldNameEnum.SURVEYDATE) as string;
+    let route = "";
+
+    if (dayOfSurvey) {
+        const routeActivity = getFullNavigatePath(
+            idSurvey,
+            EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
+            surveyRootPage,
+        );
+        const routeWorktime = getFullNavigatePath(
+            idSurvey,
+            EdtRoutesNameEnum.WEEKLY_PLANNER,
+            surveyRootPage,
+        );
+
+        route = surveyRootPage == EdtRoutesNameEnum.WORK_TIME ? routeWorktime : routeActivity;
+    } else {
+        route = getFullNavigatePath(idSurvey, EdtRoutesNameEnum.DAY_OF_SURVEY, surveyRootPage);
+    }
+    return route;
+};
+
 export {
     closeFormularieAndNav,
     getCurrentNavigatePath,
@@ -791,6 +816,7 @@ export {
     navToHelp,
     navToHome,
     navToHomeReviewer,
+    navToPlanner,
     navToRouteOrRouteNotSelection,
     navToWeeklyPlannerOrClose,
     onClose,

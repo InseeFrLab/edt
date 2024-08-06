@@ -1,10 +1,4 @@
-import {
-    AutoCompleteActiviteOption,
-    NomenclatureActivityOption,
-    findItemInCategoriesNomenclature,
-    generateDateFromStringInput,
-    getFrenchDayFromDate,
-} from "@inseefrlab/lunatic-edt";
+import { generateDateFromStringInput, getFrenchDayFromDate } from "@inseefrlab/lunatic-edt";
 import dayjs from "dayjs";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
@@ -41,7 +35,6 @@ import {
     UserSurveysData,
 } from "interface/lunatic/Lunatic";
 import { AuthContextProps } from "oidc-react";
-import { Dispatch, SetStateAction } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { fetchReviewerSurveysAssignments } from "service/api-service/getRemoteData";
 import { lunaticDatabase } from "service/lunatic-database";
@@ -68,9 +61,8 @@ import {
     remoteGetSurveyDataReviewer,
 } from "./api-service/getRemoteData";
 import { getFlatLocalStorageValue } from "./local-storage-service";
-import { getFullNavigatePath, setAllNamesOfGroupAndNav } from "./navigation-service";
-import { addToAutocompleteActivityReferentiel, getAutoCompleteRef } from "./referentiel-service";
-import { CreateIndex, optionsFiltered, setIndexSuggester } from "./suggester-service";
+import { getFullNavigatePath, navToPlanner, setAllNamesOfGroupAndNav } from "./navigation-service";
+import { addToAutocompleteActivityReferentiel } from "./referentiel-service";
 import { getQualityScore } from "./summary-service";
 import { getActivitiesOrRoutes, getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
@@ -994,7 +986,6 @@ const saveData = (
     forceUpdate = false,
     stateDataForced?: StateData,
 ): Promise<LunaticData> => {
-    console.log("Attempt to save data", data.COLLECTED);
     data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
     if (!data.houseReference) {
         const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
@@ -1015,6 +1006,7 @@ const saveData = (
 
     if (isChange) {
         console.log("isChange");
+        console.log("Attempt to save data", data.COLLECTED);
         data = saveQualityScore(idSurvey, data);
         stateData = getSurveyStateData(data);
 
@@ -1148,69 +1140,6 @@ const getUserDatas = () => {
     return userDatas?.length > 0 ? userDatas : getArrayFromSession("userDatas");
 };
 
-const updateIndexAutoComplete = (
-    referentiel: AutoCompleteActiviteOption[],
-    index: elasticlunr.Index<AutoCompleteActiviteOption> | undefined,
-    setIndex: Dispatch<SetStateAction<elasticlunr.Index<AutoCompleteActiviteOption> | undefined>>,
-) => {
-    const options = optionsFiltered(getAutoCompleteRef());
-    const indexSuggester = CreateIndex(options, index, setIndex);
-    setIndexSuggester(indexSuggester);
-};
-
-const updateReferentielAutoComplete = (
-    currentData: any,
-    newItem: AutoCompleteActiviteOption,
-    newActivity: string,
-    index: elasticlunr.Index<AutoCompleteActiviteOption> | undefined,
-    setIndex: Dispatch<SetStateAction<elasticlunr.Index<AutoCompleteActiviteOption> | undefined>>,
-) => {
-    return saveReferentiels(currentData).then(() => {
-        addToAutocompleteActivityReferentiel(newItem).then(referentielData => {
-            const newAutocompleteRef = referentielData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE];
-            localStorage.setItem("selectedIdNewActivity", newActivity);
-            updateIndexAutoComplete(newAutocompleteRef, index, setIndex);
-        });
-    });
-};
-
-const createNewActivityInCategory = (
-    newItem: AutoCompleteActiviteOption,
-    categoryId: string | undefined,
-    newActivity: string,
-    referentiel: NomenclatureActivityOption[],
-    index: elasticlunr.Index<AutoCompleteActiviteOption> | undefined,
-    setIndex: Dispatch<SetStateAction<elasticlunr.Index<AutoCompleteActiviteOption> | undefined>>,
-) => {
-    lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
-        const ref = currentData[ReferentielsEnum.ACTIVITYNOMENCLATURE];
-        const category = findItemInCategoriesNomenclature(categoryId, referentiel);
-        const categoryParent = category?.parent ?? category?.item;
-        const parentCategoryId = categoryParent?.id;
-        const existCategory = category?.item.subs.find((cat: any) => cat.label == newItem.label);
-
-        if (!existCategory) {
-            category?.item.subs.push({
-                id: newItem.id,
-                rang: category?.item.rang + 1,
-                label: newItem.label,
-            });
-            const indexParentCategory = ref.findIndex((opt: any) => opt.id == parentCategoryId);
-
-            ref[indexParentCategory] = categoryParent;
-            return updateReferentielAutoComplete(currentData, newItem, newActivity, index, setIndex);
-        }
-
-        if (!categoryId) {
-            return updateReferentielAutoComplete(currentData, newItem, newActivity, index, setIndex);
-        }
-    });
-};
-
-const getReferentiel = (refName: ReferentielsEnum) => {
-    return referentielsData[refName];
-};
-
 const getActivitySource = () => {
     return sourcesData != null ? sourcesData.edtActivitySurvey : edtActivitySurvey;
 };
@@ -1226,6 +1155,9 @@ const getSource = (refName: SourcesEnum) => {
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
     return source.variables.find(v => v.variableType === "COLLECTED" && v.name === dependency);
+};
+const getReferentiel = (refName: ReferentielsEnum) => {
+    return referentielsData[refName];
 };
 
 //Return the last lunatic model page that has been fill with data
@@ -1500,7 +1432,13 @@ const getNumSurveyDateReviewer = (
     }
 };
 
-// return survey date in french format (day x - dd/mm) if exist or default value
+/**
+ * Returns the survey date in French format (day x - dd/mm) if it exists, or a default value.
+ *
+ * @param {string} idSurvey - The ID of the survey.
+ * @param {EdtRoutesNameEnum} [surveyParentPage] - The parent page of the survey.
+ * @returns {string} The formatted survey date or a default value.
+ */
 const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesNameEnum): string => {
     const savedSurveyDate = getSurveyDate(idSurvey);
     const label =
@@ -1521,12 +1459,23 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
     }
 };
 
-//Return date with full french format dd/MM/YYYY
+/**
+ * Returns the date in full French format (dd/MM/YYYY).
+ *
+ * @param {string} surveyDate - The survey date in string format.
+ * @returns {string} The formatted date in dd/MM/YYYY format.
+ */
 const getFullFrenchDate = (surveyDate: string): string => {
     const splittedDate = surveyDate?.split("-");
     return splittedDate?.length > 2 ? [splittedDate[2], splittedDate[1], splittedDate[0]].join("/") : "";
 };
 
+/**
+ * Creates a map of survey names based on the provided survey IDs.
+ *
+ * @param {string[]} idSurveys - An array of survey IDs.
+ * @returns {Array} An array of objects containing survey data, first name, and index.
+ */
 const createNameSurveyMap = (idSurveys: string[]) => {
     let numInterviewer = 0;
     return idSurveys
@@ -1800,32 +1749,6 @@ const getSurveysAct = () => {
     return surveys;
 };
 
-const navToPlanner = (
-    idSurvey: string,
-    surveyRootPage: EdtRoutesNameEnum.ACTIVITY | EdtRoutesNameEnum.WORK_TIME,
-) => {
-    const dayOfSurvey = getValue(idSurvey, FieldNameEnum.SURVEYDATE) as string;
-    let route = "";
-
-    if (dayOfSurvey) {
-        const routeActivity = getFullNavigatePath(
-            idSurvey,
-            EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER,
-            surveyRootPage,
-        );
-        const routeWorktime = getFullNavigatePath(
-            idSurvey,
-            EdtRoutesNameEnum.WEEKLY_PLANNER,
-            surveyRootPage,
-        );
-
-        route = surveyRootPage == EdtRoutesNameEnum.WORK_TIME ? routeWorktime : routeActivity;
-    } else {
-        route = getFullNavigatePath(idSurvey, EdtRoutesNameEnum.DAY_OF_SURVEY, surveyRootPage);
-    }
-    return route;
-};
-
 const getPerson = (idSurvey: string) => {
     const surveys = getSurveysAct();
     const personAct = surveys?.find(survey => survey.data.surveyUnitId == idSurvey);
@@ -1889,7 +1812,6 @@ export {
     addToAutocompleteActivityReferentiel,
     arrayOfSurveysPersonDemo,
     createDataEmpty,
-    createNewActivityInCategory,
     existVariableEdited,
     getAuthCache,
     getComponentId,

@@ -39,7 +39,6 @@ import {
     getSource,
     getSurveyRights,
     getUserDatasActivity,
-    initializeDatas,
     initializeHomeSurveys,
     initializeRemoteDatas,
     initializeSurveysDatasCache,
