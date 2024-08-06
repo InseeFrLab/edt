@@ -76,6 +76,7 @@ import { getActivitiesOrRoutes, getScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
 import { remotePutSurveyData, remotePutSurveyDataReviewer } from "./api-service/putRemoteData";
 import { fetchReferentiels } from "./api-service/getLocalSurveyData";
+import { fetchRemoteReferentiels } from "service/api-service/getRemoteData";
 import {
     getSurveyStateData,
     initStateData,
@@ -141,6 +142,17 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     });
 };
 
+const initializeRemoteDatas = (setError: (error: ErrorCodeEnum) => void): Promise<boolean> => {
+    const promisesToWait: Promise<any>[] = [];
+    return new Promise(resolve => {
+        promisesToWait.push(initializeRemoteRefs(setError));
+        promisesToWait.push(initializeSurveysIdsAndSources(setError));
+        Promise.all(promisesToWait).then(() => {
+            resolve(true);
+        });
+    });
+};
+
 const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
     const dataState: DataState = {
         data: {
@@ -172,6 +184,18 @@ const getAuthCache = (): Promise<DataState> => {
         let dataState = data as DataState;
         sessionStorage.setItem(clientTokenKey, JSON.stringify(dataState));
         return dataState;
+    });
+};
+
+const initializeRemoteRefs = (setError: (error: ErrorCodeEnum) => void) => {
+    return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
+        if (!refData && navigator.onLine) {
+            return fetchRemoteReferentiels(setError).then(refs => {
+                return saveReferentiels(refs);
+            });
+        } else {
+            referentielsData = refData as ReferentielData;
+        }
     });
 };
 
@@ -1903,6 +1927,7 @@ export {
     initStateData,
     initSurveyData,
     initializeDatas,
+    initializeRemoteDatas,
     initializeHomeSurveys,
     initializeListSurveys,
     initializeSurveysDatasCache,

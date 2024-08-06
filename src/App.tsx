@@ -15,7 +15,7 @@ import {
     getAuthCache,
     getDatas,
     initPropsAuth,
-    initializeDatas,
+    initializeRemoteDatas,
     initializeListSurveys,
 } from "service/survey-service";
 import { getUserRights, setAuth, setUser, setUserToken } from "service/user-service";
@@ -84,7 +84,7 @@ const App = () => {
 
             //auth.userManager.startSilentRenew();
             promisesToWait.push(
-                initializeDatas(setError).then(() => {
+                initializeRemoteDatas(setError).then(() => {
                     setInitialized(true);
                     return initPropsAuth(auth).then(() => {
                         const options = optionsFiltered(getAutoCompleteRef());
@@ -127,7 +127,7 @@ const App = () => {
                 }
 
                 promisesToWait.push(
-                    initializeDatas(setError).then(() => {
+                    initializeRemoteDatas(setError).then(() => {
                         if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
                             return initializeListSurveys(setError).then(() => {
                                 setInitialized(true);

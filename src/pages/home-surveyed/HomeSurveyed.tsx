@@ -41,6 +41,7 @@ import {
     getUserDatasActivity,
     initializeDatas,
     initializeHomeSurveys,
+    initializeRemoteDatas,
     initializeSurveysDatasCache,
     initializeSurveysIdsDemo,
     nameSurveyGroupMap,
@@ -85,11 +86,11 @@ const HomeSurveyedPage = () => {
 
     useEffect(() => {
         if (navigator.onLine && getUserRights() === EdtUserRightsEnum.SURVEYED) {
-            initializeDatas(setError).then(() => {
+            initializeRemoteDatas(setError).then(() => {
                 setInitialized(true);
             });
         } else if (getUserRights() === EdtUserRightsEnum.SURVEYED) {
-            initializeDatas(setError).then(() => {
+            initializeRemoteDatas(setError).then(() => {
                 setInitialized(true);
                 setState({});
             });
