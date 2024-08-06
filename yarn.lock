@@ -1631,10 +1631,10 @@
   dependencies:
     antlr4 "4.8.0"
 
-"@inseefrlab/lunatic-edt@0.12.6":
-  version "0.12.6"
-  resolved "https://registry.yarnpkg.com/@inseefrlab/lunatic-edt/-/lunatic-edt-0.12.6.tgz#1946f52e2ef3c7254c15a684f56a2cfbabeb3109"
-  integrity sha512-CxRoUYuWHQdeVjRi8fX4D5J4h1t8dSm+S1UNqmGULVLS5JlKiHBkJSoLgjQ+GyLdsEIsnqNmd6B5up/kq1pn5w==
+"@inseefrlab/lunatic-edt@0.13.3":
+  version "0.13.3"
+  resolved "https://registry.yarnpkg.com/@inseefrlab/lunatic-edt/-/lunatic-edt-0.13.3.tgz#fe9544e5dc4ca6d7b032c4919d4d8d736d3b9398"
+  integrity sha512-hWpeq0u0VvikH5NOwNy70ZMkHQ8TeRdqYBbdopMBr1LPDIWbDvOPzHOWvlYBP4gWJipybxHf48ZXabSNdxoPkw==
   dependencies:
     "@date-io/dayjs" "^2.16.0"
     "@emotion/react" "^11.10.4"

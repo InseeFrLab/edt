@@ -207,10 +207,8 @@ const saveAndNav = (
     value?: FieldNameEnum,
     routeNotSelection?: string,
     currentIteration?: number,
-    forceUpdate?: boolean,
 ): void => {
-    forceUpdate ?? console.log("saveAndNav", getData(idSurvey));
-    saveData(idSurvey, getData(idSurvey), forceUpdate).then(() => {
+    saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey)).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };

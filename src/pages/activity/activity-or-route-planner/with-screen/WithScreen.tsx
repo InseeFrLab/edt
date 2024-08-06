@@ -77,10 +77,6 @@ const WithScreenPage = () => {
                           getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
                           context.source,
                       ),
-                undefined,
-                undefined,
-                undefined,
-                true,
             );
         },
         onSelectValue: () => {
@@ -96,10 +92,6 @@ const WithScreenPage = () => {
                               getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
                               context.source,
                           ),
-                    undefined,
-                    undefined,
-                    undefined,
-                    true,
                 );
             });
         },
