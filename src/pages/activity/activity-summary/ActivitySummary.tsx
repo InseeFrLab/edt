@@ -637,7 +637,7 @@ const ActivitySummaryPage = () => {
                 <FlexCenter className={classes.download}>
                     {isReviewerMode ? (
                         <>
-                            {/* <Alert
+                            <Alert
                                 isAlertDisplayed={isAlertValidateDisplayed}
                                 onCompleteCallBack={validate}
                                 onCancelCallBack={displayAlert(setIsAlertValidateDisplayed, false)}
@@ -645,7 +645,7 @@ const ActivitySummaryPage = () => {
                                 icon={
                                     <ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />
                                 }
-                            ></Alert> */}
+                            ></Alert>
                             <Button variant="outlined" onClick={back} className={classes.buttonNav}>
                                 {t("common.navigation.back")}
                             </Button>

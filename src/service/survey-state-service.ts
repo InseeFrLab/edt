@@ -43,36 +43,24 @@ const isSurveyLocked = (idSurvey: string) => {
 // };
 
 const isSurveyValidated = (idSurvey: string) => {
-    const stateData = getSurveyStateData(getData(idSurvey), idSurvey);
+    const stateData = getSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.VALIDATED;
 };
 
 const isSurveyClosed = (idSurvey: string) => {
-    const stateData = getSurveyStateData(getData(idSurvey), idSurvey);
+    const stateData = getSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.COMPLETED;
 };
 const isSurveyStarted = (idSurvey: string) => {
-    const stateData = getSurveyStateData(getData(idSurvey), idSurvey);
+    const stateData = getSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.INIT;
 };
 
 const isSurveyCompleted = (idSurvey: string) => {
-    const stateData = getSurveyStateData(getData(idSurvey), idSurvey);
+    const stateData = getSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.COMPLETED;
 };
 
-const getStateOfSurvey = (idSurvey: string): StateDataStateEnum => {
-    const isSent = getValue(idSurvey, FieldNameEnum.ISENVOYED) as boolean;
-    const isValidated = isSurveyValidated(idSurvey);
-    let state: StateDataStateEnum = StateDataStateEnum.INIT;
-
-    if (isSent) {
-        state = StateDataStateEnum.COMPLETED;
-    } else if (isValidated) {
-        state = StateDataStateEnum.VALIDATED;
-    }
-    return state;
-};
 const getStatutSurvey = (idSurvey: string) => {
     const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
     const isValidated = isSurveyValidated(idSurvey);
@@ -84,10 +72,10 @@ const getStatutSurvey = (idSurvey: string) => {
     } else return StateSurveyEnum.INIT;
 };
 
-const getSurveyStateData = (data: LunaticData, idSurvey: string): StateData => {
+const getSurveyStateData = (data: LunaticData): StateData => {
     const lastRemoteDate = Date.now();
     const stateData: StateData = {
-        state: getStateOfSurvey(idSurvey),
+        state: data.stateData?.state ?? StateDataStateEnum.INIT,
         date: lastRemoteDate,
         currentPage: getCurrentPage(data),
     };
@@ -146,7 +134,7 @@ const lockAllSurveys = (idHousehold: string) => {
 
 const validateSurvey = (idSurvey: string) => {
     const data = getData(idSurvey);
-    const stateData = getSurveyStateData(getData(idSurvey), idSurvey);
+    const stateData = getSurveyStateData(getData(idSurvey));
     if (stateData.state != StateDataStateEnum.VALIDATED) {
         const validatedStateData: StateData = {
             idStateData: stateData.idStateData,
@@ -166,7 +154,7 @@ const validateAllEmptySurveys = (idHousehold: string) => {
 
     idSurveys.forEach((idSurvey: string) => {
         const data = getData(idSurvey || "");
-        const stateData = getSurveyStateData(data, idSurvey);
+        const stateData = getSurveyStateData(data);
 
         if (stateData.state != StateDataStateEnum.VALIDATED) {
             const validatedStateData: StateData = {
@@ -201,7 +189,6 @@ export {
     isSurveyClosed,
     isSurveyStarted,
     isSurveyCompleted,
-    getStateOfSurvey,
     getStatutSurvey,
     getSurveyStateData,
     lockAllSurveys,

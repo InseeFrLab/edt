@@ -713,7 +713,7 @@ const ActivityOrRoutePlannerPage = () => {
                                             {activitiesRoutesOrGaps.length !== 0 &&
                                                 (isReviewerMode() ? (
                                                     <Box className={classes.headerActivityLockBox}>
-                                                        {/* <Alert
+                                                        <Alert
                                                             isAlertDisplayed={isAlertLockDisplayed}
                                                             onCompleteCallBack={lock}
                                                             onCancelCallBack={displayAlert(
@@ -732,7 +732,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                                     )}
                                                                 />
                                                             }
-                                                        ></Alert> */}
+                                                        ></Alert>
                                                         <Box className={classes.headerActivityBox}>
                                                             <Typography className={classes.label}>
                                                                 {t(

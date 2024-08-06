@@ -220,7 +220,7 @@ const ActivityDurationPage = () => {
             isRoute={isRoute}
         >
             <FlexCenter>
-                {/* <Alert
+                <Alert
                     isAlertDisplayed={isAlertDisplayed}
                     onCompleteCallBack={useCallback(
                         () => setIsAlertDisplayed(false),
@@ -229,7 +229,7 @@ const ActivityDurationPage = () => {
                     onCancelCallBack={useCallback(cancel => onClose(cancel), [])}
                     labels={getLabelsWhenQuit(isRoute)}
                     icon={<ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />}
-                ></Alert> */}
+                ></Alert>
                 <Snackbar
                     className={isDesktop() ? classes.snackbarDesktop : classes.snackbar}
                     open={openSnackbar}

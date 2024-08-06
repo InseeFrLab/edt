@@ -524,7 +524,7 @@ const getRemoteSavedSurveyData = (
             const surveyData = initializeData(remoteSurveyData, surveyId);
             return lunaticDatabase.get(surveyId).then(localSurveyData => {
                 if (shouldInitData(remoteSurveyData, localSurveyData)) {
-                    const stateData = getSurveyStateData(surveyData, surveyId);
+                    const stateData = getSurveyStateData(surveyData);
                     setLocalDatabase(stateData, surveyData, surveyId);
                     return lunaticDatabase.save(surveyId, surveyData);
                 } else {
@@ -534,7 +534,7 @@ const getRemoteSavedSurveyData = (
                         if (weeklyPlanner) {
                             remoteSurveyData.COLLECTED.WEEKLYPLANNER = weeklyPlanner;
                         }
-                        const stateData = getSurveyStateData(surveyData, surveyId);
+                        const stateData = getSurveyStateData(surveyData);
                         setLocalDatabase(stateData, remoteSurveyData, surveyId);
                         return lunaticDatabase.save(surveyId, surveyData);
                     }
@@ -989,7 +989,7 @@ const saveData = (
     if (isChange) {
         console.log("isChange");
         data = saveQualityScore(idSurvey, data);
-        stateData = getSurveyStateData(data, idSurvey);
+        stateData = getSurveyStateData(data);
 
         if (!navigator.onLine) {
             stateData.date = 0;
@@ -1704,13 +1704,16 @@ const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
 
     for (let prop in FieldNameEnum as any) {
         if (prop == FieldNameEnum.FIRSTNAME) continue;
-        const data = dataOfSurvey && dataOfSurvey[prop];
+        const surveyData = dataOfSurvey && dataOfSurvey[prop];
         const ifArrayInputed =
-            data?.EDITED &&
-            Array.isArray(data.EDITED) &&
-            data.EDITED.length > 0 &&
-            data.EDITED[0] != null;
-        if ((data?.EDITED && ifArrayInputed) || (data?.EDITED && !Array.isArray(data.EDITED))) {
+            surveyData?.EDITED &&
+            Array.isArray(surveyData.EDITED) &&
+            surveyData.EDITED.length > 0 &&
+            surveyData.EDITED[0] != null;
+        if (
+            (surveyData?.EDITED && ifArrayInputed) ||
+            (surveyData?.EDITED && !Array.isArray(surveyData.EDITED))
+        ) {
             return true;
         }
     }
