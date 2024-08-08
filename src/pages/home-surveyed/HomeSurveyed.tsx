@@ -39,7 +39,6 @@ import {
     getSource,
     getSurveyRights,
     getUserDatasActivity,
-    initializeRemoteDatas,
     initializeHomeSurveys,
     initializeSurveysDatasCache,
     initializeSurveysIdsDemo,
@@ -47,6 +46,7 @@ import {
     saveData,
     surveysIds,
     userDatasMap,
+    initializeDatas,
 } from "service/survey-service";
 import { isDemoMode, lockAllSurveys, validateAllEmptySurveys } from "service/survey-state-service";
 import { getUserRights } from "service/user-service";
@@ -85,11 +85,11 @@ const HomeSurveyedPage = () => {
 
     useEffect(() => {
         if (navigator.onLine && getUserRights() === EdtUserRightsEnum.SURVEYED) {
-            initializeRemoteDatas(setError).then(() => {
+            initializeDatas(setError).then(() => {
                 setInitialized(true);
             });
         } else if (getUserRights() === EdtUserRightsEnum.SURVEYED) {
-            initializeRemoteDatas(setError).then(() => {
+            initializeDatas(setError).then(() => {
                 setInitialized(true);
                 setState({});
             });
