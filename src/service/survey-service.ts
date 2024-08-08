@@ -183,6 +183,7 @@ const initializeRemoteRefs = (setError: (error: ErrorCodeEnum) => void) => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
         if (!refData && navigator.onLine) {
             return fetchRemoteReferentiels(setError).then(refs => {
+                console.log("Save Remote refs", refs);
                 return saveReferentiels(refs);
             });
         } else {
@@ -195,6 +196,7 @@ const initializeRefs = () => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
         if (!refData && navigator.onLine) {
             return fetchReferentiels().then(refs => {
+                console.log("Save Local refs", refs);
                 return saveReferentiels(refs);
             });
         } else {
@@ -1005,7 +1007,6 @@ const saveData = (
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
 
     if (isChange) {
-        console.log("isChange");
         console.log("Attempt to save data", data.COLLECTED);
         data = saveQualityScore(idSurvey, data);
         stateData = getSurveyStateData(data);
@@ -1095,7 +1096,6 @@ const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: str
 const saveReferentiels = (data: ReferentielData): Promise<ReferentielData> => {
     return lunaticDatabase.save(REFERENTIELS_ID, data).then(() => {
         referentielsData = data;
-        console.log("saveReferentiels", referentielsData);
         return data;
     });
 };
