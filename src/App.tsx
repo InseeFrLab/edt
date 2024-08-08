@@ -15,8 +15,8 @@ import {
     getAuthCache,
     getDatas,
     initPropsAuth,
-    initializeRemoteDatas,
     initializeListSurveys,
+    initializeRemoteDatas,
 } from "service/survey-service";
 import { getUserRights, setAuth, setUser, setUserToken } from "service/user-service";
 import { getCookie } from "utils/utils";

@@ -141,7 +141,7 @@ const setDataOfActivityReviewer = (
     const bindings: string[] = components?.filter(
         (component: any) => component.componentType != "Sequence",
     )[0]?.bindingDependencies;
-
+    console.log("setDataOfActivityReviewer", dataCollected, data, components, iteration);
     for (let prop in FieldNameEnumActivity as any) {
         let dataOfField = dataCollected[prop];
         const collected = dataOfField?.COLLECTED;
@@ -251,6 +251,7 @@ const getVariablesActivity = (
             isReviewerMode || isLocked ? variableEdited ?? variableCollected : variableCollected;
         variables.set(bindingDependency, variable);
     });
+    console.log("getVariablesActivity", variables);
     return variables;
 };
 
@@ -345,6 +346,8 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     {components.map(function (component: any) {
                         const { id, componentType, response, options, value, ...other } = component;
                         const Component = lunatic[componentType];
+                        const parsedValue = typeof value === "number" ? value.toString() : value;
+                        console.log("component:", componentType, "response:", response, "value:", value);
                         return (
                             <div className="lunatic lunatic-component" key={`component-${id}`}>
                                 <Component
@@ -360,11 +363,11 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                         getDataLocal(),
                                         iteration,
                                         getBindingDependencies(components),
-                                        value,
+                                        parsedValue,
                                         source,
                                     )}
                                     bindingDependencies={getBindingDependencies(components)}
-                                    value={value}
+                                    value={parsedValue}
                                 />
                             </div>
                         );

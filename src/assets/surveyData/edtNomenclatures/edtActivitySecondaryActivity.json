@@ -1,66 +1,66 @@
 [
     {
-        "label": "Écouter la radio, des podcasts ou de la musique",
-        "value": 1
+        "value": 1,
+        "label": "Écouter la radio, des podcasts ou de la musique"
     },
     {
-        "label": "Regarder la télévision, des DVD, des vidéos en ligne",
-        "value": 2
+        "value": 2,
+        "label": "Regarder la télévision, des DVD, des vidéos en ligne"
     },
     {
-        "label": "Conversation",
-        "value": 3
+        "value": 3,
+        "label": "Conversation"
     },
     {
-        "label": "Consulter mes mails personnels",
-        "value": 4
+        "value": 4,
+        "label": "Consulter mes mails personnels"
     },
     {
-        "label": "Consulter les notifications de mon téléphone",
-        "value": 5
+        "value": 5,
+        "label": "Consulter les notifications de mon téléphone"
     },
     {
-        "label": "Publier ou surfer sur les médias sociaux (Facebook, Instagram, Twitter, …)",
-        "value": 6
+        "value": 6,
+        "label": "Publier ou surfer sur les médias sociaux (Facebook, Instagram, Twitter, …)"
     },
     {
-        "label": "Surf sur Internet, visite de sites pour m'informer (hors journaux)",
-        "value": 7
+        "value": 7,
+        "label": "Surf sur Internet, visite de sites pour m'informer (hors journaux)"
     },
     {
-        "label": "Jeux sur téléphone",
-        "value": 8
+        "value": 8,
+        "label": "Jeux sur téléphone"
     },
     {
-        "label": "Lecture de journaux, revues",
-        "value": 9
+        "value": 9,
+        "label": "Lecture de journaux, revues"
     },
     {
-        "label": "Lecture de livres",
-        "value": 10
+        "value": 10,
+        "label": "Lecture de livres"
     },
     {
-        "label": "Repas",
-        "value": 11
+        "value": 11,
+        "label": "Repas"
     },
     {
-        "label": "Travail professionnel (y compris mails)",
-        "value": 12
+        "value": 12,
+        "label": "Travail professionnel (y compris mails)"
     },
     {
-        "label": "Me détendre, fumer",
-        "value": 13
+        "value": 13,
+        "label": "Me détendre, fumer"
     },
     {
-        "label": "Conversations avec les enfants, lectures",
-        "value": 14
+        "value": 14,
+        "label": "Conversations avec les enfants, lectures"
     },
     {
-        "label": "Repas, douche, habillage des enfants",
-        "value": 15
+        "value": 15,
+        "label": "Repas, douche, habillage des enfants"
     },
     {
-        "label": "Surveiller les devoirs des enfants",
-        "value": 16
+        "value": 16,
+        "label": "Surveiller les devoirs des enfants"
     }
 ]

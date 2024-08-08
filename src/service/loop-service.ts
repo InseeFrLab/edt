@@ -24,7 +24,6 @@ import {
     getValueOfData,
     getVariable,
     saveData,
-    saveDataLocally,
     setValue,
     toIgnoreForActivity,
     toIgnoreForRoute,
