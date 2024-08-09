@@ -450,6 +450,18 @@
             "variableType": "COLLECTED"
         },
         {
+            "name": "ISCOMPLETED",
+            "values": {
+                "EDITED": [null],
+                "FORCED": [null],
+                "INPUTED": [null],
+                "PREVIOUS": [null],
+                "COLLECTED": [null]
+            },
+            "componentRef": "",
+            "variableType": "COLLECTED"
+        },
+        {
             "name": "INPUT_SUGGESTER",
             "values": {
                 "EDITED": [null],
@@ -471,6 +483,18 @@
                 "COLLECTED": [null]
             },
             "componentRef": "activityselecter_mainactivity",
+            "variableType": "COLLECTED"
+        },
+        {
+            "name": "ISVALIDATED",
+            "values": {
+                "EDITED": null,
+                "FORCED": null,
+                "INPUTED": null,
+                "PREVIOUS": null,
+                "COLLECTED": null
+            },
+            "componentRef": "",
             "variableType": "COLLECTED"
         },
         {
@@ -1144,6 +1168,7 @@
                 "OTHER",
                 "WITHSCREEN",
                 "ISROUTE",
+                "ISCOMPLETED",
                 "INPUT_SUGGESTER",
                 "ACTIVITY_SELECTER_HISTORY"
             ]

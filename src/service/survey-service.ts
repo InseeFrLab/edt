@@ -61,7 +61,7 @@ import {
     remoteGetSurveyDataReviewer,
 } from "./api-service/getRemoteData";
 import { getFlatLocalStorageValue } from "./local-storage-service";
-import { getFullNavigatePath, navToPlanner, setAllNamesOfGroupAndNav } from "./navigation-service";
+import { navToPlanner, setAllNamesOfGroupAndNav } from "./navigation-service";
 import { addToAutocompleteActivityReferentiel } from "./referentiel-service";
 import { getQualityScore } from "./summary-service";
 import { getActivitiesOrRoutes, getScore } from "./survey-activity-service";
@@ -1140,17 +1140,8 @@ const getUserDatas = () => {
     return userDatas?.length > 0 ? userDatas : getArrayFromSession("userDatas");
 };
 
-const getActivitySource = () => {
-    return sourcesData != null ? sourcesData.edtActivitySurvey : edtActivitySurvey;
-};
-
-//TODO: Temp solution as place work does not exist
-const getWorkTimeSource = () => {
-    return edtWorkTimeSurvey;
-};
-
 const getSource = (refName: SourcesEnum) => {
-    return refName == SourcesEnum.ACTIVITY_SURVEY ? getActivitySource() : getWorkTimeSource();
+    return refName == SourcesEnum.ACTIVITY_SURVEY ? edtActivitySurvey : edtWorkTimeSurvey;
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {

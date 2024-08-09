@@ -34,11 +34,9 @@ const SecondaryActivitySelectionPage = () => {
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
     const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
-    console.log("isRoute", isRoute);
     const referentiel = isRoute ? getRouteSecondaryActivityRef() : getActivitySecondaryActivityRef();
-    console.log("referentiel", referentiel);
     const newActivities = getNewSecondaryActivities(idSurvey, referentiel);
-    console.log("newActivities", newActivities);
+    //console.log("newActivities", newActivities);
     const modifiable = !surveyReadOnly(context.rightsSurvey);
 
     const iconAddAlt = t("accessibility.asset.mui-icon.add");

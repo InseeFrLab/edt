@@ -98,7 +98,6 @@ const WithScreenPage = () => {
         labels: getLabels("with-screen-selecter"),
         errorIcon: <ErrorIcon />,
     };
-    console.log("Final data with screen : ", context.data);
     return (
         <LoopSurveyPage
             onNext={useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [nextClickEvent])}

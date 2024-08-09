@@ -153,7 +153,14 @@ const setDataOfActivityReviewer = (
             //get data of current prop ->
             //COLLECTED : value of bdd (COLLECTED)
             //EDITED: if exist EDITED -> value of lunatic for value[iteration], other -> value of bdd (EDITED)
-
+            console.log(
+                "setDataOfActivityReviewer",
+                prop,
+                collected,
+                edited,
+                collectedSaved,
+                editedSaved,
+            );
             dataOfField = getDataOfCurrentBinding(
                 copyObject(collected),
                 copyObject(edited),
@@ -163,6 +170,14 @@ const setDataOfActivityReviewer = (
                 iteration,
             );
         } else if (dataOfField) {
+            console.log(
+                "setDataOfActivityReviewer dataOffField",
+                prop,
+                collected,
+                edited,
+                collectedSaved,
+                editedSaved,
+            );
             //prop activity + prop not currently being edited,
             //so edited get value of edited in bdd, and collected get value of partie collected in bdd
             dataOfField.EDITED = copyObject(editedSaved);
@@ -199,7 +214,13 @@ const getDataReviewer = (
     return callbackholder;
 };
 
-//data of interviewer
+/**
+ * Retrieves and updates interviewer data.
+ *
+ * This function fetches data using `getData` callback, then updates
+ * the collected data with edited values from the provided `data` object.
+ * It ensures that the edited values from the database are correctly set
+ */
 const getDataInterviewer = (getData: any, data: LunaticData | undefined, source?: LunaticModel) => {
     const callbackholder = getData();
     const dataCollected = callbackholder.COLLECTED;
@@ -251,7 +272,7 @@ const getVariablesActivity = (
             isReviewerMode || isLocked ? variableEdited ?? variableCollected : variableCollected;
         variables.set(bindingDependency, variable);
     });
-    console.log("getVariablesActivity", variables);
+    //console.log("getVariablesActivity", variables);
     return variables;
 };
 
@@ -346,8 +367,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     {components.map(function (component: any) {
                         const { id, componentType, response, options, value, ...other } = component;
                         const Component = lunatic[componentType];
-                        const parsedValue = typeof value === "number" ? value.toString() : value;
-                        console.log("component:", componentType, "response:", response, "value:", value);
+                        //console.log("component:", componentType, "response:", response, "value:", value);
                         return (
                             <div className="lunatic lunatic-component" key={`component-${id}`}>
                                 <Component
@@ -363,11 +383,11 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                                         getDataLocal(),
                                         iteration,
                                         getBindingDependencies(components),
-                                        parsedValue,
+                                        value,
                                         source,
                                     )}
                                     bindingDependencies={getBindingDependencies(components)}
-                                    value={parsedValue}
+                                    value={value}
                                 />
                             </div>
                         );
