@@ -241,7 +241,6 @@ const closeFormularieAndNav = (idSurvey: string, route: string) => {
  * we need to make the call twice to be able to retrieve the current state of the database
  */
 const validate = (idSurvey: string): Promise<void | LunaticData> => {
-    console.log("validate");
     return saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), true).then(() => {
         return saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), false);
     });

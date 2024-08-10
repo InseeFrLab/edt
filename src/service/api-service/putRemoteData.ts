@@ -1,5 +1,3 @@
-//TODO: fix any
-
 import axios from "axios";
 import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { SurveyData, StateData } from "interface/entity/Api";
@@ -9,21 +7,14 @@ import { getUserToken, getAuth } from "service/user-service";
 import { stromaeBackOfficeApiBaseUrl, getHeader } from "./getRemoteData";
 import jwt, { JwtPayload } from "jwt-decode";
 import { logout } from "service/auth-service";
-
-const transformCollectedArray = (dataAct: any) => {
-    const transformedDataAct: { [key: string]: any } = {};
-    Object.keys(dataAct).forEach(key => {
-        const transformedKey: string = /^\d/.test(key) ? `S_${key}` : key;
-        transformedDataAct[transformedKey] = dataAct[key];
-    });
-    return transformedDataAct;
-};
+import { transformCollectedArray } from "utils/utils";
 
 const requestPutSurveyData = (
     idSurvey: string,
     data: SurveyData,
     token?: string,
 ): Promise<SurveyData> => {
+    console.log("requestPutSurveyData", data);
     const collectedData = transformCollectedArray(data?.data?.COLLECTED);
     if (data.data) {
         data.data.COLLECTED = collectedData;
@@ -102,6 +93,7 @@ const requestPutDataReviewer = (
     data: LunaticData,
     token?: string,
 ): Promise<LunaticData> => {
+    console.log("requestPutDataReviewer", data);
     data.COLLECTED = transformCollectedArray(data?.COLLECTED);
     delete data.COLLECTED?.WEEKLYPLANNER;
     return new Promise<LunaticData>(resolve => {

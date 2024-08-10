@@ -45,6 +45,8 @@ import {
     getArrayFromSession,
     getItemFromSession,
     groupBy,
+    revertTransformedArray,
+    transformCollectedArray,
 } from "utils/utils";
 import {
     edtWorkTimeSurvey,
@@ -746,6 +748,8 @@ const getData = (idSurvey: string): LunaticData => {
     const modifyCollected = modifyIndividualCollected(idSurvey);
     const emptyData = getDataCache(idSurvey) ?? createDataEmpty(idSurvey ?? "");
     const data = modifyCollected || emptyData;
+    const revertedCollected = revertTransformedArray(data.COLLECTED);
+    data.COLLECTED = revertedCollected;
     return data;
 };
 
@@ -1007,7 +1011,8 @@ const saveData = (
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
 
     if (isChange) {
-        console.log("Attempt to save data", data.COLLECTED);
+        console.log("SaveRemote data", data.COLLECTED);
+
         data = saveQualityScore(idSurvey, data);
         stateData = getSurveyStateData(data);
 

@@ -38,7 +38,6 @@ import {
     getNavigatePath,
     getOrchestratorPage,
     navFullPath,
-    saveAndNav,
     saveAndNavLocally,
     setEnviro,
 } from "service/navigation-service";
@@ -133,6 +132,7 @@ const WeeklyPlannerPage = () => {
             getArrayFromSession("DATES")) as string[];
         const currentDateIndex = dates.indexOf(response.date);
         const dataResponse = getData(idSurveyResponse);
+        console.log("Save Duration", dataCopy);
         if (
             !isReviewer() &&
             dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
@@ -238,7 +238,7 @@ const WeeklyPlannerPage = () => {
     const validateAndNav = (): void => {
         if (displayDayOverview) {
             if (isPlaceWorkDisplayed) {
-                saveDataLocally(idSurvey, callbackHolder.getData());
+                saveData(idSurvey, callbackHolder.getData());
                 setDisplayDayOverview(true);
                 setIsPlaceWorkDisplayed(false);
                 isPlaceWorkDisplayed = false;
@@ -304,7 +304,7 @@ const WeeklyPlannerPage = () => {
                 <SurveyPage
                     idSurvey={idSurvey}
                     validate={useCallback(() => validateAndNav(), [displayDayOverview])}
-                    onNavigateBack={useCallback(() => validateAndNav(), [displayDayOverview])}
+                    onNavigateBack={useCallback(() => saveAndNavLocally(idSurvey), [displayDayOverview])}
                     onPrevious={useCallback(() => saveAndNavLocally(idSurvey), [])}
                     onEdit={useCallback(() => onEdit(), [])}
                     onHelp={onHelp}

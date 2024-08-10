@@ -173,22 +173,28 @@ function difference(origObj: any, newObj: any) {
     return changes(newObj, origObj);
 }
 
+/**
+ * Merges specific fields from one object into another.
+ *
+ * This function merges the "variables" and "components" fields from the new object into the original object.
+ * Both objects must be valid and of type object.
+ *
+ * @param origObj - The original object to merge into.
+ * @param newObj - The new object containing fields to merge.
+ * @returns The merged object.
+ * @throws Will throw an error if either origObj or newObj is not a valid object.
+ */
 function mergeObjects(origObj: any, newObj: any): any {
-    // Validate input objects
     if (!origObj || !newObj || typeof origObj !== "object" || typeof newObj !== "object") {
         throw new Error("Both origObj and newObj must be valid objects.");
     }
 
-    // Fields to merge
     const fieldsToMerge = ["variables", "components"];
 
     fieldsToMerge.forEach(field => {
         // Check if the field exists and is an array in origObj
         if (Array.isArray(origObj[field])) {
-            // Ensure the field exists in newObj; if not, initialize as an empty array
             newObj[field] = newObj[field] || [];
-
-            // Merge the array from origObj into newObj without duplicates
             origObj[field].forEach((item: any) => {
                 if (!newObj[field].some((newItem: any) => isEqual(newItem, item))) {
                     newObj[field].push(item);
@@ -199,6 +205,39 @@ function mergeObjects(origObj: any, newObj: any): any {
 
     return newObj;
 }
+
+/**
+ * Reverts a transformed array back to its original structure.
+ * (Platine Back Office data transformation)
+ * @param transformedArray - The array that has been transformed.
+ * @param transformationLogic - A function that defines how to revert the transformation.
+ * @returns The original array structure before transformation.
+ * @throws Will throw an error if the transformedArray is not an array .
+ */
+const revertTransformedArray = (dataAct: any) => {
+    const revertedDataAct: { [key: string]: any } = {};
+    Object.keys(dataAct).forEach(key => {
+        const revertedKey = key.startsWith("S_") ? key.substring(2) : key;
+        revertedDataAct[revertedKey] = dataAct[key];
+    });
+    return revertedDataAct;
+};
+
+/**
+ * Transforms the keys of an object by prefixing keys that start with a digit.
+ * (Required for Platine Back Office data extract)
+ *
+ * @param dataAct - The input object whose keys need to be transformed.
+ * @returns The transformed object with prefixed keys.
+ */
+const transformCollectedArray = (dataAct: any) => {
+    const transformedDataAct: { [key: string]: any } = {};
+    Object.keys(dataAct).forEach(key => {
+        const transformedKey: string = /^\d/.test(key) ? `S_${key}` : key;
+        transformedDataAct[transformedKey] = dataAct[key];
+    });
+    return transformedDataAct;
+};
 
 export {
     addArrayToSession,
@@ -219,4 +258,6 @@ export {
     sumAllOfArray,
     difference,
     mergeObjects,
+    revertTransformedArray,
+    transformCollectedArray,
 };

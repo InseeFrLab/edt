@@ -7,6 +7,7 @@ import { getUserToken, isReviewer } from "../user-service";
 import { AuthContextProps } from "oidc-react";
 import { NomenclatureActivityOption } from "@inseefrlab/lunatic-edt";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
+import { revertTransformedArray } from "utils/utils";
 
 export const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
 export const stromaeBackOfficeApiBaseUrl = process.env.REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL;
@@ -83,15 +84,6 @@ const fetchRemoteReferentiels = (setError: (error: ErrorCodeEnum) => void): Prom
                 }
             });
     });
-};
-
-const revertTransformedArray = (dataAct: any) => {
-    const revertedDataAct: { [key: string]: any } = {};
-    Object.keys(dataAct).forEach(key => {
-        const revertedKey = key.startsWith("S_") ? key.substring(2) : key;
-        revertedDataAct[revertedKey] = dataAct[key];
-    });
-    return revertedDataAct;
 };
 
 const fetchUserSurveysInfo = (setError: (error: ErrorCodeEnum) => void): Promise<UserSurveys[]> => {
