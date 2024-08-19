@@ -1,5 +1,3 @@
-import puppeteer from "puppeteer";
-import { edtOrganisationApiBaseUrl, stromaeBackOfficeApiBaseUrl } from "../src/service/api-service";
 import { getUserToken } from "../src/service/user-service";
 import userData from "./mocks/userData.json";
 import userSurveyInfo from "./mocks/userSurveyInfo-interviewer.json";

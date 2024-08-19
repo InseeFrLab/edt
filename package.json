@@ -7,7 +7,7 @@
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",
         "@inseefr/lunatic": "2.0.7-v2",
-        "@inseefrlab/lunatic-edt": "0.13.3",
+        "@inseefrlab/lunatic-edt": "0.13.4",
         "@mui/material": "^5.10.7",
         "@mui/styles": "^5.12.0",
         "@react-pdf/font": "2.2.1",

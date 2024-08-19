@@ -14,7 +14,7 @@ import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
-import { LunaticModel } from "interface/lunatic/Lunatic";
+import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import { TFunction, useTranslation } from "react-i18next";
 import { getLoopSize } from "service/loop-service";
 import {
@@ -27,8 +27,19 @@ import {
     getAutoCompleteRef,
     getLanguage,
 } from "service/referentiel-service";
-import { getData, getValue, getValueOfData, saveData, surveysIds } from "service/survey-service";
+import {
+    getData,
+    getModePersistence,
+    getValue,
+    getValueOfData,
+    getVarBooleanModepersistance,
+    saveData,
+    surveysIds,
+} from "service/survey-service";
 import { getStatutSurvey } from "./survey-state-service";
+import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
+import { getQualityScore } from "./summary-service";
+import { t } from "i18next";
 
 const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
     const mainActivityId = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_ID, i) as string;
@@ -518,6 +529,102 @@ const getMeanOfTransportLabel = (
     return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
 };
 
+const undefineVarSomeone = (data: LunaticData, modePersistence: ModePersistenceEnum, index: number) => {
+    const dataCollected = data.COLLECTED;
+    if (dataCollected) {
+        const fieldNames = [
+            FieldNameEnum.CHILD,
+            FieldNameEnum.COUPLE,
+            FieldNameEnum.PARENTS,
+            FieldNameEnum.OTHERKNOWN,
+            FieldNameEnum.OTHER,
+        ];
+
+        fieldNames.forEach(fieldName => {
+            const field = getVarBooleanModepersistance(dataCollected, modePersistence, fieldName);
+            if (field) {
+                field[index] = null;
+            }
+        });
+    }
+};
+
+const undefineVarSecondaryActivity = (
+    data: LunaticData,
+    modePersistence: ModePersistenceEnum,
+    index: number,
+) => {
+    const dataCollected = data.COLLECTED;
+    const modeInterviewer = modePersistence == ModePersistenceEnum.COLLECTED;
+    if (dataCollected) {
+        const fieldNames = [FieldNameEnum.SECONDARYACTIVITY, FieldNameEnum.SECONDARYACTIVITY_LABEL];
+
+        fieldNames.forEach(fieldName => {
+            const fieldData = (
+                modeInterviewer ? dataCollected[fieldName].COLLECTED : dataCollected[fieldName].EDITED
+            ) as (string | null)[];
+
+            if (fieldData) fieldData[index] = null;
+        });
+    }
+};
+
+const processArray = (array: (string | null)[] | undefined, callback: (index: number) => void) => {
+    if (array && array.length > 0) {
+        array.forEach((item, index) => {
+            if (item === "false") {
+                callback(index);
+            }
+        });
+    }
+};
+
+const fixConditionals = (data: LunaticData) => {
+    const withSomeone = data.COLLECTED?.[FieldNameEnum.WITHSOMEONE];
+    const withSecondaryActivity = data.COLLECTED?.[FieldNameEnum.WITHSECONDARYACTIVITY];
+    const modePersistence = getModePersistence(data);
+
+    const arrayWithSomeone =
+        modePersistence == ModePersistenceEnum.COLLECTED ? withSomeone?.COLLECTED : withSomeone?.EDITED;
+    const arrayWithSecondaryActivity =
+        modePersistence == ModePersistenceEnum.COLLECTED
+            ? withSecondaryActivity?.COLLECTED
+            : withSecondaryActivity?.EDITED;
+
+    processArray(arrayWithSomeone, index => {
+        undefineVarSomeone(data, modePersistence, index);
+    });
+
+    processArray(arrayWithSecondaryActivity, index => {
+        undefineVarSecondaryActivity(data, modePersistence, index);
+    });
+};
+
+const saveQualityScore = (idSurvey: string, data: LunaticData) => {
+    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
+    const qualityScore = getQualityScore(idSurvey, activitiesRoutesOrGaps, overlaps, t);
+    const modePersistence = getModePersistence(data);
+    if (data?.COLLECTED?.[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS]) {
+        data.COLLECTED[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS] = {
+            COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? qualityScore.points : null,
+            EDITED: modePersistence == ModePersistenceEnum.EDITED ? qualityScore.points : null,
+            FORCED: null,
+            INPUTED: null,
+            PREVIOUS: null,
+        };
+    }
+    if (data?.COLLECTED?.[FieldNameEnum.QUALITY_SCORE]) {
+        data.COLLECTED[FieldNameEnum.QUALITY_SCORE] = {
+            COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? qualityScore.group : null,
+            EDITED: modePersistence == ModePersistenceEnum.EDITED ? qualityScore.group : null,
+            FORCED: null,
+            INPUTED: null,
+            PREVIOUS: null,
+        };
+    }
+    return data;
+};
+
 const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: number) => {
     const data = getData(idSurvey);
     const dataCollected = data.COLLECTED ?? null;
@@ -612,6 +719,7 @@ const surveyReadOnly = (rightsSurvey: EdtSurveyRightsEnum): boolean => {
 export {
     convertStringToBoolean,
     deleteActivity,
+    fixConditionals,
     getActivitesSelectedLabel,
     getActivitiesOrRoutes,
     getActivityLabel,
@@ -623,5 +731,6 @@ export {
     getWeeklyPlannerScore,
     mockActivitiesRoutesOrGaps,
     mockData,
+    saveQualityScore,
     surveyReadOnly,
 };

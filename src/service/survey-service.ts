@@ -46,7 +46,6 @@ import {
     getItemFromSession,
     groupBy,
     revertTransformedArray,
-    transformCollectedArray,
 } from "utils/utils";
 import {
     edtWorkTimeSurvey,
@@ -65,8 +64,7 @@ import {
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { navToPlanner, setAllNamesOfGroupAndNav } from "./navigation-service";
 import { addToAutocompleteActivityReferentiel } from "./referentiel-service";
-import { getQualityScore } from "./summary-service";
-import { getActivitiesOrRoutes, getScore } from "./survey-activity-service";
+import { fixConditionals, getScore, saveQualityScore } from "./survey-activity-service";
 import { getUserRights, isReviewer } from "./user-service";
 import { remotePutSurveyData, remotePutSurveyDataReviewer } from "./api-service/putRemoteData";
 import { fetchReferentiels } from "./api-service/getLocalSurveyData";
@@ -86,7 +84,7 @@ const oldDatas = new Map<string, LunaticData>();
 
 const NUM_MAX_ACTIVITY_SURVEYS = process.env.REACT_APP_NUM_ACTIVITY_SURVEYS ?? 6;
 const NUM_MAX_WORKTIME_SURVEYS = 3;
-
+//TODO: Find a way to remove these goddamn global variables
 let referentielsData: ReferentielData;
 let sourcesData: SourceData;
 let surveysIds: SurveysIds = {
@@ -553,7 +551,8 @@ const getRemoteSavedSurveyData = (
                 } else {
                     if (shouldSaveRemoteData(remoteSurveyData, localSurveyData)) {
                         // TEMP: WeeklyPlanner stuff (to be removed)
-                        const weeklyPlanner = localSurveyData?.COLLECTED?.WEEKLYPLANNER ?? null;
+                        //TODO: fix a bug where other variable are overwrited if there is no weeklyPlanner
+                        const weeklyPlanner = localSurveyData?.COLLECTED?.WEEKLYPLANNER;
                         if (weeklyPlanner) {
                             remoteSurveyData.COLLECTED.WEEKLYPLANNER = weeklyPlanner;
                         }
@@ -838,112 +837,6 @@ const getVarBooleanModepersistance = (
         ? dataCollected[variableName].COLLECTED
         : dataCollected[variableName].EDITED;
     return data as (boolean | null)[];
-};
-
-const undefineVarSomeone = (data: LunaticData, modePersistence: ModePersistenceEnum, index: number) => {
-    const dataCollected = data.COLLECTED;
-    if (dataCollected) {
-        const child = getVarBooleanModepersistance(dataCollected, modePersistence, FieldNameEnum.CHILD);
-        const couple = getVarBooleanModepersistance(
-            dataCollected,
-            modePersistence,
-            FieldNameEnum.COUPLE,
-        );
-        const parents = getVarBooleanModepersistance(
-            dataCollected,
-            modePersistence,
-            FieldNameEnum.PARENTS,
-        );
-        const otherknow = getVarBooleanModepersistance(
-            dataCollected,
-            modePersistence,
-            FieldNameEnum.OTHERKNOWN,
-        );
-        const other = getVarBooleanModepersistance(dataCollected, modePersistence, FieldNameEnum.OTHER);
-
-        if (child) child[index] = null;
-        if (couple) couple[index] = null;
-        if (parents) parents[index] = null;
-        if (otherknow) otherknow[index] = null;
-        if (other) other[index] = null;
-    }
-};
-
-const undefineVarSecondaryActivity = (
-    data: LunaticData,
-    modePersistence: ModePersistenceEnum,
-    index: number,
-) => {
-    const dataCollected = data.COLLECTED;
-    const modeInterviewer = modePersistence == ModePersistenceEnum.COLLECTED;
-    if (dataCollected) {
-        const secondaryActivity = (
-            modeInterviewer
-                ? dataCollected[FieldNameEnum.SECONDARYACTIVITY].COLLECTED
-                : dataCollected[FieldNameEnum.SECONDARYACTIVITY].EDITED
-        ) as (string | null)[];
-        const secondaryActivityLabel = (
-            modeInterviewer
-                ? dataCollected[FieldNameEnum.SECONDARYACTIVITY_LABEL].COLLECTED
-                : dataCollected[FieldNameEnum.SECONDARYACTIVITY_LABEL].EDITED
-        ) as (string | null)[];
-
-        if (secondaryActivity) secondaryActivity[index] = null;
-        if (secondaryActivityLabel) secondaryActivityLabel[index] = null;
-    }
-};
-
-const fixConditionals = (data: LunaticData) => {
-    const withSomeone = data.COLLECTED?.[FieldNameEnum.WITHSOMEONE];
-    const withSecondaryActivity = data.COLLECTED?.[FieldNameEnum.WITHSECONDARYACTIVITY];
-    const modePersistence = getModePersistence(data);
-
-    const arrayWithSomeone =
-        modePersistence == ModePersistenceEnum.COLLECTED ? withSomeone?.COLLECTED : withSomeone?.EDITED;
-    const arrayWithSecondaryActivity =
-        modePersistence == ModePersistenceEnum.COLLECTED
-            ? withSecondaryActivity?.COLLECTED
-            : withSecondaryActivity?.EDITED;
-    if (arrayWithSomeone?.length && arrayWithSomeone?.length == 0) {
-        arrayWithSomeone?.forEach((withSom: string, index: number) => {
-            if (withSom == "false") {
-                undefineVarSomeone(data, modePersistence, index);
-            }
-        });
-    }
-
-    if (arrayWithSecondaryActivity && arrayWithSecondaryActivity.length == 0) {
-        arrayWithSecondaryActivity?.forEach((withSecAct: string, index: number) => {
-            if (withSecAct == "false") {
-                undefineVarSecondaryActivity(data, modePersistence, index);
-            }
-        });
-    }
-};
-
-const saveQualityScore = (idSurvey: string, data: LunaticData) => {
-    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
-    const qualityScore = getQualityScore(idSurvey, activitiesRoutesOrGaps, overlaps, t);
-    const modePersistence = getModePersistence(data);
-    if (data?.COLLECTED?.[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS]) {
-        data.COLLECTED[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS] = {
-            COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? qualityScore.points : null,
-            EDITED: modePersistence == ModePersistenceEnum.EDITED ? qualityScore.points : null,
-            FORCED: null,
-            INPUTED: null,
-            PREVIOUS: null,
-        };
-    }
-    if (data?.COLLECTED?.[FieldNameEnum.QUALITY_SCORE]) {
-        data.COLLECTED[FieldNameEnum.QUALITY_SCORE] = {
-            COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? qualityScore.group : null,
-            EDITED: modePersistence == ModePersistenceEnum.EDITED ? qualityScore.group : null,
-            FORCED: null,
-            INPUTED: null,
-            PREVIOUS: null,
-        };
-    }
-    return data;
 };
 
 const updateLocked = (idSurvey: string, data: LunaticData) => {
@@ -1841,6 +1734,7 @@ export {
     getValue,
     getValueOfData,
     getValueWithData,
+    getVarBooleanModepersistance,
     getVariable,
     initPropsAuth,
     initStateData,
