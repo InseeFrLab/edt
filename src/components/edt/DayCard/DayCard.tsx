@@ -4,7 +4,7 @@ import { ReactComponent as PersonSunCloseIcon } from "assets/illustration/card/p
 import { ReactComponent as PersonSunIcon } from "assets/illustration/card/person-sun.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
-import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
+import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "service/responsive";
 import { getQualityScore } from "service/summary-service";
@@ -134,13 +134,13 @@ const DayCard = (props: DayCardProps) => {
                     )}
                 >
                     {modeReviewer &&
-                        (stateSurvey == StateSurveyEnum.INIT ? (
+                        (stateSurvey == StateDataStateEnum.INIT ? (
                             <Box className={classes.statusInitBox}>
                                 {t("page.reviewer-home.status-survey.init")}
                             </Box>
                         ) : (
                             <Box className={classes.statusProgressBox}>
-                                {stateSurvey == StateSurveyEnum.VALIDATED
+                                {stateSurvey == StateDataStateEnum.VALIDATED
                                     ? t("page.reviewer-home.status-survey.validated")
                                     : t("page.reviewer-home.status-survey.locked")}
                             </Box>

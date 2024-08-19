@@ -12,7 +12,6 @@ import {
 } from "./survey-service";
 import { Collected, LunaticData } from "interface/lunatic/Lunatic";
 import { StateData } from "interface/entity/Api";
-import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
 
 const initStateData = (data?: LunaticData) => {
     const stateData = {
@@ -66,10 +65,10 @@ const getStatutSurvey = (idSurvey: string) => {
     const isValidated = isSurveyValidated(idSurvey);
     const variableEdited = existVariableEdited(idSurvey);
     if (isValidated != null && isValidated) {
-        return StateSurveyEnum.VALIDATED;
+        return StateDataStateEnum.VALIDATED;
     } else if ((isLocked != null && isLocked) || variableEdited) {
-        return StateSurveyEnum.LOCKED;
-    } else return StateSurveyEnum.INIT;
+        return StateDataStateEnum.LOCKED;
+    } else return StateDataStateEnum.INIT;
 };
 
 const getSurveyStateData = (data: LunaticData): StateData => {

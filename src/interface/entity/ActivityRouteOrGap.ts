@@ -1,4 +1,4 @@
-import { StateSurveyEnum } from "enumerations/StateSurveyEnum";
+import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 
 export interface ActivityRouteOrGap {
     isRoute?: boolean;
@@ -17,7 +17,7 @@ export interface ActivityRouteOrGap {
     withScreen?: boolean;
     isGap?: boolean;
     iteration?: number;
-    state?: StateSurveyEnum;
+    state?: StateDataStateEnum;
 }
 
 export interface Activity {

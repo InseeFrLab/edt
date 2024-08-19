@@ -135,6 +135,7 @@ const WeeklyPlannerPage = () => {
         }
     };
 
+    // TODO: Fix the addition of "S_" prefix to the variable name (response.names)
     const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
         const callbackData = getData(idSurvey);
         const dataCopy = { ...callbackData };
@@ -143,6 +144,7 @@ const WeeklyPlannerPage = () => {
         const currentDateIndex = dates.indexOf(response.date);
         const dataResponse = getData(idSurveyResponse);
         console.log("Save Duration", dataCopy);
+        console.log("Response", response);
         if (
             !isReviewer() &&
             dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
