@@ -151,11 +151,19 @@ const WeeklyPlannerPage = () => {
                 dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
         ) {
             response.names.forEach(name => {
-                let quartier = Object.assign(dataCopy?.COLLECTED?.[name]?.COLLECTED as string[]);
-                quartier[currentDateIndex] = response.values[name] + "";
+                const newName = "S_" + name;
+                let quartier: string[] = [];
 
-                if (dataCopy?.COLLECTED) {
-                    dataCopy.COLLECTED[name].COLLECTED = quartier;
+                if (dataCopy?.COLLECTED?.[newName]?.COLLECTED) {
+                    quartier = Object.assign([], dataCopy.COLLECTED[newName].COLLECTED);
+                }
+
+                if (response?.values?.[name] !== undefined) {
+                    quartier[currentDateIndex] = response.values[name] + "";
+                }
+
+                if (dataCopy?.COLLECTED?.[newName]) {
+                    dataCopy.COLLECTED[newName].COLLECTED = quartier;
                 }
             });
             saveDataLocally(idSurveyResponse, dataCopy);
@@ -169,14 +177,15 @@ const WeeklyPlannerPage = () => {
                     dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED)
         ) {
             response.names.forEach(name => {
+                const newName = "S_" + name;
                 const responsesValues: string[] =
-                    dataCopy?.COLLECTED?.[name]?.EDITED ?? dataCopy?.COLLECTED?.[name]?.COLLECTED;
+                    dataCopy?.COLLECTED?.[newName]?.EDITED ?? dataCopy?.COLLECTED?.[newName]?.COLLECTED;
                 let quartier = Object.assign(responsesValues ?? []);
 
                 quartier[currentDateIndex] = response.values[name] + "";
 
                 if (dataCopy?.COLLECTED) {
-                    dataCopy.COLLECTED[name].EDITED = quartier;
+                    dataCopy.COLLECTED[newName].EDITED = quartier;
                 }
             });
             saveDataLocally(idSurveyResponse, dataCopy);

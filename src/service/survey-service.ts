@@ -45,7 +45,6 @@ import {
     getArrayFromSession,
     getItemFromSession,
     groupBy,
-    revertTransformedArray,
 } from "utils/utils";
 import {
     edtWorkTimeSurvey,
@@ -747,8 +746,6 @@ const getData = (idSurvey: string): LunaticData => {
     const modifyCollected = modifyIndividualCollected(idSurvey);
     const emptyData = getDataCache(idSurvey) ?? createDataEmpty(idSurvey ?? "");
     const data = modifyCollected || emptyData;
-    const revertedCollected = revertTransformedArray(data.COLLECTED);
-    data.COLLECTED = revertedCollected;
     return data;
 };
 
