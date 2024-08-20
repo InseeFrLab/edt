@@ -1,0 +1,4017 @@
+[
+    {
+        "id": "111-1",
+        "label": "Dormir (hors sieste)",
+        "synonymes": "roupiller;pioncer"
+    },
+    {
+        "id": "111-2",
+        "label": "Sommeil (hors sieste)",
+        "synonymes": "dodo"
+    },
+    {
+        "id": "111-3",
+        "label": "Aller au lit (sommeil)",
+        "synonymes": ""
+    },
+    {
+        "id": "111-4",
+        "label": "Etre endormi",
+        "synonymes": "assoupi"
+    },
+    {
+        "id": "111-5",
+        "label": "Se mettre au lit (sommeil)",
+        "synonymes": ""
+    },
+    {
+        "id": "111-6",
+        "label": "Nuit au lit",
+        "synonymes": ""
+    },
+    {
+        "id": "112-1",
+        "label": "Malade et au lit",
+        "synonymes": "grippe;migraine;mal de tête"
+    },
+    {
+        "id": "112-2",
+        "label": "Fièvre et au lit",
+        "synonymes": ""
+    },
+    {
+        "id": "112-3",
+        "label": "Malade sur le canapé",
+        "synonymes": ""
+    },
+    {
+        "id": "113-1",
+        "label": "Se coucher (avant sommeil)",
+        "synonymes": "Se recoucher"
+    },
+    {
+        "id": "113-2",
+        "label": "Eveillé et au lit",
+        "synonymes": ""
+    },
+    {
+        "id": "113-3",
+        "label": "Se mettre au lit (avant sommeil)",
+        "synonymes": ""
+    },
+    {
+        "id": "113-4",
+        "label": "Rester au lit sans dormir",
+        "synonymes": ""
+    },
+    {
+        "id": "113-5",
+        "label": "Se reposer au lit",
+        "synonymes": ""
+    },
+    {
+        "id": "113-6",
+        "label": "Grasse matinée",
+        "synonymes": ""
+    },
+    {
+        "id": "113-7",
+        "label": "Insomnie",
+        "synonymes": ""
+    },
+    {
+        "id": "114-1",
+        "label": "Faire la sieste",
+        "synonymes": "somme"
+    },
+    {
+        "id": "114-2",
+        "label": "Dormir (sieste)",
+        "synonymes": ""
+    },
+    {
+        "id": "121-1",
+        "label": "Toilette",
+        "synonymes": ""
+    },
+    {
+        "id": "121-2",
+        "label": "Se lever (et toilette)",
+        "synonymes": ""
+    },
+    {
+        "id": "121-3",
+        "label": "Se laver",
+        "synonymes": ""
+    },
+    {
+        "id": "121-4",
+        "label": "Se doucher",
+        "synonymes": ""
+    },
+    {
+        "id": "121-5",
+        "label": "Se laver les cheveux",
+        "synonymes": "shampoing"
+    },
+    {
+        "id": "121-6",
+        "label": "Prendre un bain",
+        "synonymes": ""
+    },
+    {
+        "id": "121-7",
+        "label": "Se laver les dents",
+        "synonymes": ""
+    },
+    {
+        "id": "121-8",
+        "label": "Se maquiller, se démaquiller",
+        "synonymes": ""
+    },
+    {
+        "id": "121-9",
+        "label": "Se peigner",
+        "synonymes": "se coiffer;se brosser les cheveux"
+    },
+    {
+        "id": "121-10",
+        "label": "Se raser",
+        "synonymes": ""
+    },
+    {
+        "id": "121-11",
+        "label": "Soins du visage",
+        "synonymes": ""
+    },
+    {
+        "id": "121-12",
+        "label": "Soins du corps",
+        "synonymes": ""
+    },
+    {
+        "id": "121-13",
+        "label": "Se sécher",
+        "synonymes": ""
+    },
+    {
+        "id": "121-14",
+        "label": "Aller aux toilettes",
+        "synonymes": "WC; petit coin ;sanitaires ;pipi"
+    },
+    {
+        "id": "121-15",
+        "label": "Faire une couleur",
+        "synonymes": ""
+    },
+    {
+        "id": "121-16",
+        "label": "Se couper les ongles",
+        "synonymes": ""
+    },
+    {
+        "id": "121-17",
+        "label": "Se tailler la barbe, la moustache",
+        "synonymes": ""
+    },
+    {
+        "id": "121-18",
+        "label": "S'épiler",
+        "synonymes": ""
+    },
+    {
+        "id": "122-1",
+        "label": "Mettre son pyjama",
+        "synonymes": "chemise de nuit;nuisette"
+    },
+    {
+        "id": "122-2",
+        "label": "Se lever (et s’habiller)",
+        "synonymes": ""
+    },
+    {
+        "id": "122-3",
+        "label": "S’habiller, se déshabiller",
+        "synonymes": "se changer"
+    },
+    {
+        "id": "122-4",
+        "label": "Préparer ses vêtements",
+        "synonymes": "préparer ses habits"
+    },
+    {
+        "id": "122-5",
+        "label": "Retirer son pyjama",
+        "synonymes": ""
+    },
+    {
+        "id": "122-6",
+        "label": "Se préparer pour sortir",
+        "synonymes": ""
+    },
+    {
+        "id": "122-7",
+        "label": "Mettre ses chaussures",
+        "synonymes": ""
+    },
+    {
+        "id": "122-8",
+        "label": "Mettre son manteau",
+        "synonymes": ""
+    },
+    {
+        "id": "125-1",
+        "label": "Coiffeur, barbier",
+        "synonymes": ""
+    },
+    {
+        "id": "125-2",
+        "label": "Soins de manucure",
+        "synonymes": ""
+    },
+    {
+        "id": "125-3",
+        "label": "Soins d’épilation",
+        "synonymes": ""
+    },
+    {
+        "id": "125-4",
+        "label": "Centre de bronzage",
+        "synonymes": ""
+    },
+    {
+        "id": "125-5",
+        "label": "Soins de bien-être",
+        "synonymes": "hammam;sauna;jacuzzi;massage;balnéo;thalassothérapie"
+    },
+    {
+        "id": "125-6",
+        "label": "Institut de beauté",
+        "synonymes": "esthéticien"
+    },
+    {
+        "id": "131-1",
+        "label": "Se soigner à domicile",
+        "synonymes": ""
+    },
+    {
+        "id": "131-2",
+        "label": "Prendre un médicament",
+        "synonymes": "Anti-inflammatoire;insuline;doliprane;efferalgan;aspirine;sirop;calmant;somnifère"
+    },
+    {
+        "id": "131-3",
+        "label": "Faire un pansement à domicile, bandage",
+        "synonymes": "strapping"
+    },
+    {
+        "id": "131-4",
+        "label": "Prendre sa température",
+        "synonymes": ""
+    },
+    {
+        "id": "131-5",
+        "label": "Prendre sa tension",
+        "synonymes": ""
+    },
+    {
+        "id": "131-6",
+        "label": "Se faire une piqûre",
+        "synonymes": "injection"
+    },
+    {
+        "id": "133-1",
+        "label": "Kinésithérapeute à domicile",
+        "synonymes": ""
+    },
+    {
+        "id": "133-2",
+        "label": "Infirmier à domicile",
+        "synonymes": ""
+    },
+    {
+        "id": "133-3",
+        "label": "Médecin à domicile",
+        "synonymes": ""
+    },
+    {
+        "id": "133-4",
+        "label": "Hospitalisation à domicile",
+        "synonymes": ""
+    },
+    {
+        "id": "133-5",
+        "label": "Piqûre à domicile",
+        "synonymes": ""
+    },
+    {
+        "id": "133-6",
+        "label": "Prise de sang à domicile",
+        "synonymes": ""
+    },
+    {
+        "id": "133-7",
+        "label": "Teleconsultation avec le médecin",
+        "synonymes": ""
+    },
+    {
+        "id": "132-1",
+        "label": "Visite chez le médecin",
+        "synonymes": "psychiatre;ORL;gynécologue;cardiologue ;généraliste ;ophtalmologiste ;pneumologue;rhumatologue ;"
+    },
+    {
+        "id": "132-2",
+        "label": "Faire des analyses",
+        "synonymes": ""
+    },
+    {
+        "id": "132-3",
+        "label": "Soins à l’hôpital",
+        "synonymes": ""
+    },
+    {
+        "id": "132-4",
+        "label": "Séance au cabinet de kinésithérapie",
+        "synonymes": ""
+    },
+    {
+        "id": "132-5",
+        "label": "Séance d’ostéopathie au cabinet",
+        "synonymes": ""
+    },
+    {
+        "id": "132-6",
+        "label": "Séance chez le psychologue",
+        "synonymes": ""
+    },
+    {
+        "id": "132-7",
+        "label": "Visite chez le dentiste",
+        "synonymes": "orthodontiste"
+    },
+    {
+        "id": "132-9",
+        "label": "Soins paramédicaux",
+        "synonymes": "pédicure;podologue;ostéopathe;naturopathe;diététicien;nutritionniste ;orthophoniste;orthoptiste"
+    },
+    {
+        "id": "132-10",
+        "label": "Prise de sang au laboratoire",
+        "synonymes": ""
+    },
+    {
+        "id": "132-11",
+        "label": "Examens médicaux",
+        "synonymes": ""
+    },
+    {
+        "id": "132-12",
+        "label": "Radio, scanner, IRM, échographie",
+        "synonymes": ""
+    },
+    {
+        "id": "132-13",
+        "label": "Urgences à l’hôpital",
+        "synonymes": ""
+    },
+    {
+        "id": "132-14",
+        "label": "Soins à l’hôpital",
+        "synonymes": "clinique"
+    },
+    {
+        "id": "132-15",
+        "label": "Séance de radiothérapie, chimiothérapie",
+        "synonymes": ""
+    },
+    {
+        "id": "140-1",
+        "label": "Se lever (et petit-déjeuner)",
+        "synonymes": ""
+    },
+    {
+        "id": "140-2",
+        "label": "Déjeuner",
+        "synonymes": ""
+    },
+    {
+        "id": "140-3",
+        "label": "Brunch",
+        "synonymes": ""
+    },
+    {
+        "id": "140-4",
+        "label": "Petit-déjeuner",
+        "synonymes": ""
+    },
+    {
+        "id": "140-5",
+        "label": "Goûter",
+        "synonymes": ""
+    },
+    {
+        "id": "140-6",
+        "label": "Dîner",
+        "synonymes": ""
+    },
+    {
+        "id": "140-7",
+        "label": "Prendre une boisson, prendre un verre",
+        "synonymes": "prendre un coca ;prendre une bière"
+    },
+    {
+        "id": "140-8",
+        "label": "Boire un café",
+        "synonymes": ""
+    },
+    {
+        "id": "140-9",
+        "label": "Manger",
+        "synonymes": ""
+    },
+    {
+        "id": "140-10",
+        "label": "Prendre un sandwich",
+        "synonymes": "hamburger;kebab"
+    },
+    {
+        "id": "140-11",
+        "label": "Pique-nique",
+        "synonymes": ""
+    },
+    {
+        "id": "140-12",
+        "label": "Prendre l’apéritif",
+        "synonymes": "apéro"
+    },
+    {
+        "id": "140-13",
+        "label": "Repas",
+        "synonymes": ""
+    },
+    {
+        "id": "140-14",
+        "label": "Boire ",
+        "synonymes": ""
+    },
+    {
+        "id": "140-15",
+        "label": "Boire un thé",
+        "synonymes": ""
+    },
+    {
+        "id": "140-16",
+        "label": "Boire une tisane",
+        "synonymes": ""
+    },
+    {
+        "id": "140-17",
+        "label": "Grignoter",
+        "synonymes": "snack;en-cas"
+    },
+    {
+        "id": "151-1",
+        "label": "Faire l’amour",
+        "synonymes": ""
+    },
+    {
+        "id": "151-2",
+        "label": "Activités sexuelles",
+        "synonymes": ""
+    },
+    {
+        "id": "151-3",
+        "label": "Calins",
+        "synonymes": "bisous;caresses;"
+    },
+    {
+        "id": "151-4",
+        "label": "Activités personnelles",
+        "synonymes": "privé;intime ;"
+    },
+    {
+        "id": "213-1",
+        "label": "Trajet pendant le travail",
+        "synonymes": ""
+    },
+    {
+        "id": "213-2",
+        "label": "Livraison pendant le travail",
+        "synonymes": ""
+    },
+    {
+        "id": "215-1",
+        "label": "Travail professionnel",
+        "synonymes": "boulot;job ;teletravail ;"
+    },
+    {
+        "id": "215-2",
+        "label": "Réunion de travail",
+        "synonymes": "séminaire;conférence"
+    },
+    {
+        "id": "215-3",
+        "label": "Lire des mails professionnels",
+        "synonymes": "messagerie ;"
+    },
+    {
+        "id": "215-4",
+        "label": "Envoyer des mails professionnels",
+        "synonymes": ""
+    },
+    {
+        "id": "221-1",
+        "label": "Aide au travail dans sa famille",
+        "synonymes": ""
+    },
+    {
+        "id": "223-1",
+        "label": "Petit boulot",
+        "synonymes": ""
+    },
+    {
+        "id": "223-2",
+        "label": "Baby-sitting",
+        "synonymes": ""
+    },
+    {
+        "id": "231-1",
+        "label": "Pause au travail",
+        "synonymes": ""
+    },
+    {
+        "id": "231-2",
+        "label": "Pot au travail",
+        "synonymes": ""
+    },
+    {
+        "id": "231-3",
+        "label": "Pause-café au travail",
+        "synonymes": ""
+    },
+    {
+        "id": "231-4",
+        "label": "Discuter avec des collègues",
+        "synonymes": ""
+    },
+    {
+        "id": "232-1",
+        "label": "Grève",
+        "synonymes": "débrayage"
+    },
+    {
+        "id": "233-1",
+        "label": "Se changer au travail",
+        "synonymes": ""
+    },
+    {
+        "id": "233-2",
+        "label": "Temps d’attente au travail",
+        "synonymes": ""
+    },
+    {
+        "id": "233-3",
+        "label": "Panne au travail",
+        "synonymes": "dysfonctionnement"
+    },
+    {
+        "id": "234-1",
+        "label": "Activités syndicales",
+        "synonymes": ""
+    },
+    {
+        "id": "234-2",
+        "label": "Réunion pour préparer la grève",
+        "synonymes": ""
+    },
+    {
+        "id": "241-1",
+        "label": "Recherche d’emploi",
+        "synonymes": "prospecter;postuler;candidater;pôle Emploi ;APEC"
+    },
+    {
+        "id": "241-2",
+        "label": "Écrire une lettre de motivation",
+        "synonymes": ""
+    },
+    {
+        "id": "241-3",
+        "label": "Écrire un CV",
+        "synonymes": ""
+    },
+    {
+        "id": "241-4",
+        "label": "LinkedIn (recherche d’emploi)",
+        "synonymes": ""
+    },
+    {
+        "id": "241-5",
+        "label": "Entretien d'embauche",
+        "synonymes": ""
+    },
+    {
+        "id": "251-1",
+        "label": "Formation professionnelle",
+        "synonymes": ""
+    },
+    {
+        "id": "251-2",
+        "label": "Rechercher une formation professionnelle",
+        "synonymes": ""
+    },
+    {
+        "id": "261-1",
+        "label": "Suivre ses cours",
+        "synonymes": ""
+    },
+    {
+        "id": "261-2",
+        "label": "En classe, en cours",
+        "synonymes": ""
+    },
+    {
+        "id": "262-1",
+        "label": "Faire ses devoirs, réviser",
+        "synonymes": ""
+    },
+    {
+        "id": "262-2",
+        "label": "Apprendre ses cours, ses leçons",
+        "synonymes": ""
+    },
+    {
+        "id": "262-3",
+        "label": "Etudier",
+        "synonymes": ""
+    },
+    {
+        "id": "262-4",
+        "label": "Travail scolaire",
+        "synonymes": ""
+    },
+    {
+        "id": "262-5",
+        "label": "Faire ses exercices",
+        "synonymes": ""
+    },
+    {
+        "id": "263-1",
+        "label": "Récréations, pauses à l’école",
+        "synonymes": ""
+    },
+    {
+        "id": "263-2",
+        "label": "Attente avant d’aller en cours",
+        "synonymes": ""
+    },
+    {
+        "id": "264-1",
+        "label": "Stage (en cours d’études)",
+        "synonymes": ""
+    },
+    {
+        "id": "271-1",
+        "label": "Formations non-professionnelles",
+        "synonymes": ""
+    },
+    {
+        "id": "271-2",
+        "label": "Formation pour reconversion",
+        "synonymes": ""
+    },
+    {
+        "id": "271-3",
+        "label": "Congé-formation",
+        "synonymes": ""
+    },
+    {
+        "id": "272-1",
+        "label": "Cours de conduite",
+        "synonymes": ""
+    },
+    {
+        "id": "272-2",
+        "label": "Cours de cuisine",
+        "synonymes": ""
+    },
+    {
+        "id": "272-3",
+        "label": "Cours de langue",
+        "synonymes": ""
+    },
+    {
+        "id": "311-1",
+        "label": "Préparer le repas, préparer à manger",
+        "synonymes": ""
+    },
+    {
+        "id": "311-2",
+        "label": "Faire à manger",
+        "synonymes": ""
+    },
+    {
+        "id": "311-3",
+        "label": "Cuisiner",
+        "synonymes": ""
+    },
+    {
+        "id": "311-4",
+        "label": "Réchauffer le repas",
+        "synonymes": ""
+    },
+    {
+        "id": "311-5",
+        "label": "Eplucher des légumes",
+        "synonymes": ""
+    },
+    {
+        "id": "311-6",
+        "label": "Faire un gâteau",
+        "synonymes": "patisserie"
+    },
+    {
+        "id": "311-7",
+        "label": "Préparer le goûter",
+        "synonymes": ""
+    },
+    {
+        "id": "312-1",
+        "label": "Vider le lave-vaisselle",
+        "synonymes": ""
+    },
+    {
+        "id": "312-2",
+        "label": "Faire la vaisselle",
+        "synonymes": "Laver la vaisselle"
+    },
+    {
+        "id": "312-3",
+        "label": "Remplir le lave-vaisselle",
+        "synonymes": ""
+    },
+    {
+        "id": "312-4",
+        "label": "Débarrasser la table",
+        "synonymes": ""
+    },
+    {
+        "id": "312-5",
+        "label": "Essuyer la vaisselle",
+        "synonymes": ""
+    },
+    {
+        "id": "312-6",
+        "label": "Ranger la vaisselle",
+        "synonymes": ""
+    },
+    {
+        "id": "313-1",
+        "label": "Mettre la table",
+        "synonymes": ""
+    },
+    {
+        "id": "313-2",
+        "label": "Servir le repas",
+        "synonymes": ""
+    },
+    {
+        "id": "313-3",
+        "label": "Mettre le couvert",
+        "synonymes": ""
+    },
+    {
+        "id": "322-1",
+        "label": "Ranger les courses",
+        "synonymes": ""
+    },
+    {
+        "id": "322-2",
+        "label": "Livraison des courses",
+        "synonymes": ""
+    },
+    {
+        "id": "322-3",
+        "label": "Sortir les courses de la voiture",
+        "synonymes": ""
+    },
+    {
+        "id": "323-1",
+        "label": "Passer le karcher",
+        "synonymes": ""
+    },
+    {
+        "id": "323-2",
+        "label": "Nettoyer la terrasse",
+        "synonymes": ""
+    },
+    {
+        "id": "323-3",
+        "label": "Ranger le salon de jardin",
+        "synonymes": ""
+    },
+    {
+        "id": "323-4",
+        "label": "Entretenir la piscine",
+        "synonymes": ""
+    },
+    {
+        "id": "323-5",
+        "label": "Entretenir l’extérieur du logement",
+        "synonymes": ""
+    },
+    {
+        "id": "324-1",
+        "label": "Ranger ma chambre",
+        "synonymes": ""
+    },
+    {
+        "id": "324-2",
+        "label": "Ranger la maison",
+        "synonymes": ""
+    },
+    {
+        "id": "324-3",
+        "label": "Passer l’aspirateur",
+        "synonymes": ""
+    },
+    {
+        "id": "324-4",
+        "label": "Faire le ménage, nettoyer",
+        "synonymes": ""
+    },
+    {
+        "id": "324-5",
+        "label": "Balayer",
+        "synonymes": ""
+    },
+    {
+        "id": "324-6",
+        "label": "Faire les vitres",
+        "synonymes": ""
+    },
+    {
+        "id": "324-7",
+        "label": "Faire la poussière",
+        "synonymes": ""
+    },
+    {
+        "id": "324-8",
+        "label": "Laver le sol, passer la serpillère",
+        "synonymes": ""
+    },
+    {
+        "id": "324-9",
+        "label": "Faire son lit",
+        "synonymes": ""
+    },
+    {
+        "id": "325-1",
+        "label": "Vider les poubelles",
+        "synonymes": ""
+    },
+    {
+        "id": "325-2",
+        "label": "Tri des déchets",
+        "synonymes": ""
+    },
+    {
+        "id": "325-3",
+        "label": "Mettre au compost",
+        "synonymes": ""
+    },
+    {
+        "id": "331-1",
+        "label": "Faire la lessive",
+        "synonymes": ""
+    },
+    {
+        "id": "331-2",
+        "label": "Sortir le linge",
+        "synonymes": ""
+    },
+    {
+        "id": "331-3",
+        "label": "Etendre le linge",
+        "synonymes": ""
+    },
+    {
+        "id": "331-4",
+        "label": "Plier le linge",
+        "synonymes": ""
+    },
+    {
+        "id": "332-1",
+        "label": "Repasser",
+        "synonymes": ""
+    },
+    {
+        "id": "333-1",
+        "label": "Cirer les chaussures",
+        "synonymes": ""
+    },
+    {
+        "id": "333-2",
+        "label": "Nettoyer les chaussures",
+        "synonymes": ""
+    },
+    {
+        "id": "334-1",
+        "label": "Faire de la couture",
+        "synonymes": ""
+    },
+    {
+        "id": "334-2",
+        "label": "Tricoter",
+        "synonymes": ""
+    },
+    {
+        "id": "334-3",
+        "label": "Broder",
+        "synonymes": ""
+    },
+    {
+        "id": "334-4",
+        "label": "Raccommoder",
+        "synonymes": ""
+    },
+    {
+        "id": "335-1",
+        "label": "Ranger ses vêtements",
+        "synonymes": ""
+    },
+    {
+        "id": "335-2",
+        "label": "Préparer ses bagages",
+        "synonymes": ""
+    },
+    {
+        "id": "335-3",
+        "label": "Préparer ses affaires",
+        "synonymes": ""
+    },
+    {
+        "id": "335-4",
+        "label": "Faire sa valise",
+        "synonymes": ""
+    },
+    {
+        "id": "335-5",
+        "label": "Faire son sac",
+        "synonymes": ""
+    },
+    {
+        "id": "341-1",
+        "label": "Faire du feu",
+        "synonymes": ""
+    },
+    {
+        "id": "341-2",
+        "label": "Préparer le feu",
+        "synonymes": ""
+    },
+    {
+        "id": "341-3",
+        "label": "Allumer la cheminée",
+        "synonymes": ""
+    },
+    {
+        "id": "341-4",
+        "label": "S’occuper du poele",
+        "synonymes": ""
+    },
+    {
+        "id": "341-5",
+        "label": "Couper du bois",
+        "synonymes": ""
+    },
+    {
+        "id": "341-6",
+        "label": "Rentrer le bois",
+        "synonymes": ""
+    },
+    {
+        "id": "341-7",
+        "label": "S’occuper du chauffage",
+        "synonymes": ""
+    },
+    {
+        "id": "341-8",
+        "label": "Nettoyer la cheminée",
+        "synonymes": ""
+    },
+    {
+        "id": "342-1",
+        "label": "Faire ses comptes",
+        "synonymes": ""
+    },
+    {
+        "id": "342-2",
+        "label": "Ranger les papiers administratifs",
+        "synonymes": ""
+    },
+    {
+        "id": "342-3",
+        "label": "Trier, classer des papiers",
+        "synonymes": ""
+    },
+    {
+        "id": "342-4",
+        "label": "S’occuper des impôts",
+        "synonymes": ""
+    },
+    {
+        "id": "342-5",
+        "label": "S’occuper du courrier",
+        "synonymes": ""
+    },
+    {
+        "id": "342-6",
+        "label": "Payer des factures",
+        "synonymes": ""
+    },
+    {
+        "id": "342-7",
+        "label": "Comptabilité de la maison",
+        "synonymes": ""
+    },
+    {
+        "id": "342-8",
+        "label": "Tâches administratives",
+        "synonymes": ""
+    },
+    {
+        "id": "342-9",
+        "label": "Préparer sa liste de courses",
+        "synonymes": ""
+    },
+    {
+        "id": "343-1",
+        "label": "Ouvrir les volets",
+        "synonymes": ""
+    },
+    {
+        "id": "343-2",
+        "label": "Fermer les volets",
+        "synonymes": ""
+    },
+    {
+        "id": "343-3",
+        "label": "A la déchetterie",
+        "synonymes": ""
+    },
+    {
+        "id": "343-4",
+        "label": "Fermer la maison",
+        "synonymes": ""
+    },
+    {
+        "id": "344-1",
+        "label": "Déménager",
+        "synonymes": ""
+    },
+    {
+        "id": "344-2",
+        "label": "Aider à déménager",
+        "synonymes": ""
+    },
+    {
+        "id": "353-1",
+        "label": "Faire les courses au supermarché",
+        "synonymes": ""
+    },
+    {
+        "id": "353-2",
+        "label": "Acheter le pain, boulangerie",
+        "synonymes": ""
+    },
+    {
+        "id": "353-3",
+        "label": "Acheter à manger",
+        "synonymes": ""
+    },
+    {
+        "id": "353-4",
+        "label": "Courses pour manger",
+        "synonymes": ""
+    },
+    {
+        "id": "353-5",
+        "label": "Boucherie, charcuterie",
+        "synonymes": ""
+    },
+    {
+        "id": "353-6",
+        "label": "Au marché",
+        "synonymes": ""
+    },
+    {
+        "id": "353-7",
+        "label": "Courses sur internet, achats en ligne",
+        "synonymes": ""
+    },
+    {
+        "id": "353-8",
+        "label": "Commander un repas en ligne",
+        "synonymes": "Uber eats;Deliveroo"
+    },
+    {
+        "id": "354-1",
+        "label": "Shopping",
+        "synonymes": ""
+    },
+    {
+        "id": "354-2",
+        "label": "Vinted",
+        "synonymes": ""
+    },
+    {
+        "id": "354-3",
+        "label": "Le Bon coin",
+        "synonymes": ""
+    },
+    {
+        "id": "354-4",
+        "label": "Prendre de l’essence",
+        "synonymes": ""
+    },
+    {
+        "id": "354-5",
+        "label": "Faire le plein",
+        "synonymes": ""
+    },
+    {
+        "id": "354-6",
+        "label": "Achat de médicaments à la pharmacie",
+        "synonymes": ""
+    },
+    {
+        "id": "354-7",
+        "label": "Faire les magasins, faire les bou=tiques",
+        "synonymes": ""
+    },
+    {
+        "id": "354-8",
+        "label": "Chiner",
+        "synonymes": ""
+    },
+    {
+        "id": "354-9",
+        "label": "Brocante",
+        "synonymes": ""
+    },
+    {
+        "id": "354-10",
+        "label": "Vide-grenier",
+        "synonymes": ""
+    },
+    {
+        "id": "354-11",
+        "label": "Achats en ligne",
+        "synonymes": ""
+    },
+    {
+        "id": "352-1",
+        "label": "Réserver un voyage",
+        "synonymes": ""
+    },
+    {
+        "id": "352-2",
+        "label": "Payer une aide à domicile",
+        "synonymes": ""
+    },
+    {
+        "id": "352-3",
+        "label": "Acheter des services",
+        "synonymes": ""
+    },
+    {
+        "id": "352-4",
+        "label": "Pressing",
+        "synonymes": ""
+    },
+    {
+        "id": "352-5",
+        "label": "Réserver les vacances",
+        "synonymes": ""
+    },
+    {
+        "id": "352-6",
+        "label": "Acheter un billet de train",
+        "synonymes": ""
+    },
+    {
+        "id": "352-7",
+        "label": "Au garage pour réparer la voiture",
+        "synonymes": ""
+    },
+    {
+        "id": "352-8",
+        "label": "Agent immobilier",
+        "synonymes": ""
+    },
+    {
+        "id": "352-9",
+        "label": "Lavage de la voiture à la station de lavage",
+        "synonymes": ""
+    },
+    {
+        "id": "352-10",
+        "label": "Contrôle technique",
+        "synonymes": ""
+    },
+    {
+        "id": "352-11",
+        "label": "Réserver un hébergement",
+        "synonymes": ""
+    },
+    {
+        "id": "352-12",
+        "label": "Réserver sur Airbnb",
+        "synonymes": ""
+    },
+    {
+        "id": "352-13",
+        "label": "Réserver un hôtel, booking, expedia",
+        "synonymes": ""
+    },
+    {
+        "id": "352-14",
+        "label": "S'abonner (musique, internet, revue)",
+        "synonymes": ""
+    },
+    {
+        "id": "361-1",
+        "label": "Démarches administratives",
+        "synonymes": ""
+    },
+    {
+        "id": "361-2",
+        "label": "Consulter son compte en banque",
+        "synonymes": ""
+    },
+    {
+        "id": "361-3",
+        "label": "Rendez-vous à la banque",
+        "synonymes": ""
+    },
+    {
+        "id": "361-4",
+        "label": "A la poste",
+        "synonymes": ""
+    },
+    {
+        "id": "361-5",
+        "label": "Rendez-vous avec le notaire",
+        "synonymes": ""
+    },
+    {
+        "id": "361-6",
+        "label": "Rendez-vous avec un avocat",
+        "synonymes": ""
+    },
+    {
+        "id": "361-7",
+        "label": "S’occuper de la CAF",
+        "synonymes": ""
+    },
+    {
+        "id": "361-8",
+        "label": "S’occuper des assurances",
+        "synonymes": ""
+    },
+    {
+        "id": "361-9",
+        "label": "S’occuper de la Mutuelle",
+        "synonymes": ""
+    },
+    {
+        "id": "361-10",
+        "label": "S’occuper de la Sécurité sociale",
+        "synonymes": ""
+    },
+    {
+        "id": "361-11",
+        "label": "Rendez-vous au centre administratif municipal",
+        "synonymes": ""
+    },
+    {
+        "id": "371-1",
+        "label": "Travaux d’électricité",
+        "synonymes": ""
+    },
+    {
+        "id": "371-2",
+        "label": "Travaux de plomberie",
+        "synonymes": ""
+    },
+    {
+        "id": "371-3",
+        "label": "Travaux de construction",
+        "synonymes": ""
+    },
+    {
+        "id": "371-4",
+        "label": "Travaux d’isolation",
+        "synonymes": ""
+    },
+    {
+        "id": "371-5",
+        "label": "Travaux de toiture",
+        "synonymes": ""
+    },
+    {
+        "id": "372-1",
+        "label": "Travaux de décoration de la maison",
+        "synonymes": ""
+    },
+    {
+        "id": "372-2",
+        "label": "Bricoler",
+        "synonymes": ""
+    },
+    {
+        "id": "372-3",
+        "label": "Réparer une fuite",
+        "synonymes": ""
+    },
+    {
+        "id": "372-4",
+        "label": "Repeindre un mur de la maison",
+        "synonymes": ""
+    },
+    {
+        "id": "373-1",
+        "label": "Entretenir et réparer les appareils, les meubles",
+        "synonymes": ""
+    },
+    {
+        "id": "374-1",
+        "label": "Entretenir, réparer son vélo",
+        "synonymes": ""
+    },
+    {
+        "id": "374-2",
+        "label": "Entretenir, réparer sa voiture",
+        "synonymes": ""
+    },
+    {
+        "id": "374-3",
+        "label": "Entretenir, réparer son scooter, sa moto",
+        "synonymes": ""
+    },
+    {
+        "id": "381-1",
+        "label": "Faire de la sculpture",
+        "synonymes": ""
+    },
+    {
+        "id": "381-2",
+        "label": "Peindre (art créatif)",
+        "synonymes": ""
+    },
+    {
+        "id": "381-3",
+        "label": "Faire de la poterie",
+        "synonymes": ""
+    },
+    {
+        "id": "381-4",
+        "label": "Faire du dessin",
+        "synonymes": ""
+    },
+    {
+        "id": "381-5",
+        "label": "Aquarelle",
+        "synonymes": ""
+    },
+    {
+        "id": "381-6",
+        "label": "Modélisme",
+        "synonymes": ""
+    },
+    {
+        "id": "381-7",
+        "label": "Faire une maquette",
+        "synonymes": ""
+    },
+    {
+        "id": "381-8",
+        "label": "Ecrire son journal",
+        "synonymes": ""
+    },
+    {
+        "id": "381-9",
+        "label": "Ecrire une histoire",
+        "synonymes": ""
+    },
+    {
+        "id": "381-10",
+        "label": "Ecrire un poème",
+        "synonymes": ""
+    },
+    {
+        "id": "381-11",
+        "label": "Atelier d’écriture",
+        "synonymes": ""
+    },
+    {
+        "id": "381-12",
+        "label": "Scrapbooking",
+        "synonymes": ""
+    },
+    {
+        "id": "381-13",
+        "label": "Art créatif",
+        "synonymes": ""
+    },
+    {
+        "id": "381-14",
+        "label": "Coloriage",
+        "synonymes": ""
+    },
+    {
+        "id": "381-15",
+        "label": "Dessiner",
+        "synonymes": ""
+    },
+    {
+        "id": "382-1",
+        "label": "Tondre la pelouse",
+        "synonymes": ""
+    },
+    {
+        "id": "382-2",
+        "label": "Jardiner",
+        "synonymes": ""
+    },
+    {
+        "id": "382-3",
+        "label": "Arroser le jardin",
+        "synonymes": ""
+    },
+    {
+        "id": "382-4",
+        "label": "Cueillir des fruits, des légumes du jardin",
+        "synonymes": ""
+    },
+    {
+        "id": "382-5",
+        "label": "Entretenir le potager",
+        "synonymes": ""
+    },
+    {
+        "id": "382-6",
+        "label": "Entretenir le jardin",
+        "synonymes": ""
+    },
+    {
+        "id": "382-7",
+        "label": "Désherber",
+        "synonymes": ""
+    },
+    {
+        "id": "382-8",
+        "label": "Ramasser les feuilles",
+        "synonymes": ""
+    },
+    {
+        "id": "382-9",
+        "label": "Arroser les plantes",
+        "synonymes": ""
+    },
+    {
+        "id": "383-1",
+        "label": "S’occuper des poules",
+        "synonymes": ""
+    },
+    {
+        "id": "383-2",
+        "label": "S’occuper des animaux domestiques",
+        "synonymes": ""
+    },
+    {
+        "id": "384-1",
+        "label": "Soins aux animaux de compagnie",
+        "synonymes": ""
+    },
+    {
+        "id": "384-2",
+        "label": "Jouer avec le chien, le chat, autres animaux",
+        "synonymes": ""
+    },
+    {
+        "id": "384-3",
+        "label": "Donner à manger au chien, au chat, autres animaux",
+        "synonymes": ""
+    },
+    {
+        "id": "384-4",
+        "label": "S’occuper des poissons",
+        "synonymes": ""
+    },
+    {
+        "id": "384-5",
+        "label": "S’occuper du lapin",
+        "synonymes": ""
+    },
+    {
+        "id": "384-6",
+        "label": "S’occuper du hamster",
+        "synonymes": ""
+    },
+    {
+        "id": "385-1",
+        "label": "Promener le chien, sortir le chien",
+        "synonymes": ""
+    },
+    {
+        "id": "411-1",
+        "label": "Coucher les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "411-2",
+        "label": "Réveiller les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "411-3",
+        "label": "Mettre au lit les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "411-4",
+        "label": "Laver les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "411-5",
+        "label": "Douche des enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "411-6",
+        "label": "Bain des enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "411-7",
+        "label": "Repas des enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "411-8",
+        "label": "Donner le biberon aux enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "411-9",
+        "label": "Habiller les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "411-10",
+        "label": "Aider les enfants sur le pot",
+        "synonymes": ""
+    },
+    {
+        "id": "411-11",
+        "label": "Mettre en pyjama les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "411-12",
+        "label": "Changer la couche ",
+        "synonymes": ""
+    },
+    {
+        "id": "411-13",
+        "label": "Allaiter",
+        "synonymes": ""
+    },
+    {
+        "id": "411-14",
+        "label": "Endormir les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "411-15",
+        "label": "Soins aux enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "411-16",
+        "label": "Toilette des enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "412-1",
+        "label": "Accompagner les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "412-2",
+        "label": "Attente devant l’école",
+        "synonymes": ""
+    },
+    {
+        "id": "412-3",
+        "label": "Attendre un enfant à son activité",
+        "synonymes": ""
+    },
+    {
+        "id": "413-1",
+        "label": "Soigner un enfant",
+        "synonymes": ""
+    },
+    {
+        "id": "413-2",
+        "label": "Donner un médicament à un enfant",
+        "synonymes": ""
+    },
+    {
+        "id": "413-3",
+        "label": "Mettre un pansement à un enfant",
+        "synonymes": ""
+    },
+    {
+        "id": "414-1",
+        "label": "Calins avec les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "414-2",
+        "label": "Bercer les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "414-3",
+        "label": "Chanson pour les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "414-4",
+        "label": "Temps calme avec les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "414-5",
+        "label": "Bisous aux enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "417-1",
+        "label": "Gronder les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "421-1",
+        "label": "Surveiller les devoirs des enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "421-2",
+        "label": "Faire travailler les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "421-3",
+        "label": "Aider les enfants à apprendre une leçon",
+        "synonymes": ""
+    },
+    {
+        "id": "421-4",
+        "label": "Faire réciter les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "421-5",
+        "label": "Faire réviser les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "421-6",
+        "label": "Aider les enfants pour leurs devoirs",
+        "synonymes": ""
+    },
+    {
+        "id": "422-1",
+        "label": "Discussion avec les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "422-2",
+        "label": "Conversation avec les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "422-3",
+        "label": "Parler aux enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "422-4",
+        "label": "Raconter une histoire à un enfant",
+        "synonymes": ""
+    },
+    {
+        "id": "422-5",
+        "label": "Lire une histoire à un enfant",
+        "synonymes": ""
+    },
+    {
+        "id": "425-1",
+        "label": "Jeux avec les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "425-2",
+        "label": "Promenade avec les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "425-3",
+        "label": "Au parc avec les enfants",
+        "synonymes": ""
+    },
+    {
+        "id": "425-4",
+        "label": "Jeux au square avec les enfants",
+        "synonymes": "balançoire;toboggan ; aire de jeux"
+    },
+    {
+        "id": "510-1",
+        "label": "Sorties avec l’association",
+        "synonymes": ""
+    },
+    {
+        "id": "510-2",
+        "label": "Rencontres de l’association",
+        "synonymes": ""
+    },
+    {
+        "id": "510-3",
+        "label": "Fête de l'école",
+        "synonymes": ""
+    },
+    {
+        "id": "510-4",
+        "label": "Fête du club",
+        "synonymes": ""
+    },
+    {
+        "id": "510-5",
+        "label": "Dîner de l'association",
+        "synonymes": ""
+    },
+    {
+        "id": "511-1",
+        "label": "Visite chez des amis",
+        "synonymes": ""
+    },
+    {
+        "id": "511-2",
+        "label": "Aller chez des amis",
+        "synonymes": ""
+    },
+    {
+        "id": "511-3",
+        "label": "Aller voir de la famille",
+        "synonymes": ""
+    },
+    {
+        "id": "511-4",
+        "label": "Invitation chez des amis (hors repas)",
+        "synonymes": ""
+    },
+    {
+        "id": "511-5",
+        "label": "Invitation chez mes parents (hors repas)",
+        "synonymes": ""
+    },
+    {
+        "id": "512-1",
+        "label": "Amis à la maison (hors repas)",
+        "synonymes": ""
+    },
+    {
+        "id": "512-2",
+        "label": "Visite de la famille (hors repas)",
+        "synonymes": ""
+    },
+    {
+        "id": "512-3",
+        "label": "Invités à la maison (hors repas)",
+        "synonymes": ""
+    },
+    {
+        "id": "512-4",
+        "label": "Recevoir de la visite",
+        "synonymes": ""
+    },
+    {
+        "id": "512-5",
+        "label": "Recevoir des amis (hors repas)",
+        "synonymes": ""
+    },
+    {
+        "id": "512-6",
+        "label": "Visite d’amis",
+        "synonymes": ""
+    },
+    {
+        "id": "516-1",
+        "label": "Diner chez des amis",
+        "synonymes": ""
+    },
+    {
+        "id": "516-2",
+        "label": "Invitation à manger chez des amis",
+        "synonymes": ""
+    },
+    {
+        "id": "516-3",
+        "label": "Invitation à manger chez mes parents",
+        "synonymes": ""
+    },
+    {
+        "id": "516-4",
+        "label": "Invitation à manger dans la famille",
+        "synonymes": ""
+    },
+    {
+        "id": "516-5",
+        "label": "Sortie pour dîner chez des proches",
+        "synonymes": ""
+    },
+    {
+        "id": "516-6",
+        "label": "Recevoir des amis pour un repas",
+        "synonymes": ""
+    },
+    {
+        "id": "516-7",
+        "label": "Recevoir de la famille pour un repas",
+        "synonymes": ""
+    },
+    {
+        "id": "517-1",
+        "label": "Sortie au restaurant",
+        "synonymes": ""
+    },
+    {
+        "id": "518-1",
+        "label": "Sortie pour boire un verre",
+        "synonymes": ""
+    },
+    {
+        "id": "518-2",
+        "label": "Prendre un pot",
+        "synonymes": ""
+    },
+    {
+        "id": "518-3",
+        "label": "Discothèque, boite",
+        "synonymes": ""
+    },
+    {
+        "id": "518-4",
+        "label": "Bar",
+        "synonymes": ""
+    },
+    {
+        "id": "518-5",
+        "label": "Boire un café hors de chez soi",
+        "synonymes": ""
+    },
+    {
+        "id": "518-6",
+        "label": "Terrasse d’un café",
+        "synonymes": ""
+    },
+    {
+        "id": "518-7",
+        "label": "Bal",
+        "synonymes": ""
+    },
+    {
+        "id": "521-1",
+        "label": "Conversation, discussion",
+        "synonymes": ""
+    },
+    {
+        "id": "521-2",
+        "label": "Dispute",
+        "synonymes": ""
+    },
+    {
+        "id": "521-3",
+        "label": "Se parler",
+        "synonymes": ""
+    },
+    {
+        "id": "522-1",
+        "label": "Conversation téléphonique (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "522-2",
+        "label": "Téléphoner (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "522-3",
+        "label": "Appel au téléphone (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "523-1",
+        "label": "Écrire un sms, texto (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "523-2",
+        "label": "Discussion par sms (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "523-3",
+        "label": "Discussion par Whatsapp (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "523-4",
+        "label": "Messagerie instantanée (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "523-5",
+        "label": "Consulter ses sms (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "523-6",
+        "label": "Discussion par Messager (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "525-1",
+        "label": "Appel video (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "525-2",
+        "label": "Appel Skype (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "525-3",
+        "label": "Appel Facetime (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "525-4",
+        "label": "Appel Whatsapp (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "523-1",
+        "label": "Écrire une lettre (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "526-1",
+        "label": "Écrire un mail (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "526-2",
+        "label": "Mails (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "526-3",
+        "label": "Consulter ses mails (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "527-1",
+        "label": "Ecrire une lettre (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "527-2",
+        "label": "Écrire une carte postale",
+        "synonymes": ""
+    },
+    {
+        "id": "527-3",
+        "label": "Faire son courrier (hors professionnel)",
+        "synonymes": ""
+    },
+    {
+        "id": "527-4",
+        "label": "Écrire des cartes de vœux",
+        "synonymes": ""
+    },
+    {
+        "id": "524-1",
+        "label": "Instagram",
+        "synonymes": ""
+    },
+    {
+        "id": "524-2",
+        "label": "Tik tok",
+        "synonymes": ""
+    },
+    {
+        "id": "524-3",
+        "label": "Snapshat, snap",
+        "synonymes": ""
+    },
+    {
+        "id": "524-4",
+        "label": "Facebook",
+        "synonymes": ""
+    },
+    {
+        "id": "524-5",
+        "label": "Twitter",
+        "synonymes": ""
+    },
+    {
+        "id": "524-6",
+        "label": "Liker",
+        "synonymes": ""
+    },
+    {
+        "id": "524-7",
+        "label": "Tenir son blog",
+        "synonymes": ""
+    },
+    {
+        "id": "524-8",
+        "label": "Post de photos, de vidéos",
+        "synonymes": ""
+    },
+    {
+        "id": "524-9",
+        "label": "Post de commentaires",
+        "synonymes": ""
+    },
+    {
+        "id": "524-10",
+        "label": "Réseaux sociaux",
+        "synonymes": ""
+    },
+    {
+        "id": "524-11",
+        "label": "Forum de discussion",
+        "synonymes": ""
+    },
+    {
+        "id": "524-12",
+        "label": "LinkedIn",
+        "synonymes": ""
+    },
+    {
+        "id": "531-1",
+        "label": "Messe",
+        "synonymes": ""
+    },
+    {
+        "id": "531-2",
+        "label": "Prières",
+        "synonymes": ""
+    },
+    {
+        "id": "531-3",
+        "label": "Prier dans un lieu de culte",
+        "synonymes": "mosquée;synagogue;temple;église;paroisse"
+    },
+    {
+        "id": "531-4",
+        "label": "Étude des textes religieux",
+        "synonymes": "Bible ; Coran ; Torah"
+    },
+    {
+        "id": "531-5",
+        "label": "Assister au catéchisme",
+        "synonymes": ""
+    },
+    {
+        "id": "531-6",
+        "label": "Assister à un culte religieux",
+        "synonymes": ""
+    },
+    {
+        "id": "532-1",
+        "label": "Assister à un enterrement",
+        "synonymes": ""
+    },
+    {
+        "id": "532-2",
+        "label": "Se recueillir au cimetière",
+        "synonymes": ""
+    },
+    {
+        "id": "532-3",
+        "label": "Se recueillir sur une tombe",
+        "synonymes": ""
+    },
+    {
+        "id": "532-4",
+        "label": "Apporter des fleurs au cimetière",
+        "synonymes": ""
+    },
+    {
+        "id": "532-5",
+        "label": "Assister à une crémation",
+        "synonymes": ""
+    },
+    {
+        "id": "532-6",
+        "label": "Assister à des funérailles",
+        "synonymes": ""
+    },
+    {
+        "id": "532-7",
+        "label": "Assister à une veillée mortuaire",
+        "synonymes": ""
+    },
+    {
+        "id": "533-1",
+        "label": "Fête d’anniversaire",
+        "synonymes": ""
+    },
+    {
+        "id": "533-2",
+        "label": "Mariage",
+        "synonymes": ""
+    },
+    {
+        "id": "533-3",
+        "label": "Soirée du réveillon",
+        "synonymes": ""
+    },
+    {
+        "id": "533-4",
+        "label": "Fête de Noël",
+        "synonymes": ""
+    },
+    {
+        "id": "533-5",
+        "label": "Baptème",
+        "synonymes": ""
+    },
+    {
+        "id": "533-6",
+        "label": "Communion",
+        "synonymes": ""
+    },
+    {
+        "id": "533-7",
+        "label": "Fête religieuse, cérémonie",
+        "synonymes": ""
+    },
+    {
+        "id": "533-8",
+        "label": "Pacs",
+        "synonymes": ""
+    },
+    {
+        "id": "541-1",
+        "label": "Aller voter",
+        "synonymes": ""
+    },
+    {
+        "id": "541-2",
+        "label": "Donner son sang",
+        "synonymes": ""
+    },
+    {
+        "id": "541-3",
+        "label": "Activités civiques ",
+        "synonymes": ""
+    },
+    {
+        "id": "541-4",
+        "label": "Assister au conseil municipal",
+        "synonymes": ""
+    },
+    {
+        "id": "541-5",
+        "label": "Réunion politique",
+        "synonymes": ""
+    },
+    {
+        "id": "541-6",
+        "label": "Préparer les élections",
+        "synonymes": ""
+    },
+    {
+        "id": "541-7",
+        "label": "Activités liées à la mairie",
+        "synonymes": ""
+    },
+    {
+        "id": "542-1",
+        "label": "Activités de bénévolat",
+        "synonymes": ""
+    },
+    {
+        "id": "542-2",
+        "label": "Soutien scolaire bénévole",
+        "synonymes": ""
+    },
+    {
+        "id": "542-3",
+        "label": "Aide en tant que bénévole",
+        "synonymes": ""
+    },
+    {
+        "id": "542-4",
+        "label": "Réunion du bureau de l’association",
+        "synonymes": ""
+    },
+    {
+        "id": "542-5",
+        "label": "Réunion des bénévoles",
+        "synonymes": ""
+    },
+    {
+        "id": "542-6",
+        "label": "Réunion de l’association",
+        "synonymes": ""
+    },
+    {
+        "id": "542-7",
+        "label": "Conseil syndical, réunion de copropriété",
+        "synonymes": ""
+    },
+    {
+        "id": "543-1",
+        "label": "Aide au restos du coeur",
+        "synonymes": ""
+    },
+    {
+        "id": "543-2",
+        "label": "Aide au secours populaire",
+        "synonymes": ""
+    },
+    {
+        "id": "543-3",
+        "label": "Aide au secours catholique",
+        "synonymes": ""
+    },
+    {
+        "id": "612-1",
+        "label": "Footing",
+        "synonymes": ""
+    },
+    {
+        "id": "612-2",
+        "label": "Course à pied",
+        "synonymes": ""
+    },
+    {
+        "id": "612-3",
+        "label": "Runnig",
+        "synonymes": ""
+    },
+    {
+        "id": "612-4",
+        "label": "Athlétisme",
+        "synonymes": ""
+    },
+    {
+        "id": "612-5",
+        "label": "Lancer du javelot",
+        "synonymes": ""
+    },
+    {
+        "id": "612-6",
+        "label": "Lancer du poids",
+        "synonymes": ""
+    },
+    {
+        "id": "612-7",
+        "label": "Lancer du disque",
+        "synonymes": ""
+    },
+    {
+        "id": "612-8",
+        "label": "Saut en hauteur",
+        "synonymes": ""
+    },
+    {
+        "id": "612-9",
+        "label": "Saut à la perche",
+        "synonymes": ""
+    },
+    {
+        "id": "612-10",
+        "label": "Saut en longueur",
+        "synonymes": ""
+    },
+    {
+        "id": "612-11",
+        "label": "saut de haies",
+        "synonymes": ""
+    },
+    {
+        "id": "612-12",
+        "label": "Sprint",
+        "synonymes": ""
+    },
+    {
+        "id": "612-13",
+        "label": "Endurance",
+        "synonymes": ""
+    },
+    {
+        "id": "612-14",
+        "label": "Lancer du marteau",
+        "synonymes": ""
+    },
+    {
+        "id": "612-15",
+        "label": "Décathlon",
+        "synonymes": ""
+    },
+    {
+        "id": "612-16",
+        "label": "Jogging",
+        "synonymes": ""
+    },
+    {
+        "id": "612-17",
+        "label": "Fractionné",
+        "synonymes": ""
+    },
+    {
+        "id": "613-1",
+        "label": "Cyclisme",
+        "synonymes": ""
+    },
+    {
+        "id": "613-2",
+        "label": "Vélo de course",
+        "synonymes": ""
+    },
+    {
+        "id": "613-3",
+        "label": "Skate",
+        "synonymes": ""
+    },
+    {
+        "id": "613-4",
+        "label": "patinage",
+        "synonymes": ""
+    },
+    {
+        "id": "613-5",
+        "label": "Roller",
+        "synonymes": ""
+    },
+    {
+        "id": "613-6",
+        "label": "Balade à vélo",
+        "synonymes": ""
+    },
+    {
+        "id": "613-7",
+        "label": "Tour à vélo",
+        "synonymes": ""
+    },
+    {
+        "id": "613-8",
+        "label": "Ski",
+        "synonymes": ""
+    },
+    {
+        "id": "613-9",
+        "label": "biathlon",
+        "synonymes": ""
+    },
+    {
+        "id": "613-10",
+        "label": "sports d’hiver",
+        "synonymes": ""
+    },
+    {
+        "id": "613-11",
+        "label": "Ski de fond",
+        "synonymes": ""
+    },
+    {
+        "id": "613-12",
+        "label": "Raquettes",
+        "synonymes": ""
+    },
+    {
+        "id": "614-1",
+        "label": "Football",
+        "synonymes": ""
+    },
+    {
+        "id": "614-2",
+        "label": "Rugby",
+        "synonymes": ""
+    },
+    {
+        "id": "614-3",
+        "label": "Tennis",
+        "synonymes": ""
+    },
+    {
+        "id": "614-4",
+        "label": "Ping-pong",
+        "synonymes": ""
+    },
+    {
+        "id": "614-5",
+        "label": "Tennis de table",
+        "synonymes": ""
+    },
+    {
+        "id": "614-6",
+        "label": "Padel",
+        "synonymes": ""
+    },
+    {
+        "id": "614-7",
+        "label": "Basket",
+        "synonymes": ""
+    },
+    {
+        "id": "614-8",
+        "label": "Volley",
+        "synonymes": ""
+    },
+    {
+        "id": "614-9",
+        "label": "HandBall",
+        "synonymes": ""
+    },
+    {
+        "id": "614-10",
+        "label": "Golf",
+        "synonymes": ""
+    },
+    {
+        "id": "614-11",
+        "label": "Squash",
+        "synonymes": ""
+    },
+    {
+        "id": "614-12",
+        "label": "Badminton",
+        "synonymes": ""
+    },
+    {
+        "id": "614-13",
+        "label": "Bowling",
+        "synonymes": ""
+    },
+    {
+        "id": "614-14",
+        "label": "Sport de balles",
+        "synonymes": ""
+    },
+    {
+        "id": "614-15",
+        "label": "Sport avec un ballon",
+        "synonymes": ""
+    },
+    {
+        "id": "614-16",
+        "label": "Hockey",
+        "synonymes": ""
+    },
+    {
+        "id": "615-1",
+        "label": "Exercices de sport à la maison",
+        "synonymes": ""
+    },
+    {
+        "id": "616-1",
+        "label": "Exercices à la salle de sport",
+        "synonymes": ""
+    },
+    {
+        "id": "617-1",
+        "label": "Natation",
+        "synonymes": ""
+    },
+    {
+        "id": "617-2",
+        "label": "Aquagym",
+        "synonymes": ""
+    },
+    {
+        "id": "617-3",
+        "label": "Nage à la piscine",
+        "synonymes": ""
+    },
+    {
+        "id": "617-4",
+        "label": "Aquabike",
+        "synonymes": ""
+    },
+    {
+        "id": "617-5",
+        "label": "Sports nautiques",
+        "synonymes": ""
+    },
+    {
+        "id": "617-6",
+        "label": "Ski nautique",
+        "synonymes": ""
+    },
+    {
+        "id": "617-7",
+        "label": "Aviron",
+        "synonymes": ""
+    },
+    {
+        "id": "617-8",
+        "label": "Kayak",
+        "synonymes": ""
+    },
+    {
+        "id": "617-9",
+        "label": "Voile",
+        "synonymes": ""
+    },
+    {
+        "id": "617-10",
+        "label": "Kitesurf",
+        "synonymes": ""
+    },
+    {
+        "id": "617-11",
+        "label": "Planche à voile",
+        "synonymes": ""
+    },
+    {
+        "id": "617-12",
+        "label": "Surf sur le web",
+        "synonymes": ""
+    },
+    {
+        "id": "617-13",
+        "label": "Plongée",
+        "synonymes": ""
+    },
+    {
+        "id": "617-14",
+        "label": "Baignade",
+        "synonymes": ""
+    },
+    {
+        "id": "617-15",
+        "label": "Snorkeling",
+        "synonymes": ""
+    },
+    {
+        "id": "618-1",
+        "label": "Gym",
+        "synonymes": ""
+    },
+    {
+        "id": "618-2",
+        "label": "Gymnastique",
+        "synonymes": ""
+    },
+    {
+        "id": "618-3",
+        "label": "Fitness",
+        "synonymes": ""
+    },
+    {
+        "id": "618-4",
+        "label": "Yoga",
+        "synonymes": ""
+    },
+    {
+        "id": "618-5",
+        "label": "Taichi",
+        "synonymes": ""
+    },
+    {
+        "id": "618-6",
+        "label": "GRS",
+        "synonymes": ""
+    },
+    {
+        "id": "618-7",
+        "label": "Body building",
+        "synonymes": ""
+    },
+    {
+        "id": "618-8",
+        "label": "Crossfit",
+        "synonymes": ""
+    },
+    {
+        "id": "618-9",
+        "label": "Stretching",
+        "synonymes": ""
+    },
+    {
+        "id": "618-10",
+        "label": "Pilates",
+        "synonymes": ""
+    },
+    {
+        "id": "618-11",
+        "label": "Relaxation",
+        "synonymes": ""
+    },
+    {
+        "id": "618-12",
+        "label": "Etirements",
+        "synonymes": ""
+    },
+    {
+        "id": "618-13",
+        "label": "Musculation",
+        "synonymes": ""
+    },
+    {
+        "id": "618-14",
+        "label": "Vélo d’appartement",
+        "synonymes": ""
+    },
+    {
+        "id": "618-15",
+        "label": "Haltérophilie",
+        "synonymes": ""
+    },
+    {
+        "id": "618-16",
+        "label": "Assouplissements",
+        "synonymes": ""
+    },
+    {
+        "id": "618-17",
+        "label": "Aérobic",
+        "synonymes": ""
+    },
+    {
+        "id": "619-1",
+        "label": "Judo",
+        "synonymes": ""
+    },
+    {
+        "id": "619-2",
+        "label": "Karaté",
+        "synonymes": ""
+    },
+    {
+        "id": "619-3",
+        "label": "Équitation",
+        "synonymes": ""
+    },
+    {
+        "id": "619-4",
+        "label": "Arts martiaux",
+        "synonymes": ""
+    },
+    {
+        "id": "619-5",
+        "label": "Monter à cheval",
+        "synonymes": ""
+    },
+    {
+        "id": "619-6",
+        "label": "Tir à l’arc",
+        "synonymes": ""
+    },
+    {
+        "id": "619-7",
+        "label": "Escrime",
+        "synonymes": ""
+    },
+    {
+        "id": "619-8",
+        "label": "Escalade",
+        "synonymes": ""
+    },
+    {
+        "id": "619-9",
+        "label": "Kart",
+        "synonymes": ""
+    },
+    {
+        "id": "619-10",
+        "label": "Boxe",
+        "synonymes": ""
+    },
+    {
+        "id": "619-11",
+        "label": "Tir à l’arc",
+        "synonymes": ""
+    },
+    {
+        "id": "619-12",
+        "label": "Course automobile",
+        "synonymes": ""
+    },
+    {
+        "id": "619-13",
+        "label": "Course de motos",
+        "synonymes": ""
+    },
+    {
+        "id": "621-1",
+        "label": "Marche nordique",
+        "synonymes": ""
+    },
+    {
+        "id": "621-2",
+        "label": "Randonnée",
+        "synonymes": ""
+    },
+    {
+        "id": "621-3",
+        "label": "Marche, promenade",
+        "synonymes": ""
+    },
+    {
+        "id": "621-4",
+        "label": "Promenade, balade",
+        "synonymes": ""
+    },
+    {
+        "id": "621-5",
+        "label": "Faire un tour en ville",
+        "synonymes": ""
+    },
+    {
+        "id": "621-6",
+        "label": "Sortie en ville à pied",
+        "synonymes": ""
+    },
+    {
+        "id": "621-7",
+        "label": "Sortie au parc",
+        "synonymes": ""
+    },
+    {
+        "id": "621-8",
+        "label": "Se promener",
+        "synonymes": ""
+    },
+    {
+        "id": "621-9",
+        "label": "Flâner en marchant",
+        "synonymes": ""
+    },
+    {
+        "id": "622-1",
+        "label": "Promenade dans le jardin",
+        "synonymes": ""
+    },
+    {
+        "id": "622-2",
+        "label": "Tour dans le jardin",
+        "synonymes": ""
+    },
+    {
+        "id": "622-3",
+        "label": "Marche dans le jardin",
+        "synonymes": ""
+    },
+    {
+        "id": "622-4",
+        "label": "Sortir dans le jardin",
+        "synonymes": ""
+    },
+    {
+        "id": "622-5",
+        "label": "Balade dans le jardin",
+        "synonymes": ""
+    },
+    {
+        "id": "622-6",
+        "label": "Flâner dans le jardin",
+        "synonymes": ""
+    },
+    {
+        "id": "623-1",
+        "label": "Pêche",
+        "synonymes": ""
+    },
+    {
+        "id": "623-2",
+        "label": "Chasse",
+        "synonymes": ""
+    },
+    {
+        "id": "623-3",
+        "label": "Guetter le gibier",
+        "synonymes": ""
+    },
+    {
+        "id": "623-4",
+        "label": "Battue",
+        "synonymes": ""
+    },
+    {
+        "id": "623-5",
+        "label": "Vérifier son fusil",
+        "synonymes": ""
+    },
+    {
+        "id": "623-6",
+        "label": "Ramasser des coquillages à manger",
+        "synonymes": ""
+    },
+    {
+        "id": "624-1",
+        "label": "Ramasser des fruits, de légumes",
+        "synonymes": ""
+    },
+    {
+        "id": "624-2",
+        "label": "Cueillette de fruits, de légumes",
+        "synonymes": ""
+    },
+    {
+        "id": "624-3",
+        "label": "Récolte des fruits, des légumes",
+        "synonymes": ""
+    },
+    {
+        "id": "624-4",
+        "label": "Ramasser des champignons",
+        "synonymes": ""
+    },
+    {
+        "id": "624-5",
+        "label": "Cueillir des baies",
+        "synonymes": ""
+    },
+    {
+        "id": "624-6",
+        "label": "Vendanges",
+        "synonymes": ""
+    },
+    {
+        "id": "624-7",
+        "label": "Cueillir des fleurs",
+        "synonymes": ""
+    },
+    {
+        "id": "625-1",
+        "label": "Sur la plage",
+        "synonymes": ""
+    },
+    {
+        "id": "625-2",
+        "label": "A la mer",
+        "synonymes": ""
+    },
+    {
+        "id": "625-3",
+        "label": "Monter la tente ",
+        "synonymes": ""
+    },
+    {
+        "id": "625-4",
+        "label": "Démonter la tente",
+        "synonymes": ""
+    },
+    {
+        "id": "625-5",
+        "label": "Au camping",
+        "synonymes": ""
+    },
+    {
+        "id": "625-6",
+        "label": "Bronzer à la plage",
+        "synonymes": ""
+    },
+    {
+        "id": "625-7",
+        "label": "Au bord du lac",
+        "synonymes": ""
+    },
+    {
+        "id": "625-8",
+        "label": "Jeux de plage",
+        "synonymes": ""
+    },
+    {
+        "id": "626-1",
+        "label": "Se changer avant le sport",
+        "synonymes": ""
+    },
+    {
+        "id": "626-2",
+        "label": "Nettoyer le matériel de sport",
+        "synonymes": ""
+    },
+    {
+        "id": "626-3",
+        "label": "Préparer le matériel de sport",
+        "synonymes": ""
+    },
+    {
+        "id": "626-4",
+        "label": "Installer le matériel de sport",
+        "synonymes": ""
+    },
+    {
+        "id": "626-5",
+        "label": "Se préparer avant le sport",
+        "synonymes": ""
+    },
+    {
+        "id": "626-6",
+        "label": "Se mettre en tenue de sport",
+        "synonymes": ""
+    },
+    {
+        "id": "626-7",
+        "label": "Dans les vestiaires",
+        "synonymes": ""
+    },
+    {
+        "id": "626-8",
+        "label": "Attente avant le sport",
+        "synonymes": ""
+    },
+    {
+        "id": "627-1",
+        "label": "Sortie en bateau à moteur",
+        "synonymes": ""
+    },
+    {
+        "id": "627-2",
+        "label": "Tour en bateau à moteur",
+        "synonymes": ""
+    },
+    {
+        "id": "627-3",
+        "label": "Sortie en moto",
+        "synonymes": ""
+    },
+    {
+        "id": "627-4",
+        "label": "Balade à moto",
+        "synonymes": ""
+    },
+    {
+        "id": "627-5",
+        "label": "Tour en voiture",
+        "synonymes": ""
+    },
+    {
+        "id": "627-6",
+        "label": "Balade en voiture",
+        "synonymes": ""
+    },
+    {
+        "id": "627-7",
+        "label": "Quad",
+        "synonymes": ""
+    },
+    {
+        "id": "633-1",
+        "label": "Lire le journal (papier ou numérique)",
+        "synonymes": ""
+    },
+    {
+        "id": "633-2",
+        "label": "Feuilleter un catalogue",
+        "synonymes": ""
+    },
+    {
+        "id": "633-3",
+        "label": "Feuilleter un magazine",
+        "synonymes": ""
+    },
+    {
+        "id": "633-4",
+        "label": "Lire la presse (papier ou numérique)",
+        "synonymes": ""
+    },
+    {
+        "id": "633-5",
+        "label": "Presse en ligne",
+        "synonymes": ""
+    },
+    {
+        "id": "632-1",
+        "label": "Lecture d’un livre",
+        "synonymes": ""
+    },
+    {
+        "id": "632-2",
+        "label": "Lecture d’un roman",
+        "synonymes": ""
+    },
+    {
+        "id": "632-3",
+        "label": "Lire un bouquin",
+        "synonymes": ""
+    },
+    {
+        "id": "632-4",
+        "label": "Lecture d’un magazine",
+        "synonymes": ""
+    },
+    {
+        "id": "632-5",
+        "label": "Lire une BD, une bande dessinée",
+        "synonymes": ""
+    },
+    {
+        "id": "632-6",
+        "label": "Bouquiner",
+        "synonymes": ""
+    },
+    {
+        "id": "636-1",
+        "label": "Ecouter la radio",
+        "synonymes": ""
+    },
+    {
+        "id": "636-2",
+        "label": "Ecouter un podcast",
+        "synonymes": ""
+    },
+    {
+        "id": "636-3",
+        "label": "Emission de radio",
+        "synonymes": ""
+    },
+    {
+        "id": "638-1",
+        "label": "Ecouter de la musique",
+        "synonymes": ""
+    },
+    {
+        "id": "638-2",
+        "label": "Musique sur deezer",
+        "synonymes": ""
+    },
+    {
+        "id": "638-3",
+        "label": "Musique sur spotify",
+        "synonymes": ""
+    },
+    {
+        "id": "638-4",
+        "label": "Ecouter un album",
+        "synonymes": ""
+    },
+    {
+        "id": "638-5",
+        "label": "Ecouter un disque",
+        "synonymes": ""
+    },
+    {
+        "id": "638-6",
+        "label": "Ecouter un vinyle",
+        "synonymes": ""
+    },
+    {
+        "id": "638-7",
+        "label": "Télécharger de la musique",
+        "synonymes": ""
+    },
+    {
+        "id": "641-1",
+        "label": "Ne rien faire",
+        "synonymes": ""
+    },
+    {
+        "id": "641-3",
+        "label": "S’ennuyer",
+        "synonymes": ""
+    },
+    {
+        "id": "641-4",
+        "label": "Se reposer",
+        "synonymes": ""
+    },
+    {
+        "id": "641-5",
+        "label": "Se détendre",
+        "synonymes": ""
+    },
+    {
+        "id": "641-6",
+        "label": "Méditer",
+        "synonymes": ""
+    },
+    {
+        "id": "642-1",
+        "label": "Pause cigarette, fumer",
+        "synonymes": ""
+    },
+    {
+        "id": "649-1",
+        "label": "Regarder la télévision",
+        "synonymes": "TV"
+    },
+    {
+        "id": "649-3",
+        "label": "Regarder une série",
+        "synonymes": ""
+    },
+    {
+        "id": "649-4",
+        "label": "Regarder un DVD",
+        "synonymes": ""
+    },
+    {
+        "id": "649-5",
+        "label": "Regarder Netflix",
+        "synonymes": ""
+    },
+    {
+        "id": "649-6",
+        "label": "Regarder Amazone Prime",
+        "synonymes": ""
+    },
+    {
+        "id": "649-7",
+        "label": "Regarder OCS",
+        "synonymes": ""
+    },
+    {
+        "id": "649-8",
+        "label": "Regarder Disney+",
+        "synonymes": ""
+    },
+    {
+        "id": "649-9",
+        "label": "Regarder un film",
+        "synonymes": ""
+    },
+    {
+        "id": "649-10",
+        "label": "Pièce de théâtre à la télévision",
+        "synonymes": ""
+    },
+    {
+        "id": "649-11",
+        "label": "Emission de télévision",
+        "synonymes": ""
+    },
+    {
+        "id": "649-12",
+        "label": "Regarder un documentaire",
+        "synonymes": ""
+    },
+    {
+        "id": "649-13",
+        "label": "Série en streaming",
+        "synonymes": ""
+    },
+    {
+        "id": "649-14",
+        "label": "soirée télé",
+        "synonymes": ""
+    },
+    {
+        "id": "649-15",
+        "label": "Regarder les informations",
+        "synonymes": ""
+    },
+    {
+        "id": "649-16",
+        "label": "Replay télé",
+        "synonymes": ""
+    },
+    {
+        "id": "651-1",
+        "label": "Assister à un match",
+        "synonymes": ""
+    },
+    {
+        "id": "651-2",
+        "label": "Assister à un événement sportif",
+        "synonymes": ""
+    },
+    {
+        "id": "651-3",
+        "label": "Assister à une compétition sportive",
+        "synonymes": ""
+    },
+    {
+        "id": "653-1",
+        "label": "Au cinéma",
+        "synonymes": ""
+    },
+    {
+        "id": "653-2",
+        "label": "Soirée cinéma",
+        "synonymes": ""
+    },
+    {
+        "id": "653-3",
+        "label": "Film au cinéma",
+        "synonymes": ""
+    },
+    {
+        "id": "654-1",
+        "label": "Visite d’un musée",
+        "synonymes": ""
+    },
+    {
+        "id": "654-2",
+        "label": "Exposition au musée",
+        "synonymes": ""
+    },
+    {
+        "id": "654-3",
+        "label": "Visite d’une galerie d’art",
+        "synonymes": ""
+    },
+    {
+        "id": "654-4",
+        "label": "Visite d’un lieu culturel",
+        "synonymes": ""
+    },
+    {
+        "id": "654-5",
+        "label": "Expo de sculptures",
+        "synonymes": ""
+    },
+    {
+        "id": "654-6",
+        "label": "Expo de tableaux",
+        "synonymes": ""
+    },
+    {
+        "id": "654-7",
+        "label": "Expo de peintures",
+        "synonymes": ""
+    },
+    {
+        "id": "654-8",
+        "label": "Exposition culturelle",
+        "synonymes": ""
+    },
+    {
+        "id": "655-1",
+        "label": "Assister à un spectacle",
+        "synonymes": ""
+    },
+    {
+        "id": "655-2",
+        "label": "Au théâtre",
+        "synonymes": ""
+    },
+    {
+        "id": "655-3",
+        "label": "Pièce de théâtre",
+        "synonymes": ""
+    },
+    {
+        "id": "655-4",
+        "label": "Assister à un concert",
+        "synonymes": ""
+    },
+    {
+        "id": "655-5",
+        "label": "Concert de musique classique",
+        "synonymes": ""
+    },
+    {
+        "id": "655-6",
+        "label": "Comédie musicale",
+        "synonymes": ""
+    },
+    {
+        "id": "655-7",
+        "label": "Cirque",
+        "synonymes": ""
+    },
+    {
+        "id": "655-8",
+        "label": "Opéra",
+        "synonymes": ""
+    },
+    {
+        "id": "655-9",
+        "label": "Ballet",
+        "synonymes": ""
+    },
+    {
+        "id": "655-10",
+        "label": "Cabaret",
+        "synonymes": ""
+    },
+    {
+        "id": "655-11",
+        "label": "Spectacle d’impro",
+        "synonymes": ""
+    },
+    {
+        "id": "655-12",
+        "label": "Festival",
+        "synonymes": ""
+    },
+    {
+        "id": "656-1",
+        "label": "Médiathèque",
+        "synonymes": ""
+    },
+    {
+        "id": "656-2",
+        "label": "Bibliothèque",
+        "synonymes": ""
+    },
+    {
+        "id": "656-3",
+        "label": "Emprunter des livres à la médiathèque",
+        "synonymes": ""
+    },
+    {
+        "id": "656-4",
+        "label": "Rendre des livres à la médiathèque",
+        "synonymes": ""
+    },
+    {
+        "id": "656-5",
+        "label": "Ludothèque",
+        "synonymes": ""
+    },
+    {
+        "id": "658-1",
+        "label": "Visiter un zoo",
+        "synonymes": ""
+    },
+    {
+        "id": "658-2",
+        "label": "Visiter un parc d’attractions",
+        "synonymes": ""
+    },
+    {
+        "id": "658-3",
+        "label": "Au parc Astérix",
+        "synonymes": ""
+    },
+    {
+        "id": "658-4",
+        "label": "A Disneyland",
+        "synonymes": ""
+    },
+    {
+        "id": "658-5",
+        "label": "Visiter un château",
+        "synonymes": ""
+    },
+    {
+        "id": "658-6",
+        "label": "Visiter un monument historique",
+        "synonymes": ""
+    },
+    {
+        "id": "658-7",
+        "label": "Visiter une église",
+        "synonymes": ""
+    },
+    {
+        "id": "658-8",
+        "label": "Au Futuroscope",
+        "synonymes": ""
+    },
+    {
+        "id": "658-9",
+        "label": "Visiter un jardin remarquable",
+        "synonymes": ""
+    },
+    {
+        "id": "658-10",
+        "label": "Visiter un jardin botanique",
+        "synonymes": ""
+    },
+    {
+        "id": "658-11",
+        "label": "Visiter une foire",
+        "synonymes": ""
+    },
+    {
+        "id": "658-12",
+        "label": "Visiter un arboretum",
+        "synonymes": ""
+    },
+    {
+        "id": "661-1",
+        "label": "Atelier de théâtre",
+        "synonymes": ""
+    },
+    {
+        "id": "661-2",
+        "label": "Faire de la musique",
+        "synonymes": ""
+    },
+    {
+        "id": "661-3",
+        "label": "Jouer du piano",
+        "synonymes": ""
+    },
+    {
+        "id": "661-4",
+        "label": "Jouer du violon",
+        "synonymes": ""
+    },
+    {
+        "id": "661-5",
+        "label": "Jouer d’un instrument",
+        "synonymes": ""
+    },
+    {
+        "id": "661-6",
+        "label": "Jouer du violoncelle",
+        "synonymes": ""
+    },
+    {
+        "id": "661-7",
+        "label": "Jouer de la trompette",
+        "synonymes": ""
+    },
+    {
+        "id": "661-8",
+        "label": "Jouer de la clarinette",
+        "synonymes": ""
+    },
+    {
+        "id": "661-9",
+        "label": "Atelier comédie musicale",
+        "synonymes": ""
+    },
+    {
+        "id": "661-10",
+        "label": "Chant, chorale",
+        "synonymes": ""
+    },
+    {
+        "id": "661-11",
+        "label": "Jouer dans un orchestre",
+        "synonymes": ""
+    },
+    {
+        "id": "661-12",
+        "label": "Jouer dans une fanfare",
+        "synonymes": ""
+    },
+    {
+        "id": "661-13",
+        "label": "Jouer de la flûte",
+        "synonymes": ""
+    },
+    {
+        "id": "661-14",
+        "label": "Faire de la danse",
+        "synonymes": ""
+    },
+    {
+        "id": "661-15",
+        "label": "Danse classique",
+        "synonymes": ""
+    },
+    {
+        "id": "661-16",
+        "label": "Jouer de la guitare",
+        "synonymes": ""
+    },
+    {
+        "id": "661-17",
+        "label": "Solfège",
+        "synonymes": ""
+    },
+    {
+        "id": "661-18",
+        "label": "Jouer de la batterie",
+        "synonymes": ""
+    },
+    {
+        "id": "661-19",
+        "label": "Jouer du saxophone",
+        "synonymes": ""
+    },
+    {
+        "id": "661-20",
+        "label": "Jouer du clavier",
+        "synonymes": ""
+    },
+    {
+        "id": "661-21",
+        "label": "Théâtre d’improvisation",
+        "synonymes": ""
+    },
+    {
+        "id": "661-22",
+        "label": "Répétition",
+        "synonymes": ""
+    },
+    {
+        "id": "662-1",
+        "label": "Jeux de société",
+        "synonymes": ""
+    },
+    {
+        "id": "662-2",
+        "label": "Jeux de cartes",
+        "synonymes": ""
+    },
+    {
+        "id": "662-3",
+        "label": "Jouer à la belote",
+        "synonymes": ""
+    },
+    {
+        "id": "662-4",
+        "label": "Jouer au tarot",
+        "synonymes": ""
+    },
+    {
+        "id": "662-5",
+        "label": "Jouer au bridge",
+        "synonymes": ""
+    },
+    {
+        "id": "662-6",
+        "label": "Jouer au Monopoly",
+        "synonymes": ""
+    },
+    {
+        "id": "662-7",
+        "label": "Jouer au Scrabble",
+        "synonymes": ""
+    },
+    {
+        "id": "662-8",
+        "label": "Jouer aux dames",
+        "synonymes": ""
+    },
+    {
+        "id": "662-9",
+        "label": "Jouer au poker",
+        "synonymes": ""
+    },
+    {
+        "id": "662-10",
+        "label": "Soirée jeux",
+        "synonymes": ""
+    },
+    {
+        "id": "662-11",
+        "label": "Jouer aux fléchettes",
+        "synonymes": ""
+    },
+    {
+        "id": "662-12",
+        "label": "Jouer au billard",
+        "synonymes": ""
+    },
+    {
+        "id": "662-13",
+        "label": "Jouer à cache cache",
+        "synonymes": ""
+    },
+    {
+        "id": "662-14",
+        "label": "Jouer en plein air",
+        "synonymes": ""
+    },
+    {
+        "id": "662-15",
+        "label": "Jouer au baby foot",
+        "synonymes": ""
+    },
+    {
+        "id": "662-16",
+        "label": "Jouer aux dés",
+        "synonymes": ""
+    },
+    {
+        "id": "662-17",
+        "label": "jouer aux boules, pétanque",
+        "synonymes": ""
+    },
+    {
+        "id": "662-18",
+        "label": "Escape Game",
+        "synonymes": ""
+    },
+    {
+        "id": "662-19",
+        "label": "Laser Game",
+        "synonymes": ""
+    },
+    {
+        "id": "662-20",
+        "label": "Chasse aux œufs",
+        "synonymes": ""
+    },
+    {
+        "id": "663-1",
+        "label": "Jouer au Loto",
+        "synonymes": ""
+    },
+    {
+        "id": "663-2",
+        "label": "Jouer au Tiercé",
+        "synonymes": ""
+    },
+    {
+        "id": "663-3",
+        "label": "Jouer au poker (y compris en ligne)",
+        "synonymes": ""
+    },
+    {
+        "id": "663-4",
+        "label": "Paris sportifs",
+        "synonymes": ""
+    },
+    {
+        "id": "663-5",
+        "label": "Jouer au Casino",
+        "synonymes": ""
+    },
+    {
+        "id": "663-6",
+        "label": "Machines à sous",
+        "synonymes": ""
+    },
+    {
+        "id": "663-7",
+        "label": "Jouer au quinté",
+        "synonymes": ""
+    },
+    {
+        "id": "663-8",
+        "label": "Parier sur des courses de chevaux",
+        "synonymes": ""
+    },
+    {
+        "id": "663-9",
+        "label": "PMU",
+        "synonymes": ""
+    },
+    {
+        "id": "663-10",
+        "label": "Paris en ligne",
+        "synonymes": ""
+    },
+    {
+        "id": "663-11",
+        "label": "Cartes à gratter",
+        "synonymes": ""
+    },
+    {
+        "id": "663-12",
+        "label": "Jeux d’argent (y compris en ligne)",
+        "synonymes": ""
+    },
+    {
+        "id": "664-1",
+        "label": "Compléter sa collection",
+        "synonymes": ""
+    },
+    {
+        "id": "664-2",
+        "label": "Trier pour sa collection",
+        "synonymes": ""
+    },
+    {
+        "id": "664-3",
+        "label": "Philatélie, timbres",
+        "synonymes": ""
+    },
+    {
+        "id": "665-1",
+        "label": "Réaliser une vidéo",
+        "synonymes": ""
+    },
+    {
+        "id": "665-2",
+        "label": "Faire un montage de photos",
+        "synonymes": ""
+    },
+    {
+        "id": "665-3",
+        "label": "Faire un album photos",
+        "synonymes": ""
+    },
+    {
+        "id": "665-4",
+        "label": "Trier, classer les photos",
+        "synonymes": ""
+    },
+    {
+        "id": "665-5",
+        "label": "Séance de photos",
+        "synonymes": ""
+    },
+    {
+        "id": "665-6",
+        "label": "Imprimer des photos",
+        "synonymes": ""
+    },
+    {
+        "id": "665-7",
+        "label": "Retoucher des photos",
+        "synonymes": ""
+    },
+    {
+        "id": "665-8",
+        "label": "Réaliser un film",
+        "synonymes": ""
+    },
+    {
+        "id": "665-9",
+        "label": "Sauvegarder les photos",
+        "synonymes": ""
+    },
+    {
+        "id": "665-10",
+        "label": "Stocker les photos",
+        "synonymes": ""
+    },
+    {
+        "id": "666-1",
+        "label": "Créer de la musique",
+        "synonymes": ""
+    },
+    {
+        "id": "666-2",
+        "label": "Mixer de la musique",
+        "synonymes": ""
+    },
+    {
+        "id": "666-3",
+        "label": "Composer de la musique",
+        "synonymes": ""
+    },
+    {
+        "id": "666-4",
+        "label": "Enregistrer de la musique",
+        "synonymes": ""
+    },
+    {
+        "id": "666-5",
+        "label": "Arranger de la musique",
+        "synonymes": ""
+    },
+    {
+        "id": "668-1",
+        "label": "Jeux en solo",
+        "synonymes": ""
+    },
+    {
+        "id": "668-2",
+        "label": "Mots croisés",
+        "synonymes": ""
+    },
+    {
+        "id": "668-3",
+        "label": "Sudokus",
+        "synonymes": ""
+    },
+    {
+        "id": "668-4",
+        "label": "Mots fléchés",
+        "synonymes": ""
+    },
+    {
+        "id": "668-5",
+        "label": "Jeux du magazine",
+        "synonymes": ""
+    },
+    {
+        "id": "668-6",
+        "label": "Puzzle",
+        "synonymes": ""
+    },
+    {
+        "id": "668-7",
+        "label": "Rubik’s cube",
+        "synonymes": ""
+    },
+    {
+        "id": "671-1",
+        "label": "Jeux sur console",
+        "synonymes": ""
+    },
+    {
+        "id": "671-2",
+        "label": "Jeux sur ordinateur",
+        "synonymes": ""
+    },
+    {
+        "id": "671-3",
+        "label": "Jeux sur la Play station",
+        "synonymes": ""
+    },
+    {
+        "id": "671-4",
+        "label": "Jeux sur la Switch",
+        "synonymes": ""
+    },
+    {
+        "id": "671-5",
+        "label": "Jeux en ligne",
+        "synonymes": ""
+    },
+    {
+        "id": "671-6",
+        "label": "Jeux sur le téléphone",
+        "synonymes": ""
+    },
+    {
+        "id": "671-7",
+        "label": "Candy Crush",
+        "synonymes": ""
+    },
+    {
+        "id": "671-8",
+        "label": "Fornite",
+        "synonymes": ""
+    },
+    {
+        "id": "671-9",
+        "label": "Jeux sur la PS3",
+        "synonymes": ""
+    },
+    {
+        "id": "671-10",
+        "label": "Jeux sur la PS4",
+        "synonymes": ""
+    },
+    {
+        "id": "671-11",
+        "label": "Call of Duty",
+        "synonymes": ""
+    },
+    {
+        "id": "671-12",
+        "label": "GTA",
+        "synonymes": ""
+    },
+    {
+        "id": "671-13",
+        "label": "Jeux sur la Xbox",
+        "synonymes": ""
+    },
+    {
+        "id": "671-14",
+        "label": "Jeux sur la Wii",
+        "synonymes": ""
+    },
+    {
+        "id": "672-1",
+        "label": "Installation de logiciels",
+        "synonymes": ""
+    },
+    {
+        "id": "672-2",
+        "label": "Réparation de l’ordinateur",
+        "synonymes": ""
+    },
+    {
+        "id": "672-3",
+        "label": "Programmation informatique",
+        "synonymes": ""
+    },
+    {
+        "id": "672-4",
+        "label": "Mises à jour d’objets connectés",
+        "synonymes": ""
+    },
+    {
+        "id": "673-1",
+        "label": "Consulter des sites d’annonces",
+        "synonymes": ""
+    },
+    {
+        "id": "673-2",
+        "label": "Consulter des forums de discussions",
+        "synonymes": ""
+    },
+    {
+        "id": "673-3",
+        "label": "Surf sur le web",
+        "synonymes": ""
+    },
+    {
+        "id": "673-4",
+        "label": "Surf sur internet",
+        "synonymes": ""
+    },
+    {
+        "id": "673-5",
+        "label": "Naviguer sur internet",
+        "synonymes": ""
+    },
+    {
+        "id": "673-6",
+        "label": "Recherche d’informations sur internet",
+        "synonymes": ""
+    },
+    {
+        "id": "991-1",
+        "label": "Enquête INSEE",
+        "synonymes": ""
+    },
+    {
+        "id": "431-1",
+        "label": "Aide mon conjoint",
+        "synonymes": ""
+    },
+    {
+        "id": "431-2",
+        "label": "Aide à la toilette de mon conjoint",
+        "synonymes": ""
+    },
+    {
+        "id": "431-3",
+        "label": "Aide mes parents âgés qui vivent avec moi",
+        "synonymes": ""
+    },
+    {
+        "id": "431-4",
+        "label": "Aide à mes grands-parents qui vivent avec moi",
+        "synonymes": ""
+    },
+    {
+        "id": "432-1",
+        "label": "Accompagner un de mes parents qui vit avec moi",
+        "synonymes": ""
+    },
+    {
+        "id": "432-2",
+        "label": "Tenir compagnie à ma mère qui vit avec moi",
+        "synonymes": ""
+    },
+    {
+        "id": "432-3",
+        "label": "Tenir compagnie à mon père qui vit avec moi",
+        "synonymes": ""
+    },
+    {
+        "id": "433-1",
+        "label": "Soins médicaux à ma mère qui vit avec moi",
+        "synonymes": ""
+    },
+    {
+        "id": "433-2",
+        "label": "Soins médicaux à mon père qui vit avec moi",
+        "synonymes": ""
+    },
+    {
+        "id": "433-3",
+        "label": "Soins médicaux à ma belle-mère qui vit avec nous",
+        "synonymes": ""
+    },
+    {
+        "id": "433-2",
+        "label": "Soins médicaux à mon beau-père qui vit avec nous",
+        "synonymes": ""
+    },
+    {
+        "id": "438-1",
+        "label": "Aide mes parents âgés qui vivent seuls",
+        "synonymes": ""
+    },
+    {
+        "id": "438-2",
+        "label": "Aide ma mère qui vit seule",
+        "synonymes": ""
+    },
+    {
+        "id": "438-3",
+        "label": "Aide mon père qui vit seul",
+        "synonymes": ""
+    },
+    {
+        "id": "438-4",
+        "label": "Faire les courses de mes parents qui vivent seuls",
+        "synonymes": ""
+    },
+    {
+        "id": "438-5",
+        "label": "Tenir compagnie à ma mère qui vit seule",
+        "synonymes": ""
+    },
+    {
+        "id": "438-6",
+        "label": "Tenir compagnie à mon père qui vit seul",
+        "synonymes": ""
+    },
+    {
+        "id": "439-1",
+        "label": "Aide un autre membre de la famille qui vit seul",
+        "synonymes": ""
+    }
+]

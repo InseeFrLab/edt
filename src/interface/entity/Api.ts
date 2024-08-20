@@ -2,12 +2,14 @@ import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
 import { LunaticData } from "interface/lunatic/Lunatic";
 
 export interface UserSurveys {
-    id: number;
+    id?: number;
     campaignId: string;
+    subCampaignId?: string;
     interviewerId: string;
     questionnaireModelId: string;
-    reviewerId: string;
+    reviewerId?: string;
     surveyUnitId: string;
+    nameHousehold?: string;
 }
 
 export interface SurveyData {
@@ -16,6 +18,7 @@ export interface SurveyData {
 }
 
 export interface StateData {
+    idStateData?: number;
     state: StateDataStateEnum | null;
     date: number;
     currentPage: number;

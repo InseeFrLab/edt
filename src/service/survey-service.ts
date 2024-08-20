@@ -1,47 +1,101 @@
-import {
-    AutoCompleteActiviteOption,
-    CheckboxOneCustomOption,
-    generateDateFromStringInput,
-    getFrenchDayFromDate,
-} from "@inseefrlab/lunatic-edt";
+import { generateDateFromStringInput, getFrenchDayFromDate } from "@inseefrlab/lunatic-edt";
+import dayjs from "dayjs";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
 import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
+import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
-import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
+import { StateHouseholdEnum } from "enumerations/StateHouseholdEnum";
 import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { t } from "i18next";
+import _ from "lodash";
 import { TabData } from "interface/component/Component";
-import { StateData, SurveyData } from "interface/entity/Api";
+import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
+import { Household } from "interface/entity/Household";
+import { Person } from "interface/entity/Person";
+import { StatsHousehold } from "interface/entity/StatsHouseHold";
 import {
     Collected,
-    LunaticData,
+    DATA_STATE,
+    DataState,
     LunaticModel,
     LunaticModelComponent,
     LunaticModelVariable,
-    ReferentielData,
+    MultiCollected,
     REFERENTIELS_ID,
-    SourceData,
+    ReferentielData,
     SOURCES_MODELS,
-    SurveysIds,
     SURVEYS_IDS,
+    SourceData,
+    SurveysIds,
+    USER_SURVEYS_DATA,
+    UserSurveysData,
 } from "interface/lunatic/Lunatic";
+import { AuthContextProps } from "oidc-react";
+import { NavigateFunction } from "react-router-dom";
+import { fetchReviewerSurveysAssignments } from "service/api-service/getRemoteData";
 import { lunaticDatabase } from "service/lunatic-database";
-import { getCurrentPageSource, LABEL_WORK_TIME_SURVEY } from "service/orchestrator-service";
+import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrator-service";
 import {
-    fetchReferentiels,
+    addArrayToSession,
+    addItemToSession,
+    getArrayFromSession,
+    getItemFromSession,
+    groupBy,
+} from "utils/utils";
+import {
+    edtWorkTimeSurvey,
+    edtActivitySurvey,
+    dataEmptyActivity,
+    dataEmptyWeeklyPlanner,
+} from "assets/surveyData";
+import { EdtUserRightsEnum } from "./../enumerations/EdtUserRightsEnum";
+import { LunaticData } from "./../interface/lunatic/Lunatic";
+import {
     fetchSurveysSourcesByIds,
     fetchUserSurveysInfo,
     remoteGetSurveyData,
-    remotePutSurveyData,
-} from "./api-service";
-import { getScore } from "./survey-activity-service";
+    remoteGetSurveyDataReviewer,
+} from "./api-service/getRemoteData";
+import { getFlatLocalStorageValue } from "./local-storage-service";
+import { navToPlanner, setAllNamesOfGroupAndNav } from "./navigation-service";
+import { addToAutocompleteActivityReferentiel } from "./referentiel-service";
+import { fixConditionals, getScore, saveQualityScore } from "./survey-activity-service";
+import { getUserRights, isReviewer } from "./user-service";
+import { remotePutSurveyData, remotePutSurveyDataReviewer } from "./api-service/putRemoteData";
+import { fetchReferentiels } from "./api-service/getLocalSurveyData";
+import { fetchRemoteReferentiels } from "service/api-service/getRemoteData";
+import {
+    getSurveyStateData,
+    initStateData,
+    isDemoMode,
+    isSurveyClosed,
+    isSurveyLocked,
+    isSurveyStarted,
+    isSurveyValidated,
+} from "./survey-state-service";
 
 const datas = new Map<string, LunaticData>();
+const oldDatas = new Map<string, LunaticData>();
+
+const NUM_MAX_ACTIVITY_SURVEYS = process.env.REACT_APP_NUM_ACTIVITY_SURVEYS ?? 6;
+const NUM_MAX_WORKTIME_SURVEYS = 3;
+//TODO: Find a way to remove these goddamn global variables
 let referentielsData: ReferentielData;
 let sourcesData: SourceData;
-let surveysIds: SurveysIds;
+let surveysIds: SurveysIds = {
+    [SurveysIdsEnum.ALL_SURVEYS_IDS]: [],
+    [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: [],
+    [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: [],
+};
+let userDatasActivity: UserSurveys[] = [];
+let userDatasWorkTime: UserSurveys[] = [];
+let userDatas: UserSurveys[] = [];
+let surveysData: UserSurveys[] = [];
+let initData = false;
 
 const toIgnoreForRoute = [
     FieldNameEnum.PLACE,
@@ -49,14 +103,23 @@ const toIgnoreForRoute = [
     FieldNameEnum.MAINACTIVITY_SUGGESTERID,
     FieldNameEnum.MAINACTIVITY_LABEL,
     FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED,
+    FieldNameEnum.INPUT_SUGGESTER,
+    FieldNameEnum.ACTIVITY_SELECTER_HISTORY,
+    FieldNameEnum.SECONDARYACTIVITY_LABEL,
     FieldNameEnum.GOAL,
 ];
 
 const toIgnoreForActivity = [
     FieldNameEnum.GOAL,
     FieldNameEnum.ROUTE,
-    FieldNameEnum.MEANOFTRANSPORT,
+    FieldNameEnum.FOOT,
+    FieldNameEnum.BICYCLE,
+    FieldNameEnum.TWOWHEELSMOTORIZED,
+    FieldNameEnum.PRIVATECAR,
+    FieldNameEnum.OTHERPRIVATE,
+    FieldNameEnum.PUBLIC,
     FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED,
+    FieldNameEnum.SECONDARYACTIVITY_LABEL,
 ];
 
 const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<boolean> => {
@@ -70,11 +133,57 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     });
 };
 
-const initializeRefs = () => {
+const initializeRemoteDatas = (setError: (error: ErrorCodeEnum) => void): Promise<boolean> => {
+    const promisesToWait: Promise<any>[] = [];
+    return new Promise(resolve => {
+        promisesToWait.push(initializeRemoteRefs(setError));
+        promisesToWait.push(initializeSurveysIdsAndSources(setError));
+        Promise.all(promisesToWait).then(() => {
+            resolve(true);
+        });
+    });
+};
+
+const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
+    const dataState: DataState = {
+        data: {
+            userData: {
+                access_token: auth.userData?.access_token,
+                expires_at: auth.userData?.expires_at,
+                id_token: auth.userData?.id_token,
+                profile: auth.userData?.profile,
+                refresh_token: auth.userData?.refresh_token,
+                scope: auth.userData?.scope,
+                session_state: auth.userData?.session_state ?? "",
+                token_type: auth.userData?.token_type,
+                state: auth.userData?.state,
+                expires_in: auth.userData?.expires_in,
+                expired: auth.userData?.expired,
+                scopes: auth.userData?.scopes,
+            },
+        },
+    };
+    return lunaticDatabase.save(DATA_STATE, dataState).then(() => {
+        return dataState;
+    });
+};
+
+const getAuthCache = (): Promise<DataState> => {
+    const clientTokenKey =
+        "oidc.user:https://auth.demo.insee.io/auth/realms/questionnaires-edt/:client-edt";
+    return lunaticDatabase.get(DATA_STATE).then(data => {
+        let dataState = data as DataState;
+        sessionStorage.setItem(clientTokenKey, JSON.stringify(dataState));
+        return dataState;
+    });
+};
+
+const initializeRemoteRefs = (setError: (error: ErrorCodeEnum) => void) => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
-        if (!refData) {
-            return fetchReferentiels().then(refs => {
-                saveReferentiels(refs);
+        if (!refData && navigator.onLine) {
+            return fetchRemoteReferentiels(setError).then(refs => {
+                console.log("Save Remote refs", refs);
+                return saveReferentiels(refs);
             });
         } else {
             referentielsData = refData as ReferentielData;
@@ -82,102 +191,551 @@ const initializeRefs = () => {
     });
 };
 
+const initializeRefs = () => {
+    return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
+        if (!refData && navigator.onLine) {
+            return fetchReferentiels().then(refs => {
+                console.log("Save Local refs", refs);
+                return saveReferentiels(refs);
+            });
+        } else {
+            referentielsData = refData as ReferentielData;
+        }
+    });
+};
+
+const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
+    if (navigator.onLine) {
+        return fetchUserSurveysInfo(setError).then(userSurveyData => {
+            let activitySurveysIds: string[] = [];
+            let userSurveyDataActivity: UserSurveys[] = [];
+            let workingTimeSurveysIds: string[] = [];
+            let userSurveyDataWorkTime: UserSurveys[] = [];
+
+            userSurveyData.forEach(surveyData => {
+                if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
+                    activitySurveysIds.push(surveyData.surveyUnitId);
+                    userSurveyDataActivity.push(surveyData);
+                }
+                if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
+                    workingTimeSurveysIds.push(surveyData.surveyUnitId);
+                    userSurveyDataWorkTime.push(surveyData);
+                }
+                userDatas.push(surveyData);
+            });
+            userDatasActivity = userSurveyDataActivity;
+            userDatasWorkTime = userSurveyDataWorkTime;
+            addArrayToSession("userDatasWorkTime", userDatasWorkTime);
+            addArrayToSession("userDatasActivity", userDatasActivity);
+            addArrayToSession("userDatas", userDatas);
+
+            let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
+            const surveysIds: SurveysIds = {
+                [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+                [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
+                [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
+            };
+            const innerPromises: Promise<any>[] = [
+                getRemoteSavedSurveysDatas(allSurveysIds, setError).then(() => {
+                    return initializeSurveysDatasCache(allSurveysIds);
+                }),
+                saveSurveysIds(surveysIds),
+                fetchSurveysSourcesByIds(
+                    [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY],
+                    setError,
+                ).then(sources => {
+                    const inerFetchPromises: Promise<any>[] = [
+                        saveSources(sources),
+                        saveUserSurveysData({ data: userDatas }),
+                    ];
+                    return Promise.all(inerFetchPromises);
+                }),
+            ];
+            return Promise.all(innerPromises);
+        });
+    } else {
+        return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {
+            let userDaras = data as UserSurveysData;
+            let userSurveyData = userDaras.data;
+            let activitySurveysIds: string[] = [];
+            let userSurveyDataActivity: UserSurveys[] = [];
+            let workingTimeSurveysIds: string[] = [];
+            let userSurveyDataWorkTime: UserSurveys[] = [];
+            userSurveyData.forEach(surveyData => {
+                if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
+                    activitySurveysIds.push(surveyData.surveyUnitId);
+                    userSurveyDataActivity.push(surveyData);
+                    if (!userDatas.find(survey => survey.surveyUnitId == surveyData.surveyUnitId))
+                        userDatas.push(surveyData);
+                }
+                if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
+                    workingTimeSurveysIds.push(surveyData.surveyUnitId);
+                    userSurveyDataWorkTime.push(surveyData);
+                    if (!userDatas.find(survey => survey.surveyUnitId == surveyData.surveyUnitId))
+                        userDatas.push(surveyData);
+                }
+            });
+            userDatasActivity = userSurveyDataActivity;
+            userDatasWorkTime = userSurveyDataWorkTime;
+
+            addArrayToSession("userDatasWorkTime", userDatasWorkTime);
+            addArrayToSession("userDatasActivity", userDatasActivity);
+            addArrayToSession("userDatas", userDatas);
+            let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
+            const innerPromisesOffline: Promise<any>[] = [initializeSurveysDatasCache(allSurveysIds)];
+            return Promise.all(innerPromisesOffline);
+        });
+    }
+};
+
 const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
     const promises: Promise<any>[] = [];
     return lunaticDatabase.get(SURVEYS_IDS).then(data => {
-        if (!data) {
-            promises.push(
-                fetchUserSurveysInfo(setError).then(userSurveyData => {
-                    const distinctSources = Array.from(
-                        new Set(userSurveyData.map(surveyData => surveyData.questionnaireModelId)),
-                    );
-                    let activitySurveysIds: string[] = [];
-                    let workingTimeSurveysIds: string[] = [];
-                    userSurveyData.forEach(surveyData => {
-                        if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
-                            activitySurveysIds.push(surveyData.surveyUnitId);
-                        }
-                        if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
-                            workingTimeSurveysIds.push(surveyData.surveyUnitId);
-                        }
-                    });
-                    let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
-                    const surveysIds: SurveysIds = {
-                        [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
-                        [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
-                        [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
-                    };
+        const surveyIdsData = data as SurveysIds;
+        const existSurveysIds = surveyIdsData?.[SurveysIdsEnum.ALL_SURVEYS_IDS].length > 0;
 
-                    const innerPromises: Promise<any>[] = [
-                        getRemoteSavedSurveysDatas(allSurveysIds, setError).then(() => {
-                            return initializeSurveysDatasCache();
-                        }),
-                        saveSurveysIds(surveysIds),
-                        fetchSurveysSourcesByIds(distinctSources).then(sources => {
-                            saveSources(sources);
-                        }),
-                    ];
-                    return Promise.all(innerPromises);
-                }),
-            );
+        if (!existSurveysIds) {
+            promises.push(initDataForSurveys(setError));
         } else {
             surveysIds = data as SurveysIds;
+            const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
+            const listSurveysOfHousehold =
+                getListSurveysHousehold()
+                    .find(household => household.idHousehold == idHousehold)
+                    ?.surveys?.map(survey => survey.surveyUnitId) ?? [];
+            const surveysIdsAct =
+                getUserRights() == EdtUserRightsEnum.REVIEWER
+                    ? listSurveysOfHousehold
+                    : surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS];
+
             promises.push(
                 lunaticDatabase.get(SOURCES_MODELS).then(data => {
-                    sourcesData = data as SourceData;
+                    if (sourcesData == undefined) {
+                        sourcesData = data as SourceData;
+                    }
                 }),
             );
-            promises.push(
-                getRemoteSavedSurveysDatas(surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS], setError).then(
-                    () => {
-                        return initializeSurveysDatasCache();
-                    },
-                ),
-            );
+            if (navigator.onLine) {
+                promises.push(
+                    getRemoteSavedSurveysDatas(surveysIdsAct, setError).then(() => {
+                        return initializeSurveysDatasCache(surveysIdsAct);
+                    }),
+                );
+            } else promises.push(initializeSurveysDatasCache(surveysIdsAct));
         }
-        return Promise.all(promises);
+        return new Promise(resolve => {
+            Promise.all(promises).finally(() => {
+                resolve(true);
+            });
+        });
     });
+};
+
+const activitySurveyDemo = () => {
+    let activitySurveysIds: string[] = [];
+    let numInterviewer = 0;
+    if (userDatas == null) userDatas = [];
+    for (let i = 1; i <= Number(NUM_MAX_ACTIVITY_SURVEYS); i++) {
+        if (i % 2 != 0) {
+            numInterviewer += 1;
+        }
+        const userSurvey: UserSurveys = {
+            interviewerId: "interviewer" + numInterviewer,
+            surveyUnitId: "activitySurvey" + i,
+            questionnaireModelId: SourcesEnum.ACTIVITY_SURVEY,
+            campaignId: "",
+            subCampaignId: "",
+            id: i,
+            reviewerId: "",
+        };
+        activitySurveysIds.push("activitySurvey" + i);
+        userDatasActivity.push(userSurvey);
+        userDatas?.push(userSurvey);
+    }
+    addArrayToSession("userDatasActivty", userDatasActivity);
+    addArrayToSession("userDatas", userDatas);
+    return activitySurveysIds;
+};
+
+const workTimeSurveyDemo = () => {
+    let workingTimeSurveysIds: string[] = [];
+    userDatasWorkTime = [];
+
+    for (let i = 1; i <= Number(NUM_MAX_WORKTIME_SURVEYS); i++) {
+        const userSurvey: UserSurveys = {
+            interviewerId: "interviewer" + i,
+            surveyUnitId: "workTimeSurvey" + i,
+            questionnaireModelId: SourcesEnum.WORK_TIME_SURVEY,
+            campaignId: "",
+            subCampaignId: "",
+            id: i,
+            reviewerId: "",
+        };
+        workingTimeSurveysIds.push("workTimeSurvey" + i);
+        userDatasWorkTime.push(userSurvey);
+        userDatas.push(userSurvey);
+    }
+    addArrayToSession("userDatasWorkTime", userDatasWorkTime);
+    addArrayToSession("userDatas", userDatas);
+    return workingTimeSurveysIds;
+};
+
+const initializeSurveysIds = (innerSurveysIds: SurveysIds) => {
+    const innerPromises: Promise<any>[] = [
+        saveSurveysIds(innerSurveysIds),
+        initializeSurveysDatasCache(),
+    ];
+    return Promise.all(innerPromises);
+};
+
+const initializeSurveysIdsDemo = (): Promise<any> => {
+    userDatasActivity = [];
+    let activitySurveysIds = activitySurveyDemo();
+    let workingTimeSurveysIds = workTimeSurveyDemo();
+
+    let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
+    const innerSurveysIds: SurveysIds = {
+        [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+        [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
+        [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
+    };
+    surveysIds = innerSurveysIds;
+    return initializeSurveysIds(surveysIds);
+};
+
+const initializeHomeSurveys = (idHousehold: string) => {
+    let userDatasCopy: UserSurveys[] = [];
+    let userDatasWorkTimeCopy: UserSurveys[] = [];
+    let userDatasActivityCopy: UserSurveys[] = [];
+    return new Promise(resolve => {
+        userDatasCopy =
+            getListSurveysHousehold().find(household => household.idHousehold == idHousehold)?.surveys ??
+            [];
+        userDatasCopy.forEach(userSurvey => {
+            if (userSurvey.questionnaireModelId == SourcesEnum.WORK_TIME_SURVEY) {
+                userDatasWorkTimeCopy.push(userSurvey);
+            } else {
+                userDatasActivityCopy.push(userSurvey);
+            }
+        });
+        setSurveysIdsReviewers();
+
+        userDatas = userDatasCopy.length > 0 ? userDatasCopy : getUserDatas();
+        userDatasWorkTime =
+            userDatasWorkTimeCopy.length > 0 ? userDatasWorkTimeCopy : getUserDatasWorkTime();
+        userDatasActivity =
+            userDatasActivityCopy.length > 0 ? userDatasActivityCopy : getUserDatasActivity();
+
+        addArrayToSession("userDatasWorkTime", userDatasWorkTime);
+        addArrayToSession("userDatasActivity", userDatasActivity);
+        addArrayToSession("userDatas", userDatas);
+        resolve(true);
+    });
+};
+
+const getSurveysIdsForHousehold = (idHousehold: string) => {
+    return (
+        getListSurveysHousehold()
+            .find(household => household.idHousehold == idHousehold)
+            ?.surveys?.map(survey => survey.surveyUnitId) ?? []
+    );
+};
+
+const setSurveysIdsReviewers = () => {
+    let allSurveysIds = getUserDatas().map(data => data.surveyUnitId);
+    const innerSurveysIds: SurveysIds = {
+        [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+        [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: getUserDatasActivity().map(data => data.surveyUnitId),
+        [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: getUserDatasWorkTime().map(data => data.surveyUnitId),
+    };
+    surveysIds = innerSurveysIds;
+};
+
+const initializeSurveysIdsModeReviewer = () => {
+    let activitySurveysIds: string[] = [];
+    let workingTimeSurveysIds: string[] = [];
+
+    getListSurveys().forEach(userSurvey => {
+        if (userSurvey.questionnaireModelId != SourcesEnum.WORK_TIME_SURVEY) {
+            activitySurveysIds.push(userSurvey.surveyUnitId);
+        } else {
+            workingTimeSurveysIds.push(userSurvey.surveyUnitId);
+        }
+    });
+
+    let allSurveysIds = [...activitySurveysIds, ...workingTimeSurveysIds];
+    const innerSurveysIds: SurveysIds = {
+        [SurveysIdsEnum.ALL_SURVEYS_IDS]: allSurveysIds,
+        [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
+        [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
+    };
+    surveysIds = innerSurveysIds;
+};
+
+const refreshSurveyData = (
+    setError: (error: ErrorCodeEnum) => void,
+    specifiquesSurveysIds?: string[],
+): Promise<any> => {
+    initData = false;
+    const promisesToWait: Promise<any>[] = [];
+    promisesToWait.push(
+        getRemoteSavedSurveysDatas(
+            specifiquesSurveysIds ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS],
+            setError,
+        ),
+        initializeSurveysDatasCache(),
+    );
+    return Promise.all(promisesToWait);
+};
+
+const refreshSurvey = (idSurvey: string, setError: (error: ErrorCodeEnum) => void): Promise<any> => {
+    initData = false;
+    return getRemoteSavedSurveysDatas([idSurvey], setError).then(() => {
+        return initializeSurveysDatasCache([idSurvey]);
+    });
+};
+
+const initializeSurveysIdsDataModeReviewer = (
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<any> => {
+    initializeSurveysIdsModeReviewer();
+    return initializeSurveysIds(surveysIds).then(() => {
+        if (!initData && navigator.onLine) {
+            return refreshSurveyData(setError);
+        } else {
+            return initializeSurveysDatasCache();
+        }
+    });
+};
+
+const initializeData = (remoteSurveyData: any, idSurvey: string) => {
+    const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+    let surveyData: LunaticData = {
+        COLLECTED: {},
+        CALCULATED: {},
+        EXTERNAL: {},
+        houseReference: "",
+        id: "",
+        lastLocalSaveDate: Date.now(),
+    };
+    surveyData.houseReference = idSurvey?.replace(regexp, "");
+    surveyData.CALCULATED = {};
+    surveyData.EXTERNAL = {};
+    surveyData.COLLECTED = remoteSurveyData.COLLECTED ?? getDataEmpty(idSurvey);
+    surveyData.lastLocalSaveDate =
+        remoteSurveyData.lastLocalSaveDate ?? remoteSurveyData.stateData?.date ?? new Date(0).getTime();
+    surveyData.stateData = remoteSurveyData.stateData;
+    return surveyData;
+};
+
+const getRemoteSavedSurveyData = (
+    surveyId: string,
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<any> => {
+    if (!navigator.onLine) {
+        return Promise.reject(new Error("Offline"));
+    }
+
+    const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
+
+    return urlRemote(surveyId, setError)
+        .then((remoteSurveyData: any) => {
+            // TODO: remove any and improve ts types
+            const surveyData = initializeData(remoteSurveyData, surveyId);
+            return lunaticDatabase.get(surveyId).then(localSurveyData => {
+                if (shouldInitData(remoteSurveyData, localSurveyData)) {
+                    const stateData = getSurveyStateData(surveyData);
+                    setLocalDatabase(stateData, surveyData, surveyId);
+                    return lunaticDatabase.save(surveyId, surveyData);
+                } else {
+                    if (shouldSaveRemoteData(remoteSurveyData, localSurveyData)) {
+                        // TEMP: WeeklyPlanner stuff (to be removed)
+                        //TODO: fix a bug where other variable are overwrited if there is no weeklyPlanner
+                        const weeklyPlanner = localSurveyData?.COLLECTED?.WEEKLYPLANNER ?? null;
+                        if (weeklyPlanner) {
+                            remoteSurveyData.COLLECTED.WEEKLYPLANNER = weeklyPlanner;
+                        }
+                        const stateData = getSurveyStateData(surveyData);
+                        setLocalDatabase(stateData, remoteSurveyData, surveyId);
+                        return lunaticDatabase.save(surveyId, surveyData);
+                    }
+                }
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            setError(err);
+        });
 };
 
 const getRemoteSavedSurveysDatas = (
     surveysIds: string[],
     setError: (error: ErrorCodeEnum) => void,
-): Promise<any> => {
-    const promises: Promise<any>[] = [];
-    surveysIds.forEach(surveyId => {
-        promises.push(
-            remoteGetSurveyData(surveyId, setError).then((remoteSurveyData: SurveyData) => {
-                return lunaticDatabase.get(surveyId).then(localSurveyData => {
-                    if (
-                        remoteSurveyData.stateData.date > 0 &&
-                        (localSurveyData === undefined ||
-                            (localSurveyData.lastRemoteSaveDate ?? 0) < remoteSurveyData.stateData.date)
-                    ) {
-                        return lunaticDatabase.save(surveyId, remoteSurveyData.data);
-                    }
-                });
-            }),
-        );
-    });
+): Promise<any[]> => {
+    const promises: Promise<any>[] = surveysIds.map(surveyId =>
+        getRemoteSavedSurveyData(surveyId, setError),
+    );
     return Promise.all(promises);
 };
 
-const initializeSurveysDatasCache = (): Promise<any> => {
+const shouldSaveRemoteData = (remoteSurveyData: any, localSurveyData: any): boolean => {
+    const lastRemoteSaveDate =
+        remoteSurveyData.lastRemoteSaveDate ?? remoteSurveyData.data?.lastRemoteSaveDate ?? 1;
+    const lastLocalSaveDate =
+        remoteSurveyData.lastLocalSaveDate ??
+        remoteSurveyData?.data?.lastLocalSaveDate ??
+        localSurveyData?.lastLocalSaveDate ??
+        0;
+    const remoteStateDataDate = remoteSurveyData?.stateData?.date ?? 1;
+    if (!localSurveyData) return true;
+    if (lastRemoteSaveDate >= lastLocalSaveDate) return true;
+    if (lastLocalSaveDate <= remoteStateDataDate) return true;
+    return false;
+};
+
+const shouldInitData = (remoteSurveyData: any, localSurveyData: any): boolean => {
+    if (!localSurveyData) {
+        if (remoteSurveyData && typeof remoteSurveyData === "object") {
+            const isCollectedEmpty =
+                "COLLECTED" in remoteSurveyData && Object.keys(remoteSurveyData.COLLECTED).length === 0;
+            //console.log("shouldInitData", isCollectedEmpty);
+            return isCollectedEmpty;
+        }
+    }
+    return false;
+};
+
+const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
     const promises: Promise<any>[] = [];
+    const idSurveysToInit = idSurveys ?? surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS];
     return lunaticDatabase.get(SURVEYS_IDS).then(data => {
         surveysIds = data as SurveysIds;
-        for (const idSurvey of surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS]) {
+
+        return new Promise(resolve => {
+            for (const idSurvey of idSurveysToInit) {
+                promises.push(initializeDatasCache(idSurvey));
+            }
             promises.push(
-                lunaticDatabase.get(idSurvey).then(data => {
-                    if (data != null) {
-                        datas.set(idSurvey, data || {});
-                    }
-                    return data;
+                lunaticDatabase.get(USER_SURVEYS_DATA).then(data => {
+                    userDatas = (data as UserSurveysData)?.data;
                 }),
             );
-        }
-        return Promise.all(promises);
+            return Promise.all(promises).finally(() => {
+                resolve(true);
+            });
+        });
     });
+};
+
+const initializeDatasCache = (idSurvey: string) => {
+    return lunaticDatabase.get(idSurvey).then(data => {
+        if (data != null) {
+            const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+            data.houseReference = idSurvey.replace(regexp, "");
+            datas.set(idSurvey, data);
+            addItemToSession(idSurvey, data);
+            //oldDatas.set(idSurvey, data);
+            initData = true;
+        } else {
+            datas.set(idSurvey, createDataEmpty(idSurvey ?? ""));
+            addItemToSession(idSurvey, createDataEmpty(idSurvey ?? ""));
+        }
+        return data;
+    });
+};
+
+const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
+    if (navigator.onLine) {
+        return fetchReviewerSurveysAssignments(setError)
+            .then(data => {
+                surveysData = data;
+                addArrayToSession("surveysData", surveysData);
+                data.forEach((surveyData: UserSurveys) => {
+                    if (!userDatas?.find(user => user.surveyUnitId == surveyData.surveyUnitId)) {
+                        if (userDatas == null) userDatas = [];
+                        if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
+                            userDatas.push(surveyData);
+                        }
+                        if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
+                            userDatas.push(surveyData);
+                        }
+                    }
+                });
+                return saveUserSurveysData({ data: userDatas });
+            })
+            .catch(err => {
+                console.log(err);
+                return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {
+                    let datas = data as UserSurveysData;
+                    return datas.data;
+                });
+            });
+    } else {
+        return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {
+            let datas = data as UserSurveysData;
+            surveysData = datas.data;
+            addArrayToSession("surveysData", surveysData);
+            datas.data.forEach((surveyData: UserSurveys) => {
+                if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
+                    if (!userDatas.find(survey => survey.surveyUnitId == surveyData.surveyUnitId))
+                        userDatas.push(surveyData);
+                }
+                if (surveyData.questionnaireModelId === SourcesEnum.WORK_TIME_SURVEY) {
+                    if (!userDatas.find(survey => survey.surveyUnitId == surveyData.surveyUnitId))
+                        userDatas.push(surveyData);
+                }
+            });
+        });
+    }
+};
+
+const getListSurveys = () => {
+    return surveysData ?? getArrayFromSession("surveysData");
+};
+
+const getSurveyDataHousehold = (surveys: UserSurveys[]) => {
+    const activitiesSurveys = surveys
+        .filter(survey => survey.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY)
+        .map(survey => survey.surveyUnitId);
+    const workTimeSurveys = surveys
+        .filter(survey => survey.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY)
+        .map(survey => survey.surveyUnitId);
+
+    const firstSurvey = getOrderedSurveys(activitiesSurveys, workTimeSurveys)[0];
+
+    const firstSurveyDate = getValue(
+        firstSurvey?.data?.surveyUnitId,
+        FieldNameEnum.SURVEYDATE,
+    ) as string;
+    return firstSurveyDate?.length && firstSurveyDate.length > 0
+        ? dayjs(generateDateFromStringInput(firstSurveyDate)).format("DD/MM/YYYY")
+        : undefined;
+};
+
+const getListSurveysHousehold = (): Household[] => {
+    const listSurveys = getListSurveys();
+    let grouped = groupBy(listSurveys, surveyData => {
+        const length = surveyData.surveyUnitId.length - 1;
+        const group = surveyData.surveyUnitId.substring(0, length);
+        return group;
+    });
+    let mapped = Object.entries(grouped)
+        .map(([key, value]) => {
+            return {
+                idHousehold: key,
+                userName: value[0]?.nameHousehold ?? "",
+                surveys: value,
+                surveyDate: getSurveyDataHousehold(value),
+                stats: getStatsHousehold(value),
+                campaingId: value[0].campaignId ?? undefined,
+                subCampaignId: value[0].subCampaignId ?? undefined,
+            };
+        })
+        .sort(
+            (houseHoldData1: any, houseHoldData2: any) =>
+                Number(houseHoldData1.idHousehold) - Number(houseHoldData2.idHousehold),
+        );
+    return mapped;
 };
 
 const getDatas = (): Map<string, LunaticData> => {
@@ -185,41 +743,249 @@ const getDatas = (): Map<string, LunaticData> => {
 };
 
 const getData = (idSurvey: string): LunaticData => {
-    return datas.get(idSurvey) || {};
+    const modifyCollected = modifyIndividualCollected(idSurvey);
+    const emptyData = getDataCache(idSurvey) ?? createDataEmpty(idSurvey ?? "");
+    const data = modifyCollected || emptyData;
+    return data;
 };
 
-const saveData = (idSurvey: string, data: LunaticData, localSaveOnly = false): Promise<LunaticData> => {
-    data.lastLocalSaveDate = Date.now();
+const getDataCache = (idSurvey: string) => {
+    return datas.get(idSurvey) ?? getItemFromSession(idSurvey);
+};
 
-    return lunaticDatabase.save(idSurvey, data).then(() => {
-        datas.set(idSurvey, data);
+const setDataCache = (idSurvey: string, data: LunaticData) => {
+    datas.set(idSurvey, data);
+    addItemToSession(idSurvey, data);
+};
 
-        //We try to submit each time the local database is updated if the user is online
-        if (!localSaveOnly && navigator.onLine) {
-            const surveyData: SurveyData = {
-                stateData: getSurveyStateData(data),
-                data: data,
-            };
-            remotePutSurveyData(idSurvey, surveyData).then(surveyData => {
-                data.lastRemoteSaveDate = surveyData.stateData.date;
-                //set the last remote save date inside local database to be able to compare it later with remote data
-                lunaticDatabase.save(idSurvey, data).then(() => {
-                    datas.set(idSurvey, data);
-                });
-            });
+const modifyIndividualCollected = (idSurvey: string) => {
+    let dataSurv = Object.assign(getDataCache(idSurvey));
+
+    if (getModePersistence(dataSurv) != ModePersistenceEnum.EDITED) {
+        const dataOfSurvey = dataSurv?.COLLECTED;
+        for (let prop in FieldNameEnum as any) {
+            const data = dataOfSurvey?.[prop];
+            if (
+                data?.EDITED &&
+                !Array.isArray(data.EDITED) &&
+                data.COLLECTED &&
+                !Array.isArray(data.COLLECTED)
+            ) {
+                data.COLLECTED = dataSurv?.COLLECTED?.[prop].EDITED;
+            }
         }
+    }
 
-        return data;
+    return dataSurv;
+};
+
+const setData = (idSurvey: string, data: LunaticData) => {
+    datas.set(idSurvey, data);
+    addItemToSession(idSurvey, data);
+};
+
+const getDataEmpty = (idSurvey: string) => {
+    if (surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].includes(idSurvey)) {
+        return dataEmptyActivity;
+    } else {
+        return dataEmptyWeeklyPlanner;
+    }
+};
+
+const createDataEmpty = (idSurvey: string): LunaticData => {
+    const householdId = "";
+
+    const data = {
+        COLLECTED: {},
+        CALCULATED: {},
+        EXTERNAL: {},
+        houseReference: householdId,
+        id: idSurvey,
+        lastLocalSaveDate: Date.now(),
+        lastRemoteSaveDate: undefined,
+    };
+    data.COLLECTED = getDataEmpty(idSurvey);
+    return data;
+};
+
+const dataIsChange = (idSurvey: string, dataAct: LunaticData, lastData: LunaticData): boolean => {
+    const dataCollected = dataAct?.COLLECTED;
+    const currentDataCollected = lastData?.COLLECTED;
+    if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurvey)) {
+        return true;
+    }
+
+    if (!dataCollected || !currentDataCollected) {
+        return true;
+    }
+    //console.log("dataIsChange", !_.isEqual(dataCollected, currentDataCollected));
+    return !_.isEqual(dataCollected, currentDataCollected);
+};
+
+const getVarBooleanModepersistance = (
+    dataCollected: {
+        [key: string]: Collected | MultiCollected;
+    },
+    modePersistence: ModePersistenceEnum,
+    variableName: FieldNameEnum,
+) => {
+    const modeInterviewer = modePersistence == ModePersistenceEnum.COLLECTED;
+    const data = modeInterviewer
+        ? dataCollected[variableName].COLLECTED
+        : dataCollected[variableName].EDITED;
+    return data as (boolean | null)[];
+};
+
+const updateLocked = (idSurvey: string, data: LunaticData) => {
+    if (existVariableEdited(idSurvey, data) && data.COLLECTED) {
+        data.COLLECTED[FieldNameEnum.ISLOCKED] = {
+            COLLECTED: true,
+            EDITED: true,
+            FORCED: null,
+            INPUTED: null,
+            PREVIOUS: null,
+        };
+    }
+    return data;
+};
+
+const getDataUpdatedOffline = () => {
+    let surveysToUpdated = new Map<string, LunaticData>();
+    surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
+        let data = getDataCache(idSurvey);
+        //state data -> last data recuperée from stateData
+        //lastRemoteSaveDate -> a pouvoir supprimer (change lastRemoteSaveDate to stateData.date)
+        if (
+            data.lastLocalSaveDate > data.lastRemoteSaveDate ||
+            data.lastLocalSaveDate > data.stateData?.date
+        ) {
+            surveysToUpdated.set(idSurvey, data);
+        }
+    });
+    return surveysToUpdated;
+};
+
+const saveDatas = () => {
+    const promisesToWait: Promise<any>[] = [];
+    getDataUpdatedOffline().forEach((value, key) => {
+        promisesToWait.push(saveData(key, value, false, true));
+    });
+    return Promise.all(promisesToWait).then(result => {
+        console.log(result);
     });
 };
 
-const getSurveyStateData = (data: LunaticData): StateData => {
-    const stateData: StateData = {
-        state: StateDataStateEnum.INIT,
-        date: Date.now(),
-        currentPage: getCurrentPage(data),
-    };
-    return stateData;
+const saveData = (
+    idSurvey: string,
+    data: LunaticData,
+    localSaveOnly = false,
+    forceUpdate = false,
+    stateDataForced?: StateData,
+): Promise<LunaticData> => {
+    data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
+    if (!data.houseReference) {
+        const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+        data.houseReference = idSurvey.replace(regexp, "");
+    }
+    const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+    const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
+    fixConditionals(data);
+    let oldDataSurvey = datas.get(idSurvey) ?? {};
+    const dataIsChanged = dataIsChange(idSurvey, data, oldDataSurvey);
+    const isChange = forceUpdate || dataIsChanged;
+    datas.set(idSurvey, data);
+
+    data = updateLocked(idSurvey, data);
+    let stateData: StateData = data?.stateData ?? stateDataForced ?? initStateData(data);
+
+    if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
+
+    if (isChange) {
+        console.log("SaveRemote data", data.COLLECTED);
+
+        data = saveQualityScore(idSurvey, data);
+        stateData = getSurveyStateData(data);
+
+        if (!navigator.onLine) {
+            stateData.date = 0;
+            data.stateData = stateData;
+            return setLocalDatabase(stateData, data, idSurvey);
+        }
+
+        if (!isDemoMode && !localSaveOnly) {
+            stateData.date = data.lastLocalSaveDate ?? Date.now();
+            const surveyData: SurveyData = {
+                stateData: stateData,
+                data: data,
+            };
+            data.lastRemoteSaveDate = stateData.date;
+
+            if (isReviewerMode) {
+                return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
+                    stateData.date = Math.max(stateData.date, data.lastLocalSaveDate ?? 0);
+                    data.stateData = stateData;
+                    data.lastRemoteSaveDate = stateData.date;
+                    return setLocalDatabase(stateData, data, idSurvey);
+                });
+            } else {
+                return remotePutSurveyData(idSurvey, surveyData).then(() => {
+                    data.stateData = stateData;
+                    return setLocalDatabase(stateData, data, idSurvey);
+                });
+            }
+        } else {
+            stateData.date = 0;
+            data.stateData = stateData;
+            return setLocalDatabase(stateData, data, idSurvey);
+        }
+    } else {
+        data.stateData = stateData;
+        return setLocalDatabase(stateData, data, idSurvey);
+    }
+};
+
+const saveDataLocally = (
+    idSurvey: string,
+    data: LunaticData,
+    localSaveOnly = false,
+    forceUpdate = false,
+    stateDataForced?: StateData,
+): Promise<LunaticData> => {
+    data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
+    if (!data.houseReference) {
+        const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+        data.houseReference = idSurvey.replace(regexp, "");
+    }
+    const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
+    //const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
+    fixConditionals(data);
+    let oldDataSurvey = datas.get(idSurvey) ?? {};
+    const dataIsChanged = dataIsChange(idSurvey, data, oldDataSurvey);
+    const isChange = forceUpdate || dataIsChanged;
+    datas.set(idSurvey, data);
+
+    data = updateLocked(idSurvey, data);
+    let stateData: StateData = stateDataForced ?? initStateData(data);
+
+    if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
+
+    if (isChange) {
+        data = saveQualityScore(idSurvey, data);
+    }
+    data.stateData = stateData;
+    console.log("saveDataLocally");
+    return setLocalDatabase(stateData, data, idSurvey);
+};
+
+const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: string) => {
+    let oldDataSurvey = datas.get(idSurvey) ?? {};
+    oldDatas.set(idSurvey, oldDataSurvey);
+    setDataCache(idSurvey, data);
+    return lunaticDatabase.save(idSurvey, data).then(() => {
+        datas.set(idSurvey, data);
+        addItemToSession(idSurvey, data);
+        return data;
+    });
 };
 
 const saveReferentiels = (data: ReferentielData): Promise<ReferentielData> => {
@@ -231,7 +997,9 @@ const saveReferentiels = (data: ReferentielData): Promise<ReferentielData> => {
 
 const saveSources = (data: SourceData): Promise<SourceData> => {
     return lunaticDatabase.save(SOURCES_MODELS, data).then(() => {
-        sourcesData = data;
+        if (sourcesData == undefined) {
+            sourcesData = data;
+        }
         return data;
     });
 };
@@ -243,33 +1011,39 @@ const saveSurveysIds = (data: SurveysIds): Promise<SurveysIds> => {
     });
 };
 
-const addToSecondaryActivityReferentiel = (
-    referentiel: ReferentielsEnum.ACTIVITYSECONDARYACTIVITY | ReferentielsEnum.ROUTESECONDARYACTIVITY,
-    newItem: CheckboxOneCustomOption,
-) => {
-    lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
-        currentData[referentiel].push(newItem);
-        saveReferentiels(currentData);
-    });
+const saveUserSurveysData = (data: UserSurveysData): Promise<UserSurveys[]> => {
+    return data.data?.length > 0
+        ? lunaticDatabase.save(USER_SURVEYS_DATA, data).then(() => {
+              userDatas = data.data;
+              return data.data;
+          })
+        : lunaticDatabase.get(USER_SURVEYS_DATA).then(userDatas => {
+              let userDatasLocal = userDatas as UserSurveysData;
+              return userDatasLocal?.data;
+          });
 };
 
-const addToAutocompleteActivityReferentiel = (newItem: AutoCompleteActiviteOption) => {
-    lunaticDatabase.get(REFERENTIELS_ID).then((currentData: any) => {
-        currentData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE].push(newItem);
-        saveReferentiels(currentData);
-    });
+const getUserDatasActivity = (): UserSurveys[] => {
+    return userDatasActivity.length > 0 ? userDatasActivity : getArrayFromSession("userDatasActivity");
 };
 
-const getReferentiel = (refName: ReferentielsEnum) => {
-    return referentielsData[refName];
+const getUserDatasWorkTime = (): UserSurveys[] => {
+    return userDatasWorkTime.length > 0 ? userDatasWorkTime : getArrayFromSession("userDatasWorkTime");
+};
+
+const getUserDatas = () => {
+    return userDatas?.length > 0 ? userDatas : getArrayFromSession("userDatas");
 };
 
 const getSource = (refName: SourcesEnum) => {
-    return sourcesData[refName];
+    return refName == SourcesEnum.ACTIVITY_SURVEY ? edtActivitySurvey : edtWorkTimeSurvey;
 };
 
 const getVariable = (source: LunaticModel, dependency: string): LunaticModelVariable | undefined => {
     return source.variables.find(v => v.variableType === "COLLECTED" && v.name === dependency);
+};
+const getReferentiel = (refName: ReferentielsEnum) => {
+    return referentielsData[refName];
 };
 
 //Return the last lunatic model page that has been fill with data
@@ -290,7 +1064,7 @@ const getCurrentPage = (data: LunaticData | undefined, source?: LunaticModel): n
         i++;
     }
     if (currentPage == 0) {
-        const firstName = data.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED;
+        const firstName = getValueOfData(data, FieldNameEnum.FIRSTNAME);
         if (firstName) currentPage = Number(components[components.length - 2].page);
         if (source.label == LABEL_WORK_TIME_SURVEY) currentPage = 3;
     }
@@ -309,7 +1083,7 @@ const haveVariableNotFilled = (
     variables.forEach(v => {
         const variable = getVariable(source, v);
         if (variable) {
-            const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+            const value = getValueOfData(data, variable.name);
             if (value != null && !Array.isArray(value)) {
                 filled = false;
             } else if (Array.isArray(value)) {
@@ -335,11 +1109,18 @@ const getComponentsOfVariable = (
 };
 
 const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: number) => {
+    const data = getDataCache(idSurvey);
+    const valueEdited = data?.COLLECTED?.[variableName]?.EDITED;
+    const valueCollected = data?.COLLECTED?.[variableName]?.COLLECTED;
+    const modePersistenceEdited = getModePersistence(data) == ModePersistenceEnum.EDITED;
+
     if (iteration != null) {
-        let value = datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+        let value = valueCollected;
+        if (modePersistenceEdited && valueEdited && valueEdited[iteration] != null) value = valueEdited;
         return Array.isArray(value) ? value[iteration] : null;
     } else {
-        return datas.get(idSurvey)?.COLLECTED?.[variableName]?.COLLECTED;
+        let value = modePersistenceEdited && valueEdited != null ? valueEdited : valueCollected;
+        return value;
     }
 };
 
@@ -348,18 +1129,65 @@ const setValue = (
     variableName: FieldNameEnum,
     value: string | boolean | null,
     iteration?: number,
+): LunaticData => {
+    let dataAct = getDataCache(idSurvey) ?? {};
+    if (dataAct == null) {
+        lunaticDatabase.get(idSurvey).then(data => {
+            getDataModePersist(idSurvey, data ?? {}, variableName, value, iteration);
+        });
+    } else {
+        getDataModePersist(idSurvey, dataAct, variableName, value, iteration);
+    }
+
+    return dataAct;
+};
+
+const getDataModePersistOfArray = (
+    dataAct: LunaticData,
+    variableName: FieldNameEnum,
+    modePersistenceEdited: boolean,
+    value: string | boolean,
+    iteration: number,
 ) => {
-    const dataAct = datas.get(idSurvey);
-    if (dataAct && dataAct.COLLECTED && dataAct.COLLECTED[variableName]) {
-        if (iteration != null && value != null) {
-            const dataAsArray = dataAct.COLLECTED[variableName].COLLECTED;
-            if (dataAsArray && Array.isArray(dataAsArray)) {
-                dataAsArray[iteration] = value;
-            }
+    if (dataAct?.COLLECTED && dataAct.COLLECTED[variableName]) {
+        let dataAsArray = modePersistenceEdited
+            ? dataAct.COLLECTED[variableName].EDITED
+            : dataAct.COLLECTED[variableName].COLLECTED;
+        if (dataAsArray && Array.isArray(dataAsArray)) {
+            dataAsArray[iteration] = value;
         } else {
+            dataAsArray = Array(iteration + 1);
+            dataAsArray[iteration] = value;
+        }
+
+        if (modePersistenceEdited) dataAct.COLLECTED[variableName].EDITED = dataAsArray;
+        else dataAct.COLLECTED[variableName].COLLECTED = dataAsArray;
+    }
+    return dataAct;
+};
+
+const getDataModePersist = (
+    idSurvey: string,
+    dataAct: LunaticData,
+    variableName: FieldNameEnum,
+    value: string | boolean | null,
+    iteration?: number,
+) => {
+    const modePersistenceEdited = getModePersistence(dataAct) == ModePersistenceEnum.EDITED;
+    if (dataAct?.COLLECTED && dataAct.COLLECTED[variableName]) {
+        if (iteration != null && value != null) {
+            dataAct = getDataModePersistOfArray(
+                dataAct,
+                variableName,
+                modePersistenceEdited,
+                value,
+                iteration,
+            );
+        } else {
+            const valueCollected = dataAct.COLLECTED[variableName].COLLECTED as string | boolean;
             const variable: Collected = {
-                COLLECTED: value,
-                EDITED: null,
+                COLLECTED: modePersistenceEdited ? valueCollected : value,
+                EDITED: modePersistenceEdited ? value : dataAct.COLLECTED[variableName].EDITED,
                 FORCED: null,
                 INPUTED: null,
                 PREVIOUS: null,
@@ -367,12 +1195,9 @@ const setValue = (
             dataAct.COLLECTED[variableName] = variable;
         }
     }
-    datas.set(idSurvey, dataAct || {});
+    datas.set(idSurvey, dataAct);
+    addItemToSession(idSurvey, dataAct);
     return dataAct;
-};
-
-const getLastName = (idSurvey: string) => {
-    return getValue(idSurvey, FieldNameEnum.LASTNAME)?.toString();
 };
 
 const getFirstName = (idSurvey: string) => {
@@ -388,33 +1213,118 @@ const getPrintedFirstName = (idSurvey: string): string => {
     return getFirstName(idSurvey) || t("common.user.person") + " " + getPersonNumber(idSurvey);
 };
 
-const getTabsData = (t: any): TabData[] => {
+const getIdSurveyActivity = (interviewer: string, numActivity: number): string => {
+    return getUserDatasActivity().filter(data => data.interviewerId == interviewer)[numActivity]
+        ?.surveyUnitId;
+};
+
+const getIdSurveyWorkTime = (interviewer: string) => {
+    return getUserDatasWorkTime().filter(data => data.interviewerId == interviewer)[0]?.surveyUnitId;
+};
+
+const createTabData = (idSurvey: string, t: any, isActivitySurvey: boolean) => {
+    let tabData: TabData = {
+        idSurvey: idSurvey,
+        surveyDateLabel: getPrintedSurveyDate(
+            idSurvey,
+            isActivitySurvey ? EdtRoutesNameEnum.ACTIVITY : EdtRoutesNameEnum.WORK_TIME,
+        ),
+        firstNameLabel: getPrintedFirstName(idSurvey),
+        score: getScore(idSurvey, t),
+        isActivitySurvey: isActivitySurvey,
+    };
+    return tabData;
+};
+
+const getTabsDataReviewer = (t: any) => {
     let tabsData: TabData[] = [];
 
-    surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].forEach(idSurvey => {
-        let tabData: TabData = {
-            idSurvey: idSurvey,
-            surveyDateLabel: getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.ACTIVITY),
-            firstNameLabel: getPrintedFirstName(idSurvey),
-            score: getScore(idSurvey, t),
-            isActivitySurvey: true,
-        };
-        tabsData.push(tabData);
+    const interviewers = getUserDatasActivity().map(data => data.interviewerId);
+    const interviewersUniques = interviewers.filter(
+        (value, index, self) => self.indexOf(value) === index,
+    );
+
+    interviewersUniques.forEach(interviewer => {
+        let tabData1 = createTabData(getIdSurveyActivity(interviewer, 0), t, true);
+        tabsData.push(tabData1);
+        const tabData2 = createTabData(getIdSurveyActivity(interviewer, 1), t, true);
+        tabsData.push(tabData2);
+        if (getIdSurveyWorkTime(interviewer)) {
+            const tabData3 = createTabData(getIdSurveyWorkTime(interviewer), t, false);
+            tabsData.push(tabData3);
+        }
     });
-    surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].forEach(idSurvey => {
-        let tabData: TabData = {
-            idSurvey: idSurvey,
-            surveyDateLabel: getPrintedSurveyDate(idSurvey, EdtRoutesNameEnum.WORK_TIME),
-            firstNameLabel: getPrintedFirstName(idSurvey),
-            score: getScore(idSurvey, t),
-            isActivitySurvey: false,
-        };
+    return tabsData;
+};
+
+const getTabsDataInterviewer = (t: any) => {
+    let tabsData: TabData[] = [];
+
+    const dataOrdered = getOrderedSurveys(
+        surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS],
+        surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS],
+    );
+
+    dataOrdered.forEach(data => {
+        const isActivity = data.data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY;
+        const tabData = createTabData(data.data.surveyUnitId, t, isActivity);
         tabsData.push(tabData);
     });
     return tabsData;
 };
 
-// return survey date in french format (day x - dd/mm) if exist or default value
+const getTabsData = (t: any): TabData[] => {
+    if (isDemoMode()) {
+        return getTabsDataReviewer(t);
+    } else if (isReviewer()) {
+        setSurveysIdsReviewers();
+        return getTabsDataInterviewer(t);
+    } else {
+        return getTabsDataInterviewer(t);
+    }
+};
+
+const getNumSurveyDateReviewer = (
+    label: string,
+    idSurvey: string,
+    surveyParentPage?: EdtRoutesNameEnum,
+) => {
+    let index = 0;
+    if (isDemoMode()) {
+        const dataUserSurvey = userDatas?.filter(data => data.surveyUnitId == idSurvey)[0];
+        const indexInterviewerId = userDatas
+            ?.filter(
+                data =>
+                    data.interviewerId == dataUserSurvey?.interviewerId &&
+                    data.questionnaireModelId == dataUserSurvey?.questionnaireModelId,
+            )
+            .map(data => data.surveyUnitId)
+            .indexOf(idSurvey);
+        index = indexInterviewerId + 1;
+    } else {
+        const surveyMap = isReviewer() ? userDatasMap() : nameSurveyMap();
+        const indexOfSurvey = surveyMap.find(user => user.data.surveyUnitId == idSurvey)?.num;
+        index =
+            surveyMap
+                .filter(user => user.num == indexOfSurvey)
+                .map(user => user.data.surveyUnitId)
+                .indexOf(idSurvey) + 1;
+    }
+
+    if (surveyParentPage == EdtRoutesNameEnum.WORK_TIME) {
+        return label;
+    } else {
+        return label + " " + index;
+    }
+};
+
+/**
+ * Returns the survey date in French format (day x - dd/mm) if it exists, or a default value.
+ *
+ * @param {string} idSurvey - The ID of the survey.
+ * @param {EdtRoutesNameEnum} [surveyParentPage] - The parent page of the survey.
+ * @returns {string} The formatted survey date or a default value.
+ */
 const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesNameEnum): string => {
     const savedSurveyDate = getSurveyDate(idSurvey);
     const label =
@@ -423,53 +1333,432 @@ const getPrintedSurveyDate = (idSurvey: string, surveyParentPage?: EdtRoutesName
             : t("component.day-card.day");
     if (savedSurveyDate) {
         const dayName = getFrenchDayFromDate(generateDateFromStringInput(savedSurveyDate));
-        const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+        const capitalizedDayName =
+            surveyParentPage === EdtRoutesNameEnum.WORK_TIME
+                ? "Semaine du"
+                : dayName.charAt(0).toUpperCase() + dayName.slice(1);
 
         const splittedDate = savedSurveyDate.split("-");
-        return label + " - " + capitalizedDayName + " " + [splittedDate[2], splittedDate[1]].join("/");
+        return capitalizedDayName + " " + [splittedDate[2], splittedDate[1]].join("/");
     } else {
-        return label + " 1";
+        return getNumSurveyDateReviewer(label, idSurvey, surveyParentPage);
     }
 };
 
-//Return date with full french format dd/MM/YYYY
+/**
+ * Returns the date in full French format (dd/MM/YYYY).
+ *
+ * @param {string} surveyDate - The survey date in string format.
+ * @returns {string} The formatted date in dd/MM/YYYY format.
+ */
 const getFullFrenchDate = (surveyDate: string): string => {
-    const splittedDate = surveyDate.split("-");
-    return [splittedDate[2], splittedDate[1], splittedDate[0]].join("/");
+    const splittedDate = surveyDate?.split("-");
+    return splittedDate?.length > 2 ? [splittedDate[2], splittedDate[1], splittedDate[0]].join("/") : "";
+};
+
+/**
+ * Creates a map of survey names based on the provided survey IDs.
+ *
+ * @param {string[]} idSurveys - An array of survey IDs.
+ * @returns {Array} An array of objects containing survey data, first name, and index.
+ */
+const createNameSurveyMap = (idSurveys: string[]) => {
+    let numInterviewer = 0;
+    return idSurveys
+        .map((idSurvey, index) => {
+            if (index % 2 == 0 && index != 0) {
+                numInterviewer += 1;
+            }
+            const isActivity =
+                surveysIds != null &&
+                surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey) >= 0;
+            const userData: UserSurveys = {
+                surveyUnitId: idSurvey,
+                questionnaireModelId: isActivity
+                    ? SourcesEnum.ACTIVITY_SURVEY
+                    : SourcesEnum.WORK_TIME_SURVEY,
+                id: 0,
+                campaignId: "",
+                subCampaignId: "",
+                interviewerId: "",
+                reviewerId: "",
+            };
+            const indexData = isActivity ? numInterviewer + 1 : index + 1;
+            const name = isActivity ? "zzzz " + indexData : "zzzzz " + indexData;
+            const data = {
+                data: userData,
+                firstName: name,
+                num: indexData,
+            };
+            return data;
+        })
+        .sort((u1, u2) => u1.data.surveyUnitId.localeCompare(u2.data.surveyUnitId));
+};
+
+const nameSurveyMap = (): Person[] => {
+    return getOrderedSurveys(
+        surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS],
+        surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS],
+    );
+};
+
+const nameSurveyGroupMap = () => {
+    const listSurveysAct = getOrderedSurveys(
+        surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS],
+        surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS],
+    );
+    let grouped = groupBy(listSurveysAct, nameSurveyData => nameSurveyData.num);
+    return grouped;
+};
+
+const getOrderedSurveys = (activitiesIds: string[], workTimeIds: string[]) => {
+    const userActivityMap = createNameSurveyMap(activitiesIds);
+    const userWeeklyPlannerMap = createNameSurveyMap(workTimeIds);
+    const userMap = userActivityMap.concat(userWeeklyPlannerMap).sort((u1, u2) => {
+        if (u1.num == u2.num) return u1.firstName.localeCompare(u2.firstName);
+        else return u1.num > u2.num ? 1 : -1;
+    });
+    return userMap;
+};
+
+const createUserDataMap = (usersurvey: UserSurveys[]): Person[] => {
+    let numInterviewer = 0;
+    return usersurvey
+        .map((data, index) => {
+            if (index % 2 == 0 && index != 0) {
+                numInterviewer += 1;
+            }
+            return data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
+                ? {
+                      data: data,
+                      firstName: "zzzz " + (numInterviewer + 1),
+                      num: numInterviewer + 1,
+                  }
+                : {
+                      data: data,
+                      firstName: "zzzzz " + index + 1,
+                      num: index + 1,
+                  };
+        })
+        .sort((u1, u2) => u1.data.surveyUnitId.localeCompare(u2.data.surveyUnitId));
+};
+
+/**
+ * map of name of survey and data of survey
+ */
+const userDatasMap = () => {
+    const userActivityMap = createUserDataMap(getUserDatasActivity());
+    const userWeeklyPlannerMap = createUserDataMap(getUserDatasWorkTime());
+
+    const userMap = userActivityMap.concat(userWeeklyPlannerMap).sort((u1, u2) => {
+        if (u1.num == u2.num) return u1.firstName.localeCompare(u2.firstName);
+        else return u1.num > u2.num ? 1 : -1;
+    });
+    return userMap;
+};
+
+const arrayOfSurveysPersonDemo = (interviewer: string, index: number): Person[] => {
+    return [
+        {
+            data: {
+                questionnaireModelId: SourcesEnum.ACTIVITY_SURVEY,
+                surveyUnitId: getIdSurveyActivity(interviewer, 0),
+                interviewerId: interviewer,
+                campaignId: "",
+                subCampaignId: "",
+            },
+            firstName: "zzzz" + interviewer,
+            num: index,
+        },
+        {
+            data: {
+                questionnaireModelId: SourcesEnum.ACTIVITY_SURVEY,
+                surveyUnitId: getIdSurveyActivity(interviewer, 1),
+                interviewerId: interviewer,
+                campaignId: "",
+                subCampaignId: "",
+            },
+            firstName: "zzzz" + interviewer,
+            num: index,
+        },
+        {
+            data: {
+                questionnaireModelId: SourcesEnum.WORK_TIME_SURVEY,
+                surveyUnitId: getIdSurveyWorkTime(interviewer),
+                interviewerId: interviewer,
+                campaignId: "",
+                subCampaignId: "",
+            },
+            firstName: "zzzz" + interviewer,
+            num: index,
+        },
+    ];
 };
 
 const getPersonNumber = (idSurvey: string) => {
-    const index =
-        surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey) !== -1
-            ? surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS].indexOf(idSurvey)
-            : surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].indexOf(idSurvey);
-    return index + 1;
+    const interviewerId = userDatas?.filter(data => data.surveyUnitId == idSurvey)[0]?.interviewerId;
+    let indexDemo = interviewerId?.split("interviewer")[1];
+
+    const surveyMap = isReviewer() ? userDatasMap() : nameSurveyMap();
+    indexDemo = (surveyMap?.find(user => user.data.surveyUnitId == idSurvey)?.num ?? 1).toString();
+    return indexDemo;
+};
+
+const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
+    const surveysIdsHousehold = surveys
+        .filter(survey => survey.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY)
+        .map(survey => survey.surveyUnitId);
+    let stats = null;
+    let state: StateHouseholdEnum;
+    let numHouseholds = 0,
+        numHouseholdsInProgress = 0,
+        numHouseholdsClosed = 0,
+        numHouseholdsValidated = 0;
+    surveysIdsHousehold.forEach(idSurvey => {
+        const isValidated = isSurveyValidated(idSurvey);
+        const isClosed = isSurveyClosed(idSurvey);
+        const isStarted = isSurveyStarted(idSurvey);
+
+        if (isValidated) {
+            numHouseholdsValidated++;
+        }
+        if (isClosed && !isValidated) {
+            numHouseholdsClosed++;
+        }
+
+        if (!isValidated && !isClosed && isStarted) {
+            numHouseholdsInProgress++;
+        }
+        numHouseholds++;
+    });
+
+    if (numHouseholds == numHouseholdsValidated) state = StateHouseholdEnum.VALIDATED;
+    else if (numHouseholdsClosed > 0) state = StateHouseholdEnum.CLOSED;
+    else state = StateHouseholdEnum.IN_PROGRESS;
+
+    stats = {
+        numHouseholds: numHouseholds,
+        numHouseholdsInProgress: numHouseholdsInProgress,
+        numHouseholdsClosed: numHouseholdsClosed,
+        numHouseholdsValidated: numHouseholdsValidated,
+        state: state,
+    };
+    return stats;
+};
+
+const getSurveyRights = (idSurvey: string) => {
+    const isReviewerMode = isReviewer();
+    const isValidated = isSurveyValidated(idSurvey);
+    const isLocked = isSurveyLocked(idSurvey);
+
+    if (isReviewerMode) {
+        return EdtSurveyRightsEnum.WRITE_REVIEWER;
+    } else {
+        return isLocked || isValidated || existVariableEdited(idSurvey)
+            ? EdtSurveyRightsEnum.READ_INTERVIEWER
+            : EdtSurveyRightsEnum.WRITE_INTERVIEWER;
+    }
+};
+
+const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
+    const dataSurv = data ?? getDataCache(idSurvey ?? "");
+    const dataOfSurvey = dataSurv?.COLLECTED;
+
+    for (let prop in FieldNameEnum as any) {
+        if (prop == FieldNameEnum.FIRSTNAME) continue;
+        const surveyData = dataOfSurvey && dataOfSurvey[prop];
+        const ifArrayInputed =
+            surveyData?.EDITED &&
+            Array.isArray(surveyData.EDITED) &&
+            surveyData.EDITED.length > 0 &&
+            surveyData.EDITED[0] != null;
+        if (
+            (surveyData?.EDITED && ifArrayInputed) ||
+            (surveyData?.EDITED && !Array.isArray(surveyData.EDITED))
+        ) {
+            return true;
+        }
+    }
+    return false;
+};
+
+const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum => {
+    const isReviewerMode = isReviewer();
+    const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED as boolean;
+    return isReviewerMode || isLocked || existVariableEdited(undefined, data)
+        ? ModePersistenceEnum.EDITED
+        : ModePersistenceEnum.COLLECTED;
+};
+
+const getValueWithData = (
+    data: LunaticData | undefined,
+    variableName: string,
+): string | boolean | string[] | boolean[] | null[] | { [key: string]: string }[] | null | undefined => {
+    return data?.COLLECTED?.[variableName]?.COLLECTED;
+};
+
+const getValueOfData = (
+    data: LunaticData | undefined,
+    variableName: string,
+): string | boolean | string[] | boolean[] | null[] | { [key: string]: string }[] | null | undefined => {
+    const modePersistenceEdited = getModePersistence(data) == ModePersistenceEnum.EDITED;
+    const dataCollected = data?.COLLECTED;
+    const dataSurvey = dataCollected?.[variableName];
+    const dataEdited = dataSurvey?.EDITED;
+    const dataCollect = dataSurvey?.COLLECTED;
+    if (dataCollected) {
+        if (modePersistenceEdited) {
+            return dataEdited ?? dataCollect;
+        } else {
+            return dataCollect;
+        }
+    }
+    return null;
+};
+
+const getSurveysAct = () => {
+    let surveys: Person[] = [];
+    const isDemo = isDemoMode();
+    if (getUserRights() === EdtUserRightsEnum.REVIEWER && !isDemo) {
+        surveys = userDatasMap();
+    } else if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
+        let interviewers = getUserDatasActivity().map(data => data.interviewerId);
+        let interviewersUniques = interviewers.filter(
+            (value, index, self) => self.indexOf(value) === index,
+        );
+        interviewersUniques.forEach((interviewer, index) => {
+            surveys = surveys.concat(arrayOfSurveysPersonDemo(interviewer, index));
+        });
+    } else {
+        surveys = nameSurveyMap();
+    }
+    return surveys;
+};
+
+const getPerson = (idSurvey: string) => {
+    const surveys = getSurveysAct();
+    const personAct = surveys?.find(survey => survey.data.surveyUnitId == idSurvey);
+    return personAct;
+};
+
+const getGroupOfPerson = (idSurvey: string) => {
+    const surveys = getSurveysAct();
+    const personAct = surveys?.find(survey => survey.data.surveyUnitId == idSurvey);
+    const idsSurveysFromGroupAct = surveys
+        ?.filter(survey => survey.num == personAct?.num)
+        .map(survey => survey.data.surveyUnitId);
+    return idsSurveysFromGroupAct;
+};
+
+const validateAllGroup = (
+    navigate: NavigateFunction,
+    idSurvey: string,
+    inputNameAct: string,
+    inputDate?: string,
+) => {
+    const personAct = getPerson(idSurvey);
+
+    const surveyRootPage =
+        personAct?.data?.questionnaireModelId == SourcesEnum.WORK_TIME_SURVEY
+            ? EdtRoutesNameEnum.WORK_TIME
+            : EdtRoutesNameEnum.ACTIVITY;
+
+    const route = navToPlanner(idSurvey, surveyRootPage);
+
+    setAllNamesOfGroupAndNav(
+        navigate,
+        route,
+        idSurvey,
+        getGroupOfPerson(idSurvey),
+        inputNameAct,
+        inputDate,
+    );
+};
+
+const initSurveyData = (surveyId: string): LunaticData => {
+    const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+    let surveyData: LunaticData = {
+        COLLECTED: {},
+        CALCULATED: {},
+        EXTERNAL: {},
+        houseReference: "",
+        id: "",
+        lastLocalSaveDate: Date.now(),
+    };
+    surveyData.houseReference = surveyId?.replace(regexp, "");
+    surveyData.CALCULATED = {};
+    surveyData.EXTERNAL = {};
+    surveyData.COLLECTED = getDataEmpty(surveyId);
+    surveyData.lastLocalSaveDate = Date.now();
+    surveyData.stateData = initStateData();
+    return surveyData;
 };
 
 export {
-    getData,
-    getDatas,
-    initializeDatas,
-    saveData,
-    getCurrentPage,
-    getLastName,
-    getFirstName,
-    getPrintedFirstName,
-    getSurveyDate,
-    getPrintedSurveyDate,
-    getFullFrenchDate,
-    getValue,
-    setValue,
-    getReferentiel,
-    getSource,
+    addToAutocompleteActivityReferentiel,
+    arrayOfSurveysPersonDemo,
+    createDataEmpty,
+    existVariableEdited,
+    getAuthCache,
     getComponentId,
     getComponentsOfVariable,
-    getVariable,
+    getCurrentPage,
+    getData,
+    getDataEmpty,
+    getDataUpdatedOffline,
+    getDatas,
+    getFirstName,
+    getFullFrenchDate,
+    getIdSurveyActivity,
+    getIdSurveyWorkTime,
+    getListSurveys,
+    getListSurveysHousehold,
+    getModePersistence,
+    getPerson,
+    getPrintedFirstName,
+    getPrintedSurveyDate,
+    getReferentiel,
+    getRemoteSavedSurveysDatas,
+    getSource,
+    getSurveyDate,
+    getSurveysIdsForHousehold,
+    getSurveyRights,
+    getSurveyStateData,
     getTabsData,
-    surveysIds,
-    toIgnoreForRoute,
-    toIgnoreForActivity,
-    addToSecondaryActivityReferentiel,
-    addToAutocompleteActivityReferentiel,
+    getUserDatas,
+    getUserDatasActivity,
+    getUserDatasWorkTime,
+    getValue,
+    getValueOfData,
+    getValueWithData,
+    getVarBooleanModepersistance,
+    getVariable,
+    initPropsAuth,
+    initStateData,
+    initSurveyData,
+    initializeDatas,
+    initializeRemoteDatas,
+    initializeHomeSurveys,
+    initializeListSurveys,
     initializeSurveysDatasCache,
+    initializeSurveysIdsDataModeReviewer,
+    initializeSurveysIdsDemo,
+    initializeSurveysIdsModeReviewer,
+    nameSurveyGroupMap,
+    nameSurveyMap,
+    navToPlanner,
+    refreshSurvey,
+    refreshSurveyData,
+    saveData,
+    saveDataLocally,
+    saveDatas,
+    saveReferentiels,
+    setData,
+    setValue,
+    surveysIds,
+    toIgnoreForActivity,
+    toIgnoreForRoute,
+    userDatasMap,
+    validateAllGroup,
+    isDemoMode,
 };

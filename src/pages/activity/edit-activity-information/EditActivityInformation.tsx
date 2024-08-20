@@ -9,14 +9,19 @@ import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { loopActivityRouteStepperData, loopActivityStepperData } from "service/loop-stepper-service";
 import { getLoopParameterizedNavigatePath, navFullPath } from "service/navigation-service";
+import { surveyReadOnly } from "service/survey-activity-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const EditActivityInformationPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const context: OrchestratorContext = useOutletContext();
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
+
     const { classes } = useStyles();
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
@@ -27,27 +32,37 @@ const EditActivityInformationPage = () => {
     const navToStep = useCallback(
         (page: EdtRoutesNameEnum) => () =>
             navigate(
-                getLoopParameterizedNavigatePath(page, LoopEnum.ACTIVITY_OR_ROUTE, currentIteration),
+                getLoopParameterizedNavigatePath(
+                    idSurvey,
+                    page,
+                    LoopEnum.ACTIVITY_OR_ROUTE,
+                    currentIteration,
+                ),
             ),
         [],
     );
 
     return (
         <SurveyPage
+            idSurvey={idSurvey}
             onNavigateBack={useCallback(
-                () => navFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                () => navFullPath(idSurvey, EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
                 [],
             )}
-            onPrevious={useCallback(() => navFullPath(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER), [])}
+            onPrevious={useCallback(
+                () => navFullPath(idSurvey, EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                [],
+            )}
             simpleHeaderLabel={t("page.edit-activity-information.header")}
             simpleHeader={true}
             backgroundWhiteHeader={false}
+            modifiable={!surveyReadOnly(context.rightsSurvey)}
         >
             <FlexCenter>
                 <ActivityOrRouteCard
                     labelledBy={""}
                     describedBy={""}
-                    activityOrRoute={context.activityOrRoute || {}}
+                    activityOrRoute={context.activityOrRoute ?? {}}
                 />
             </FlexCenter>
             <Box className={classes.titleBox}>

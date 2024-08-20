@@ -1,0 +1,32 @@
+[
+    {
+        "id": "1",
+        "label": "À pied",
+        "value": "FOOT"
+    },
+    {
+        "id": "2",
+        "label": "Vélo (électrique ou non)",
+        "value": "BICYCLE"
+    },
+    {
+        "id": "3",
+        "label": "Deux roues motorisé (scooter, moto...)",
+        "value": "TWOWHEELSMOTORIZED"
+    },
+    {
+        "id": "4",
+        "label": "Voiture privée (y compris covoiturage)",
+        "value": "PRIVATECAR"
+    },
+    {
+        "id": "5",
+        "label": "Autre moyen privé (monoroue, trottinette ou skate, bateau, électrique ou non…)",
+        "value": "OTHERPRIVATE"
+    },
+    {
+        "id": "6",
+        "label": "Transports publics (bus, train, taxi, Uber, avion…)",
+        "value": "PUBLIC"
+    }
+]

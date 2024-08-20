@@ -1,4 +1,8 @@
 export enum EdtRoutesNameEnum {
+    INSTALL = "install",
+    REVIEWER_HOME = "reviewer-home",
+    REVIEWER_SURVEYS_OVERVIEW = "surveys-overview",
+    SURVEYED_HOME = "surveyed-home",
     HELP = "help",
     ERROR = "error/:code",
     ACTIVITY = "activity/:idSurvey",
@@ -29,4 +33,12 @@ export enum EdtRoutesNameEnum {
     PHONE_TIME = "phone-time",
     END_SURVEY = "end-survey",
     ACTIVITY_SUMMARY = "activity-summary",
+    HELP_INSTALL = "help-install",
+    HELP_ACTIVITY = "help-activity",
+    HELP_DURATION = "help-duration",
+    HELP_MAIN_ACTIVITY_CATEGORY = "help-main-activity-category",
+    HELP_MAIN_ACTIVITY_SUB_CATEGORY = "help-main-activity-sub-category",
+    HELP_CHECKBOX = "help-checkbox",
+    HELP_WORK_TIME = "help-work-time",
+    CONTACT = "contact",
 }

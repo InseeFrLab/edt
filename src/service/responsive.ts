@@ -1,9 +1,9 @@
 import { useMediaQuery } from "react-responsive";
 
-const mobileMaxWidth = 767;
-const tabletMaxWidth = 991;
-const tabletMinWidth = 768;
-const destktopMinWidth = 992;
+const mobileMaxWidth = 615;
+const tabletMaxWidth = 931;
+const tabletMinWidth = 616;
+const destktopMinWidth = 932;
 
 const isMobile = (): boolean => {
     return useMediaQuery({ query: "(max-width: " + mobileMaxWidth + "px)" });
@@ -17,12 +17,19 @@ const isDesktop = (): boolean => {
     return useMediaQuery({ query: "(min-width: " + destktopMinWidth + "px)" });
 };
 
+const isPwa = (): boolean => {
+    return ["fullscreen", "standalone", "minimal-ui"].some(
+        displayMode => window.matchMedia("(display-mode: " + displayMode + ")").matches,
+    );
+};
+
 export {
-    isMobile,
-    isTablet,
-    isDesktop,
-    mobileMaxWidth,
-    tabletMinWidth,
-    tabletMaxWidth,
     destktopMinWidth,
+    isDesktop,
+    isMobile,
+    isPwa,
+    isTablet,
+    mobileMaxWidth,
+    tabletMaxWidth,
+    tabletMinWidth,
 };

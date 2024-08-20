@@ -1,0 +1,2378 @@
+{
+    "pagination": "question",
+    "lunaticModelVersion": "2.2.10",
+    "modele": "TIME",
+    "enoCoreVersion": "2.3.11",
+    "generatingDate": "29-09-2022 13:56:00",
+    "missing": false,
+    "id": "l8lq5lp6",
+    "label": "WorkTime",
+    "maxPage": "4",
+    "variables": [
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "FIRSTNAME",
+            "componentRef": "inputtext_firstName"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "SURVEYDATE",
+            "componentRef": "datepicker_surveyDate"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "WEEKLYPLANNER",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "DATES",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "DATES_STARTED",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_00H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_00H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_00H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_00H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_01H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_01H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_01H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_01H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_02H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_02H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_02H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_02H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_03H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_03H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_03H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_03H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_04H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_04H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_04H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_04H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_05H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_05H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_05H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_05H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_06H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_06H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_06H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_06H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_07H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_07H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_07H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_07H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_08H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_08H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_08H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_08H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_09H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_09H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_09H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_09H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_10H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_10H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_10H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_10H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_11H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_11H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_11H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_11H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_12H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_12H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_12H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_12H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_13H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_13H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_13H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_11H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_12H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_12H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_12H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_12H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_13H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_13H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_13H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_13H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_14H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_14H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_14H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_14H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_15H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_15H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_15H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_15H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_16H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_16H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_16H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_16H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_17H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_17H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_17H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_17H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_18H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_18H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_18H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_18H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_19H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_19H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_19H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_19H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_20H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_20H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_20H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_20H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_21H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_21H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_21H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_21H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_22H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_22H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_22H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_22H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_23H00",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_23H15",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_23H30",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "S_23H45",
+            "componentRef": "weeklyplanner_value"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "WEEKTYPE",
+            "componentRef": "checkboxone_weektype"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "ISCLOSED",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "ISENVOYED",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": null,
+                "EDITED": null,
+                "INPUTED": null,
+                "FORCED": null,
+                "PREVIOUS": null
+            },
+            "name": "ISLOCKED",
+            "componentRef": ""
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "NOTWORK",
+            "componentRef": "checkboxgroup_placework"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "OTHER",
+            "componentRef": "checkboxgroup_placework"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "CLIENT",
+            "componentRef": "checkboxgroup_placework"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "HOME",
+            "componentRef": "checkboxgroup_placework"
+        },
+        {
+            "variableType": "COLLECTED",
+            "values": {
+                "COLLECTED": [null],
+                "EDITED": [null],
+                "INPUTED": [null],
+                "FORCED": [null],
+                "PREVIOUS": [null]
+            },
+            "name": "WORK",
+            "componentRef": "checkboxgroup_placework"
+        },
+        {
+            "variableType": "CALCULATED",
+            "expression": "true",
+            "name": "FILTER_RESULT_INPUTTEXT",
+            "inFilter": "false"
+        },
+        {
+            "variableType": "CALCULATED",
+            "expression": "true",
+            "name": "FILTER_RESULT_DATEPICKER",
+            "inFilter": "false"
+        }
+    ],
+    "components": [
+        {
+            "componentType": "Sequence",
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
+            "id": "sequence_1",
+            "page": "1",
+            "label": ""
+        },
+        {
+            "componentType": "Input",
+            "bindingDependencies": ["FIRSTNAME"],
+            "response": {
+                "name": "FIRSTNAME"
+            },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
+            "id": "inputtext_firstName",
+            "page": "1",
+            "label": "\"Qui êtes-vous ?\"",
+            "placeholder": "Prénom",
+            "mandatory": true,
+            "maxLength": 100,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" La valeur doit être remplie.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(FIRSTNAME)) and length(FIRSTNAME) >= 1"
+                    },
+                    "id": "kze792d8-formatBorneInfSup"
+                }
+            ]
+        },
+        {
+            "componentType": "Datepicker",
+            "bindingDependencies": ["SURVEYDATE"],
+            "min": "1900-01-01",
+            "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
+            "dateFormat": "YYYY-MM-DD",
+            "response": {
+                "name": "SURVEYDATE"
+            },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
+            "id": "datepicker_surveyDate",
+            "page": "2",
+            "label": "\"Quel est le premier jour de votre semaine ?\"",
+            "mandatory": false,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" La valeur doit être remplie.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(SURVEYDATE)) and length(SURVEYDATE) >= 1"
+                    },
+                    "id": "kze792d8-inputSurveyDate"
+                }
+            ]
+        },
+        {
+            "componentType": "WeeklyPlanner",
+            "bindingDependencies": [
+                "WEEKLYPLANNER",
+                "DATES",
+                "DATES_STARTED",
+                "S_00H00",
+                "S_00H15",
+                "S_00H30",
+                "S_00H45",
+                "S_01H00",
+                "S_01H15",
+                "S_01H30",
+                "S_01H45",
+                "S_02H00",
+                "S_02H15",
+                "S_02H30",
+                "S_02H45",
+                "S_03H00",
+                "S_03H15",
+                "S_03H30",
+                "S_03H45",
+                "S_04H00",
+                "S_04H15",
+                "S_04H30",
+                "S_04H45",
+                "S_05H00",
+                "S_05H15",
+                "S_05H30",
+                "S_05H45",
+                "S_06H00",
+                "S_06H15",
+                "S_06H30",
+                "S_06H45",
+                "S_07H00",
+                "S_07H15",
+                "S_07H30",
+                "S_07H45",
+                "S_08H00",
+                "S_08H15",
+                "S_08H30",
+                "S_08H45",
+                "S_09H00",
+                "S_09H15",
+                "S_09H30",
+                "S_09H45",
+                "S_10H00",
+                "S_10H15",
+                "S_10H30",
+                "S_10H45",
+                "S_11H00",
+                "S_11H15",
+                "S_11H30",
+                "S_11H45",
+                "S_12H00",
+                "S_12H15",
+                "S_12H30",
+                "S_12H45",
+                "S_13H00",
+                "S_13H15",
+                "S_13H30",
+                "S_13H45",
+                "S_14H00",
+                "S_14H15",
+                "S_14H30",
+                "S_14H45",
+                "S_15H00",
+                "S_15H15",
+                "S_15H30",
+                "S_15H45",
+                "S_16H00",
+                "S_16H15",
+                "S_16H30",
+                "S_16H45",
+                "S_17H00",
+                "S_17H15",
+                "S_17H30",
+                "S_17H45",
+                "S_18H00",
+                "S_18H15",
+                "S_18H30",
+                "S_18H45",
+                "S_19H00",
+                "S_19H15",
+                "S_19H30",
+                "S_19H45",
+                "S_20H00",
+                "S_20H15",
+                "S_20H30",
+                "S_20H45",
+                "S_21H00",
+                "S_21H15",
+                "S_21H30",
+                "S_21H45",
+                "S_22H00",
+                "S_22H15",
+                "S_22H30",
+                "S_22H45",
+                "S_23H00",
+                "S_23H15",
+                "S_23H30",
+                "S_23H45",
+                "ISCLOSED",
+                "NOTWORK",
+                "OTHER",
+                "WORK",
+                "HOME",
+                "CLIENT"
+            ],
+            "responses": [
+                {
+                    "response": {
+                        "name": "WEEKLYPLANNER"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "DATES"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "DATES_STARTED"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_00H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_00H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_00H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_00H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_01H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_01H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_01H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_01H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_02H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_02H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_02H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_02H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_03H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_03H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_03H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_03H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_04H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_04H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_04H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_04H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_05H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_05H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_05H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_05H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_06H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_06H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_06H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_06H5"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_07H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_07H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_07H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_07H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_08H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_08H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_08H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_08H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_09H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_09H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_09H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_09H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_10H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_10H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_10H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_10H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_11H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_11H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_11H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_11H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_12H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_12H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_12H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_12H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_13H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_13H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_13H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_13H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_14H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_14H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_14H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_14H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_15H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_15H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_15H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_15H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_16H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_16H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_16H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_16H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_17H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_17H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_17H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_17H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_18H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_18H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_18H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_18H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_19H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_19H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_19H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_19H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_20H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_20H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_20H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_20H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_21H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_21H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_21H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_21H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_22H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_22H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_22H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_22H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_23H00"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_23H15"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_23H30"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "S_23H45"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "NOTWORK"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "OTHER"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "WORK"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "HOME"
+                    }
+                },
+                {
+                    "response": {
+                        "name": "CLIENT"
+                    }
+                }
+            ],
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
+            "id": "weeklyplanner_value",
+            "page": "3",
+            "mandatory": false,
+            "title": "Planning de votre semaine",
+            "workSumLabel": "Durée totale travaillée : ",
+            "presentButtonLabel": "Continuer",
+            "futureButtonLabel": "Commencer",
+            "placeWork": {
+                "bindingDependencies": ["NOTWORK", "OTHER", "WORK", "HOME", "CLIENT"],
+                "responses": [
+                    {
+                        "response": {
+                            "name": "WORK"
+                        },
+                        "id": "1",
+                        "label": "Sur mon site de travail habituel (hors domicile) / dans mon établissement."
+                    },
+                    {
+                        "response": {
+                            "name": "HOME"
+                        },
+                        "id": "2",
+                        "label": "À domicile"
+                    },
+                    {
+                        "response": {
+                            "name": "CLIENT"
+                        },
+                        "id": "3",
+                        "label": "Chez des clients, livraisons, déplacement..."
+                    },
+                    {
+                        "response": {
+                            "name": "OTHER"
+                        },
+                        "id": "4",
+                        "label": "Autre situation"
+                    },
+                    {
+                        "response": {
+                            "name": "NOTWORK"
+                        },
+                        "id": "5",
+                        "label": "Non travaillé"
+                    }
+                ],
+                "label": "Où avez-vous travaillé"
+            }
+        },
+        {
+            "componentType": "CheckboxOneEdt",
+            "bindingDependencies": ["WEEKTYPE"],
+            "response": {
+                "name": "WEEKTYPE"
+            },
+            "responses": [
+                {
+                    "response": {
+                        "name": "WEEKTYPE"
+                    }
+                }
+            ],
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
+            "id": "checkboxone_weektype",
+            "page": "4",
+            "label": "\"De quel type de semaine s’agissait-il \"",
+            "mandatory": false
+        },
+        {
+            "componentType": "Input",
+            "bindingDependencies": ["FIRSTNAME"],
+            "response": {
+                "name": "FIRSTNAME"
+            },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
+            "id": "inputtext_firstName2",
+            "page": "5",
+            "label": "\"Vos informations : \"",
+            "placeholder": "Prénom",
+            "mandatory": true,
+            "maxLength": 100,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" Le prénom doit être saisi.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(FIRSTNAME)) and length(FIRSTNAME) >= 1"
+                    },
+                    "id": "kze792d8-formatBornInfSup2"
+                }
+            ]
+        },
+        {
+            "componentType": "Datepicker",
+            "bindingDependencies": ["SURVEYDATE"],
+            "min": "1900-01-01",
+            "max": "format-date(current-date(),'[Y0001]-[M01]-[D01]')",
+            "dateFormat": "YYYY-MM-DD",
+            "response": {
+                "name": "SURVEYDATE"
+            },
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
+            "id": "datepicker_surveyDate2",
+            "page": "5",
+            "label": "\"Le premier jour de votre semaine : \"",
+            "mandatory": false,
+            "controls": [
+                {
+                    "criticality": "ERROR",
+                    "errorMessage": {
+                        "type": "VTL|MD",
+                        "value": "\" La date doit être saisie.\""
+                    },
+                    "typeOfControl": "FORMAT",
+                    "control": {
+                        "type": "VTL",
+                        "value": "not(isnull(SURVEYDATE)) and length(SURVEYDATE) >= 1"
+                    },
+                    "id": "kze792d8-inputSurveyDate2"
+                }
+            ]
+        },
+        {
+            "componentType": "CheckboxGroupEdt",
+            "bindingDependencies": ["NOTWORK", "OTHER", "WORK", "HOME", "CLIENT"],
+            "responses": [
+                {
+                    "response": {
+                        "name": "NOTWORK"
+                    },
+                    "id": "1",
+                    "label": "Non travaillé"
+                },
+                {
+                    "response": {
+                        "name": "WORK"
+                    },
+                    "id": "2",
+                    "label": "Site travaille"
+                },
+                {
+                    "response": {
+                        "name": "HOME"
+                    },
+                    "id": "3",
+                    "label": "À domicile"
+                },
+                {
+                    "response": {
+                        "name": "CLIENT"
+                    },
+                    "id": "4",
+                    "label": "Chez client"
+                },
+                {
+                    "response": {
+                        "name": "OTHER"
+                    },
+                    "id": "5",
+                    "label": "Autre situation"
+                }
+            ],
+            "hierarchy": {
+                "sequence": {
+                    "id": "sequence_1",
+                    "page": "1"
+                }
+            },
+            "conditionFilter": {
+                "value": "true"
+            },
+            "id": "checkboxgroup_placework",
+            "page": "3.1",
+            "label": "\"Où avez-vous travaillé \"",
+            "mandatory": false
+        }
+    ]
+}

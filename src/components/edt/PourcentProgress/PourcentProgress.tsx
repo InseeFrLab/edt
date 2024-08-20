@@ -28,6 +28,8 @@ const useStyles = makeStylesEdt({ "name": { PourcentProgress } })(theme => ({
         borderRadius: "50%",
         backgroundColor: "#dfe9fa",
         padding: "0.5rem",
+        display: "flex",
+        justifyContent: "center",
     },
     closeBox: {
         backgroundColor: theme.palette.secondary.dark,

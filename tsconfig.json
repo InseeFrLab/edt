@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "lib": ["es6", "dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "skipLibCheck": true,
@@ -18,7 +18,9 @@
         "noImplicitAny": true,
         "noImplicitThis": true,
         "strictNullChecks": true,
-        "baseUrl": "src"
+        "baseUrl": "src",
+        "downlevelIteration": true
     },
+    "allowImportingTsExtensions": true,
     "include": ["src"]
 }

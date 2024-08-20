@@ -1,7 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import React from "react";
 
 interface EndActivityStepperProps {
     numberOfSteps: number;
@@ -14,7 +13,7 @@ const EndActivityStepper = (props: EndActivityStepperProps) => {
     const { numberOfSteps, lastCompletedStepNumber, currentStepNumber, currentStepLabel } = props;
     const { classes } = useStyles();
     let stepIncrement = 100 / numberOfSteps;
-    const [progress] = React.useState(stepIncrement * lastCompletedStepNumber);
+    const progress = stepIncrement * lastCompletedStepNumber;
 
     return (
         <Box className={classes.stepper}>
@@ -25,6 +24,7 @@ const EndActivityStepper = (props: EndActivityStepperProps) => {
                         color="primary"
                         variant="determinate"
                         value={progress}
+                        aria-label="circular-progressbar"
                     ></CircularProgress>
                     <Box className={classes.labelProgressBox}>
                         <Typography className={classes.textStepNumber}>

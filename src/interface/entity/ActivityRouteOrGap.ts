@@ -1,3 +1,5 @@
+import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
+
 export interface ActivityRouteOrGap {
     isRoute?: boolean;
     startTime?: string;
@@ -15,6 +17,7 @@ export interface ActivityRouteOrGap {
     withScreen?: boolean;
     isGap?: boolean;
     iteration?: number;
+    state?: StateDataStateEnum;
 }
 
 export interface Activity {

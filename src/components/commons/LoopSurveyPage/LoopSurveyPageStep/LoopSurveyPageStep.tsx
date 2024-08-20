@@ -1,27 +1,29 @@
 import { Alert, Info } from "@inseefrlab/lunatic-edt";
-import InfoIcon from "assets/illustration/info.svg";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
 import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { getLabels, getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage, skipBackPage, skipNextPage } from "service/loop-service";
 import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
-import { onClose, onNext, onPrevious, setEnviro, validate } from "service/navigation-service";
+import { onClose, onNext, onPrevious, setEnviro, validateLocally } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
-import { getValue } from "service/survey-service";
+import { surveyReadOnly } from "service/survey-activity-service";
+import { getData, getValue } from "service/survey-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 import LoopSurveyPage from "../LoopSurveyPage";
 
 export interface LoopSurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
     labelOfPage: string;
-    errorIcon: string;
+    errorIcon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     backRoute?: EdtRoutesNameEnum;
     nextRoute?: EdtRoutesNameEnum;
     fieldConditionNext?: FieldNameEnum;
@@ -44,11 +46,15 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
     const { t } = useTranslation();
     const context: OrchestratorContext = useOutletContext();
     setEnviro(context, useNavigate(), callbackHolder);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
 
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
-    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
+    const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
     const stepData = getStepData(currentPage, isRoute);
+    const modifiable = !surveyReadOnly(context.rightsSurvey);
+    const IconError = errorIcon as React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 
     const [backClickEvent, setBackClickEvent] = useState<React.MouseEvent>();
     const [nextClickEvent, setNextClickEvent] = useState<React.MouseEvent>();
@@ -61,7 +67,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         backClickCallback: () => {
             specifiquesProps?.backClickback ??
                 skipBackPage(
-                    context.idSurvey,
+                    idSurvey,
                     context.source,
                     currentIteration,
                     currentPage,
@@ -73,7 +79,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         nextClickCallback: () => {
             specifiquesProps?.nextClickback ??
                 skipNextPage(
-                    context.idSurvey,
+                    idSurvey,
                     context.source,
                     currentIteration,
                     currentPage,
@@ -83,20 +89,21 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
                 );
         },
         labels: getLabels(labelOfPage),
-        errorIcon: errorIcon,
+        errorIcon: (
+            <IconError aria-label={t("component.activity-selecter.clickable-list-icon-no-result-alt")} />
+        ),
         onSelectValue: () => {
-            specifiquesProps?.onSelectValue ??
-                validate().then(() => {
-                    skipNextPage(
-                        context.idSurvey,
-                        context.source,
-                        currentIteration,
-                        currentPage,
-                        fieldConditionNext,
-                        nextRoute,
-                        isRoute,
-                    );
-                });
+            validateLocally(idSurvey).then(() => {
+                skipNextPage(
+                    idSurvey,
+                    context.source,
+                    currentIteration,
+                    currentPage,
+                    fieldConditionNext,
+                    nextRoute,
+                    isRoute,
+                );
+            });
         },
         language: getLanguage(),
         constants: {
@@ -104,8 +111,9 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
             FORMAT_TIME: FORMAT_TIME,
             MINUTE_LABEL: MINUTE_LABEL,
         },
+        modifiable: modifiable,
+        idSurvey: idSurvey,
     };
-
     const loopSurveyPageProps = {
         onNext: useCallback((e: React.MouseEvent) => onNext(e, setNextClickEvent), [nextClickEvent]),
         onPrevious: useCallback(
@@ -113,7 +121,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
             [backClickEvent],
         ),
         onClose: useCallback(
-            () => onClose(false, setIsAlertDisplayed, currentIteration),
+            () => onClose(idSurvey, context.source, false, setIsAlertDisplayed, currentIteration),
             [isAlertDisplayed],
         ),
         currentStepIcon: stepData.stepIcon,
@@ -130,24 +138,25 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
         isAlertDisplayed: isAlertDisplayed,
         onCompleteCallBack: useCallback(() => setIsAlertDisplayed(false), [isAlertDisplayed]),
         onCancelCallBack: useCallback(
-            (cancel: boolean) => onClose(cancel, setIsAlertDisplayed, currentIteration),
+            (cancel: boolean) =>
+                onClose(idSurvey, context.source, cancel, setIsAlertDisplayed, currentIteration),
             [isAlertDisplayed],
         ),
         labels: getLabelsWhenQuit(isRoute),
-        icon: errorIcon,
-        errorIconAlt: t("page.alert-when-quit.alt-alert-icon"),
+        icon: <IconError aria-label={t("page.alert-when-quit.alt-alert-icon")} />,
     };
 
-    const specifiquesPropsOrchestrator = Object.assign({}, specifiquesProps, componentLunaticProps);
+    const specifiquesPropsOrchestrator = Object.assign(specifiquesProps, componentLunaticProps);
     const orchestratorProps = {
         source: context.source,
-        data: context.data,
+        data: getData(idSurvey),
         cbHolder: callbackHolder,
         page: getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE),
         subPage: getLoopPageSubpage(currentPage),
         iteration: currentIteration,
         overrideOptions: specifiquesProps?.referentiel,
         componentSpecificProps: { ...specifiquesPropsOrchestrator },
+        idSurvey: idSurvey,
     };
 
     return (
@@ -161,8 +170,7 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
                     <Info
                         normalText={t(specifiquesProps?.infoLight)}
                         boldText={t(specifiquesProps?.infoBold)}
-                        infoIcon={InfoIcon}
-                        infoIconAlt={t("accessibility.asset.info.info-alt")}
+                        infoIcon={<InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />}
                     />
                 )}
             </FlexCenter>

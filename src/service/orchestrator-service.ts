@@ -1,7 +1,7 @@
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
 import { SourcesEnum } from "enumerations/SourcesEnum";
 import { LunaticModel } from "interface/lunatic/Lunatic";
-import { getSource } from "./survey-service";
+import { getSource } from "service/survey-service";
 
 const LABEL_WORK_TIME_SURVEY = "WorkTime";
 const LABEL_ACTIVITY_SURVEY = "ActivityTime";

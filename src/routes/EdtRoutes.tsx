@@ -1,9 +1,9 @@
 import ActivityPage from "pages/activity/Activity";
+import ActivityOrRoutePlannerPage from "pages/activity/activity-or-route-planner/ActivityOrRoutePlanner";
 import ActivityDurationPage from "pages/activity/activity-or-route-planner/activity-duration/ActivityDuration";
 import ActivityLocationPage from "pages/activity/activity-or-route-planner/activity/activity-location/ActivityLocation";
 import MainActivityGoalPage from "pages/activity/activity-or-route-planner/activity/main-activity-goal/MainActivityGoal";
 import MainActivityPage from "pages/activity/activity-or-route-planner/activity/main-activity/MainActivity";
-import ActivityOrRoutePlannerPage from "pages/activity/activity-or-route-planner/ActivityOrRoutePlanner";
 import MeanOfTransportPage from "pages/activity/activity-or-route-planner/route/mean-of-transport/MeanOfTransport";
 import RoutePage from "pages/activity/activity-or-route-planner/route/route/Route";
 import SecondaryActivitySelectionPage from "pages/activity/activity-or-route-planner/secondary-activity-selection/SecondaryActivitySelection";
@@ -15,6 +15,13 @@ import ActivitySummaryPage from "pages/activity/activity-summary/ActivitySummary
 import EditActivityInformationPage from "pages/activity/edit-activity-information/EditActivityInformation";
 import ExceptionalDayPage from "pages/activity/exceptional-day/ExceptionalDay";
 import GreatestActivityDayPage from "pages/activity/greatest-activity-day/GreatestActivityDay";
+import HelpActivityPage from "pages/activity/help/HelpActivity/HelpActivity";
+import HelpCheckboxPage from "pages/activity/help/HelpCheckbox/HelpCheckbox";
+import HelpDurationPage from "pages/activity/help/HelpDuration/HelpDuration";
+import { default as HelpInstallPage } from "pages/activity/help/HelpInstallPage/HelpInstallPage";
+import HelpCategoryActivityPage from "pages/activity/help/HelpMainActivity/HelpCategoryActivity";
+import HelpSubCategoryActivityPage from "pages/activity/help/HelpMainActivity/HelpSubCategoryActivity";
+import HelpWorkTimePage from "pages/activity/help/HelpWorkTime/HelpWorkTime";
 import KindOfDayPage from "pages/activity/kind-of-day/KindOfDay";
 import PhoneTimePage from "pages/activity/phone-time/PhoneTime";
 import TravelTimePage from "pages/activity/travel-time/TravelTime";
@@ -22,14 +29,19 @@ import WorstActivityDayPage from "pages/activity/worst-activity-day/WorstActivit
 import DayOfSurveyPage from "pages/day-of-survey/DayOfSurvey";
 import EditGlobalInformationPage from "pages/edit-global-information/EditGlobalInformation";
 import EndSurveyPage from "pages/end-survey/EndSurvey";
-import ErrorPage from "pages/error/Error";
+import ErrorPage from "pages/error/ErrorPage";
 import HelpPage from "pages/help/Help";
+import ContactPage from "pages/help/contact/ContactPage";
+import InstallPage from "pages/help/install/InstallPage";
+import HomeReviewerPage from "pages/home-reviewer/HomeReviewer";
+import HomeSurveyedPage from "pages/home-surveyed/HomeSurveyed";
 import HomePage from "pages/home/Home";
 import NotFoundPage from "pages/not-found/NotFound";
+import SurveysOverviewPage from "pages/surveys-overview/SurveysOverview";
 import WhoAreYouPage from "pages/who-are-you/WhoAreYou";
+import WorkTimePage from "pages/work-time/WorkTime";
 import KindOfWeekPage from "pages/work-time/kind-of-week/KindOfWeek";
 import WeeklyPlannerPage from "pages/work-time/weekly-planner/WeeklyPlanner";
-import WorkTimePage from "pages/work-time/WorkTime";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { EdtRoutesNameEnum } from "./EdtRoutesMapping";
 
@@ -39,7 +51,29 @@ const EdtRoutes = (): JSX.Element => {
             <Routes>
                 <Route path="*" element={<NotFoundPage />} />
                 <Route path="/" element={<HomePage />} />
+                <Route path={EdtRoutesNameEnum.REVIEWER_HOME} element={<HomeReviewerPage />} />
+                <Route
+                    path={EdtRoutesNameEnum.REVIEWER_SURVEYS_OVERVIEW}
+                    element={<SurveysOverviewPage />}
+                />
+                <Route path={EdtRoutesNameEnum.SURVEYED_HOME} element={<HomeSurveyedPage />} />
+                <Route path={EdtRoutesNameEnum.CONTACT} element={<ContactPage />} />
+                <Route path={EdtRoutesNameEnum.INSTALL} element={<InstallPage />} />
                 <Route path={EdtRoutesNameEnum.HELP} element={<HelpPage />} />
+                <Route path={EdtRoutesNameEnum.HELP_INSTALL} element={<HelpInstallPage />} />
+                <Route path={EdtRoutesNameEnum.HELP_ACTIVITY} element={<HelpActivityPage />} />
+                <Route path={EdtRoutesNameEnum.HELP_DURATION} element={<HelpDurationPage />} />
+                <Route
+                    path={EdtRoutesNameEnum.HELP_MAIN_ACTIVITY_CATEGORY}
+                    element={<HelpCategoryActivityPage />}
+                />
+                <Route
+                    path={EdtRoutesNameEnum.HELP_MAIN_ACTIVITY_SUB_CATEGORY}
+                    element={<HelpSubCategoryActivityPage />}
+                />
+                <Route path={EdtRoutesNameEnum.HELP_CHECKBOX} element={<HelpCheckboxPage />} />
+                <Route path={EdtRoutesNameEnum.HELP_WORK_TIME} element={<HelpWorkTimePage />} />
+
                 <Route path={EdtRoutesNameEnum.ERROR} element={<ErrorPage />} />
                 <Route path={EdtRoutesNameEnum.ACTIVITY} element={<ActivityPage />}>
                     <Route path={EdtRoutesNameEnum.WHO_ARE_YOU} element={<WhoAreYouPage />} />

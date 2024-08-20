@@ -2,10 +2,14 @@ import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
 import AddActivityOrRouteStepper from "components/edt/AddActivityOrRouteStepper/AddActivityOrRouteStepper";
 import { LoopEnum } from "enumerations/LoopEnum";
+import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { callbackHolder } from "orchestrator/Orchestrator";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { getLoopLastCompletedStep } from "service/loop-service";
 import { loopActivityStepperData } from "service/loop-stepper-service";
+import { setEnviro } from "service/navigation-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 import LoopNavigator from "./LoopNavigator/LoopNavigator";
 import LoopSurveyPageHeader from "./LoopSurveyPageHeader/LoopSurveyPageHeader";
 import LoopSurveyPageSimpleHeader from "./LoopSurveyPageSimpleHeader/LoopSurveyPageSimpleHeader";
@@ -19,7 +23,7 @@ interface LoopSurveyPageProps {
     displayHeader?: boolean;
     className?: string;
     children: JSX.Element[] | JSX.Element;
-    currentStepIcon?: string;
+    currentStepIcon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     currentStepIconAlt?: string;
     currentStepNumber?: number;
     currentStepLabel?: string;
@@ -44,11 +48,18 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
     } = props;
 
     const { t } = useTranslation();
-    const { idSurvey, iteration } = useParams();
+    const { iteration } = useParams();
+
+    const context: OrchestratorContext = useOutletContext();
+    setEnviro(context, useNavigate(), callbackHolder);
+
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
+
     const { classes, cx } = useStyles();
 
     const lastCompletedStep = getLoopLastCompletedStep(
-        idSurvey ?? "",
+        idSurvey,
         LoopEnum.ACTIVITY_OR_ROUTE,
         iteration ? +iteration : 0,
     );

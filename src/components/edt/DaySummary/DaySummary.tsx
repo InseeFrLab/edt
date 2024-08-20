@@ -1,7 +1,8 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { makeStylesEdt, TooltipInfo } from "@inseefrlab/lunatic-edt";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
 import { UserActivitiesSummary } from "interface/entity/ActivitiesSummary";
 import { useTranslation } from "react-i18next";
 
@@ -13,6 +14,16 @@ const DaySummary = (props: DaySummaryProps) => {
     const { userActivitiesSummary } = props;
     const { classes } = useStyles();
     const { t } = useTranslation();
+    const tooltipTitleLabels = {
+        boldText: t("component.day-summary.tooltip-summary"),
+        infoIcon: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
+        infoIconTooltip: <InfoIcon aria-label={t("accessibility.asset.info.info-alt")} />,
+        border: true,
+    };
+    const titleLabels = {
+        boldTitle: t("component.day-summary.title"),
+        typeTitle: "h2",
+    };
 
     const getCardSummary = (timeLabel: string | undefined, label: string) => {
         return (
@@ -20,7 +31,7 @@ const DaySummary = (props: DaySummaryProps) => {
                 <Divider variant="middle" flexItem />
                 <Box className={classes.rowBox}>
                     <Box className={classes.valueBox}>
-                        {timeLabel || t("component.day-summary.no-time")}
+                        {timeLabel ?? t("component.day-summary.no-time")}
                     </Box>
                     <Typography className={classes.label}>{t(label)}</Typography>
                 </Box>
@@ -30,15 +41,21 @@ const DaySummary = (props: DaySummaryProps) => {
 
     return (
         <Box className={classes.daySummaryBox}>
-            <h3 className={classes.title}>{t("component.day-summary.title")}</h3>
+            <Box className={classes.titleBox}>
+                <TooltipInfo
+                    displayTooltip={false}
+                    titleLabels={titleLabels}
+                    infoLabels={tooltipTitleLabels}
+                />
+            </Box>
             <Box className={classes.rowBox}>
-                <Box className={classes.valueBox}>{userActivitiesSummary?.activitiesAmount || 0}</Box>
+                <Box className={classes.valueBox}>{userActivitiesSummary?.activitiesAmount ?? 0}</Box>
                 <Typography className={classes.label}>
                     {t("component.day-summary.activity-done")}
                 </Typography>
             </Box>
             <Box className={classes.rowBox}>
-                <Box className={classes.valueBox}>{userActivitiesSummary?.routesAmount || 0}</Box>
+                <Box className={classes.valueBox}>{userActivitiesSummary?.routesAmount ?? 0}</Box>
                 <Typography className={classes.label}>
                     {t("component.day-summary.route-done")}
                 </Typography>
@@ -85,6 +102,9 @@ const useStyles = makeStylesEdt({ "name": { DaySummary } })(theme => ({
         color: theme.palette.primary.main,
         marginTop: "1rem",
     },
+    titleBox: {
+        marginBottom: "1rem",
+    },
     rowBox: {
         display: "flex",
         alignItems: "center",
@@ -99,6 +119,7 @@ const useStyles = makeStylesEdt({ "name": { DaySummary } })(theme => ({
     },
     title: {
         marginTop: 0,
+        marginBottom: 0,
     },
 }));
 

@@ -22,4 +22,4 @@ const Default = ({ children }: ResponsiveProps) => {
     return isNotMobile ? <>{children}</> : <></>;
 };
 
-export { Desktop, Tablet, Mobile, Default };
+export { Default, Desktop, Mobile, Tablet };

@@ -1,27 +1,31 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Box, Button, Divider, Popover, Typography } from "@mui/material";
-import activityErrorIconSvg from "assets/illustration/error/activity.svg";
-import locationErrorIconSvg from "assets/illustration/error/location.svg";
-import meanOfTransportErrorIconSvg from "assets/illustration/error/mean-of-transport.svg";
-import peopleErrorIconSvg from "assets/illustration/error/people.svg";
-import routeErrorIconSvg from "assets/illustration/error/route.svg";
-import screenErrorIconSvg from "assets/illustration/error/screen.svg";
+import { ReactComponent as activityErrorIconSvg } from "assets/illustration/error/activity.svg";
+import { ReactComponent as locationErrorIconSvg } from "assets/illustration/error/location.svg";
+import { ReactComponent as meanOfTransportErrorIconSvg } from "assets/illustration/error/mean-of-transport.svg";
+import { ReactComponent as peopleErrorIconSvg } from "assets/illustration/error/people.svg";
+import { ReactComponent as routeErrorIconSvg } from "assets/illustration/error/route.svg";
+import { ReactComponent as screenErrorIconSvg } from "assets/illustration/error/screen.svg";
+import { ReactComponent as MoreHorizontalImage } from "assets/illustration/mui-icon/more-horizontal.svg";
 import { InsideAlertTypes } from "enumerations/InsideAlertTypesEnum";
 import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
 import React, { useCallback } from "react";
 import { TFunction, useTranslation } from "react-i18next";
 import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
 import { filtrePage } from "service/loop-service";
+import Icon from "../Icon/Icon";
 
 interface ActivityOrRouteCardProps {
     labelledBy: string;
     describedBy: string;
-    onClick?(): void;
+    onClick?(idSurvey?: any, source?: any): void;
     onClickGap?(startTime: string | undefined, endTime: string | undefined): void;
     activityOrRoute: ActivityRouteOrGap;
-    onEdit?(): void;
-    onDelete?(): void;
+    onEdit?(idSurvey?: any, source?: any): void;
+    onDelete?(idSurvey?: any, source?: any): void;
+    helpStep?: number;
+    tabIndex?: number;
+    modifiable?: boolean;
 }
 
 const renderMeanOfTransport = (
@@ -112,9 +116,17 @@ const renderSecondaryActivity = (
         </Box>
     );
 
-    return activityOrRoute.withSecondaryActivity == null
-        ? renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
-        : isWithSecondaryActivity;
+    const sectionFiltrer = filtrePage(
+        EdtRoutesNameEnum.SECONDARY_ACTIVITY,
+        activityOrRoute.activity?.activityCode ?? "",
+    );
+
+    return (
+        !sectionFiltrer &&
+        (activityOrRoute.withSecondaryActivity == null
+            ? renderInsideAlert(InsideAlertTypes.SECONDARYACTIVITY)
+            : isWithSecondaryActivity)
+    );
 };
 
 const renderWithScreen = (
@@ -143,36 +155,54 @@ const renderWithScreen = (
 };
 
 const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
-    const { labelledBy, describedBy, onClick, onClickGap, activityOrRoute, onEdit, onDelete } = props;
+    const {
+        labelledBy,
+        describedBy,
+        onClick,
+        onClickGap,
+        activityOrRoute,
+        onEdit,
+        onDelete,
+        helpStep,
+        tabIndex,
+        modifiable = true,
+    } = props;
     const { t } = useTranslation();
     const { classes, cx } = useStyles();
     const insideAlertLabels = {
         [InsideAlertTypes.ACTIVITY]: {
             icon: activityErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.activity-error-alt"),
             label: t("page.activity-planner.no-activity"),
         },
         [InsideAlertTypes.ROUTE]: {
             icon: routeErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.route-error-alt"),
             label: t("page.activity-planner.no-route"),
         },
         [InsideAlertTypes.PLACE]: {
             icon: locationErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.place-error-alt"),
             label: t("page.activity-planner.no-place"),
         },
         [InsideAlertTypes.MEANOFTRANSPORT]: {
             icon: meanOfTransportErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.mean-of-transport-error-alt"),
             label: t("page.activity-planner.no-mean-of-transport"),
         },
         [InsideAlertTypes.SECONDARYACTIVITY]: {
             icon: activityErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.secondary-activity-error-alt"),
             label: t("page.activity-planner.no-secondary-activity"),
         },
         [InsideAlertTypes.WITHSOMEONE]: {
             icon: peopleErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.someone-error-alt"),
             label: t("page.activity-planner.no-with-someone"),
         },
         [InsideAlertTypes.SCREEN]: {
             icon: screenErrorIconSvg,
+            altIcon: t("accessibility.asset.insideAlerts.screen-error-alt"),
             label: t("page.activity-planner.no-screen"),
         },
     };
@@ -195,19 +225,23 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     );
 
     const onEditIn = useCallback((e: React.MouseEvent) => {
-        onEdit && onEdit();
+        onEdit?.();
         e.stopPropagation();
     }, []);
 
     const onDeleteIn = useCallback((e: React.MouseEvent) => {
-        onDelete && onDelete();
+        onDelete?.();
         e.stopPropagation();
     }, []);
 
     const renderInsideAlert = (type: InsideAlertTypes) => {
         return (
             <Box className={classes.insideAlertBox}>
-                <img className={classes.insideAlertIcon} src={insideAlertLabels[type].icon}></img>
+                <Icon
+                    icon={insideAlertLabels[type].icon}
+                    alt={insideAlertLabels[type].altIcon}
+                    className={classes.insideAlertIcon}
+                />
                 <Typography className={classes.insideAlertText}>
                     {" "}
                     {insideAlertLabels[type].label}{" "}
@@ -216,18 +250,20 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         );
     };
 
-    const onEditCard = useCallback((e: React.MouseEvent) => {
+    const onEditCard = useCallback((e: any) => {
         e.stopPropagation();
         setAnchorEl(e.currentTarget as HTMLButtonElement);
     }, []);
 
-    const renderActivityOrRoute = () => {
+    const renderActivityOrRoute = (index?: number) => {
         return (
             <Box
                 className={cx(classes.mainCardBox, classes.activityCardBox)}
                 onClick={onClick}
                 aria-labelledby={labelledBy}
                 aria-describedby={describedBy}
+                tabIndex={index}
+                id={"activityOrRouteCard-" + index}
             >
                 <Box className={classes.timeBox}>
                     <Box className={classes.hour}>{activityOrRoute.startTime}</Box>
@@ -253,13 +289,12 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                     {renderWithSomeone(activityOrRoute, classes, renderInsideAlert, t)}
                     {renderWithScreen(activityOrRoute, classes, renderInsideAlert, t)}
                 </Box>
-                {onEdit && onDelete && (
-                    <Box className={classes.editBox}>
-                        <MoreHorizIcon
+                {onEdit && onDelete && modifiable && (
+                    <Box className={classes.editBox} onClick={onEditCard} onKeyUp={onEditCard}>
+                        <MoreHorizontalImage
                             className={classes.actionIcon}
-                            onClick={onEditCard}
                             aria-label="editCardToggle"
-                        ></MoreHorizIcon>
+                        />
                         <Popover
                             id={id}
                             open={openPopOver}
@@ -285,26 +320,44 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     };
 
     const clickToGap = useCallback(() => {
-        onClickGap && onClickGap(activityOrRoute.startTime, activityOrRoute.endTime);
+        onClickGap && modifiable && onClickGap(activityOrRoute.startTime, activityOrRoute.endTime);
     }, []);
 
     const renderGap = () => {
         return (
-            <Box className={cx(classes.mainCardBox, classes.gapBox)} onClick={clickToGap}>
-                <Typography className={cx(classes.mainActivityLabel, classes.gapText)}>
+            <Box
+                className={cx(classes.mainCardBox, helpStep == 2 ? classes.gapHelpBox : classes.gapBox)}
+                onClick={clickToGap}
+            >
+                <Typography
+                    className={cx(
+                        classes.mainActivityLabel,
+                        helpStep == 2 ? classes.gapHelpText : classes.gapText,
+                    )}
+                >
                     {gapLabels.main}
                 </Typography>
-                <Typography className={cx(classes.otherInfoLabel, classes.gapText)}>
+                <Typography
+                    className={cx(
+                        classes.otherInfoLabel,
+                        helpStep == 2 ? classes.gapHelpText : classes.gapText,
+                    )}
+                >
                     {gapLabels.secondary}
                 </Typography>
-                <Button className={classes.addActivityButton} variant="contained">
+                <Button
+                    className={helpStep == 2 ? classes.addActivityButtonHelp : classes.addActivityButton}
+                    variant="contained"
+                    onClick={clickToGap}
+                    disabled={!modifiable}
+                >
                     {t("common.navigation.add")}
                 </Button>
             </Box>
         );
     };
 
-    return activityOrRoute.isGap ? renderGap() : renderActivityOrRoute();
+    return activityOrRoute.isGap ? renderGap() : renderActivityOrRoute(tabIndex);
 };
 
 const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
@@ -351,7 +404,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
         maxHeight: "25px",
     },
     insideAlertText: {
-        fontSize: "10px",
+        fontSize: "12px",
         color: theme.variables.alertActivity,
     },
     gapBox: {
@@ -360,8 +413,21 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
         border: "1px dashed",
         borderColor: theme.variables.alertActivity,
     },
+    gapHelpBox: {
+        flexDirection: "column",
+        alignItems: "center",
+        border: "1px dashed",
+        borderColor: theme.variables.white,
+        zIndex: "1400",
+        position: "relative",
+        pointerEvents: "none",
+        backgroundColor: "#707070",
+    },
     gapText: {
         color: theme.variables.alertActivity,
+    },
+    gapHelpText: {
+        color: theme.variables.white,
     },
     actionIcon: {
         cursor: "pointer",
@@ -372,6 +438,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
             backgroundColor: theme.variables.white,
             padding: "0.5rem",
         },
+        top: "-132px",
     },
     clickableText: {
         cursor: "pointer",
@@ -387,6 +454,14 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
         backgroundColor: theme.variables.alertActivity,
         "&:hover": {
             backgroundColor: theme.variables.alertActivity + "99",
+        },
+    },
+    addActivityButtonHelp: {
+        marginTop: "0.5rem",
+        backgroundColor: "#FBE7E2",
+        color: theme.variables.alertActivity,
+        "&:hover": {
+            backgroundColor: theme.variables.alertActivity,
         },
     },
 }));

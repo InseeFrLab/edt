@@ -3,9 +3,10 @@
 ## General information
 
 EDT is a ReactTS PWA front-end application.
-It was made to allow INSEE (French public services) to do surveys based on their own data management and treatment system. The opensource data engine made by INSEE is called Lunatic.
+It was made to allow INSEE (French public services) to do surveys based on their own data management and treatment system.
+The opensource data engine made by INSEE is called Lunatic.
 The most reusable front-end components for any surveys such as input fields have been developped inside another project repository called Lunatic-Edt and is used as a library by EDT.
-The app is using the embedded database of the navigator (IndexedDB) and is able to run offline as soon as the app have been loaded once. The user will need to recover internet connection at least to deliver his surveys answers when he finished.
+The app is using the embedded database of the navigator (IndexedDB) and is able to run offline as soon as the app have been loaded once. The user needs internet to login and he will need to recover internet connection at least to deliver his surveys answers when he finished.
 EDT is calling two different API.
 edt-pilotage API which is used to give to the surveyed their required surveys and surveyers their accessible surveys.
 Stromae Back Office API which is used to GET all required nomenclatures for the application such as question answer options. It also allow the user to POST his surveys answers and GET it when he started a survey and then change device.
@@ -291,29 +292,84 @@ This lib was designed to be integrated in the future inside another MUI reusable
 
 It contains all the survey "fields" components and an associated storybook documentation (please refer to [Lunatic-EDT local install](#lunatic-edt-local-install) section to launch the storybook).
 
+## Household lifecycle
+
+### Initial survey state
+
+A surveyed, when loggin in the first time, will be able to see le total of the surveys retrieved by the query _REACT_APP_EDT_ORGANISATION_API_BASE_URL + "api/survey-assigment/interviewer/my-surveys"_.
+
+In demo version, the surveys able to see are `REACT_APP_NUM_ACTIVITY_SURVEYS` (total amount of activity surveys, accessible in env file) activity surveys and `REACT_APP_NUM_WORKTIME_SURVEYS` work time surveys.
+
+When a survey has never been started, no data are visible in the indexedDB.
+
+### Started survey state
+
+When a user starts a survey, you can find it in the indexedDB referenced by his surveyId.
+You will also find all the labels and values of the variables corresponding to each question answer for this survey and the lunatic source.
+The data is sent to INSEE by API call each time a user validate an answer and has access to internet.
+
+### Completed survey state
+
+Corresponding to ISCOMPLETED boolean variable, this state is true when a survey have been fully completed. A user isn't forced to fully complete a survey to be able to send it to INSEE.
+
+## Closed survey state
+
+This state correspond to ISCLOSED boolean variable. This state is set to true when users finishes his survey and reach the submission screen. This value is independant from ISENVOYED variable.
+
+## Sent survey state
+
+Currently corresponding to the ISENVOYED boolean variable. This state is to know if the current survey has been finished by the surveyed and its data has been submitted to INSEE backend.
+
+## Locked survey state
+
+`ISLOCKED` boolean variable is set to true when a surveyer change any of the surveyed data from the surveyer interface or if he locks the survey by using the lock button.
+This state is impacting the surveyed rights in the app. Any locked survey is not editable by the surveyed anymore (no more writting rights). The surveyer only can manage this state.
+
+## Validated survey state
+
+This state is visible on the `ISVALIDATED` boolean variable. This state can be set only by the surveyer. When this state is set to true, the ISLOCKED boolean also take true as value. The surveyer can still edit the data, but the surveyed doesn't have writting rights anymore.
+
+Also, the `ISVALIDATED` variable is updated by the value state on state-data when loading data.
+
+## Household surveys state
+
+This information concerns the surveyer interface. A color code have been set to allow surveyers to know what is the household state. The state is defined as follow :
+
+-   Orange : When no survey in the household has the state ISCLOSED to true.
+-   Green : When at least one survey in the household has the ISCLOSED state to true.
+-   Black : When all surveys in the household have the ISVALIDATED to true.
+
+Those states have been defined to ease the visibility of the ongoing current survey campain for the surveyer.
+
+## Lifecycle state
+
+![](./src/documentation/images/lifecycle_state.png)
+
 ### Project structure
 
-![](https://i.imgur.com/Jt1FrnR.png)
+![](./src/documentation/images/projet_structure.png)
 
 `src` : Contains all the source code of the application. It also has the 2 surveys sources required by Lunatic and used by EDT.
 
-`enumerations` : Contains all enumerations of the application.
-
-`service` : Contains all the app services. Please refer to the [Services section](#services) for further information.
+`assets` : Contains all app assets such as svg icons or fonts.
 
 `components` : Contains two folders. `commons` which has all the components that could be reusable in another app that would work like EDT using Lunatic. `edt` that has all the EDT specific components.
 
-`interface` : Contains all the Typescript interfaces of the used entities, lunatic models etc...
-
-`routes` : Contains `EdtRoutes.tsx` which holds the React BrowserRouter tag and all the navigation routes. `EdtRoutesMapping.ts` is holding the `mappingPageOrchestrator` (refer to the [Enumerations & Maps](#maps) section).
-
-`pages` : Contains all app pages. The `activity` folder holds the specific pages for the activity survey and `work-time` the ones for the work time survey. Other common pages are directly inside the `pages` folder.
-
 `documentation` : Contains the app technical documentation. Including `LunaticSourceToEdt.xlsx` file that contains the links between the EDT pages, the Lunatic-EDT components used and the sources variables.
+
+`enumerations` : Contains all enumerations of the application.
 
 `i18n` : Contains i18n configuration and `fr.json` which is the file that holds all the app labels including accessility labels.
 
-`assets` : Contains all app assets such as svg icons or fonts.
+`interface` : Contains all the Typescript interfaces of the used entities, lunatic models etc...
+
+`orchestrator`: Contains orchestrator, which manages the communication of the app with lunatic, where we recover the Lunatic components, its data, etc.
+
+`pages` : Contains all app pages. The `activity` folder holds the specific pages for the activity survey and `work-time` the ones for the work time survey. Other common pages are directly inside the `pages` folder.
+
+`routes` : Contains `EdtRoutes.tsx` which holds the React BrowserRouter tag and all the navigation routes. `EdtRoutesMapping.ts` is holding the `mappingPageOrchestrator` (refer to the [Enumerations & Maps](#maps) section).
+
+`service` : Contains all the app services. Please refer to the [Services section](#services) for further information.
 
 ### Authentification
 
@@ -325,6 +381,7 @@ These two environment variables are used to setup the connection :
 
 ```
 REACT_APP_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
+REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/?kc_idp_hint=insee-ssp
 REACT_APP_KEYCLOAK_CLIENT_ID=client-edt
 ```
 
@@ -332,11 +389,25 @@ The user bearer token is used to call the secured APIs.
 
 The accounts are created and managed by INSEE. It is not possible to sign up by yourself.
 
+SSO is available using INSEE LDAP only with users with reviewer role. The reviewer is already authenticated when we enter with SSO, if he enter the url https://{URL_ENVIRO}/?kc_idp_hint={IDP_ID} (or {IDP_ID} can be no value, defaults "insee-ssp") already authenticated, he is redirect to the main page of the app taking the current token and the information corresponding, without having to go through the authentication page again.
+
+#### Rights
+
+The different roles of the application are defined on the EdtUserRightsEnum enum.
+
+![EdtUserRightsEnum](./src/documentation/images/rights_1.png)
+
+The values of its variables are replaced by the environment variables `REACT_APP_REVIEWER_ROLE` and `REACT_APP_SURVEYED_ROLE` respectively.
+
+The rights check is done on the _getUserRights()_ method so that we always retrieve a value from the _EdtUserRightsEnum_ enum.
+
+![user rights](./src/documentation/images/rights_2.png)
+
 ### APIs usage
 
 #### Architecture schema
 
-![](https://i.imgur.com/Q3sKoCe.png)
+![](./src/documentation/images/schema_architecture.png)
 
 #### API Edt-pilotage
 
@@ -595,7 +666,7 @@ Usage : this enumeration is used to define the nomenclature ids that are used by
 
 ```
 
-const enum FieldNameEnum {
+export enum FieldNameEnum {
 LASTNAME = "LASTNAME",
 FIRSTNAME = "FIRSTNAME",
 SURVEYDATE = "SURVEYDATE",
@@ -605,10 +676,13 @@ MAINACTIVITY_ID = "MAINACTIVITY_ID",
 MAINACTIVITY_SUGGESTERID = "MAINACTIVITY_SUGGESTERID",
 MAINACTIVITY_ISFULLYCOMPLETED = "MAINACTIVITY_ISFULLYCOMPLETED",
 MAINACTIVITY_LABEL = "MAINACTIVITY_LABEL",
+INPUT_SUGGESTER = "INPUT_SUGGESTER",
+ACTIVITY_SELECTER_HISTORY = "ACTIVITY_SELECTER_HISTORY",
 ROUTE = "ROUTE",
 GOAL = "GOAL",
 WITHSECONDARYACTIVITY = "WITHSECONDARYACTIVITY",
 SECONDARYACTIVITY = "SECONDARYACTIVITY",
+SECONDARYACTIVITY_LABEL = "SECONDARYACTIVITY_LABEL",
 MEANOFTRANSPORT = "MEANOFTRANSPORT",
 PLACE = "PLACE",
 WITHSOMEONE = "WITHSOMEONE",
@@ -619,6 +693,7 @@ OTHERKNOWN = "OTHERKNOWN",
 OTHER = "OTHER",
 WITHSCREEN = "WITHSCREEN",
 WEEKLYPLANNER = "WEEKLYPLANNER",
+WEEKTYPE = "WEEKTYPE",
 WORKINGWEEK = "WORKINGWEEK",
 HOLIDAYWEEK = "HOLIDAYWEEK",
 OTHERWEEK = "OTHERWEEK",
@@ -629,8 +704,11 @@ EXCEPTIONALDAY = "EXCEPTIONALDAY",
 TRAVELTIME = "TRAVELTIME",
 PHONETIME = "PHONETIME",
 ISCLOSED = "ISCLOSED",
+ISENVOYED = "ISENVOYED",
 ISROUTE = "ISROUTE",
 ISCOMPLETED = "ISCOMPLETED",
+ISVALIDATED = "ISVALIDATED",
+ISLOCKED = "ISLOCKED",
 }
 
 ```
@@ -650,8 +728,12 @@ In the case of EDT, it contains the variables from `edt-activity-survey` and `ed
 ```
 
 export enum EdtRoutesNameEnum {
+INSTALL = "install",
+REVIEWER_HOME = "reviewer-home",
+REVIEWER_SURVEYS_OVERVIEW = "surveys-overview",
+SURVEYED_HOME = "surveyed-home",
 HELP = "help",
-ERROR = "error",
+ERROR = "error/:code",
 ACTIVITY = "activity/:idSurvey",
 WHO_ARE_YOU = "who-are-you",
 DAY_OF_SURVEY = "day-of-survey",
@@ -678,6 +760,15 @@ KIND_OF_DAY = "kind-of-day",
 EXCEPTIONAL_DAY = "exceptional-day",
 TRAVEL_TIME = "travel-time",
 PHONE_TIME = "phone-time",
+END_SURVEY = "end-survey",
+ACTIVITY_SUMMARY = "activity-summary",
+HELP_INSTALL = "help-install",
+HELP_ACTIVITY = "help-activity",
+HELP_DURATION = "help-duration",
+HELP_MAIN_ACTIVITY_CATEGORY = "help-main-activity-category",
+HELP_MAIN_ACTIVITY_SUB_CATEGORY = "help-main-activity-sub-category",
+HELP_CHECKBOX = "help-checkbox",
+HELP_WORK_TIME = "help-work-time",
 }
 
 ```
@@ -900,11 +991,432 @@ The `.env.production` file is used when the builded app is hosted.
 REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL=https://stromae-edt-kc.demo.insee.io/
 REACT_APP_EDT_ORGANISATION_API_BASE_URL=https://edt-api-kc.demo.insee.io/
 REACT_APP_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
+REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/
 REACT_APP_KEYCLOAK_CLIENT_ID=client-edt
-REACT_APP_KEYCLOAK_REDIRECT_URI=https://insee-edt.k8s.keyconsulting.fr/
+REACT_APP_KEYCLOAK_REDIRECT_URI=https://insee-recette-edt.k8s.keyconsulting.fr/
+REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION=.\$
+REACT_APP_SEPARATOR_SUGGESTER=;
+REACT_APP_NODE_ENV="production"
+REACT_APP_CHROMIUM_PATH=/builds/insee/edt/deploy/pwa-edt/node_modules/chromium/lib/chromium/chrome-linux/chrome
+REACT_APP_NUM_ACTIVITY_SURVEYS=6
+REACT_APP_NUM_WORKTIME_SURVEYS=2
 
 ```
 </details>
+
+`REACT_APP_NUM_ACTIVITY_SURVEYS` and `REACT_APP_NUM_WORKTIME_SURVEYS` allows to change the surveys affichées pour le mode demo.
+
+Otherwise, the number of surveys displayed are retrieved by the request *"REACT_APP_EDT_ORGANISATION_API_BASE_URL + api/survey-assigment/interviewer/my-surveys"* or the distinction on each model is made from the variable *questionnaireModelId*.
+
+
+## Orchestrator
+
+
+Orchestrator manages the communication of the app with lunatic, where we recover the Lunatic components, its data, etc.
+
+Currently the application manages access modes (profiles): interviewer mode and reviewer mode which can save and consult data.
+
+​The app manages the two modes using the different properties that exist in the database, for each variable.
+For each variable, there are 5 usable properties: **COLLECTED, EDITED, FORCED, INPUTED, PREVIOUS**. In this app, we will use the **COLLECTED** property for the **interviewer mode** and the **EDITED** property for the **reviewer mode**.
+
+Normally, the management of persistence modes is done on the lunatic side, unfortunately the current version that we use on the app does not take this option into account. To resolve this problem, we managed the recovery of data from the orchestrator.
+
+### Updated variables
+
+The orchestrator is summoned on each page of the application where we have displayed a lunatic component.
+
+For each lunatic component, we have several variables attached. Each time we enter the corresponding page, we modify the corresponding variables; if we do not enter this page, no modification is made to the variables.
+
+For example, for the creation of an activity, on the page for choosing a main activity (main_activity), we have attached the lunatic component "activity_selecter" and on this component we have the variables: **"MAINACTIVITY_ID", "MAINACTIVITY_SUGGESTERID" , "MAINACTIVITY_LABEL", "MAINACTIVITY_ISFULLYCOMPLETED", "INPUT_SUGGESTER", "ACTIVITY_SELECTER_HISTORY"**.
+
+So, if you create an activity, when you arrive on the main_activity page, the values for these variables are updated, so we add a value to the array or we modify the corresponding value.
+If you create an activity, but get to the previous step, you will never modify the values of these variables.
+Even if you create a path, it never passes through this component, so we cannot modify the values.
+
+### Orchestrator flow
+
+The callbackHolder function recovers the data and the errors which give us lunatic.
+
+![](./src/documentation/images/orchestrator_code.png)
+
+The getData() function provided by lunatic, instead of returning it within callbackHolder, we proceed to process the data recovered by lunatic, to be able to transform that data, along with that of the database and obtain our data model filled with the COLLECTED and EDITED.
+
+For this process,
+
+First, the profile of the current user is obtained.
+
+If the user is an interviewer, the data is treated as follows:
+
+- getData(): data of lunatic,
+- data: data in database,
+
+For each existing property :
+
+- **value of EDITED:** if mode EDITED exists in the database *(data[prop].EDITED)*, it is set, otherwise value is null .
+- **value of COLLECTED:** data of lunatic *(callbackholder.getData()[prop].COLLECTED)*;
+
+
+![](./src/documentation/images/orchestrator_code_interviewer.png)
+
+If the user is a reviewer, the data is treated as follows:
+
+- getData(): data of lunatic,
+- data: data in database,
+
+For each existing property :
+
+value of lunatic for value[iteration], other -> value of bdd (EDITED)
+
+- if (prop being modified in current component (prop in binding dependencies)) :
+
+    - if(exist data for property in lunatic) :
+
+        - if (data for property is array):
+
+
+            - **value of EDITED:** data of lunatic for data[iteration] *(callbackholder.getData()[prop].COLLECTED[iteration])* and for other values data of bbdd *(data[prop].EDITED[i])*.
+            - **value of COLLECTED:** data of bbdd *(data[prop].COLLECTED)*;
+
+        - else :
+
+            - **value of EDITED:** data of lunatic *(callbackholder.getData()[prop].COLLECTED)*.
+            - **value of COLLECTED:** data of bbdd *(data[prop].COLLECTED)*;
+
+    - else :
+
+        - **value of EDITED:** data of bbdd *(data[prop].EDITED)*;
+        - **value of COLLECTED:** data of bbdd *(data[prop].COLLECTED)*;
+
+- else :
+
+    - **value of EDITED:** data of bbdd *(data[prop].EDITED)*;
+    - **value of COLLECTED:** data of bbdd *(data[prop].COLLECTED)*;
+
+![](./src/documentation/images/orchestrator_code_reviewer.png)
+
+Here a diagram of the flow of orchestrator data
+
+![Orchestrator data flow](./src/documentation/images/orchestrator_flow.png)
+
+#### Examples
+
+**1. Connect with one user surveyer**
+
+![Authentification](./src/documentation/images/auth_interviewer.png)
+![HOME](./src/documentation/images/home_interviewer.png)
+
+**2. Create one survey**
+
+Click in one of day one, person one.
+
+![FIRSTNAME PAGE](./src/documentation/images/create_survey_one_interviewer.png)
+
+In this step, the values of variables FIRSTNAME, SURVEYDATE are set in COLLECTED part, EDITED rest empty.
+
+![FIRSTNAME VALUE](./src/documentation/images/create_survey_one_interviewer_value_firstname.png)
+
+**3. Create activity complete**
+
+    3.1 - DURATION ACITVITY
+
+![DURATION PAGE](./src/documentation/images/create_survey_one_interviewer_first_activity_duration_page.png)
+
+    The variables START_TIME and END_TIME are set in first element of array situate in COLLECTED part, EDITED rest empty.
+
+![DURATION START_TIME VALUE](./src/documentation/images/create_survey_one_interviewer_first_activity_duration_value_starttime.png)
+![DURATION END_TIME VALUE](./src/documentation/images/create_survey_one_interviewer_first_activity_duration_value_endtime.png)
+
+    3.2 - MAIN ACTIVITY
+
+    The variables ACTIVITY_SELECTER_HISTORY, MAINACTIVITY_ID, MAINACTIVITY_SUGGESTERID, MAINACTIVITY_ISFULLYCOMPLETED, MAINACTIVITY_LABEL, GOAL are updated in this step.
+
+![MAIN ACTIVITY CATEGORIES](./src/documentation/images/create_survey_one_interviewer_first_activity_main_activity_categories.png)
+![MAIN ACTIVITY SUBCATEGORIES](./src/documentation/images/create_survey_one_interviewer_first_activity_main_activity_subcategories.png)
+
+    Selected category "EAT" -> update variables ACTIVITY_SELECTER_HISTORY, MAINACTIVITY_ID, MAINACTIVITY_ISFULLYCOMPLETED in first element of array situate in COLLECTED part.
+
+![ACTIVITY_SELECTER_HISTORY](./src/documentation/images/create_survey_one_interviewer_first_activity_activityselecterhistory_values.png)
+![MAINACTIVITY_ID, MAINACTIVITY_ISFULLYCOMPLETED](./src/documentation/images/create_survey_one_interviewer_first_activity_main_activity_values.png)
+
+    3.3 - SECONDARY ACTIVITY
+
+    3.3.1 WITH SECONDARY ACTIVITY
+
+![WITH SECONDARY ACTIVITY PAGE](./src/documentation/images/create_survey_one_interviewer_first_activity_secondaryActivity_page.png)
+
+    Select "YES".
+
+    The variable WITHSECONDARYACTIVITY are updated first element of array situate in COLLECTED part, EDITED rest empty.
+
+![WITH SECONDARY ACTIVITY VALUE](./src/documentation/images/create_survey_one_interviewer_first_activity_withsecondaryActivity_value.png)
+
+    3.3.2 SECONDARY ACTIVITY
+
+![SECONDARY ACTIVITY PAGE](./src/documentation/images/create_survey_one_interviewer_first_activity_withSecondaryActivity_page.png)
+
+    Select "Conversation".
+
+    The variable SECONDARYACTIVITY are updated with id of value in first element of array situate in COLLECTED part, EDITED rest empty.
+
+![SECONDARY ACTIVITY VALUE](./src/documentation/images/create_survey_one_interviewer_first_activity_secondaryActivity_value.png)
+
+    3.4 - PLACE
+
+![PLACE PAGE](./src/documentation/images/create_survey_one_interviewer_first_activity_place_page.png)
+
+    Select "Place of travail and study"
+
+    The variable PLACE are updated with id of value in first element of array situate in COLLECTED part, EDITED rest empty.
+
+![PLACE VALUE](./src/documentation/images/create_survey_one_interviewer_first_activity_place_value.png)
+
+    3.5 - SOMEONE
+
+    3.5.1 SOMEONE CHOICE
+
+![WITH SOMEONE PAGE](./src/documentation/images/create_survey_one_interviewer_first_activity_withsomeone_page.png)
+
+    Select "YES"
+
+    The variable WITHSOMEONE are updated first element of array situate in COLLECTED part, EDITED rest empty.
+
+![WITH SOMEONE VALUE](./src/documentation/images/create_survey_one_interviewer_first_activity_withsomeone_value.png)
+
+    3.5.2 SOMEONE
+
+![SOMEONE PAGE](./src/documentation/images/create_survey_one_interviewer_first_activity_someone_page.png)
+
+    Select "your couple", "your mother, your father".
+
+    The variable COUPLE, PARENTS, CHILD, OTHERKNOW, OTHER are updated in first element of array situate in COLLECTED part, EDITED rest empty.
+
+![COUPLE, CHILD VALUES](./src/documentation/images/create_survey_one_interviewer_first_activity_someone_value_1.png)
+![PARENTS, OTHER, OTHERKNOW VALUES](./src/documentation/images/create_survey_one_interviewer_first_activity_someone_value_2.png)
+
+    3.6 - WITH SCREEN
+
+![WITH SCREEN PAGE](./src/documentation/images/create_survey_one_interviewer_first_activity_withscreen_page.png)
+
+    Select "YES"
+
+    The variable WITHSCREEN are updated first element of array situate in COLLECTED part, EDITED rest empty.
+
+![WITH SCREEN VALUE](./src/documentation/images/create_survey_one_interviewer_first_activity_withscreen_page.png)
+
+**4. Create route complete**
+
+    4.1 - DURATION ROUTE
+
+![DURATION VALUE](./src/documentation/images/create_survey_one_interviewer_first_route_duration_page.png)
+
+    The variables START_TIME and END_TIME are set in second element of array situate in COLLECTED part, EDITED rest empty.
+
+![STARTTIME VALUE](./src/documentation/images/create_survey_one_interviewer_first_route_duration_starttime_value.png)
+![ENDTIME VALUE](./src/documentation/images/create_survey_one_interviewer_first_route_duration_endtime_value.png)
+
+    3.2 - ROUTE
+
+![ROUTE PAGE](./src/documentation/images/create_survey_one_interviewer_first_route_route_page.png)
+
+    Select "route home - work"
+
+    The variable ROUTE are updated in second element of array situate in COLLECTED part, EDITED rest empty.
+
+![ROUTE VALUE](./src/documentation/images/create_survey_one_interviewer_first_route_route_value.png)
+
+    4.3 - MEAN OF TRANSPORT
+
+![MEANOFTRANSPORT PAGE](./src/documentation/images/create_survey_one_interviewer_first_route_meanOfTransport_page.png)
+
+    Select "foot", "bicycle", "private car".
+
+    The variableS FOOT, BICYCLE, TWOWHEELSMOTORIZED, PRIVATECAR, OTHERPRIVATE, PUBLIC are updated in second element of array situate in COLLECTED part, EDITED rest empty.
+
+![BICYCLE, FOOT](./src/documentation/images/create_survey_one_interviewer_first_route_meanOfTransport_value_1.png)
+![OTHERPRIVATE, PUBLIC, PRIVATECAR, TWOWHEELSMOTORIZED](./src/documentation/images/create_survey_one_interviewer_first_route_meanOfTransport_value_2.png)
+
+    4.4 - SECONDARY ACTIVITY
+
+    4.4.1 WITH SECONDARY ACTIVITY
+
+![WITH SECONDARY ACTIVITY PAGE](./src/documentation/images/create_survey_one_interviewer_first_activity_secondaryActivity_page.png)
+
+    Select "YES".
+
+    The variable WITHSECONDARYACTIVITY are updated second element of array situate in COLLECTED part, EDITED rest empty.
+
+![WITH SECONDARY ACTIVITY VALUE](./src/documentation/images/create_survey_one_interviewer_first_route_secondaryActivity_value.png)
+
+    4.4.2 SECONDARY ACTIVITY
+
+![SECONDARY ACTIVITY PAGE](./src/documentation/images/create_survey_one_interviewer_first_activity_withSecondaryActivity_page.png)
+
+    Select "Conversation".
+
+    The variable SECONDARYACTIVITY are updated in second element of array situate in COLLECTED part, EDITED rest empty.
+
+![SECONDARY ACTIVITY VALUE](./src/documentation/images/create_survey_one_interviewer_first_route_secondaryActivity_value_1.png)
+
+    4.5 WITH SOMEONE
+
+    4.5.1 SOMEONE CHOICE
+
+![WITH SOMEONE PAGE](./src/documentation/images/create_survey_one_interviewer_first_activity_withsomeone_page.png)
+
+    Select "YES".
+
+    The variable WITHSOMEONE are updated second element of array situate in COLLECTED part, EDITED rest empty.
+
+![WITH SOMEONE VALUE](./src/documentation/images/create_survey_one_interviewer_first_route_withsomeone_value.png)
+
+    4.5.2 SOMEONE
+
+![SOMEONE PAGE](./src/documentation/images/create_survey_one_interviewer_first_activity_someone_page.png)
+
+    Select "your couple", "other person of household".
+
+    The variable COUPLE, PARENTS, CHILD, OTHERKNOW, OTHER are updated in second element of array situate in COLLECTED part, EDITED rest empty.
+
+    As we selected COUPLE and OTHERKNOW, these 2 elements are updated with their value, and the rest with a null on the corresponding index.
+
+![CHILD, COUPLE VALUE](./src/documentation/images/create_survey_one_interviewer_first_route_someone_value_1.png)
+![PARENTS, OTHER, OTHERKNOW VALUE](./src/documentation/images/create_survey_one_interviewer_first_route_someone_value_2.png)
+
+    4.7 WITH SCREEN
+
+![WITH SCREEN PAGE](./src/documentation/images/create_survey_one_interviewer_first_activity_withscreen_page.png)
+
+    Select "NO".
+
+    The variable WITHSCREEN are updated second element of array situate in COLLECTED part, EDITED rest empty.
+
+![WITH SCREEN VALUE](./src/documentation/images/create_survey_one_interviewer_first_route_screen_value.png)
+
+**5. Create activity - parcial**
+
+    5.1 - DURATION ACITVITY
+
+![DURATION PAGE](./src/documentation/images/create_survey_one_interviewer_second_activity_duration_page.png)
+
+    The variables START_TIME and END_TIME are set in third element of array situate in COLLECTED part, EDITED rest empty.
+
+    The rest of variables aren't updated of size. Ex: variable of main_Activity
+
+![STARTTIME VALUE](./src/documentation/images/create_survey_one_interviewer_second_activity_duration_endtime_value.png)
+![ENDTIME VALUE](./src/documentation/images/create_survey_one_interviewer_second_activity_duration_starttime_value.png)
+![MAIN_ACTIVITY_ID VALUE](./src/documentation/images/create_survey_one_interviewer_second_activity_main_Activity_value.png)
+
+    The variables are updated only in the related component.
+
+**6. Quit step, go to planner**
+
+![PLANNER PAGE](./src/documentation/images/planner_interviewer.png)
+
+**7. Disconnect and connect with one user reviewer**
+
+![HOME REVIEWER](./src/documentation/images/reviewer_home.png)
+
+**8. Get all households**
+
+![HOUSEHOLDS LIST](./src/documentation/images/housheholds_list.png)
+
+**9. Go to household**
+
+![HOUSEHOLD](./src/documentation/images/household_home.png)
+
+**10. Click to first day**
+
+![PLANNER REVIEWR](./src/documentation/images/planner_reviewer.png)
+
+**11. Click last activity**
+
+![MAIN ACTIVITY CATEGORIES PAGE](./src/documentation/images/update_survey_main_activity_categories_page.png)
+
+**12. Select subcategory**
+
+![MAIN ACTIVITY SUBCATEGORIES PAGE](./src/documentation/images/update_survey_main_activity_subcategories_page.png)
+
+**13. Select "SLEEP"**
+
+![MAIN ACTIVITY VALUES](./src/documentation/images/update_survey_main_activity_values.png)
+
+The variables related of component ActivitySelected (component in this page) are updated.
+The variables MAINACTIVITY_ID, MAINACTIVITY_ISFULLYCOMPLETED are updated EDITED part, COLLECTED part rest without change. THe value of EDTED part is an array of size equal to the number of surveys. In this case, the index of surveys the type ROUTE are undefined values.
+
+The variables MAINACTIVITY_lABEL and MAINACTIVIY_SUGGESTERID aren't value, so EDITED part is updated with null values.
+
+**14. PLACE PAGE**
+
+Select "Restaurant, coffee, bar".
+
+![PLACE VALUE](./src/documentation/images/update_survey_place_values.png)
+
+The variable PLACE is updated EDITED part, COLLECTED part rest without change. THe value of EDTED part is an array of size equal to the number of surveys. In this case, the index of surveys the type ROUTE are undefined values.
+
+**15. Create new activity**
+
+SET only duration step.
+
+![DURATION PAGE](./src/documentation/images/update_survey_new_activity_duration_page.png)
+
+The variable ENDTIME is updated EDITED part, COLLECTED part rest without change. THe value of EDTED part is an array of size equal to the number of surveys. In this case, EDITED part rest with 4 elements and COLLECTED part reste with 3 elements which are surveys created by the surveyed.
+
+![DURATION ENDTIME VALUE](./src/documentation/images/update_survey_new_activity_duration_endtime_value.png)
+
+**16. QUIT step**
+
+**17. Delete third activity**
+
+All variables update EDITED part by removing third element of array.
+
+Ex: ENDTIME value
+
+The variable ENDTIME is updated EDITED part by removing the ancient third element. COLLECTED rest without change, so always 3 elements which are created by the surveyed.
+
+![DURATION ENDTIME VALUE](./src/documentation/images/update_survey_delete_activity_duration_endtime_value.png)
+
+## Offline
+
+The application is completely functional offline in browser or in the application, you can exit the application and when you return you will be able to use it without any problem and all the cached data will be used.
+
+For the reviewer mode, the information recovered is done on two requetes:
+
+- To retrieve the data: REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/data"
+- To retrieve the stateData : REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/state-data"
+
+For the interviewer mode, the information retrieved is done on the following request:
+
+- REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey.
+
+Same mechanism used to save information relevant to surveys.
+
+Once in offline mode, authentication is not performed or the token is reviewed until the next online connection. Likewise, there is no requirement for the released API, everything is cached.
+
+### Data synchronization
+
+The information displayed will always be the most recent information found.
+The cached last modification date will always be compared (on object data -> lastLocalSaveDate), with the date of last modification in remote (on stateData -> date) and if the value in Remote is the most recent, the data will be updated by that of the remote.
+
+![GET DATA](./src/documentation/images/offline_get_data.png)
+
+
+### Offline update data
+
+#### Reviewer mode
+
+As there is no requirement with the API, the local data will not be sent until we go online and : either click on the "update the list" button, or modify the corresponding survey.
+
+If we click the "update list" button after having been in offline mode and having made modifications, we will send all the households that have been modified in offline.
+
+![UPDATE DATA](./src/documentation/images/offline_save_offline_reviewer.png)
+
+#### Interviewer mode
+
+As there is no requirement with the API, the local data will not be sent until we go online and made a modification to the survey.
+
+> **REMAINS TO BE DONE**
+
+> Same behavior as reviewer, it will be necessary to call on the interviewer home page the *saveDatas()* method already used in reviewer mode (`saveAllAndUpdate` on *SurveysOverview*) when you go from offline to online.
 
 ## Maintenance and evolution
 
@@ -1078,9 +1590,12 @@ All the labels that are not directly related to the survey answers are reference
 ## Qualimetry and Tests
 ### Sonar
 Sonar quality have been treated using INSEE default configuration. You can refer to the Github pipeline to see which configuration is used.
+
 ### Test E2E
-E2E tests using React Testing Library have been done to cover the nominal navigation of the app.
-[TO COMPLETE]
+E2E tests using React Testing Library and Puppeteer have been done to cover the nominal navigation of the app.
+- `e2e.test` contains the e2e tests for nominal use cases in surveyed mode.
+- `e2e-reviewer.test` contains the e2e tests for nominal use cases in reviewer mode.
+
 ### Unit Tests
 JEST Unit tests have been done to cover the complexe Lunatic-EDT components such as `ActivitySelecter` or `HourChecker`.
 Run `yarn test` command inside Lunatic-EDT to execute the tests.

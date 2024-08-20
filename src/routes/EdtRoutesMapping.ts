@@ -197,4 +197,4 @@ const routesToIgnoreForRoute = [
     EdtRoutesNameEnum.WITH_SOMEONE_SELECTION,
 ];
 
-export { mappingPageOrchestrator, EdtRoutesNameEnum, routesToIgnoreForActivity, routesToIgnoreForRoute };
+export { EdtRoutesNameEnum, mappingPageOrchestrator, routesToIgnoreForActivity, routesToIgnoreForRoute };

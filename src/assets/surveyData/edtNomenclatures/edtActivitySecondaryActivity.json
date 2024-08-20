@@ -1,0 +1,66 @@
+[
+    {
+        "value": 1,
+        "label": "Écouter la radio, des podcasts ou de la musique"
+    },
+    {
+        "value": 2,
+        "label": "Regarder la télévision, des DVD, des vidéos en ligne"
+    },
+    {
+        "value": 3,
+        "label": "Conversation"
+    },
+    {
+        "value": 4,
+        "label": "Consulter mes mails personnels"
+    },
+    {
+        "value": 5,
+        "label": "Consulter les notifications de mon téléphone"
+    },
+    {
+        "value": 6,
+        "label": "Publier ou surfer sur les médias sociaux (Facebook, Instagram, Twitter, …)"
+    },
+    {
+        "value": 7,
+        "label": "Surf sur Internet, visite de sites pour m'informer (hors journaux)"
+    },
+    {
+        "value": 8,
+        "label": "Jeux sur téléphone"
+    },
+    {
+        "value": 9,
+        "label": "Lecture de journaux, revues"
+    },
+    {
+        "value": 10,
+        "label": "Lecture de livres"
+    },
+    {
+        "value": 11,
+        "label": "Repas"
+    },
+    {
+        "value": 12,
+        "label": "Travail professionnel (y compris mails)"
+    },
+    {
+        "value": 13,
+        "label": "Me détendre, fumer"
+    },
+    {
+        "value": 14,
+        "label": "Conversations avec les enfants, lectures"
+    },
+    {
+        "value": 15,
+        "label": "Repas, douche, habillage des enfants"
+    },
+    {
+        "value": 16,
+        "label": "Surveiller les devoirs des enfants"
+    }
+]

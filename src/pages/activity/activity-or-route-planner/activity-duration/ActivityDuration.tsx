@@ -1,10 +1,11 @@
 import { Alert, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
-import CloseIcon from "@mui/icons-material/Close";
 import { IconButton, Snackbar } from "@mui/material";
-import errorIcon from "assets/illustration/error/activity.svg";
+import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
+import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
+import { ReactComponent as ArrowDownIcon } from "assets/illustration/mui-icon/expand-more.svg";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
-import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
+import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -14,7 +15,7 @@ import { OrchestratorContext } from "interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
 import { Fragment, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { getLabelsWhenQuit } from "service/alert-service";
 import { getLoopInitialPage } from "service/loop-service";
 import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
@@ -25,8 +26,10 @@ import {
     setEnviro,
 } from "service/navigation-service";
 import { isDesktop } from "service/responsive";
-import { getActivitiesOrRoutes } from "service/survey-activity-service";
-import { getValue, saveData } from "service/survey-service";
+import { getActivitiesOrRoutes, surveyReadOnly } from "service/survey-activity-service";
+import { getData, getValue, getValueOfData, saveDataLocally } from "service/survey-service";
+import { isSurveyCompleted } from "service/survey-state-service";
+import { getSurveyIdFromUrl } from "utils/utils";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
@@ -35,16 +38,15 @@ const ActivityDurationPage = () => {
     const { classes } = useStyles();
     setEnviro(context, useNavigate(), callbackHolder);
 
-    const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
-    const stepData = getStepData(currentPage, context.isRoute);
+    const location = useLocation();
+    const idSurvey = getSurveyIdFromUrl(context, location);
     const paramIteration = useParams().iteration;
     const currentIteration = paramIteration ? +paramIteration : 0;
-    const activitiesAct = getActivitiesOrRoutes(
-        t,
-        context.idSurvey,
-        context.source,
-    ).activitiesRoutesOrGaps;
-    const isRoute = getValue(context.idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
+    const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
+    const currentPage = EdtRoutesNameEnum.ACTIVITY_DURATION;
+    const stepData = getStepData(currentPage, isRoute);
+
+    const activitiesAct = getActivitiesOrRoutes(t, idSurvey, context.source).activitiesRoutesOrGaps;
 
     const [isAlertDisplayed, setIsAlertDisplayed] = useState<boolean>(false);
     const [snackbarText, setSnackbarText] = useState<string | undefined>(undefined);
@@ -59,6 +61,14 @@ const ActivityDurationPage = () => {
             FORMAT_TIME: FORMAT_TIME,
             MINUTE_LABEL: MINUTE_LABEL,
         },
+        arrowDownIcon: <ArrowDownIcon aria-label={t("accessibility.asset.mui-icon.expand-more")} />,
+        modifiable: !surveyReadOnly(context.rightsSurvey),
+        defaultLanguage: "fr",
+        labels: {
+            ariaLabelTimepicker: t("accessibility.asset.timepicker-alt"),
+            cancelLabel: t("page.activity-duration.cancel"),
+            validateLabel: t("page.activity-duration.validate"),
+        },
     };
 
     let startTimeDay: Dayjs;
@@ -68,25 +78,53 @@ const ActivityDurationPage = () => {
         const data = callbackHolder.getData();
         let isAfter = false;
         if (data) {
-            const startTime = data.COLLECTED?.[FieldNameEnum.START_TIME]?.COLLECTED as string[];
-            const endTime = data.COLLECTED?.[FieldNameEnum.END_TIME]?.COLLECTED as string[];
+            const startTime = getValueOfData(data, FieldNameEnum.START_TIME) as string[];
+            const endTime = getValueOfData(data, FieldNameEnum.END_TIME) as string[];
 
             dayjs.extend(customParseFormat);
             if (startTime && endTime) {
-                startTimeDay = dayjs(startTime[currentIteration], "HH:mm");
-                endTimeDay = dayjs(endTime[currentIteration], "HH:mm");
-                if (endTimeDay.hour() < 4) {
-                    endTimeDay = endTimeDay.add(1, "day");
-                }
-                if (startTimeDay.hour() < 4) {
-                    startTimeDay = startTimeDay.add(1, "day");
-                }
-                if (startTimeDay.isAfter(endTimeDay)) {
-                    isAfter = true;
-                }
+                const setter = setStartEndTime(isAfter, startTime, endTime);
+                startTimeDay = setter[0] as dayjs.Dayjs;
+                endTimeDay = setter[1] as dayjs.Dayjs;
+                isAfter = setter[2] as boolean;
             }
         }
         return isAfter;
+    };
+
+    const setStartEndTime = (isAfter: boolean, startTime: string[], endTime: string[]) => {
+        startTimeDay = dayjs(startTime[currentIteration], "HH:mm");
+        endTimeDay = dayjs(endTime[currentIteration], "HH:mm");
+        let init = dayjs(START_TIME_DAY, FORMAT_TIME);
+
+        startTimeDay = addDayOfStartDay(startTimeDay, init);
+        endTimeDay = addDayEndTime(startTimeDay, endTimeDay, init);
+
+        if (startTimeDay.isAfter(endTimeDay)) {
+            isAfter = true;
+        }
+        return [startTimeDay, endTimeDay, isAfter];
+    };
+
+    // when the start time < 4 and the end time is >=4, it is counted as the same day
+    const addDayOfStartDay = (startTimeDay: dayjs.Dayjs, init: dayjs.Dayjs) => {
+        if (startTimeDay.hour() < 4 && endTimeDay.isAfter(init)) {
+            startTimeDay = startTimeDay.add(1, DAY_LABEL);
+        }
+        return startTimeDay;
+    };
+
+    const addDayEndTime = (startTimeDay: dayjs.Dayjs, endTimeDay: dayjs.Dayjs, init: dayjs.Dayjs) => {
+        // when the end time is <=4, it is counted as the same day
+        if (endTimeDay.hour() < 4 || endTimeDay.isSame(init)) {
+            endTimeDay = endTimeDay.add(1, DAY_LABEL);
+        }
+
+        if (startTimeDay.isSame(endTimeDay) && startTimeDay.isSame(init)) {
+            endTimeDay = endTimeDay.add(1, DAY_LABEL);
+        }
+
+        return endTimeDay;
     };
 
     const endTimeAfterStartTime = (isAfter: boolean) => {
@@ -113,10 +151,11 @@ const ActivityDurationPage = () => {
         }
 
         if ((skip && isAfter) || !isAfter) {
-            saveData(context.idSurvey, callbackHolder.getData()).then(() => {
+            saveDataLocally(idSurvey, callbackHolder.getData()).then(() => {
                 navigate(
                     getLoopParameterizedNavigatePath(
-                        getNextLoopPage(currentPage, context.isRoute),
+                        idSurvey,
+                        getNextLoopPage(currentPage, isRoute),
                         LoopEnum.ACTIVITY_OR_ROUTE,
                         currentIteration,
                     ),
@@ -125,28 +164,28 @@ const ActivityDurationPage = () => {
         }
     };
 
+    const navIsClompleted = (isCloture: boolean) => {
+        if (isCloture) {
+            navToActivitySummary(idSurvey);
+        } else {
+            navToActivityRoutePlanner(idSurvey, context.source);
+        }
+    };
+
     const onClose = (forceQuit: boolean) => {
-        const isCompleted = getValue(context.idSurvey, FieldNameEnum.ISCOMPLETED, currentIteration);
-        const isCloture = getValue(context.idSurvey, FieldNameEnum.ISCLOSED) as boolean;
+        const isCompleted = isSurveyCompleted(idSurvey);
+        const isCloture = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
         if (!openSnackbar) {
             if (!isCompleted) {
                 if (forceQuit) {
-                    saveData(context.idSurvey, callbackHolder.getData()).then(() => {
-                        if (isCloture) {
-                            navToActivitySummary();
-                        } else {
-                            navToActivityRoutePlanner();
-                        }
+                    saveDataLocally(idSurvey, callbackHolder.getData()).then(() => {
+                        navIsClompleted(isCloture);
                     });
                 } else {
                     setIsAlertDisplayed(true);
                 }
             } else {
-                if (isCloture) {
-                    navToActivitySummary();
-                } else {
-                    navToActivityRoutePlanner();
-                }
+                navIsClompleted(isCloture);
             }
         }
     };
@@ -164,8 +203,9 @@ const ActivityDurationPage = () => {
     const snackbarAction = (
         <Fragment>
             <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
-                <CloseIcon fontSize="small" />
+                <CloseIcon aria-label={t("accessibility.asset.mui-icon.close")} />
             </IconButton>
+            <></>
         </Fragment>
     );
 
@@ -188,8 +228,7 @@ const ActivityDurationPage = () => {
                     )}
                     onCancelCallBack={useCallback(cancel => onClose(cancel), [])}
                     labels={getLabelsWhenQuit(isRoute)}
-                    icon={errorIcon}
-                    errorIconAlt={t("page.activity-duration.alt-alert-icon")}
+                    icon={<ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />}
                 ></Alert>
                 <Snackbar
                     className={isDesktop() ? classes.snackbarDesktop : classes.snackbar}
@@ -204,7 +243,7 @@ const ActivityDurationPage = () => {
                 />
                 <OrchestratorForStories
                     source={context.source}
-                    data={context.data}
+                    data={getData(idSurvey)}
                     cbHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}

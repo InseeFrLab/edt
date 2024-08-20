@@ -1,0 +1,18 @@
+[
+    {
+        "label": "Sur mon site de travail",
+        "value": "1"
+    },
+    {
+        "label": "À domicile (yc télétravail à domicile)",
+        "value": "2"
+    },
+    {
+        "label": "Chez des clients, livraison, déplacement",
+        "value": "3"
+    },
+    {
+        "label": "Autre situation",
+        "value": "4"
+    }
+]

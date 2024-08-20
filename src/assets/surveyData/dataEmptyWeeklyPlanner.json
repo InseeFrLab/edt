@@ -1,0 +1,772 @@
+{
+    "FIRSTNAME": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "SURVEYDATE": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "WEEKLYPLANNER": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "DATES": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "DATES_STARTED": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "S_00H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_00H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_00H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_00H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_01H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_01H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_01H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_01H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_02H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_02H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_02H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_02H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_03H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_03H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_03H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_03H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_04H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_04H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_04H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_04H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_05H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_05H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_05H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_05H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_06H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_06H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_06H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_06H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_07H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_07H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_07H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_07H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_08H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_08H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_08H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_08H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_09H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_09H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_09H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_09H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_10H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_10H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_10H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_10H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_11H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_11H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_11H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_11H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_12H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_12H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_12H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_12H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_13H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_13H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_13H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_13H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_14H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_14H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_14H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_14H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_15H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_15H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_15H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_15H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_16H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_16H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_16H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_16H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_17H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_17H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_17H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_17H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_18H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_18H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_18H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_18H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_19H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_19H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_19H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_19H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_20H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_20H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_20H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_20H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_21H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_21H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_21H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_21H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_22H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_22H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_22H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_22H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_23H00": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_23H15": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_23H30": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "S_23H45": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "WEEKTYPE": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "ISCLOSED": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "ISENVOYED": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "ISLOCKED": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
+    },
+    "NOTWORK": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "OTHER": {
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null],
+        "COLLECTED": [null]
+    },
+    "CLIENT": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "HOME": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    },
+    "WORK": {
+        "COLLECTED": [null],
+        "EDITED": [null],
+        "FORCED": [null],
+        "INPUTED": [null],
+        "PREVIOUS": [null]
+    }
+}

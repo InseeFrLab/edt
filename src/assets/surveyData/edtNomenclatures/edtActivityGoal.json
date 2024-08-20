@@ -1,0 +1,22 @@
+[
+    {
+        "label": "Personnel, pour mon ménage",
+        "value": "1",
+        "iconName": "home"
+    },
+    {
+        "label": "Professionnel",
+        "value": "2",
+        "iconName": "work"
+    },
+    {
+        "label": "Aide à un autre ménage",
+        "value": "3",
+        "iconName": "help"
+    },
+    {
+        "label": "Bénévole, pour une association",
+        "value": "4",
+        "iconName": "solidarity"
+    }
+]

@@ -9,7 +9,7 @@
 // service worker, and the Workbox build step will be skipped.
 
 import { clientsClaim } from "workbox-core";
-import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
+import { createHandlerBoundToURL, precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { NetworkFirst } from "workbox-strategies";
 
@@ -43,7 +43,7 @@ registerRoute(
 
         // If this looks like a URL for a resource, because it contains
         // a file extension, skip.
-        if (url.pathname.match(fileExtensionRegexp)) {
+        if (RegExp(fileExtensionRegexp).exec(url.pathname)) {
             return false;
         }
 
@@ -74,5 +74,3 @@ self.addEventListener("message", event => {
         self.skipWaiting();
     }
 });
-
-// Any other custom service worker logic can go here.

@@ -1,28 +1,45 @@
 import {
+    AutoCompleteActiviteOption,
     getProgressBarValue,
     SelectedActivity,
     transformToWeeklyPlannerDataType,
 } from "@inseefrlab/lunatic-edt";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
-import activitySurveySource from "activity-survey.json";
+import { edtActivitySurvey } from "assets/surveyData";
+import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
 import { FieldNameEnum } from "enumerations/FieldNameEnum";
 import { LoopEnum } from "enumerations/LoopEnum";
+import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
 import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
-import { LunaticModel } from "interface/lunatic/Lunatic";
+import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
 import { TFunction, useTranslation } from "react-i18next";
-import { getData, getValue, saveData } from "service/survey-service";
-import { getLoopSize } from "./loop-service";
+import { getLoopSize } from "service/loop-service";
 import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
-    findMeanOfTransportInRef,
+    findActivitySecondaryActivityInRef,
     findPlaceInRef,
     findRouteInRef,
-    findSecondaryActivityInRef,
+    findRouteSecondaryActivityInRef,
+    getAutoCompleteRef,
     getLanguage,
-} from "./referentiel-service";
+} from "service/referentiel-service";
+import {
+    getData,
+    getModePersistence,
+    getValue,
+    getValueOfData,
+    getVarBooleanModepersistance,
+    saveData,
+    surveysIds,
+} from "service/survey-service";
+import { getStatutSurvey } from "./survey-state-service";
+import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
+import { getQualityScore } from "./summary-service";
+import { t } from "i18next";
 
 const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
     const mainActivityId = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_ID, i) as string;
@@ -47,12 +64,23 @@ const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: Acti
             isFullyCompleted: mainActivityIsFullyCompleted,
         };
         activityOrRoute.activity = {
-            activityCode: activitySelection.suggesterId ?? activitySelection.id,
-            activityLabel: getActivityLabel(activitySelection) || "",
+            activityCode:
+                activitySelection.suggesterId ??
+                activitySelection.id ??
+                findItemInAutoCompleteRefByLabel(activitySelection.label, getAutoCompleteRef())?.id ??
+                mainActivityLabel,
+            activityLabel: getActivityLabel(activitySelection),
             isGoal: mainActivitySuggesterId != null || mainActivityLabel != null,
             activityGoal: goalActivity,
         };
     }
+};
+
+export const findItemInAutoCompleteRefByLabel = (
+    label: string | undefined,
+    ref: AutoCompleteActiviteOption[],
+): AutoCompleteActiviteOption | undefined => {
+    return ref.find(a => a.label === label);
 };
 
 const checkForPlace = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
@@ -73,10 +101,30 @@ const checkForSecondaryActivity = (idSurvey: string, i: number, activityOrRoute:
         if (secondaryActivityValue) {
             activityOrRoute.secondaryActivity = {
                 activityCode: secondaryActivityValue,
-                activityLabel: findSecondaryActivityInRef(secondaryActivityValue)?.label,
+                activityLabel: !activityOrRoute.isRoute
+                    ? getActivitySecondary(idSurvey, i, secondaryActivityValue)
+                    : getRouteActivitySecondary(idSurvey, i, secondaryActivityValue),
             };
         }
     }
+};
+
+const getActivitySecondary = (idSurvey: string, i: number, secondaryActivityValue: string) => {
+    const newSecondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY_LABEL, i) as
+        | string
+        | undefined;
+    const activtySecondaryInRef = findActivitySecondaryActivityInRef(secondaryActivityValue);
+    return activtySecondaryInRef != null ? activtySecondaryInRef?.label : newSecondaryActivityValue;
+};
+
+const getRouteActivitySecondary = (idSurvey: string, i: number, secondaryActivityValue: string) => {
+    const newSecondaryActivityValue = getValue(idSurvey, FieldNameEnum.SECONDARYACTIVITY_LABEL, i) as
+        | string
+        | undefined;
+    const routeActivtySecondaryInRef = findRouteSecondaryActivityInRef(secondaryActivityValue);
+    return routeActivtySecondaryInRef != null
+        ? routeActivtySecondaryInRef?.label
+        : newSecondaryActivityValue;
 };
 
 const createRoute = (
@@ -98,7 +146,7 @@ const createRoute = (
     }
 
     //Mean of transport
-    activityOrRoute.meanOfTransportLabels = getMeanOfTransportLabel(idSurvey, iteration);
+    activityOrRoute.meanOfTransportLabels = getMeanOfTransportLabel(idSurvey, iteration, source);
     return activityOrRoute;
 };
 
@@ -120,13 +168,18 @@ const createActivity = (
     return activityOrRoute;
 };
 
+const convertStringToBoolean = (value: string | undefined) => {
+    const valueFalseOrUndefined = value == "false" ? false : undefined;
+    return value == "true" ? true : valueFalseOrUndefined;
+};
+
 const createActivitiesOrRoutes = (
     idSurvey: string,
     source: LunaticModel,
     t: TFunction<"translation", undefined>,
 ) => {
     let activitiesRoutes: ActivityRouteOrGap[] = [];
-    const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE, activitySurveySource);
+    const activityLoopSize = getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE, edtActivitySurvey);
 
     for (let i = 0; i < activityLoopSize; i++) {
         let activityOrRoute: ActivityRouteOrGap = {};
@@ -145,30 +198,30 @@ const createActivitiesOrRoutes = (
             activityOrRoute = createActivity(idSurvey, activityOrRoute, i, t);
         }
 
+        const withSecondaryActivity = getValue(idSurvey, FieldNameEnum.WITHSECONDARYACTIVITY, i) as
+            | string
+            | undefined;
         // With Secondary activity
-        activityOrRoute.withSecondaryActivity = getValue(
-            idSurvey,
-            FieldNameEnum.WITHSECONDARYACTIVITY,
-            i,
-        ) as boolean | undefined;
+        activityOrRoute.withSecondaryActivity = convertStringToBoolean(withSecondaryActivity);
 
         // Secondary activity
         checkForSecondaryActivity(idSurvey, i, activityOrRoute);
 
         // With someone
-        activityOrRoute.withSomeone = getValue(idSurvey, FieldNameEnum.WITHSOMEONE, i) as
-            | boolean
-            | undefined;
+        activityOrRoute.withSomeone = convertStringToBoolean(
+            getValue(idSurvey, FieldNameEnum.WITHSOMEONE, i) as string | undefined,
+        );
         if (activityOrRoute.withSomeone) {
             const withSomeoneLabel = getWithSomeoneLabel(idSurvey, i, source);
             activityOrRoute.withSomeoneLabels = withSomeoneLabel;
         }
 
         // Screen
-        activityOrRoute.withScreen = getValue(idSurvey, FieldNameEnum.WITHSCREEN, i) as
-            | boolean
-            | undefined;
+        activityOrRoute.withScreen = convertStringToBoolean(
+            getValue(idSurvey, FieldNameEnum.WITHSCREEN, i) as string | undefined,
+        );
 
+        activityOrRoute.state = getStatutSurvey(idSurvey);
         activitiesRoutes.push(activityOrRoute);
     }
 
@@ -183,7 +236,7 @@ const createGapsOverlaps = (idSurvey: string, activitiesRoutes: ActivityRouteOrG
     const copy = [...activitiesRoutes];
     for (const act of copy) {
         // Gaps
-        const beforeFirstActivity = getDiffTime(getTime("04:00"), getTime(act?.startTime));
+        const beforeFirstActivity = getDiffTime(getTime("04:00"), getTime(act?.startTime), "hours");
         if (activitiesRoutes.indexOf(act) == 0 && beforeFirstActivity > 0) {
             activitiesRoutes.splice(0, 0, {
                 startTime: "04:00",
@@ -229,10 +282,9 @@ const getActivitiesOrRoutes = (
 } => {
     let overlaps = [];
     let activitiesRoutes: ActivityRouteOrGap[] = [];
-    if (source == null) source = activitySurveySource;
+    if (source == null) source = edtActivitySurvey;
 
     activitiesRoutes = createActivitiesOrRoutes(idSurvey, source, t);
-
     activitiesRoutes.sort(
         (a, b) =>
             hourToNormalizedTimeStamp(a.startTime, idSurvey) -
@@ -274,29 +326,46 @@ const getActivitesSelectedLabel = (idSurvey: string): Activity[] => {
         if (
             activityRouteOrGap?.activity?.activityLabel != null &&
             activityRouteOrGap?.activity?.activityLabel.length > 0
-        )
+        ) {
             activitesSelected.push(activityRouteOrGap.activity);
-        if (
-            activityRouteOrGap?.secondaryActivity?.activityLabel != null &&
-            activityRouteOrGap?.secondaryActivity?.activityLabel.length > 0
-        )
-            activitesSelected.push(activityRouteOrGap.secondaryActivity);
+        } else if (activityRouteOrGap.isRoute && activityRouteOrGap.route) {
+            const route = activityRouteOrGap.route;
+            const castRouteToActivity: Activity = {
+                activityCode: route.routeCode,
+                activityLabel: route.routeLabel,
+            };
+            activitesSelected.push(castRouteToActivity);
+        }
     });
     return activitesSelected;
+};
+
+const getActivityOrRouteDuration = (activity: ActivityRouteOrGap, diffType: string): number => {
+    dayjs.extend(customParseFormat);
+    const startTime = dayjs(activity.startTime, FORMAT_TIME);
+    let endTime = dayjs(activity.endTime, FORMAT_TIME);
+
+    if (startTime.isAfter(endTime)) {
+        endTime = endTime.add(1, DAY_LABEL);
+    }
+
+    let init = dayjs(START_TIME_DAY, FORMAT_TIME);
+
+    if (startTime.isSame(endTime) && endTime.isSame(init)) {
+        endTime = endTime.add(1, DAY_LABEL);
+    }
+
+    let diffMinutes = Math.abs(endTime.diff(startTime, MINUTE_LABEL));
+    let diffHours = Math.trunc(diffMinutes / 60);
+
+    return diffType != MINUTE_LABEL ? diffHours : diffMinutes;
 };
 
 const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string => {
     if (!activity.startTime || !activity.endTime) return "?";
 
-    dayjs.extend(customParseFormat);
-    const startTime = dayjs(activity.startTime, "HH:mm");
-    let endTime = dayjs(activity.endTime, "HH:mm");
-
-    if (startTime.isAfter(endTime)) {
-        endTime = endTime.add(1, "day");
-    }
-    let diffHours = Math.abs(endTime.diff(startTime, "hour"));
-    let diffMinutes = Math.abs(endTime.diff(startTime, "minute"));
+    let diffMinutes = getActivityOrRouteDuration(activity, MINUTE_LABEL);
+    let diffHours = Math.trunc(diffMinutes / 60);
     diffMinutes = diffMinutes - diffHours * 60;
 
     if (diffMinutes >= 0 && diffHours > 0) {
@@ -308,13 +377,7 @@ const getActivityOrRouteDurationLabel = (activity: ActivityRouteOrGap): string =
 
 const getActivityOrRouteDurationMinutes = (activity: ActivityRouteOrGap): number => {
     if (!activity.startTime || !activity.endTime) return 0;
-    dayjs.extend(customParseFormat);
-    const startTime = dayjs(activity.startTime, "HH:mm");
-    let endTime = dayjs(activity.endTime, "HH:mm");
-    if (startTime.isAfter(endTime)) {
-        endTime = endTime.add(1, "day");
-    }
-    return Math.abs(endTime.diff(startTime, "minutes"));
+    return getActivityOrRouteDuration(activity, MINUTE_LABEL);
 };
 
 const getActivityOrRouteDurationLabelFromDurationMinutes = (durationMinutes: number): string => {
@@ -327,7 +390,7 @@ const getLabelFromTime = (hours: number, minutes: number) => {
     let hoursLabel = hours > 0 ? hours + "h" : "";
     let minutesLabel;
 
-    if (hours > 1) {
+    if (hours > 0) {
         minutesLabel = (minutes < 10 ? "0" : "") + minutes;
     } else {
         minutesLabel = minutes + "min";
@@ -337,38 +400,22 @@ const getLabelFromTime = (hours: number, minutes: number) => {
 
 const getTotalTimeOfActivities = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
     const { activitiesRoutesOrGaps } = getActivitiesOrRoutes(t, idSurvey);
-    let totalTimeGap = 0;
-    let leftTimeActivities = 0;
+    let totalTimeActivities = 0;
 
     for (let activityRouteOrGap of activitiesRoutesOrGaps) {
-        if (activityRouteOrGap.isGap) {
-            let startTime = getTime(activityRouteOrGap.startTime);
-            let endTime = getTime(activityRouteOrGap.endTime);
-            const diffTime = getDiffTime(startTime, endTime);
-            totalTimeGap += diffTime;
+        if (!activityRouteOrGap.isGap) {
+            totalTimeActivities += getActivityOrRouteDuration(activityRouteOrGap, MINUTE_LABEL);
         }
     }
-
-    const beforeFirstActivity = getDiffTime(
-        getTime("04:00"),
-        getTime(activitiesRoutesOrGaps[0]?.startTime),
-    );
-
-    const afterLastActivity = getDiffTime(
-        getTime(activitiesRoutesOrGaps[activitiesRoutesOrGaps.length - 1]?.endTime),
-        getTime("03:55"),
-    );
-
-    leftTimeActivities = beforeFirstActivity + afterLastActivity + totalTimeGap;
-
     if (activitiesRoutesOrGaps.length == 0) return 0;
-    else return 24 - leftTimeActivities;
+    else return totalTimeActivities;
 };
 
 const getScore = (idSurvey: string, t: TFunction<"translation", undefined>): number => {
-    const totalHourActivities = getTotalTimeOfActivities(idSurvey, t);
+    const totalHourActivities = getTotalTimeOfActivities(idSurvey, t) / 60;
     const percentage = (totalHourActivities / 24) * 100;
-    return totalHourActivities > 0 ? Number(percentage.toFixed(0)) : 0;
+    const percentageMax = percentage >= 100 ? 100 : percentage;
+    return totalHourActivities > 0 ? Math.trunc(percentageMax) : 0;
 };
 
 const getWeeklyPlannerScore = (idSurvey: string): number => {
@@ -384,7 +431,7 @@ const getTime = (time?: string) => {
     } else return timeDay;
 };
 
-const getDiffTime = (startTime?: dayjs.Dayjs, endTime?: dayjs.Dayjs) => {
+const getDiffTime = (startTime?: dayjs.Dayjs, endTime?: dayjs.Dayjs, diffType?: "minutes" | "hours") => {
     if (startTime == null || endTime == null) return 0;
     dayjs.extend(customParseFormat);
     let startFinalTime = startTime;
@@ -397,8 +444,16 @@ const getDiffTime = (startTime?: dayjs.Dayjs, endTime?: dayjs.Dayjs) => {
     if (startTimeAfterMidnightAfterEndTime || startTimeBeforeMidnightAfterEndTime) {
         endTimeDay = endTimeDay.set("day", dayjs().day() + 1);
     }
-    const diffHours = Math.abs(startFinalTime.diff(endTimeDay, "hour", true));
+    const diffHours = Math.abs(startFinalTime.diff(endTimeDay, diffType, true));
     return diffHours;
+};
+
+const findLabelNotInputed = (activity: SelectedActivity) => {
+    if (activity.suggesterId) {
+        return findActivityInAutoCompleteReferentiel(activity)?.label;
+    } else {
+        return findActivityInNomenclatureReferentiel(activity)?.label;
+    }
 };
 
 const getActivityLabel = (activity: SelectedActivity | undefined): string | undefined => {
@@ -408,11 +463,7 @@ const getActivityLabel = (activity: SelectedActivity | undefined): string | unde
     if (activity.label) {
         return activity.label;
     } else {
-        if (activity.suggesterId) {
-            return findActivityInAutoCompleteReferentiel(activity)?.label;
-        } else {
-            return findActivityInNomenclatureReferentiel(activity)?.label;
-        }
+        return findLabelNotInputed(activity);
     }
 };
 
@@ -461,39 +512,225 @@ const getWithSomeoneLabel = (
     return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
 };
 
-const getMeanOfTransportLabel = (idSurvey: string, i: number): string | undefined => {
-    const meanOfTransportValue = getValue(idSurvey, FieldNameEnum.MEANOFTRANSPORT, i) as
-        | string
-        | undefined;
+const getMeanOfTransportLabel = (
+    idSurvey: string,
+    i: number,
+    source: LunaticModel | undefined,
+): string | undefined => {
+    const fieldNames = [
+        FieldNameEnum.FOOT,
+        FieldNameEnum.BICYCLE,
+        FieldNameEnum.TWOWHEELSMOTORIZED,
+        FieldNameEnum.PRIVATECAR,
+        FieldNameEnum.OTHERPRIVATE,
+        FieldNameEnum.PUBLIC,
+    ];
+    const result = filterFieldNames(fieldNames, idSurvey, i, source);
+    return result.length !== 0 ? result.join(", ").replaceAll('"', "") : undefined;
+};
 
-    return meanOfTransportValue ? findMeanOfTransportInRef(meanOfTransportValue)?.label : undefined;
+const undefineVarSomeone = (data: LunaticData, modePersistence: ModePersistenceEnum, index: number) => {
+    const dataCollected = data.COLLECTED;
+    if (dataCollected) {
+        const fieldNames = [
+            FieldNameEnum.CHILD,
+            FieldNameEnum.COUPLE,
+            FieldNameEnum.PARENTS,
+            FieldNameEnum.OTHERKNOWN,
+            FieldNameEnum.OTHER,
+        ];
+
+        fieldNames.forEach(fieldName => {
+            const field = getVarBooleanModepersistance(dataCollected, modePersistence, fieldName);
+            if (field) {
+                field[index] = null;
+            }
+        });
+    }
+};
+
+const undefineVarSecondaryActivity = (
+    data: LunaticData,
+    modePersistence: ModePersistenceEnum,
+    index: number,
+) => {
+    const dataCollected = data.COLLECTED;
+    const modeInterviewer = modePersistence == ModePersistenceEnum.COLLECTED;
+    if (dataCollected) {
+        const fieldNames = [FieldNameEnum.SECONDARYACTIVITY, FieldNameEnum.SECONDARYACTIVITY_LABEL];
+
+        fieldNames.forEach(fieldName => {
+            const fieldData = (
+                modeInterviewer ? dataCollected[fieldName].COLLECTED : dataCollected[fieldName].EDITED
+            ) as (string | null)[];
+
+            if (fieldData) fieldData[index] = null;
+        });
+    }
+};
+
+const processArray = (array: (string | null)[] | undefined, callback: (index: number) => void) => {
+    if (array && array.length > 0) {
+        array.forEach((item, index) => {
+            if (item === "false") {
+                callback(index);
+            }
+        });
+    }
+};
+
+const fixConditionals = (data: LunaticData) => {
+    const withSomeone = data.COLLECTED?.[FieldNameEnum.WITHSOMEONE];
+    const withSecondaryActivity = data.COLLECTED?.[FieldNameEnum.WITHSECONDARYACTIVITY];
+    const modePersistence = getModePersistence(data);
+
+    const arrayWithSomeone =
+        modePersistence == ModePersistenceEnum.COLLECTED ? withSomeone?.COLLECTED : withSomeone?.EDITED;
+    const arrayWithSecondaryActivity =
+        modePersistence == ModePersistenceEnum.COLLECTED
+            ? withSecondaryActivity?.COLLECTED
+            : withSecondaryActivity?.EDITED;
+
+    processArray(arrayWithSomeone, index => {
+        undefineVarSomeone(data, modePersistence, index);
+    });
+
+    processArray(arrayWithSecondaryActivity, index => {
+        undefineVarSecondaryActivity(data, modePersistence, index);
+    });
+};
+
+const saveQualityScore = (idSurvey: string, data: LunaticData) => {
+    const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
+    const qualityScore = getQualityScore(idSurvey, activitiesRoutesOrGaps, overlaps, t);
+    const modePersistence = getModePersistence(data);
+    if (data?.COLLECTED?.[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS]) {
+        data.COLLECTED[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS] = {
+            COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? qualityScore.points : null,
+            EDITED: modePersistence == ModePersistenceEnum.EDITED ? qualityScore.points : null,
+            FORCED: null,
+            INPUTED: null,
+            PREVIOUS: null,
+        };
+    }
+    if (data?.COLLECTED?.[FieldNameEnum.QUALITY_SCORE]) {
+        data.COLLECTED[FieldNameEnum.QUALITY_SCORE] = {
+            COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? qualityScore.group : null,
+            EDITED: modePersistence == ModePersistenceEnum.EDITED ? qualityScore.group : null,
+            FORCED: null,
+            INPUTED: null,
+            PREVIOUS: null,
+        };
+    }
+    return data;
 };
 
 const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: number) => {
     const data = getData(idSurvey);
-    const dataCollected = data.COLLECTED != null ? data.COLLECTED : null;
+    const dataCollected = data.COLLECTED ?? null;
     if (dataCollected) {
         source.variables.forEach(variable => {
-            let value = dataCollected?.[variable.name]?.COLLECTED;
+            let value = getValueOfData(data, variable.name);
             if (Array.isArray(value)) {
                 if (value.length >= iteration + 1) {
                     value.splice(iteration, 1);
                 }
             }
         });
-        saveData(idSurvey, data);
+        saveData(idSurvey, data, false, true).then(() => {
+            return saveData(idSurvey, data);
+        });
     }
 };
 
+const mockActivitiesRoutesOrGaps = () => {
+    const activitiesRoutesOrGaps = [
+        {
+            activity: {
+                activityCode: "140",
+                activityLabel: "Manger",
+            },
+            durationLabel: "2h00",
+            durationMinutes: 120,
+            endTime: "14:00",
+            isRoute: false,
+            iteration: 0,
+            place: {
+                placeCode: "12",
+                placeLabel: "Lieu de travail ou d’études",
+            },
+            secondaryActivity: {
+                activityCode: "1",
+                activityLabel: '"Écouter la radio, des podcasts ou de la musique"',
+            },
+            startTime: "12:00",
+            withScreen: true,
+            withSecondaryActivity: false,
+            withSomeone: false,
+        },
+        {
+            endTime: "16:00",
+            isGap: true,
+            startTime: "14h00",
+        },
+        {
+            durationLabel: "2h00",
+            durationMinutes: 120,
+            endTime: "18:00",
+            isRoute: true,
+            iteration: 2,
+            meanOfTransportLabels: "Vélo (électrique ou non)",
+            route: {
+                routeCode: "1",
+                routeLabel: "Trajet Domicile - Travail",
+            },
+            startTime: "16:00",
+            withScreen: false,
+            withSecondaryActivity: false,
+            withSomeone: false,
+        },
+    ];
+    return activitiesRoutesOrGaps;
+};
+
+const mockData = () => {
+    const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
+    let dataAct = getData(idSurvey ?? "");
+
+    if (dataAct?.COLLECTED) {
+        if (dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_ID])
+            dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_ID].COLLECTED = null;
+        if (dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED])
+            dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED].COLLECTED = null;
+        if (dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_LABEL])
+            dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_LABEL].COLLECTED = null;
+        if (dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_SUGGESTERID])
+            dataAct.COLLECTED[FieldNameEnum.MAINACTIVITY_SUGGESTERID].COLLECTED = null;
+    }
+    return dataAct;
+};
+
+const surveyReadOnly = (rightsSurvey: EdtSurveyRightsEnum): boolean => {
+    return [EdtSurveyRightsEnum.READ_INTERVIEWER, EdtSurveyRightsEnum.READ_REVIEWER].includes(
+        rightsSurvey,
+    );
+};
+
 export {
-    getActivitiesOrRoutes,
+    convertStringToBoolean,
+    deleteActivity,
+    fixConditionals,
     getActivitesSelectedLabel,
+    getActivitiesOrRoutes,
+    getActivityLabel,
     getActivityOrRouteDurationLabel,
     getActivityOrRouteDurationLabelFromDurationMinutes,
-    getActivityLabel,
     getLabelFromTime,
-    getTotalTimeOfActivities,
     getScore,
+    getTotalTimeOfActivities,
     getWeeklyPlannerScore,
-    deleteActivity,
+    mockActivitiesRoutesOrGaps,
+    mockData,
+    saveQualityScore,
+    surveyReadOnly,
 };

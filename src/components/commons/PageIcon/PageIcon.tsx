@@ -1,19 +1,16 @@
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { ReactElement } from "react";
 import { makeStyles } from "tss-react/mui";
 
 interface PageIconProps {
-    srcIcon: string;
-    altIcon: string;
+    icon: ReactElement<any>;
+    withMargin?: boolean;
 }
 
 const PageIcon = (props: PageIconProps) => {
-    const { srcIcon, altIcon } = props;
+    const { icon, withMargin = true } = props;
     const { classes } = useStyles();
-    return (
-        <FlexCenter className={classes.spacing}>
-            <img src={srcIcon} alt={altIcon} />
-        </FlexCenter>
-    );
+    return <FlexCenter className={withMargin ? classes.spacing : ""}>{icon}</FlexCenter>;
 };
 
 const useStyles = makeStyles({ "name": { PageIcon } })(() => ({

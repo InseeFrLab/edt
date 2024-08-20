@@ -27,7 +27,7 @@ const getLabelsWhenQuit = (isRoute?: boolean) => {
         content: isRoute
             ? t("page.alert-when-quit.route.alert-content")
             : t("page.alert-when-quit.activity.alert-content"),
-        cancel: t("page.alert-when-quit.alert-cancel"),
+        cancel: t("page.alert-when-quit.alert-undo"),
         complete: t("page.alert-when-quit.alert-complete"),
     };
 

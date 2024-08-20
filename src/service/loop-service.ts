@@ -3,6 +3,7 @@ import {
     CODES_ACTIVITY_IGNORE_GOAL,
     CODES_ACTIVITY_IGNORE_LOCATION,
     CODES_ACTIVITY_IGNORE_SCREEN,
+    CODES_ACTIVITY_IGNORE_SECONDARY_ACTIVITY,
     CODES_ACTIVITY_IGNORE_SOMEONE,
 } from "constants/constants";
 import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
@@ -20,6 +21,7 @@ import {
     getData,
     getDatas,
     getValue,
+    getValueOfData,
     getVariable,
     saveData,
     setValue,
@@ -37,8 +39,9 @@ import {
     getCurrentNavigatePath,
     getLoopPage,
     getOrchestratorPage,
-    saveAndLoopNavigate,
+    saveAndLoopNavigateLocally,
     saveAndNav,
+    saveAndNavLocally,
 } from "./navigation-service";
 import { getNomenclatureRef } from "./referentiel-service";
 
@@ -51,26 +54,26 @@ loopPageInfo.set(LoopEnum.ACTIVITY_OR_ROUTE, {
 });
 
 const getLoopInitialPage = (loop: LoopEnum): string => {
-    return loopPageInfo.get(loop)?.loopInitialPage || "";
+    return loopPageInfo.get(loop)?.loopInitialPage ?? "";
 };
 
 const getLoopInitialSubPage = (loop: LoopEnum): string => {
-    return loopPageInfo.get(loop)?.loopInitialSubpage || "";
+    return loopPageInfo.get(loop)?.loopInitialSubpage ?? "";
 };
 
 const getLoopInitialSequencePage = (loop: LoopEnum): string => {
-    return loopPageInfo.get(loop)?.loopInitialSequencePage || "";
+    return loopPageInfo.get(loop)?.loopInitialSequencePage ?? "";
 };
 
 const LOOP_PAGES_CONDITIONALS = ["4.7", "4.10"];
 
 const getValueOfActivity = (data: LunaticData | undefined, iteration: number) => {
-    const activityCategory = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_ID]?.COLLECTED;
+    const activityCategory = getValueOfData(data, FieldNameEnum.MAINACTIVITY_ID);
     if (Array.isArray(activityCategory) && activityCategory[iteration] != null) {
         return activityCategory[iteration] as string;
     }
 
-    const activityAutoComplete = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_SUGGESTERID]?.COLLECTED;
+    const activityAutoComplete = getValueOfData(data, FieldNameEnum.MAINACTIVITY_SUGGESTERID);
     if (Array.isArray(activityAutoComplete) && activityAutoComplete[iteration] != null) {
         return (activityAutoComplete[iteration] as string).split("-")[0];
     }
@@ -98,6 +101,43 @@ const ignoreActivity = (
     }
     return false;
 };
+
+const getStringOrEmpty = (text: string | undefined) => {
+    return text ?? "";
+};
+
+const ignoreIfContidional = (conditional: string | boolean, ignore: boolean) => {
+    if (typeof conditional == "string") ignore = conditional.length > 0;
+    if (typeof conditional == "boolean") ignore = conditional;
+    return ignore;
+};
+
+/**
+ * ignore all variables of composant if it's added one of dependencies of component
+ */
+const ifIgnoreVariables = (
+    component: LunaticModelComponent | undefined,
+    data: LunaticData | undefined,
+    iteration: number,
+    mustShowPageOfConditional: boolean,
+) => {
+    //in page of conditional select yes
+    if (mustShowPageOfConditional) {
+        let ignore = false;
+        const deps = component?.bindingDependencies; //values of composant
+        deps?.forEach(dep => {
+            const value = getValueOfData(data, getStringOrEmpty(dep));
+            if (Array.isArray(value) && value[iteration] != null) {
+                const conditional = value[iteration] as string | boolean;
+                if (!ignore) {
+                    ignore = ignoreIfContidional(conditional, ignore);
+                }
+            }
+        });
+        return ignore;
+    } //other, skip variables of conditional
+    else return true;
+};
 /**
  * Skip pages conditionals
  * if conditional value is false or
@@ -116,36 +156,19 @@ const ignoreVariablesCondtionals = (
     iteration: number,
 ) => {
     const pageOfConditional = Number(component?.page?.split(".")[1]) - 1;
-    const isPageOfConditional = LOOP_PAGES_CONDITIONALS.indexOf(component?.page ?? "") >= 0;
+    const isPageOfConditional = LOOP_PAGES_CONDITIONALS.indexOf(getStringOrEmpty(component?.page)) >= 0;
 
     const componentConditional = loopComponents.find(
         component => component.page == component?.page?.split(".")[0] + "." + pageOfConditional,
     );
     const depConditional = componentConditional?.bindingDependencies?.[0];
-    const valueOfConditional = data?.COLLECTED?.[depConditional ?? ""]?.COLLECTED as boolean[];
+    const valueOfConditional = getValueOfData(data, getStringOrEmpty(depConditional)) as string[];
 
     //is page of values of conditional = true
     if (isPageOfConditional) {
         const mustShowPageOfConditional =
-            valueOfConditional[iteration] != null && valueOfConditional[iteration];
-        //in page of conditional select yes
-        if (mustShowPageOfConditional) {
-            let ignore = false;
-            const deps = component?.bindingDependencies; //values of composant
-            //ignore all variables of composant if it's added one of dependencies of component
-            deps?.forEach(dep => {
-                const value = data?.COLLECTED?.[dep ?? ""]?.COLLECTED;
-                if (Array.isArray(value) && value[iteration] != null) {
-                    const conditional = value[iteration] as string | boolean;
-                    if (!ignore) {
-                        if (typeof conditional == "string") ignore = conditional.length > 0;
-                        if (typeof conditional == "boolean") ignore = conditional;
-                    }
-                }
-            });
-            return ignore;
-        } //other, skip variables of conditional
-        else return true;
+            valueOfConditional?.[iteration] != null && valueOfConditional?.[iteration] == "true";
+        return ifIgnoreVariables(component, data, iteration, mustShowPageOfConditional);
     } else return false;
 };
 
@@ -160,9 +183,8 @@ const ignoreDepsActivity = (
         (component?.bindingDependencies?.indexOf(variable?.name ?? "") ?? -1) >= 0;
     if (variableActivity) {
         let oneActivityIsAdded = false;
-        const activityCategory = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_ID]?.COLLECTED;
-        const isFullyCompleted =
-            data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED]?.COLLECTED;
+        const activityCategory = getValueOfData(data, FieldNameEnum.MAINACTIVITY_ID);
+        const isFullyCompleted = getValueOfData(data, FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED);
 
         if (
             Array.isArray(activityCategory) &&
@@ -174,13 +196,12 @@ const ignoreDepsActivity = (
             oneActivityIsAdded = true;
         }
 
-        const activityAutoComplete =
-            data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_SUGGESTERID]?.COLLECTED;
+        const activityAutoComplete = getValueOfData(data, FieldNameEnum.MAINACTIVITY_SUGGESTERID);
         if (Array.isArray(activityAutoComplete) && activityAutoComplete[iteration] != null) {
             oneActivityIsAdded = true;
         }
 
-        const newActivity = data?.COLLECTED?.[FieldNameEnum.MAINACTIVITY_LABEL]?.COLLECTED;
+        const newActivity = getValueOfData(data, FieldNameEnum.MAINACTIVITY_LABEL);
         if (Array.isArray(newActivity) && newActivity[iteration] != null) {
             oneActivityIsAdded = true;
         }
@@ -213,14 +234,20 @@ const ignoreDeps = (
     let ignoreSomeone = ignoreActivity(component, data, iteration, EdtRoutesNameEnum.WITH_SOMEONE);
     let ignoreScreen = ignoreActivity(component, data, iteration, EdtRoutesNameEnum.WITH_SCREEN);
     let ignoreGoal = ignoreActivity(component, data, iteration, EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL);
+    let ignoreSecondaryActivity = ignoreActivity(
+        component,
+        data,
+        iteration,
+        EdtRoutesNameEnum.SECONDARY_ACTIVITY,
+    );
 
-    const filtrerActivities = ignoreLocation || ignoreSomeone || ignoreScreen || ignoreGoal;
+    const filtrerActivities =
+        ignoreLocation || ignoreSomeone || ignoreScreen || ignoreGoal || ignoreSecondaryActivity;
 
     let toIgnoreActivity = ignoreDepsActivity(variable, component, data, iteration);
     let toIgnoreIfInputInCheckboxGroup =
         component?.componentType == "CheckboxGroupEdt" &&
         ignoreDepsOfCheckboxGroup(component, data, iteration);
-
     return (
         toIgnore ||
         filtrerActivities ||
@@ -241,7 +268,7 @@ const ignoreDepsOfCheckboxGroup = (
 ) => {
     let existOneDepAdded = false;
     component?.bindingDependencies?.forEach(dep => {
-        const value = data?.COLLECTED?.[dep ?? ""]?.COLLECTED;
+        const value = getValueOfData(data, dep ?? "");
         if (Array.isArray(value) && value[iteration] != null) {
             const conditional = value[iteration] as string | boolean;
             if (conditional) existOneDepAdded = true;
@@ -253,6 +280,9 @@ const ignoreDepsOfCheckboxGroup = (
 const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
     let codesToIgnore;
     let listToIgnore: string[] = [];
+
+    const activityCodeOrSuggesterCode =
+        activityCode.split("-").length > 1 ? activityCode.split("-")[0] : activityCode;
 
     switch (page) {
         case EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL:
@@ -267,13 +297,16 @@ const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
         case EdtRoutesNameEnum.WITH_SCREEN:
             listToIgnore = CODES_ACTIVITY_IGNORE_SCREEN;
             break;
+        case EdtRoutesNameEnum.SECONDARY_ACTIVITY:
+            listToIgnore = CODES_ACTIVITY_IGNORE_SECONDARY_ACTIVITY;
+            break;
         default:
             listToIgnore = [];
             break;
     }
 
     codesToIgnore = getAllCodesFromActivitiesCodes(listToIgnore);
-    const exist = codesToIgnore.indexOf(activityCode) >= 0;
+    const exist = codesToIgnore.indexOf(activityCodeOrSuggesterCode) >= 0;
     return exist;
 };
 
@@ -317,12 +350,13 @@ const skipNextPage = (
         : undefined;
     const nextCurrentPage = getNextLoopPage(currentPage, isRoute);
     const nextPageNextLoop = skipAllNextPage(idSurvey, source, iteration, nextCurrentPage, isRoute);
-
     if (
         nextPageRoute == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER ||
         (nextPageRoute == null && nextPageNextLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)
     ) {
+        //console.log("skipNextPage -> nextPageRoute", nextPageRoute);
         saveAndNav(
+            idSurvey,
             getCurrentNavigatePath(
                 idSurvey,
                 EdtRoutesNameEnum.ACTIVITY,
@@ -331,8 +365,11 @@ const skipNextPage = (
             ),
         );
     } else {
-        saveAndLoopNavigate(
-            nextPageRoute || nextPageNextLoop,
+        //console.log('Skip Next page navigate locally')
+        saveAndLoopNavigateLocally(
+            idSurvey,
+            source,
+            nextPageRoute ?? nextPageNextLoop,
             LoopEnum.ACTIVITY_OR_ROUTE,
             iteration,
             fieldConditionNext,
@@ -371,7 +408,8 @@ const skipBackPage = (
         backPageRoute == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER ||
         backPageBackLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER
     ) {
-        saveAndNav(
+        saveAndNavLocally(
+            idSurvey,
             getCurrentNavigatePath(
                 idSurvey,
                 EdtRoutesNameEnum.ACTIVITY,
@@ -380,8 +418,10 @@ const skipBackPage = (
             ),
         );
     } else {
-        saveAndLoopNavigate(
-            backPageRoute || backPageBackLoop,
+        saveAndLoopNavigateLocally(
+            idSurvey,
+            source,
+            backPageRoute ?? backPageBackLoop,
             LoopEnum.ACTIVITY_OR_ROUTE,
             iteration,
             fieldConditionBack,
@@ -459,12 +499,19 @@ const findItemInCategoriesNomenclature = (
     id: string | undefined,
     referentiel: NomenclatureActivityOption[],
     parent?: NomenclatureActivityOption,
-): { item: NomenclatureActivityOption; parent: NomenclatureActivityOption | undefined } | undefined => {
+):
+    | {
+          item: NomenclatureActivityOption;
+          parent: NomenclatureActivityOption | undefined;
+          index?: number;
+      }
+    | undefined => {
     let res = referentiel.find(a => a.id === id);
     if (res) {
         return {
             item: res,
             parent: parent,
+            index: referentiel.findIndex(a => a.id === id),
         };
     } else {
         for (let ref of referentiel) {
@@ -494,8 +541,9 @@ const getAllCodesFromActivitiesCodes = (listAIgnorer: string[]) => {
             codesActivity.push(code);
         }
         const findCategory = findItemInCategoriesNomenclature(code.toString(), categoriesActivity);
-        if (findCategory?.item?.subs) {
-            for (let category of findCategory?.item?.subs) {
+        const subs = findCategory?.item?.subs;
+        if (subs) {
+            for (let category of subs) {
                 if (codesActivity.indexOf(category.id) < 0) {
                     codesActivity.push(category.id);
                     getCodesSubCategories(category.id, codesActivity, categoriesActivity);
@@ -518,14 +566,19 @@ const getCodesSubCategories = (
     categoriesActivity: NomenclatureActivityOption[],
 ) => {
     const findCategory = findItemInCategoriesNomenclature(code.toString(), categoriesActivity);
-    if (findCategory?.item?.subs) {
-        for (let category of findCategory?.item?.subs) {
+    const subs = findCategory?.item?.subs;
+    if (subs) {
+        for (let category of subs) {
             if (codesActivity.indexOf(category.id) < 0) {
                 codesActivity.push(category.id);
                 getCodesSubCategories(category.id, codesActivity, categoriesActivity);
             }
         }
     }
+};
+
+const setIfLoopCompleted = (components: LunaticModelComponent[], notFilled: boolean, i: number) => {
+    return i == components.length && !notFilled;
 };
 
 // Give the first loop subpage that don't have any data fill
@@ -569,7 +622,7 @@ const getCurrentLoopPage = (
         }
         i++;
     }
-    if (i == components.length && !notFilled) completed = true;
+    completed = setIfLoopCompleted(components, notFilled, i);
     setLoopCompleted(idSurvey, iteration, completed);
 
     if (completed) {
@@ -580,6 +633,7 @@ const getCurrentLoopPage = (
     return { step: currentLoopSubpage, completed: false };
 };
 
+//TODO: Edit this function to send state data with COMPLETED status instead
 const setLoopCompleted = (idSurvey: string, iteration: number | undefined, isCompleted: boolean) => {
     const completed = setValue(idSurvey, FieldNameEnum.ISCOMPLETED, isCompleted, iteration);
     if (completed) {
@@ -611,7 +665,7 @@ const getLoopSizeOfVariable = (
     currentLoopSize: number,
 ): number => {
     if (variable) {
-        const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+        const value = getValueOfData(data, variable.name);
         if (Array.isArray(value) && value[0] !== null) {
             return Math.max(currentLoopSize, value.length);
         } else return currentLoopSize;
@@ -619,7 +673,7 @@ const getLoopSizeOfVariable = (
 };
 
 const getLoopSize = (idSurvey: string, currentLoop: LoopEnum, sourceModel?: LunaticModel): number => {
-    const source = sourceModel != null ? sourceModel : getCurrentPageSource();
+    const source = sourceModel ?? getCurrentPageSource();
     const loopPage = getLoopInitialPage(currentLoop);
     if (!source?.components) {
         return 0;
@@ -643,12 +697,14 @@ const getLoopSize = (idSurvey: string, currentLoop: LoopEnum, sourceModel?: Luna
 
 const setLoopSize = (source: LunaticModel, currentLoop: LoopEnum, size: number): number => {
     const initialLoopPage = getLoopInitialPage(currentLoop);
-    const loop = source.components.find(composant => composant.page === initialLoopPage);
+    const loop = source?.components?.find(composant => composant.page === initialLoopPage);
+    let loopSize = 0;
     if (loop && loop.iterations) {
         loop.iterations.value = size.toString();
-        return +loop.iterations.value;
+        loopSize = +loop.iterations.value;
     }
-    return 0;
+    localStorage.setItem("loopSize", loopSize.toString());
+    return loopSize;
 };
 
 const haveVariableNotFilled = (
@@ -665,7 +721,7 @@ const haveVariableNotFilled = (
     variables.forEach(v => {
         const variable = getVariable(source, v);
         if (!ignoreDeps(variable, loopComponents, component, data, iteration, isRoute) && variable) {
-            const value = data?.COLLECTED?.[variable.name]?.COLLECTED;
+            const value = getValueOfData(data, variable.name);
             if (Array.isArray(value) && value[iteration] != null) {
                 filled = false;
             } else {
@@ -677,17 +733,17 @@ const haveVariableNotFilled = (
 };
 
 export {
-    getLoopInitialPage,
-    getLoopInitialSubPage,
-    getLoopInitialSequencePage,
+    activityIgnore,
+    filtrePage,
+    getAllCodesFromActivitiesCodes,
     getCurrentLoopPage,
+    getLoopInitialPage,
+    getLoopInitialSequencePage,
+    getLoopInitialSubPage,
     getLoopLastCompletedStep,
     getLoopSize,
-    setLoopSize,
-    activityIgnore,
     getValueOfActivity,
-    filtrePage,
-    skipNextPage,
+    setLoopSize,
     skipBackPage,
-    getAllCodesFromActivitiesCodes,
+    skipNextPage,
 };

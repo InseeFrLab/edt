@@ -9,9 +9,12 @@ import SurveyPageHeader from "components/commons/SurveyPage/SurveyPageHeader/Sur
 import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
 import EndActivityStepper from "components/edt/EndActivityStepper/EndActivityStepper";
-import React, { useEffect } from "react";
+import { LunaticModel } from "interface/lunatic/Lunatic";
+import React, { ReactElement, useEffect } from "react";
+import { isAndroid, isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { getLastCompletedStep } from "service/navigation-service";
+import { isMobile, isPwa } from "service/responsive";
 import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
 import { getScore } from "service/survey-activity-service";
 
@@ -19,12 +22,11 @@ interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;
     className?: string;
     validate?(): void;
-    onFinish?(): void;
+    onFinish?(idSurvey: string, source?: LunaticModel): void;
     onAdd?(): void;
     finishLabel?: string;
     addLabel?: string;
-    srcIcon?: string;
-    altIcon?: string;
+    icon?: ReactElement<any>;
     onNavigateBack?(): void;
     firstName?: string;
     firstNamePrefix?: string;
@@ -41,16 +43,17 @@ interface SurveyPageProps {
     currentStepLabel?: string;
     backgroundWhiteHeader?: boolean;
     activityProgressBar?: boolean;
-    idSurvey?: string;
+    idSurvey: string;
     score?: number;
+    helpStep?: number;
+    modifiable?: boolean;
 }
 
 const SurveyPage = (props: SurveyPageProps) => {
     const {
         children,
         className,
-        srcIcon,
-        altIcon,
+        icon,
         validate,
         onFinish,
         onAdd,
@@ -74,10 +77,21 @@ const SurveyPage = (props: SurveyPageProps) => {
         activityProgressBar = false,
         idSurvey,
         score,
+        helpStep,
+        modifiable = true,
     } = props;
     const { t } = useTranslation();
-    const { classes, cx } = useStyles();
 
+    const isMobileNav = !isPwa && (isIOS || isAndroid || isMobile());
+    const headerHeight = document.getElementById(
+        t("accessibility.component.survey-selecter.id"),
+    )?.clientHeight;
+
+    const windowHeight = isMobileNav ? window.innerHeight : window.innerHeight - (headerHeight ?? 0);
+
+    const { classes, cx } = useStyles({
+        "innerHeight": windowHeight,
+    });
     const [scoreAct, setScoreAct] = React.useState<number | undefined>(score);
 
     useEffect(() => {
@@ -94,7 +108,6 @@ const SurveyPage = (props: SurveyPageProps) => {
             )
         );
     };
-
     return (
         <Box className={cx(classes.page, className)}>
             {!simpleHeader && firstName && surveyDate && onNavigateBack && (
@@ -111,6 +124,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                     onNavigateBack={onPrevious}
                     onEdit={onEdit}
                     onHelp={onHelp}
+                    modifiable={modifiable}
                 />
             )}
             {simpleHeader && onNavigateBack && (
@@ -127,14 +141,14 @@ const SurveyPage = (props: SurveyPageProps) => {
                             activityComplementaryQuestionsStepperData.length - 1
                         ].stepNumber
                     }
-                    lastCompletedStepNumber={getLastCompletedStep()}
+                    lastCompletedStepNumber={getLastCompletedStep(idSurvey ?? "")}
                     currentStepNumber={currentStepNumber}
                     currentStepLabel={currentStepLabel}
                 />
             )}
             {renderProgressBar()}
             <Box className={classes.content}>
-                {srcIcon && altIcon && <PageIcon srcIcon={srcIcon} altIcon={altIcon} />}
+                {icon && <PageIcon icon={icon} />}
                 {children}
             </Box>
 
@@ -154,7 +168,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                     <ValidateButton
                         onClick={validate}
                         text={t("common.navigation.validate")}
-                        disabled={disableNav}
+                        disabled={modifiable ? disableNav : true}
                     />
                 </FlexCenter>
             )}
@@ -165,6 +179,8 @@ const SurveyPage = (props: SurveyPageProps) => {
                         onClickAdd={onAdd}
                         finishLabel={finishLabel}
                         addLabel={addLabel}
+                        helpStep={helpStep}
+                        modifiable={modifiable}
                     />
                 </FlexCenter>
             )}
@@ -172,14 +188,15 @@ const SurveyPage = (props: SurveyPageProps) => {
     );
 };
 
-const useStyles = makeStylesEdt({ "name": { NavButton: SurveyPage } })(theme => ({
+const useStyles = makeStylesEdt<{
+    innerHeight: number;
+}>({ "name": { NavButton: SurveyPage } })((theme, { innerHeight }) => ({
     page: {
         flexGrow: "1",
         display: "flex",
         flexDirection: "column",
-        maxHeight: "100%",
-        height: "100%",
-        overflow: "auto",
+        overflow: "hidden !important",
+        height: innerHeight,
     },
     content: {
         flexGrow: "1",
