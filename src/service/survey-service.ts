@@ -551,7 +551,7 @@ const getRemoteSavedSurveyData = (
                     if (shouldSaveRemoteData(remoteSurveyData, localSurveyData)) {
                         // TEMP: WeeklyPlanner stuff (to be removed)
                         //TODO: fix a bug where other variable are overwrited if there is no weeklyPlanner
-                        const weeklyPlanner = localSurveyData?.COLLECTED?.WEEKLYPLANNER;
+                        const weeklyPlanner = localSurveyData?.COLLECTED?.WEEKLYPLANNER ?? null;
                         if (weeklyPlanner) {
                             remoteSurveyData.COLLECTED.WEEKLYPLANNER = weeklyPlanner;
                         }

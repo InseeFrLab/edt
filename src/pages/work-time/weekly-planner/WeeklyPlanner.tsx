@@ -136,6 +136,7 @@ const WeeklyPlannerPage = () => {
     };
 
     // TODO: Fix the addition of "S_" prefix to the variable name (response.names)
+    // This also causes the total work time to be set to zero as lunatic-edt does not recognize the variable name
     const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
         const callbackData = getData(idSurvey);
         const dataCopy = { ...callbackData };
