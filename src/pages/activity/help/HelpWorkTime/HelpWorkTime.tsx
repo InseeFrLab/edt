@@ -35,7 +35,6 @@ import {
     isPageGlobal,
     navToHelp,
     navToHome,
-    saveAndNav,
     saveAndNavLocally,
 } from "service/navigation-service";
 import { getLanguage } from "service/referentiel-service";
