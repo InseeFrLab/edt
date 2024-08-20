@@ -486,18 +486,6 @@
             "variableType": "COLLECTED"
         },
         {
-            "name": "ISVALIDATED",
-            "values": {
-                "EDITED": null,
-                "FORCED": null,
-                "INPUTED": null,
-                "PREVIOUS": null,
-                "COLLECTED": null
-            },
-            "componentRef": "",
-            "variableType": "COLLECTED"
-        },
-        {
             "name": "ISLOCKED",
             "values": {
                 "EDITED": null,

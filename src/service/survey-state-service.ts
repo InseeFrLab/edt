@@ -26,30 +26,11 @@ const isDemoMode = () => {
     return getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
 };
 
-const isSurveyLocked = (idSurvey: string) => {
-    const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
-    return (isLocked != null && isLocked) || existVariableEdited(idSurvey);
-};
-
-// const surveyValidated = (idSurvey: string) => {
-//     const isValidated = getValue(idSurvey, FieldNameEnum.ISVALIDATED) as boolean;
-//     return isValidated != null && isValidated;
-// };
-
-// const surveyClosed = (idSurvey: string) => {
-//     const isClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
-//     return isClosed != null && isClosed;
-// };
-
 const isSurveyValidated = (idSurvey: string) => {
     const stateData = getSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.VALIDATED;
 };
 
-const isSurveyClosed = (idSurvey: string) => {
-    const stateData = getSurveyStateData(getData(idSurvey));
-    return stateData.state == StateDataStateEnum.COMPLETED;
-};
 const isSurveyStarted = (idSurvey: string) => {
     const stateData = getSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.INIT;
@@ -58,6 +39,16 @@ const isSurveyStarted = (idSurvey: string) => {
 const isSurveyCompleted = (idSurvey: string) => {
     const stateData = getSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.COMPLETED;
+};
+
+const isSurveyClosed = (idSurvey: string) => {
+    const isClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
+    return isClosed != null && isClosed;
+};
+
+const isSurveyLocked = (idSurvey: string) => {
+    const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
+    return (isLocked != null && isLocked) || existVariableEdited(idSurvey);
 };
 
 const getStatutSurvey = (idSurvey: string) => {
