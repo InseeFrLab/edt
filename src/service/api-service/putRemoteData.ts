@@ -95,7 +95,7 @@ const requestPutDataReviewer = (
 ): Promise<LunaticData> => {
     console.log("requestPutDataReviewer", data);
     data.COLLECTED = transformCollectedArray(data?.COLLECTED);
-    //TODO: Find another solution to avoid ui bug
+    //TODO: Find another solution to avoid ui problem
     delete data.COLLECTED?.WEEKLYPLANNER;
     return new Promise<LunaticData>(resolve => {
         axios

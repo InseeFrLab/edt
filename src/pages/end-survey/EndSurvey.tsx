@@ -81,7 +81,7 @@ const EndSurveyPage = () => {
     };
 
     const saveDataAndInit = useCallback((surveyData: SurveyData, forceUpdate?: boolean) => {
-        saveData(idSurvey, surveyData.data, false, forceUpdate).then(() => {
+        saveData(idSurvey, surveyData, false, forceUpdate).then(() => {
             initializeSurveysDatasCache().finally(() => {
                 setIsModalDisplayed(true);
             });
@@ -112,10 +112,10 @@ const EndSurveyPage = () => {
         if (!isDemoMode && navigator.onLine) {
             if (isReviewer()) {
                 return remotePutSurveyDataReviewer(idSurvey, stateData, surveyData.data)
-                    .then(handleSuccess)
+                    .then(navToHome)
                     .catch(handleError);
             } else {
-                return remotePutSurveyData(idSurvey, surveyData).then(handleSuccess).catch(handleError);
+                return remotePutSurveyData(idSurvey, surveyData).then(navToHome).catch(handleError);
             }
         } else {
             return saveDataAndInit(surveyData, true);

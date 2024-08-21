@@ -577,6 +577,7 @@ const getCodesSubCategories = (
     }
 };
 
+//TODO: Fix isCompleted here
 const setIfLoopCompleted = (components: LunaticModelComponent[], notFilled: boolean, i: number) => {
     return i == components.length && !notFilled;
 };
@@ -635,7 +636,9 @@ const getCurrentLoopPage = (
 
 //TODO: Edit this function to send state data with COMPLETED status instead
 const setLoopCompleted = (idSurvey: string, iteration: number | undefined, isCompleted: boolean) => {
+    console.log("setLoopCompleted ", idSurvey, iteration, isCompleted);
     const completed = setValue(idSurvey, FieldNameEnum.ISCOMPLETED, isCompleted, iteration);
+    console.log("setLoopCompleted -> completed", completed);
     if (completed) {
         saveData(idSurvey, completed);
     }
