@@ -55,7 +55,6 @@ import {
 import { EdtUserRightsEnum } from "./../enumerations/EdtUserRightsEnum";
 import { LunaticData } from "./../interface/lunatic/Lunatic";
 import {
-    fetchSurveysSourcesByIds,
     fetchUserSurveysInfo,
     remoteGetSurveyData,
     remoteGetSurveyDataReviewer,
@@ -235,23 +234,21 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                 [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
                 [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
             };
+            const sources: SourceData = {
+                [SourcesEnum.ACTIVITY_SURVEY]: edtActivitySurvey,
+                [SourcesEnum.WORK_TIME_SURVEY]: edtWorkTimeSurvey,
+            };
             const innerPromises: Promise<any>[] = [
                 getRemoteSavedSurveysDatas(allSurveysIds, setError).then(() => {
                     return initializeSurveysDatasCache(allSurveysIds);
                 }),
                 saveSurveysIds(surveysIds),
-                fetchSurveysSourcesByIds(
-                    [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY],
-                    setError,
-                ).then(sources => {
-                    const inerFetchPromises: Promise<any>[] = [
-                        saveSources(sources),
-                        saveUserSurveysData({ data: userDatas }),
-                    ];
-                    return Promise.all(inerFetchPromises);
-                }),
             ];
-            return Promise.all(innerPromises);
+            const inerFetchPromises: Promise<any>[] = [
+                saveSources(sources),
+                saveUserSurveysData({ data: userDatas }),
+            ];
+            return Promise.all([...innerPromises, ...inerFetchPromises]);
         });
     } else {
         return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {

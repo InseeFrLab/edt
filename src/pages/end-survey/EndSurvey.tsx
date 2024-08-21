@@ -101,10 +101,10 @@ const EndSurveyPage = () => {
             data: dataWithIsEnvoyed ?? callbackHolder.getData(),
         };
 
-        const handleSuccess = (surveyDataAnswer: any) => {
-            surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
-            return saveDataAndInit(surveyData, true);
-        };
+        // const handleSuccess = (surveyDataAnswer: any) => {
+        //     surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
+        //     return saveDataAndInit(surveyData, true);
+        // };
 
         const handleError = () => {
             setErrorSubmit(true);
