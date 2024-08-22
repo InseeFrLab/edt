@@ -172,8 +172,12 @@ const remoteGetSurveyData = (
             )
             .then(response => {
                 if (response.data.COLLECTED != null) {
-                    const revertedTranformedData = revertTransformedArray(response.data.COLLECTED);
-                    response.data.COLLECTED = revertedTranformedData;
+                    try {
+                        const revertedTranformedData = revertTransformedArray(response.data.COLLECTED);
+                        response.data.COLLECTED = revertedTranformedData;
+                    } catch (error) {
+                        console.error("Error reverting transformed data:", error);
+                    }
                     resolve(response.data);
                 }
                 resolve(response.data);
@@ -200,8 +204,12 @@ const requestGetDataReviewer = (
             )
             .then(response => {
                 if (response.data != null) {
-                    const revertedTranformedData = revertTransformedArray(response.data.COLLECTED);
-                    response.data.COLLECTED = revertedTranformedData;
+                    try {
+                        const revertedTranformedData = revertTransformedArray(response.data.COLLECTED);
+                        response.data.COLLECTED = revertedTranformedData;
+                    } catch (error) {
+                        console.error("Error reverting transformed data:", error);
+                    }
                     resolve(response.data);
                 } else {
                     resolve(response.data);
@@ -249,8 +257,8 @@ const requestGetSurveyDataReviewer = (
     idSurvey: string,
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<SurveyData> => {
-    return requestGetStateReviewer(idSurvey, setError).then((stateData: StateData) => {
-        return requestGetDataReviewer(idSurvey, setError).then(data => {
+    return requestGetDataReviewer(idSurvey, setError).then(data => {
+        return requestGetStateReviewer(idSurvey, setError).then((stateData: StateData) => {
             return new Promise(resolve => {
                 const surveyData: SurveyData = {
                     stateData: stateData,
