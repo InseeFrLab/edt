@@ -14,12 +14,13 @@ const requestPutSurveyData = (
     data: SurveyData,
     token?: string,
 ): Promise<SurveyData> => {
-    console.log("requestPutSurveyData", data);
     const collectedData = transformCollectedArray(data?.data?.COLLECTED);
     if (data.data) {
         data.data.COLLECTED = collectedData;
         delete data.data.COLLECTED?.WEEKLYPLANNER;
+        delete data.data.stateData;
     }
+    console.log("requestPutSurveyData", data);
     const stateData = data.stateData;
     const putLunaticData = axios.put(
         `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/data`,
@@ -68,7 +69,7 @@ const remotePutSurveyDataReviewer = (
     data: LunaticData,
 ): Promise<SurveyData> => {
     //Temporar check on token validity to avoid 401 error, if not valid, reload page
-    //#
+    //
     const now = new Date();
     const tokenExpiresAt = jwt<JwtPayload>(getUserToken() ?? "").exp;
     // * 1000 because tokenExpiresAt is in seconds and now.getTime() in milliseconds
@@ -95,7 +96,7 @@ const requestPutDataReviewer = (
 ): Promise<LunaticData> => {
     console.log("requestPutDataReviewer", data);
     data.COLLECTED = transformCollectedArray(data?.COLLECTED);
-    //TODO: Find another solution to avoid ui bug
+    //TODO: Find another solution to avoid ui problem
     delete data.COLLECTED?.WEEKLYPLANNER;
     return new Promise<LunaticData>(resolve => {
         axios

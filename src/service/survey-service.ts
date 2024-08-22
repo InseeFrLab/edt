@@ -55,7 +55,6 @@ import {
 import { EdtUserRightsEnum } from "./../enumerations/EdtUserRightsEnum";
 import { LunaticData } from "./../interface/lunatic/Lunatic";
 import {
-    fetchSurveysSourcesByIds,
     fetchUserSurveysInfo,
     remoteGetSurveyData,
     remoteGetSurveyDataReviewer,
@@ -235,23 +234,21 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                 [SurveysIdsEnum.ACTIVITY_SURVEYS_IDS]: activitySurveysIds,
                 [SurveysIdsEnum.WORK_TIME_SURVEYS_IDS]: workingTimeSurveysIds,
             };
+            const sources: SourceData = {
+                [SourcesEnum.ACTIVITY_SURVEY]: edtActivitySurvey,
+                [SourcesEnum.WORK_TIME_SURVEY]: edtWorkTimeSurvey,
+            };
             const innerPromises: Promise<any>[] = [
                 getRemoteSavedSurveysDatas(allSurveysIds, setError).then(() => {
                     return initializeSurveysDatasCache(allSurveysIds);
                 }),
                 saveSurveysIds(surveysIds),
-                fetchSurveysSourcesByIds(
-                    [SourcesEnum.ACTIVITY_SURVEY, SourcesEnum.WORK_TIME_SURVEY],
-                    setError,
-                ).then(sources => {
-                    const inerFetchPromises: Promise<any>[] = [
-                        saveSources(sources),
-                        saveUserSurveysData({ data: userDatas }),
-                    ];
-                    return Promise.all(inerFetchPromises);
-                }),
             ];
-            return Promise.all(innerPromises);
+            const inerFetchPromises: Promise<any>[] = [
+                saveSources(sources),
+                saveUserSurveysData({ data: userDatas }),
+            ];
+            return Promise.all([...innerPromises, ...inerFetchPromises]);
         });
     } else {
         return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {
@@ -750,7 +747,8 @@ const getData = (idSurvey: string): LunaticData => {
 };
 
 const getDataCache = (idSurvey: string) => {
-    return datas.get(idSurvey) ?? getItemFromSession(idSurvey);
+    const data = datas.get(idSurvey) ?? getItemFromSession(idSurvey);
+    return data;
 };
 
 const setDataCache = (idSurvey: string, data: LunaticData) => {
@@ -901,17 +899,15 @@ const saveData = (
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
 
     if (isChange) {
-        console.log("SaveRemote data", data.COLLECTED);
+        console.log("SaveRemote data", data);
 
         data = saveQualityScore(idSurvey, data);
-        stateData = getSurveyStateData(data);
 
         if (!navigator.onLine) {
             stateData.date = 0;
             data.stateData = stateData;
             return setLocalDatabase(stateData, data, idSurvey);
         }
-
         if (!isDemoMode && !localSaveOnly) {
             stateData.date = data.lastLocalSaveDate ?? Date.now();
             const surveyData: SurveyData = {
@@ -919,6 +915,7 @@ const saveData = (
                 data: data,
             };
             data.lastRemoteSaveDate = stateData.date;
+            console.log("StateData to save", stateData);
 
             if (isReviewerMode) {
                 return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
@@ -928,6 +925,7 @@ const saveData = (
                     return setLocalDatabase(stateData, data, idSurvey);
                 });
             } else {
+                //TODO: TEMP: need to figure out why there is still a state data here
                 return remotePutSurveyData(idSurvey, surveyData).then(() => {
                     data.stateData = stateData;
                     return setLocalDatabase(stateData, data, idSurvey);

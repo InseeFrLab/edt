@@ -28,7 +28,6 @@ import {
 import { isDesktop } from "service/responsive";
 import { getActivitiesOrRoutes, surveyReadOnly } from "service/survey-activity-service";
 import { getData, getValue, getValueOfData, saveDataLocally } from "service/survey-service";
-import { isSurveyCompleted } from "service/survey-state-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
 const ActivityDurationPage = () => {
@@ -173,7 +172,7 @@ const ActivityDurationPage = () => {
     };
 
     const onClose = (forceQuit: boolean) => {
-        const isCompleted = isSurveyCompleted(idSurvey);
+        const isCompleted = getValue(idSurvey, FieldNameEnum.ISCOMPLETED, currentIteration) as boolean;
         const isCloture = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
         if (!openSnackbar) {
             if (!isCompleted) {

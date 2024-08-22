@@ -633,7 +633,6 @@ const getCurrentLoopPage = (
     return { step: currentLoopSubpage, completed: false };
 };
 
-//TODO: Edit this function to send state data with COMPLETED status instead
 const setLoopCompleted = (idSurvey: string, iteration: number | undefined, isCompleted: boolean) => {
     const completed = setValue(idSurvey, FieldNameEnum.ISCOMPLETED, isCompleted, iteration);
     if (completed) {
