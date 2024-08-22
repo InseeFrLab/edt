@@ -747,7 +747,8 @@ const getData = (idSurvey: string): LunaticData => {
 };
 
 const getDataCache = (idSurvey: string) => {
-    return datas.get(idSurvey) ?? getItemFromSession(idSurvey);
+    const data = datas.get(idSurvey) ?? getItemFromSession(idSurvey);
+    return data;
 };
 
 const setDataCache = (idSurvey: string, data: LunaticData) => {
@@ -898,17 +899,15 @@ const saveData = (
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
 
     if (isChange) {
-        console.log("SaveRemote data", data.COLLECTED);
+        console.log("SaveRemote data", data);
 
         data = saveQualityScore(idSurvey, data);
-        stateData = getSurveyStateData(data);
 
         if (!navigator.onLine) {
             stateData.date = 0;
             data.stateData = stateData;
             return setLocalDatabase(stateData, data, idSurvey);
         }
-
         if (!isDemoMode && !localSaveOnly) {
             stateData.date = data.lastLocalSaveDate ?? Date.now();
             const surveyData: SurveyData = {
@@ -916,6 +915,7 @@ const saveData = (
                 data: data,
             };
             data.lastRemoteSaveDate = stateData.date;
+            console.log("StateData to save", stateData);
 
             if (isReviewerMode) {
                 return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
@@ -925,6 +925,7 @@ const saveData = (
                     return setLocalDatabase(stateData, data, idSurvey);
                 });
             } else {
+                //TODO: TEMP: need to figure out why there is still a state data here
                 return remotePutSurveyData(idSurvey, surveyData).then(() => {
                     data.stateData = stateData;
                     return setLocalDatabase(stateData, data, idSurvey);

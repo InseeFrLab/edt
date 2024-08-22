@@ -188,6 +188,31 @@ const remoteGetSurveyData = (
     });
 };
 
+const remoteGetSurveyStateData = (
+    idSurvey: string,
+    setError?: (error: ErrorCodeEnum) => void,
+): Promise<StateData> => {
+    return new Promise(resolve => {
+        axios
+            .get(
+                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
+                getHeader(stromaeBackOfficeApiBaseUrl),
+            )
+            .then(response => {
+                console.log("Get stateData", response.data);
+                const stateData: StateData = response.data;
+                resolve(stateData);
+            })
+            .catch(err => {
+                if (err.response?.status === 403) {
+                    setError?.(ErrorCodeEnum.NO_RIGHTS);
+                } else if (err.response?.status != 404) {
+                    setError?.(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
+                }
+            });
+    });
+};
+
 const requestGetDataReviewer = (
     idSurvey: string,
     setError: (error: ErrorCodeEnum) => void,
@@ -292,5 +317,6 @@ export {
     fetchSurveysSourcesByIds,
     fetchUserSurveysInfo,
     remoteGetSurveyData,
+    remoteGetSurveyStateData,
     remoteGetSurveyDataReviewer,
 };
