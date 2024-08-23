@@ -15,16 +15,17 @@ const requestPutSurveyData = (
     token?: string,
 ): Promise<SurveyData> => {
     const collectedData = transformCollectedArray(data?.data?.COLLECTED);
+    const stateData = data.stateData;
     if (data.data) {
         data.data.COLLECTED = collectedData;
-        delete data.data.COLLECTED?.WEEKLYPLANNER;
-        delete data.data.stateData;
     }
-    console.log("requestPutSurveyData", data);
-    const stateData = data.stateData;
+    const tempData = { ...data };
+    delete tempData.data.COLLECTED?.WEEKLYPLANNER;
+    delete tempData.data.stateData;
+    console.log("requestPutSurveyData", tempData);
     const putLunaticData = axios.put(
         `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/data`,
-        data.data,
+        tempData.data,
         getHeader(stromaeBackOfficeApiBaseUrl, token),
     );
 
@@ -68,8 +69,6 @@ const remotePutSurveyDataReviewer = (
     stateData: StateData,
     data: LunaticData,
 ): Promise<SurveyData> => {
-    //Temporar check on token validity to avoid 401 error, if not valid, reload page
-    //
     const now = new Date();
     const tokenExpiresAt = jwt<JwtPayload>(getUserToken() ?? "").exp;
     // * 1000 because tokenExpiresAt is in seconds and now.getTime() in milliseconds
@@ -96,13 +95,15 @@ const requestPutDataReviewer = (
 ): Promise<LunaticData> => {
     console.log("requestPutDataReviewer", data);
     data.COLLECTED = transformCollectedArray(data?.COLLECTED);
-    //TODO: Find another solution to avoid ui problem
-    delete data.COLLECTED?.WEEKLYPLANNER;
+    const tempData = { ...data };
+    delete tempData.COLLECTED?.WEEKLYPLANNER;
+    delete tempData.stateData;
+    console.log("requestPutSurveyData", tempData);
     return new Promise<LunaticData>(resolve => {
         axios
             .put(
                 stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
-                data,
+                tempData,
                 getHeader(stromaeBackOfficeApiBaseUrl, token),
             )
             .then(() => {

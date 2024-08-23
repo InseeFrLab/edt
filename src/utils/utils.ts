@@ -59,12 +59,13 @@ function getSurveyIdFromUrl(context: OrchestratorContext, location: Location) {
 }
 
 function addItemToSession(idSurvey: string, item: any) {
+    console.log("Add item to session", idSurvey, item);
     sessionStorage.setItem(idSurvey, JSON.stringify(item));
 }
 
 function getItemFromSession(idSurvey: string) {
-    console.log("getItemFromSession", idSurvey, sessionStorage.getItem(idSurvey));
-    return JSON.parse(sessionStorage.getItem(idSurvey ?? "") ?? "{}");
+    const item = JSON.parse(sessionStorage.getItem(idSurvey ?? "") ?? "{}");
+    return item;
 }
 
 function addArrayToSession(nameItem: string, array: any[]) {

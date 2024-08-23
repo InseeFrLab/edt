@@ -155,7 +155,6 @@ const validateAllEmptySurveys = (idHousehold: string) => {
             };
 
             const value = getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string;
-
             if (value == null || value.length == 0) {
                 data.stateData = validatedStateData;
                 promisesToWait.push(saveData(idSurvey, data, false, true, validatedStateData));

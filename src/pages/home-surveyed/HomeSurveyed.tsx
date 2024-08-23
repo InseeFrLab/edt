@@ -236,7 +236,6 @@ const HomeSurveyedPage = () => {
                 setInitialized(true);
             });
         });
-
         return (
             <>
                 {renderReminderNote()}
@@ -259,6 +258,7 @@ const HomeSurveyedPage = () => {
     const renderHomeInterviewer = () => {
         let userDataGroupedInterv = nameSurveyGroupMap();
         let groups = Object.keys(userDataGroupedInterv);
+        console.log("groups", groups);
         return (
             <>
                 {renderReminderNote()}
