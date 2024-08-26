@@ -203,7 +203,6 @@ const remoteGetSurveyStateData = (
                 getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {
-                console.log("Get stateData", response.data);
                 const stateData: StateData = response.data;
                 resolve(stateData);
             })
@@ -270,36 +269,12 @@ const requestGetDataReviewer = (
     });
 };
 
-const requestGetStateReviewer = (
-    idSurvey: string,
-    setError: (error: ErrorCodeEnum) => void,
-): Promise<StateData> => {
-    return new Promise<StateData>(resolve => {
-        axios
-            .get(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
-                getHeader(stromaeBackOfficeApiBaseUrl),
-            )
-            .then(response => {
-                resolve(response.data);
-            })
-            .catch(err => {
-                console.log(err);
-                if (err.response?.status === 403) {
-                    setError(ErrorCodeEnum.NO_RIGHTS);
-                } else {
-                    resolve(initStateData());
-                }
-            });
-    });
-};
-
 const requestGetSurveyDataReviewer = (
     idSurvey: string,
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<SurveyData> => {
     return requestGetDataReviewer(idSurvey, setError).then(data => {
-        return requestGetStateReviewer(idSurvey, setError).then((stateData: StateData) => {
+        return remoteGetSurveyStateData(idSurvey, setError).then((stateData: StateData) => {
             return new Promise(resolve => {
                 const surveyData: SurveyData = {
                     stateData: stateData,

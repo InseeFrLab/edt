@@ -27,17 +27,17 @@ const isDemoMode = () => {
 };
 
 const isSurveyValidated = (idSurvey: string) => {
-    const stateData = getSurveyStateData(getData(idSurvey));
+    const stateData = getLocalSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.VALIDATED;
 };
 
 const isSurveyStarted = (idSurvey: string) => {
-    const stateData = getSurveyStateData(getData(idSurvey));
+    const stateData = getLocalSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.INIT;
 };
 
 const isSurveyCompleted = (idSurvey: string) => {
-    const stateData = getSurveyStateData(getData(idSurvey));
+    const stateData = getLocalSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.COMPLETED;
 };
 
@@ -62,7 +62,7 @@ const getStatutSurvey = (idSurvey: string) => {
     } else return StateDataStateEnum.INIT;
 };
 
-const getSurveyStateData = (data: LunaticData): StateData => {
+const getLocalSurveyStateData = (data: LunaticData): StateData => {
     const lastRemoteDate = Date.now();
     const stateData: StateData = {
         state: data.stateData?.state ?? StateDataStateEnum.INIT,
@@ -124,7 +124,7 @@ const lockAllSurveys = (idHousehold: string) => {
 
 const validateSurvey = (idSurvey: string) => {
     const data = getData(idSurvey);
-    const stateData = getSurveyStateData(getData(idSurvey));
+    const stateData = getLocalSurveyStateData(getData(idSurvey));
     if (stateData.state != StateDataStateEnum.VALIDATED) {
         const validatedStateData: StateData = {
             idStateData: stateData.idStateData,
@@ -144,7 +144,7 @@ const validateAllEmptySurveys = (idHousehold: string) => {
 
     idSurveys.forEach((idSurvey: string) => {
         const data = getData(idSurvey || "");
-        const stateData = getSurveyStateData(data);
+        const stateData = getLocalSurveyStateData(data);
 
         if (stateData.state != StateDataStateEnum.VALIDATED) {
             const validatedStateData: StateData = {
@@ -179,7 +179,7 @@ export {
     isSurveyStarted,
     isSurveyCompleted,
     getStatutSurvey,
-    getSurveyStateData,
+    getLocalSurveyStateData,
     lockAllSurveys,
     lockSurvey,
     validateSurvey,

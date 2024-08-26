@@ -38,6 +38,7 @@ import { AuthContextProps } from "oidc-react";
 import { NavigateFunction } from "react-router-dom";
 import {
     fetchReviewerSurveysAssignments,
+    remoteGetSurveyStateData,
     requestGetDataReviewer,
 } from "service/api-service/getRemoteData";
 import { lunaticDatabase } from "service/lunatic-database";
@@ -71,7 +72,7 @@ import { remotePutSurveyData, remotePutSurveyDataReviewer } from "./api-service/
 import { fetchReferentiels } from "./api-service/getLocalSurveyData";
 import { fetchRemoteReferentiels } from "service/api-service/getRemoteData";
 import {
-    getSurveyStateData,
+    getLocalSurveyStateData,
     initStateData,
     isDemoMode,
     isSurveyClosed,
@@ -536,15 +537,15 @@ const getRemoteSavedSurveyData = (
         return Promise.reject(new Error("Offline"));
     }
 
-    const urlRemote = isReviewer() ? requestGetDataReviewer : remoteGetSurveyData;
-
-    return urlRemote(surveyId, setError)
+    const getSurveyDataFunction = isReviewer() ? requestGetDataReviewer : remoteGetSurveyData;
+    const getSurveyStateDataFunction = remoteGetSurveyStateData;
+    //TODO: Refactor dirty code
+    return getSurveyDataFunction(surveyId, setError)
         .then((remoteSurveyData: any) => {
-            // TODO: remove any and improve ts types
             const surveyData = initializeData(remoteSurveyData, surveyId);
             return lunaticDatabase.get(surveyId).then(localSurveyData => {
                 if (shouldInitData(remoteSurveyData, localSurveyData)) {
-                    const stateData = getSurveyStateData(surveyData);
+                    const stateData = getLocalSurveyStateData(surveyData);
                     setLocalDatabase(stateData, surveyData, surveyId);
                     return lunaticDatabase.save(surveyId, surveyData);
                 } else {
@@ -555,8 +556,10 @@ const getRemoteSavedSurveyData = (
                         if (weeklyPlanner) {
                             remoteSurveyData.COLLECTED.WEEKLYPLANNER = weeklyPlanner;
                         }
-                        const stateData = getSurveyStateData(surveyData);
-                        setLocalDatabase(stateData, remoteSurveyData, surveyId);
+                        getSurveyStateDataFunction(surveyId, setError).then(stateData => {
+                            setLocalDatabase(stateData, remoteSurveyData, surveyId);
+                        });
+
                         return lunaticDatabase.save(surveyId, surveyData);
                     }
                 }
@@ -1725,7 +1728,7 @@ export {
     getSurveyDate,
     getSurveysIdsForHousehold,
     getSurveyRights,
-    getSurveyStateData,
+    getLocalSurveyStateData,
     getTabsData,
     getUserDatas,
     getUserDatasActivity,

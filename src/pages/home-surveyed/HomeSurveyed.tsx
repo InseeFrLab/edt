@@ -47,7 +47,6 @@ import {
     surveysIds,
     userDatasMap,
     initializeDatas,
-    createNameSurveyMap,
 } from "service/survey-service";
 import { isDemoMode, lockAllSurveys, validateAllEmptySurveys } from "service/survey-state-service";
 import { getUserRights } from "service/user-service";
