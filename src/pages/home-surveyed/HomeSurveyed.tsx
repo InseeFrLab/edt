@@ -27,7 +27,7 @@ import ErrorPage from "pages/error/ErrorPage";
 import ErrorProvider from "pages/error/ErrorProvider";
 import React, { useCallback, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { TFunction, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { logout } from "service/auth-service";
 import { lunaticDatabase } from "service/lunatic-database";

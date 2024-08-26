@@ -58,11 +58,7 @@ import {
 } from "assets/surveyData";
 import { EdtUserRightsEnum } from "./../enumerations/EdtUserRightsEnum";
 import { LunaticData } from "./../interface/lunatic/Lunatic";
-import {
-    fetchUserSurveysInfo,
-    remoteGetSurveyData,
-    remoteGetSurveyDataReviewer,
-} from "./api-service/getRemoteData";
+import { fetchUserSurveysInfo, remoteGetSurveyData } from "./api-service/getRemoteData";
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { navToPlanner, setAllNamesOfGroupAndNav } from "./navigation-service";
 import { addToAutocompleteActivityReferentiel } from "./referentiel-service";
