@@ -230,6 +230,7 @@
             "validate-all-empties-surveys": "Valider les carnets vides",
             "validate-survey": "Valider le carnet",
             "lock-survey": "Verrouiller le carnet",
+            "lock-all-surveys": "Verrouiller tous les carnets",
             "not-lock-survey": "Devérrouiller le carnet",
             "status-survey": {
                 "locked": "Verrouillé",
@@ -242,9 +243,11 @@
             },
             "lock-popup": {
                 "boldContent": "Êtes-vous sûr de vouloir verrouiller le carnet ?",
+                "boldContent-all-surveys": "Êtes-vous sûr de vouloir verrouiller tous les carnets ?",
                 "boldContent-not-locked": "Êtes-vous sûr de vouloir déverrouiller le carnet ?",
                 "boldContent-not-unlocked": "Vous ne pouvez pas déverrouiller le carnet !",
                 "content": "En cochant cette option, l'enquêté ne pourra pas modifier le carnet.",
+                "content-all-surveys": "En cochant cette option, les enquêtés ne pourront pas modifier les carnets.",
                 "content-not-locked": "En cochant cette option, l'enquêté pourra modifier le carnet.",
                 "content-not-unlocked": "Une fois que vous avez commencé à remplir le carnet, vous ne pouvez pas le déverrouiller.",
                 "confirm-button": "Compris"
