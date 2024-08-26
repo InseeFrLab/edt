@@ -87,7 +87,7 @@ const lockSurvey = (idSurvey: string) => {
     } else if (data.COLLECTED) {
         data.COLLECTED.ISLOCKED = variable;
     }
-    return saveData(idSurvey, data);
+    return saveData(idSurvey, data, false, true);
 };
 
 const lockAllSurveys = (idHousehold: string) => {

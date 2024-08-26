@@ -898,7 +898,6 @@ const saveData = (
     const dataIsChanged = dataIsChange(idSurvey, data, oldDataSurvey);
     const isChange = forceUpdate || dataIsChanged;
     datas.set(idSurvey, data);
-
     data = updateLocked(idSurvey, data);
     let stateData: StateData = data?.stateData ?? stateDataForced ?? initStateData(data);
 
@@ -921,7 +920,6 @@ const saveData = (
                 data: data,
             };
             data.lastRemoteSaveDate = stateData.date;
-            console.log("StateData to save", stateData);
 
             if (isReviewerMode) {
                 return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {

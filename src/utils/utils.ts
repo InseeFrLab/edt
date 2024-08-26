@@ -59,7 +59,6 @@ function getSurveyIdFromUrl(context: OrchestratorContext, location: Location) {
 }
 
 function addItemToSession(idSurvey: string, item: any) {
-    console.log("Add item to session", idSurvey, item);
     sessionStorage.setItem(idSurvey, JSON.stringify(item));
 }
 

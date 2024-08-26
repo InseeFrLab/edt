@@ -311,7 +311,6 @@ const HomeSurveyedPage = () => {
 
     const renderHomeReviewer = () => {
         let userDatas = groupBy(userDatasMap(), nameSurveyData => nameSurveyData.num);
-        console.log("userDatas", userDatas);
         let groups = Object.keys(userDatas);
         return renderPageOrLoadingOrError(
             <ErrorBoundary FallbackComponent={ErrorProvider}>
