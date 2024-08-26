@@ -216,6 +216,22 @@ const remoteGetSurveyStateData = (
             });
     });
 };
+const remoteGetSurveyDataSurveyed = (
+    idSurvey: string,
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<SurveyData> => {
+    return remoteGetSurveyData(idSurvey, setError).then(data => {
+        return remoteGetSurveyStateData(idSurvey, setError).then((stateData: StateData) => {
+            return new Promise(resolve => {
+                const surveyData: SurveyData = {
+                    stateData: stateData,
+                    data: data,
+                };
+                resolve(surveyData);
+            });
+        });
+    });
+};
 
 const requestGetDataReviewer = (
     idSurvey: string,
@@ -325,6 +341,8 @@ export {
     fetchSurveysSourcesByIds,
     fetchUserSurveysInfo,
     remoteGetSurveyData,
+    requestGetDataReviewer,
     remoteGetSurveyStateData,
     remoteGetSurveyDataReviewer,
+    remoteGetSurveyDataSurveyed,
 };

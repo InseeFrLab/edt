@@ -36,7 +36,10 @@ import {
 } from "interface/lunatic/Lunatic";
 import { AuthContextProps } from "oidc-react";
 import { NavigateFunction } from "react-router-dom";
-import { fetchReviewerSurveysAssignments } from "service/api-service/getRemoteData";
+import {
+    fetchReviewerSurveysAssignments,
+    requestGetDataReviewer,
+} from "service/api-service/getRemoteData";
 import { lunaticDatabase } from "service/lunatic-database";
 import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrator-service";
 import {
@@ -533,7 +536,7 @@ const getRemoteSavedSurveyData = (
         return Promise.reject(new Error("Offline"));
     }
 
-    const urlRemote = isReviewer() ? remoteGetSurveyDataReviewer : remoteGetSurveyData;
+    const urlRemote = isReviewer() ? requestGetDataReviewer : remoteGetSurveyData;
 
     return urlRemote(surveyId, setError)
         .then((remoteSurveyData: any) => {
@@ -1696,6 +1699,7 @@ export {
     addToAutocompleteActivityReferentiel,
     arrayOfSurveysPersonDemo,
     createDataEmpty,
+    createNameSurveyMap,
     existVariableEdited,
     getAuthCache,
     getComponentId,

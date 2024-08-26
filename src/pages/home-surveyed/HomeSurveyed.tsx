@@ -47,6 +47,7 @@ import {
     surveysIds,
     userDatasMap,
     initializeDatas,
+    createNameSurveyMap,
 } from "service/survey-service";
 import { isDemoMode, lockAllSurveys, validateAllEmptySurveys } from "service/survey-state-service";
 import { getUserRights } from "service/user-service";
@@ -72,14 +73,16 @@ const HomeSurveyedPage = () => {
 
     const initHome = (idsSurveysSelected: string[]) => {
         initializeHomeSurveys(idHousehold ?? "").then(() => {
-            initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
-                userDatas = userDatasMap();
-                if (getData(idsSurveysSelected[0]) != undefined) {
-                    setState(getData(idsSurveysSelected[0]));
-                    setInitialized(true);
-                }
-                setDatas(userDatas);
-            });
+            // initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
+
+            // });
+
+            userDatas = userDatasMap();
+            if (getData(idsSurveysSelected[0]) != undefined) {
+                setState(getData(idsSurveysSelected[0]));
+                setInitialized(true);
+            }
+            setDatas(userDatas);
         });
     };
 
@@ -258,7 +261,6 @@ const HomeSurveyedPage = () => {
     const renderHomeInterviewer = () => {
         let userDataGroupedInterv = nameSurveyGroupMap();
         let groups = Object.keys(userDataGroupedInterv);
-        console.log("groups", groups);
         return (
             <>
                 {renderReminderNote()}
@@ -310,6 +312,7 @@ const HomeSurveyedPage = () => {
 
     const renderHomeReviewer = () => {
         let userDatas = groupBy(userDatasMap(), nameSurveyData => nameSurveyData.num);
+        console.log("userDatas", userDatas);
         let groups = Object.keys(userDatas);
         return renderPageOrLoadingOrError(
             <ErrorBoundary FallbackComponent={ErrorProvider}>
