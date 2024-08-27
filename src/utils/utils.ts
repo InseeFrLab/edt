@@ -63,8 +63,8 @@ function addItemToSession(idSurvey: string, item: any) {
 }
 
 function getItemFromSession(idSurvey: string) {
-    console.log("getItemFromSession", idSurvey, sessionStorage.getItem(idSurvey));
-    return JSON.parse(sessionStorage.getItem(idSurvey ?? "") ?? "{}");
+    const item = JSON.parse(sessionStorage.getItem(idSurvey ?? "") ?? "{}");
+    return item;
 }
 
 function addArrayToSession(nameItem: string, array: any[]) {

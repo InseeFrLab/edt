@@ -8,6 +8,7 @@ import { ReactComponent as LockIcon } from "assets/illustration/mui-icon/lock.sv
 import { ReactComponent as PowerSettingsIcon } from "assets/illustration/mui-icon/power-settings.svg";
 import { ReactComponent as RemoveCircleIcon } from "assets/illustration/mui-icon/remove-circle.svg";
 import { ReactComponent as ReminderNoteImg } from "assets/illustration/reminder-note.svg";
+import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
 import BreadcrumbsReviewer from "components/commons/BreadcrumbsReviewer/BreadcrumbsReviewer";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "components/commons/LoadingFull/LoadingFull";
@@ -62,6 +63,7 @@ const HomeSurveyedPage = () => {
     const [initialized, setInitialized] = React.useState<boolean>(false);
     const [state, setState] = React.useState<LunaticData | undefined>(undefined);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
+    const [isAlertLockDisplayed, setIsAlertLockDisplayed] = React.useState<boolean>(false);
     const [datas, setDatas] = React.useState<Person[]>([]);
 
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
@@ -70,16 +72,26 @@ const HomeSurveyedPage = () => {
     const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
     let userDatas: Person[];
 
+    //TODO: Set Alert to separate component as it is the same as in activity page minus the unlock labels
+    const alertLockLabels = {
+        boldContent: t("page.reviewer-home.lock-popup.boldContent-all-surveys"),
+        content: t("page.reviewer-home.lock-popup.content-all-surveys"),
+        cancel: t("page.alert-when-quit.alert-cancel"),
+        complete: t("page.reviewer-home.lock-survey"),
+    };
+
     const initHome = (idsSurveysSelected: string[]) => {
         initializeHomeSurveys(idHousehold ?? "").then(() => {
-            initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
-                userDatas = userDatasMap();
-                if (getData(idsSurveysSelected[0]) != undefined) {
-                    setState(getData(idsSurveysSelected[0]));
-                    setInitialized(true);
-                }
-                setDatas(userDatas);
-            });
+            // initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
+
+            // });
+
+            userDatas = userDatasMap();
+            if (getData(idsSurveysSelected[0]) != undefined) {
+                setState(getData(idsSurveysSelected[0]));
+                setInitialized(true);
+            }
+            setDatas(userDatas);
         });
     };
 
@@ -198,6 +210,12 @@ const HomeSurveyedPage = () => {
         navigate(getNavigatePath(EdtRoutesNameEnum.REVIEWER_HOME));
     }, []);
 
+    const displayAlert = useCallback(
+        (setDisplayAlert: React.Dispatch<React.SetStateAction<boolean>>, display: boolean) => () =>
+            setDisplayAlert(display),
+        [],
+    );
+
     const renderReminderNote = () => {
         return (
             <FlexCenter className={classes.spacing}>
@@ -236,7 +254,6 @@ const HomeSurveyedPage = () => {
                 setInitialized(true);
             });
         });
-
         return (
             <>
                 {renderReminderNote()}
@@ -292,6 +309,7 @@ const HomeSurveyedPage = () => {
                         !survey.startsWith("activitySurvey") && !survey.startsWith("workTimeSurvey"),
                 );
             initHome(idsSurveysSelected);
+            setIsAlertLockDisplayed(false);
         });
     }, []);
 
@@ -313,6 +331,13 @@ const HomeSurveyedPage = () => {
         let groups = Object.keys(userDatas);
         return renderPageOrLoadingOrError(
             <ErrorBoundary FallbackComponent={ErrorProvider}>
+                <Alert
+                    isAlertDisplayed={isAlertLockDisplayed}
+                    onCompleteCallBack={lockSurveys}
+                    onCancelCallBack={displayAlert(setIsAlertLockDisplayed, false)}
+                    labels={alertLockLabels}
+                    icon={<ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />}
+                ></Alert>
                 {renderReminderNote()}
 
                 <Box className={classes.groupCardBox}>
@@ -346,11 +371,15 @@ const HomeSurveyedPage = () => {
                         </Button>
                         <Button
                             variant="contained"
-                            onClick={lockSurveys}
+                            onClick={displayAlert(setIsAlertLockDisplayed, true)}
                             className={cx(classes.navButton)}
                             disabled={!navigator.onLine}
                         >
-                            <LockIcon aria-label={t("accessibility.asset.mui-icon.padlock")} />
+                            <LockIcon
+                                className={cx(classes.lockIcon)}
+                                aria-label={t("accessibility.asset.mui-icon.padlock")}
+                            />
+                            {t("page.reviewer-home.lock-all-surveys")}
                         </Button>
                     </FlexCenter>
                 </Box>
@@ -513,6 +542,10 @@ const useStyles = makeStylesEdt({ "name": { NavButton: HomeSurveyedPage } })(the
     },
     emptyHeader: {
         visibility: "hidden",
+    },
+    lockIcon: {
+        width: "1.5rem",
+        marginRight: "0.2rem",
     },
 }));
 

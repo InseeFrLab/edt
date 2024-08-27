@@ -27,17 +27,17 @@ const isDemoMode = () => {
 };
 
 const isSurveyValidated = (idSurvey: string) => {
-    const stateData = getSurveyStateData(getData(idSurvey));
+    const stateData = getLocalSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.VALIDATED;
 };
 
 const isSurveyStarted = (idSurvey: string) => {
-    const stateData = getSurveyStateData(getData(idSurvey));
+    const stateData = getLocalSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.INIT;
 };
 
 const isSurveyCompleted = (idSurvey: string) => {
-    const stateData = getSurveyStateData(getData(idSurvey));
+    const stateData = getLocalSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.COMPLETED;
 };
 
@@ -62,7 +62,7 @@ const getStatutSurvey = (idSurvey: string) => {
     } else return StateDataStateEnum.INIT;
 };
 
-const getSurveyStateData = (data: LunaticData): StateData => {
+const getLocalSurveyStateData = (data: LunaticData): StateData => {
     const lastRemoteDate = Date.now();
     const stateData: StateData = {
         state: data.stateData?.state ?? StateDataStateEnum.INIT,
@@ -87,7 +87,7 @@ const lockSurvey = (idSurvey: string) => {
     } else if (data.COLLECTED) {
         data.COLLECTED.ISLOCKED = variable;
     }
-    return saveData(idSurvey, data);
+    return saveData(idSurvey, data, false, true);
 };
 
 const lockAllSurveys = (idHousehold: string) => {
@@ -124,7 +124,7 @@ const lockAllSurveys = (idHousehold: string) => {
 
 const validateSurvey = (idSurvey: string) => {
     const data = getData(idSurvey);
-    const stateData = getSurveyStateData(getData(idSurvey));
+    const stateData = getLocalSurveyStateData(getData(idSurvey));
     if (stateData.state != StateDataStateEnum.VALIDATED) {
         const validatedStateData: StateData = {
             idStateData: stateData.idStateData,
@@ -141,27 +141,20 @@ const validateSurvey = (idSurvey: string) => {
 const validateAllEmptySurveys = (idHousehold: string) => {
     const idSurveys = getSurveysIdsForHousehold(idHousehold);
     const promisesToWait: Promise<any>[] = [];
-
+    console.log("Validate all empty surveys", idSurveys);
     idSurveys.forEach((idSurvey: string) => {
         const data = getData(idSurvey || "");
-        const stateData = getSurveyStateData(data);
-
-        if (stateData.state != StateDataStateEnum.VALIDATED) {
-            const validatedStateData: StateData = {
-                idStateData: stateData.idStateData,
-                state: StateDataStateEnum.VALIDATED,
-                date: Date.now(),
-                currentPage: getCurrentPage(data),
-            };
-
-            const value = getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string;
-
-            if (value == null || value.length == 0) {
-                data.stateData = validatedStateData;
-                promisesToWait.push(saveData(idSurvey, data, false, true, validatedStateData));
-            }
-        } else {
-            promisesToWait.push(saveData(idSurvey, data, false, true, stateData));
+        const stateData = getLocalSurveyStateData(data);
+        const validatedStateData: StateData = {
+            idStateData: stateData.idStateData,
+            state: StateDataStateEnum.VALIDATED,
+            date: Date.now(),
+            currentPage: getCurrentPage(data),
+        };
+        const value = getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string;
+        if (value == null || value.length == 0) {
+            data.stateData = validatedStateData;
+            promisesToWait.push(saveData(idSurvey, data, false, true, validatedStateData));
         }
     });
 
@@ -180,7 +173,7 @@ export {
     isSurveyStarted,
     isSurveyCompleted,
     getStatutSurvey,
-    getSurveyStateData,
+    getLocalSurveyStateData,
     lockAllSurveys,
     lockSurvey,
     validateSurvey,
