@@ -214,8 +214,9 @@ const saveAndNav = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
-    console.log("should save", idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() });
-    navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
+    saveData(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }).then(() => {
+        navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
+    });
     /*
     saveData(idSurvey, , {...Data(idSurvey), ..._callbackHolder.getData()})then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
