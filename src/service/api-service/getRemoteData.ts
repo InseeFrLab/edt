@@ -4,8 +4,6 @@ import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
 import { LunaticData, ReferentielData, SourceData } from "interface/lunatic/Lunatic";
 import { initStateData, initSurveyData } from "../survey-service";
 import { getUserToken, isReviewer } from "../user-service";
-import { AuthContextProps } from "oidc-react";
-import { NomenclatureActivityOption } from "@inseefrlab/lunatic-edt";
 import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
 import { revertTransformedArray } from "utils/utils";
 
@@ -35,14 +33,9 @@ export const getHeader = (origin?: string, userToken?: string) => {
     };
 };
 
-const fetchRemoteReferentiel = (auth: AuthContextProps, idReferentiel: ReferentielsEnum) => {
-    return axios.get<NomenclatureActivityOption[]>(
-        stromaeBackOfficeApiBaseUrl + "api/nomenclature/" + idReferentiel,
-        getHeader(stromaeBackOfficeApiBaseUrl),
-    );
-};
-
-const fetchRemoteReferentiels = (setError: (error: ErrorCodeEnum) => void): Promise<ReferentielData> => {
+export const fetchRemoteReferentiels = (
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<ReferentielData> => {
     let refs: ReferentielData = {
         [ReferentielsEnum.ACTIVITYNOMENCLATURE]: [],
         [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: [],
@@ -86,7 +79,9 @@ const fetchRemoteReferentiels = (setError: (error: ErrorCodeEnum) => void): Prom
     });
 };
 
-const fetchUserSurveysInfo = (setError: (error: ErrorCodeEnum) => void): Promise<UserSurveys[]> => {
+export const fetchUserSurveysInfo = (
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<UserSurveys[]> => {
     return new Promise(resolve => {
         axios
             .get(
@@ -107,7 +102,7 @@ const fetchUserSurveysInfo = (setError: (error: ErrorCodeEnum) => void): Promise
     });
 };
 
-const fetchSurveysSourcesByIds = (
+export const fetchSurveysSourcesByIds = (
     sourcesIds: string[],
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<SourceData> => {
@@ -140,7 +135,9 @@ const fetchSurveysSourcesByIds = (
     });
 };
 
-const fetchReviewerSurveysAssignments = (setError: (error: ErrorCodeEnum) => void): Promise<any> => {
+export const fetchReviewerSurveysAssignments = (
+    setError: (error: ErrorCodeEnum) => void,
+): Promise<any> => {
     return new Promise(resolve => {
         axios
             .get(
@@ -160,7 +157,7 @@ const fetchReviewerSurveysAssignments = (setError: (error: ErrorCodeEnum) => voi
     });
 };
 
-const remoteGetSurveyData = (
+export const remoteGetSurveyData = (
     idSurvey: string,
     setError?: (error: ErrorCodeEnum) => void,
 ): Promise<SurveyData> => {
@@ -192,7 +189,7 @@ const remoteGetSurveyData = (
     });
 };
 
-const remoteGetSurveyStateData = (
+export const remoteGetSurveyStateData = (
     idSurvey: string,
     setError?: (error: ErrorCodeEnum) => void,
 ): Promise<StateData> => {
@@ -215,7 +212,7 @@ const remoteGetSurveyStateData = (
             });
     });
 };
-const remoteGetSurveyDataSurveyed = (
+export const remoteGetSurveyDataSurveyed = (
     idSurvey: string,
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<SurveyData> => {
@@ -232,7 +229,7 @@ const remoteGetSurveyDataSurveyed = (
     });
 };
 
-const requestGetDataReviewer = (
+export const requestGetDataReviewer = (
     idSurvey: string,
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<LunaticData> => {
@@ -269,7 +266,7 @@ const requestGetDataReviewer = (
     });
 };
 
-const requestGetSurveyDataReviewer = (
+export const requestGetSurveyDataReviewer = (
     idSurvey: string,
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<SurveyData> => {
@@ -286,7 +283,7 @@ const requestGetSurveyDataReviewer = (
     });
 };
 
-const remoteGetSurveyDataReviewer = (
+export const remoteGetSurveyDataReviewer = (
     idSurvey: string,
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<SurveyData> => {
@@ -307,17 +304,4 @@ const remoteGetSurveyDataReviewer = (
             }
             return Promise.reject(err);
         });
-};
-
-export {
-    fetchRemoteReferentiel,
-    fetchRemoteReferentiels,
-    fetchReviewerSurveysAssignments,
-    fetchSurveysSourcesByIds,
-    fetchUserSurveysInfo,
-    remoteGetSurveyData,
-    requestGetDataReviewer,
-    remoteGetSurveyStateData,
-    remoteGetSurveyDataReviewer,
-    remoteGetSurveyDataSurveyed,
 };

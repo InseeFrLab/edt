@@ -132,17 +132,6 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     });
 };
 
-const initializeRemoteDatas = (setError: (error: ErrorCodeEnum) => void): Promise<boolean> => {
-    const promisesToWait: Promise<any>[] = [];
-    return new Promise(resolve => {
-        promisesToWait.push(initializeRemoteRefs(setError));
-        promisesToWait.push(initializeSurveysIdsAndSources(setError));
-        Promise.all(promisesToWait).then(() => {
-            resolve(true);
-        });
-    });
-};
-
 const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
     const dataState: DataState = {
         data: {
@@ -505,6 +494,9 @@ const initializeSurveysIdsDataModeReviewer = (
     });
 };
 
+/**
+ * Create a data object from fetched survey data
+ */
 const initializeData = (remoteSurveyData: any, idSurvey: string) => {
     const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
     let surveyData: LunaticData = {
@@ -525,6 +517,9 @@ const initializeData = (remoteSurveyData: any, idSurvey: string) => {
     return surveyData;
 };
 
+/**
+ * Fetch survey data from the server
+ */
 const getRemoteSavedSurveyData = (
     surveyId: string,
     setError: (error: ErrorCodeEnum) => void,
@@ -535,6 +530,7 @@ const getRemoteSavedSurveyData = (
 
     const getSurveyDataFunction = isReviewer() ? requestGetDataReviewer : remoteGetSurveyData;
     const getSurveyStateDataFunction = remoteGetSurveyStateData;
+
     //TODO: Refactor dirty code
     return getSurveyDataFunction(surveyId, setError)
         .then((remoteSurveyData: any) => {
@@ -542,8 +538,7 @@ const getRemoteSavedSurveyData = (
             return lunaticDatabase.get(surveyId).then(localSurveyData => {
                 if (shouldInitData(remoteSurveyData, localSurveyData)) {
                     const stateData = getLocalSurveyStateData(surveyData);
-                    setLocalDatabase(stateData, surveyData, surveyId);
-                    return lunaticDatabase.save(surveyId, surveyData);
+                    return saveInDatabase(surveyId, { ...surveyData, stateData });
                 } else {
                     if (shouldSaveRemoteData(remoteSurveyData, localSurveyData)) {
                         // TEMP: WeeklyPlanner stuff (to be removed)
@@ -552,11 +547,9 @@ const getRemoteSavedSurveyData = (
                         if (weeklyPlanner) {
                             remoteSurveyData.COLLECTED.WEEKLYPLANNER = weeklyPlanner;
                         }
-                        getSurveyStateDataFunction(surveyId, setError).then(stateData => {
-                            setLocalDatabase(stateData, remoteSurveyData, surveyId);
+                        return getSurveyStateDataFunction(surveyId, setError).then(stateData => {
+                            return saveInDatabase(surveyId, { ...remoteSurveyData, stateData });
                         });
-
-                        return lunaticDatabase.save(surveyId, surveyData);
                     }
                 }
             });
@@ -571,10 +564,7 @@ const getRemoteSavedSurveysDatas = (
     surveysIds: string[],
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<any[]> => {
-    const promises: Promise<any>[] = surveysIds.map(surveyId =>
-        getRemoteSavedSurveyData(surveyId, setError),
-    );
-    return Promise.all(promises);
+    return Promise.all(surveysIds.map(surveyId => getRemoteSavedSurveyData(surveyId, setError)));
 };
 
 const shouldSaveRemoteData = (remoteSurveyData: any, localSurveyData: any): boolean => {
@@ -592,12 +582,14 @@ const shouldSaveRemoteData = (remoteSurveyData: any, localSurveyData: any): bool
     return false;
 };
 
+/**
+ * Detect if collected data is empty
+ */
 const shouldInitData = (remoteSurveyData: any, localSurveyData: any): boolean => {
     if (!localSurveyData) {
         if (remoteSurveyData && typeof remoteSurveyData === "object") {
             const isCollectedEmpty =
                 "COLLECTED" in remoteSurveyData && Object.keys(remoteSurveyData.COLLECTED).length === 0;
-            //console.log("shouldInitData", isCollectedEmpty);
             return isCollectedEmpty;
         }
     }
@@ -875,6 +867,9 @@ const saveDatas = () => {
     });
 };
 
+/**
+ * Save data in the local database and push to the server if necessary
+ */
 const saveData = (
     idSurvey: string,
     data: LunaticData,
@@ -882,6 +877,16 @@ const saveData = (
     forceUpdate = false,
     stateDataForced?: StateData,
 ): Promise<LunaticData> => {
+    if (stateDataForced) {
+        console.error(
+            "stateDataForced parameter was removed, put state data inside the data object instead",
+        );
+    }
+    if (data.stateData?.state !== "COMPLETED" && idSurvey === "DEMO1302") {
+        // eslint-disable-next-line no-debugger
+        debugger;
+        return Promise.resolve(data);
+    }
     data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
     if (!data.houseReference) {
         const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
@@ -895,7 +900,7 @@ const saveData = (
     const isChange = forceUpdate || dataIsChanged;
     datas.set(idSurvey, data);
     data = updateLocked(idSurvey, data);
-    let stateData: StateData = data?.stateData ?? stateDataForced ?? initStateData(data);
+    let stateData: StateData = data?.stateData ?? getLocalSurveyStateData(data) ?? initStateData(data);
 
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
 
@@ -907,7 +912,7 @@ const saveData = (
         if (!navigator.onLine) {
             stateData.date = 0;
             data.stateData = stateData;
-            return setLocalDatabase(stateData, data, idSurvey);
+            return saveInDatabase(idSurvey, data);
         }
         if (!isDemoMode && !localSaveOnly) {
             stateData.date = data.lastLocalSaveDate ?? Date.now();
@@ -922,26 +927,29 @@ const saveData = (
                     stateData.date = Math.max(stateData.date, data.lastLocalSaveDate ?? 0);
                     data.stateData = stateData;
                     data.lastRemoteSaveDate = stateData.date;
-                    return setLocalDatabase(stateData, data, idSurvey);
+                    return saveInDatabase(idSurvey, data);
                 });
             } else {
                 //TODO: TEMP: need to figure out why there is still a state data here
                 return remotePutSurveyData(idSurvey, surveyData).then(() => {
                     data.stateData = stateData;
-                    return setLocalDatabase(stateData, data, idSurvey);
+                    return saveInDatabase(idSurvey, data);
                 });
             }
         } else {
             stateData.date = 0;
             data.stateData = stateData;
-            return setLocalDatabase(stateData, data, idSurvey);
+            return saveInDatabase(idSurvey, data);
         }
     } else {
         data.stateData = stateData;
-        return setLocalDatabase(stateData, data, idSurvey);
+        return saveInDatabase(idSurvey, data);
     }
 };
 
+/**
+ * @deprecated use saveData with the right parameters instead
+ */
 const saveDataLocally = (
     idSurvey: string,
     data: LunaticData,
@@ -949,33 +957,13 @@ const saveDataLocally = (
     forceUpdate = false,
     stateDataForced?: StateData,
 ): Promise<LunaticData> => {
-    data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
-    if (!data.houseReference) {
-        const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
-        data.houseReference = idSurvey.replace(regexp, "");
-    }
-    const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
-    //const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
-    fixConditionals(data);
-    let oldDataSurvey = datas.get(idSurvey) ?? {};
-    const dataIsChanged = dataIsChange(idSurvey, data, oldDataSurvey);
-    const isChange = forceUpdate || dataIsChanged;
-    datas.set(idSurvey, data);
-
-    data = updateLocked(idSurvey, data);
-    let stateData: StateData = stateDataForced ?? initStateData(data);
-
-    if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
-
-    if (isChange) {
-        data = saveQualityScore(idSurvey, data);
-    }
-    data.stateData = stateData;
-    console.log("saveDataLocally");
-    return setLocalDatabase(stateData, data, idSurvey);
+    return saveData(idSurvey, data, true, forceUpdate, stateDataForced);
 };
 
-const setLocalDatabase = (stateData: StateData, data: LunaticData, idSurvey: string) => {
+/**
+ * Save the new data in the database and keep the previous data in "oldDatas" variable
+ */
+const saveInDatabase = (idSurvey: string, data: LunaticData) => {
     let oldDataSurvey = datas.get(idSurvey) ?? {};
     oldDatas.set(idSurvey, oldDataSurvey);
     setDataCache(idSurvey, data);
@@ -1736,7 +1724,6 @@ export {
     initStateData,
     initSurveyData,
     initializeDatas,
-    initializeRemoteDatas,
     initializeHomeSurveys,
     initializeListSurveys,
     initializeSurveysDatasCache,

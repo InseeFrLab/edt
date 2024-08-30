@@ -109,17 +109,12 @@ const EndSurveyPage = () => {
         const handleError = () => {
             setErrorSubmit(true);
         };
-        if (!isDemoMode && navigator.onLine) {
-            if (isReviewer()) {
-                return remotePutSurveyDataReviewer(idSurvey, stateData, surveyData.data)
-                    .then(navToHome)
-                    .catch(handleError);
-            } else {
-                return remotePutSurveyData(idSurvey, surveyData).then(navToHome).catch(handleError);
-            }
-        } else {
+        if (isDemoMode) {
             return saveDataAndInit(surveyData, true);
         }
+        saveData(idSurvey, { ...surveyData.data, stateData: stateData }, false, true)
+            .then(navToHome)
+            .catch(handleError);
     }, []);
 
     const onPrevious = useCallback(() => {
