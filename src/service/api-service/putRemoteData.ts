@@ -9,7 +9,7 @@ import jwt, { JwtPayload } from "jwt-decode";
 import { logout } from "service/auth-service";
 import { transformCollectedArray } from "utils/utils";
 
-const requestPutSurveyData = (
+export const requestPutSurveyData = (
     idSurvey: string,
     data: SurveyData,
     token?: string,
@@ -44,7 +44,7 @@ const requestPutSurveyData = (
         });
 };
 
-const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<SurveyData> => {
+export const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<SurveyData> => {
     const now = new Date();
     const tokenExpiresAt = jwt<JwtPayload>(getUserToken() ?? "").exp;
     // * 1000 because tokenExpiresAt is in seconds and now.getTime() in milliseconds
@@ -64,7 +64,7 @@ const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<Survey
     }
 };
 
-const remotePutSurveyDataReviewer = (
+export const remotePutSurveyDataReviewer = (
     idSurvey: string,
     stateData: StateData,
     data: LunaticData,
@@ -88,7 +88,7 @@ const remotePutSurveyDataReviewer = (
     }
 };
 
-const requestPutDataReviewer = (
+export const requestPutDataReviewer = (
     idSurvey: string,
     data: LunaticData,
     token?: string,
@@ -112,7 +112,7 @@ const requestPutDataReviewer = (
     });
 };
 
-const requestPutStateReviewer = (
+export const requestPutStateReviewer = (
     idSurvey: string,
     data: StateData,
     token?: string,
@@ -140,7 +140,7 @@ const requestPutStateReviewer = (
     });
 };
 
-const requestPutSurveyDataReviewer = (
+export const requestPutSurveyDataReviewer = (
     idSurvey: string,
     data: LunaticData,
     stateData: StateData,
@@ -154,14 +154,4 @@ const requestPutSurveyDataReviewer = (
         };
         return surveyData;
     });
-};
-
-export {
-    remotePutSurveyData,
-    remotePutSurveyDataReviewer,
-    requestPutSurveyData,
-    requestPutDataReviewer,
-    requestPutStateReviewer,
-    requestPutSurveyDataReviewer,
-    transformCollectedArray,
 };

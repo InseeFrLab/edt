@@ -35,6 +35,9 @@ let _context: OrchestratorContext;
 let _navigate: NavigateFunction;
 let _callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } };
 
+/**
+ * Make context and navigation globally available
+ */
 const setEnviro = (
     context: OrchestratorContext,
     navigate: NavigateFunction,
@@ -49,6 +52,10 @@ const getNavigatePath = (page: EdtRoutesNameEnum): string => {
     return "/" + page;
 };
 
+/**
+ * Add a parameter at the end of a path containing a dynamic parameter
+ * For instance `/code/:code` will become `/code/3`
+ */
 const getParameterizedNavigatePath = (page: EdtRoutesNameEnum, param: string): string => {
     return "/" + page.split(":")[0] + param;
 };
@@ -207,11 +214,19 @@ const saveAndNav = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
-    saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey)).then(() => {
+    saveData(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
+    /*
+    saveData(idSurvey, , {...Data(idSurvey), ..._callbackHolder.getData()})then(() => {
+        navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
+    });
+*/
 };
 
+/**
+ * Save data using the callbackHolder and then navigate
+ */
 const saveAndNavLocally = (
     idSurvey: string,
     route?: string,
@@ -219,7 +234,7 @@ const saveAndNavLocally = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
-    saveDataLocally(idSurvey, _callbackHolder.getData() ?? getData(idSurvey)).then(() => {
+    saveDataLocally(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
@@ -241,15 +256,21 @@ const closeFormularieAndNav = (idSurvey: string, route: string) => {
  * we need to make the call twice to be able to retrieve the current state of the database
  */
 const validate = (idSurvey: string): Promise<void | LunaticData> => {
-    return saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), true).then(() => {
-        return saveData(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), false);
+    return saveData(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }, true).then(() => {
+        return saveData(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }, false);
     });
 };
 
 const validateLocally = (idSurvey: string): Promise<void | LunaticData> => {
-    return saveDataLocally(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), true).then(() => {
-        return saveDataLocally(idSurvey, _callbackHolder.getData() ?? getData(idSurvey), false);
-    });
+    return saveDataLocally(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }, true).then(
+        () => {
+            return saveDataLocally(
+                idSurvey,
+                { ...getData(idSurvey), ..._callbackHolder.getData() },
+                false,
+            );
+        },
+    );
 };
 
 const navToRouteOrRouteNotSelection = (

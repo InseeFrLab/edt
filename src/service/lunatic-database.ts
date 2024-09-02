@@ -7,7 +7,10 @@ export interface LunaticDatabase {
     clear(): Promise<void>;
 }
 
-class LunaticDatabaseImpl extends Dexie implements LunaticDatabase {
+/**
+ * Database implementation that stores data in IndexedDB using Dexie
+ */
+class LunaticIndexedDB extends Dexie implements LunaticDatabase {
     lunaticData!: Dexie.Table<LunaticData, string>;
 
     public constructor() {
@@ -31,7 +34,10 @@ class LunaticDatabaseImpl extends Dexie implements LunaticDatabase {
     }
 }
 
-class MemoryLunaticDatabaseImpl implements LunaticDatabase {
+/**
+ * In-Memory database implementation, used as a fallback if Dexie fails to initialize
+ */
+class LunaticMemoryDB implements LunaticDatabase {
     lunaticData = new Map<string, LunaticData>();
 
     public save(id: string, data: LunaticData): Promise<string> {
@@ -49,35 +55,39 @@ class MemoryLunaticDatabaseImpl implements LunaticDatabase {
     }
 }
 
-class PromiseProxyLunaticDatabaseImpl implements LunaticDatabase {
-    lunaticDatabasePromise = new Map<string, LunaticData>();
-    constructor(private promise: Promise<LunaticDatabase>) {}
+/**
+ * Proxy the calls to the right database implementation according to browser support
+ */
+class BrowserDatabase implements LunaticDatabase {
+    private db: Promise<LunaticDatabase>;
+
+    constructor() {
+        this.db = new Promise(resolve => {
+            const database = new LunaticIndexedDB();
+            database
+                .get("")
+                .then(() => resolve(database))
+                .catch(e => {
+                    console.warn(
+                        "- Dexie will not work in this environment. We will use a memory database.",
+                    );
+                    console.debug(e);
+                    resolve(new LunaticMemoryDB());
+                });
+        });
+    }
 
     public save(id: string, data: LunaticData): Promise<string> {
-        return lunaticDatabasePromise.then(database => database.save(id, data));
+        return this.db.then(database => database.save(id, data));
     }
 
     public get(id: string): Promise<LunaticData | undefined> {
-        return lunaticDatabasePromise.then(database => database.get(id));
+        return this.db.then(database => database.get(id));
     }
 
     public clear(): Promise<void> {
-        return lunaticDatabasePromise.then(database => database.clear());
+        return this.db.then(database => database.clear());
     }
 }
 
-// this is somewhat complexe as browser sometime cannot work with dexie in private mode
-export const lunaticDatabasePromise = new Promise<LunaticDatabase>(resolve => {
-    // validate dexie is working on this computer
-    const database = new LunaticDatabaseImpl();
-    database
-        .get("")
-        .then(() => resolve(database))
-        .catch(e => {
-            console.warn("- Dexie will not work in this environment. We will use a memory database.");
-            console.debug(e);
-            resolve(new MemoryLunaticDatabaseImpl());
-        });
-});
-
-export const lunaticDatabase = new PromiseProxyLunaticDatabaseImpl(lunaticDatabasePromise);
+export const lunaticDatabase = new BrowserDatabase();

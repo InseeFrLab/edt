@@ -150,7 +150,7 @@ const ActivityDurationPage = () => {
         }
 
         if ((skip && isAfter) || !isAfter) {
-            saveDataLocally(idSurvey, callbackHolder.getData()).then(() => {
+            saveDataLocally(idSurvey, { ...context.data, ...callbackHolder.getData() }).then(() => {
                 navigate(
                     getLoopParameterizedNavigatePath(
                         idSurvey,
