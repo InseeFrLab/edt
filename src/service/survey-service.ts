@@ -66,7 +66,6 @@ import { fixConditionals, getScore, saveQualityScore } from "./survey-activity-s
 import { getUserRights, isReviewer } from "./user-service";
 import { remotePutSurveyData, remotePutSurveyDataReviewer } from "./api-service/putRemoteData";
 import { fetchReferentiels } from "./api-service/getLocalSurveyData";
-import { fetchRemoteReferentiels } from "service/api-service/getRemoteData";
 import {
     getLocalSurveyStateData,
     initStateData,
@@ -163,19 +162,6 @@ const getAuthCache = (): Promise<DataState> => {
         let dataState = data as DataState;
         sessionStorage.setItem(clientTokenKey, JSON.stringify(dataState));
         return dataState;
-    });
-};
-
-const initializeRemoteRefs = (setError: (error: ErrorCodeEnum) => void) => {
-    return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
-        if (!refData && navigator.onLine) {
-            return fetchRemoteReferentiels(setError).then(refs => {
-                console.log("Save Remote refs", refs);
-                return saveReferentiels(refs);
-            });
-        } else {
-            referentielsData = refData as ReferentielData;
-        }
     });
 };
 

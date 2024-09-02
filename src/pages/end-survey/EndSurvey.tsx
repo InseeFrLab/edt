@@ -18,7 +18,6 @@ import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import { remotePutSurveyData, remotePutSurveyDataReviewer } from "service/api-service/putRemoteData";
 import { getFlatLocalStorageValue } from "service/local-storage-service";
 import {
     getNavigatePath,
@@ -30,7 +29,6 @@ import { getCurrentSurveyRootPage } from "service/orchestrator-service";
 import { isPwa } from "service/responsive";
 import { surveyReadOnly } from "service/survey-activity-service";
 import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from "service/survey-service";
-import { isReviewer } from "service/user-service";
 import { getSurveyIdFromUrl } from "utils/utils";
 
 const isActivity = () => {
