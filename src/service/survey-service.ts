@@ -882,11 +882,6 @@ const saveData = (
             "stateDataForced parameter was removed, put state data inside the data object instead",
         );
     }
-    if (data.stateData?.state !== "COMPLETED" && idSurvey === "DEMO1302") {
-        // eslint-disable-next-line no-debugger
-        debugger;
-        return Promise.resolve(data);
-    }
     data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
     if (!data.houseReference) {
         const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
