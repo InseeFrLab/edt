@@ -296,9 +296,9 @@ It contains all the survey "fields" components and an associated storybook docum
 
 ### Initial survey state
 
-A surveyed, when loggin in the first time, will be able to see le total of the surveys retrieved by the query _REACT_APP_EDT_ORGANISATION_API_BASE_URL + "api/survey-assigment/interviewer/my-surveys"_.
+A surveyed, when loggin in the first time, will be able to see le total of the surveys retrieved by the query _VITE_EDT_ORGANISATION_API_BASE_URL + "api/survey-assigment/interviewer/my-surveys"_.
 
-In demo version, the surveys able to see are `REACT_APP_NUM_ACTIVITY_SURVEYS` (total amount of activity surveys, accessible in env file) activity surveys and `REACT_APP_NUM_WORKTIME_SURVEYS` work time surveys.
+In demo version, the surveys able to see are `VITE_NUM_ACTIVITY_SURVEYS` (total amount of activity surveys, accessible in env file) activity surveys and `VITE_NUM_WORKTIME_SURVEYS` work time surveys.
 
 When a survey has never been started, no data are visible in the indexedDB.
 
@@ -380,9 +380,9 @@ EDT is using a Keycloak for authentification. It uses `oidc-react` (https://gith
 These two environment variables are used to setup the connection :
 
 ```
-REACT_APP_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
-REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/?kc_idp_hint=insee-ssp
-REACT_APP_KEYCLOAK_CLIENT_ID=client-edt
+VITE_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
+VITE_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/?kc_idp_hint=insee-ssp
+VITE_KEYCLOAK_CLIENT_ID=client-edt
 ```
 
 The user bearer token is used to call the secured APIs.
@@ -397,7 +397,7 @@ The different roles of the application are defined on the EdtUserRightsEnum enum
 
 ![EdtUserRightsEnum](./src/documentation/images/rights_1.png)
 
-The values of its variables are replaced by the environment variables `REACT_APP_REVIEWER_ROLE` and `REACT_APP_SURVEYED_ROLE` respectively.
+The values of its variables are replaced by the environment variables `VITE_REVIEWER_ROLE` and `VITE_SURVEYED_ROLE` respectively.
 
 The rights check is done on the _getUserRights()_ method so that we always retrieve a value from the _EdtUserRightsEnum_ enum.
 
@@ -988,25 +988,25 @@ The `.env.production` file is used when the builded app is hosted.
 
 ```
 
-REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL=https://stromae-edt-kc.demo.insee.io/
-REACT_APP_EDT_ORGANISATION_API_BASE_URL=https://edt-api-kc.demo.insee.io/
-REACT_APP_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
-REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/
-REACT_APP_KEYCLOAK_CLIENT_ID=client-edt
-REACT_APP_KEYCLOAK_REDIRECT_URI=https://insee-recette-edt.k8s.keyconsulting.fr/
-REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION=.\$
-REACT_APP_SEPARATOR_SUGGESTER=;
-REACT_APP_NODE_ENV="production"
-REACT_APP_CHROMIUM_PATH=/builds/insee/edt/deploy/pwa-edt/node_modules/chromium/lib/chromium/chrome-linux/chrome
-REACT_APP_NUM_ACTIVITY_SURVEYS=6
-REACT_APP_NUM_WORKTIME_SURVEYS=2
+VITE_STROMAE_BACK_OFFICE_API_BASE_URL=https://stromae-edt-kc.demo.insee.io/
+VITE_EDT_ORGANISATION_API_BASE_URL=https://edt-api-kc.demo.insee.io/
+VITE_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
+VITE_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/
+VITE_KEYCLOAK_CLIENT_ID=client-edt
+VITE_KEYCLOAK_REDIRECT_URI=https://insee-recette-edt.k8s.keyconsulting.fr/
+VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION=.\$
+VITE_SEPARATOR_SUGGESTER=;
+VITE_NODE_ENV="production"
+VITE_CHROMIUM_PATH=/builds/insee/edt/deploy/pwa-edt/node_modules/chromium/lib/chromium/chrome-linux/chrome
+VITE_NUM_ACTIVITY_SURVEYS=6
+VITE_NUM_WORKTIME_SURVEYS=2
 
 ```
 </details>
 
-`REACT_APP_NUM_ACTIVITY_SURVEYS` and `REACT_APP_NUM_WORKTIME_SURVEYS` allows to change the surveys affichées pour le mode demo.
+`VITE_NUM_ACTIVITY_SURVEYS` and `VITE_NUM_WORKTIME_SURVEYS` allows to change the surveys affichées pour le mode demo.
 
-Otherwise, the number of surveys displayed are retrieved by the request *"REACT_APP_EDT_ORGANISATION_API_BASE_URL + api/survey-assigment/interviewer/my-surveys"* or the distinction on each model is made from the variable *questionnaireModelId*.
+Otherwise, the number of surveys displayed are retrieved by the request *"VITE_EDT_ORGANISATION_API_BASE_URL + api/survey-assigment/interviewer/my-surveys"* or the distinction on each model is made from the variable *questionnaireModelId*.
 
 
 ## Orchestrator
@@ -1381,12 +1381,12 @@ The application is completely functional offline in browser or in the applicatio
 
 For the reviewer mode, the information recovered is done on two requetes:
 
-- To retrieve the data: REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/data"
-- To retrieve the stateData : REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/state-data"
+- To retrieve the data: VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/data"
+- To retrieve the stateData : VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/state-data"
 
 For the interviewer mode, the information retrieved is done on the following request:
 
-- REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey.
+- VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey.
 
 Same mechanism used to save information relevant to surveys.
 

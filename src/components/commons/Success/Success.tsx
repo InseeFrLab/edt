@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import { ReactComponent as DoneIcon } from "assets/illustration/mui-icon/done.svg";
+import DoneIcon from "assets/illustration/mui-icon/done.svg?react";
 import FlexCenter from "components/commons/FlexCenter/FlexCenter";
 import { useTranslation } from "react-i18next";
 

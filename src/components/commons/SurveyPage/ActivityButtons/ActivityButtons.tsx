@@ -1,6 +1,6 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Button } from "@mui/material";
-import { ReactComponent as AddIcon } from "../../../../assets/illustration/mui-icon/add.svg";
+import AddIcon from "../../../../assets/illustration/mui-icon/add.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
 import { isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";

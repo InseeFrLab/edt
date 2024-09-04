@@ -1,8 +1,8 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Modal } from "@mui/material";
-import { ReactComponent as ActivityIcon } from "../../../assets/illustration/activity.svg";
-import { ReactComponent as RouteIcon } from "../../../assets/illustration/route.svg";
-import { ReactComponent as YellowPlusIcon } from "../../../assets/illustration/yellow-plus.svg";
+import ActivityIcon from "../../../assets/illustration/activity.svg?react";
+import RouteIcon from "../../../assets/illustration/route.svg?react";
+import YellowPlusIcon from "../../../assets/illustration/yellow-plus.svg?react";
 import { Default, Mobile } from "../../commons/Responsive/Responsive.tsx";
 import { LunaticModel } from "../../../interface/lunatic/Lunatic";
 import React from "react";

@@ -1,12 +1,12 @@
 import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
-import { ReactComponent as DisconnectIcon } from "../../assets/illustration/disconnect.svg";
+import DisconnectIcon from "../../assets/illustration/disconnect.svg?react";
 import logo from "../../assets/illustration/logo.png";
-import { ReactComponent as ArrowForwardIosIcon } from "../../assets/illustration/mui-icon/arrow-forward-blue.svg";
-import { ReactComponent as PowerSettingsIcon } from "../../assets/illustration/mui-icon/power-settings.svg";
-import { ReactComponent as VisibilityIcon } from "../../assets/illustration/mui-icon/visibility.svg";
-import { ReactComponent as ReviewerImg } from "../../assets/illustration/reviewer.svg";
+import ArrowForwardIosIcon from "../../assets/illustration/mui-icon/arrow-forward-blue.svg?react";
+import PowerSettingsIcon from "../../assets/illustration/mui-icon/power-settings.svg?react";
+import VisibilityIcon from "../../assets/illustration/mui-icon/visibility.svg?react";
+import ReviewerImg from "../../assets/illustration/reviewer.svg?react";
 import FlexCenter from "../../components/commons/FlexCenter/FlexCenter";
 import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
 import { LocalStorageVariableEnum } from "../../enumerations/LocalStorageVariableEnum";
@@ -58,7 +58,7 @@ const HomeReviewerPage = () => {
             })
             .then(() => auth.userManager.clearStaleState())
             .then(() => localStorage.removeItem("auth"))
-            .then(() => window.location.replace(process.env.VITE_PUBLIC_URL || ""));
+            .then(() => window.location.replace(import.meta.env.VITE_PUBLIC_URL || ""));
     }, []);
 
     const navToSurveysOverview = useCallback(() => {

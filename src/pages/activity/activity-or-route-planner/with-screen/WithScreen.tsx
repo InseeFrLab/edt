@@ -1,5 +1,5 @@
 import { Alert, CheckboxBooleanEdtSpecificProps } from "@inseefrlab/lunatic-edt";
-import { ReactComponent as ErrorIcon } from "../../../../assets/illustration/error/screen.svg";
+import ErrorIcon from "../../../../assets/illustration/error/screen.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "../../../../components/commons/LoopSurveyPage/LoopSurveyPage";
 import { EdtRoutesNameEnum } from "../../../../enumerations/EdtRoutesNameEnum";

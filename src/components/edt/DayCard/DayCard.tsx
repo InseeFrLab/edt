@@ -1,7 +1,7 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import Box from "@mui/material/Box";
-import { ReactComponent as PersonSunCloseIcon } from "../../../assets/illustration/card/person-sun-close.svg";
-import { ReactComponent as PersonSunIcon } from "../../../assets/illustration/card/person-sun.svg";
+import PersonSunCloseIcon from "../../../assets/illustration/card/person-sun-close.svg?react";
+import PersonSunIcon from "../../../assets/illustration/card/person-sun.svg?react";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import PourcentProgress from "../../../components/edt/PourcentProgress/PourcentProgress";
 import { StateDataStateEnum } from "../../../enumerations/StateDataStateEnum";

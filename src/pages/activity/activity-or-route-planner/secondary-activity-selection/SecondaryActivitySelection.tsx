@@ -1,10 +1,10 @@
 import { CheckboxOneCustomOption } from "@inseefrlab/lunatic-edt";
-import { ReactComponent as ErrorIcon } from "../../../../assets/illustration/error/activity.svg";
-import { ReactComponent as AddLightBlueIcon } from "../../../../assets/illustration/mui-icon/add-light-blue.svg";
-import { ReactComponent as AddWhiteIcon } from "../../../../assets/illustration/mui-icon/add.svg";
-import { ReactComponent as ExtensionDisabledIcon } from "../../../../assets/illustration/mui-icon/extension-grey.svg";
-import { ReactComponent as ExtensionIcon } from "../../../../assets/illustration/mui-icon/extension.svg";
-import { ReactComponent as SearchIcon } from "../../../../assets/illustration/mui-icon/search.svg";
+import ErrorIcon from "../../../../assets/illustration/error/activity.svg?react";
+import AddLightBlueIcon from "../../../../assets/illustration/mui-icon/add-light-blue.svg?react";
+import AddWhiteIcon from "../../../../assets/illustration/mui-icon/add.svg?react";
+import ExtensionDisabledIcon from "../../../../assets/illustration/mui-icon/extension-grey.svg?react";
+import ExtensionIcon from "../../../../assets/illustration/mui-icon/extension.svg?react";
+import SearchIcon from "../../../../assets/illustration/mui-icon/search.svg?react";
 import LoopSurveyPageStep from "../../../../components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
 import { SEPARATOR_DEFAUT } from "../../../../constants/constants";
 import { EdtRoutesNameEnum } from "../../../../enumerations/EdtRoutesNameEnum";
@@ -61,7 +61,7 @@ const SecondaryActivitySelectionPage = () => {
         displayStepper: false,
         modifiable: modifiable,
         activitesAutoCompleteRef: getAutoCompleteRef(),
-        separatorSuggester: process.env.VITE_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
+        separatorSuggester: import.meta.env.VITE_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
         labelsClickableList: {
             selectInCategory: t("component.activity-selecter.select-in-category"),
             addActivity: t("component.activity-selecter.add-activity"),

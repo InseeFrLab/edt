@@ -1,4 +1,4 @@
-import { ReactComponent as WorstActivityDayImg } from "../../../assets/illustration/worst-activity-day.svg";
+import WorstActivityDayImg from "../../../assets/illustration/worst-activity-day.svg?react";
 import SurveyPageStep from "../../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "../../../interface/lunatic/Lunatic";

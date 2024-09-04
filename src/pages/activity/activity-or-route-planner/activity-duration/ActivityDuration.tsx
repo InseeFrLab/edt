@@ -1,8 +1,8 @@
 import { Alert, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
 import { IconButton, Snackbar } from "@mui/material";
-import { ReactComponent as ErrorIcon } from "../../../../assets/illustration/error/activity.svg";
-import { ReactComponent as CloseIcon } from "../../../../assets/illustration/mui-icon/close.svg";
-import { ReactComponent as ArrowDownIcon } from "../../../../assets/illustration/mui-icon/expand-more.svg";
+import ErrorIcon from "../../../../assets/illustration/error/activity.svg?react";
+import CloseIcon from "../../../../assets/illustration/mui-icon/close.svg?react";
+import ArrowDownIcon from "../../../../assets/illustration/mui-icon/expand-more.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "../../../../components/commons/LoopSurveyPage/LoopSurveyPage";
 import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "../../../../constants/constants";

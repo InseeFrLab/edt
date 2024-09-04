@@ -7,11 +7,11 @@ import {
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal, Typography } from "@mui/material";
-import { ReactComponent as InfoIcon } from "../../../../assets/illustration/info.svg";
-import { ReactComponent as ArrowBackIosIcon } from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg";
-import { ReactComponent as ArrowForwardIosIcon } from "../../../../assets/illustration/mui-icon/arrow-forward-ios-white.svg";
-import { ReactComponent as ArrowForwardIcon } from "../../../../assets/illustration/mui-icon/arrow-forward.svg";
-import { ReactComponent as InfoTooltipIcon } from "../../../../assets/illustration/mui-icon/info.svg";
+import InfoIcon from "../../../../assets/illustration/info.svg?react";
+import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg?react";
+import ArrowForwardIosIcon from "../../../../assets/illustration/mui-icon/arrow-forward-ios-white.svg?react";
+import ArrowForwardIcon from "../../../../assets/illustration/mui-icon/arrow-forward.svg?react";
+import InfoTooltipIcon from "../../../../assets/illustration/mui-icon/info.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "../../../../components/commons/SurveyPage/SurveyPage";
 import ActivityOrRouteCard from "../../../../components/edt/ActivityCard/ActivityOrRouteCard";

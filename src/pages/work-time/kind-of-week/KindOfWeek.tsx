@@ -1,7 +1,7 @@
 import { Alert, CheckboxOneSpecificProps } from "@inseefrlab/lunatic-edt";
-import { ReactComponent as CalendarWeekImg } from "../../../assets/illustration/kind-of-week-categories/calendar-week.svg";
-import { ReactComponent as KindOfWeekImg } from "../../../assets/illustration/kind-of-week.svg";
-import { ReactComponent as ExtensionIcon } from "../../../assets/illustration/mui-icon/extension.svg";
+import CalendarWeekImg from "../../../assets/illustration/kind-of-week-categories/calendar-week.svg?react";
+import KindOfWeekImg from "../../../assets/illustration/kind-of-week.svg?react";
+import ExtensionIcon from "../../../assets/illustration/mui-icon/extension.svg?react";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "../../../components/commons/SurveyPage/SurveyPage";
 import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";

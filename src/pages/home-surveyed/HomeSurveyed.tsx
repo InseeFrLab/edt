@@ -1,14 +1,14 @@
 import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button } from "@mui/material";
-import { ReactComponent as DisconnectIcon } from "../../assets/illustration/disconnect.svg";
+import DisconnectIcon from "../../assets/illustration/disconnect.svg?react";
 import logo from "../../assets/illustration/logo.png";
-import { ReactComponent as HelpIcon } from "../../assets/illustration/mui-icon/help.svg";
-import { ReactComponent as HomeIcon } from "../../assets/illustration/mui-icon/home.svg";
-import { ReactComponent as LockIcon } from "../../assets/illustration/mui-icon/lock.svg";
-import { ReactComponent as PowerSettingsIcon } from "../../assets/illustration/mui-icon/power-settings.svg";
-import { ReactComponent as RemoveCircleIcon } from "../../assets/illustration/mui-icon/remove-circle.svg";
-import { ReactComponent as ReminderNoteImg } from "../../assets/illustration/reminder-note.svg";
-import { ReactComponent as ErrorIcon } from "../../assets/illustration/error/activity.svg";
+import HelpIcon from "../../assets/illustration/mui-icon/help.svg?react";
+import HomeIcon from "../../assets/illustration/mui-icon/home.svg?react";
+import LockIcon from "../../assets/illustration/mui-icon/lock.svg?react";
+import PowerSettingsIcon from "../../assets/illustration/mui-icon/power-settings.svg?react";
+import RemoveCircleIcon from "../../assets/illustration/mui-icon/remove-circle.svg?react";
+import ReminderNoteImg from "../../assets/illustration/reminder-note.svg?react";
+import ErrorIcon from "../../assets/illustration/error/activity.svg?react";
 import BreadcrumbsReviewer from "../../components/commons/BreadcrumbsReviewer/BreadcrumbsReviewer";
 import FlexCenter from "../../components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "../../components/commons/LoadingFull/LoadingFull";
@@ -147,7 +147,7 @@ const HomeSurveyedPage = () => {
             promises.push(saveData(idSurvey, {}));
         });
         Promise.all(promises).then(() => {
-            window.location.replace(process.env.VITE_PUBLIC_URL || "");
+            window.location.replace(import.meta.env.VITE_PUBLIC_URL || "");
         });
     }, []);
 

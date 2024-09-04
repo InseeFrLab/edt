@@ -10,12 +10,12 @@ import {
     Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { ReactComponent as ArrowForwardIosGreyIcon } from "../../assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
-import { ReactComponent as HomeIcon } from "../../assets/illustration/mui-icon/home.svg";
-import { ReactComponent as PersonIcon } from "../../assets/illustration/mui-icon/person-white.svg";
-import { ReactComponent as RefreshIcon } from "../../assets/illustration/mui-icon/refresh-white.svg";
-import { ReactComponent as SearchIcon } from "../../assets/illustration/mui-icon/search.svg";
-import { ReactComponent as StatsImg } from "../../assets/illustration/stats.svg";
+import ArrowForwardIosGreyIcon from "../../assets/illustration/mui-icon/arrow-forward-ios-grey.svg?react";
+import HomeIcon from "../../assets/illustration/mui-icon/home.svg?react";
+import PersonIcon from "../../assets/illustration/mui-icon/person-white.svg?react";
+import RefreshIcon from "../../assets/illustration/mui-icon/refresh-white.svg?react";
+import SearchIcon from "../../assets/illustration/mui-icon/search.svg?react";
+import StatsImg from "../../assets/illustration/stats.svg?react";
 import FlexCenter from "../../components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "../../components/commons/LoadingFull/LoadingFull";
 import ReviewerPage from "../../components/commons/ReviewerPage/ReviewerPage";

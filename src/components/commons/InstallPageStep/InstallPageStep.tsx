@@ -1,6 +1,6 @@
 import { Info, important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import { ReactComponent as InfoIcon } from "../../../assets/illustration/info.svg";
+import InfoIcon from "../../../assets/illustration/info.svg?react";
 import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
 import { ReactElement, useCallback } from "react";
 import { isIOS, isMobile as isMobileDevice } from "react-device-detect";

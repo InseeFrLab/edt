@@ -7,8 +7,8 @@ import { getUserToken, isReviewer } from "../user-service";
 import { ReferentielsEnum } from "../../enumerations/ReferentielsEnum";
 import { revertTransformedArray } from "../../utils/utils";
 
-export const edtOrganisationApiBaseUrl = process.env.VITE_EDT_ORGANISATION_API_BASE_URL;
-export const stromaeBackOfficeApiBaseUrl = process.env.VITE_STROMAE_BACK_OFFICE_API_BASE_URL;
+export const edtOrganisationApiBaseUrl = import.meta.env.VITE_EDT_ORGANISATION_API_BASE_URL;
+export const stromaeBackOfficeApiBaseUrl = import.meta.env.VITE_STROMAE_BACK_OFFICE_API_BASE_URL;
 
 axios.interceptors.response.use(
     response => {

@@ -1,4 +1,4 @@
-import * as lunatic from "@inseefr/lunatic";
+import * as lunatic from "@inseefr/lunatic/lib/index";
 import * as lunaticEDT from "@inseefrlab/lunatic-edt";
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
@@ -10,6 +10,8 @@ import { getCurrentPageSource } from "../service/orchestrator-service";
 import { isReviewer } from "../service/user-service";
 
 const { ...edtComponents } = lunaticEDT;
+
+console.log({lunatic, lunaticEDT})
 
 //notLunaticComponents contains all components that don't come directly from lunatic.
 lunaticEDT.notLunaticComponents.forEach((component: React.MemoExoticComponent<any>, name: string) => {

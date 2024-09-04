@@ -28,13 +28,13 @@ export const setUserToken = (token: string): void => {
 export const getUserRights = (): EdtUserRightsEnum => {
     if (
         user?.profile?.inseegroupedefaut?.includes(
-            process.env.VITE_REVIEWER_ROLE ?? EdtUserRightsEnum.REVIEWER,
+            import.meta.env.VITE_REVIEWER_ROLE ?? EdtUserRightsEnum.REVIEWER,
         )
     ) {
         return EdtUserRightsEnum.REVIEWER;
     } else if (
         user?.profile?.inseegroupedefaut?.includes(
-            process.env.VITE_SURVEYED_ROLE ?? EdtUserRightsEnum.SURVEYED,
+            import.meta.env.VITE_SURVEYED_ROLE ?? EdtUserRightsEnum.SURVEYED,
         )
     ) {
         return EdtUserRightsEnum.SURVEYED;

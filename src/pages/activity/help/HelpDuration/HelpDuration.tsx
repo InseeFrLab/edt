@@ -1,10 +1,10 @@
 import { important, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
-import { ReactComponent as ImageHelpIcon } from "../../../../assets/illustration/hourpicker.svg";
-import { ReactComponent as ArrowBackIosIcon } from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg";
-import { ReactComponent as ArrowForwardIosIcon } from "../../../../assets/illustration/mui-icon/arrow-forward-ios-white.svg";
-import { ReactComponent as ArrowForwardIcon } from "../../../../assets/illustration/mui-icon/arrow-forward.svg";
-import { ReactComponent as ArrowDownIcon } from "../../../../assets/illustration/mui-icon/expand-more.svg";
+import ImageHelpIcon from "../../../../assets/illustration/hourpicker.svg?react";
+import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg?react";
+import ArrowForwardIosIcon from "../../../../assets/illustration/mui-icon/arrow-forward-ios-white.svg?react";
+import ArrowForwardIcon from "../../../../assets/illustration/mui-icon/arrow-forward.svg?react";
+import ArrowDownIcon from "../../../../assets/illustration/mui-icon/expand-more.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "../../../../components/commons/LoopSurveyPage/LoopSurveyPage";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "../../../../constants/constants";

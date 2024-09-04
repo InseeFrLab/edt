@@ -1,6 +1,6 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Paper, Typography } from "@mui/material";
-import { ReactComponent as ContactImg } from "../../../assets/illustration/contact.svg";
+import ContactImg from "../../../assets/illustration/contact.svg?react";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import SurveyPageSimpleHeader from "../../../components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";

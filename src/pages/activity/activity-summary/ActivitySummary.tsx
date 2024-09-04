@@ -9,12 +9,12 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider, Switch, Typography } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { ReactComponent as ErrorIcon } from "../../../assets/illustration/error/activity.svg";
-import { ReactComponent as InfoAlertIcon } from "../../../assets/illustration/info-alert.svg";
-import { ReactComponent as InfoIcon } from "../../../assets/illustration/info.svg";
-import { ReactComponent as CheckIcon } from "../../../assets/illustration/mui-icon/check.svg";
-import { ReactComponent as DownloadIcon } from "../../../assets/illustration/mui-icon/download.svg";
-import { ReactComponent as InfoTooltipIcon } from "../../../assets/illustration/mui-icon/info.svg";
+import ErrorIcon from "../../../assets/illustration/error/activity.svg?react";
+import InfoAlertIcon from "../../../assets/illustration/info-alert.svg?react";
+import InfoIcon from "../../../assets/illustration/info.svg?react";
+import CheckIcon from "../../../assets/illustration/mui-icon/check.svg?react";
+import DownloadIcon from "../../../assets/illustration/mui-icon/download.svg?react";
+import InfoTooltipIcon from "../../../assets/illustration/mui-icon/info.svg?react";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "../../../components/commons/LoadingFull/LoadingFull";
 import SurveyPage from "../../../components/commons/SurveyPage/SurveyPage";

@@ -1,4 +1,4 @@
-import { ReactComponent as activityErrorIcon } from "../../../../assets/illustration/error/activity.svg";
+import activityErrorIcon from "../../../../assets/illustration/error/activity.svg?react";
 import LoopSurveyPageStep from "../../../../components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
 import { EdtRoutesNameEnum } from "../../../../enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "../../../../enumerations/FieldNameEnum";

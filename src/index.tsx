@@ -10,7 +10,7 @@ import "./index.css";
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
 const getAuthority = () => {
-    const authority = process.env.VITE_KEYCLOAK_AUTHORITY;
+    const authority = import.meta.env.VITE_KEYCLOAK_AUTHORITY;
     return authority;
 };
 
@@ -26,8 +26,8 @@ const oidcConfigOnline = {
         window.history.replaceState(null, "", window.location.pathname);
     },
     authority: getAuthority(),
-    clientId: process.env.VITE_KEYCLOAK_CLIENT_ID,
-    redirectUri: process.env.VITE_KEYCLOAK_REDIRECT_URI,
+    clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
+    redirectUri: import.meta.env.VITE_KEYCLOAK_REDIRECT_URI,
     automaticSilentRenew: true,
 };
 

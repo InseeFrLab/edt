@@ -1,8 +1,8 @@
 import { Info, InfoProps, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Typography } from "@mui/material";
-import { ReactComponent as InfoIcon } from "../../assets/illustration/info.svg";
-import { ReactComponent as SendIcon } from "../../assets/illustration/mui-icon/send.svg";
-import { ReactComponent as SubmitIcon } from "../../assets/illustration/submit.svg";
+import InfoIcon from "../../assets/illustration/info.svg?react";
+import SendIcon from "../../assets/illustration/mui-icon/send.svg?react";
+import SubmitIcon from "../../assets/illustration/submit.svg?react";
 import FlexCenter from "../../components/commons/FlexCenter/FlexCenter";
 import FelicitationModal from "../../components/commons/Modal/FelicitationModal/FelicitationModal";
 import PageIcon from "../../components/commons/PageIcon/PageIcon";

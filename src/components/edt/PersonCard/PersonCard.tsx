@@ -1,9 +1,9 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
-import { ReactComponent as ExpandMoreIcon } from "../../../assets/illustration/mui-icon/expand-more-white.svg";
-import { ReactComponent as CatIcon } from "../../../assets/illustration/person/cat.svg";
-import { ReactComponent as OwlIcon } from "../../../assets/illustration/person/owl.svg";
-import { ReactComponent as ZebraIcon } from "../../../assets/illustration/person/zebra.svg";
+import ExpandMoreIcon from "../../../assets/illustration/mui-icon/expand-more-white.svg?react";
+import CatIcon from "../../../assets/illustration/person/cat.svg?react";
+import OwlIcon from "../../../assets/illustration/person/owl.svg?react";
+import ZebraIcon from "../../../assets/illustration/person/zebra.svg?react";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import DayCard from "../../../components/edt/DayCard/DayCard";
 import WeekCard from "../../../components/edt/WeekCard/WeekCard";

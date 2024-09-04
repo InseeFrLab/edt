@@ -1,4 +1,4 @@
-import { ReactComponent as WhoAreYouImg } from "../../assets/illustration/who-are-you.svg";
+import WhoAreYouImg from "../../assets/illustration/who-are-you.svg?react";
 import SurveyPageStep from "../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "../../enumerations/FieldNameEnum";

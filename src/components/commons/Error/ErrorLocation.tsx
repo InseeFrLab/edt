@@ -1,4 +1,4 @@
-import { ReactComponent as LocationErrorImg } from "assets/illustration/error/location.svg";
+import LocationErrorImg from "assets/illustration/error/location.svg?react";
 import Error from "components/commons/Error/Error";
 import { useTranslation } from "react-i18next";
 

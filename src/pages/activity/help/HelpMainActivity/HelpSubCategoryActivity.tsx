@@ -6,23 +6,23 @@ import {
     makeStylesEdt,
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
-import { ReactComponent as CatIcon100 } from "../../../../assets/illustration/activity-categories/1.svg";
-import { ReactComponent as CatIcon200 } from "../../../../assets/illustration/activity-categories/2.svg";
-import { ReactComponent as CatIcon300 } from "../../../../assets/illustration/activity-categories/3.svg";
-import { ReactComponent as CatIcon400 } from "../../../../assets/illustration/activity-categories/4.svg";
-import { ReactComponent as CatIcon440 } from "../../../../assets/illustration/activity-categories/5.svg";
-import { ReactComponent as CatIcon500 } from "../../../../assets/illustration/activity-categories/6.svg";
-import { ReactComponent as CatIcon650 } from "../../../../assets/illustration/activity-categories/7.svg";
-import { ReactComponent as CatIcon600 } from "../../../../assets/illustration/activity-categories/8.svg";
-import { ReactComponent as ErrorIcon } from "../../../../assets/illustration/error/activity.svg";
-import { ReactComponent as AddLightBlueIcon } from "../../../../assets/illustration/mui-icon/add-light-blue.svg";
-import { ReactComponent as AddWhiteIcon } from "../../../../assets/illustration/mui-icon/add.svg";
-import { ReactComponent as ArrowBackIosIcon } from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg";
-import { ReactComponent as ArrowForwardIosIcon } from "../../../../assets/illustration/mui-icon/arrow-forward-ios-white.svg";
-import { ReactComponent as ChevronRightIcon } from "../../../../assets/illustration/mui-icon/arrow-forward-ios.svg";
-import { ReactComponent as ArrowForwardIcon } from "../../../../assets/illustration/mui-icon/arrow-forward.svg";
-import { ReactComponent as ExtensionIcon } from "../../../../assets/illustration/mui-icon/extension.svg";
-import { ReactComponent as SearchIcon } from "../../../../assets/illustration/mui-icon/search.svg";
+import CatIcon100 from "../../../../assets/illustration/activity-categories/1.svg?react";
+import CatIcon200 from "../../../../assets/illustration/activity-categories/2.svg?react";
+import CatIcon300 from "../../../../assets/illustration/activity-categories/3.svg?react";
+import CatIcon400 from "../../../../assets/illustration/activity-categories/4.svg?react";
+import CatIcon440 from "../../../../assets/illustration/activity-categories/5.svg?react";
+import CatIcon500 from "../../../../assets/illustration/activity-categories/6.svg?react";
+import CatIcon650 from "../../../../assets/illustration/activity-categories/7.svg?react";
+import CatIcon600 from "../../../../assets/illustration/activity-categories/8.svg?react";
+import ErrorIcon from "../../../../assets/illustration/error/activity.svg?react";
+import AddLightBlueIcon from "../../../../assets/illustration/mui-icon/add-light-blue.svg?react";
+import AddWhiteIcon from "../../../../assets/illustration/mui-icon/add.svg?react";
+import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg?react";
+import ArrowForwardIosIcon from "../../../../assets/illustration/mui-icon/arrow-forward-ios-white.svg?react";
+import ChevronRightIcon from "../../../../assets/illustration/mui-icon/arrow-forward-ios.svg?react";
+import ArrowForwardIcon from "../../../../assets/illustration/mui-icon/arrow-forward.svg?react";
+import ExtensionIcon from "../../../../assets/illustration/mui-icon/extension.svg?react";
+import SearchIcon from "../../../../assets/illustration/mui-icon/search.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "../../../../components/commons/LoopSurveyPage/LoopSurveyPage";
 import { SEPARATOR_DEFAUT } from "../../../../constants/constants";
@@ -144,7 +144,7 @@ const HelpSubCategoryActivity = () => {
             addToAutocompleteActivityReferentiel(newItem);
         },
         widthGlobal: true,
-        separatorSuggester: process.env.VITE_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
+        separatorSuggester: import.meta.env.VITE_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
         helpStep: 3,
         chevronRightIcon: ChevronRightIcon,
         chevronRightIconAlt: t("accessibility.asset.mui-icon.arrow-right-ios"),

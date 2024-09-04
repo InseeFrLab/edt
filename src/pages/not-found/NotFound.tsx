@@ -1,10 +1,10 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Typography } from "@mui/material";
 import PageIcon from "../../components/commons/PageIcon/PageIcon";
-import { ReactComponent as HomeIcon } from "../../assets/illustration/mui-icon/home.svg";
+import HomeIcon from "../../assets/illustration/mui-icon/home.svg?react";
 
-import { ReactComponent as DefaultErrorIcon } from "../../assets/illustration/error/error.svg";
-import { ReactComponent as PowerSettingsIcon } from "../../assets/illustration/mui-icon/power-settings-white.svg";
+import DefaultErrorIcon from "../../assets/illustration/error/error.svg?react";
+import PowerSettingsIcon from "../../assets/illustration/mui-icon/power-settings-white.svg?react";
 import ErrorPage from "../../pages/error/ErrorPage";
 import { useTranslation } from "react-i18next";
 import FlexCenter from "../../components/commons/FlexCenter/FlexCenter";
@@ -27,7 +27,7 @@ const NotFoundPage = () => {
             localStorage.clear();
             lunaticDatabase.clear();
             setTimeout(() => {
-                window.location.replace(process.env.VITE_PUBLIC_URL || "");
+                window.location.replace(import.meta.env.VITE_PUBLIC_URL || "");
                 auth.userManager.clearStaleState();
             }, 200);
         });

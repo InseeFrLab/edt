@@ -80,7 +80,7 @@ import {
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
 
-const NUM_MAX_ACTIVITY_SURVEYS = process.env.VITE_NUM_ACTIVITY_SURVEYS ?? 6;
+const NUM_MAX_ACTIVITY_SURVEYS = import.meta.env.VITE_NUM_ACTIVITY_SURVEYS ?? 6;
 const NUM_MAX_WORKTIME_SURVEYS = 3;
 //TODO: Find a way to remove these goddamn global variables
 let referentielsData: ReferentielData;
@@ -498,7 +498,7 @@ const initializeSurveysIdsDataModeReviewer = (
  * Create a data object from fetched survey data
  */
 const initializeData = (remoteSurveyData: any, idSurvey: string) => {
-    const regexp = new RegExp(process.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+    const regexp = new RegExp(import.meta.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
     let surveyData: LunaticData = {
         COLLECTED: {},
         CALCULATED: {},
@@ -621,7 +621,7 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
 const initializeDatasCache = (idSurvey: string) => {
     return lunaticDatabase.get(idSurvey).then(data => {
         if (data != null) {
-            const regexp = new RegExp(process.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+            const regexp = new RegExp(import.meta.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
             data.houseReference = idSurvey.replace(regexp, "");
             datas.set(idSurvey, data);
             addItemToSession(idSurvey, data);
@@ -884,7 +884,7 @@ const saveData = (
     }
     data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
     if (!data.houseReference) {
-        const regexp = new RegExp(process.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+        const regexp = new RegExp(import.meta.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
         data.houseReference = idSurvey.replace(regexp, "");
     }
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
@@ -1657,7 +1657,7 @@ const validateAllGroup = (
 };
 
 const initSurveyData = (surveyId: string): LunaticData => {
-    const regexp = new RegExp(process.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+    const regexp = new RegExp(import.meta.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
     let surveyData: LunaticData = {
         COLLECTED: {},
         CALCULATED: {},

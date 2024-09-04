@@ -8,11 +8,11 @@ import {
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
 import { Box, Divider, IconButton, Snackbar, Switch, Typography } from "@mui/material";
-import { ReactComponent as EmptyActivityImg } from "../../../assets/illustration/empty-activity.svg";
-import { ReactComponent as ErrorIcon } from "../../../assets/illustration/error/activity.svg";
-import { ReactComponent as InfoIcon } from "../../../assets/illustration/info.svg";
-import { ReactComponent as CloseIcon } from "../../../assets/illustration/mui-icon/close.svg";
-import { ReactComponent as InfoTooltipIcon } from "../../../assets/illustration/mui-icon/info.svg";
+import EmptyActivityImg from "../../../assets/illustration/empty-activity.svg?react";
+import ErrorIcon from "../../../assets/illustration/error/activity.svg?react";
+import InfoIcon from "../../../assets/illustration/info.svg?react";
+import CloseIcon from "../../../assets/illustration/mui-icon/close.svg?react";
+import InfoTooltipIcon from "../../../assets/illustration/mui-icon/info.svg?react";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "../../../components/commons/LoadingFull/LoadingFull";
 import PageIcon from "../../../components/commons/PageIcon/PageIcon";

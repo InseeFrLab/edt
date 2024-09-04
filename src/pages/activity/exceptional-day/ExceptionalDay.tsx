@@ -1,4 +1,4 @@
-import { ReactComponent as ExceptionalDayImg } from "../../../assets/illustration/exceptional-day.svg";
+import ExceptionalDayImg from "../../../assets/illustration/exceptional-day.svg?react";
 import SurveyPageStep from "../../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
 

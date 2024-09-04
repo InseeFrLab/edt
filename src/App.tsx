@@ -75,7 +75,7 @@ const App = () => {
                             localStorage.clear();
                         })
                         .then(() => auth.userManager.clearStaleState())
-                        .then(() => window.location.replace(process.env.VITE_PUBLIC_URL || ""))
+                        .then(() => window.location.replace(import.meta.env.VITE_PUBLIC_URL || ""))
                         .catch(err => {
                             setErrorType(err);
                         });

@@ -1,4 +1,4 @@
-import { ReactComponent as BagIcon } from "../../../assets/illustration/type-of-day-categories/bag.svg";
+import BagIcon from "../../../assets/illustration/type-of-day-categories/bag.svg?react";
 import SurveyPageStep from "../../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
 import { t } from "i18next";

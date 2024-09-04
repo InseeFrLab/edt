@@ -1,6 +1,6 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Paper, Typography } from "@mui/material";
-import { ReactComponent as InstallImg } from "../../../../assets/illustration/mui-icon/download.svg";
+import InstallImg from "../../../../assets/illustration/mui-icon/download.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
 import SurveyPageSimpleHeader from "../../../../components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
 import { EdtRoutesNameEnum } from "../../../../enumerations/EdtRoutesNameEnum";

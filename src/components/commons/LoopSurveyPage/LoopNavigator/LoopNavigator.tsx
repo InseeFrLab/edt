@@ -1,8 +1,8 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button } from "@mui/material";
-import { ReactComponent as ArrowBackIosIcon } from "../../../../assets/illustration/mui-icon/arrow-back-ios.svg";
-import { ReactComponent as ArrowForwardIosIcon } from "../../../../assets/illustration/mui-icon/arrow-forward-ios.svg";
-import { ReactComponent as DoneIcon } from "../../../../assets/illustration/mui-icon/done.svg";
+import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios.svg?react";
+import ArrowForwardIosIcon from "../../../../assets/illustration/mui-icon/arrow-forward-ios.svg?react";
+import DoneIcon from "../../../../assets/illustration/mui-icon/done.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
 import { useCallback } from "react";
 import { isIOS, isMobile } from "react-device-detect";

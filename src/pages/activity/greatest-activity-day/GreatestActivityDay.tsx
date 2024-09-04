@@ -1,4 +1,4 @@
-import { ReactComponent as GreatestActivityDayImg } from "../../../assets/illustration/greatest-activity-day.svg";
+import GreatestActivityDayImg from "../../../assets/illustration/greatest-activity-day.svg?react";
 import SurveyPageStep from "../../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "../../../interface/lunatic/Lunatic";

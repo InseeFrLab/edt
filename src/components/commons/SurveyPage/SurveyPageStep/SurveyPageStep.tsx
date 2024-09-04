@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import { ReactComponent as ExtensionIcon } from "../../../../assets/illustration/mui-icon/extension.svg";
+import ExtensionIcon from "../../../../assets/illustration/mui-icon/extension.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
 import FelicitationModal from "../../../../components/commons/Modal/FelicitationModal/FelicitationModal";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "../../../../constants/constants";

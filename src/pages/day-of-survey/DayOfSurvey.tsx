@@ -1,4 +1,4 @@
-import { ReactComponent as DayOfSurveyImg } from "../../assets/illustration/day-of-survey.svg";
+import DayOfSurveyImg from "../../assets/illustration/day-of-survey.svg?react";
 import SurveyPageStep from "../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";

@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import Box from "@mui/material/Box";
-import { ReactComponent as CalendarMonthIcon } from "../../../assets/illustration/mui-icon/calendar-month.svg";
+import CalendarMonthIcon from "../../../assets/illustration/mui-icon/calendar-month.svg?react";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "../../../service/responsive";

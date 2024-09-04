@@ -1,5 +1,5 @@
 import { Alert, Info } from "@inseefrlab/lunatic-edt";
-import { ReactComponent as InfoIcon } from "../../../../assets/illustration/info.svg";
+import InfoIcon from "../../../../assets/illustration/info.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "../../../../constants/constants";
 import { EdtRoutesNameEnum } from "../../../../enumerations/EdtRoutesNameEnum";
