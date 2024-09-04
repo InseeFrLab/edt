@@ -186,7 +186,7 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             let userSurveyDataActivity: UserSurveys[] = [];
             let workingTimeSurveysIds: string[] = [];
             let userSurveyDataWorkTime: UserSurveys[] = [];
-
+            console.log("userSurveyData remote", userSurveyData);
             userSurveyData.forEach(surveyData => {
                 if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
                     activitySurveysIds.push(surveyData.surveyUnitId);
@@ -234,6 +234,7 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             let userSurveyDataActivity: UserSurveys[] = [];
             let workingTimeSurveysIds: string[] = [];
             let userSurveyDataWorkTime: UserSurveys[] = [];
+            console.log("userSurveyData", userSurveyData);
             userSurveyData.forEach(surveyData => {
                 if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
                     activitySurveysIds.push(surveyData.surveyUnitId);
@@ -722,6 +723,7 @@ const getDatas = (): Map<string, LunaticData> => {
 
 const getData = (idSurvey: string): LunaticData => {
     const modifyCollected = modifyIndividualCollected(idSurvey);
+    //TODO: empty data is never used
     const emptyData = getDataCache(idSurvey) ?? createDataEmpty(idSurvey ?? "");
     const data = modifyCollected || emptyData;
     return data;
@@ -737,9 +739,19 @@ const setDataCache = (idSurvey: string, data: LunaticData) => {
     addItemToSession(idSurvey, data);
 };
 
+/**
+ * Edit the collected data using the EDITED property from cache.
+ * 1. Retrieves the cached data for the given survey ID and creates copy.
+ * 2. Checks if the mode persistence of the survey data is not EDITED.
+ * 3. For each property, it checks if the EDITED and COLLECTED properties exist and are not arrays.
+ * 4. If the conditions are met, it overwrite the EDITED value to the COLLECTED property.
+ */
 const modifyIndividualCollected = (idSurvey: string) => {
     let dataSurv = Object.assign(getDataCache(idSurvey));
-
+    if (dataSurv?.COLLECTED && Object.keys(dataSurv.COLLECTED).length === 0) {
+        dataSurv = createDataEmpty(idSurvey);
+        saveInDatabase(idSurvey, dataSurv);
+    }
     if (getModePersistence(dataSurv) != ModePersistenceEnum.EDITED) {
         const dataOfSurvey = dataSurv?.COLLECTED;
         for (let prop in FieldNameEnum as any) {
@@ -754,7 +766,6 @@ const modifyIndividualCollected = (idSurvey: string) => {
             }
         }
     }
-
     return dataSurv;
 };
 
@@ -784,6 +795,7 @@ const createDataEmpty = (idSurvey: string): LunaticData => {
         lastRemoteSaveDate: undefined,
     };
     data.COLLECTED = getDataEmpty(idSurvey);
+    console.log("createDataEmpty", data);
     return data;
 };
 
@@ -887,8 +899,6 @@ const saveData = (
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
 
     if (isChange) {
-        console.log("SaveRemote data", data);
-
         data = saveQualityScore(idSurvey, data);
 
         if (!navigator.onLine) {
@@ -905,6 +915,7 @@ const saveData = (
             data.lastRemoteSaveDate = stateData.date;
 
             if (isReviewerMode) {
+                console.log("SaveRemote data", data);
                 return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
                     stateData.date = Math.max(stateData.date, data.lastLocalSaveDate ?? 0);
                     data.stateData = stateData;
@@ -913,6 +924,7 @@ const saveData = (
                 });
             } else {
                 //TODO: TEMP: need to figure out why there is still a state data here
+                console.log("SaveRemote data", data);
                 return remotePutSurveyData(idSurvey, surveyData).then(() => {
                     data.stateData = stateData;
                     return saveInDatabase(idSurvey, data);
@@ -1033,8 +1045,9 @@ const getCurrentPage = (data: LunaticData | undefined, source?: LunaticModel): n
         i++;
     }
     if (currentPage == 0) {
+        //TODO: Fix this
         const firstName = getValueOfData(data, FieldNameEnum.FIRSTNAME);
-        if (firstName) currentPage = Number(components[components.length - 2].page);
+        if (firstName) currentPage = Number(components[components.length - 1].page);
         if (source.label == LABEL_WORK_TIME_SURVEY) currentPage = 3;
     }
     return currentPage;
@@ -1107,7 +1120,7 @@ const setValue = (
     } else {
         getDataModePersist(idSurvey, dataAct, variableName, value, iteration);
     }
-
+    console.log("setValue", dataAct);
     return dataAct;
 };
 
@@ -1626,7 +1639,7 @@ const validateAllGroup = (
     inputDate?: string,
 ) => {
     const personAct = getPerson(idSurvey);
-
+    console.log("validateAllGroup", personAct);
     const surveyRootPage =
         personAct?.data?.questionnaireModelId == SourcesEnum.WORK_TIME_SURVEY
             ? EdtRoutesNameEnum.WORK_TIME

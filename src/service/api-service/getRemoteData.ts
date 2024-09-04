@@ -283,6 +283,10 @@ export const requestGetSurveyDataReviewer = (
     });
 };
 
+/**
+ * @deprecated This function is deprecated and it is not used anymore.
+ * Please use `requestGetSurveyDataReviewer` instead.
+ */
 export const remoteGetSurveyDataReviewer = (
     idSurvey: string,
     setError: (error: ErrorCodeEnum) => void,

@@ -23,21 +23,21 @@ const WhoAreYouPage = () => {
     const idSurvey = getSurveyIdFromUrl(context, location);
     const navigate = useNavigate();
 
-    const keydownChange = () => {
-        const componentId = getComponentId(FieldNameEnum.FIRSTNAME, context.source);
-        if (componentId == null) {
-            navToErrorPage();
-        } else {
-            const disabled =
-                callbackHolder.getErrors() && callbackHolder.getErrors()[componentId].length > 0;
-            setDisabledButton(disabled);
-        }
-    };
+    // const keydownChange = () => {
+    //     const componentId = getComponentId(FieldNameEnum.FIRSTNAME, context.source);
+    //     if (componentId == null) {
+    //         navToErrorPage();
+    //     } else {
+    //         const disabled =
+    //             callbackHolder.getErrors() && callbackHolder.getErrors()[componentId].length > 0;
+    //         setDisabledButton(disabled);
+    //     }
+    // };
 
-    React.useEffect(() => {
-        document.addEventListener("keyup", keydownChange, true);
-        return () => document.removeEventListener("keyup", keydownChange, true);
-    }, [callbackHolder]);
+    // React.useEffect(() => {
+    //     document.addEventListener("keyup", keydownChange, true);
+    //     return () => document.removeEventListener("keyup", keydownChange, true);
+    // }, [callbackHolder]);
 
     const keypressChange = (event: KeyboardEvent) => {
         if (event.key === "Enter") {
@@ -52,6 +52,7 @@ const WhoAreYouPage = () => {
     }, [callbackHolder]);
 
     const validate = useCallback(() => {
+        console.log("validate button");
         const input = (document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement)
             ?.value;
         validateAllGroup(navigate, idSurvey, input);
