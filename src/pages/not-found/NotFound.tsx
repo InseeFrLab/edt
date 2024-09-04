@@ -1,16 +1,16 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Typography } from "@mui/material";
-import PageIcon from "components/commons/PageIcon/PageIcon";
-import { ReactComponent as HomeIcon } from "assets/illustration/mui-icon/home.svg";
+import PageIcon from "../../components/commons/PageIcon/PageIcon";
+import { ReactComponent as HomeIcon } from "../../assets/illustration/mui-icon/home.svg";
 
-import { ReactComponent as DefaultErrorIcon } from "assets/illustration/error/error.svg";
-import { ReactComponent as PowerSettingsIcon } from "assets/illustration/mui-icon/power-settings-white.svg";
-import ErrorPage from "pages/error/ErrorPage";
+import { ReactComponent as DefaultErrorIcon } from "../../assets/illustration/error/error.svg";
+import { ReactComponent as PowerSettingsIcon } from "../../assets/illustration/mui-icon/power-settings-white.svg";
+import ErrorPage from "../../pages/error/ErrorPage";
 import { useTranslation } from "react-i18next";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import FlexCenter from "../../components/commons/FlexCenter/FlexCenter";
 import { useCallback } from "react";
 import { useAuth } from "oidc-react";
-import { lunaticDatabase } from "service/lunatic-database";
+import { lunaticDatabase } from "../../service/lunatic-database";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
 const NotFoundPage = () => {
@@ -27,7 +27,7 @@ const NotFoundPage = () => {
             localStorage.clear();
             lunaticDatabase.clear();
             setTimeout(() => {
-                window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
+                window.location.replace(process.env.VITE_PUBLIC_URL || "");
                 auth.userManager.clearStaleState();
             }, 200);
         });

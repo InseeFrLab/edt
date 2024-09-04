@@ -3,13 +3,13 @@ import { Breadcrumbs } from "@mui/material";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
+import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
+import { LocalStorageVariableEnum } from "../../../enumerations/LocalStorageVariableEnum";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { getFlatLocalStorageValue } from "service/local-storage-service";
-import { getNavigatePath } from "service/navigation-service";
+import { getFlatLocalStorageValue } from "../../../service/local-storage-service";
+import { getNavigatePath } from "../../../service/navigation-service";
 
 interface BreadcrumbsReviewerProps {
     labelBreadcrumbPrincipal: string;

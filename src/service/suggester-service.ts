@@ -1,7 +1,7 @@
 import { AutoCompleteActiviteOption } from "@inseefrlab/lunatic-edt";
 import elasticlunr, { Index } from "elasticlunrjs";
 import { Dispatch, SetStateAction } from "react";
-import { stopWordsFrench, synonymesMisspellings } from "assets/surveyData";
+import { stopWordsFrench, synonymesMisspellings } from "../assets/surveyData";
 
 /**
  * Remove accents

@@ -12,14 +12,14 @@ import {
     SKIP_WORKING_CATEGORIES_ACTIVITES_LIST,
     SLEEPING_CATEGORIES_ACTIVITES_LIST,
     WORKING_CATEGORIES_ACTIVITES_LIST,
-} from "constants/constants";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
+} from "../constants/constants";
+import { EdtRoutesNameEnum } from "../enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "../enumerations/FieldNameEnum";
 import {
     UserActivitiesCharacteristics,
     UserActivitiesSummary,
-} from "interface/entity/ActivitiesSummary";
-import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
+} from "../interface/entity/ActivitiesSummary";
+import { ActivityRouteOrGap } from "../interface/entity/ActivityRouteOrGap";
 import { TFunction } from "react-i18next";
 import {
     findActivityInAutoCompleteReferentielById,
@@ -28,14 +28,14 @@ import {
     findNewActivityById,
     findRouteInRef,
     findRouteSecondaryActivityInRef,
-} from "service/referentiel-service";
+} from "./referentiel-service";
 import {
     convertStringToBoolean,
     getActivitiesOrRoutes,
     getActivityOrRouteDurationLabelFromDurationMinutes,
     getLabelFromTime,
-} from "service/survey-activity-service";
-import { sumAllOfArray } from "utils/utils";
+} from "./survey-activity-service";
+import { sumAllOfArray } from "../utils/utils";
 import { filtrePage, getAllCodesFromActivitiesCodes } from "./loop-service";
 import { getValue } from "./survey-service";
 

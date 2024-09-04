@@ -1,10 +1,10 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Modal } from "@mui/material";
-import { ReactComponent as ActivityIcon } from "assets/illustration/activity.svg";
-import { ReactComponent as RouteIcon } from "assets/illustration/route.svg";
-import { ReactComponent as YellowPlusIcon } from "assets/illustration/yellow-plus.svg";
-import { Default, Mobile } from "components/commons/Responsive/Responsive";
-import { LunaticModel } from "interface/lunatic/Lunatic";
+import { ReactComponent as ActivityIcon } from "../../../assets/illustration/activity.svg";
+import { ReactComponent as RouteIcon } from "../../../assets/illustration/route.svg";
+import { ReactComponent as YellowPlusIcon } from "../../../assets/illustration/yellow-plus.svg";
+import { Default, Mobile } from "../../commons/Responsive/Responsive.tsx";
+import { LunaticModel } from "../../../interface/lunatic/Lunatic";
 import React from "react";
 import AddActivityOrRouteDefault from "./AddActivityOrRouteDefault";
 import AddActivityOrRouteMobile from "./AddActivityOrRouteMobile";

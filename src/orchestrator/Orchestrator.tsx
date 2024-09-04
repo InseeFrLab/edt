@@ -2,12 +2,12 @@ import * as lunatic from "@inseefr/lunatic";
 import * as lunaticEDT from "@inseefrlab/lunatic-edt";
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { FieldNameEnum, FieldNameEnumActivity } from "enumerations/FieldNameEnum";
-import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
+import FlexCenter from "../components/commons/FlexCenter/FlexCenter";
+import { FieldNameEnum, FieldNameEnumActivity } from "../enumerations/FieldNameEnum";
+import { LunaticData, LunaticModel } from "../interface/lunatic/Lunatic";
 import React from "react";
-import { getCurrentPageSource } from "service/orchestrator-service";
-import { isReviewer } from "service/user-service";
+import { getCurrentPageSource } from "../service/orchestrator-service";
+import { isReviewer } from "../service/user-service";
 
 const { ...edtComponents } = lunaticEDT;
 

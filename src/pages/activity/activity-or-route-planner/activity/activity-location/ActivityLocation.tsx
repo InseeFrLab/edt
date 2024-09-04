@@ -1,15 +1,15 @@
-import { ReactComponent as locationErrorIcon } from "assets/illustration/error/location.svg";
-import { ReactComponent as option1 } from "assets/illustration/locations/1.svg";
-import { ReactComponent as option2 } from "assets/illustration/locations/2.svg";
-import { ReactComponent as option3 } from "assets/illustration/locations/3.svg";
-import { ReactComponent as option4 } from "assets/illustration/locations/4.svg";
-import { ReactComponent as option5 } from "assets/illustration/locations/5.svg";
-import { ReactComponent as option6 } from "assets/illustration/locations/6.svg";
-import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
+import { ReactComponent as locationErrorIcon } from "../../../../../assets/illustration/error/location.svg";
+import { ReactComponent as option1 } from "../../../../../assets/illustration/locations/1.svg";
+import { ReactComponent as option2 } from "../../../../../assets/illustration/locations/2.svg";
+import { ReactComponent as option3 } from "../../../../../assets/illustration/locations/3.svg";
+import { ReactComponent as option4 } from "../../../../../assets/illustration/locations/4.svg";
+import { ReactComponent as option5 } from "../../../../../assets/illustration/locations/5.svg";
+import { ReactComponent as option6 } from "../../../../../assets/illustration/locations/6.svg";
+import LoopSurveyPageStep from "../../../../../components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
+import { EdtRoutesNameEnum } from "../../../../../enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "../../../../../enumerations/FieldNameEnum";
 import { useTranslation } from "react-i18next";
-import { getPlaceRef } from "service/referentiel-service";
+import { getPlaceRef } from "../../../../../service/referentiel-service";
 
 const ActivityLocationPage = () => {
     const { t } = useTranslation();

@@ -1,10 +1,10 @@
-import { ReactComponent as FinalizationIcon } from "assets/illustration/help.svg";
-import { ReactComponent as InstallationImg } from "assets/illustration/installation.svg";
-import { ReactComponent as DownloadIcon } from "assets/illustration/mui-icon/download.svg";
-import InstallPageStep from "components/commons/InstallPageStep/InstallPageStep";
+import { ReactComponent as FinalizationIcon } from "../../../assets/illustration/help.svg";
+import { ReactComponent as InstallationImg } from "../../../assets/illustration/installation.svg";
+import { ReactComponent as DownloadIcon } from "../../../assets/illustration/mui-icon/download.svg";
+import InstallPageStep from "../../../components/commons/InstallPageStep/InstallPageStep";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { getDevice, getNavigator } from "utils/utils";
+import { getDevice, getNavigator } from "../../../utils/utils";
 import { createMap, getLabelStep } from "./utils";
 
 const InstallPage = () => {

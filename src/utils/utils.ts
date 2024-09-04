@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { EdtRoutesNameEnum } from "../enumerations/EdtRoutesNameEnum";
+import { OrchestratorContext } from "../interface/lunatic/Lunatic";
 import { isArray, isEqual, isObject, transform } from "lodash";
 import {
     isAndroid,
@@ -15,8 +15,8 @@ import {
     isSafari,
 } from "react-device-detect";
 import { Location } from "react-router-dom";
-import { getCurrentSurveyRootPage } from "service/orchestrator-service";
-import { isPwa } from "service/responsive";
+import { getCurrentSurveyRootPage } from "../service/orchestrator-service";
+import { isPwa } from "../service/responsive";
 
 function groupBy<T>(arr: T[], fn: (item: T) => any) {
     return arr.reduce<Record<string, T[]>>((prev, curr) => {

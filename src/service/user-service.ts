@@ -1,4 +1,4 @@
-import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
+import { EdtUserRightsEnum } from "../enumerations/EdtUserRightsEnum";
 import { AuthContextProps, User } from "oidc-react";
 
 let user: any;
@@ -28,13 +28,13 @@ export const setUserToken = (token: string): void => {
 export const getUserRights = (): EdtUserRightsEnum => {
     if (
         user?.profile?.inseegroupedefaut?.includes(
-            process.env.REACT_APP_REVIEWER_ROLE ?? EdtUserRightsEnum.REVIEWER,
+            process.env.VITE_REVIEWER_ROLE ?? EdtUserRightsEnum.REVIEWER,
         )
     ) {
         return EdtUserRightsEnum.REVIEWER;
     } else if (
         user?.profile?.inseegroupedefaut?.includes(
-            process.env.REACT_APP_SURVEYED_ROLE ?? EdtUserRightsEnum.SURVEYED,
+            process.env.VITE_SURVEYED_ROLE ?? EdtUserRightsEnum.SURVEYED,
         )
     ) {
         return EdtUserRightsEnum.SURVEYED;

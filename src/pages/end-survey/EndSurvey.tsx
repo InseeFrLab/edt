@@ -1,37 +1,37 @@
 import { Info, InfoProps, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Typography } from "@mui/material";
-import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
-import { ReactComponent as SendIcon } from "assets/illustration/mui-icon/send.svg";
-import { ReactComponent as SubmitIcon } from "assets/illustration/submit.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import FelicitationModal from "components/commons/Modal/FelicitationModal/FelicitationModal";
-import PageIcon from "components/commons/PageIcon/PageIcon";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
-import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
-import { StateData, SurveyData } from "interface/entity/Api";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder } from "orchestrator/Orchestrator";
+import { ReactComponent as InfoIcon } from "../../assets/illustration/info.svg";
+import { ReactComponent as SendIcon } from "../../assets/illustration/mui-icon/send.svg";
+import { ReactComponent as SubmitIcon } from "../../assets/illustration/submit.svg";
+import FlexCenter from "../../components/commons/FlexCenter/FlexCenter";
+import FelicitationModal from "../../components/commons/Modal/FelicitationModal/FelicitationModal";
+import PageIcon from "../../components/commons/PageIcon/PageIcon";
+import SurveyPage from "../../components/commons/SurveyPage/SurveyPage";
+import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "../../enumerations/FieldNameEnum";
+import { LocalStorageVariableEnum } from "../../enumerations/LocalStorageVariableEnum";
+import { StateDataStateEnum } from "../../enumerations/StateDataStateEnum";
+import { StateData, SurveyData } from "../../interface/entity/Api";
+import { OrchestratorContext } from "../../interface/lunatic/Lunatic";
+import { callbackHolder } from "../../orchestrator/Orchestrator";
 import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import { remotePutSurveyData, remotePutSurveyDataReviewer } from "service/api-service/putRemoteData";
-import { getFlatLocalStorageValue } from "service/local-storage-service";
+import { remotePutSurveyData, remotePutSurveyDataReviewer } from "../../service/api-service/putRemoteData";
+import { getFlatLocalStorageValue } from "../../service/local-storage-service";
 import {
     getNavigatePath,
     getParameterizedNavigatePath,
     navToHome,
     setEnviro,
-} from "service/navigation-service";
-import { getCurrentSurveyRootPage } from "service/orchestrator-service";
-import { isPwa } from "service/responsive";
-import { surveyReadOnly } from "service/survey-activity-service";
-import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from "service/survey-service";
-import { isReviewer } from "service/user-service";
-import { getSurveyIdFromUrl } from "utils/utils";
+} from "../../service/navigation-service";
+import { getCurrentSurveyRootPage } from "../../service/orchestrator-service";
+import { isPwa } from "../../service/responsive";
+import { surveyReadOnly } from "../../service/survey-activity-service";
+import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from "../../service/survey-service";
+import { isReviewer } from "../../service/user-service";
+import { getSurveyIdFromUrl } from "../../utils/utils";
 
 const isActivity = () => {
     return getCurrentSurveyRootPage() === EdtRoutesNameEnum.ACTIVITY;

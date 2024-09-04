@@ -1,13 +1,13 @@
 import { Info, important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { ReactComponent as InfoIcon } from "../../../assets/illustration/info.svg";
+import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
 import { ReactElement, useCallback } from "react";
 import { isIOS, isMobile as isMobileDevice } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { getNavigatePath } from "service/navigation-service";
-import { isMobile as isMobileScreen } from "service/responsive";
+import { getNavigatePath } from "../../../service/navigation-service";
+import { isMobile as isMobileScreen } from "../../../service/responsive";
 import FlexCenter from "../FlexCenter/FlexCenter";
 import NavigationStep from "../NavigationStep/NavigationStep";
 import SurveyPageSimpleHeader from "../SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";

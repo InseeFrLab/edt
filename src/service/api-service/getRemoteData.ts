@@ -1,14 +1,14 @@
 import axios from "axios";
-import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
-import { LunaticData, ReferentielData, SourceData } from "interface/lunatic/Lunatic";
+import { ErrorCodeEnum } from "../../enumerations/ErrorCodeEnum";
+import { StateData, SurveyData, UserSurveys } from "../../interface/entity/Api";
+import { LunaticData, ReferentielData, SourceData } from "../../interface/lunatic/Lunatic";
 import { initStateData, initSurveyData } from "../survey-service";
 import { getUserToken, isReviewer } from "../user-service";
-import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
-import { revertTransformedArray } from "utils/utils";
+import { ReferentielsEnum } from "../../enumerations/ReferentielsEnum";
+import { revertTransformedArray } from "../../utils/utils";
 
-export const edtOrganisationApiBaseUrl = process.env.REACT_APP_EDT_ORGANISATION_API_BASE_URL;
-export const stromaeBackOfficeApiBaseUrl = process.env.REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL;
+export const edtOrganisationApiBaseUrl = process.env.VITE_EDT_ORGANISATION_API_BASE_URL;
+export const stromaeBackOfficeApiBaseUrl = process.env.VITE_STROMAE_BACK_OFFICE_API_BASE_URL;
 
 axios.interceptors.response.use(
     response => {

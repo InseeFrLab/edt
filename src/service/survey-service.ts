@@ -1,22 +1,22 @@
 import { generateDateFromStringInput, getFrenchDayFromDate } from "@inseefrlab/lunatic-edt";
 import dayjs from "dayjs";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
-import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
-import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
-import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { StateHouseholdEnum } from "enumerations/StateHouseholdEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
+import { EdtRoutesNameEnum } from "../enumerations/EdtRoutesNameEnum";
+import { EdtSurveyRightsEnum } from "../enumerations/EdtSurveyRightsEnum";
+import { ErrorCodeEnum } from "../enumerations/ErrorCodeEnum";
+import { FieldNameEnum } from "../enumerations/FieldNameEnum";
+import { LocalStorageVariableEnum } from "../enumerations/LocalStorageVariableEnum";
+import { ModePersistenceEnum } from "../enumerations/ModePersistenceEnum";
+import { ReferentielsEnum } from "../enumerations/ReferentielsEnum";
+import { SourcesEnum } from "../enumerations/SourcesEnum";
+import { StateHouseholdEnum } from "../enumerations/StateHouseholdEnum";
+import { SurveysIdsEnum } from "../enumerations/SurveysIdsEnum";
 import { t } from "i18next";
 import _ from "lodash";
-import { TabData } from "interface/component/Component";
-import { StateData, SurveyData, UserSurveys } from "interface/entity/Api";
-import { Household } from "interface/entity/Household";
-import { Person } from "interface/entity/Person";
-import { StatsHousehold } from "interface/entity/StatsHouseHold";
+import { TabData } from "../interface/component/Component";
+import { StateData, SurveyData, UserSurveys } from "../interface/entity/Api";
+import { Household } from "../interface/entity/Household";
+import { Person } from "../interface/entity/Person";
+import { StatsHousehold } from "../interface/entity/StatsHouseHold";
 import {
     Collected,
     DATA_STATE,
@@ -33,29 +33,29 @@ import {
     SurveysIds,
     USER_SURVEYS_DATA,
     UserSurveysData,
-} from "interface/lunatic/Lunatic";
+} from "../interface/lunatic/Lunatic";
 import { AuthContextProps } from "oidc-react";
 import { NavigateFunction } from "react-router-dom";
 import {
     fetchReviewerSurveysAssignments,
     remoteGetSurveyStateData,
     requestGetDataReviewer,
-} from "service/api-service/getRemoteData";
-import { lunaticDatabase } from "service/lunatic-database";
-import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "service/orchestrator-service";
+} from "./api-service/getRemoteData";
+import { lunaticDatabase } from "./lunatic-database";
+import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "./orchestrator-service";
 import {
     addArrayToSession,
     addItemToSession,
     getArrayFromSession,
     getItemFromSession,
     groupBy,
-} from "utils/utils";
+} from "../utils/utils";
 import {
     edtWorkTimeSurvey,
     edtActivitySurvey,
     dataEmptyActivity,
     dataEmptyWeeklyPlanner,
-} from "assets/surveyData";
+} from "../assets/surveyData";
 import { EdtUserRightsEnum } from "./../enumerations/EdtUserRightsEnum";
 import { LunaticData } from "./../interface/lunatic/Lunatic";
 import { fetchUserSurveysInfo, remoteGetSurveyData } from "./api-service/getRemoteData";
@@ -66,7 +66,7 @@ import { fixConditionals, getScore, saveQualityScore } from "./survey-activity-s
 import { getUserRights, isReviewer } from "./user-service";
 import { remotePutSurveyData, remotePutSurveyDataReviewer } from "./api-service/putRemoteData";
 import { fetchReferentiels } from "./api-service/getLocalSurveyData";
-import { fetchRemoteReferentiels } from "service/api-service/getRemoteData";
+import { fetchRemoteReferentiels } from "./api-service/getRemoteData";
 import {
     getLocalSurveyStateData,
     initStateData,
@@ -80,7 +80,7 @@ import {
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
 
-const NUM_MAX_ACTIVITY_SURVEYS = process.env.REACT_APP_NUM_ACTIVITY_SURVEYS ?? 6;
+const NUM_MAX_ACTIVITY_SURVEYS = process.env.VITE_NUM_ACTIVITY_SURVEYS ?? 6;
 const NUM_MAX_WORKTIME_SURVEYS = 3;
 //TODO: Find a way to remove these goddamn global variables
 let referentielsData: ReferentielData;
@@ -498,7 +498,7 @@ const initializeSurveysIdsDataModeReviewer = (
  * Create a data object from fetched survey data
  */
 const initializeData = (remoteSurveyData: any, idSurvey: string) => {
-    const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+    const regexp = new RegExp(process.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
     let surveyData: LunaticData = {
         COLLECTED: {},
         CALCULATED: {},
@@ -621,7 +621,7 @@ const initializeSurveysDatasCache = (idSurveys?: string[]): Promise<any> => {
 const initializeDatasCache = (idSurvey: string) => {
     return lunaticDatabase.get(idSurvey).then(data => {
         if (data != null) {
-            const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+            const regexp = new RegExp(process.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
             data.houseReference = idSurvey.replace(regexp, "");
             datas.set(idSurvey, data);
             addItemToSession(idSurvey, data);
@@ -884,7 +884,7 @@ const saveData = (
     }
     data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
     if (!data.houseReference) {
-        const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+        const regexp = new RegExp(process.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
         data.houseReference = idSurvey.replace(regexp, "");
     }
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
@@ -1657,7 +1657,7 @@ const validateAllGroup = (
 };
 
 const initSurveyData = (surveyId: string): LunaticData => {
-    const regexp = new RegExp(process.env.REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
+    const regexp = new RegExp(process.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
     let surveyData: LunaticData = {
         COLLECTED: {},
         CALCULATED: {},

@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
+import { ReactComponent as CloseIcon } from "../../../../assets/illustration/mui-icon/close.svg";
 import { useTranslation } from "react-i18next";
 
 interface LoopSurveyPageSimpleHeaderProps {

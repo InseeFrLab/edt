@@ -1,5 +1,5 @@
 import Dexie, { PromiseExtended } from "dexie";
-import { LunaticData } from "interface/lunatic/Lunatic";
+import { LunaticData } from "../interface/lunatic/Lunatic";
 
 export interface LunaticDatabase {
     save(id: string, data: LunaticData): Promise<string>;

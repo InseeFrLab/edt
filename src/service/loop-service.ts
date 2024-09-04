@@ -5,18 +5,18 @@ import {
     CODES_ACTIVITY_IGNORE_SCREEN,
     CODES_ACTIVITY_IGNORE_SECONDARY_ACTIVITY,
     CODES_ACTIVITY_IGNORE_SOMEONE,
-} from "constants/constants";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { LoopEnum } from "enumerations/LoopEnum";
+} from "../constants/constants";
+import { EdtRoutesNameEnum } from "../enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "../enumerations/FieldNameEnum";
+import { LoopEnum } from "../enumerations/LoopEnum";
 import {
     LoopData,
     LunaticData,
     LunaticModel,
     LunaticModelComponent,
     LunaticModelVariable,
-} from "interface/lunatic/Lunatic";
-import { getCurrentPageSource } from "service/orchestrator-service";
+} from "../interface/lunatic/Lunatic";
+import { getCurrentPageSource } from "./orchestrator-service";
 import {
     getData,
     getDatas,
@@ -27,7 +27,7 @@ import {
     setValue,
     toIgnoreForActivity,
     toIgnoreForRoute,
-} from "service/survey-service";
+} from "./survey-service";
 import {
     getLastStep,
     getNextLoopPage,

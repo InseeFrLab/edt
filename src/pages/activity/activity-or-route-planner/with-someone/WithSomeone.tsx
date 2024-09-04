@@ -1,8 +1,8 @@
-import { ReactComponent as peopleErrorIcon } from "assets/illustration/error/people.svg";
-import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { ReactComponent as peopleErrorIcon } from "../../../../assets/illustration/error/people.svg";
+import LoopSurveyPageStep from "../../../../components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
+import { EdtRoutesNameEnum } from "../../../../enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "../../../../enumerations/FieldNameEnum";
+import { OrchestratorContext } from "../../../../interface/lunatic/Lunatic";
 import { useOutletContext } from "react-router";
 
 const WithSomeonePage = () => {

@@ -6,13 +6,13 @@ import {
     NomenclatureActivityOption,
     SelectedActivity,
 } from "@inseefrlab/lunatic-edt";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
+import { FieldNameEnum } from "../enumerations/FieldNameEnum";
+import { ReferentielsEnum } from "../enumerations/ReferentielsEnum";
 import i18n from "i18next";
 import { getReferentiel, getValue, saveReferentiels } from "./survey-service";
 import { lunaticDatabase } from "./lunatic-database";
 import { validate } from "uuid";
-import { REFERENTIELS_ID } from "interface/lunatic/Lunatic";
+import { REFERENTIELS_ID } from "../interface/lunatic/Lunatic";
 import { Dispatch, SetStateAction } from "react";
 import { CreateIndex, optionsFiltered, setIndexSuggester } from "./suggester-service";
 

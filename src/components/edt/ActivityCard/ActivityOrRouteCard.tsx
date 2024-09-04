@@ -1,18 +1,18 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider, Popover, Typography } from "@mui/material";
-import { ReactComponent as activityErrorIconSvg } from "assets/illustration/error/activity.svg";
-import { ReactComponent as locationErrorIconSvg } from "assets/illustration/error/location.svg";
-import { ReactComponent as meanOfTransportErrorIconSvg } from "assets/illustration/error/mean-of-transport.svg";
-import { ReactComponent as peopleErrorIconSvg } from "assets/illustration/error/people.svg";
-import { ReactComponent as routeErrorIconSvg } from "assets/illustration/error/route.svg";
-import { ReactComponent as screenErrorIconSvg } from "assets/illustration/error/screen.svg";
-import { ReactComponent as MoreHorizontalImage } from "assets/illustration/mui-icon/more-horizontal.svg";
-import { InsideAlertTypes } from "enumerations/InsideAlertTypesEnum";
-import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
+import { ReactComponent as activityErrorIconSvg } from "../../../assets/illustration/error/activity.svg";
+import { ReactComponent as locationErrorIconSvg } from "../../../assets/illustration/error/location.svg";
+import { ReactComponent as meanOfTransportErrorIconSvg } from "../../../assets/illustration/error/mean-of-transport.svg";
+import { ReactComponent as peopleErrorIconSvg } from "../../../assets/illustration/error/people.svg";
+import { ReactComponent as routeErrorIconSvg } from "../../../assets/illustration/error/route.svg";
+import { ReactComponent as screenErrorIconSvg } from "../../../assets/illustration/error/screen.svg";
+import { ReactComponent as MoreHorizontalImage } from "../../../assets/illustration/mui-icon/more-horizontal.svg";
+import { InsideAlertTypes } from "../../../enumerations/InsideAlertTypesEnum";
+import { ActivityRouteOrGap } from "../../../interface/entity/ActivityRouteOrGap";
 import React, { useCallback } from "react";
 import { TFunction, useTranslation } from "react-i18next";
-import { EdtRoutesNameEnum } from "routes/EdtRoutesMapping";
-import { filtrePage } from "service/loop-service";
+import { EdtRoutesNameEnum } from "../../../routes/EdtRoutesMapping";
+import { filtrePage } from "../../../service/loop-service";
 import Icon from "../Icon/Icon";
 
 interface ActivityOrRouteCardProps {

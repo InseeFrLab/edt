@@ -2,8 +2,8 @@ import { makeStylesEdt, TooltipInfo } from "@inseefrlab/lunatic-edt";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
-import { UserActivitiesSummary } from "interface/entity/ActivitiesSummary";
+import { ReactComponent as InfoIcon } from "../../../assets/illustration/info.svg";
+import { UserActivitiesSummary } from "../../../interface/entity/ActivitiesSummary";
 import { useTranslation } from "react-i18next";
 
 interface DaySummaryProps {

@@ -1,15 +1,15 @@
-import { ReactComponent as WhoAreYouImg } from "assets/illustration/who-are-you.svg";
-import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
+import { ReactComponent as WhoAreYouImg } from "../../assets/illustration/who-are-you.svg";
+import SurveyPageStep from "../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder } from "orchestrator/Orchestrator";
+import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "../../enumerations/FieldNameEnum";
+import { OrchestratorContext } from "../../interface/lunatic/Lunatic";
+import { callbackHolder } from "../../orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import { getComponentsOfVariable, setValue, validateAllGroup } from "service/survey-service";
-import { formatDate, getSurveyIdFromUrl } from "utils/utils";
+import { getComponentsOfVariable, setValue, validateAllGroup } from "../../service/survey-service";
+import { formatDate, getSurveyIdFromUrl } from "../../utils/utils";
 
 const EditGlobalInformationPage = () => {
     const context: OrchestratorContext = useOutletContext();

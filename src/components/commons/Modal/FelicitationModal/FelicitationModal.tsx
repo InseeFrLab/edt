@@ -1,5 +1,5 @@
 import { ModalEdt } from "@inseefrlab/lunatic-edt";
-import { ReactComponent as FelicitationsIcon } from "assets/illustration/felicitations.svg";
+import { ReactComponent as FelicitationsIcon } from "../../../../assets/illustration/felicitations.svg";
 import { useTranslation } from "react-i18next";
 
 interface FelicitationModalProps {

@@ -7,16 +7,16 @@ import {
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal, Typography } from "@mui/material";
-import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
-import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
-import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
-import { ReactComponent as ArrowForwardIcon } from "assets/illustration/mui-icon/arrow-forward.svg";
-import { ReactComponent as InfoTooltipIcon } from "assets/illustration/mui-icon/info.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
-import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { ReactComponent as InfoIcon } from "../../../../assets/illustration/info.svg";
+import { ReactComponent as ArrowBackIosIcon } from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg";
+import { ReactComponent as ArrowForwardIosIcon } from "../../../../assets/illustration/mui-icon/arrow-forward-ios-white.svg";
+import { ReactComponent as ArrowForwardIcon } from "../../../../assets/illustration/mui-icon/arrow-forward.svg";
+import { ReactComponent as InfoTooltipIcon } from "../../../../assets/illustration/mui-icon/info.svg";
+import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
+import SurveyPage from "../../../../components/commons/SurveyPage/SurveyPage";
+import ActivityOrRouteCard from "../../../../components/edt/ActivityCard/ActivityOrRouteCard";
+import AddActivityOrRoute from "../../../../components/edt/AddActivityOrRoute/AddActivityOrRoute";
+import { EdtRoutesNameEnum } from "../../../../enumerations/EdtRoutesNameEnum";
 import React, { useCallback } from "react";
 import { isAndroid, isBrowser, isIOS, isMobile as isMobileNav } from "react-device-detect";
 import { useTranslation } from "react-i18next";
@@ -27,10 +27,10 @@ import {
     navToActivityRoutePlanner,
     navToHelp,
     navToHome,
-} from "service/navigation-service";
-import { getLanguage } from "service/referentiel-service";
-import { isDesktop, isMobile, isPwa, isTablet } from "service/responsive";
-import { mockActivitiesRoutesOrGaps } from "service/survey-activity-service";
+} from "../../../../service/navigation-service";
+import { getLanguage } from "../../../../service/referentiel-service";
+import { isDesktop, isMobile, isPwa, isTablet } from "../../../../service/responsive";
+import { mockActivitiesRoutesOrGaps } from "../../../../service/survey-activity-service";
 import { v4 as uuidv4 } from "uuid";
 
 const HelpActivity = () => {

@@ -6,42 +6,42 @@ import {
     makeStylesEdt,
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
-import { ReactComponent as CatIcon100 } from "assets/illustration/activity-categories/1.svg";
-import { ReactComponent as CatIcon200 } from "assets/illustration/activity-categories/2.svg";
-import { ReactComponent as CatIcon300 } from "assets/illustration/activity-categories/3.svg";
-import { ReactComponent as CatIcon400 } from "assets/illustration/activity-categories/4.svg";
-import { ReactComponent as CatIcon440 } from "assets/illustration/activity-categories/5.svg";
-import { ReactComponent as CatIcon500 } from "assets/illustration/activity-categories/6.svg";
-import { ReactComponent as CatIcon650 } from "assets/illustration/activity-categories/7.svg";
-import { ReactComponent as CatIcon600 } from "assets/illustration/activity-categories/8.svg";
-import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
-import { ReactComponent as AddLightBlueIcon } from "assets/illustration/mui-icon/add-light-blue.svg";
-import { ReactComponent as AddWhiteIcon } from "assets/illustration/mui-icon/add.svg";
-import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
-import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
-import { ReactComponent as ChevronRightIcon } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
-import { ReactComponent as ArrowForwardIcon } from "assets/illustration/mui-icon/arrow-forward.svg";
-import { ReactComponent as ExtensionIcon } from "assets/illustration/mui-icon/extension.svg";
-import { ReactComponent as SearchIcon } from "assets/illustration/mui-icon/search.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
-import { SEPARATOR_DEFAUT } from "constants/constants";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { LoopEnum } from "enumerations/LoopEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
+import { ReactComponent as CatIcon100 } from "../../../../assets/illustration/activity-categories/1.svg";
+import { ReactComponent as CatIcon200 } from "../../../../assets/illustration/activity-categories/2.svg";
+import { ReactComponent as CatIcon300 } from "../../../../assets/illustration/activity-categories/3.svg";
+import { ReactComponent as CatIcon400 } from "../../../../assets/illustration/activity-categories/4.svg";
+import { ReactComponent as CatIcon440 } from "../../../../assets/illustration/activity-categories/5.svg";
+import { ReactComponent as CatIcon500 } from "../../../../assets/illustration/activity-categories/6.svg";
+import { ReactComponent as CatIcon650 } from "../../../../assets/illustration/activity-categories/7.svg";
+import { ReactComponent as CatIcon600 } from "../../../../assets/illustration/activity-categories/8.svg";
+import { ReactComponent as ErrorIcon } from "../../../../assets/illustration/error/activity.svg";
+import { ReactComponent as AddLightBlueIcon } from "../../../../assets/illustration/mui-icon/add-light-blue.svg";
+import { ReactComponent as AddWhiteIcon } from "../../../../assets/illustration/mui-icon/add.svg";
+import { ReactComponent as ArrowBackIosIcon } from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg";
+import { ReactComponent as ArrowForwardIosIcon } from "../../../../assets/illustration/mui-icon/arrow-forward-ios-white.svg";
+import { ReactComponent as ChevronRightIcon } from "../../../../assets/illustration/mui-icon/arrow-forward-ios.svg";
+import { ReactComponent as ArrowForwardIcon } from "../../../../assets/illustration/mui-icon/arrow-forward.svg";
+import { ReactComponent as ExtensionIcon } from "../../../../assets/illustration/mui-icon/extension.svg";
+import { ReactComponent as SearchIcon } from "../../../../assets/illustration/mui-icon/search.svg";
+import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
+import LoopSurveyPage from "../../../../components/commons/LoopSurveyPage/LoopSurveyPage";
+import { SEPARATOR_DEFAUT } from "../../../../constants/constants";
+import { EdtRoutesNameEnum } from "../../../../enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "../../../../enumerations/FieldNameEnum";
+import { LoopEnum } from "../../../../enumerations/LoopEnum";
+import { SourcesEnum } from "../../../../enumerations/SourcesEnum";
+import { OrchestratorForStories, callbackHolder } from "../../../../orchestrator/Orchestrator";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { getLabelsWhenQuit } from "service/alert-service";
-import { getLoopInitialPage } from "service/loop-service";
-import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
-import { getNavigatePath, navToHome, onClose, onNext, onPrevious } from "service/navigation-service";
-import { getAutoCompleteRef, getNomenclatureRef } from "service/referentiel-service";
-import { CreateIndexation, getIndexSuggester } from "service/suggester-service";
-import { mockData } from "service/survey-activity-service";
-import { addToAutocompleteActivityReferentiel, getSource } from "service/survey-service";
+import { getLabelsWhenQuit } from "../../../../service/alert-service";
+import { getLoopInitialPage } from "../../../../service/loop-service";
+import { getLoopPageSubpage, getStepData } from "../../../../service/loop-stepper-service";
+import { getNavigatePath, navToHome, onClose, onNext, onPrevious } from "../../../../service/navigation-service";
+import { getAutoCompleteRef, getNomenclatureRef } from "../../../../service/referentiel-service";
+import { CreateIndexation, getIndexSuggester } from "../../../../service/suggester-service";
+import { mockData } from "../../../../service/survey-activity-service";
+import { addToAutocompleteActivityReferentiel, getSource } from "../../../../service/survey-service";
 
 const HelpSubCategoryActivity = () => {
     const navigate = useNavigate();
@@ -144,7 +144,7 @@ const HelpSubCategoryActivity = () => {
             addToAutocompleteActivityReferentiel(newItem);
         },
         widthGlobal: true,
-        separatorSuggester: process.env.REACT_APP_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
+        separatorSuggester: process.env.VITE_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
         helpStep: 3,
         chevronRightIcon: ChevronRightIcon,
         chevronRightIconAlt: t("accessibility.asset.mui-icon.arrow-right-ios"),

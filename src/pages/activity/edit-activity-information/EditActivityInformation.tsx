@@ -1,19 +1,19 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Typography } from "@mui/material";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
-import StepNavCard from "components/edt/StepNavCard/StepNavCard";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { LoopEnum } from "enumerations/LoopEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
+import SurveyPage from "../../../components/commons/SurveyPage/SurveyPage";
+import ActivityOrRouteCard from "../../../components/edt/ActivityCard/ActivityOrRouteCard";
+import StepNavCard from "../../../components/edt/StepNavCard/StepNavCard";
+import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
+import { LoopEnum } from "../../../enumerations/LoopEnum";
+import { OrchestratorContext } from "../../../interface/lunatic/Lunatic";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { loopActivityRouteStepperData, loopActivityStepperData } from "service/loop-stepper-service";
-import { getLoopParameterizedNavigatePath, navFullPath } from "service/navigation-service";
-import { surveyReadOnly } from "service/survey-activity-service";
-import { getSurveyIdFromUrl } from "utils/utils";
+import { loopActivityRouteStepperData, loopActivityStepperData } from "../../../service/loop-stepper-service";
+import { getLoopParameterizedNavigatePath, navFullPath } from "../../../service/navigation-service";
+import { surveyReadOnly } from "../../../service/survey-activity-service";
+import { getSurveyIdFromUrl } from "../../../utils/utils";
 
 const EditActivityInformationPage = () => {
     const { t } = useTranslation();

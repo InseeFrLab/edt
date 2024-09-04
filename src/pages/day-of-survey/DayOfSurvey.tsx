@@ -1,17 +1,17 @@
-import { ReactComponent as DayOfSurveyImg } from "assets/illustration/day-of-survey.svg";
-import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
+import { ReactComponent as DayOfSurveyImg } from "../../assets/illustration/day-of-survey.svg";
+import SurveyPageStep from "../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder } from "orchestrator/Orchestrator";
+import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "../../enumerations/FieldNameEnum";
+import { ModePersistenceEnum } from "../../enumerations/ModePersistenceEnum";
+import { SourcesEnum } from "../../enumerations/SourcesEnum";
+import { OrchestratorContext } from "../../interface/lunatic/Lunatic";
+import { callbackHolder } from "../../orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import { navToErrorPage } from "service/navigation-service";
-import { surveyReadOnly } from "service/survey-activity-service";
+import { navToErrorPage } from "../../service/navigation-service";
+import { surveyReadOnly } from "../../service/survey-activity-service";
 import {
     getComponentId,
     getData,
@@ -20,8 +20,8 @@ import {
     navToPlanner,
     saveData,
     setValue,
-} from "service/survey-service";
-import { getSurveyIdFromUrl } from "utils/utils";
+} from "../../service/survey-service";
+import { getSurveyIdFromUrl } from "../../utils/utils";
 
 const DayOfSurveyPage = () => {
     const context: OrchestratorContext = useOutletContext();

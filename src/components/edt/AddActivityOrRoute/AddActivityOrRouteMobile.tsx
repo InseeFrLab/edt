@@ -1,8 +1,8 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider } from "@mui/material";
-import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
-import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import { ReactComponent as ArrowForwardIosIcon } from "../../../assets/illustration/mui-icon/arrow-forward-ios.svg";
+import { ReactComponent as CloseIcon } from "../../../assets/illustration/mui-icon/close.svg";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import { useTranslation } from "react-i18next";
 import Icon from "../Icon/Icon";
 

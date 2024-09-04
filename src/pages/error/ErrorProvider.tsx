@@ -1,16 +1,16 @@
 import ErrorPage from "./ErrorPage";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import FlexCenter from "../../components/commons/FlexCenter/FlexCenter";
 import { Box, Button, Typography } from "@mui/material";
-import { ReactComponent as HomeIcon } from "assets/illustration/mui-icon/home.svg";
+import { ReactComponent as HomeIcon } from "../../assets/illustration/mui-icon/home.svg";
 import { useTranslation } from "react-i18next";
-import { ReactComponent as DefaultErrorIcon } from "assets/illustration/error/error.svg";
-import { ReactComponent as PowerSettingsIcon } from "assets/illustration/mui-icon/power-settings-white.svg";
-import PageIcon from "components/commons/PageIcon/PageIcon";
+import { ReactComponent as DefaultErrorIcon } from "../../assets/illustration/error/error.svg";
+import { ReactComponent as PowerSettingsIcon } from "../../assets/illustration/mui-icon/power-settings-white.svg";
+import PageIcon from "../../components/commons/PageIcon/PageIcon";
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { useAuth } from "oidc-react";
 import { useCallback } from "react";
-import { lunaticDatabase } from "service/lunatic-database";
-import { navToHome } from "service/navigation-service";
+import { lunaticDatabase } from "../../service/lunatic-database";
+import { navToHome } from "../../service/navigation-service";
 
 // export type ErrorProviderProps = {
 //     errorCode?: ErrorCodeEnum;
@@ -32,7 +32,7 @@ const ErrorProvider = () => {
             localStorage.clear();
             lunaticDatabase.clear();
             setTimeout(() => {
-                window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
+                window.location.replace(process.env.VITE_PUBLIC_URL || "");
                 auth.userManager.clearStaleState();
             }, 200);
         });

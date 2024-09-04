@@ -1,13 +1,13 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import { Default } from "components/commons/Responsive/Responsive";
-import SurveySelecter from "components/edt/SurveySelecter/SurveySelecter";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { TabData } from "interface/component/Component";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder } from "orchestrator/Orchestrator";
+import { Default } from "../../components/commons/Responsive/Responsive";
+import SurveySelecter from "../../components/edt/SurveySelecter/SurveySelecter";
+import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
+import { ErrorCodeEnum } from "../../enumerations/ErrorCodeEnum";
+import { SourcesEnum } from "../../enumerations/SourcesEnum";
+import { TabData } from "../../interface/component/Component";
+import { OrchestratorContext } from "../../interface/lunatic/Lunatic";
+import { callbackHolder } from "../../orchestrator/Orchestrator";
 import { useCallback, useEffect } from "react";
 import { isAndroid, isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
@@ -16,10 +16,10 @@ import {
     getParameterizedNavigatePath,
     navToWeeklyPlannerOrClose,
     setEnviro,
-} from "service/navigation-service";
-import { getCurrentSurveyRootPage } from "service/orchestrator-service";
-import { isPwa, isTablet } from "service/responsive";
-import { getData, getSource, getSurveyRights, getTabsData } from "service/survey-service";
+} from "../../service/navigation-service";
+import { getCurrentSurveyRootPage } from "../../service/orchestrator-service";
+import { isPwa, isTablet } from "../../service/responsive";
+import { getData, getSource, getSurveyRights, getTabsData } from "../../service/survey-service";
 
 const WorkTimePage = () => {
     let { idSurvey } = useParams();

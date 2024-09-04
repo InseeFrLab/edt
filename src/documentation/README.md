@@ -376,9 +376,9 @@ EDT is using a Keycloak for authentification. It uses `oidc-react` (https://gith
 These three environment variables are used to setup the connection :
 
 ```
-REACT_APP_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
-REACT_APP_KEYCLOAK_CLIENT_ID=client-edt
-REACT_APP_KEYCLOAK_REDIRECT_URI=https://insee-recette-edt.k8s.keyconsulting.fr/
+VITE_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
+VITE_KEYCLOAK_CLIENT_ID=client-edt
+VITE_KEYCLOAK_REDIRECT_URI=https://insee-recette-edt.k8s.keyconsulting.fr/
 ```
 
 The user bearer token is used to call the secured APIs.
@@ -1005,23 +1005,23 @@ The `.env.production` file is used when the builded app is hosted.
 
 ```
 
-REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL=https://stromae-edt-kc.demo.insee.io/
-REACT_APP_EDT_ORGANISATION_API_BASE_URL=https://edt-api-kc.demo.insee.io/
-REACT_APP_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
-REACT_APP_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/
-REACT_APP_KEYCLOAK_CLIENT_ID=client-edt
-REACT_APP_KEYCLOAK_REDIRECT_URI=https://insee-recette-edt.k8s.keyconsulting.fr/
-REACT_APP_HOUSE_REFERENCE_REGULAR_EXPRESSION=.\$
-REACT_APP_SEPARATOR_SUGGESTER=;
-REACT_APP_NODE_ENV="production"
-REACT_APP_CHROMIUM_PATH=/builds/insee/edt/deploy/pwa-edt/node_modules/chromium/lib/chromium/chrome-linux/chrome
-REACT_APP_NUM_ACTIVITY_SURVEYS=6
-REACT_APP_NUM_WORKTIME_SURVEYS=2
+VITE_STROMAE_BACK_OFFICE_API_BASE_URL=https://stromae-edt-kc.demo.insee.io/
+VITE_EDT_ORGANISATION_API_BASE_URL=https://edt-api-kc.demo.insee.io/
+VITE_KEYCLOAK_AUTHORITY=https://auth.demo.insee.io/auth/realms/questionnaires-edt/
+VITE_KEYCLOAK_AUTHORITY_REVIEWER=https://auth.insee.io/auth/realms/questionnaires-particuliers/
+VITE_KEYCLOAK_CLIENT_ID=client-edt
+VITE_KEYCLOAK_REDIRECT_URI=https://insee-recette-edt.k8s.keyconsulting.fr/
+VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION=.\$
+VITE_SEPARATOR_SUGGESTER=;
+VITE_NODE_ENV="production"
+VITE_CHROMIUM_PATH=/builds/insee/edt/deploy/pwa-edt/node_modules/chromium/lib/chromium/chrome-linux/chrome
+VITE_NUM_ACTIVITY_SURVEYS=6
+VITE_NUM_WORKTIME_SURVEYS=2
 
 ```
 </details>
 
-`REACT_APP_NUM_ACTIVITY_SURVEYS` and `REACT_APP_NUM_WORKTIME_SURVEYS` allows to change the amount of each survey kind for user.
+`VITE_NUM_ACTIVITY_SURVEYS` and `VITE_NUM_WORKTIME_SURVEYS` allows to change the amount of each survey kind for user.
 
 ## Orchestrator
 
@@ -1395,12 +1395,12 @@ The application is completely functional offline in browser or in the applicatio
 
 For the reviewer mode, the information recovered is done on two requetes:
 
-- To retrieve the data: REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/data"
-- To retrieve the stateData : REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/state-data"
+- To retrieve the data: VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/data"
+- To retrieve the stateData : VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/state-data"
 
 For the interviewer mode, the information retrieved is done on the following request:
 
-- REACT_APP_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey.
+- VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey.
 
 Same mechanism used to save information relevant to surveys.
 

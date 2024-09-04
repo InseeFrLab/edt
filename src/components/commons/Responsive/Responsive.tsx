@@ -1,5 +1,5 @@
 import { useMediaQuery } from "react-responsive";
-import { destktopMinWidth, mobileMaxWidth, tabletMaxWidth, tabletMinWidth } from "service/responsive";
+import { destktopMinWidth, mobileMaxWidth, tabletMaxWidth, tabletMinWidth } from "../../../service/responsive";
 
 interface ResponsiveProps {
     children: JSX.Element[] | JSX.Element;
