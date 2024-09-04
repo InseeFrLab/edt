@@ -5,7 +5,6 @@ import RouteIcon from "../../../assets/illustration/route.svg?react";
 import YellowPlusIcon from "../../../assets/illustration/yellow-plus.svg?react";
 import { Default, Mobile } from "../../commons/Responsive/Responsive.tsx";
 import { LunaticModel } from "../../../interface/lunatic/Lunatic";
-import React from "react";
 import AddActivityOrRouteDefault from "./AddActivityOrRouteDefault";
 import AddActivityOrRouteMobile from "./AddActivityOrRouteMobile";
 

@@ -18,7 +18,11 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { getLabelsWhenQuit } from "../../../../service/alert-service";
 import { getLoopInitialPage } from "../../../../service/loop-service";
-import { getLoopPageSubpage, getNextLoopPage, getStepData } from "../../../../service/loop-stepper-service";
+import {
+    getLoopPageSubpage,
+    getNextLoopPage,
+    getStepData,
+} from "../../../../service/loop-stepper-service";
 import {
     getLoopParameterizedNavigatePath,
     navToActivityRoutePlanner,
@@ -190,7 +194,7 @@ const ActivityDurationPage = () => {
     };
 
     const handleCloseSnackBar = useCallback(
-        (event: React.SyntheticEvent | Event, reason?: string) => {
+        (_: unknown, reason?: string) => {
             if (reason === "clickaway") {
                 return;
             }

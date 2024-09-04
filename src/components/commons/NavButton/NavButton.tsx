@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Button } from "@mui/material";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 
 interface NavButtonProps {
     onClick(): void;

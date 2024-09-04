@@ -1,4 +1,4 @@
-import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
+import { StateDataStateEnum } from "../../enumerations/StateDataStateEnum";
 
 export interface ActivityRouteOrGap {
     isRoute?: boolean;

@@ -208,7 +208,7 @@ const useStyles = makeStylesEdt<{
     innerHeight: number;
 }>({
     "name": { SurveyPageStep },
-})((theme, { isIOS, iosHeight, withStepper, innerHeight }) => ({
+})((_, { isIOS, iosHeight, withStepper, innerHeight }) => ({
     bottomPadding: {
         paddingBottom: "4rem",
     },

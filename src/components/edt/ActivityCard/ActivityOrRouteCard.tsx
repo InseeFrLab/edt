@@ -10,7 +10,8 @@ import MoreHorizontalImage from "../../../assets/illustration/mui-icon/more-hori
 import { InsideAlertTypes } from "../../../enumerations/InsideAlertTypesEnum";
 import { ActivityRouteOrGap } from "../../../interface/entity/ActivityRouteOrGap";
 import React, { useCallback } from "react";
-import { TFunction, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { type TFunction } from "i18next";
 import { EdtRoutesNameEnum } from "../../../routes/EdtRoutesMapping";
 import { filtrePage } from "../../../service/loop-service";
 import Icon from "../Icon/Icon";

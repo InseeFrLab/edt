@@ -1,1 +1,4 @@
-declare module "@inseefr/lunatic";
+declare module "@inseefr/lunatic/lib/index" {
+    const lunatic: any;
+    export default lunatic;
+}

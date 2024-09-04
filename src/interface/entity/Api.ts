@@ -1,5 +1,5 @@
-import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
-import { LunaticData } from "interface/lunatic/Lunatic";
+import { StateDataStateEnum } from "../../enumerations/StateDataStateEnum";
+import { LunaticData } from "../lunatic/Lunatic.ts";
 
 export interface UserSurveys {
     id?: number;

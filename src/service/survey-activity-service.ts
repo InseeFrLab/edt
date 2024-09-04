@@ -15,7 +15,8 @@ import { LoopEnum } from "../enumerations/LoopEnum";
 import { SurveysIdsEnum } from "../enumerations/SurveysIdsEnum";
 import { Activity, ActivityRouteOrGap } from "../interface/entity/ActivityRouteOrGap";
 import { LunaticData, LunaticModel } from "../interface/lunatic/Lunatic";
-import { TFunction, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { type TFunction } from "i18next";
 import { getLoopSize } from "./loop-service";
 import {
     findActivityInAutoCompleteReferentiel,

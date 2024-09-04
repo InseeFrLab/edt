@@ -358,7 +358,7 @@ const useStyles = makeStylesEdt<{
     innerHeight: number;
 }>({
     "name": { WeeklyPlannerPage },
-})((theme, { isIOS, iosHeight, innerHeight }) => ({
+})((_, { isIOS, iosHeight, innerHeight }) => ({
     pageDesktop: {
         height: "100%",
         maxHeight: isIOS ? iosHeight : innerHeight,

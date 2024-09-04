@@ -20,7 +20,7 @@ import {
     UserActivitiesSummary,
 } from "../interface/entity/ActivitiesSummary";
 import { ActivityRouteOrGap } from "../interface/entity/ActivityRouteOrGap";
-import { TFunction } from "react-i18next";
+import { type TFunction } from "i18next";
 import {
     findActivityInAutoCompleteReferentielById,
     findActivityInNomenclatureReferentielById,
@@ -410,7 +410,8 @@ const missingVariables = (activitiesRoutesOrGaps: ActivityRouteOrGap[], substrac
 };
 
 const getQualityScore = (
-    idSurvey: string,
+    // idSurvey param is not used anymore
+    _: string,
     activitiesRoutesOrGaps: ActivityRouteOrGap[],
     overlaps: { prev: string | undefined; current: string | undefined }[],
     t: TFunction<"translation", undefined>,

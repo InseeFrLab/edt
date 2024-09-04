@@ -25,11 +25,11 @@ import {
     LunaticModelComponent,
     LunaticModelVariable,
     MultiCollected,
-    REFERENTIELS_ID,
     ReferentielData,
+    REFERENTIELS_ID,
+    SourceData,
     SOURCES_MODELS,
     SURVEYS_IDS,
-    SourceData,
     SurveysIds,
     USER_SURVEYS_DATA,
     UserSurveysData,
@@ -38,11 +38,13 @@ import { AuthContextProps } from "oidc-react";
 import { NavigateFunction } from "react-router-dom";
 import {
     fetchReviewerSurveysAssignments,
+    fetchUserSurveysInfo,
+    remoteGetSurveyData,
     remoteGetSurveyStateData,
     requestGetDataReviewer,
 } from "./api-service/getRemoteData";
 import { lunaticDatabase } from "./lunatic-database";
-import { LABEL_WORK_TIME_SURVEY, getCurrentPageSource } from "./orchestrator-service";
+import { getCurrentPageSource, LABEL_WORK_TIME_SURVEY } from "./orchestrator-service";
 import {
     addArrayToSession,
     addItemToSession,
@@ -51,14 +53,13 @@ import {
     groupBy,
 } from "../utils/utils";
 import {
-    edtWorkTimeSurvey,
-    edtActivitySurvey,
     dataEmptyActivity,
     dataEmptyWeeklyPlanner,
+    edtActivitySurvey,
+    edtWorkTimeSurvey,
 } from "../assets/surveyData";
 import { EdtUserRightsEnum } from "./../enumerations/EdtUserRightsEnum";
 import { LunaticData } from "./../interface/lunatic/Lunatic";
-import { fetchUserSurveysInfo, remoteGetSurveyData } from "./api-service/getRemoteData";
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import { navToPlanner, setAllNamesOfGroupAndNav } from "./navigation-service";
 import { addToAutocompleteActivityReferentiel } from "./referentiel-service";
@@ -66,7 +67,6 @@ import { fixConditionals, getScore, saveQualityScore } from "./survey-activity-s
 import { getUserRights, isReviewer } from "./user-service";
 import { remotePutSurveyData, remotePutSurveyDataReviewer } from "./api-service/putRemoteData";
 import { fetchReferentiels } from "./api-service/getLocalSurveyData";
-import { fetchRemoteReferentiels } from "./api-service/getRemoteData";
 import {
     getLocalSurveyStateData,
     initStateData,
@@ -163,19 +163,6 @@ const getAuthCache = (): Promise<DataState> => {
         let dataState = data as DataState;
         sessionStorage.setItem(clientTokenKey, JSON.stringify(dataState));
         return dataState;
-    });
-};
-
-const initializeRemoteRefs = (setError: (error: ErrorCodeEnum) => void) => {
-    return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
-        if (!refData && navigator.onLine) {
-            return fetchRemoteReferentiels(setError).then(refs => {
-                console.log("Save Remote refs", refs);
-                return saveReferentiels(refs);
-            });
-        } else {
-            referentielsData = refData as ReferentielData;
-        }
     });
 };
 
@@ -948,7 +935,8 @@ const saveData = (
 const saveDataLocally = (
     idSurvey: string,
     data: LunaticData,
-    localSaveOnly = false,
+    // localSaveOnly parameter is not used anymore
+    _ = false,
     forceUpdate = false,
     stateDataForced?: StateData,
 ): Promise<LunaticData> => {

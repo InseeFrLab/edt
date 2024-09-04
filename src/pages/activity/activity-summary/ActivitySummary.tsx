@@ -36,7 +36,8 @@ import { LunaticModel, OrchestratorContext } from "../../../interface/lunatic/Lu
 import { callbackHolder } from "../../../orchestrator/Orchestrator";
 import ErrorPage from "../../../pages/error/ErrorPage";
 import React, { useCallback, useEffect, useState } from "react";
-import { TFunction, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import {type TFunction} from "i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { getFlatLocalStorageValue, getLocalStorageValue } from "../../../service/local-storage-service";
 import { getLoopSize, setLoopSize } from "../../../service/loop-service";

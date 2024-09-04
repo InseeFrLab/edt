@@ -31,7 +31,8 @@ import { callbackHolder } from "../../../orchestrator/Orchestrator";
 import ErrorPage from "../../../pages/error/ErrorPage";
 import React, { useCallback, useEffect, useState } from "react";
 import { isAndroid, isIOS, isMobile } from "react-device-detect";
-import { TFunction, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import {
     Location,
     NavigateFunction,

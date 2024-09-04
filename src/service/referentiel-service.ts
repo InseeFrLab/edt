@@ -194,7 +194,8 @@ export const updateReferentielAutoComplete = (
 };
 
 export const updateIndexAutoComplete = (
-    referentiel: AutoCompleteActiviteOption[],
+    // Referentiel parameter is not used anymore
+    _: AutoCompleteActiviteOption[],
     index: elasticlunr.Index<AutoCompleteActiviteOption> | undefined,
     setIndex: Dispatch<SetStateAction<elasticlunr.Index<AutoCompleteActiviteOption> | undefined>>,
 ) => {

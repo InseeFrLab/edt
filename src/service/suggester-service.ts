@@ -95,7 +95,8 @@ export const CreateIndexation = (optionsFiltered: AutoCompleteActiviteOption[]) 
 
 export function CreateIndex(
     optionsFiltered: AutoCompleteActiviteOption[],
-    index: elasticlunr.Index<AutoCompleteActiviteOption> | undefined,
+    // TODO : Remove this parameter since it's not used
+    _: elasticlunr.Index<AutoCompleteActiviteOption> | undefined,
     setIndex: Dispatch<SetStateAction<elasticlunr.Index<AutoCompleteActiviteOption> | undefined>>,
 ) {
     const optionsFilteredMap = activitesFiltredMap(optionsFiltered);

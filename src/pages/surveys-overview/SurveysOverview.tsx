@@ -25,10 +25,11 @@ import { ErrorCodeEnum } from "../../enumerations/ErrorCodeEnum";
 import { Household } from "../../interface/entity/Household";
 import ErrorPage from "../../pages/error/ErrorPage";
 import React, { useCallback, useEffect } from "react";
-import { TFunction, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "../../service/navigation-service";
 import { isMobile } from "../../service/responsive";
+import type {TFunction} from 'i18next'
 import {
     getListSurveysHousehold,
     initializeListSurveys,
