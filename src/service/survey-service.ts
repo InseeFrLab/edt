@@ -76,6 +76,7 @@ import {
     isSurveyStarted,
     isSurveyValidated,
 } from "./survey-state-service";
+import { createDataWeeklyPlanner } from "pages/work-time/weekly-planner/utils";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -186,7 +187,6 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             let userSurveyDataActivity: UserSurveys[] = [];
             let workingTimeSurveysIds: string[] = [];
             let userSurveyDataWorkTime: UserSurveys[] = [];
-            console.log("userSurveyData remote", userSurveyData);
             userSurveyData.forEach(surveyData => {
                 if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
                     activitySurveysIds.push(surveyData.surveyUnitId);
@@ -530,11 +530,20 @@ const getRemoteSavedSurveyData = (
                 } else {
                     if (shouldSaveRemoteData(remoteSurveyData, localSurveyData)) {
                         // TEMP: WeeklyPlanner stuff (to be removed)
-                        //TODO: fix a bug where other variable are overwrited if there is no weeklyPlanner
-                        const weeklyPlanner = localSurveyData?.COLLECTED?.WEEKLYPLANNER ?? null;
-                        if (weeklyPlanner) {
-                            remoteSurveyData.COLLECTED.WEEKLYPLANNER = weeklyPlanner;
+                        if (remoteSurveyData.COLLECTED && "WEEKTYPE" in remoteSurveyData.COLLECTED) {
+                            const weeklyPlannerData = createDataWeeklyPlanner(remoteSurveyData);
+                            const WeeklyPlannerVariable: MultiCollected = {
+                                COLLECTED: weeklyPlannerData,
+                                EDITED: [],
+                                FORCED: null,
+                                INPUTED: null,
+                                PREVIOUS: null,
+                            };
+                            remoteSurveyData.COLLECTED["WEEKLYPLANNER"] = WeeklyPlannerVariable;
+                            console.log("Create WeeklyPlanner data", remoteSurveyData);
                         }
+
+                        //TODO: fix a bug where other variable are overwrited if there is no weeklyPlanner
                         return getSurveyStateDataFunction(surveyId, setError).then(stateData => {
                             return saveInDatabase(surveyId, { ...remoteSurveyData, stateData });
                         });
@@ -881,6 +890,7 @@ const saveData = (
             "stateDataForced parameter was removed, put state data inside the data object instead",
         );
     }
+    console.log("SaveData", data);
     data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
     if (!data.houseReference) {
         const regexp = new RegExp(import.meta.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
@@ -915,7 +925,6 @@ const saveData = (
             data.lastRemoteSaveDate = stateData.date;
 
             if (isReviewerMode) {
-                console.log("SaveRemote data", data);
                 return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
                     stateData.date = Math.max(stateData.date, data.lastLocalSaveDate ?? 0);
                     data.stateData = stateData;
@@ -923,8 +932,6 @@ const saveData = (
                     return saveInDatabase(idSurvey, data);
                 });
             } else {
-                //TODO: TEMP: need to figure out why there is still a state data here
-                console.log("SaveRemote data", data);
                 return remotePutSurveyData(idSurvey, surveyData).then(() => {
                     data.stateData = stateData;
                     return saveInDatabase(idSurvey, data);
@@ -1120,7 +1127,6 @@ const setValue = (
     } else {
         getDataModePersist(idSurvey, dataAct, variableName, value, iteration);
     }
-    console.log("setValue", dataAct);
     return dataAct;
 };
 

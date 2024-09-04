@@ -129,7 +129,6 @@ const WeeklyPlannerPage = () => {
                     dataBdd.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
                     dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
                 }
-
                 saveData(idSurvey, dataBdd);
             }
         }
@@ -144,8 +143,6 @@ const WeeklyPlannerPage = () => {
             getArrayFromSession("DATES")) as string[];
         const currentDateIndex = dates.indexOf(response.date);
         const dataResponse = getData(idSurveyResponse);
-        console.log("Save Duration", dataCopy);
-        console.log("Response", response);
         if (
             !isReviewer() &&
             dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
@@ -167,7 +164,7 @@ const WeeklyPlannerPage = () => {
                     dataCopy.COLLECTED[newName].COLLECTED = quartier;
                 }
             });
-            saveDataLocally(idSurveyResponse, dataCopy);
+            saveData(idSurveyResponse, dataCopy, true);
         }
 
         if (
@@ -189,7 +186,7 @@ const WeeklyPlannerPage = () => {
                     dataCopy.COLLECTED[newName].EDITED = quartier;
                 }
             });
-            saveDataLocally(idSurveyResponse, dataCopy);
+            saveData(idSurveyResponse, dataCopy, true);
         }
     };
 
