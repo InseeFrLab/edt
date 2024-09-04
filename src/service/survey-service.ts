@@ -888,6 +888,7 @@ const saveData = (
             "stateDataForced parameter was removed, put state data inside the data object instead",
         );
     }
+    console.log("SaveData", data);
     data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
     if (!data.houseReference) {
         const regexp = new RegExp(import.meta.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
@@ -922,7 +923,6 @@ const saveData = (
             data.lastRemoteSaveDate = stateData.date;
 
             if (isReviewerMode) {
-                console.log("SaveRemote data", data);
                 return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
                     stateData.date = Math.max(stateData.date, data.lastLocalSaveDate ?? 0);
                     data.stateData = stateData;
