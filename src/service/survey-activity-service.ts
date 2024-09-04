@@ -604,7 +604,6 @@ const fixConditionals = (data: LunaticData) => {
 const saveQualityScore = (idSurvey: string, data: LunaticData) => {
     const { activitiesRoutesOrGaps, overlaps } = getActivitiesOrRoutes(t, idSurvey);
     const qualityScore = getQualityScore(idSurvey, activitiesRoutesOrGaps, overlaps, t);
-    console.log("qualityScore", qualityScore);
     const modePersistence = getModePersistence(data);
     if (data?.COLLECTED?.[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS]) {
         data.COLLECTED[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS] = {
