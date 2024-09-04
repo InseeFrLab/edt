@@ -234,6 +234,7 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             let userSurveyDataActivity: UserSurveys[] = [];
             let workingTimeSurveysIds: string[] = [];
             let userSurveyDataWorkTime: UserSurveys[] = [];
+            console.log("userSurveyData", userSurveyData);
             userSurveyData.forEach(surveyData => {
                 if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
                     activitySurveysIds.push(surveyData.surveyUnitId);
@@ -802,6 +803,7 @@ const createDataEmpty = (idSurvey: string): LunaticData => {
         lastRemoteSaveDate: undefined,
     };
     data.COLLECTED = getDataEmpty(idSurvey);
+    console.log("createDataEmpty", data);
     return data;
 };
 
@@ -920,6 +922,7 @@ const saveData = (
             data.lastRemoteSaveDate = stateData.date;
 
             if (isReviewerMode) {
+                console.log("SaveRemote data", data);
                 return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
                     stateData.date = Math.max(stateData.date, data.lastLocalSaveDate ?? 0);
                     data.stateData = stateData;
@@ -1074,6 +1077,7 @@ const getCurrentPage = (data: LunaticData | undefined, source?: LunaticModel): n
         i++;
     }
     if (currentPage == 0) {
+        //TODO: Fix this
         const firstName = getValueOfData(data, FieldNameEnum.FIRSTNAME);
         if (firstName) currentPage = Number(components[components.length - 1].page);
         if (source.label == LABEL_WORK_TIME_SURVEY) currentPage = 3;
