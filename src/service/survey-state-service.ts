@@ -1,6 +1,6 @@
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
-import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
+import { FieldNameEnum } from "../enumerations/FieldNameEnum";
+import { LocalStorageVariableEnum } from "../enumerations/LocalStorageVariableEnum";
+import { StateDataStateEnum } from "../enumerations/StateDataStateEnum";
 import { getFlatLocalStorageValue } from "./local-storage-service";
 import {
     getValue,
@@ -10,8 +10,8 @@ import {
     saveData,
     getSurveysIdsForHousehold,
 } from "./survey-service";
-import { Collected, LunaticData } from "interface/lunatic/Lunatic";
-import { StateData } from "interface/entity/Api";
+import { Collected, LunaticData } from "../interface/lunatic/Lunatic";
+import { StateData } from "../interface/entity/Api";
 
 const initStateData = (data?: LunaticData) => {
     const stateData = {

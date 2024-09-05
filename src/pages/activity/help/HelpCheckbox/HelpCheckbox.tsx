@@ -1,25 +1,25 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
-import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
-import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
-import { ReactComponent as ArrowForwardIcon } from "assets/illustration/mui-icon/arrow-forward.svg";
-import { ReactComponent as childIcon } from "assets/illustration/with-someone-categories/child.svg";
-import { ReactComponent as coupleIcon } from "assets/illustration/with-someone-categories/couple.svg";
-import { ReactComponent as otherKnownIcon } from "assets/illustration/with-someone-categories/other-known.svg";
-import { ReactComponent as otherIcon } from "assets/illustration/with-someone-categories/other.svg";
-import { ReactComponent as parentsIcon } from "assets/illustration/with-someone-categories/parents.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
-import { LoopEnum } from "enumerations/LoopEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
+import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg?react";
+import ArrowForwardIosIcon from "../../../../assets/illustration/mui-icon/arrow-forward-ios-white.svg?react";
+import ArrowForwardIcon from "../../../../assets/illustration/mui-icon/arrow-forward.svg?react";
+import childIcon from "../../../../assets/illustration/with-someone-categories/child.svg?react";
+import coupleIcon from "../../../../assets/illustration/with-someone-categories/couple.svg?react";
+import otherKnownIcon from "../../../../assets/illustration/with-someone-categories/other-known.svg?react";
+import otherIcon from "../../../../assets/illustration/with-someone-categories/other.svg?react";
+import parentsIcon from "../../../../assets/illustration/with-someone-categories/parents.svg?react";
+import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
+import LoopSurveyPage from "../../../../components/commons/LoopSurveyPage/LoopSurveyPage";
+import { EdtRoutesNameEnum } from "../../../../enumerations/EdtRoutesNameEnum";
+import { LocalStorageVariableEnum } from "../../../../enumerations/LocalStorageVariableEnum";
+import { LoopEnum } from "../../../../enumerations/LoopEnum";
+import { SourcesEnum } from "../../../../enumerations/SourcesEnum";
+import { OrchestratorForStories, callbackHolder } from "../../../../orchestrator/Orchestrator";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { getLoopInitialPage } from "service/loop-service";
-import { getLoopPageSubpage, getStepData } from "service/loop-stepper-service";
+import { getLoopInitialPage } from "../../../../service/loop-service";
+import { getLoopPageSubpage, getStepData } from "../../../../service/loop-stepper-service";
 import {
     getCurrentNavigatePath,
     getNavigatePath,
@@ -29,9 +29,9 @@ import {
     onClose,
     onNext,
     onPrevious,
-} from "service/navigation-service";
-import { mockData } from "service/survey-activity-service";
-import { getSource } from "service/survey-service";
+} from "../../../../service/navigation-service";
+import { mockData } from "../../../../service/survey-activity-service";
+import { getSource } from "../../../../service/survey-service";
 
 const HelpCheckbox = () => {
     const navigate = useNavigate();

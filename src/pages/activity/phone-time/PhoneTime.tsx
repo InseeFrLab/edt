@@ -1,9 +1,9 @@
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
+import SurveyPage from "../../../components/commons/SurveyPage/SurveyPage";
+import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "../../../constants/constants";
+import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
+import { OrchestratorContext } from "../../../interface/lunatic/Lunatic";
+import { OrchestratorForStories, callbackHolder } from "../../../orchestrator/Orchestrator";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
@@ -15,12 +15,12 @@ import {
     saveAndNavFullPath,
     setEnviro,
     validateAndNextStep,
-} from "service/navigation-service";
-import { getLanguage } from "service/referentiel-service";
-import { getStepData } from "service/stepper.service";
-import { surveyReadOnly } from "service/survey-activity-service";
-import { getData } from "service/survey-service";
-import { getSurveyIdFromUrl } from "utils/utils";
+} from "../../../service/navigation-service";
+import { getLanguage } from "../../../service/referentiel-service";
+import { getStepData } from "../../../service/stepper.service";
+import { surveyReadOnly } from "../../../service/survey-activity-service";
+import { getData } from "../../../service/survey-service";
+import { getSurveyIdFromUrl } from "../../../utils/utils";
 
 const PhoneTimePage = () => {
     const currentPage = EdtRoutesNameEnum.PHONE_TIME;

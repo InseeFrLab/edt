@@ -1,15 +1,15 @@
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { EdtRoutesNameEnum } from "../../../../../enumerations/EdtRoutesNameEnum";
 
-import { ReactComponent as errorIcon } from "assets/illustration/error/activity.svg";
-import { ReactComponent as help } from "assets/illustration/goals/help.svg";
-import { ReactComponent as home } from "assets/illustration/goals/home.svg";
-import { ReactComponent as solidarity } from "assets/illustration/goals/solidarity.svg";
-import { ReactComponent as work } from "assets/illustration/goals/work.svg";
+import errorIcon from "../../../../../assets/illustration/error/activity.svg?react";
+import help from "../../../../../assets/illustration/goals/help.svg?react";
+import home from "../../../../../assets/illustration/goals/home.svg?react";
+import solidarity from "../../../../../assets/illustration/goals/solidarity.svg?react";
+import work from "../../../../../assets/illustration/goals/work.svg?react";
 
-import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
+import LoopSurveyPageStep from "../../../../../components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
 import { FunctionComponent, SVGProps } from "react";
 import { useTranslation } from "react-i18next";
-import { getActivityGoalRef } from "service/referentiel-service";
+import { getActivityGoalRef } from "../../../../../service/referentiel-service";
 
 const MainActivityGoalPage = () => {
     const { t } = useTranslation();

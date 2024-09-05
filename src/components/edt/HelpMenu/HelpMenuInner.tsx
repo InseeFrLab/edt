@@ -1,14 +1,14 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider } from "@mui/material";
-import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
-import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
-import { ReactComponent as DownloadIcon } from "assets/illustration/mui-icon/download.svg";
-import { ReactComponent as ExpandLessIcon } from "assets/illustration/mui-icon/expand-less.svg";
-import { ReactComponent as MailIcon } from "assets/illustration/mui-icon/mail.svg";
-import { ReactComponent as RebaseEditIcon } from "assets/illustration/mui-icon/rebase_edit.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import ArrowForwardIosIcon from "../../../assets/illustration/mui-icon/arrow-forward-ios.svg?react";
+import CloseIcon from "../../../assets/illustration/mui-icon/close.svg?react";
+import DownloadIcon from "../../../assets/illustration/mui-icon/download.svg?react";
+import ExpandLessIcon from "../../../assets/illustration/mui-icon/expand-less.svg?react";
+import MailIcon from "../../../assets/illustration/mui-icon/mail.svg?react";
+import RebaseEditIcon from "../../../assets/illustration/mui-icon/rebase_edit.svg?react";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import { useTranslation } from "react-i18next";
-import { getDeviceNavigatorIsAvaiableForInstall } from "utils/utils";
+import { getDeviceNavigatorIsAvaiableForInstall } from "../../../utils/utils";
 
 interface HelpMenuInnerProps {
     handleClose(): void;

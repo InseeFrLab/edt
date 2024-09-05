@@ -1,25 +1,25 @@
 import { AutoCompleteActiviteOption } from "@inseefrlab/lunatic-edt";
-import "App.scss";
-import LoadingFull from "components/commons/LoadingFull/LoadingFull";
+import "./App.scss";
+import LoadingFull from "./components/commons/LoadingFull/LoadingFull";
 import { Index } from "elasticlunrjs";
-import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
-import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import "i18n/i18n";
+import { EdtUserRightsEnum } from "./enumerations/EdtUserRightsEnum";
+import { ErrorCodeEnum } from "./enumerations/ErrorCodeEnum";
+import "./i18n/i18n";
 import { User, useAuth } from "oidc-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { EdtRoutes } from "routes/EdtRoutes";
-import { getAutoCompleteRef } from "service/referentiel-service";
-import { CreateIndex, optionsFiltered, setIndexSuggester } from "service/suggester-service";
+import { EdtRoutes } from "./routes/EdtRoutes";
+import { getAutoCompleteRef } from "./service/referentiel-service";
+import { CreateIndex, optionsFiltered, setIndexSuggester } from "./service/suggester-service";
 import {
     getAuthCache,
     getDatas,
     initPropsAuth,
     initializeDatas,
     initializeListSurveys,
-} from "service/survey-service";
-import { getUserRights, setAuth, setUser, setUserToken } from "service/user-service";
-import { getCookie } from "utils/utils";
+} from "./service/survey-service";
+import { getUserRights, setAuth, setUser, setUserToken } from "./service/user-service";
+import { getCookie } from "./utils/utils";
 
 const App = () => {
     const { t } = useTranslation();
@@ -75,7 +75,7 @@ const App = () => {
                             localStorage.clear();
                         })
                         .then(() => auth.userManager.clearStaleState())
-                        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL || ""))
+                        .then(() => window.location.replace(import.meta.env.VITE_PUBLIC_URL || ""))
                         .catch(err => {
                             setErrorType(err);
                         });

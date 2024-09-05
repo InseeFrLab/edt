@@ -1,27 +1,27 @@
 import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Typography } from "@mui/material";
-import { edtActivitySurvey } from "assets/surveyData";
-import { ReactComponent as DisconnectIcon } from "assets/illustration/disconnect.svg";
-import { ReactComponent as DefaultErrorIcon } from "assets/illustration/error/error.svg";
-import { ReactComponent as HelpIcon } from "assets/illustration/mui-icon/help-white.svg";
-import { ReactComponent as HomeIcon } from "assets/illustration/mui-icon/home.svg";
-import { ReactComponent as PowerSettingsIcon } from "assets/illustration/mui-icon/power-settings-white.svg";
-import { ReactComponent as ReplayIcon } from "assets/illustration/mui-icon/replay.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import PageIcon from "components/commons/PageIcon/PageIcon";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import { edtActivitySurvey } from "../../assets/surveyData";
+import DisconnectIcon from "../../assets/illustration/disconnect.svg?react";
+import DefaultErrorIcon from "../../assets/illustration/error/error.svg?react";
+import HelpIcon from "../../assets/illustration/mui-icon/help-white.svg?react";
+import HomeIcon from "../../assets/illustration/mui-icon/home.svg?react";
+import PowerSettingsIcon from "../../assets/illustration/mui-icon/power-settings-white.svg?react";
+import ReplayIcon from "../../assets/illustration/mui-icon/replay.svg?react";
+import FlexCenter from "../../components/commons/FlexCenter/FlexCenter";
+import PageIcon from "../../components/commons/PageIcon/PageIcon";
+import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
+import { ErrorCodeEnum } from "../../enumerations/ErrorCodeEnum";
+import { LocalStorageVariableEnum } from "../../enumerations/LocalStorageVariableEnum";
+import { SurveysIdsEnum } from "../../enumerations/SurveysIdsEnum";
+import { OrchestratorContext } from "../../interface/lunatic/Lunatic";
 import { useAuth } from "oidc-react";
-import { callbackHolder } from "orchestrator/Orchestrator";
+import { callbackHolder } from "../../orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { lunaticDatabase } from "service/lunatic-database";
-import { getNavigatePath, setEnviro } from "service/navigation-service";
-import { getData, getSurveyRights, surveysIds } from "service/survey-service";
+import { lunaticDatabase } from "../../service/lunatic-database";
+import { getNavigatePath, setEnviro } from "../../service/navigation-service";
+import { getData, getSurveyRights, surveysIds } from "../../service/survey-service";
 
 export type ErrorPageProps = {
     errorCode?: ErrorCodeEnum;
@@ -126,7 +126,7 @@ const ErrorPage = (props: ErrorPageProps) => {
             localStorage.clear();
             lunaticDatabase.clear();
             setTimeout(() => {
-                window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
+                window.location.replace(import.meta.env.VITE_PUBLIC_URL || "");
                 auth.userManager.clearStaleState();
             }, 200);
         });

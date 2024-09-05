@@ -1,10 +1,10 @@
-import { ReactComponent as GreatestActivityDayImg } from "assets/illustration/greatest-activity-day.svg";
-import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
+import GreatestActivityDayImg from "../../../assets/illustration/greatest-activity-day.svg?react";
+import SurveyPageStep from "../../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
+import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
+import { OrchestratorContext } from "../../../interface/lunatic/Lunatic";
 import { useLocation, useOutletContext } from "react-router-dom";
-import { getActivitesSelectedLabel } from "service/survey-activity-service";
-import { getSurveyIdFromUrl } from "utils/utils";
+import { getActivitesSelectedLabel } from "../../../service/survey-activity-service";
+import { getSurveyIdFromUrl } from "../../../utils/utils";
 
 const GreatestActivityDayPage = () => {
     const context: OrchestratorContext = useOutletContext();

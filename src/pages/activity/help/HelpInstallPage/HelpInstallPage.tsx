@@ -1,15 +1,15 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Paper, Typography } from "@mui/material";
-import { ReactComponent as InstallImg } from "assets/illustration/mui-icon/download.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import InstallImg from "../../../../assets/illustration/mui-icon/download.svg?react";
+import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
+import SurveyPageSimpleHeader from "../../../../components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
+import { EdtRoutesNameEnum } from "../../../../enumerations/EdtRoutesNameEnum";
 import { useCallback } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { getNavigatePath, navToHome } from "service/navigation-service";
-import { isPwa } from "service/responsive";
+import { getNavigatePath, navToHome } from "../../../../service/navigation-service";
+import { isPwa } from "../../../../service/responsive";
 import packageJson from "../../../../../package.json";
 
 const HelpInstallPage = () => {

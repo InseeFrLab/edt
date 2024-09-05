@@ -1,4 +1,4 @@
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
 
 export interface OrchestratorEdtNavigation {
     parentPage: EdtRoutesNameEnum;

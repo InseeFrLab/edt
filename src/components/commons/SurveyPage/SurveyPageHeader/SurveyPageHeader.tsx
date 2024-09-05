@@ -1,6 +1,6 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Typography } from "@mui/material";
-import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
+import CloseIcon from "../../../../assets/illustration/mui-icon/close.svg?react";
 import { useTranslation } from "react-i18next";
 
 interface SurveyPageHeaderProps {

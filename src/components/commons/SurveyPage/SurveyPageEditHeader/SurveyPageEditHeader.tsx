@@ -1,7 +1,7 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider, Popover, Typography } from "@mui/material";
-import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios.svg";
-import { ReactComponent as MoreHorizontalImage } from "assets/illustration/mui-icon/more-horizontal.svg";
+import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios.svg?react";
+import MoreHorizontalImage from "../../../../assets/illustration/mui-icon/more-horizontal.svg?react";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 

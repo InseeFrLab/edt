@@ -5,25 +5,25 @@ import {
     WeeklyPlannerSpecificProps,
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
-import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
-import { ReactComponent as ArrowBackIosIcon } from "assets/illustration/mui-icon/arrow-back-ios-white.svg";
-import { ReactComponent as ArrowForwardIosIcon } from "assets/illustration/mui-icon/arrow-forward-ios-white.svg";
-import { ReactComponent as ArrowForwardIcon } from "assets/illustration/mui-icon/arrow-forward.svg";
-import { ReactComponent as ExpandLessWhiteIcon } from "assets/illustration/mui-icon/expand-less-white.svg";
-import { ReactComponent as ExpandLessIcon } from "assets/illustration/mui-icon/expand-less.svg";
-import { ReactComponent as ExpandMoreWhiteIcon } from "assets/illustration/mui-icon/expand-more-white.svg";
-import { ReactComponent as ExpandMoreIcon } from "assets/illustration/mui-icon/expand-more.svg";
-import { ReactComponent as InfoTooltipIcon } from "assets/illustration/mui-icon/info.svg";
-import { ReactComponent as MoreHorizontalIcon } from "assets/illustration/mui-icon/more-horizontal.svg";
-import { ReactComponent as WorkFullIcon } from "assets/illustration/mui-icon/work-full.svg";
-import { ReactComponent as WorkIcon } from "assets/illustration/place-work-categories/work.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import InfoIcon from "../../../../assets/illustration/info.svg?react";
+import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg?react";
+import ArrowForwardIosIcon from "../../../../assets/illustration/mui-icon/arrow-forward-ios-white.svg?react";
+import ArrowForwardIcon from "../../../../assets/illustration/mui-icon/arrow-forward.svg?react";
+import ExpandLessWhiteIcon from "../../../../assets/illustration/mui-icon/expand-less-white.svg?react";
+import ExpandLessIcon from "../../../../assets/illustration/mui-icon/expand-less.svg?react";
+import ExpandMoreWhiteIcon from "../../../../assets/illustration/mui-icon/expand-more-white.svg?react";
+import ExpandMoreIcon from "../../../../assets/illustration/mui-icon/expand-more.svg?react";
+import InfoTooltipIcon from "../../../../assets/illustration/mui-icon/info.svg?react";
+import MoreHorizontalIcon from "../../../../assets/illustration/mui-icon/more-horizontal.svg?react";
+import WorkFullIcon from "../../../../assets/illustration/mui-icon/work-full.svg?react";
+import WorkIcon from "../../../../assets/illustration/place-work-categories/work.svg?react";
+import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
+import SurveyPage from "../../../../components/commons/SurveyPage/SurveyPage";
+import { EdtRoutesNameEnum } from "../../../../enumerations/EdtRoutesNameEnum";
+import { LocalStorageVariableEnum } from "../../../../enumerations/LocalStorageVariableEnum";
+import { SourcesEnum } from "../../../../enumerations/SourcesEnum";
+import { SurveysIdsEnum } from "../../../../enumerations/SurveysIdsEnum";
+import { callbackHolder, OrchestratorForStories } from "../../../../orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -36,15 +36,15 @@ import {
     navToHelp,
     navToHome,
     saveAndNavLocally,
-} from "service/navigation-service";
-import { getLanguage } from "service/referentiel-service";
+} from "../../../../service/navigation-service";
+import { getLanguage } from "../../../../service/referentiel-service";
 import {
     getData,
     getPrintedFirstName,
     getSource,
     getSurveyDate,
     saveDataLocally,
-} from "service/survey-service";
+} from "../../../../service/survey-service";
 
 const HelpWorkTime = () => {
     const navigate = useNavigate();

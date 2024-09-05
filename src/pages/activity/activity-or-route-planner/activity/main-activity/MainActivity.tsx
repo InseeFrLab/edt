@@ -1,16 +1,16 @@
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import FlexCenter from "../../../../../components/commons/FlexCenter/FlexCenter";
+import LoopSurveyPage from "../../../../../components/commons/LoopSurveyPage/LoopSurveyPage";
+import { EdtRoutesNameEnum } from "../../../../../enumerations/EdtRoutesNameEnum";
+import { OrchestratorContext } from "../../../../../interface/lunatic/Lunatic";
+import { callbackHolder, OrchestratorForStories } from "../../../../../orchestrator/Orchestrator";
 import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { filtrePage, getLoopInitialPage, getValueOfActivity, skipNextPage } from "service/loop-service";
+import { filtrePage, getLoopInitialPage, getValueOfActivity, skipNextPage } from "../../../../../service/loop-service";
 import {
     getLoopPageSubpage,
     getNextLoopPage,
     getPreviousLoopPage,
     getStepData,
-} from "service/loop-stepper-service";
+} from "../../../../../service/loop-stepper-service";
 import {
     onClose,
     onNext,
@@ -18,44 +18,44 @@ import {
     saveAndLoopNavigate,
     setEnviro,
     validateLocally,
-} from "service/navigation-service";
+} from "../../../../../service/navigation-service";
 
 import {
     ActivitySelecterSpecificProps,
     Alert,
     AutoCompleteActiviteOption,
 } from "@inseefrlab/lunatic-edt";
-import { ReactComponent as CatIcon100 } from "assets/illustration/activity-categories/1.svg";
-import { ReactComponent as CatIcon200 } from "assets/illustration/activity-categories/2.svg";
-import { ReactComponent as CatIcon300 } from "assets/illustration/activity-categories/3.svg";
-import { ReactComponent as CatIcon400 } from "assets/illustration/activity-categories/4.svg";
-import { ReactComponent as CatIcon440 } from "assets/illustration/activity-categories/5.svg";
-import { ReactComponent as CatIcon500 } from "assets/illustration/activity-categories/6.svg";
-import { ReactComponent as CatIcon650 } from "assets/illustration/activity-categories/7.svg";
-import { ReactComponent as CatIcon600 } from "assets/illustration/activity-categories/8.svg";
-import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
-import { ReactComponent as AddLightBlueIcon } from "assets/illustration/mui-icon/add-light-blue.svg";
-import { ReactComponent as AddWhiteIcon } from "assets/illustration/mui-icon/add.svg";
-import { ReactComponent as ChevronRightDisabledIcon } from "assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
-import { ReactComponent as ChevronRightIcon } from "assets/illustration/mui-icon/arrow-forward-ios.svg";
-import { ReactComponent as ExtensionDisabledIcon } from "assets/illustration/mui-icon/extension-grey.svg";
-import { ReactComponent as ExtensionIcon } from "assets/illustration/mui-icon/extension.svg";
-import { ReactComponent as SearchIcon } from "assets/illustration/mui-icon/search.svg";
-import { SEPARATOR_DEFAUT } from "constants/constants";
+import CatIcon100 from "../../../../../assets/illustration/activity-categories/1.svg?react";
+import CatIcon200 from "../../../../../assets/illustration/activity-categories/2.svg?react";
+import CatIcon300 from "../../../../../assets/illustration/activity-categories/3.svg?react";
+import CatIcon400 from "../../../../../assets/illustration/activity-categories/4.svg?react";
+import CatIcon440 from "../../../../../assets/illustration/activity-categories/5.svg?react";
+import CatIcon500 from "../../../../../assets/illustration/activity-categories/6.svg?react";
+import CatIcon650 from "../../../../../assets/illustration/activity-categories/7.svg?react";
+import CatIcon600 from "../../../../../assets/illustration/activity-categories/8.svg?react";
+import ErrorIcon from "../../../../../assets/illustration/error/activity.svg?react";
+import AddLightBlueIcon from "../../../../../assets/illustration/mui-icon/add-light-blue.svg?react";
+import AddWhiteIcon from "../../../../../assets/illustration/mui-icon/add.svg?react";
+import ChevronRightDisabledIcon from "../../../../../assets/illustration/mui-icon/arrow-forward-ios-grey.svg?react";
+import ChevronRightIcon from "../../../../../assets/illustration/mui-icon/arrow-forward-ios.svg?react";
+import ExtensionDisabledIcon from "../../../../../assets/illustration/mui-icon/extension-grey.svg?react";
+import ExtensionIcon from "../../../../../assets/illustration/mui-icon/extension.svg?react";
+import SearchIcon from "../../../../../assets/illustration/mui-icon/search.svg?react";
+import { SEPARATOR_DEFAUT } from "../../../../../constants/constants";
 import { Index } from "elasticlunrjs";
-import { LoopEnum } from "enumerations/LoopEnum";
+import { LoopEnum } from "../../../../../enumerations/LoopEnum";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getLabelsWhenQuit } from "service/alert-service";
+import { getLabelsWhenQuit } from "../../../../../service/alert-service";
 import {
     createNewActivityInCategory,
     getAutoCompleteRef,
     getNomenclatureRef,
-} from "service/referentiel-service";
-import { CreateIndexation, getIndexSuggester } from "service/suggester-service";
-import { surveyReadOnly } from "service/survey-activity-service";
-import { getData } from "service/survey-service";
-import { getSurveyIdFromUrl } from "utils/utils";
+} from "../../../../../service/referentiel-service";
+import { CreateIndexation, getIndexSuggester } from "../../../../../service/suggester-service";
+import { surveyReadOnly } from "../../../../../service/survey-activity-service";
+import { getData } from "../../../../../service/survey-service";
+import { getSurveyIdFromUrl } from "../../../../../utils/utils";
 
 const MainActivityPage = () => {
     const { t } = useTranslation();
@@ -192,7 +192,7 @@ const MainActivityPage = () => {
             createNewActivityInCategory(newItem, categoryId, newActivity, referentiel, index, setIndex);
         },
         widthGlobal: true,
-        separatorSuggester: process.env.REACT_APP_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
+        separatorSuggester: import.meta.env.VITE_SEPARATOR_SUGGESTER ?? SEPARATOR_DEFAUT,
         chevronRightIcon: modifiable ? ChevronRightIcon : ChevronRightDisabledIcon,
         chevronRightIconAlt: chevronRightIconAlt,
         searchIcon: SearchIcon,

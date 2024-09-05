@@ -1,13 +1,13 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Divider, Popover, Typography } from "@mui/material";
-import { ReactComponent as AddCircleIcon } from "assets/illustration/mui-icon/add-circle.svg";
-import { ReactComponent as CommuteIcon } from "assets/illustration/mui-icon/commute.svg";
-import { ReactComponent as EventIcon } from "assets/illustration/mui-icon/event.svg";
-import { ReactComponent as MoreHorizontalImage } from "assets/illustration/mui-icon/more-horizontal.svg";
-import { ReactComponent as PhoneAndroidIcon } from "assets/illustration/mui-icon/phone-android.svg";
-import { ReactComponent as RemoveCircleIcon } from "assets/illustration/mui-icon/remove-circle.svg";
-import { ReactComponent as WorkIcon } from "assets/illustration/mui-icon/work.svg";
-import { UserActivitiesCharacteristics } from "interface/entity/ActivitiesSummary";
+import AddCircleIcon from "../../../assets/illustration/mui-icon/add-circle.svg?react";
+import CommuteIcon from "../../../assets/illustration/mui-icon/commute.svg?react";
+import EventIcon from "../../../assets/illustration/mui-icon/event.svg?react";
+import MoreHorizontalImage from "../../../assets/illustration/mui-icon/more-horizontal.svg?react";
+import PhoneAndroidIcon from "../../../assets/illustration/mui-icon/phone-android.svg?react";
+import RemoveCircleIcon from "../../../assets/illustration/mui-icon/remove-circle.svg?react";
+import WorkIcon from "../../../assets/illustration/mui-icon/work.svg?react";
+import { UserActivitiesCharacteristics } from "../../../interface/entity/ActivitiesSummary";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 

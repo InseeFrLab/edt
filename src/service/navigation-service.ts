@@ -1,22 +1,26 @@
-import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { FieldNameEnum, FieldNameEnumActivity, FieldNameEnumWorkTIme } from "enumerations/FieldNameEnum";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
-import { LoopEnum } from "enumerations/LoopEnum";
-import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
+import { ErrorCodeEnum } from "../enumerations/ErrorCodeEnum";
+import {
+    FieldNameEnum,
+    FieldNameEnumActivity,
+    FieldNameEnumWorkTIme,
+} from "../enumerations/FieldNameEnum";
+import { LocalStorageVariableEnum } from "../enumerations/LocalStorageVariableEnum";
+import { LoopEnum } from "../enumerations/LoopEnum";
+import { ModePersistenceEnum } from "../enumerations/ModePersistenceEnum";
+import { SourcesEnum } from "../enumerations/SourcesEnum";
+import { SurveysIdsEnum } from "../enumerations/SurveysIdsEnum";
 import {
     Collected,
     LunaticData,
     LunaticModel,
     MultiCollected,
     OrchestratorContext,
-} from "interface/lunatic/Lunatic";
-import { OrchestratorEdtNavigation } from "interface/route/OrchestratorEdtNavigation";
+} from "../interface/lunatic/Lunatic";
+import { OrchestratorEdtNavigation } from "../interface/route/OrchestratorEdtNavigation";
 import { SetStateAction } from "react";
 import { NavigateFunction, To } from "react-router-dom";
-import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
-import { getCurrentLoopPage, getLoopInitialPage } from "service/loop-service";
+import { EdtRoutesNameEnum, mappingPageOrchestrator } from "../routes/EdtRoutesMapping";
+import { getCurrentLoopPage, getLoopInitialPage } from "./loop-service";
 import {
     getCurrentPage,
     getData,
@@ -27,7 +31,7 @@ import {
     saveDataLocally,
     setValue,
     surveysIds,
-} from "service/survey-service";
+} from "./survey-service";
 import { getLastPageStep } from "./stepper.service";
 import { surveyReadOnly } from "./survey-activity-service";
 
@@ -730,7 +734,7 @@ const validateWithAlertAndNav = (
     idSurvey: string,
     displayAlert: boolean,
     setDisplayAlert: (value: SetStateAction<boolean>) => void,
-    iteration?: number,
+    _?: number,
     route?: string,
 ): void => {
     if (!displayAlert) {

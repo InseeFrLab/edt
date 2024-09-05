@@ -1,13 +1,13 @@
 import axios from "axios";
-import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
-import { SurveyData, StateData } from "interface/entity/Api";
-import { LunaticData } from "interface/lunatic/Lunatic";
+import { StateDataStateEnum } from "../../enumerations/StateDataStateEnum";
+import { SurveyData, StateData } from "../../interface/entity/Api";
+import { LunaticData } from "../../interface/lunatic/Lunatic";
 import { User } from "oidc-react";
-import { getUserToken, getAuth } from "service/user-service";
+import { getUserToken, getAuth } from "../../service/user-service";
 import { stromaeBackOfficeApiBaseUrl, getHeader } from "./getRemoteData";
 import jwt, { JwtPayload } from "jwt-decode";
-import { logout } from "service/auth-service";
-import { transformCollectedArray } from "utils/utils";
+import { logout } from "../../service/auth-service";
+import { transformCollectedArray } from "../../utils/utils";
 
 export const requestPutSurveyData = (
     idSurvey: string,

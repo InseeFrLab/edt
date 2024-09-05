@@ -1,4 +1,4 @@
-import { StateHouseholdEnum } from "enumerations/StateHouseholdEnum";
+import { StateHouseholdEnum } from "../../enumerations/StateHouseholdEnum";
 
 export interface StatsHousehold {
     numHouseholds?: number;

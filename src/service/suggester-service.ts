@@ -1,7 +1,7 @@
 import { AutoCompleteActiviteOption } from "@inseefrlab/lunatic-edt";
 import elasticlunr, { Index } from "elasticlunrjs";
 import { Dispatch, SetStateAction } from "react";
-import { stopWordsFrench, synonymesMisspellings } from "assets/surveyData";
+import { stopWordsFrench, synonymesMisspellings } from "../assets/surveyData";
 
 /**
  * Remove accents
@@ -95,7 +95,8 @@ export const CreateIndexation = (optionsFiltered: AutoCompleteActiviteOption[]) 
 
 export function CreateIndex(
     optionsFiltered: AutoCompleteActiviteOption[],
-    index: elasticlunr.Index<AutoCompleteActiviteOption> | undefined,
+    // TODO : Remove this parameter since it's not used
+    _: elasticlunr.Index<AutoCompleteActiviteOption> | undefined,
     setIndex: Dispatch<SetStateAction<elasticlunr.Index<AutoCompleteActiviteOption> | undefined>>,
 ) {
     const optionsFilteredMap = activitesFiltredMap(optionsFiltered);

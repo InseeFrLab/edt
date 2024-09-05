@@ -8,30 +8,31 @@ import {
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
 import { Box, Divider, IconButton, Snackbar, Switch, Typography } from "@mui/material";
-import { ReactComponent as EmptyActivityImg } from "assets/illustration/empty-activity.svg";
-import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
-import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
-import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
-import { ReactComponent as InfoTooltipIcon } from "assets/illustration/mui-icon/info.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import LoadingFull from "components/commons/LoadingFull/LoadingFull";
-import PageIcon from "components/commons/PageIcon/PageIcon";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
-import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
-import HelpMenu from "components/edt/HelpMenu/HelpMenu";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { LoopEnum } from "enumerations/LoopEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
-import { LunaticData, LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder } from "orchestrator/Orchestrator";
-import ErrorPage from "pages/error/ErrorPage";
+import EmptyActivityImg from "../../../assets/illustration/empty-activity.svg?react";
+import ErrorIcon from "../../../assets/illustration/error/activity.svg?react";
+import InfoIcon from "../../../assets/illustration/info.svg?react";
+import CloseIcon from "../../../assets/illustration/mui-icon/close.svg?react";
+import InfoTooltipIcon from "../../../assets/illustration/mui-icon/info.svg?react";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
+import LoadingFull from "../../../components/commons/LoadingFull/LoadingFull";
+import PageIcon from "../../../components/commons/PageIcon/PageIcon";
+import SurveyPage from "../../../components/commons/SurveyPage/SurveyPage";
+import ActivityOrRouteCard from "../../../components/edt/ActivityCard/ActivityOrRouteCard";
+import AddActivityOrRoute from "../../../components/edt/AddActivityOrRoute/AddActivityOrRoute";
+import HelpMenu from "../../../components/edt/HelpMenu/HelpMenu";
+import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
+import { ErrorCodeEnum } from "../../../enumerations/ErrorCodeEnum";
+import { FieldNameEnum } from "../../../enumerations/FieldNameEnum";
+import { LoopEnum } from "../../../enumerations/LoopEnum";
+import { SourcesEnum } from "../../../enumerations/SourcesEnum";
+import { ActivityRouteOrGap } from "../../../interface/entity/ActivityRouteOrGap";
+import { LunaticData, LunaticModel, OrchestratorContext } from "../../../interface/lunatic/Lunatic";
+import { callbackHolder } from "../../../orchestrator/Orchestrator";
+import ErrorPage from "../../../pages/error/ErrorPage";
 import React, { useCallback, useEffect, useState } from "react";
 import { isAndroid, isIOS, isMobile } from "react-device-detect";
-import { TFunction, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import {
     Location,
     NavigateFunction,
@@ -40,7 +41,7 @@ import {
     useNavigate,
     useOutletContext,
 } from "react-router-dom";
-import { getLoopSize, setLoopSize } from "service/loop-service";
+import { getLoopSize, setLoopSize } from "../../../service/loop-service";
 import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
@@ -51,15 +52,15 @@ import {
     navToEditActivity,
     navToHome,
     setEnviro,
-} from "service/navigation-service";
-import { getLanguage } from "service/referentiel-service";
-import { isDesktop, isPwa } from "service/responsive";
+} from "../../../service/navigation-service";
+import { getLanguage } from "../../../service/referentiel-service";
+import { isDesktop, isPwa } from "../../../service/responsive";
 import {
     deleteActivity,
     getActivitiesOrRoutes,
     getScore,
     surveyReadOnly,
-} from "service/survey-activity-service";
+} from "../../../service/survey-activity-service";
 import {
     existVariableEdited,
     getData,
@@ -70,10 +71,10 @@ import {
     refreshSurvey,
     saveData,
     setValue,
-} from "service/survey-service";
-import { isDemoMode, isSurveyLocked, lockSurvey } from "service/survey-state-service";
-import { isReviewer } from "service/user-service";
-import { getClassCondition, getSurveyIdFromUrl } from "utils/utils";
+} from "../../../service/survey-service";
+import { isDemoMode, isSurveyLocked, lockSurvey } from "../../../service/survey-state-service";
+import { isReviewer } from "../../../service/user-service";
+import { getClassCondition, getSurveyIdFromUrl } from "../../../utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
 const getSurveyDatePlanner = (idSurvey: string) => {

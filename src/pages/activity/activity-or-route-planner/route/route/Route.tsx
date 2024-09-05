@@ -1,14 +1,14 @@
-import { ReactComponent as routeErrorIcon } from "assets/illustration/error/route.svg";
-import { ReactComponent as option1 } from "assets/illustration/route-categories/1.svg";
-import { ReactComponent as option2 } from "assets/illustration/route-categories/2.svg";
-import { ReactComponent as option3 } from "assets/illustration/route-categories/3.svg";
-import { ReactComponent as option4 } from "assets/illustration/route-categories/4.svg";
-import { ReactComponent as option5 } from "assets/illustration/route-categories/5.svg";
-import { ReactComponent as option6 } from "assets/illustration/route-categories/6.svg";
-import LoopSurveyPageStep from "components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import routeErrorIcon from "../../../../../assets/illustration/error/route.svg?react";
+import option1 from "../../../../../assets/illustration/route-categories/1.svg?react";
+import option2 from "../../../../../assets/illustration/route-categories/2.svg?react";
+import option3 from "../../../../../assets/illustration/route-categories/3.svg?react";
+import option4 from "../../../../../assets/illustration/route-categories/4.svg?react";
+import option5 from "../../../../../assets/illustration/route-categories/5.svg?react";
+import option6 from "../../../../../assets/illustration/route-categories/6.svg?react";
+import LoopSurveyPageStep from "../../../../../components/commons/LoopSurveyPage/LoopSurveyPageStep/LoopSurveyPageStep";
+import { EdtRoutesNameEnum } from "../../../../../enumerations/EdtRoutesNameEnum";
 import { useTranslation } from "react-i18next";
-import { getRouteRef } from "service/referentiel-service";
+import { getRouteRef } from "../../../../../service/referentiel-service";
 
 const RoutePage = () => {
     const { t } = useTranslation();

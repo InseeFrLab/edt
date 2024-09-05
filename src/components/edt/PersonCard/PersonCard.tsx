@@ -1,19 +1,19 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
-import { ReactComponent as ExpandMoreIcon } from "assets/illustration/mui-icon/expand-more-white.svg";
-import { ReactComponent as CatIcon } from "assets/illustration/person/cat.svg";
-import { ReactComponent as OwlIcon } from "assets/illustration/person/owl.svg";
-import { ReactComponent as ZebraIcon } from "assets/illustration/person/zebra.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import DayCard from "components/edt/DayCard/DayCard";
-import WeekCard from "components/edt/WeekCard/WeekCard";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { Person } from "interface/entity/Person";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder } from "orchestrator/Orchestrator";
+import ExpandMoreIcon from "../../../assets/illustration/mui-icon/expand-more-white.svg?react";
+import CatIcon from "../../../assets/illustration/person/cat.svg?react";
+import OwlIcon from "../../../assets/illustration/person/owl.svg?react";
+import ZebraIcon from "../../../assets/illustration/person/zebra.svg?react";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
+import DayCard from "../../../components/edt/DayCard/DayCard";
+import WeekCard from "../../../components/edt/WeekCard/WeekCard";
+import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "../../../enumerations/FieldNameEnum";
+import { LocalStorageVariableEnum } from "../../../enumerations/LocalStorageVariableEnum";
+import { SourcesEnum } from "../../../enumerations/SourcesEnum";
+import { Person } from "../../../interface/entity/Person";
+import { OrchestratorContext } from "../../../interface/lunatic/Lunatic";
+import { callbackHolder } from "../../../orchestrator/Orchestrator";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -21,8 +21,8 @@ import {
     navToActivityOrPlannerOrSummary,
     navToWeeklyPlannerOrClose,
     setEnviro,
-} from "service/navigation-service";
-import { isMobile } from "service/responsive";
+} from "../../../service/navigation-service";
+import { isMobile } from "../../../service/responsive";
 import Icon from "../Icon/Icon";
 import {
     getData,
@@ -30,7 +30,7 @@ import {
     getSource,
     getSurveyRights,
     getValue,
-} from "service/survey-service";
+} from "../../../service/survey-service";
 
 interface PersonCardProps {
     values: Person[];

@@ -1,8 +1,8 @@
-import { ReactComponent as BagIcon } from "assets/illustration/type-of-day-categories/bag.svg";
-import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import BagIcon from "../../../assets/illustration/type-of-day-categories/bag.svg?react";
+import SurveyPageStep from "../../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
+import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
 import { t } from "i18next";
-import { getKindOfDayRef } from "service/referentiel-service";
+import { getKindOfDayRef } from "../../../service/referentiel-service";
 
 const KindOfDayPage = () => {
     const specifiquesProps = {

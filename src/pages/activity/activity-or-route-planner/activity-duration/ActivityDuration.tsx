@@ -1,34 +1,38 @@
 import { Alert, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
 import { IconButton, Snackbar } from "@mui/material";
-import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
-import { ReactComponent as CloseIcon } from "assets/illustration/mui-icon/close.svg";
-import { ReactComponent as ArrowDownIcon } from "assets/illustration/mui-icon/expand-more.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import LoopSurveyPage from "components/commons/LoopSurveyPage/LoopSurveyPage";
-import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
+import ErrorIcon from "../../../../assets/illustration/error/activity.svg?react";
+import CloseIcon from "../../../../assets/illustration/mui-icon/close.svg?react";
+import ArrowDownIcon from "../../../../assets/illustration/mui-icon/expand-more.svg?react";
+import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
+import LoopSurveyPage from "../../../../components/commons/LoopSurveyPage/LoopSurveyPage";
+import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "../../../../constants/constants";
 import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { LoopEnum } from "enumerations/LoopEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder, OrchestratorForStories } from "orchestrator/Orchestrator";
+import { EdtRoutesNameEnum } from "../../../../enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "../../../../enumerations/FieldNameEnum";
+import { LoopEnum } from "../../../../enumerations/LoopEnum";
+import { OrchestratorContext } from "../../../../interface/lunatic/Lunatic";
+import { callbackHolder, OrchestratorForStories } from "../../../../orchestrator/Orchestrator";
 import { Fragment, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { getLabelsWhenQuit } from "service/alert-service";
-import { getLoopInitialPage } from "service/loop-service";
-import { getLoopPageSubpage, getNextLoopPage, getStepData } from "service/loop-stepper-service";
+import { getLabelsWhenQuit } from "../../../../service/alert-service";
+import { getLoopInitialPage } from "../../../../service/loop-service";
+import {
+    getLoopPageSubpage,
+    getNextLoopPage,
+    getStepData,
+} from "../../../../service/loop-stepper-service";
 import {
     getLoopParameterizedNavigatePath,
     navToActivityRoutePlanner,
     navToActivitySummary,
     setEnviro,
-} from "service/navigation-service";
-import { isDesktop } from "service/responsive";
-import { getActivitiesOrRoutes, surveyReadOnly } from "service/survey-activity-service";
-import { getData, getValue, getValueOfData, saveDataLocally } from "service/survey-service";
-import { getSurveyIdFromUrl } from "utils/utils";
+} from "../../../../service/navigation-service";
+import { isDesktop } from "../../../../service/responsive";
+import { getActivitiesOrRoutes, surveyReadOnly } from "../../../../service/survey-activity-service";
+import { getData, getValue, getValueOfData, saveDataLocally } from "../../../../service/survey-service";
+import { getSurveyIdFromUrl } from "../../../../utils/utils";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
@@ -190,7 +194,7 @@ const ActivityDurationPage = () => {
     };
 
     const handleCloseSnackBar = useCallback(
-        (event: React.SyntheticEvent | Event, reason?: string) => {
+        (_: unknown, reason?: string) => {
             if (reason === "clickaway") {
                 return;
             }

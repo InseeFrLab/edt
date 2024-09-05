@@ -1,22 +1,22 @@
 import { makeStylesEdt, ProgressBar } from "@inseefrlab/lunatic-edt";
 import { Box } from "@mui/material";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import LoopNavigator from "components/commons/LoopSurveyPage/LoopNavigator/LoopNavigator";
-import PageIcon from "components/commons/PageIcon/PageIcon";
-import ActivityButtons from "components/commons/SurveyPage/ActivityButtons/ActivityButtons";
-import SurveyPageEditHeader from "components/commons/SurveyPage/SurveyPageEditHeader/SurveyPageEditHeader";
-import SurveyPageHeader from "components/commons/SurveyPage/SurveyPageHeader/SurveyPageHeader";
-import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
-import ValidateButton from "components/commons/SurveyPage/ValidateButton/ValidateButton";
-import EndActivityStepper from "components/edt/EndActivityStepper/EndActivityStepper";
-import { LunaticModel } from "interface/lunatic/Lunatic";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
+import LoopNavigator from "../../../components/commons/LoopSurveyPage/LoopNavigator/LoopNavigator";
+import PageIcon from "../../../components/commons/PageIcon/PageIcon";
+import ActivityButtons from "../../../components/commons/SurveyPage/ActivityButtons/ActivityButtons";
+import SurveyPageEditHeader from "../../../components/commons/SurveyPage/SurveyPageEditHeader/SurveyPageEditHeader";
+import SurveyPageHeader from "../../../components/commons/SurveyPage/SurveyPageHeader/SurveyPageHeader";
+import SurveyPageSimpleHeader from "../../../components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
+import ValidateButton from "../../../components/commons/SurveyPage/ValidateButton/ValidateButton";
+import EndActivityStepper from "../../../components/edt/EndActivityStepper/EndActivityStepper";
+import { LunaticModel } from "../../../interface/lunatic/Lunatic";
 import React, { ReactElement, useEffect } from "react";
 import { isAndroid, isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
-import { getLastCompletedStep } from "service/navigation-service";
-import { isMobile, isPwa } from "service/responsive";
-import { activityComplementaryQuestionsStepperData } from "service/stepper.service";
-import { getScore } from "service/survey-activity-service";
+import { getLastCompletedStep } from "../../../service/navigation-service";
+import { isMobile, isPwa } from "../../../service/responsive";
+import { activityComplementaryQuestionsStepperData } from "../../../service/stepper.service";
+import { getScore } from "../../../service/survey-activity-service";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;

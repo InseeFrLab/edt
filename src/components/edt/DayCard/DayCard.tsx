@@ -1,16 +1,16 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import Box from "@mui/material/Box";
-import { ReactComponent as PersonSunCloseIcon } from "assets/illustration/card/person-sun-close.svg";
-import { ReactComponent as PersonSunIcon } from "assets/illustration/card/person-sun.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import PourcentProgress from "components/edt/PourcentProgress/PourcentProgress";
-import { StateDataStateEnum } from "enumerations/StateDataStateEnum";
+import PersonSunCloseIcon from "../../../assets/illustration/card/person-sun-close.svg?react";
+import PersonSunIcon from "../../../assets/illustration/card/person-sun.svg?react";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
+import PourcentProgress from "../../../components/edt/PourcentProgress/PourcentProgress";
+import { StateDataStateEnum } from "../../../enumerations/StateDataStateEnum";
 import { useTranslation } from "react-i18next";
-import { isMobile } from "service/responsive";
-import { getQualityScore } from "service/summary-service";
-import { getActivitiesOrRoutes, getScore } from "service/survey-activity-service";
-import { getStatutSurvey, isDemoMode } from "service/survey-state-service";
-import { isReviewer } from "service/user-service";
+import { isMobile } from "../../../service/responsive";
+import { getQualityScore } from "../../../service/summary-service";
+import { getActivitiesOrRoutes, getScore } from "../../../service/survey-activity-service";
+import { getStatutSurvey, isDemoMode } from "../../../service/survey-state-service";
+import { isReviewer } from "../../../service/user-service";
 
 interface DayCardProps {
     labelledBy: string;

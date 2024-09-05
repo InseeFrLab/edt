@@ -9,37 +9,38 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider, Switch, Typography } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
-import { ReactComponent as InfoAlertIcon } from "assets/illustration/info-alert.svg";
-import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
-import { ReactComponent as CheckIcon } from "assets/illustration/mui-icon/check.svg";
-import { ReactComponent as DownloadIcon } from "assets/illustration/mui-icon/download.svg";
-import { ReactComponent as InfoTooltipIcon } from "assets/illustration/mui-icon/info.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import LoadingFull from "components/commons/LoadingFull/LoadingFull";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import ActivityOrRouteCard from "components/edt/ActivityCard/ActivityOrRouteCard";
-import AddActivityOrRoute from "components/edt/AddActivityOrRoute/AddActivityOrRoute";
-import DayCharacteristics from "components/edt/DayCharacteristic/DayCharacteristic";
-import DaySummary from "components/edt/DaySummary/DaySummary";
-import HelpMenu from "components/edt/HelpMenu/HelpMenu";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
-import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
-import { LoopEnum } from "enumerations/LoopEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { ActivitiesSummaryExportData } from "interface/entity/ActivitiesSummary";
-import { ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
-import { LunaticModel, OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder } from "orchestrator/Orchestrator";
-import ErrorPage from "pages/error/ErrorPage";
+import ErrorIcon from "../../../assets/illustration/error/activity.svg?react";
+import InfoAlertIcon from "../../../assets/illustration/info-alert.svg?react";
+import InfoIcon from "../../../assets/illustration/info.svg?react";
+import CheckIcon from "../../../assets/illustration/mui-icon/check.svg?react";
+import DownloadIcon from "../../../assets/illustration/mui-icon/download.svg?react";
+import InfoTooltipIcon from "../../../assets/illustration/mui-icon/info.svg?react";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
+import LoadingFull from "../../../components/commons/LoadingFull/LoadingFull";
+import SurveyPage from "../../../components/commons/SurveyPage/SurveyPage";
+import ActivityOrRouteCard from "../../../components/edt/ActivityCard/ActivityOrRouteCard";
+import AddActivityOrRoute from "../../../components/edt/AddActivityOrRoute/AddActivityOrRoute";
+import DayCharacteristics from "../../../components/edt/DayCharacteristic/DayCharacteristic";
+import DaySummary from "../../../components/edt/DaySummary/DaySummary";
+import HelpMenu from "../../../components/edt/HelpMenu/HelpMenu";
+import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
+import { EdtUserRightsEnum } from "../../../enumerations/EdtUserRightsEnum";
+import { ErrorCodeEnum } from "../../../enumerations/ErrorCodeEnum";
+import { FieldNameEnum } from "../../../enumerations/FieldNameEnum";
+import { LocalStorageVariableEnum } from "../../../enumerations/LocalStorageVariableEnum";
+import { LoopEnum } from "../../../enumerations/LoopEnum";
+import { SourcesEnum } from "../../../enumerations/SourcesEnum";
+import { ActivitiesSummaryExportData } from "../../../interface/entity/ActivitiesSummary";
+import { ActivityRouteOrGap } from "../../../interface/entity/ActivityRouteOrGap";
+import { LunaticModel, OrchestratorContext } from "../../../interface/lunatic/Lunatic";
+import { callbackHolder } from "../../../orchestrator/Orchestrator";
+import ErrorPage from "../../../pages/error/ErrorPage";
 import React, { useCallback, useEffect, useState } from "react";
-import { TFunction, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import {type TFunction} from "i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import { getFlatLocalStorageValue, getLocalStorageValue } from "service/local-storage-service";
-import { getLoopSize, setLoopSize } from "service/loop-service";
+import { getFlatLocalStorageValue, getLocalStorageValue } from "../../../service/local-storage-service";
+import { getLoopSize, setLoopSize } from "../../../service/loop-service";
 import {
     getCurrentNavigatePath,
     getLoopParameterizedNavigatePath,
@@ -51,15 +52,15 @@ import {
     navToHome,
     saveAndNav,
     setEnviro,
-} from "service/navigation-service";
-import { getLanguage } from "service/referentiel-service";
-import { getUserActivitiesCharacteristics, getUserActivitiesSummary } from "service/summary-service";
+} from "../../../service/navigation-service";
+import { getLanguage } from "../../../service/referentiel-service";
+import { getUserActivitiesCharacteristics, getUserActivitiesSummary } from "../../../service/summary-service";
 import {
     deleteActivity,
     getActivitiesOrRoutes,
     getScore,
     surveyReadOnly,
-} from "service/survey-activity-service";
+} from "../../../service/survey-activity-service";
 import {
     existVariableEdited,
     getData,
@@ -73,11 +74,11 @@ import {
     refreshSurvey,
     saveData,
     setValue,
-} from "service/survey-service";
-import { isSurveyLocked, lockSurvey, validateSurvey } from "service/survey-state-service";
-import { getUserRights } from "service/user-service";
-import ActivitiesSummaryExportTemplate from "template/summary-export/ActivitiesSummaryExportTemplate";
-import { getClassCondition, getSurveyIdFromUrl } from "utils/utils";
+} from "../../../service/survey-service";
+import { isSurveyLocked, lockSurvey, validateSurvey } from "../../../service/survey-state-service";
+import { getUserRights } from "../../../service/user-service";
+import ActivitiesSummaryExportTemplate from "../../../template/summary-export/ActivitiesSummaryExportTemplate";
+import { getClassCondition, getSurveyIdFromUrl } from "../../../utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
 const getSurveyDatePlanner = (idSurvey: string) => {

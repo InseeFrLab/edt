@@ -1,4 +1,4 @@
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import { ReactElement } from "react";
 import { makeStyles } from "tss-react/mui";
 

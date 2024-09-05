@@ -6,27 +6,27 @@ import {
 } from "@inseefrlab/lunatic-edt";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
 import { Box } from "@mui/material";
-import { ReactComponent as InfoIcon } from "assets/illustration/info.svg";
-import { ReactComponent as ExpandLessWhiteIcon } from "assets/illustration/mui-icon/expand-less-white.svg";
-import { ReactComponent as ExpandLessIcon } from "assets/illustration/mui-icon/expand-less.svg";
-import { ReactComponent as ExpandMoreWhiteIcon } from "assets/illustration/mui-icon/expand-more-white.svg";
-import { ReactComponent as ExpandMoreIcon } from "assets/illustration/mui-icon/expand-more.svg";
-import { ReactComponent as InfoTooltipIcon } from "assets/illustration/mui-icon/info.svg";
-import { ReactComponent as MoreHorizontalIcon } from "assets/illustration/mui-icon/more-horizontal.svg";
-import { ReactComponent as WorkFullIcon } from "assets/illustration/mui-icon/work-full.svg";
-import { ReactComponent as ClientIcon } from "assets/illustration/place-work-categories/client.svg";
-import { ReactComponent as HomeIcon } from "assets/illustration/place-work-categories/home.svg";
-import { ReactComponent as NotWorkIcon } from "assets/illustration/place-work-categories/notwork.svg";
-import { ReactComponent as OtherIcon } from "assets/illustration/place-work-categories/other.svg";
-import { ReactComponent as WorkIcon } from "assets/illustration/place-work-categories/work.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import HelpMenu from "components/edt/HelpMenu/HelpMenu";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { LunaticData, MultiCollected, OrchestratorContext } from "interface/lunatic/Lunatic";
-import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
-import ErrorProvider from "pages/error/ErrorProvider";
+import InfoIcon from "../../../assets/illustration/info.svg?react";
+import ExpandLessWhiteIcon from "../../../assets/illustration/mui-icon/expand-less-white.svg?react";
+import ExpandLessIcon from "../../../assets/illustration/mui-icon/expand-less.svg?react";
+import ExpandMoreWhiteIcon from "../../../assets/illustration/mui-icon/expand-more-white.svg?react";
+import ExpandMoreIcon from "../../../assets/illustration/mui-icon/expand-more.svg?react";
+import InfoTooltipIcon from "../../../assets/illustration/mui-icon/info.svg?react";
+import MoreHorizontalIcon from "../../../assets/illustration/mui-icon/more-horizontal.svg?react";
+import WorkFullIcon from "../../../assets/illustration/mui-icon/work-full.svg?react";
+import ClientIcon from "../../../assets/illustration/place-work-categories/client.svg?react";
+import HomeIcon from "../../../assets/illustration/place-work-categories/home.svg?react";
+import NotWorkIcon from "../../../assets/illustration/place-work-categories/notwork.svg?react";
+import OtherIcon from "../../../assets/illustration/place-work-categories/other.svg?react";
+import WorkIcon from "../../../assets/illustration/place-work-categories/work.svg?react";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
+import SurveyPage from "../../../components/commons/SurveyPage/SurveyPage";
+import HelpMenu from "../../../components/edt/HelpMenu/HelpMenu";
+import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
+import { FieldNameEnum } from "../../../enumerations/FieldNameEnum";
+import { LunaticData, MultiCollected, OrchestratorContext } from "../../../interface/lunatic/Lunatic";
+import { OrchestratorForStories, callbackHolder } from "../../../orchestrator/Orchestrator";
+import ErrorProvider from "../../../pages/error/ErrorProvider";
 import React, { useCallback } from "react";
 import { isAndroid, isIOS } from "react-device-detect";
 import { ErrorBoundary } from "react-error-boundary";
@@ -40,18 +40,18 @@ import {
     navFullPath,
     saveAndNavLocally,
     setEnviro,
-} from "service/navigation-service";
-import { getLanguage } from "service/referentiel-service";
-import { isMobile, isPwa } from "service/responsive";
+} from "../../../service/navigation-service";
+import { getLanguage } from "../../../service/referentiel-service";
+import { isMobile, isPwa } from "../../../service/responsive";
 import {
     getData,
     getPrintedFirstName,
     getSurveyDate,
     saveData,
     saveDataLocally,
-} from "service/survey-service";
-import { isReviewer } from "service/user-service";
-import { getSurveyIdFromUrl } from "utils/utils";
+} from "../../../service/survey-service";
+import { isReviewer } from "../../../service/user-service";
+import { getSurveyIdFromUrl } from "../../../utils/utils";
 
 //TODO: For info:
 // The Weekly Planner page UI uses the content of the "WEEKLYPLANNER" variable from the data object.
@@ -358,7 +358,7 @@ const useStyles = makeStylesEdt<{
     innerHeight: number;
 }>({
     "name": { WeeklyPlannerPage },
-})((theme, { isIOS, iosHeight, innerHeight }) => ({
+})((_, { isIOS, iosHeight, innerHeight }) => ({
     pageDesktop: {
         height: "100%",
         maxHeight: isIOS ? iosHeight : innerHeight,

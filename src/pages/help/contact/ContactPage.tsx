@@ -1,15 +1,15 @@
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Paper, Typography } from "@mui/material";
-import { ReactComponent as ContactImg } from "assets/illustration/contact.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import SurveyPageSimpleHeader from "components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
+import ContactImg from "../../../assets/illustration/contact.svg?react";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
+import SurveyPageSimpleHeader from "../../../components/commons/SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
+import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
 import { useCallback } from "react";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { getNavigatePath } from "service/navigation-service";
-import { isMobile as isMobileImage, isPwa, isTablet } from "service/responsive";
+import { getNavigatePath } from "../../../service/navigation-service";
+import { isMobile as isMobileImage, isPwa, isTablet } from "../../../service/responsive";
 import packageJson from "../../../../package.json";
 
 const ContactPage = () => {

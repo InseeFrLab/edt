@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "@react-pdf/renderer";
-import { ActivitiesSummaryExportData } from "interface/entity/ActivitiesSummary";
+import { ActivitiesSummaryExportData } from "../../interface/entity/ActivitiesSummary";
 import { useTranslation } from "react-i18next";
 
 interface DaySummaryExportTemplateProps {

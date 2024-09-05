@@ -10,33 +10,34 @@ import {
     Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { ReactComponent as ArrowForwardIosGreyIcon } from "assets/illustration/mui-icon/arrow-forward-ios-grey.svg";
-import { ReactComponent as HomeIcon } from "assets/illustration/mui-icon/home.svg";
-import { ReactComponent as PersonIcon } from "assets/illustration/mui-icon/person-white.svg";
-import { ReactComponent as RefreshIcon } from "assets/illustration/mui-icon/refresh-white.svg";
-import { ReactComponent as SearchIcon } from "assets/illustration/mui-icon/search.svg";
-import { ReactComponent as StatsImg } from "assets/illustration/stats.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import LoadingFull from "components/commons/LoadingFull/LoadingFull";
-import ReviewerPage from "components/commons/ReviewerPage/ReviewerPage";
-import HouseholdCard from "components/edt/HouseholdCard/HouseholdCard";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { Household } from "interface/entity/Household";
-import ErrorPage from "pages/error/ErrorPage";
+import ArrowForwardIosGreyIcon from "../../assets/illustration/mui-icon/arrow-forward-ios-grey.svg?react";
+import HomeIcon from "../../assets/illustration/mui-icon/home.svg?react";
+import PersonIcon from "../../assets/illustration/mui-icon/person-white.svg?react";
+import RefreshIcon from "../../assets/illustration/mui-icon/refresh-white.svg?react";
+import SearchIcon from "../../assets/illustration/mui-icon/search.svg?react";
+import StatsImg from "../../assets/illustration/stats.svg?react";
+import FlexCenter from "../../components/commons/FlexCenter/FlexCenter";
+import LoadingFull from "../../components/commons/LoadingFull/LoadingFull";
+import ReviewerPage from "../../components/commons/ReviewerPage/ReviewerPage";
+import HouseholdCard from "../../components/edt/HouseholdCard/HouseholdCard";
+import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
+import { ErrorCodeEnum } from "../../enumerations/ErrorCodeEnum";
+import { Household } from "../../interface/entity/Household";
+import ErrorPage from "../../pages/error/ErrorPage";
 import React, { useCallback, useEffect } from "react";
-import { TFunction, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { getNavigatePath } from "service/navigation-service";
-import { isMobile } from "service/responsive";
+import { getNavigatePath } from "../../service/navigation-service";
+import { isMobile } from "../../service/responsive";
+import type {TFunction} from 'i18next'
 import {
     getListSurveysHousehold,
     initializeListSurveys,
     initializeSurveysIdsDataModeReviewer,
     refreshSurveyData,
     saveDatas,
-} from "service/survey-service";
-import { getUniquesValues } from "utils/utils";
+} from "../../service/survey-service";
+import { getUniquesValues } from "../../utils/utils";
 
 const getListCampaigns = (dataHouseholds: Household[], t: TFunction<"translation", undefined>) => {
     const subCampaignIds = getUniquesValues(dataHouseholds.map(household => household.campaingId)).map(

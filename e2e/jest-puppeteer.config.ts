@@ -1,7 +1,7 @@
 module.exports = {
     launch: {
-        headless: process.env.HEADLESS !== "false",
-        slowMo: process.env.SLOWMO ? process.env.SLOWMO : 0,
+        headless: import.meta.env.HEADLESS !== "false",
+        slowMo: import.meta.env.SLOWMO ? import.meta.env.SLOWMO : 0,
         devtools: true,
     },
     //browser: 'chromium',

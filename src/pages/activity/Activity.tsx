@@ -1,10 +1,10 @@
-import SurveySelecter from "components/edt/SurveySelecter/SurveySelecter";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { TabData } from "interface/component/Component";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder } from "orchestrator/Orchestrator";
+import SurveySelecter from "../../components/edt/SurveySelecter/SurveySelecter";
+import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
+import { ErrorCodeEnum } from "../../enumerations/ErrorCodeEnum";
+import { SourcesEnum } from "../../enumerations/SourcesEnum";
+import { TabData } from "../../interface/component/Component";
+import { OrchestratorContext } from "../../interface/lunatic/Lunatic";
+import { callbackHolder } from "../../orchestrator/Orchestrator";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
@@ -14,10 +14,10 @@ import {
     navToActivityOrPlannerOrSummary,
     navToWeeklyPlannerOrClose,
     setEnviro,
-} from "service/navigation-service";
-import { getCurrentSurveyRootPage } from "service/orchestrator-service";
-import { tabletMinWidth } from "service/responsive";
-import { getData, getSource, getSurveyRights, getTabsData } from "service/survey-service";
+} from "../../service/navigation-service";
+import { getCurrentSurveyRootPage } from "../../service/orchestrator-service";
+import { tabletMinWidth } from "../../service/responsive";
+import { getData, getSource, getSurveyRights, getTabsData } from "../../service/survey-service";
 
 const ActivityPage = () => {
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);

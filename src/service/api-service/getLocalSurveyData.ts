@@ -1,5 +1,5 @@
-import { ReferentielsEnum } from "enumerations/ReferentielsEnum";
-import { ReferentielData } from "interface/lunatic/Lunatic";
+import { ReferentielsEnum } from "../../enumerations/ReferentielsEnum";
+import { ReferentielData } from "../../interface/lunatic/Lunatic";
 import { AuthContextProps } from "oidc-react";
 import {
     edtActivityAutoComplete,
@@ -12,9 +12,9 @@ import {
     edtPlace,
     edtRoute,
     edtRouteSecondaryActivity,
-} from "assets/surveyData/edtNomenclatures";
+} from "../../assets/surveyData/edtNomenclatures";
 
-const fetchReferentiel = (auth: AuthContextProps, idReferentiel: ReferentielsEnum) => {
+const fetchReferentiel = (_: AuthContextProps, idReferentiel: ReferentielsEnum) => {
     console.log("fetchReferentiel", { data: idReferentiel });
     return Promise.resolve({ data: idReferentiel });
 };

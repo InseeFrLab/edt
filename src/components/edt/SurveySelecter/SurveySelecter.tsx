@@ -1,10 +1,10 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { AppBar, Box, Divider, Tab, Tabs, Typography } from "@mui/material";
-import { ReactComponent as PersonSunIcon } from "assets/illustration/card/person-sun.svg";
-import { ReactComponent as CalendarMonthIcon } from "assets/illustration/mui-icon/calendar-month.svg";
-import { ReactComponent as ExpandLessIcon } from "assets/illustration/mui-icon/expand-less.svg";
-import { ReactComponent as ExpandMoreIcon } from "assets/illustration/mui-icon/expand-more.svg";
-import { TabData } from "interface/component/Component";
+import PersonSunIcon from "../../../assets/illustration/card/person-sun.svg?react";
+import CalendarMonthIcon from "../../../assets/illustration/mui-icon/calendar-month.svg?react";
+import ExpandLessIcon from "../../../assets/illustration/mui-icon/expand-less.svg?react";
+import ExpandMoreIcon from "../../../assets/illustration/mui-icon/expand-more.svg?react";
+import { TabData } from "../../../interface/component/Component";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 

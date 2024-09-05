@@ -1,7 +1,7 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Modal } from "@mui/material";
-import { Default, Mobile } from "components/commons/Responsive/Responsive";
-import { LunaticModel } from "interface/lunatic/Lunatic";
+import { Default, Mobile } from "../../../components/commons/Responsive/Responsive";
+import { LunaticModel } from "../../../interface/lunatic/Lunatic";
 import HelpMenuInner from "./HelpMenuInner";
 
 interface HelpMenuProps {

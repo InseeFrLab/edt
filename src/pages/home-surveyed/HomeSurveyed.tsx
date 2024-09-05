@@ -1,37 +1,37 @@
 import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button } from "@mui/material";
-import { ReactComponent as DisconnectIcon } from "assets/illustration/disconnect.svg";
-import logo from "assets/illustration/logo.png";
-import { ReactComponent as HelpIcon } from "assets/illustration/mui-icon/help.svg";
-import { ReactComponent as HomeIcon } from "assets/illustration/mui-icon/home.svg";
-import { ReactComponent as LockIcon } from "assets/illustration/mui-icon/lock.svg";
-import { ReactComponent as PowerSettingsIcon } from "assets/illustration/mui-icon/power-settings.svg";
-import { ReactComponent as RemoveCircleIcon } from "assets/illustration/mui-icon/remove-circle.svg";
-import { ReactComponent as ReminderNoteImg } from "assets/illustration/reminder-note.svg";
-import { ReactComponent as ErrorIcon } from "assets/illustration/error/activity.svg";
-import BreadcrumbsReviewer from "components/commons/BreadcrumbsReviewer/BreadcrumbsReviewer";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import LoadingFull from "components/commons/LoadingFull/LoadingFull";
-import HelpMenu from "components/edt/HelpMenu/HelpMenu";
-import PersonCard from "components/edt/PersonCard/PersonCard";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { EdtUserRightsEnum } from "enumerations/EdtUserRightsEnum";
-import { ErrorCodeEnum } from "enumerations/ErrorCodeEnum";
-import { LocalStorageVariableEnum } from "enumerations/LocalStorageVariableEnum";
-import { SourcesEnum } from "enumerations/SourcesEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { Person } from "interface/entity/Person";
-import { LunaticData, OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder } from "orchestrator/Orchestrator";
-import ErrorPage from "pages/error/ErrorPage";
-import ErrorProvider from "pages/error/ErrorProvider";
+import DisconnectIcon from "../../assets/illustration/disconnect.svg?react";
+import logo from "../../assets/illustration/logo.png";
+import HelpIcon from "../../assets/illustration/mui-icon/help.svg?react";
+import HomeIcon from "../../assets/illustration/mui-icon/home.svg?react";
+import LockIcon from "../../assets/illustration/mui-icon/lock.svg?react";
+import PowerSettingsIcon from "../../assets/illustration/mui-icon/power-settings.svg?react";
+import RemoveCircleIcon from "../../assets/illustration/mui-icon/remove-circle.svg?react";
+import ReminderNoteImg from "../../assets/illustration/reminder-note.svg?react";
+import ErrorIcon from "../../assets/illustration/error/activity.svg?react";
+import BreadcrumbsReviewer from "../../components/commons/BreadcrumbsReviewer/BreadcrumbsReviewer";
+import FlexCenter from "../../components/commons/FlexCenter/FlexCenter";
+import LoadingFull from "../../components/commons/LoadingFull/LoadingFull";
+import HelpMenu from "../../components/edt/HelpMenu/HelpMenu";
+import PersonCard from "../../components/edt/PersonCard/PersonCard";
+import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
+import { EdtUserRightsEnum } from "../../enumerations/EdtUserRightsEnum";
+import { ErrorCodeEnum } from "../../enumerations/ErrorCodeEnum";
+import { LocalStorageVariableEnum } from "../../enumerations/LocalStorageVariableEnum";
+import { SourcesEnum } from "../../enumerations/SourcesEnum";
+import { SurveysIdsEnum } from "../../enumerations/SurveysIdsEnum";
+import { Person } from "../../interface/entity/Person";
+import { LunaticData, OrchestratorContext } from "../../interface/lunatic/Lunatic";
+import { callbackHolder } from "../../orchestrator/Orchestrator";
+import ErrorPage from "../../pages/error/ErrorPage";
+import ErrorProvider from "../../pages/error/ErrorProvider";
 import React, { useCallback, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { logout } from "service/auth-service";
-import { lunaticDatabase } from "service/lunatic-database";
-import { getNavigatePath, setEnviro } from "service/navigation-service";
+import { logout } from "../../service/auth-service";
+import { lunaticDatabase } from "../../service/lunatic-database";
+import { getNavigatePath, setEnviro } from "../../service/navigation-service";
 import {
     arrayOfSurveysPersonDemo,
     getData,
@@ -48,10 +48,10 @@ import {
     surveysIds,
     userDatasMap,
     initializeDatas,
-} from "service/survey-service";
-import { isDemoMode, lockAllSurveys, validateAllEmptySurveys } from "service/survey-state-service";
-import { getUserRights } from "service/user-service";
-import { groupBy } from "utils/utils";
+} from "../../service/survey-service";
+import { isDemoMode, lockAllSurveys, validateAllEmptySurveys } from "../../service/survey-state-service";
+import { getUserRights } from "../../service/user-service";
+import { groupBy } from "../../utils/utils";
 
 const HomeSurveyedPage = () => {
     const { t } = useTranslation();
@@ -147,7 +147,7 @@ const HomeSurveyedPage = () => {
             promises.push(saveData(idSurvey, {}));
         });
         Promise.all(promises).then(() => {
-            window.location.replace(process.env.REACT_APP_PUBLIC_URL || "");
+            window.location.replace(import.meta.env.VITE_PUBLIC_URL || "");
         });
     }, []);
 

@@ -1,7 +1,7 @@
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Modal } from "@mui/material";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import FlexEvenly from "components/commons/FlexEvenly/FlexEvenly";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
+import FlexEvenly from "../../../components/commons/FlexEvenly/FlexEvenly";
 import React, { ReactElement, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 

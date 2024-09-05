@@ -1,6 +1,6 @@
 import { t } from "i18next";
-import { LunaticData, LunaticModel, LunaticModelComponent } from "interface/lunatic/Lunatic";
-import { EdtRoutesNameEnum, mappingPageOrchestrator } from "routes/EdtRoutesMapping";
+import { LunaticData, LunaticModel, LunaticModelComponent } from "../interface/lunatic/Lunatic";
+import { EdtRoutesNameEnum, mappingPageOrchestrator } from "../routes/EdtRoutesMapping";
 import { getCurrentPageSource } from "./orchestrator-service";
 import { getValueOfData, getVariable } from "./survey-service";
 

@@ -5,18 +5,19 @@ import {
     transformToWeeklyPlannerDataType,
 } from "@inseefrlab/lunatic-edt";
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
-import { edtActivitySurvey } from "assets/surveyData";
-import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "constants/constants";
+import { edtActivitySurvey } from "../assets/surveyData";
+import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "../constants/constants";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { EdtSurveyRightsEnum } from "enumerations/EdtSurveyRightsEnum";
-import { FieldNameEnum } from "enumerations/FieldNameEnum";
-import { LoopEnum } from "enumerations/LoopEnum";
-import { SurveysIdsEnum } from "enumerations/SurveysIdsEnum";
-import { Activity, ActivityRouteOrGap } from "interface/entity/ActivityRouteOrGap";
-import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
-import { TFunction, useTranslation } from "react-i18next";
-import { getLoopSize } from "service/loop-service";
+import { EdtSurveyRightsEnum } from "../enumerations/EdtSurveyRightsEnum";
+import { FieldNameEnum } from "../enumerations/FieldNameEnum";
+import { LoopEnum } from "../enumerations/LoopEnum";
+import { SurveysIdsEnum } from "../enumerations/SurveysIdsEnum";
+import { Activity, ActivityRouteOrGap } from "../interface/entity/ActivityRouteOrGap";
+import { LunaticData, LunaticModel } from "../interface/lunatic/Lunatic";
+import { useTranslation } from "react-i18next";
+import { type TFunction } from "i18next";
+import { getLoopSize } from "./loop-service";
 import {
     findActivityInAutoCompleteReferentiel,
     findActivityInNomenclatureReferentiel,
@@ -26,7 +27,7 @@ import {
     findRouteSecondaryActivityInRef,
     getAutoCompleteRef,
     getLanguage,
-} from "service/referentiel-service";
+} from "./referentiel-service";
 import {
     getData,
     getModePersistence,
@@ -35,9 +36,9 @@ import {
     getVarBooleanModepersistance,
     saveData,
     surveysIds,
-} from "service/survey-service";
+} from "./survey-service";
 import { getStatutSurvey } from "./survey-state-service";
-import { ModePersistenceEnum } from "enumerations/ModePersistenceEnum";
+import { ModePersistenceEnum } from "../enumerations/ModePersistenceEnum";
 import { getQualityScore } from "./summary-service";
 import { t } from "i18next";
 

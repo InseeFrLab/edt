@@ -1,13 +1,13 @@
 import { Button, CircularProgress } from "@mui/material";
-import ReminderNoteImg from "assets/illustration/reminder-note.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import PageIcon from "components/commons/PageIcon/PageIcon";
+import ReminderNoteImg from "../../../assets/illustration/reminder-note.svg";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
+import PageIcon from "../../../components/commons/PageIcon/PageIcon";
 import { useTranslation } from "react-i18next";
 import { makeStyles } from "tss-react/mui";
-import { ReactComponent as PowerSettingsIcon } from "assets/illustration/mui-icon/power-settings.svg";
+import PowerSettingsIcon from "../../../assets/illustration/mui-icon/power-settings.svg?react";
 import { useCallback } from "react";
-import { lunaticDatabase } from "service/lunatic-database";
-import { logout } from "service/auth-service";
+import { lunaticDatabase } from "../../../service/lunatic-database";
+import { logout } from "../../../service/auth-service";
 
 interface LoadingFullProps {
     message: string;

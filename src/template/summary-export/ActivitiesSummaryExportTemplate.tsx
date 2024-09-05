@@ -1,12 +1,12 @@
 import { Document, Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
-import logoInsee from "assets/illustration/logo.png";
-import { ActivitiesSummaryExportData } from "interface/entity/ActivitiesSummary";
+import logoInsee from "../../assets/illustration/logo.png";
+import { ActivitiesSummaryExportData } from "../../interface/entity/ActivitiesSummary";
 import { useTranslation } from "react-i18next";
-import { ActivitiesPlanningExportTemplate } from "template/summary-export/ActivitiesPlanningExportTemplate";
-import { DayCharacteristicsExportTemplate } from "template/summary-export/DayCharacteristicsExportTemplate";
-import { DaySummaryExportTemplate } from "template/summary-export/DaySummaryExportTemplate";
-import { GlobalOrganisationExportTemplate } from "template/summary-export/GlobalOrganisationExportTemplate";
-import { RoutesPlanningExportTemplate } from "template/summary-export/RoutesPlanningExportTemplate";
+import { ActivitiesPlanningExportTemplate } from "./ActivitiesPlanningExportTemplate.tsx";
+import { DayCharacteristicsExportTemplate } from "./DayCharacteristicsExportTemplate.tsx";
+import { DaySummaryExportTemplate } from "./DaySummaryExportTemplate.tsx";
+import { GlobalOrganisationExportTemplate } from "./GlobalOrganisationExportTemplate.tsx";
+import { RoutesPlanningExportTemplate } from "./RoutesPlanningExportTemplate.tsx";
 
 interface ActivitiesSummaryExportTemplateProps {
     exportData: ActivitiesSummaryExportData;

@@ -2,9 +2,9 @@ import { WebStorageStateStore } from "oidc-client-ts";
 import { UserManager } from "oidc-react";
 import { getAuth, setUserToken } from "./user-service";
 
-const url = process.env.REACT_APP_KEYCLOAK_AUTHORITY ?? "";
-const clientId = process.env.REACT_APP_KEYCLOAK_CLIENT_ID ?? "";
-const redirectUri = process.env.REACT_APP_KEYCLOAK_REDIRECT_URI ?? "";
+const url = import.meta.env.VITE_KEYCLOAK_AUTHORITY ?? "";
+const clientId = import.meta.env.VITE_KEYCLOAK_CLIENT_ID ?? "";
+const redirectUri = import.meta.env.VITE_KEYCLOAK_REDIRECT_URI ?? "";
 const protocol = "protocol/openid-connect/auth";
 const attributes = window.location.search;
 const isSSO = attributes.includes("kc_idp_hint");
@@ -98,8 +98,8 @@ const signinRedirect = (userManager: UserManager) => {
 };
 
 const isAuthenticated = () => {
-    const url = process.env.REACT_APP_AUTH_URL;
-    const clientId = process.env.REACT_APP_IDENTITY_CLIENT_ID;
+    const url = import.meta.env.VITE_AUTH_URL;
+    const clientId = import.meta.env.VITE_IDENTITY_CLIENT_ID;
     if (url != null && clientId != null) {
         const item = `oidc.user:${url}:${clientId}`;
         const oidcStorage = JSON.parse(sessionStorage.getItem(item) ?? "");
@@ -134,7 +134,7 @@ const logoutClearData = (userManager: UserManager) => {
 const signoutRedirectCallback = (userManager: UserManager) => {
     userManager.signoutRedirectCallback().then(() => {
         localStorage.clear();
-        window.location.replace(process.env.REACT_APP_PUBLIC_URL ?? "");
+        window.location.replace(import.meta.env.VITE_PUBLIC_URL ?? "");
     });
     userManager.clearStaleState();
 };
@@ -152,7 +152,7 @@ const logout = () => {
             localStorage.clear();
         })
         .then(() => auth.userManager.clearStaleState())
-        .then(() => window.location.replace(process.env.REACT_APP_PUBLIC_URL ?? ""));
+        .then(() => window.location.replace(import.meta.env.VITE_PUBLIC_URL ?? ""));
 };
 
 export {

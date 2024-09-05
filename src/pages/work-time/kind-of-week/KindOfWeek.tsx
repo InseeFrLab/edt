@@ -1,12 +1,12 @@
 import { Alert, CheckboxOneSpecificProps } from "@inseefrlab/lunatic-edt";
-import { ReactComponent as CalendarWeekImg } from "assets/illustration/kind-of-week-categories/calendar-week.svg";
-import { ReactComponent as KindOfWeekImg } from "assets/illustration/kind-of-week.svg";
-import { ReactComponent as ExtensionIcon } from "assets/illustration/mui-icon/extension.svg";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import SurveyPage from "components/commons/SurveyPage/SurveyPage";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { OrchestratorForStories, callbackHolder } from "orchestrator/Orchestrator";
+import CalendarWeekImg from "../../../assets/illustration/kind-of-week-categories/calendar-week.svg?react";
+import KindOfWeekImg from "../../../assets/illustration/kind-of-week.svg?react";
+import ExtensionIcon from "../../../assets/illustration/mui-icon/extension.svg?react";
+import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
+import SurveyPage from "../../../components/commons/SurveyPage/SurveyPage";
+import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
+import { OrchestratorContext } from "../../../interface/lunatic/Lunatic";
+import { OrchestratorForStories, callbackHolder } from "../../../orchestrator/Orchestrator";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
@@ -20,10 +20,10 @@ import {
     setEnviro,
     validate,
     validateWithAlertAndNav,
-} from "service/navigation-service";
-import { getKindOfWeekRef } from "service/referentiel-service";
-import { getData, getPrintedFirstName } from "service/survey-service";
-import { getSurveyIdFromUrl } from "utils/utils";
+} from "../../../service/navigation-service";
+import { getKindOfWeekRef } from "../../../service/referentiel-service";
+import { getData, getPrintedFirstName } from "../../../service/survey-service";
+import { getSurveyIdFromUrl } from "../../../utils/utils";
 
 const KindOfWeekPage = () => {
     const context: OrchestratorContext = useOutletContext();

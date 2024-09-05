@@ -1,19 +1,21 @@
-import * as lunatic from "@inseefr/lunatic";
+import * as lunaticComponents from "@inseefr/lunatic/lib/index";
 import * as lunaticEDT from "@inseefrlab/lunatic-edt";
 import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
-import FlexCenter from "components/commons/FlexCenter/FlexCenter";
-import { FieldNameEnum, FieldNameEnumActivity } from "enumerations/FieldNameEnum";
-import { LunaticData, LunaticModel } from "interface/lunatic/Lunatic";
+import FlexCenter from "../components/commons/FlexCenter/FlexCenter";
+import { FieldNameEnum, FieldNameEnumActivity } from "../enumerations/FieldNameEnum";
+import { LunaticData, LunaticModel } from "../interface/lunatic/Lunatic";
 import React from "react";
-import { getCurrentPageSource } from "service/orchestrator-service";
-import { isReviewer } from "service/user-service";
+import { getCurrentPageSource } from "../service/orchestrator-service";
+import { isReviewer } from "../service/user-service";
 
 const { ...edtComponents } = lunaticEDT;
 
+const lunatic = { ...lunaticComponents };
+
 //notLunaticComponents contains all components that don't come directly from lunatic.
 lunaticEDT.notLunaticComponents.forEach((component: React.MemoExoticComponent<any>, name: string) => {
-    lunatic[name] = component;
+    (lunatic as any)[name] = component;
 });
 
 export const callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } } = {
@@ -269,7 +271,7 @@ const getVariablesActivity = (
         let variableCollected = iteration != null && Array.isArray(varC) ? varC[iteration] : varC;
         variableCollected = variableCollected ?? value?.[bindingDependency];
         let variable =
-            isReviewerMode || isLocked ? variableEdited ?? variableCollected : variableCollected;
+            isReviewerMode || isLocked ? (variableEdited ?? variableCollected) : variableCollected;
         variables.set(bindingDependency, variable);
     });
     //console.log("getVariablesActivity", variables);
@@ -290,7 +292,8 @@ const getVariableOfWeeklyPlannerInterviewer = (
 };
 
 const getVariablesWeeklyPlanner = (
-    data: LunaticData | undefined,
+    // data is not used anymore
+    _: LunaticData | undefined,
     dataBdd: LunaticData | undefined,
     bindingDependencies: string[],
     value: any,
@@ -327,7 +330,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     let { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
         props;
     const { classes, cx } = useStyles();
-    const { getComponents, getCurrentErrors, getData } = lunatic.useLunatic(source, data, {
+    const { getComponents, getCurrentErrors, getData } = (lunatic as any).useLunatic(source, data, {
         initialPage:
             page +
             (subPage === undefined ? "" : `.${subPage}`) +
@@ -366,7 +369,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 >
                     {components.map(function (component: any) {
                         const { id, componentType, response, options, value, ...other } = component;
-                        const Component = lunatic[componentType];
+                        const Component = (lunatic as any)[componentType];
                         //console.log("component:", componentType, "response:", response, "value:", value);
                         return (
                             <div className="lunatic lunatic-component" key={`component-${id}`}>
