@@ -8,18 +8,6 @@ import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { surveyReadOnly } from "../../service/survey-activity-service";
 import { validateAllGroup } from "../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../utils/utils";
-=======
-import { ReactComponent as WhoAreYouImg } from "assets/illustration/who-are-you.svg";
-import SurveyPageStep from "components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
-import { EdtRoutesNameEnum } from "enumerations/EdtRoutesNameEnum";
-import { OrchestratorContext } from "interface/lunatic/Lunatic";
-import { callbackHolder } from "orchestrator/Orchestrator";
-import React, { useCallback } from "react";
-import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import { surveyReadOnly } from "service/survey-activity-service";
-import { validateAllGroup } from "service/survey-service";
-import { getSurveyIdFromUrl } from "utils/utils";
->>>>>>> 7e05c8c (fix: first name not spreading accross group on first entry)
 
 const WhoAreYouPage = () => {
     const context: OrchestratorContext = useOutletContext();
