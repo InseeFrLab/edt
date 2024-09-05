@@ -1,5 +1,6 @@
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
-import { LunaticData } from "interface/lunatic/Lunatic";
+import { LunaticData } from "../../../interface/lunatic/Lunatic";
+
 
 export const createDataWeeklyPlanner = (data: LunaticData) => {
     const result: IODataStructure[] = [];
