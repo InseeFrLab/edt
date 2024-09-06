@@ -20,6 +20,7 @@ import {
 } from "./service/survey-service";
 import { getUserRights, setAuth, setUser, setUserToken } from "./service/user-service";
 import { getCookie } from "./utils/utils";
+import { ReloadPrompt } from "./components/commons/ReloadPrompt/ReloadPrompt.tsx";
 
 const App = () => {
     const { t } = useTranslation();
@@ -105,7 +106,6 @@ const App = () => {
             Promise.all(promisesToWait);
         } else if (!navigator.onLine) {
             getAuthCache().then(auth => {
-                console.log(auth);
                 if (auth?.data.userData?.access_token) {
                     const user: User = {
                         access_token: auth.data.userData?.access_token,
@@ -158,7 +158,12 @@ const App = () => {
 
     // return <>{initialized && !error ? <EdtRoutes /> : errorOrLoadingPage()}</>;
 
-    return <>{initialized ? <EdtRoutes /> : loadingPage()}</>;
+    return (
+        <>
+            <ReloadPrompt />
+            {initialized ? <EdtRoutes /> : loadingPage()}
+        </>
+    );
 };
 
 export default App;

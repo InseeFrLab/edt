@@ -53,6 +53,12 @@
             "unknown-route": "Trajet "
         }
     },
+    "sw": {
+        "close": "Fermer",
+        "refresh": "Reload",
+        "ready": "Application prête à fonctionner hors ligne",
+        "update": "De nouveaux contenus sont disponible"
+    },
     "accessibility": {
         "component": {
             "add-activity-or-route": {
