@@ -111,6 +111,7 @@ const WeeklyPlannerPage = () => {
 
     const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
         const dataBdd = getData(idSurvey);
+        console.log("dataBdd", dataBdd);
         if (data && data[1].length > 0) {
             if (dataBdd.COLLECTED) {
                 initializeCollectedFields(dataBdd, [
@@ -134,6 +135,7 @@ const WeeklyPlannerPage = () => {
 
     const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
         const callbackData = getData(idSurvey);
+        console.log("callbackData", callbackData);
         const dataCopy = { ...callbackData };
         const dates = (dataCopy?.COLLECTED?.["DATES"].COLLECTED ??
             getArrayFromSession("DATES")) as string[];
@@ -244,6 +246,7 @@ const WeeklyPlannerPage = () => {
 
     const validateAndNav = (): void => {
         if (displayDayOverview) {
+            console.log('CallbackHolder', callbackHolder.getData());
             if (isPlaceWorkDisplayed) {
                 saveData(idSurvey, callbackHolder.getData());
                 setDisplayDayOverview(true);

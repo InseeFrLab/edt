@@ -29,6 +29,7 @@ export const requestPutSurveyData = (
         getHeader(stromaeBackOfficeApiBaseUrl, token),
     );
 
+    console.log("requestPutSurveyData", tempData);
     const putStateData = axios.put(
         `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/state-data`,
         stateData,

@@ -803,7 +803,6 @@ const createDataEmpty = (idSurvey: string): LunaticData => {
         lastRemoteSaveDate: undefined,
     };
     data.COLLECTED = getDataEmpty(idSurvey);
-    console.log("createDataEmpty", data);
     return data;
 };
 
