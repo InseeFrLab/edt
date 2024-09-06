@@ -51,6 +51,7 @@ import {
     getArrayFromSession,
     getItemFromSession,
     groupBy,
+    revertTransformedArray,
 } from "../utils/utils";
 import {
     dataEmptyActivity,
@@ -76,7 +77,7 @@ import {
     isSurveyStarted,
     isSurveyValidated,
 } from "./survey-state-service";
-import { createDataWeeklyPlanner } from "pages/work-time/weekly-planner/utils";
+import { createDataWeeklyPlanner } from "../pages/work-time/weekly-planner/utils";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -540,7 +541,7 @@ const getRemoteSavedSurveyData = (
                                 PREVIOUS: null,
                             };
                             remoteSurveyData.COLLECTED["WEEKLYPLANNER"] = WeeklyPlannerVariable;
-                            console.log("Create WeeklyPlanner data", remoteSurveyData);
+                            //console.log("Create WeeklyPlanner data", remoteSurveyData);
                         }
 
                         //TODO: fix a bug where other variable are overwrited if there is no weeklyPlanner
@@ -732,14 +733,14 @@ const getDatas = (): Map<string, LunaticData> => {
 
 const getData = (idSurvey: string): LunaticData => {
     const modifyCollected = modifyIndividualCollected(idSurvey);
-    //TODO: empty data is never used
-    const emptyData = getDataCache(idSurvey) ?? createDataEmpty(idSurvey ?? "");
-    const data = modifyCollected || emptyData;
-    return data;
+    // const emptyData = getDataCache(idSurvey) ?? createDataEmpty(idSurvey ?? "");
+    // const data = modifyCollected || emptyData;
+    // return data;
+    return modifyCollected;
 };
 
 const getDataCache = (idSurvey: string) => {
-    const data = datas.get(idSurvey) ?? getItemFromSession(idSurvey);
+    const data = getItemFromSession(idSurvey) ?? datas.get(idSurvey);
     return data;
 };
 
@@ -804,7 +805,6 @@ const createDataEmpty = (idSurvey: string): LunaticData => {
         lastRemoteSaveDate: undefined,
     };
     data.COLLECTED = getDataEmpty(idSurvey);
-    console.log("createDataEmpty", data);
     return data;
 };
 
@@ -929,11 +929,40 @@ const saveData = (
                     stateData.date = Math.max(stateData.date, data.lastLocalSaveDate ?? 0);
                     data.stateData = stateData;
                     data.lastRemoteSaveDate = stateData.date;
+                    const revertedTranformedData = revertTransformedArray(data.COLLECTED);
+                    data.COLLECTED = revertedTranformedData;
+                    if (data.COLLECTED && "WEEKTYPE" in data.COLLECTED) {
+                        const weeklyPlannerData = createDataWeeklyPlanner(data);
+                        const WeeklyPlannerVariable: MultiCollected = {
+                            COLLECTED: weeklyPlannerData,
+                            EDITED: [],
+                            FORCED: null,
+                            INPUTED: null,
+                            PREVIOUS: null,
+                        };
+                        data.COLLECTED["WEEKLYPLANNER"] = WeeklyPlannerVariable;
+                        console.log("Create WeeklyPlanner data for reviewer", data);
+                    }
                     return saveInDatabase(idSurvey, data);
                 });
             } else {
                 return remotePutSurveyData(idSurvey, surveyData).then(() => {
                     data.stateData = stateData;
+                    const revertedTranformedData = revertTransformedArray(data.COLLECTED);
+                    data.COLLECTED = revertedTranformedData;
+                    data.COLLECTED = revertedTranformedData;
+                    if (data.COLLECTED && "WEEKTYPE" in data.COLLECTED) {
+                        const weeklyPlannerData = createDataWeeklyPlanner(data);
+                        const WeeklyPlannerVariable: MultiCollected = {
+                            COLLECTED: weeklyPlannerData,
+                            EDITED: [],
+                            FORCED: null,
+                            INPUTED: null,
+                            PREVIOUS: null,
+                        };
+                        data.COLLECTED["WEEKLYPLANNER"] = WeeklyPlannerVariable;
+                        console.log("Create WeeklyPlanner data", data);
+                    }
                     return saveInDatabase(idSurvey, data);
                 });
             }

@@ -48,7 +48,6 @@ import {
     getPrintedFirstName,
     getSurveyDate,
     saveData,
-    saveDataLocally,
 } from "../../../service/survey-service";
 import { isReviewer } from "../../../service/user-service";
 import { getSurveyIdFromUrl } from "../../../utils/utils";
@@ -93,7 +92,6 @@ const WeeklyPlannerPage = () => {
 
     const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
 
-    // TODO: fix null check & move elsewhere  & fix questionnaire model (temp solution)
     const initializeCollectedFields = (dataBdd: LunaticData, fieldsToInitialize: FieldNameEnum[]) => {
         if (dataBdd.COLLECTED !== undefined) {
             fieldsToInitialize.forEach(field => {
@@ -110,9 +108,10 @@ const WeeklyPlannerPage = () => {
             });
         }
     };
-    //TODO: Fix any
+
     const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
         const dataBdd = getData(idSurvey);
+        console.log("dataBdd", dataBdd);
         if (data && data[1].length > 0) {
             if (dataBdd.COLLECTED) {
                 initializeCollectedFields(dataBdd, [
@@ -138,6 +137,7 @@ const WeeklyPlannerPage = () => {
     // This also causes the total work time to be set to zero as lunatic-edt does not recognize the variable name
     const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
         const callbackData = getData(idSurvey);
+        console.log("callbackData", callbackData);
         const dataCopy = { ...callbackData };
         const dates = (dataCopy?.COLLECTED?.["DATES"].COLLECTED ??
             getArrayFromSession("DATES")) as string[];
@@ -146,44 +146,36 @@ const WeeklyPlannerPage = () => {
         if (
             !isReviewer() &&
             dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
-                dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
+            dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
         ) {
             response.names.forEach(name => {
-                const newName = "S_" + name;
-                let quartier: string[] = [];
+                let quartier = Object.assign(dataCopy?.COLLECTED?.[name]?.COLLECTED as string[]);
+                quartier[currentDateIndex] = response.values[name] + "";
 
-                if (dataCopy?.COLLECTED?.[newName]?.COLLECTED) {
-                    quartier = Object.assign([], dataCopy.COLLECTED[newName].COLLECTED);
-                }
-
-                if (response?.values?.[name] !== undefined) {
-                    quartier[currentDateIndex] = response.values[name] + "";
-                }
-
-                if (dataCopy?.COLLECTED?.[newName]) {
-                    dataCopy.COLLECTED[newName].COLLECTED = quartier;
+                if (dataCopy?.COLLECTED) {
+                    dataCopy.COLLECTED[name].COLLECTED = quartier;
                 }
             });
             saveData(idSurveyResponse, dataCopy, true);
         }
+
 
         if (
             isReviewer() &&
             (dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].EDITED ==
                 dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].EDITED ||
                 dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
-                    dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED)
+                dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED)
         ) {
             response.names.forEach(name => {
-                const newName = "S_" + name;
                 const responsesValues: string[] =
-                    dataCopy?.COLLECTED?.[newName]?.EDITED ?? dataCopy?.COLLECTED?.[newName]?.COLLECTED;
+                    dataCopy?.COLLECTED?.[name]?.EDITED ?? dataCopy?.COLLECTED?.[name]?.COLLECTED;
                 let quartier = Object.assign(responsesValues ?? []);
 
                 quartier[currentDateIndex] = response.values[name] + "";
 
                 if (dataCopy?.COLLECTED) {
-                    dataCopy.COLLECTED[newName].EDITED = quartier;
+                    dataCopy.COLLECTED[name].EDITED = quartier;
                 }
             });
             saveData(idSurveyResponse, dataCopy, true);
@@ -256,6 +248,7 @@ const WeeklyPlannerPage = () => {
 
     const validateAndNav = (): void => {
         if (displayDayOverview) {
+            console.log('CallbackHolder', callbackHolder.getData());
             if (isPlaceWorkDisplayed) {
                 saveData(idSurvey, callbackHolder.getData());
                 setDisplayDayOverview(true);

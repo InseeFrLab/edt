@@ -72,145 +72,49 @@
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
-            },
-            "name": "S_00H00",
-            "componentRef": "weeklyplanner_value"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
-            },
-            "name": "S_00H15",
-            "componentRef": "weeklyplanner_value"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
-            },
-            "name": "S_00H30",
-            "componentRef": "weeklyplanner_value"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
-            },
-            "name": "S_00H45",
-            "componentRef": "weeklyplanner_value"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
-            },
-            "name": "S_01H00",
-            "componentRef": "weeklyplanner_value"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
-            },
-            "name": "S_01H15",
-            "componentRef": "weeklyplanner_value"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
-            },
-            "name": "S_01H30",
-            "componentRef": "weeklyplanner_value"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": [null],
-                "EDITED": [null],
-                "INPUTED": [null],
-                "FORCED": [null],
-                "PREVIOUS": [null]
-            },
-            "name": "S_01H45",
-            "componentRef": "weeklyplanner_value"
-        },
-        {
-            "variableType": "COLLECTED",
-            "values": {
-                "COLLECTED": [null],
+                "COLLECTED": [null, null, null, null, null, null, null],
                 "EDITED": [null],
                 "INPUTED": [null],
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_02H00",
+            "name": "00H00",
             "componentRef": "weeklyplanner_value"
         },
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
+                "COLLECTED": [null, null, null, null, null, null, null],
                 "EDITED": [null],
                 "INPUTED": [null],
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_02H15",
+            "name": "00H15",
             "componentRef": "weeklyplanner_value"
         },
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
+                "COLLECTED": [null, null, null, null, null, null, null],
                 "EDITED": [null],
                 "INPUTED": [null],
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_02H30",
+            "name": "00H30",
             "componentRef": "weeklyplanner_value"
         },
         {
             "variableType": "COLLECTED",
             "values": {
-                "COLLECTED": [null],
+                "COLLECTED": [null, null, null, null, null, null, null],
                 "EDITED": [null],
                 "INPUTED": [null],
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_02H45",
+            "name": "00H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -222,7 +126,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_03H00",
+            "name": "01H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -234,7 +138,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_03H15",
+            "name": "01H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -246,7 +150,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_03H30",
+            "name": "01H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -258,7 +162,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_03H45",
+            "name": "01H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -270,7 +174,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_04H00",
+            "name": "02H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -282,7 +186,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_04H15",
+            "name": "02H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -294,7 +198,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_04H30",
+            "name": "02H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -306,7 +210,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_04H45",
+            "name": "02H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -318,7 +222,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_05H00",
+            "name": "03H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -330,7 +234,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_05H15",
+            "name": "03H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -342,7 +246,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_05H30",
+            "name": "03H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -354,7 +258,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_05H45",
+            "name": "03H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -366,7 +270,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_06H00",
+            "name": "04H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -378,7 +282,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_06H15",
+            "name": "04H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -390,7 +294,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_06H30",
+            "name": "04H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -402,7 +306,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_06H45",
+            "name": "04H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -414,7 +318,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_07H00",
+            "name": "05H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -426,7 +330,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_07H15",
+            "name": "05H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -438,7 +342,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_07H30",
+            "name": "05H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -450,7 +354,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_07H45",
+            "name": "05H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -462,7 +366,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_08H00",
+            "name": "06H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -474,7 +378,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_08H15",
+            "name": "06H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -486,7 +390,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_08H30",
+            "name": "06H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -498,7 +402,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_08H45",
+            "name": "06H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -510,7 +414,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_09H00",
+            "name": "07H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -522,7 +426,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_09H15",
+            "name": "07H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -534,7 +438,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_09H30",
+            "name": "07H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -546,7 +450,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_09H45",
+            "name": "07H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -558,7 +462,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_10H00",
+            "name": "08H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -570,7 +474,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_10H15",
+            "name": "08H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -582,7 +486,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_10H30",
+            "name": "08H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -594,7 +498,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_10H45",
+            "name": "08H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -606,7 +510,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_11H00",
+            "name": "09H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -618,7 +522,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_11H15",
+            "name": "09H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -630,7 +534,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_11H30",
+            "name": "09H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -642,7 +546,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_11H45",
+            "name": "09H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -654,7 +558,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_12H00",
+            "name": "10H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -666,7 +570,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_12H15",
+            "name": "10H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -678,7 +582,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_12H30",
+            "name": "10H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -690,7 +594,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_12H45",
+            "name": "10H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -702,7 +606,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_13H00",
+            "name": "11H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -714,7 +618,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_13H15",
+            "name": "11H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -726,7 +630,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_13H30",
+            "name": "11H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -738,7 +642,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_11H45",
+            "name": "11H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -750,7 +654,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_12H00",
+            "name": "12H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -762,7 +666,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_12H15",
+            "name": "12H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -774,7 +678,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_12H30",
+            "name": "12H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -786,7 +690,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_12H45",
+            "name": "12H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -798,7 +702,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_13H00",
+            "name": "13H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -810,7 +714,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_13H15",
+            "name": "13H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -822,7 +726,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_13H30",
+            "name": "13H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -834,7 +738,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_13H45",
+            "name": "13H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -846,7 +750,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_14H00",
+            "name": "14H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -858,7 +762,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_14H15",
+            "name": "14H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -870,7 +774,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_14H30",
+            "name": "14H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -882,7 +786,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_14H45",
+            "name": "14H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -894,7 +798,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_15H00",
+            "name": "15H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -906,7 +810,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_15H15",
+            "name": "15H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -918,7 +822,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_15H30",
+            "name": "15H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -930,7 +834,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_15H45",
+            "name": "15H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -942,7 +846,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_16H00",
+            "name": "16H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -954,7 +858,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_16H15",
+            "name": "16H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -966,7 +870,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_16H30",
+            "name": "16H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -978,7 +882,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_16H45",
+            "name": "16H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -990,7 +894,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_17H00",
+            "name": "17H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1002,7 +906,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_17H15",
+            "name": "17H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1014,7 +918,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_17H30",
+            "name": "17H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1026,7 +930,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_17H45",
+            "name": "17H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1038,7 +942,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_18H00",
+            "name": "18H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1050,7 +954,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_18H15",
+            "name": "18H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1062,7 +966,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_18H30",
+            "name": "18H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1074,7 +978,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_18H45",
+            "name": "18H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1086,7 +990,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_19H00",
+            "name": "19H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1098,7 +1002,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_19H15",
+            "name": "19H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1110,7 +1014,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_19H30",
+            "name": "19H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1122,7 +1026,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_19H45",
+            "name": "19H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1134,7 +1038,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_20H00",
+            "name": "20H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1146,7 +1050,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_20H15",
+            "name": "20H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1158,7 +1062,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_20H30",
+            "name": "20H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1170,7 +1074,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_20H45",
+            "name": "20H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1182,7 +1086,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_21H00",
+            "name": "21H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1194,7 +1098,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_21H15",
+            "name": "21H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1206,7 +1110,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_21H30",
+            "name": "21H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1218,7 +1122,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_21H45",
+            "name": "21H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1230,7 +1134,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_22H00",
+            "name": "22H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1242,7 +1146,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_22H15",
+            "name": "22H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1254,7 +1158,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_22H30",
+            "name": "22H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1266,7 +1170,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_22H45",
+            "name": "22H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1278,7 +1182,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_23H00",
+            "name": "23H00",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1290,7 +1194,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_23H15",
+            "name": "23H15",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1302,7 +1206,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_23H30",
+            "name": "23H30",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1314,7 +1218,7 @@
                 "FORCED": [null],
                 "PREVIOUS": [null]
             },
-            "name": "S_23H45",
+            "name": "23H45",
             "componentRef": "weeklyplanner_value"
         },
         {
@@ -1535,102 +1439,102 @@
                 "WEEKLYPLANNER",
                 "DATES",
                 "DATES_STARTED",
-                "S_00H00",
-                "S_00H15",
-                "S_00H30",
-                "S_00H45",
-                "S_01H00",
-                "S_01H15",
-                "S_01H30",
-                "S_01H45",
-                "S_02H00",
-                "S_02H15",
-                "S_02H30",
-                "S_02H45",
-                "S_03H00",
-                "S_03H15",
-                "S_03H30",
-                "S_03H45",
-                "S_04H00",
-                "S_04H15",
-                "S_04H30",
-                "S_04H45",
-                "S_05H00",
-                "S_05H15",
-                "S_05H30",
-                "S_05H45",
-                "S_06H00",
-                "S_06H15",
-                "S_06H30",
-                "S_06H45",
-                "S_07H00",
-                "S_07H15",
-                "S_07H30",
-                "S_07H45",
-                "S_08H00",
-                "S_08H15",
-                "S_08H30",
-                "S_08H45",
-                "S_09H00",
-                "S_09H15",
-                "S_09H30",
-                "S_09H45",
-                "S_10H00",
-                "S_10H15",
-                "S_10H30",
-                "S_10H45",
-                "S_11H00",
-                "S_11H15",
-                "S_11H30",
-                "S_11H45",
-                "S_12H00",
-                "S_12H15",
-                "S_12H30",
-                "S_12H45",
-                "S_13H00",
-                "S_13H15",
-                "S_13H30",
-                "S_13H45",
-                "S_14H00",
-                "S_14H15",
-                "S_14H30",
-                "S_14H45",
-                "S_15H00",
-                "S_15H15",
-                "S_15H30",
-                "S_15H45",
-                "S_16H00",
-                "S_16H15",
-                "S_16H30",
-                "S_16H45",
-                "S_17H00",
-                "S_17H15",
-                "S_17H30",
-                "S_17H45",
-                "S_18H00",
-                "S_18H15",
-                "S_18H30",
-                "S_18H45",
-                "S_19H00",
-                "S_19H15",
-                "S_19H30",
-                "S_19H45",
-                "S_20H00",
-                "S_20H15",
-                "S_20H30",
-                "S_20H45",
-                "S_21H00",
-                "S_21H15",
-                "S_21H30",
-                "S_21H45",
-                "S_22H00",
-                "S_22H15",
-                "S_22H30",
-                "S_22H45",
-                "S_23H00",
-                "S_23H15",
-                "S_23H30",
-                "S_23H45",
+                "00H00",
+                "00H15",
+                "00H30",
+                "00H45",
+                "01H00",
+                "01H15",
+                "01H30",
+                "01H45",
+                "02H00",
+                "02H15",
+                "02H30",
+                "02H45",
+                "03H00",
+                "03H15",
+                "03H30",
+                "03H45",
+                "04H00",
+                "04H15",
+                "04H30",
+                "04H45",
+                "05H00",
+                "05H15",
+                "05H30",
+                "05H45",
+                "06H00",
+                "06H15",
+                "06H30",
+                "06H45",
+                "07H00",
+                "07H15",
+                "07H30",
+                "07H45",
+                "08H00",
+                "08H15",
+                "08H30",
+                "08H45",
+                "09H00",
+                "09H15",
+                "09H30",
+                "09H45",
+                "10H00",
+                "10H15",
+                "10H30",
+                "10H45",
+                "11H00",
+                "11H15",
+                "11H30",
+                "11H45",
+                "12H00",
+                "12H15",
+                "12H30",
+                "12H45",
+                "13H00",
+                "13H15",
+                "13H30",
+                "13H45",
+                "14H00",
+                "14H15",
+                "14H30",
+                "14H45",
+                "15H00",
+                "15H15",
+                "15H30",
+                "15H45",
+                "16H00",
+                "16H15",
+                "16H30",
+                "16H45",
+                "17H00",
+                "17H15",
+                "17H30",
+                "17H45",
+                "18H00",
+                "18H15",
+                "18H30",
+                "18H45",
+                "19H00",
+                "19H15",
+                "19H30",
+                "19H45",
+                "20H00",
+                "20H15",
+                "20H30",
+                "20H45",
+                "21H00",
+                "21H15",
+                "21H30",
+                "21H45",
+                "22H00",
+                "22H15",
+                "22H30",
+                "22H45",
+                "23H00",
+                "23H15",
+                "23H30",
+                "23H45",
                 "ISCLOSED",
                 "NOTWORK",
                 "OTHER",
@@ -1656,482 +1560,482 @@
                 },
                 {
                     "response": {
-                        "name": "S_00H00"
+                        "name": "00H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_00H15"
+                        "name": "00H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_00H30"
+                        "name": "00H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_00H45"
+                        "name": "00H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_01H00"
+                        "name": "01H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_01H15"
+                        "name": "01H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_01H30"
+                        "name": "01H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_01H45"
+                        "name": "01H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_02H00"
+                        "name": "02H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_02H15"
+                        "name": "02H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_02H30"
+                        "name": "02H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_02H45"
+                        "name": "02H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_03H00"
+                        "name": "03H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_03H15"
+                        "name": "03H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_03H30"
+                        "name": "03H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_03H45"
+                        "name": "03H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_04H00"
+                        "name": "04H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_04H15"
+                        "name": "04H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_04H30"
+                        "name": "04H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_04H45"
+                        "name": "04H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_05H00"
+                        "name": "05H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_05H15"
+                        "name": "05H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_05H30"
+                        "name": "05H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_05H45"
+                        "name": "05H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_06H00"
+                        "name": "06H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_06H15"
+                        "name": "06H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_06H30"
+                        "name": "06H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_06H5"
+                        "name": "06H5"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_07H00"
+                        "name": "07H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_07H15"
+                        "name": "07H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_07H30"
+                        "name": "07H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_07H45"
+                        "name": "07H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_08H00"
+                        "name": "08H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_08H15"
+                        "name": "08H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_08H30"
+                        "name": "08H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_08H45"
+                        "name": "08H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_09H00"
+                        "name": "09H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_09H15"
+                        "name": "09H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_09H30"
+                        "name": "09H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_09H45"
+                        "name": "09H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_10H00"
+                        "name": "10H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_10H15"
+                        "name": "10H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_10H30"
+                        "name": "10H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_10H45"
+                        "name": "10H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_11H00"
+                        "name": "11H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_11H15"
+                        "name": "11H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_11H30"
+                        "name": "11H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_11H45"
+                        "name": "11H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_12H00"
+                        "name": "12H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_12H15"
+                        "name": "12H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_12H30"
+                        "name": "12H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_12H45"
+                        "name": "12H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_13H00"
+                        "name": "13H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_13H15"
+                        "name": "13H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_13H30"
+                        "name": "13H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_13H45"
+                        "name": "13H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_14H00"
+                        "name": "14H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_14H15"
+                        "name": "14H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_14H30"
+                        "name": "14H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_14H45"
+                        "name": "14H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_15H00"
+                        "name": "15H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_15H15"
+                        "name": "15H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_15H30"
+                        "name": "15H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_15H45"
+                        "name": "15H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_16H00"
+                        "name": "16H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_16H15"
+                        "name": "16H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_16H30"
+                        "name": "16H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_16H45"
+                        "name": "16H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_17H00"
+                        "name": "17H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_17H15"
+                        "name": "17H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_17H30"
+                        "name": "17H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_17H45"
+                        "name": "17H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_18H00"
+                        "name": "18H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_18H15"
+                        "name": "18H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_18H30"
+                        "name": "18H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_18H45"
+                        "name": "18H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_19H00"
+                        "name": "19H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_19H15"
+                        "name": "19H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_19H30"
+                        "name": "19H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_19H45"
+                        "name": "19H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_20H00"
+                        "name": "20H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_20H15"
+                        "name": "20H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_20H30"
+                        "name": "20H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_20H45"
+                        "name": "20H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_21H00"
+                        "name": "21H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_21H15"
+                        "name": "21H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_21H30"
+                        "name": "21H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_21H45"
+                        "name": "21H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_22H00"
+                        "name": "22H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_22H15"
+                        "name": "22H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_22H30"
+                        "name": "22H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_22H45"
+                        "name": "22H45"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_23H00"
+                        "name": "23H00"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_23H15"
+                        "name": "23H15"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_23H30"
+                        "name": "23H30"
                     }
                 },
                 {
                     "response": {
-                        "name": "S_23H45"
+                        "name": "23H45"
                     }
                 },
                 {

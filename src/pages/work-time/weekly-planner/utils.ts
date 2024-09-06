@@ -8,6 +8,7 @@ export const createDataWeeklyPlanner = (data: LunaticData) => {
     if (!data.COLLECTED) {
         return result;
     }
+    console.log("iaduhgiuwdhiawd", data.COLLECTED);
 
     // Get variable of structure dateJ and dateJ_started
     for (let i = 0; i < 7; i++) {

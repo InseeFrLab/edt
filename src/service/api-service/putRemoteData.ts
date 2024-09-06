@@ -14,7 +14,6 @@ export const requestPutSurveyData = (
     data: SurveyData,
     token?: string,
 ): Promise<SurveyData> => {
-    console.log("requestPutSurveyData", data);
     const stateData = data.stateData;
     const tempData = { ...data };
     const collectedData = transformCollectedArray(tempData?.data?.COLLECTED);
@@ -31,6 +30,7 @@ export const requestPutSurveyData = (
         getHeader(stromaeBackOfficeApiBaseUrl, token),
     );
 
+    console.log("requestPutSurveyData", tempData);
     const putStateData = axios.put(
         `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/state-data`,
         stateData,
@@ -95,7 +95,6 @@ export const requestPutDataReviewer = (
     data: LunaticData,
     token?: string,
 ): Promise<LunaticData> => {
-    console.log("requestPutDataReviewer", data);
     data.COLLECTED = transformCollectedArray(data?.COLLECTED);
     const tempData = { ...data };
     const collectedData = transformCollectedArray(tempData?.COLLECTED);
