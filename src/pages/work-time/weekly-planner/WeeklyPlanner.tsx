@@ -111,7 +111,6 @@ const WeeklyPlannerPage = () => {
 
     const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
         const dataBdd = getData(idSurvey);
-        console.log("dataBdd", dataBdd);
         if (data && data[1].length > 0) {
             if (dataBdd.COLLECTED) {
                 initializeCollectedFields(dataBdd, [
@@ -133,11 +132,8 @@ const WeeklyPlannerPage = () => {
         }
     };
 
-    // TODO: Fix the addition of "S_" prefix to the variable name (response.names)
-    // This also causes the total work time to be set to zero as lunatic-edt does not recognize the variable name
     const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
         const callbackData = getData(idSurvey);
-        console.log("callbackData", callbackData);
         const dataCopy = { ...callbackData };
         const dates = (dataCopy?.COLLECTED?.["DATES"].COLLECTED ??
             getArrayFromSession("DATES")) as string[];

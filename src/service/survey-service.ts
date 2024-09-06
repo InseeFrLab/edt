@@ -172,7 +172,6 @@ const initializeRefs = () => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
         if (!refData && navigator.onLine) {
             return fetchReferentiels().then(refs => {
-                console.log("Save Local refs", refs);
                 return saveReferentiels(refs);
             });
         } else {
@@ -235,7 +234,6 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             let userSurveyDataActivity: UserSurveys[] = [];
             let workingTimeSurveysIds: string[] = [];
             let userSurveyDataWorkTime: UserSurveys[] = [];
-            console.log("userSurveyData", userSurveyData);
             userSurveyData.forEach(surveyData => {
                 if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
                     activitySurveysIds.push(surveyData.surveyUnitId);
@@ -541,7 +539,6 @@ const getRemoteSavedSurveyData = (
                                 PREVIOUS: null,
                             };
                             remoteSurveyData.COLLECTED["WEEKLYPLANNER"] = WeeklyPlannerVariable;
-                            //console.log("Create WeeklyPlanner data", remoteSurveyData);
                         }
 
                         //TODO: fix a bug where other variable are overwrited if there is no weeklyPlanner
@@ -818,7 +815,6 @@ const dataIsChange = (idSurvey: string, dataAct: LunaticData, lastData: LunaticD
     if (!dataCollected || !currentDataCollected) {
         return true;
     }
-    //console.log("dataIsChange", !_.isEqual(dataCollected, currentDataCollected));
     return !_.isEqual(dataCollected, currentDataCollected);
 };
 
@@ -941,7 +937,6 @@ const saveData = (
                             PREVIOUS: null,
                         };
                         data.COLLECTED["WEEKLYPLANNER"] = WeeklyPlannerVariable;
-                        console.log("Create WeeklyPlanner data for reviewer", data);
                     }
                     return saveInDatabase(idSurvey, data);
                 });
@@ -961,7 +956,6 @@ const saveData = (
                             PREVIOUS: null,
                         };
                         data.COLLECTED["WEEKLYPLANNER"] = WeeklyPlannerVariable;
-                        console.log("Create WeeklyPlanner data", data);
                     }
                     return saveInDatabase(idSurvey, data);
                 });

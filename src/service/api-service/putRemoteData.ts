@@ -23,7 +23,6 @@ export const requestPutSurveyData = (
     delete tempData.data.COLLECTED?.WEEKLYPLANNER;
     delete tempData.data.stateData;
 
-    console.log("requestPutSurveyData", tempData);
     const putLunaticData = axios.put(
         `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/data`,
         tempData.data,
