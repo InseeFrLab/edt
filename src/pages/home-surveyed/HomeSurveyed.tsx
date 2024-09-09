@@ -45,7 +45,7 @@ import {
     initializeSurveysIdsDemo,
     nameSurveyGroupMap,
     saveData,
-    surveysIds,
+    surveysIdsMap,
     userDatasMap,
     initializeDatas,
 } from "../../service/survey-service";
@@ -143,7 +143,7 @@ const HomeSurveyedPage = () => {
 
     const resetDemoDataAndReload = useCallback(() => {
         const promises: any[] = [];
-        surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
+        surveysIdsMap[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
             promises.push(saveData(idSurvey, {}));
         });
         Promise.all(promises).then(() => {
@@ -191,7 +191,7 @@ const HomeSurveyedPage = () => {
     };
 
     const navToHelp = useCallback(() => {
-        const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
+        const idSurvey = surveysIdsMap[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
         let data = getData(idSurvey || "");
         let context: OrchestratorContext = {
             source: source,

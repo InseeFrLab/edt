@@ -5,7 +5,7 @@ import { Index } from "elasticlunrjs";
 import { EdtUserRightsEnum } from "./enumerations/EdtUserRightsEnum";
 import { ErrorCodeEnum } from "./enumerations/ErrorCodeEnum";
 import "./i18n/i18n";
-import { User, useAuth } from "oidc-react";
+import { useAuth, User } from "oidc-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EdtRoutes } from "./routes/EdtRoutes";
@@ -14,17 +14,19 @@ import { CreateIndex, optionsFiltered, setIndexSuggester } from "./service/sugge
 import {
     getAuthCache,
     getDatas,
-    initPropsAuth,
     initializeDatas,
     initializeListSurveys,
+    initPropsAuth,
 } from "./service/survey-service";
 import { getUserRights, setAuth, setUser, setUserToken } from "./service/user-service";
 import { getCookie } from "./utils/utils";
 import { ReloadPrompt } from "./components/commons/ReloadPrompt/ReloadPrompt.tsx";
+import { useOnline } from "./hooks/useOnline.ts";
+import { syncSurveys } from "./service/sync-service.ts";
 
 const App = () => {
     const { t } = useTranslation();
-    const [initialized, setInitialized] = useState(false);
+    const [isReady, setReady] = useState(false);
     const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
     const auth = useAuth();
 
@@ -86,12 +88,12 @@ const App = () => {
             //auth.userManager.startSilentRenew();
             promisesToWait.push(
                 initializeDatas(setError).then(() => {
-                    setInitialized(true);
+                    setReady(true);
                     return initPropsAuth(auth).then(() => {
                         const options = optionsFiltered(getAutoCompleteRef());
                         const indexSuggester = CreateIndex(options, index, setIndex);
                         setIndexSuggester(indexSuggester);
-                        setInitialized(true);
+                        setReady(true);
                     });
                 }),
             );
@@ -99,7 +101,7 @@ const App = () => {
             if (getUserRights() === EdtUserRightsEnum.REVIEWER && navigator.onLine) {
                 promisesToWait.push(
                     initializeListSurveys(setError).then(() => {
-                        setInitialized(true);
+                        setReady(true);
                     }),
                 );
             }
@@ -130,9 +132,9 @@ const App = () => {
                     initializeDatas(setError).then(() => {
                         if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
                             return initializeListSurveys(setError).then(() => {
-                                setInitialized(true);
+                                setReady(true);
                             });
-                        } else setInitialized(true);
+                        } else setReady(true);
                     }),
                 );
 
@@ -152,16 +154,25 @@ const App = () => {
     //     );
     // };
 
+    const isOnline = useOnline();
+    useEffect(() => {
+        if (isOnline && isReady) {
+            syncSurveys(true).catch(() => {
+                alert("Impossible de synchroniser les données");
+            });
+        }
+    }, [isOnline, isReady]);
+
     const loadingPage = () => {
         return <LoadingFull message={t("page.home.loading.message")} />;
     };
 
-    // return <>{initialized && !error ? <EdtRoutes /> : errorOrLoadingPage()}</>;
+    // return <>{isReady && !error ? <EdtRoutes /> : errorOrLoadingPage()}</>;
 
     return (
         <>
             <ReloadPrompt />
-            {initialized ? <EdtRoutes /> : loadingPage()}
+            {isReady ? <EdtRoutes /> : loadingPage()}
         </>
     );
 };

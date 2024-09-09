@@ -35,7 +35,7 @@ import {
     getValueOfData,
     getVarBooleanModepersistance,
     saveData,
-    surveysIds,
+    surveysIdsMap,
 } from "./survey-service";
 import { getStatutSurvey } from "./survey-state-service";
 import { ModePersistenceEnum } from "../enumerations/ModePersistenceEnum";
@@ -695,7 +695,7 @@ const mockActivitiesRoutesOrGaps = () => {
 };
 
 const mockData = () => {
-    const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
+    const idSurvey = surveysIdsMap[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
     let dataAct = getData(idSurvey ?? "");
 
     if (dataAct?.COLLECTED) {

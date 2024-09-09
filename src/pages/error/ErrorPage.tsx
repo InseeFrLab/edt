@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { lunaticDatabase } from "../../service/lunatic-database";
 import { getNavigatePath, setEnviro } from "../../service/navigation-service";
-import { getData, getSurveyRights, surveysIds } from "../../service/survey-service";
+import { getData, getSurveyRights, surveysIdsMap } from "../../service/survey-service";
 
 export type ErrorPageProps = {
     errorCode?: ErrorCodeEnum;
@@ -134,7 +134,7 @@ const ErrorPage = (props: ErrorPageProps) => {
 
     const navToHelp = useCallback(() => {
         if (navigate) {
-            const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
+            const idSurvey = surveysIdsMap[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
             let data = getData(idSurvey || "");
             let context: OrchestratorContext = {
                 source: source,

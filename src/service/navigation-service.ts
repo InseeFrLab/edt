@@ -30,7 +30,7 @@ import {
     saveData,
     saveDataLocally,
     setValue,
-    surveysIds,
+    surveysIdsMap,
 } from "./survey-service";
 import { getLastPageStep } from "./stepper.service";
 import { surveyReadOnly } from "./survey-activity-service";
@@ -437,7 +437,7 @@ const initPropsData = (
     idSurveyOfGroup: string,
     newSurvey: boolean,
 ) => {
-    if (surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurveyOfGroup)) {
+    if (surveysIdsMap[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS].includes(idSurveyOfGroup)) {
         return initWorkTime(dataCollected, newSurvey);
     } else {
         return initActivity(dataCollected, newSurvey);
@@ -579,7 +579,7 @@ const navFullPath = (
 };
 
 const getIdSurveyContext = (typeSurvey: SurveysIdsEnum) => {
-    return _context ? _context.idSurvey : surveysIds[typeSurvey][0];
+    return _context ? _context.idSurvey : surveysIdsMap[typeSurvey][0];
 };
 
 const isGlobalString = () => {

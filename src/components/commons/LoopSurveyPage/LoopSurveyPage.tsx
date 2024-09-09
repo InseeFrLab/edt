@@ -13,6 +13,7 @@ import { getSurveyIdFromUrl } from "../../../utils/utils";
 import LoopNavigator from "./LoopNavigator/LoopNavigator";
 import LoopSurveyPageHeader from "./LoopSurveyPageHeader/LoopSurveyPageHeader";
 import LoopSurveyPageSimpleHeader from "./LoopSurveyPageSimpleHeader/LoopSurveyPageSimpleHeader";
+import { useMemo } from "react";
 
 interface LoopSurveyPageProps {
     onNext?(event?: React.MouseEvent): void;
@@ -58,11 +59,13 @@ const LoopSurveyPage = (props: LoopSurveyPageProps) => {
 
     const { classes, cx } = useStyles();
 
-    const lastCompletedStep = getLoopLastCompletedStep(
-        idSurvey,
-        LoopEnum.ACTIVITY_OR_ROUTE,
-        iteration ? +iteration : 0,
-    );
+    const lastCompletedStep = useMemo(() => {
+        return getLoopLastCompletedStep(
+            idSurvey,
+            LoopEnum.ACTIVITY_OR_ROUTE,
+            iteration ? +iteration : 0,
+        );
+    }, [idSurvey, iteration]);
 
     return (
         <Box className={cx(classes.page, className)}>
