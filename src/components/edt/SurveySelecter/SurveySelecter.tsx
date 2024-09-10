@@ -116,13 +116,13 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                             getTab(tabData, index, maxTabIndex + index + 1),
                         )}
                     </Tabs>
-                    <Box className={classes.actionBox} onClick={handleToggle}>
+                    {/* <Box className={classes.actionBox} onClick={handleToggle}>
                         {isOpen ? (
                             <ExpandLessIcon aria-label={t("accessibility.asset.mui-icon.expand-less")} />
                         ) : (
                             <ExpandMoreIcon aria-label={t("accessibility.asset.mui-icon.expand-more")} />
                         )}
-                    </Box>
+                    </Box> */}
                 </Box>
 
                 {isOpen && (

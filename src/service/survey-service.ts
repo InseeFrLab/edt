@@ -1275,6 +1275,7 @@ const getTabsDataInterviewer = (t: any) => {
         surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS],
         surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS],
     );
+    console.log(dataOrdered);
 
     dataOrdered.forEach(data => {
         const isActivity = data.data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY;
@@ -1287,12 +1288,11 @@ const getTabsDataInterviewer = (t: any) => {
 const getTabsData = (t: any): TabData[] => {
     if (isDemoMode()) {
         return getTabsDataReviewer(t);
-    } else if (isReviewer()) {
-        setSurveysIdsReviewers();
-        return getTabsDataInterviewer(t);
-    } else {
-        return getTabsDataInterviewer(t);
     }
+    if (isReviewer()) {
+        setSurveysIdsReviewers();
+    }
+    return getTabsDataInterviewer(t);
 };
 
 const getNumSurveyDateReviewer = (
@@ -1652,7 +1652,7 @@ const getPerson = (idSurvey: string) => {
     return personAct;
 };
 
-const getGroupOfPerson = (idSurvey: string) => {
+export const getGroupOfPerson = (idSurvey: string) => {
     const surveys = getSurveysAct();
     const personAct = surveys?.find(survey => survey.data.surveyUnitId == idSurvey);
     const idsSurveysFromGroupAct = surveys

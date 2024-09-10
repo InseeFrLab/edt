@@ -17,7 +17,7 @@ import {
 } from "../../service/navigation-service";
 import { getCurrentSurveyRootPage } from "../../service/orchestrator-service";
 import { tabletMinWidth } from "../../service/responsive";
-import { getData, getSource, getSurveyRights, getTabsData } from "../../service/survey-service";
+import { getData, getGroupOfPerson, getSource, getSurveyRights, getTabsData } from "../../service/survey-service";
 
 const ActivityPage = () => {
     const source = getSource(SourcesEnum.ACTIVITY_SURVEY);
@@ -33,7 +33,10 @@ const ActivityPage = () => {
     const { t } = useTranslation();
 
     const tabsData = getTabsData(t);
-    const selectedTab = tabsData.findIndex(tab => tab.idSurvey === idSurvey);
+    const groupOfPerson = getGroupOfPerson(idSurvey ?? "");
+    const filteredTabsData = tabsData.filter(tab => groupOfPerson.includes(tab.idSurvey));
+    const selectedTab = filteredTabsData.findIndex(tab => tab.idSurvey === idSurvey);
+
     const maxTabsPerRow = 4;
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -76,7 +79,7 @@ const ActivityPage = () => {
                 {isNotMobile && (
                     <SurveySelecter
                         id={t("accessibility.component.survey-selecter.id")}
-                        tabsData={tabsData}
+                        tabsData={filteredTabsData}
                         ariaLabel={t("accessibility.component.survey-selecter.aria-label")}
                         selectedTab={selectedTab}
                         onChangeSelected={handleTabSelecterChange}
