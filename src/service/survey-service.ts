@@ -1275,6 +1275,7 @@ const getTabsDataInterviewer = (t: any) => {
         surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS],
         surveysIds[SurveysIdsEnum.WORK_TIME_SURVEYS_IDS],
     );
+    console.log(dataOrdered);
 
     dataOrdered.forEach(data => {
         const isActivity = data.data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY;
