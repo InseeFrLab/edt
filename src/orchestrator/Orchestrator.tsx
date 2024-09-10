@@ -406,7 +406,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
 const useStyles = makeStylesEdt({ "name": { OrchestratorForStories } })(() => ({
     styleOverride: {
         width: "100%",
-        maxWidth: "350px",
+        maxWidth: "550px",
         "& .sequence-lunatic": {
             display: "none",
         },

@@ -600,7 +600,7 @@
                 "label": "Donner du temps pour une association (sportive, caritative…), bénévolat "
             }
         ],
-        "label": "Apporter une aide (famille, amis, voisins, etc.), faire du bénévolat"
+        "label": "Apporter une aide à des amis, de la famille, des voisins, faire du bénévolat"
     },
     {
         "id": "500",
@@ -725,7 +725,7 @@
                 "label": "Activités civiques ou religieuses"
             }
         ],
-        "label": "Discuter, participer à la vie sociale (réseaux sociaux, recevoir, fêtes, religion, vote …)"
+        "label": "Discuter, voir des amis, participer à la vie sociale (Réseaux sociaux, recevoir, fêtes, religion, vote …)"
     },
     {
         "id": "650",
@@ -796,7 +796,7 @@
                 "label": "Autres sorties (foire, zoo, château, …)"
             }
         ],
-        "label": "Sortir (bar, restaurant, cinéma, exposition, matche, médiathèque, parc d’attraction)"
+        "label": "Sortir au restaurant, au cinéma, au musée, voir un spectacle, à la médiathèque"
     },
     {
         "id": "600",
