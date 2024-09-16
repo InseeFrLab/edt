@@ -2,8 +2,6 @@ import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { AppBar, Box, Divider, Tab, Tabs, Typography } from "@mui/material";
 import PersonSunIcon from "../../../assets/illustration/card/person-sun.svg?react";
 import CalendarMonthIcon from "../../../assets/illustration/mui-icon/calendar-month.svg?react";
-import ExpandLessIcon from "../../../assets/illustration/mui-icon/expand-less.svg?react";
-import ExpandMoreIcon from "../../../assets/illustration/mui-icon/expand-more.svg?react";
 import { TabData } from "../../../interface/component/Component";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -39,7 +37,6 @@ const SurveySelecter = (props: SurveySelecterProps) => {
     const [valueRowTwo, setValueRowTwo] = React.useState<number | false>(
         selectedTab >= maxTabsPerRow ? selectedTab - maxTabsPerRow : false,
     );
-    const [isOpen, setIsOpen] = React.useState(isDefaultOpen);
 
     const handleChangeRowOne = useCallback(
         (_event: React.ChangeEvent<{}>, newValue: number) => {
@@ -96,10 +93,6 @@ const SurveySelecter = (props: SurveySelecterProps) => {
         );
     };
 
-    const handleToggle = useCallback(() => {
-        setIsOpen(isOpen => !isOpen);
-    }, []);
-
     const tabsDataFiltred = tabsData.filter((_, index) => index < maxTabsPerRow);
     return (
         <Box id={id}>
@@ -125,7 +118,7 @@ const SurveySelecter = (props: SurveySelecterProps) => {
                     </Box> */}
                 </Box>
 
-                {isOpen && (
+                {isDefaultOpen && (
                     <Tabs
                         value={valueRowTwo}
                         onChange={handleChangeRowTwo}

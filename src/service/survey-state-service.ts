@@ -32,9 +32,9 @@ const isSurveyValidated = (idSurvey: string) => {
 };
 
 const isSurveyStarted = (idSurvey: string) => {
-    const stateData = getLocalSurveyStateData(getData(idSurvey));
-    return stateData.state == StateDataStateEnum.INIT;
-};
+    const survey = getData(idSurvey);
+    return survey.COLLECTED != null && survey.COLLECTED.SURVEYDATE?.COLLECTED != null;
+}
 
 const isSurveyCompleted = (idSurvey: string) => {
     const stateData = getLocalSurveyStateData(getData(idSurvey));
