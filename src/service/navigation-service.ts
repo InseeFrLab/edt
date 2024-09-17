@@ -780,7 +780,6 @@ const onClose = (
     const route = isActivity ? pathNav : weeklyPlannerRoute;
 
     if (hasRights) {
-        console.log("hasRights");
         validateWithAlertAndNav(idSurvey, forceQuit, setIsAlertDisplayed, iteration, route);
     } else {
         _navigate(route);

@@ -50,7 +50,6 @@ const WhoAreYouPage = () => {
     }, [callbackHolder]);
 
     const validate = useCallback(() => {
-        console.log("validate button");
         const input = (document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement)
             ?.value;
         validateAllGroup(navigate, idSurvey, input);

@@ -141,7 +141,6 @@ const validateSurvey = (idSurvey: string) => {
 const validateAllEmptySurveys = (idHousehold: string) => {
     const idSurveys = getSurveysIdsForHousehold(idHousehold);
     const promisesToWait: Promise<any>[] = [];
-    console.log("Validate all empty surveys", idSurveys);
     idSurveys.forEach((idSurvey: string) => {
         const data = getData(idSurvey || "");
         const stateData = getLocalSurveyStateData(data);

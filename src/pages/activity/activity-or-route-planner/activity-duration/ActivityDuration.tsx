@@ -31,7 +31,7 @@ import {
 } from "../../../../service/navigation-service";
 import { isDesktop } from "../../../../service/responsive";
 import { getActivitiesOrRoutes, surveyReadOnly } from "../../../../service/survey-activity-service";
-import { getData, getValue, getValueOfData, saveDataLocally } from "../../../../service/survey-service";
+import { getData, getValue, getValueOfData, saveData } from "../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../utils/utils";
 
 const ActivityDurationPage = () => {
@@ -154,7 +154,7 @@ const ActivityDurationPage = () => {
         }
 
         if ((skip && isAfter) || !isAfter) {
-            saveDataLocally(idSurvey, { ...context.data, ...callbackHolder.getData() }).then(() => {
+            saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }, true).then(() => {
                 navigate(
                     getLoopParameterizedNavigatePath(
                         idSurvey,
@@ -181,7 +181,7 @@ const ActivityDurationPage = () => {
         if (!openSnackbar) {
             if (!isCompleted) {
                 if (forceQuit) {
-                    saveDataLocally(idSurvey, callbackHolder.getData()).then(() => {
+                    saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }, true).then(() => {
                         navIsClompleted(isCloture);
                     });
                 } else {

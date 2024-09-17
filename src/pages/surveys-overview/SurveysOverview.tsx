@@ -52,7 +52,6 @@ const getListCampaigns = (dataHouseholds: Household[], t: TFunction<"translation
 };
 
 const isToFilterValidate = (houseHoldData: any): boolean => {
-    console.log(houseHoldData);
     return (
         houseHoldData.stats?.numHouseholdsInProgress == 0 &&
         houseHoldData.stats?.numHouseholdsClosed == 0 &&

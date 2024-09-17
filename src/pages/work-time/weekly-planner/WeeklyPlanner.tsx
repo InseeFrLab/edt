@@ -52,15 +52,6 @@ import {
 import { isReviewer } from "../../../service/user-service";
 import { getSurveyIdFromUrl } from "../../../utils/utils";
 
-//TODO: For info:
-// The Weekly Planner page UI uses the content of the "WEEKLYPLANNER" variable from the data object.
-// This variable cannot be sent to the back office; it is only used in the front office.
-// All of its content can be derived or calculated using other variables within the data object.
-// This variable is deleted upon saving the data to the back office.
-// However, if the user clears the local storage, the data will be lost, resulting in empty fields on the page.
-// Additionally, the data is somehow overwritten if the user submits a new value for the Weekly Planner.
-// (probably when the function initializeCollectedFields() is called in the save function)
-// The component being used is from the lunatic-edt package.
 
 const WeeklyPlannerPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -244,7 +235,6 @@ const WeeklyPlannerPage = () => {
 
     const validateAndNav = (): void => {
         if (displayDayOverview) {
-            console.log('CallbackHolder', callbackHolder.getData());
             if (isPlaceWorkDisplayed) {
                 saveData(idSurvey, callbackHolder.getData());
                 setDisplayDayOverview(true);

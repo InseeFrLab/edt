@@ -54,7 +54,6 @@ const WithScreenPage = () => {
         backClickEvent: backClickEvent,
         nextClickEvent: nextClickEvent,
         backClickCallback: () => {
-            console.log("backClickCallback");
             saveAndLoopNavigate(
                 idSurvey,
                 context.source,
@@ -66,7 +65,6 @@ const WithScreenPage = () => {
             );
         },
         nextClickCallback: () => {
-            console.log("nextClickCallback");
             saveAndNav(
                 idSurvey,
                 isCloture
@@ -80,7 +78,6 @@ const WithScreenPage = () => {
             );
         },
         onSelectValue: () => {
-            console.log("onSelectValue");
             validate(idSurvey).then(() => {
                 saveAndNav(
                     idSurvey,
