@@ -244,7 +244,6 @@ const WeeklyPlannerPage = () => {
 
     const validateAndNav = (): void => {
         if (displayDayOverview) {
-            console.log('CallbackHolder', callbackHolder.getData());
             if (isPlaceWorkDisplayed) {
                 saveData(idSurvey, callbackHolder.getData());
                 setDisplayDayOverview(true);

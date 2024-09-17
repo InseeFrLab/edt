@@ -886,7 +886,6 @@ const saveData = (
             "stateDataForced parameter was removed, put state data inside the data object instead",
         );
     }
-    console.log("SaveData", data);
     data.lastLocalSaveDate = navigator.onLine ? Date.now() : Date.now() + 1;
     if (!data.houseReference) {
         const regexp = new RegExp(import.meta.env.VITE_HOUSE_REFERENCE_REGULAR_EXPRESSION || "");
@@ -1075,7 +1074,6 @@ const getCurrentPage = (data: LunaticData | undefined, source?: LunaticModel): n
         i++;
     }
     if (currentPage == 0) {
-        //TODO: Fix this
         const firstName = getValueOfData(data, FieldNameEnum.FIRSTNAME);
         if (firstName) currentPage = Number(components[components.length - 1].page);
         if (source.label == LABEL_WORK_TIME_SURVEY) currentPage = 3;
@@ -1667,7 +1665,6 @@ const validateAllGroup = (
     inputDate?: string,
 ) => {
     const personAct = getPerson(idSurvey);
-    console.log("validateAllGroup", personAct);
     const surveyRootPage =
         personAct?.data?.questionnaireModelId == SourcesEnum.WORK_TIME_SURVEY
             ? EdtRoutesNameEnum.WORK_TIME

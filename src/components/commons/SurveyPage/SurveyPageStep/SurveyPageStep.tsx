@@ -135,13 +135,14 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const surveyPageNotStepProps = {
         idSurvey: idSurvey,
         validate: useCallback(() => {
-            if (validateButton) {
-                validateButton();
-                if (nextRoute) {
-                    saveAndNavFullPath(idSurvey, nextRoute);
-                } else {
-                    saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage);
-                }
+            if (!validateButton) {
+                return;
+            }
+            validateButton();
+            if (nextRoute) {
+                saveAndNavFullPath(idSurvey, nextRoute);
+            } else {
+                saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage);
             }
         }, []),
         icon: errorIcon ? <IconError aria-label={t(errorAltIcon ?? "")} /> : undefined,

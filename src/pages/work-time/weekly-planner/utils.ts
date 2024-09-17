@@ -1,8 +1,19 @@
 import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
 import { LunaticData } from "../../../interface/lunatic/Lunatic";
 
-
-export const createDataWeeklyPlanner = (data: LunaticData) => {
+/**
+ * Creates a weekly planner data structure (IODataStructure[]) from the provided LunaticData.
+ *
+ * This function processes the collected data from a LunaticData object and generates
+ * an array of IODataStructure necessary to display and manage the weekly planner.
+ * This data structure was originally sent to StromaeBackOffice to be saved, 
+ * but it is now removed from the collected data before sending it.
+ * 
+ * @param {LunaticData} data - The input data retrieved from StromaeBackOffice.
+ * @returns {IODataStructure[]} The resulting weekly planner data structure.
+ *
+ */
+export const createDataWeeklyPlanner = (data: LunaticData): IODataStructure[] => {
     const result: IODataStructure[] = [];
     const timeFormatRegex = /^S_\d{2}H\d{2}$/;
     if (!data.COLLECTED) {

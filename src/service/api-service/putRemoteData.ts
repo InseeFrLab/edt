@@ -29,7 +29,6 @@ export const requestPutSurveyData = (
         getHeader(stromaeBackOfficeApiBaseUrl, token),
     );
 
-    console.log("requestPutSurveyData", tempData);
     const putStateData = axios.put(
         `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/state-data`,
         stateData,
@@ -100,7 +99,6 @@ export const requestPutDataReviewer = (
     tempData.COLLECTED = collectedData;
     delete tempData.COLLECTED?.WEEKLYPLANNER;
     delete tempData.stateData;
-    console.log("requestPutSurveyData", tempData);
 
     return new Promise<LunaticData>(resolve => {
         axios

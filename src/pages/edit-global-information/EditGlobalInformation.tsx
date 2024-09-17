@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState } from "react";
 import WhoAreYouImg from "../../assets/illustration/who-are-you.svg?react";
 import SurveyPageStep from "../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import dayjs from "dayjs";
@@ -6,7 +7,6 @@ import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
 import { FieldNameEnum } from "../../enumerations/FieldNameEnum";
 import { OrchestratorContext } from "../../interface/lunatic/Lunatic";
 import { callbackHolder } from "../../orchestrator/Orchestrator";
-import React, { useCallback } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { getComponentsOfVariable, setValue, validateAllGroup } from "../../service/survey-service";
 import { formatDate, getSurveyIdFromUrl } from "../../utils/utils";
@@ -17,7 +17,7 @@ const EditGlobalInformationPage = () => {
     const idSurvey = getSurveyIdFromUrl(context, location);
     const navigate = useNavigate();
 
-    let [disabledButton, setDisabledButton] = React.useState<boolean>(false);
+    let [disabledButton, setDisabledButton] = useState<boolean>(false);
 
     const keydownChange = () => {
         const componentNameId = getComponentsOfVariable(FieldNameEnum.FIRSTNAME, context.source)[1].id;
@@ -43,7 +43,7 @@ const EditGlobalInformationPage = () => {
         setDisabledButton(disableButton);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         document.addEventListener("keyup", keydownChange, true);
         return () => document.removeEventListener("keyup", keydownChange, true);
     }, [callbackHolder]);
