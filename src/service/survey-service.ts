@@ -51,6 +51,7 @@ import {
     getArrayFromSession,
     getItemFromSession,
     groupBy,
+    revertTransformedArray,
 } from "../utils/utils";
 import {
     dataEmptyActivity,
@@ -76,6 +77,7 @@ import {
     isSurveyStarted,
     isSurveyValidated,
 } from "./survey-state-service";
+import { createDataWeeklyPlanner } from "../pages/work-time/weekly-planner/utils";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();
@@ -170,7 +172,6 @@ const initializeRefs = () => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
         if (!refData && navigator.onLine) {
             return fetchReferentiels().then(refs => {
-                console.log("Save Local refs", refs);
                 return saveReferentiels(refs);
             });
         } else {
@@ -186,7 +187,6 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
             let userSurveyDataActivity: UserSurveys[] = [];
             let workingTimeSurveysIds: string[] = [];
             let userSurveyDataWorkTime: UserSurveys[] = [];
-
             userSurveyData.forEach(surveyData => {
                 if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {
                     activitySurveysIds.push(surveyData.surveyUnitId);
@@ -529,11 +529,19 @@ const getRemoteSavedSurveyData = (
                 } else {
                     if (shouldSaveRemoteData(remoteSurveyData, localSurveyData)) {
                         // TEMP: WeeklyPlanner stuff (to be removed)
-                        //TODO: fix a bug where other variable are overwrited if there is no weeklyPlanner
-                        const weeklyPlanner = localSurveyData?.COLLECTED?.WEEKLYPLANNER ?? null;
-                        if (weeklyPlanner) {
-                            remoteSurveyData.COLLECTED.WEEKLYPLANNER = weeklyPlanner;
+                        if (remoteSurveyData.COLLECTED && "WEEKTYPE" in remoteSurveyData.COLLECTED) {
+                            const weeklyPlannerData = createDataWeeklyPlanner(remoteSurveyData);
+                            const WeeklyPlannerVariable: MultiCollected = {
+                                COLLECTED: weeklyPlannerData,
+                                EDITED: [],
+                                FORCED: null,
+                                INPUTED: null,
+                                PREVIOUS: null,
+                            };
+                            remoteSurveyData.COLLECTED["WEEKLYPLANNER"] = WeeklyPlannerVariable;
                         }
+
+                        //TODO: fix a bug where other variable are overwrited if there is no weeklyPlanner
                         return getSurveyStateDataFunction(surveyId, setError).then(stateData => {
                             return saveInDatabase(surveyId, { ...remoteSurveyData, stateData });
                         });
@@ -722,13 +730,14 @@ const getDatas = (): Map<string, LunaticData> => {
 
 const getData = (idSurvey: string): LunaticData => {
     const modifyCollected = modifyIndividualCollected(idSurvey);
-    const emptyData = getDataCache(idSurvey) ?? createDataEmpty(idSurvey ?? "");
-    const data = modifyCollected || emptyData;
-    return data;
+    // const emptyData = getDataCache(idSurvey) ?? createDataEmpty(idSurvey ?? "");
+    // const data = modifyCollected || emptyData;
+    // return data;
+    return modifyCollected;
 };
 
 const getDataCache = (idSurvey: string) => {
-    const data = datas.get(idSurvey) ?? getItemFromSession(idSurvey);
+    const data = getItemFromSession(idSurvey) ?? datas.get(idSurvey);
     return data;
 };
 
@@ -737,9 +746,19 @@ const setDataCache = (idSurvey: string, data: LunaticData) => {
     addItemToSession(idSurvey, data);
 };
 
+/**
+ * Edit the collected data using the EDITED property from cache.
+ * 1. Retrieves the cached data for the given survey ID and creates copy.
+ * 2. Checks if the mode persistence of the survey data is not EDITED.
+ * 3. For each property, it checks if the EDITED and COLLECTED properties exist and are not arrays.
+ * 4. If the conditions are met, it overwrite the EDITED value to the COLLECTED property.
+ */
 const modifyIndividualCollected = (idSurvey: string) => {
     let dataSurv = Object.assign(getDataCache(idSurvey));
-
+    if (dataSurv?.COLLECTED && Object.keys(dataSurv.COLLECTED).length === 0) {
+        dataSurv = createDataEmpty(idSurvey);
+        saveInDatabase(idSurvey, dataSurv);
+    }
     if (getModePersistence(dataSurv) != ModePersistenceEnum.EDITED) {
         const dataOfSurvey = dataSurv?.COLLECTED;
         for (let prop in FieldNameEnum as any) {
@@ -754,7 +773,6 @@ const modifyIndividualCollected = (idSurvey: string) => {
             }
         }
     }
-
     return dataSurv;
 };
 
@@ -797,7 +815,6 @@ const dataIsChange = (idSurvey: string, dataAct: LunaticData, lastData: LunaticD
     if (!dataCollected || !currentDataCollected) {
         return true;
     }
-    //console.log("dataIsChange", !_.isEqual(dataCollected, currentDataCollected));
     return !_.isEqual(dataCollected, currentDataCollected);
 };
 
@@ -887,8 +904,6 @@ const saveData = (
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
 
     if (isChange) {
-        console.log("SaveRemote data", data);
-
         data = saveQualityScore(idSurvey, data);
 
         if (!navigator.onLine) {
@@ -909,12 +924,38 @@ const saveData = (
                     stateData.date = Math.max(stateData.date, data.lastLocalSaveDate ?? 0);
                     data.stateData = stateData;
                     data.lastRemoteSaveDate = stateData.date;
+                    const revertedTranformedData = revertTransformedArray(data.COLLECTED);
+                    data.COLLECTED = revertedTranformedData;
+                    if (data.COLLECTED && "WEEKTYPE" in data.COLLECTED) {
+                        const weeklyPlannerData = createDataWeeklyPlanner(data);
+                        const WeeklyPlannerVariable: MultiCollected = {
+                            COLLECTED: weeklyPlannerData,
+                            EDITED: [],
+                            FORCED: null,
+                            INPUTED: null,
+                            PREVIOUS: null,
+                        };
+                        data.COLLECTED["WEEKLYPLANNER"] = WeeklyPlannerVariable;
+                    }
                     return saveInDatabase(idSurvey, data);
                 });
             } else {
-                //TODO: TEMP: need to figure out why there is still a state data here
                 return remotePutSurveyData(idSurvey, surveyData).then(() => {
                     data.stateData = stateData;
+                    const revertedTranformedData = revertTransformedArray(data.COLLECTED);
+                    data.COLLECTED = revertedTranformedData;
+                    data.COLLECTED = revertedTranformedData;
+                    if (data.COLLECTED && "WEEKTYPE" in data.COLLECTED) {
+                        const weeklyPlannerData = createDataWeeklyPlanner(data);
+                        const WeeklyPlannerVariable: MultiCollected = {
+                            COLLECTED: weeklyPlannerData,
+                            EDITED: [],
+                            FORCED: null,
+                            INPUTED: null,
+                            PREVIOUS: null,
+                        };
+                        data.COLLECTED["WEEKLYPLANNER"] = WeeklyPlannerVariable;
+                    }
                     return saveInDatabase(idSurvey, data);
                 });
             }
@@ -1034,7 +1075,7 @@ const getCurrentPage = (data: LunaticData | undefined, source?: LunaticModel): n
     }
     if (currentPage == 0) {
         const firstName = getValueOfData(data, FieldNameEnum.FIRSTNAME);
-        if (firstName) currentPage = Number(components[components.length - 2].page);
+        if (firstName) currentPage = Number(components[components.length - 1].page);
         if (source.label == LABEL_WORK_TIME_SURVEY) currentPage = 3;
     }
     return currentPage;
@@ -1107,7 +1148,6 @@ const setValue = (
     } else {
         getDataModePersist(idSurvey, dataAct, variableName, value, iteration);
     }
-
     return dataAct;
 };
 
@@ -1245,12 +1285,11 @@ const getTabsDataInterviewer = (t: any) => {
 const getTabsData = (t: any): TabData[] => {
     if (isDemoMode()) {
         return getTabsDataReviewer(t);
-    } else if (isReviewer()) {
-        setSurveysIdsReviewers();
-        return getTabsDataInterviewer(t);
-    } else {
-        return getTabsDataInterviewer(t);
     }
+    if (isReviewer()) {
+        setSurveysIdsReviewers();
+    }
+    return getTabsDataInterviewer(t);
 };
 
 const getNumSurveyDateReviewer = (
@@ -1610,7 +1649,7 @@ const getPerson = (idSurvey: string) => {
     return personAct;
 };
 
-const getGroupOfPerson = (idSurvey: string) => {
+export const getGroupOfPerson = (idSurvey: string) => {
     const surveys = getSurveysAct();
     const personAct = surveys?.find(survey => survey.data.surveyUnitId == idSurvey);
     const idsSurveysFromGroupAct = surveys
@@ -1626,7 +1665,6 @@ const validateAllGroup = (
     inputDate?: string,
 ) => {
     const personAct = getPerson(idSurvey);
-
     const surveyRootPage =
         personAct?.data?.questionnaireModelId == SourcesEnum.WORK_TIME_SURVEY
             ? EdtRoutesNameEnum.WORK_TIME

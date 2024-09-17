@@ -18,8 +18,8 @@ import {
     setEnviro,
 } from "../../service/navigation-service";
 import { getCurrentSurveyRootPage } from "../../service/orchestrator-service";
-import { isPwa, isTablet } from "../../service/responsive";
-import { getData, getSource, getSurveyRights, getTabsData } from "../../service/survey-service";
+import { isPwa } from "../../service/responsive";
+import { getData, getGroupOfPerson, getSource, getSurveyRights, getTabsData } from "../../service/survey-service";
 
 const WorkTimePage = () => {
     let { idSurvey } = useParams();
@@ -30,8 +30,9 @@ const WorkTimePage = () => {
     const surveyRootPage = getCurrentSurveyRootPage();
     const { t } = useTranslation();
     const tabsData = getTabsData(t);
-    const selectedTab = tabsData.findIndex(tab => tab.idSurvey === idSurvey);
-    const maxTabsPerRow = isTablet() ? 3 : 4;
+    const groupOfPerson = getGroupOfPerson(idSurvey ?? "");
+    const filteredTabsData = tabsData.filter(tab => groupOfPerson.includes(tab.idSurvey));
+    const selectedTab = filteredTabsData.findIndex(tab => tab.idSurvey === idSurvey);
 
     const context: OrchestratorContext = useOutletContext();
     const { classes, cx } = useStyles();
@@ -65,12 +66,12 @@ const WorkTimePage = () => {
             <Default>
                 <SurveySelecter
                     id={t("accessibility.component.survey-selecter.id")}
-                    tabsData={tabsData}
+                    tabsData={filteredTabsData}
                     ariaLabel={t("accessibility.component.survey-selecter.aria-label")}
                     selectedTab={selectedTab}
                     onChangeSelected={handleTabSelecterChange}
-                    isDefaultOpen={selectedTab >= maxTabsPerRow}
-                    maxTabsPerRow={maxTabsPerRow}
+                    isDefaultOpen={true}
+                    maxTabsPerRow={3}
                     maxTabIndex={200}
                 />
             </Default>

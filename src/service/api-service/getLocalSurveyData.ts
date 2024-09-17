@@ -15,7 +15,6 @@ import {
 } from "../../assets/surveyData/edtNomenclatures";
 
 const fetchReferentiel = (_: AuthContextProps, idReferentiel: ReferentielsEnum) => {
-    console.log("fetchReferentiel", { data: idReferentiel });
     return Promise.resolve({ data: idReferentiel });
 };
 
