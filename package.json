@@ -23,7 +23,6 @@
         "react-i18next": "^15.0.1",
         "react-responsive": "^10.0.0",
         "react-router-dom": "^6.26.1",
-        "react-scripts": "4.0.3",
         "tss-react": "^4.9.13",
         "uuidv4": "^6.2.13",
         "web-vitals": "^4.2.3", 
@@ -60,7 +59,6 @@
         "lint": "eslint .",
         "preview": "vite preview --port 3000",
         "build:staging": "env-cmd -f .env.staging && tsc -b && vite build",
-        "build:production": "env-cmd -f .env.production react-scripts --max_old_space_size=4096 build",
         "start-with-lib": "concurrently \"yarn run dev\" \"cd ./node_modules/@inseefrlab/lunatic-edt && tsc-watch\""
     },
     "eslintConfig": {
