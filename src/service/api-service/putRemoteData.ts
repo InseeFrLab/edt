@@ -14,15 +14,15 @@ export const requestPutSurveyData = (
     data: SurveyData,
     token?: string,
 ): Promise<SurveyData> => {
-    const collectedData = transformCollectedArray(data?.data?.COLLECTED);
     const stateData = data.stateData;
-    if (data.data) {
-        data.data.COLLECTED = collectedData;
-    }
     const tempData = { ...data };
+    const collectedData = transformCollectedArray(tempData?.data?.COLLECTED);
+    if (tempData.data) {
+        tempData.data.COLLECTED = collectedData;
+    }
     delete tempData.data.COLLECTED?.WEEKLYPLANNER;
     delete tempData.data.stateData;
-    console.log("requestPutSurveyData", tempData);
+
     const putLunaticData = axios.put(
         `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/data`,
         tempData.data,
@@ -93,12 +93,13 @@ export const requestPutDataReviewer = (
     data: LunaticData,
     token?: string,
 ): Promise<LunaticData> => {
-    console.log("requestPutDataReviewer", data);
     data.COLLECTED = transformCollectedArray(data?.COLLECTED);
     const tempData = { ...data };
+    const collectedData = transformCollectedArray(tempData?.COLLECTED);
+    tempData.COLLECTED = collectedData;
     delete tempData.COLLECTED?.WEEKLYPLANNER;
     delete tempData.stateData;
-    console.log("requestPutSurveyData", tempData);
+
     return new Promise<LunaticData>(resolve => {
         axios
             .put(

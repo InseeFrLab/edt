@@ -48,7 +48,6 @@ import {
     getPrintedFirstName,
     getSurveyDate,
     saveData,
-    saveDataLocally,
 } from "../../../service/survey-service";
 import { isReviewer } from "../../../service/user-service";
 import { getSurveyIdFromUrl } from "../../../utils/utils";
@@ -93,7 +92,6 @@ const WeeklyPlannerPage = () => {
 
     const currentPage = EdtRoutesNameEnum.WEEKLY_PLANNER;
 
-    // TODO: fix null check & move elsewhere  & fix questionnaire model (temp solution)
     const initializeCollectedFields = (dataBdd: LunaticData, fieldsToInitialize: FieldNameEnum[]) => {
         if (dataBdd.COLLECTED !== undefined) {
             fieldsToInitialize.forEach(field => {
@@ -110,7 +108,7 @@ const WeeklyPlannerPage = () => {
             });
         }
     };
-    //TODO: Fix any
+
     const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
         const dataBdd = getData(idSurvey);
         if (data && data[1].length > 0) {
@@ -129,14 +127,11 @@ const WeeklyPlannerPage = () => {
                     dataBdd.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
                     dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
                 }
-
                 saveData(idSurvey, dataBdd);
             }
         }
     };
 
-    // TODO: Fix the addition of "S_" prefix to the variable name (response.names)
-    // This also causes the total work time to be set to zero as lunatic-edt does not recognize the variable name
     const saveDuration = (idSurveyResponse: string, response: responsesHourChecker) => {
         const callbackData = getData(idSurvey);
         const dataCopy = { ...callbackData };
@@ -144,52 +139,42 @@ const WeeklyPlannerPage = () => {
             getArrayFromSession("DATES")) as string[];
         const currentDateIndex = dates.indexOf(response.date);
         const dataResponse = getData(idSurveyResponse);
-        console.log("Save Duration", dataCopy);
-        console.log("Response", response);
         if (
             !isReviewer() &&
             dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
-                dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
+            dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
         ) {
             response.names.forEach(name => {
-                const newName = "S_" + name;
-                let quartier: string[] = [];
+                let quartier = Object.assign(dataCopy?.COLLECTED?.[name]?.COLLECTED as string[]);
+                quartier[currentDateIndex] = response.values[name] + "";
 
-                if (dataCopy?.COLLECTED?.[newName]?.COLLECTED) {
-                    quartier = Object.assign([], dataCopy.COLLECTED[newName].COLLECTED);
-                }
-
-                if (response?.values?.[name] !== undefined) {
-                    quartier[currentDateIndex] = response.values[name] + "";
-                }
-
-                if (dataCopy?.COLLECTED?.[newName]) {
-                    dataCopy.COLLECTED[newName].COLLECTED = quartier;
+                if (dataCopy?.COLLECTED) {
+                    dataCopy.COLLECTED[name].COLLECTED = quartier;
                 }
             });
-            saveDataLocally(idSurveyResponse, dataCopy);
+            saveData(idSurveyResponse, dataCopy, true);
         }
+
 
         if (
             isReviewer() &&
             (dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].EDITED ==
                 dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].EDITED ||
                 dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
-                    dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED)
+                dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED)
         ) {
             response.names.forEach(name => {
-                const newName = "S_" + name;
                 const responsesValues: string[] =
-                    dataCopy?.COLLECTED?.[newName]?.EDITED ?? dataCopy?.COLLECTED?.[newName]?.COLLECTED;
+                    dataCopy?.COLLECTED?.[name]?.EDITED ?? dataCopy?.COLLECTED?.[name]?.COLLECTED;
                 let quartier = Object.assign(responsesValues ?? []);
 
                 quartier[currentDateIndex] = response.values[name] + "";
 
                 if (dataCopy?.COLLECTED) {
-                    dataCopy.COLLECTED[newName].EDITED = quartier;
+                    dataCopy.COLLECTED[name].EDITED = quartier;
                 }
             });
-            saveDataLocally(idSurveyResponse, dataCopy);
+            saveData(idSurveyResponse, dataCopy, true);
         }
     };
 

@@ -170,7 +170,6 @@ function difference(origObj: any, newObj: any) {
             },
         );
     }
-    console.log("Difference : ", changes(newObj, origObj));
     return changes(newObj, origObj);
 }
 
