@@ -530,7 +530,7 @@ const getRemoteSavedSurveyData = (
     }
 
     const fetchSurvey = isReviewer() ? requestGetDataReviewer : remoteGetSurveyData;
-    const fetchSurveyState = remoteGetSurveyStateData;
+    const getSurveyStateDataFunction = remoteGetSurveyStateData;
 
     // Fetch remote data
     return fetchSurvey(surveyId, setError)
