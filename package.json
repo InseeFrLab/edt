@@ -23,6 +23,7 @@
         "react-i18next": "^15.0.1",
         "react-responsive": "^10.0.0",
         "react-router-dom": "^6.26.1",
+        "react-scripts": "4.0.3",
         "tss-react": "^4.9.13",
         "uuidv4": "^6.2.13",
         "web-vitals": "^4.2.3", 
