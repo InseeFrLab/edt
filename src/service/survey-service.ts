@@ -1074,7 +1074,6 @@ const getCurrentPage = (data: LunaticData | undefined, source?: LunaticModel): n
         i++;
     }
     if (currentPage == 0) {
-        //TODO: Fix this
         const firstName = getValueOfData(data, FieldNameEnum.FIRSTNAME);
         if (firstName) currentPage = Number(components[components.length - 1].page);
         if (source.label == LABEL_WORK_TIME_SURVEY) currentPage = 3;
