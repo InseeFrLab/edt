@@ -256,7 +256,6 @@ const getVariablesActivity = (
             isReviewerMode || isLocked ? (variableEdited ?? variableCollected) : variableCollected;
         variables.set(bindingDependency, variable);
     });
-    //console.log("getVariablesActivity", variables);
     return variables;
 };
 
@@ -352,7 +351,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     {components.map(function (component: any) {
                         const { id, componentType, response, options, value, ...other } = component;
                         const Component = (lunatic as any)[componentType];
-                        //console.log("component:", componentType, "response:", response, "value:", value);
                         return (
                             <div className="lunatic lunatic-component" key={`component-${id}`}>
                                 <Component

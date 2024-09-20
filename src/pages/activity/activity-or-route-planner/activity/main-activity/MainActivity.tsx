@@ -133,7 +133,6 @@ const MainActivityPage = () => {
         },
         nextClickCallback: (routeToGoal: boolean) => {
             const codeActivity = getValueOfActivity(callbackHolder.getData(), currentIteration) ?? "";
-            //console.log("codeActivity", codeActivity);
             const skip = filtrePage(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL, codeActivity);
             if (routeToGoal && !skip) {
                 saveAndLoopNavigate(

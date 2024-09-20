@@ -1,5 +1,5 @@
 import { makeStylesEdt, ProgressBar } from "@inseefrlab/lunatic-edt";
-import { Box, colors } from "@mui/material";
+import { Box } from "@mui/material";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import LoopNavigator from "../../../components/commons/LoopSurveyPage/LoopNavigator/LoopNavigator";
 import PageIcon from "../../../components/commons/PageIcon/PageIcon";
@@ -17,7 +17,6 @@ import { getLastCompletedStep } from "../../../service/navigation-service";
 import { isMobile, isPwa } from "../../../service/responsive";
 import { activityComplementaryQuestionsStepperData } from "../../../service/stepper.service";
 import { getScore } from "../../../service/survey-activity-service";
-import { min } from "lodash";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;
@@ -165,7 +164,7 @@ const SurveyPage = (props: SurveyPageProps) => {
             )}
 
             {!displayStepper && validate && (
-                <FlexCenter className={classes.bottomBar}>
+                <FlexCenter>
                     <ValidateButton
                         onClick={validate}
                         text={t("common.navigation.validate")}
@@ -174,7 +173,7 @@ const SurveyPage = (props: SurveyPageProps) => {
                 </FlexCenter>
             )}
             {!displayStepper && onFinish && onAdd && finishLabel && !validate && (
-                <FlexCenter className={classes.bottomBar}>
+                <FlexCenter>
                     <ActivityButtons
                         onClickFinish={onFinish}
                         onClickAdd={onAdd}
@@ -213,13 +212,6 @@ const useStyles = makeStylesEdt<{
         backgroundColor: theme.variables.white,
         overflow: "hidden",
     },
-    bottomBar: {
-        minHeight: "4.5rem",
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        right: 0,
-    }
 }));
 
 export default SurveyPage;
