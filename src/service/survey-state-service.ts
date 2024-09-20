@@ -32,9 +32,9 @@ const isSurveyValidated = (idSurvey: string) => {
 };
 
 const isSurveyStarted = (idSurvey: string) => {
-    const stateData = getLocalSurveyStateData(getData(idSurvey));
-    return stateData.state == StateDataStateEnum.INIT;
-};
+    const survey = getData(idSurvey);
+    return survey.COLLECTED != null && survey.COLLECTED.SURVEYDATE?.COLLECTED != null;
+}
 
 const isSurveyCompleted = (idSurvey: string) => {
     const stateData = getLocalSurveyStateData(getData(idSurvey));
@@ -141,7 +141,6 @@ const validateSurvey = (idSurvey: string) => {
 const validateAllEmptySurveys = (idHousehold: string) => {
     const idSurveys = getSurveysIdsForHousehold(idHousehold);
     const promisesToWait: Promise<any>[] = [];
-    console.log("Validate all empty surveys", idSurveys);
     idSurveys.forEach((idSurvey: string) => {
         const data = getData(idSurvey || "");
         const stateData = getLocalSurveyStateData(data);

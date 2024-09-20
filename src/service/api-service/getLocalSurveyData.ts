@@ -20,6 +20,7 @@ const fetchReferentiel = (_: AuthContextProps, idReferentiel: ReferentielsEnum) 
 
 const fetchReferentiels = (): Promise<ReferentielData> => {
     let refs: ReferentielData = {
+        // @ts-ignore
         [ReferentielsEnum.ACTIVITYNOMENCLATURE]: [...edtActivityCategory],
         [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: [...edtActivityAutoComplete],
         [ReferentielsEnum.ROUTE]: [...edtRoute],

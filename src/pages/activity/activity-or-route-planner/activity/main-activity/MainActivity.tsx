@@ -31,8 +31,8 @@ import CatIcon300 from "../../../../../assets/illustration/activity-categories/3
 import CatIcon400 from "../../../../../assets/illustration/activity-categories/4.svg?react";
 import CatIcon440 from "../../../../../assets/illustration/activity-categories/5.svg?react";
 import CatIcon500 from "../../../../../assets/illustration/activity-categories/6.svg?react";
-import CatIcon650 from "../../../../../assets/illustration/activity-categories/7.svg?react";
-import CatIcon600 from "../../../../../assets/illustration/activity-categories/8.svg?react";
+import CatIcon650 from "../../../../../assets/illustration/activity-categories/8.svg?react";
+import CatIcon600 from "../../../../../assets/illustration/activity-categories/7.svg?react";
 import ErrorIcon from "../../../../../assets/illustration/error/activity.svg?react";
 import AddLightBlueIcon from "../../../../../assets/illustration/mui-icon/add-light-blue.svg?react";
 import AddWhiteIcon from "../../../../../assets/illustration/mui-icon/add.svg?react";
@@ -133,7 +133,6 @@ const MainActivityPage = () => {
         },
         nextClickCallback: (routeToGoal: boolean) => {
             const codeActivity = getValueOfActivity(callbackHolder.getData(), currentIteration) ?? "";
-            //console.log("codeActivity", codeActivity);
             const skip = filtrePage(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL, codeActivity);
             if (routeToGoal && !skip) {
                 saveAndLoopNavigate(

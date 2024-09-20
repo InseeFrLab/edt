@@ -120,7 +120,6 @@ const setDataOfWorkTimeReviewer = (
     }
 
     const weeklyPlannerProps = propsWorkTime(source);
-    //console.log('weeklyPlannerProps', weeklyPlannerProps);
     weeklyPlannerProps.forEach(prop => {
         let dataOfField = dataCollected[prop];
         const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
@@ -143,7 +142,6 @@ const setDataOfActivityReviewer = (
     const bindings: string[] = components?.filter(
         (component: any) => component.componentType != "Sequence",
     )[0]?.bindingDependencies;
-    console.log("setDataOfActivityReviewer", dataCollected, data, components, iteration);
     for (let prop in FieldNameEnumActivity as any) {
         let dataOfField = dataCollected[prop];
         const collected = dataOfField?.COLLECTED;
@@ -155,14 +153,6 @@ const setDataOfActivityReviewer = (
             //get data of current prop ->
             //COLLECTED : value of bdd (COLLECTED)
             //EDITED: if exist EDITED -> value of lunatic for value[iteration], other -> value of bdd (EDITED)
-            console.log(
-                "setDataOfActivityReviewer",
-                prop,
-                collected,
-                edited,
-                collectedSaved,
-                editedSaved,
-            );
             dataOfField = getDataOfCurrentBinding(
                 copyObject(collected),
                 copyObject(edited),
@@ -172,14 +162,6 @@ const setDataOfActivityReviewer = (
                 iteration,
             );
         } else if (dataOfField) {
-            console.log(
-                "setDataOfActivityReviewer dataOffField",
-                prop,
-                collected,
-                edited,
-                collectedSaved,
-                editedSaved,
-            );
             //prop activity + prop not currently being edited,
             //so edited get value of edited in bdd, and collected get value of partie collected in bdd
             dataOfField.EDITED = copyObject(editedSaved);
@@ -274,7 +256,6 @@ const getVariablesActivity = (
             isReviewerMode || isLocked ? (variableEdited ?? variableCollected) : variableCollected;
         variables.set(bindingDependency, variable);
     });
-    //console.log("getVariablesActivity", variables);
     return variables;
 };
 
@@ -370,7 +351,6 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                     {components.map(function (component: any) {
                         const { id, componentType, response, options, value, ...other } = component;
                         const Component = (lunatic as any)[componentType];
-                        //console.log("component:", componentType, "response:", response, "value:", value);
                         return (
                             <div className="lunatic lunatic-component" key={`component-${id}`}>
                                 <Component

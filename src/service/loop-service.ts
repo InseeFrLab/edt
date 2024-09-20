@@ -354,7 +354,6 @@ const skipNextPage = (
         nextPageRoute == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER ||
         (nextPageRoute == null && nextPageNextLoop == EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER)
     ) {
-        //console.log("skipNextPage -> nextPageRoute", nextPageRoute);
         saveAndNav(
             idSurvey,
             getCurrentNavigatePath(
@@ -365,7 +364,6 @@ const skipNextPage = (
             ),
         );
     } else {
-        //console.log('Skip Next page navigate locally')
         saveAndLoopNavigateLocally(
             idSurvey,
             source,

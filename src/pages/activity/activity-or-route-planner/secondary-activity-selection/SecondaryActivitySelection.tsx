@@ -36,7 +36,6 @@ const SecondaryActivitySelectionPage = () => {
     const isRoute = getValue(idSurvey, FieldNameEnum.ISROUTE, currentIteration) as boolean;
     const referentiel = isRoute ? getRouteSecondaryActivityRef() : getActivitySecondaryActivityRef();
     const newActivities = getNewSecondaryActivities(idSurvey, referentiel);
-    //console.log("newActivities", newActivities);
     const modifiable = !surveyReadOnly(context.rightsSurvey);
 
     const iconAddAlt = t("accessibility.asset.mui-icon.add");

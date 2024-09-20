@@ -25,7 +25,6 @@ const ActivityLocationPage = () => {
         },
         referentiel: getPlaceRef(),
     };
-    //console.log("ActivityLocationPage referentiel", specifiquesProps.referentiel);
     return (
         <LoopSurveyPageStep
             currentPage={EdtRoutesNameEnum.ACTIVITY_LOCATION}
