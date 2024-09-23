@@ -6,8 +6,10 @@ import { OrchestratorContext } from "../../interface/lunatic/Lunatic";
 import { callbackHolder } from "../../orchestrator/Orchestrator";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { surveyReadOnly } from "../../service/survey-activity-service";
-import { validateAllGroup } from "../../service/survey-service";
+import { getComponentId, validateAllGroup } from "../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../utils/utils";
+import { FieldNameEnum } from "../../enumerations/FieldNameEnum";
+import { navToErrorPage } from "../../service/navigation-service";
 
 const WhoAreYouPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -21,25 +23,26 @@ const WhoAreYouPage = () => {
     const idSurvey = getSurveyIdFromUrl(context, location);
     const navigate = useNavigate();
 
-    // const keydownChange = () => {
-    //     const componentId = getComponentId(FieldNameEnum.FIRSTNAME, context.source);
-    //     if (componentId == null) {
-    //         navToErrorPage();
-    //     } else {
-    //         const disabled =
-    //             callbackHolder.getErrors() && callbackHolder.getErrors()[componentId].length > 0;
-    //         setDisabledButton(disabled);
-    //     }
-    // };
+    const keydownChange = () => {
+        const componentId = getComponentId(FieldNameEnum.FIRSTNAME, context.source);
+        if (componentId == null) {
+            navToErrorPage();
+        } else {
+            const input = (document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement)
+                ?.value;
+            input.length > 1 ? setDisabledButton(false) : setDisabledButton(true);
+        }
+    };
 
-    // React.useEffect(() => {
-    //     document.addEventListener("keyup", keydownChange, true);
-    //     return () => document.removeEventListener("keyup", keydownChange, true);
-    // }, [callbackHolder]);
+    React.useEffect(() => {
+        document.addEventListener("keyup", keydownChange, true);
+        return () => document.removeEventListener("keyup", keydownChange, true);
+    }, [callbackHolder]);
 
     const keypressChange = (event: KeyboardEvent) => {
-        if (event.key === "Enter") {
-            document.getElementById("validateButton")?.click();
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (event.key === "Enter" && isMobile) {
+            (document.activeElement as HTMLElement)?.blur();
         }
         setDisabledButton(false);
     };

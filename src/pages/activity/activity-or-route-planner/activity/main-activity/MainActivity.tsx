@@ -188,6 +188,7 @@ const MainActivityPage = () => {
             categoryId: string,
             newActivity: string,
         ) => {
+            console.log("addToReferentielCallBack", newItem, categoryId, newActivity);
             createNewActivityInCategory(newItem, categoryId, newActivity, referentiel, index, setIndex);
         },
         widthGlobal: true,

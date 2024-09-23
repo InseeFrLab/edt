@@ -185,6 +185,7 @@ export const updateReferentielAutoComplete = (
     setIndex: Dispatch<SetStateAction<elasticlunr.Index<AutoCompleteActiviteOption> | undefined>>,
 ) => {
     return saveReferentiels(currentData).then(() => {
+        console.log('newItem', newItem);
         addToAutocompleteActivityReferentiel(newItem).then(referentielData => {
             const newAutocompleteRef = referentielData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE];
             localStorage.setItem("selectedIdNewActivity", newActivity);
@@ -201,6 +202,7 @@ export const updateIndexAutoComplete = (
 ) => {
     const options = optionsFiltered(getAutoCompleteRef());
     const indexSuggester = CreateIndex(options, index, setIndex);
+    console.log("Index updated", indexSuggester);
     setIndexSuggester(indexSuggester);
 };
 
@@ -218,7 +220,7 @@ export const createNewActivityInCategory = (
         const categoryParent = category?.parent ?? category?.item;
         const parentCategoryId = categoryParent?.id;
         const existCategory = category?.item.subs.find((cat: any) => cat.label == newItem.label);
-
+        console.log("existCategory", existCategory, category, parentCategoryId);
         if (!existCategory) {
             category?.item.subs.push({
                 id: newItem.id,
@@ -227,11 +229,14 @@ export const createNewActivityInCategory = (
             });
             const indexParentCategory = ref.findIndex((opt: any) => opt.id == parentCategoryId);
 
+
             ref[indexParentCategory] = categoryParent;
+            console.log("Category does not exist");
             return updateReferentielAutoComplete(currentData, newItem, newActivity, index, setIndex);
         }
 
         if (!categoryId) {
+            console.log("category id is null");
             return updateReferentielAutoComplete(currentData, newItem, newActivity, index, setIndex);
         }
     });
