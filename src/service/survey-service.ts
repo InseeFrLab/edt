@@ -1526,18 +1526,15 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
         const isValidated = isSurveyValidated(idSurvey);
         const isClosed = isSurveyClosed(idSurvey);
         const isStarted = isSurveyStarted(idSurvey);
+        numHouseholds++;
 
         if (isValidated) {
             numHouseholdsValidated++;
-        }
-        if (isClosed && !isValidated) {
+        } else if (isClosed) {
             numHouseholdsClosed++;
-        }
-
-        if (!isValidated && !isClosed && isStarted) {
+        } else if (isStarted) {
             numHouseholdsInProgress++;
         }
-        numHouseholds++;
     });
 
     if (numHouseholds == numHouseholdsValidated) state = StateHouseholdEnum.VALIDATED;

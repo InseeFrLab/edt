@@ -132,9 +132,10 @@ const validateSurvey = (idSurvey: string) => {
             date: Date.now(),
             currentPage: getCurrentPage(getData(idSurvey)),
         };
-        return saveData(idSurvey, data, false, true, validatedStateData);
+        data.stateData = validatedStateData;
+        return saveData(idSurvey, data, false, true);
     } else {
-        return saveData(idSurvey, data, false, true, stateData);
+        return saveData(idSurvey, data, false, true);
     }
 };
 
