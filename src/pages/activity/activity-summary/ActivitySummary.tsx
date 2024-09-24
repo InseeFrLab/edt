@@ -70,8 +70,6 @@ import {
     getSurveyDate,
     getSurveyRights,
     getValue,
-    isDemoMode,
-    refreshSurvey,
     saveData,
     setValue,
 } from "../../../service/survey-service";
@@ -196,8 +194,8 @@ const ActivitySummaryPage = () => {
     const [addActivityOrRouteFromGap, setAddActivityOrRouteFromGap] = React.useState(false);
     const [gapStartTime, setGapStartTime] = React.useState<string>();
     const [gapEndTime, setGapEndTime] = React.useState<string>();
-    const [initialized, setInitialized] = React.useState<boolean>(true);
-    const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
+    const [initialized] = React.useState<boolean>(true);
+    const [error] = useState<ErrorCodeEnum | undefined>(undefined);
     const [isRoute, setIsRoute] = React.useState(false);
     const [activityOrRoute, setActivityOrRoute] = React.useState<ActivityRouteOrGap | undefined>(
         undefined,

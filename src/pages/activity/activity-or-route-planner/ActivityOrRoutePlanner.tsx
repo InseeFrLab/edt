@@ -68,7 +68,6 @@ import {
     getSource,
     getSurveyDate,
     getSurveyRights,
-    refreshSurvey,
     saveData,
     setValue,
 } from "../../../service/survey-service";
@@ -355,7 +354,7 @@ const ActivityOrRoutePlannerPage = () => {
         undefined,
     );
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
-    const [initialized, setInitialized] = React.useState<boolean>(true);
+    const [initialized] = React.useState<boolean>(true);
     const [isHelpMenuOpen, setIsHelpMenuOpen] = React.useState(false);
 
     setEnviro(context, useNavigate(), callbackHolder);
@@ -375,7 +374,7 @@ const ActivityOrRoutePlannerPage = () => {
 
     const [isAlertLockDisplayed, setIsAlertLockDisplayed] = useState<boolean>(false);
     const [isLocked, setIsLocked] = useState<boolean>(isSurveyLocked(idSurvey));
-    const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
+    const [error] = useState<ErrorCodeEnum | undefined>(undefined);
     const [menuActivityPlannerDisplayed, setMenuActivityPlannerDisplayed] = React.useState(
         isItDesktop && isSubChildDisplayed,
     );
