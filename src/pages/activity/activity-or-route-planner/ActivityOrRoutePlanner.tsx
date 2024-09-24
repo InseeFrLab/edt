@@ -306,19 +306,19 @@ const openAddActivityOrRoute = (
     }
 };
 
-const init = (
-    idSurvey: string,
-    setError: React.Dispatch<React.SetStateAction<ErrorCodeEnum | undefined>>,
-    setInitialized: (value: React.SetStateAction<boolean>) => void,
-) => {
-    if (navigator.onLine && !isDemoMode()) {
-        refreshSurvey(idSurvey, setError).finally(() => {
-            setInitialized(true);
-        });
-    } else {
-        setInitialized(true);
-    }
-};
+// const init = (
+//     idSurvey: string,
+//     setError: React.Dispatch<React.SetStateAction<ErrorCodeEnum | undefined>>,
+//     setInitialized: (value: React.SetStateAction<boolean>) => void,
+// ) => {
+//     if (navigator.onLine && !isDemoMode()) {
+//         refreshSurvey(idSurvey, setError).finally(() => {
+//             setInitialized(true);
+//         });
+//     } else {
+//         setInitialized(true);
+//     }
+// };
 
 const updateSubChildDisplayed = (
     isSubchildDisplayed: boolean,
@@ -355,7 +355,7 @@ const ActivityOrRoutePlannerPage = () => {
         undefined,
     );
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
-    const [initialized, setInitialized] = React.useState<boolean>(false);
+    const [initialized, setInitialized] = React.useState<boolean>(true);
     const [isHelpMenuOpen, setIsHelpMenuOpen] = React.useState(false);
 
     setEnviro(context, useNavigate(), callbackHolder);
@@ -576,9 +576,9 @@ const ActivityOrRoutePlannerPage = () => {
         messagesEndRef.current?.scrollIntoView();
     }, [activitiesRoutesOrGaps]);
 
-    useEffect(() => {
-        init(idSurvey, setError, setInitialized);
-    }, []);
+    // useEffect(() => {
+    //     init(idSurvey, setError, setInitialized);
+    // }, []);
 
     const navToActivityRouteHome = useCallback(() => {
         navToHome();

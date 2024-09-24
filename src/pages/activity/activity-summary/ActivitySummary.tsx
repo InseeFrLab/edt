@@ -196,7 +196,7 @@ const ActivitySummaryPage = () => {
     const [addActivityOrRouteFromGap, setAddActivityOrRouteFromGap] = React.useState(false);
     const [gapStartTime, setGapStartTime] = React.useState<string>();
     const [gapEndTime, setGapEndTime] = React.useState<string>();
-    const [initialized, setInitialized] = React.useState<boolean>(false);
+    const [initialized, setInitialized] = React.useState<boolean>(true);
     const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
     const [isRoute, setIsRoute] = React.useState(false);
     const [activityOrRoute, setActivityOrRoute] = React.useState<ActivityRouteOrGap | undefined>(
@@ -229,15 +229,15 @@ const ActivitySummaryPage = () => {
         setScore(getScore(idSurvey, t));
     }, [activitiesRoutesOrGaps]);
 
-    useEffect(() => {
-        if (navigator.onLine && !isDemoMode()) {
-            refreshSurvey(idSurvey, setError).finally(() => {
-                setInitialized(true);
-            });
-        } else {
-            setInitialized(true);
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (navigator.onLine && !isDemoMode()) {
+    //         refreshSurvey(idSurvey, setError).finally(() => {
+    //             setInitialized(true);
+    //         });
+    //     } else {
+    //         setInitialized(true);
+    //     }
+    // }, []);
 
     useEffect(() => {
         //The loop have to have a default size in source but it's updated depending on the data array size
