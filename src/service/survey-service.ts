@@ -567,22 +567,14 @@ const getRemoteSavedSurveysDatas = (
     surveysIds: string[],
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<any[]> => {
-    const totalPromises = surveysIds.length;
-    let remainingPromises = totalPromises;
 
-    const promises = surveysIds.map((surveyId, index) =>
+    const promises = surveysIds.map((surveyId) =>
         getRemoteSavedSurveyData(surveyId, setError).then(result => {
-            remainingPromises--;
-            //console.log(`Promise ${index + 1} get remote saved survey data for surveyId ${surveyId} completed`, result);
-            console.log(`Remaining promises to be fulfilled: ${remainingPromises}`);
             return result;
-        }).catch(error => {
-            remainingPromises--;
-            console.error(`Error getting data for surveyId ${surveyId}:`, error);
+        }).catch(() => {
             return undefined;
         })
     );
-    console.log('Promise for get remote saved survey data', promises.length);
 
     return Promise.all(promises).then(results => {
         return results.filter(result => result !== undefined);
