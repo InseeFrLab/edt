@@ -459,6 +459,7 @@ const refreshSurveyData = (
         ),
         initializeSurveysDatasCache(),
     );
+
     return Promise.all(promisesToWait);
 };
 
@@ -543,9 +544,15 @@ const getRemoteSavedSurveyData = (
                         }
 
                         //TODO: fix a bug where other variable are overwrited if there is no weeklyPlanner
-                        return getSurveyStateDataFunction(surveyId, setError).then(stateData => {
-                            return saveInDatabase(surveyId, { ...remoteSurveyData, stateData });
-                        });
+                        return getSurveyStateDataFunction(surveyId, setError)
+                            .then(stateData => {
+                                return saveInDatabase(surveyId, { ...remoteSurveyData, stateData });
+                            })
+                            .catch(error => {
+                                console.error(`Error in getSurveyStateDataFunction or saveInDatabase for surveyId ${surveyId}:`, error);
+                                // Handle the error and return a fallback value
+                                return saveInDatabase(surveyId, { ...remoteSurveyData, stateData: null });
+                            });
                     }
                 }
             });
@@ -560,7 +567,26 @@ const getRemoteSavedSurveysDatas = (
     surveysIds: string[],
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<any[]> => {
-    return Promise.all(surveysIds.map(surveyId => getRemoteSavedSurveyData(surveyId, setError)));
+    const totalPromises = surveysIds.length;
+    let remainingPromises = totalPromises;
+
+    const promises = surveysIds.map((surveyId, index) =>
+        getRemoteSavedSurveyData(surveyId, setError).then(result => {
+            remainingPromises--;
+            //console.log(`Promise ${index + 1} get remote saved survey data for surveyId ${surveyId} completed`, result);
+            console.log(`Remaining promises to be fulfilled: ${remainingPromises}`);
+            return result;
+        }).catch(error => {
+            remainingPromises--;
+            console.error(`Error getting data for surveyId ${surveyId}:`, error);
+            return undefined;
+        })
+    );
+    console.log('Promise for get remote saved survey data', promises.length);
+
+    return Promise.all(promises).then(results => {
+        return results.filter(result => result !== undefined);
+    });
 };
 
 const shouldSaveRemoteData = (remoteSurveyData: any, localSurveyData: any): boolean => {
@@ -856,6 +882,7 @@ const getDataUpdatedOffline = () => {
             data.lastLocalSaveDate > data.lastRemoteSaveDate ||
             data.lastLocalSaveDate > data.stateData?.date
         ) {
+            console.log('Survey', idSurvey, ' needs to be updated')
             surveysToUpdated.set(idSurvey, data);
         }
     });
@@ -868,7 +895,7 @@ const saveDatas = () => {
         promisesToWait.push(saveData(key, value, false, true));
     });
     return Promise.all(promisesToWait).then(result => {
-        console.log(result);
+        console.log('Save datas results ', result);
     });
 };
 

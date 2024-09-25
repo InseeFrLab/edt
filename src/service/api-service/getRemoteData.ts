@@ -209,6 +209,9 @@ export const remoteGetSurveyStateData = (
                 } else if (err.response?.status != 404) {
                     setError?.(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
                 }
+                //TODO: Temp fix for reviewer refresh mode
+                const stateData = initStateData()
+                resolve(stateData)
             });
     });
 };
