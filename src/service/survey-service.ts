@@ -73,6 +73,7 @@ import {
     initStateData,
     isDemoMode,
     isSurveyClosed,
+    isSurveyCompleted,
     isSurveyLocked,
     isSurveyStarted,
     isSurveyValidated,
@@ -1526,11 +1527,12 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
         const isValidated = isSurveyValidated(idSurvey);
         const isClosed = isSurveyClosed(idSurvey);
         const isStarted = isSurveyStarted(idSurvey);
+        const isCompleted = isSurveyCompleted(idSurvey);
         numHouseholds++;
 
         if (isValidated) {
             numHouseholdsValidated++;
-        } else if (isClosed) {
+        } else if (isClosed || isCompleted) {
             numHouseholdsClosed++;
         } else if (isStarted) {
             numHouseholdsInProgress++;
