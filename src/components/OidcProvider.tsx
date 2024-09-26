@@ -16,7 +16,6 @@ export function OidcProvider({ children }: PropsWithChildren) {
     if (!isOnline) {
         return (
             <AuthProvider
-                key="auth"
                 automaticSilentRenew={false}
                 silentRedirectUri={`${window.location.protocol}//${window.location.hostname}`}
             >
@@ -26,7 +25,6 @@ export function OidcProvider({ children }: PropsWithChildren) {
     }
     return (
         <AuthProvider
-            key="auth"
             userManager={isSSO ? userManager : undefined}
             onSignIn={onSignIn}
             authority={import.meta.env.VITE_KEYCLOAK_AUTHORITY}

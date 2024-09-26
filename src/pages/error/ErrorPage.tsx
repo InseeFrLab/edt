@@ -14,14 +14,13 @@ import { ErrorCodeEnum } from "../../enumerations/ErrorCodeEnum";
 import { LocalStorageVariableEnum } from "../../enumerations/LocalStorageVariableEnum";
 import { SurveysIdsEnum } from "../../enumerations/SurveysIdsEnum";
 import { OrchestratorContext } from "../../interface/lunatic/Lunatic";
-import { useAuth } from "oidc-react";
 import { callbackHolder } from "../../orchestrator/Orchestrator";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { lunaticDatabase } from "../../service/lunatic-database";
 import { getNavigatePath, setEnviro } from "../../service/navigation-service";
 import { getData, getSurveyRights, surveysIds } from "../../service/survey-service";
+import { useAuth } from "../../hooks/useAuth.ts";
 
 export type ErrorPageProps = {
     errorCode?: ErrorCodeEnum;
@@ -32,14 +31,14 @@ const ErrorPage = (props: ErrorPageProps) => {
     const { errorCode, atInit = false } = props;
     const { t } = useTranslation();
     const { classes } = useStyles();
-    const auth = useAuth();
+    const { username, logout } = useAuth();
     const [isAlertDisplayed, setIsAlertDisplayed] = React.useState<boolean>(false);
     const onDisconnect = useCallback(() => setIsAlertDisplayed(true), [isAlertDisplayed]);
     const source = edtActivitySurvey;
 
     const alertProps = {
         isAlertDisplayed: isAlertDisplayed,
-        onCompleteCallBack: useCallback(() => disconnect(), []),
+        onCompleteCallBack: logout,
         onCancelCallBack: useCallback(() => setIsAlertDisplayed(false), [isAlertDisplayed]),
         labels: {
             boldContent: t("page.home.logout-popup.content"),
@@ -117,21 +116,6 @@ const ErrorPage = (props: ErrorPageProps) => {
         }
     };
 
-    const disconnect = useCallback(() => {
-        auth.userManager.signoutRedirect({
-            id_token_hint: localStorage.getItem("id_token") ?? undefined,
-        });
-        auth.userManager.clearStaleState();
-        auth.userManager.signoutRedirectCallback().then(() => {
-            localStorage.clear();
-            lunaticDatabase.clear();
-            setTimeout(() => {
-                window.location.replace(import.meta.env.VITE_PUBLIC_URL || "");
-                auth.userManager.clearStaleState();
-            }, 200);
-        });
-    }, []);
-
     const navToHelp = useCallback(() => {
         if (navigate) {
             const idSurvey = surveysIds[SurveysIdsEnum.ACTIVITY_SURVEYS_IDS][0];
@@ -161,9 +145,7 @@ const ErrorPage = (props: ErrorPageProps) => {
                 <br />
                 <Typography>{getErrorText(errorCode)}</Typography>
                 <br />
-                <Typography>
-                    {t("common.error.error-user-info") + auth.userData?.profile?.preferred_username}
-                </Typography>
+                <Typography>{t("common.error.error-user-info") + username}</Typography>
             </Box>
             <FlexCenter>
                 <Box className={classes.buttonBox}>

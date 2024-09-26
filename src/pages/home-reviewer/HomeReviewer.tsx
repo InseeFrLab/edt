@@ -10,23 +10,22 @@ import ReviewerImg from "../../assets/illustration/reviewer.svg?react";
 import FlexCenter from "../../components/commons/FlexCenter/FlexCenter";
 import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
 import { LocalStorageVariableEnum } from "../../enumerations/LocalStorageVariableEnum";
-import { useAuth } from "oidc-react";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate } from "react-router-dom";
-import { lunaticDatabase } from "../../service/lunatic-database";
 import { getNavigatePath } from "../../service/navigation-service";
 import { initializeSurveysIdsDemo } from "../../service/survey-service";
+import { useAuth } from "../../hooks/useAuth.ts";
 
 const HomeReviewerPage = () => {
     const { classes } = useStyles();
     const { t } = useTranslation();
-    const auth = useAuth();
+    const { logout } = useAuth();
     const navigate = useNavigate();
     const [isAlertDisplayed, setIsAlertDisplayed] = React.useState<boolean>(false);
     const alertProps = {
         isAlertDisplayed: isAlertDisplayed,
-        onCompleteCallBack: useCallback(() => disconnect(), []),
+        onCompleteCallBack: logout,
         onCancelCallBack: useCallback(() => setIsAlertDisplayed(false), [isAlertDisplayed]),
         labels: {
             boldContent: t("page.home.logout-popup.content"),
@@ -40,26 +39,6 @@ const HomeReviewerPage = () => {
     const onDisconnect = useCallback(() => {
         setIsAlertDisplayed(true);
     }, [isAlertDisplayed]);
-
-    const disconnect = useCallback(() => {
-        window.localStorage.clear();
-        lunaticDatabase
-            .clear()
-            .then(() =>
-                auth.userManager.signoutRedirect({
-                    id_token_hint: localStorage.getItem("id_token") ?? undefined,
-                }),
-            )
-            .then(() => auth.userManager.clearStaleState())
-            .then(() => auth.userManager.signoutRedirectCallback())
-            .then(() => {
-                sessionStorage.clear();
-                localStorage.clear();
-            })
-            .then(() => auth.userManager.clearStaleState())
-            .then(() => localStorage.removeItem("auth"))
-            .then(() => window.location.replace(import.meta.env.VITE_PUBLIC_URL || ""));
-    }, []);
 
     const navToSurveysOverview = useCallback(() => {
         localStorage.setItem(LocalStorageVariableEnum.IS_DEMO_MODE, "false");

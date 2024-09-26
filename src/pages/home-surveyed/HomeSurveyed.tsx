@@ -29,8 +29,6 @@ import React, { useCallback, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../service/auth-service";
-import { lunaticDatabase } from "../../service/lunatic-database";
 import { getNavigatePath, setEnviro } from "../../service/navigation-service";
 import {
     arrayOfSurveysPersonDemo,
@@ -40,6 +38,7 @@ import {
     getSource,
     getSurveyRights,
     getUserDatasActivity,
+    initializeDatas,
     initializeHomeSurveys,
     initializeSurveysDatasCache,
     initializeSurveysIdsDemo,
@@ -47,11 +46,10 @@ import {
     saveData,
     surveysIds,
     userDatasMap,
-    initializeDatas,
 } from "../../service/survey-service";
 import { isDemoMode, lockAllSurveys, validateAllEmptySurveys } from "../../service/survey-state-service";
-import { getUserRights } from "../../service/user-service";
 import { groupBy } from "../../utils/utils";
+import { useAuth } from "../../hooks/useAuth.ts";
 
 const HomeSurveyedPage = () => {
     const { t } = useTranslation();
@@ -68,7 +66,8 @@ const HomeSurveyedPage = () => {
 
     const source = getSource(SourcesEnum.WORK_TIME_SURVEY);
     const isDemo = isDemoMode();
-    const isReviewer = getUserRights() === EdtUserRightsEnum.REVIEWER;
+    const { role, logout } = useAuth();
+    const isReviewer = role === EdtUserRightsEnum.REVIEWER;
     const idHousehold = localStorage.getItem(LocalStorageVariableEnum.ID_HOUSEHOLD);
     let userDatas: Person[];
 
@@ -96,18 +95,18 @@ const HomeSurveyedPage = () => {
     };
 
     useEffect(() => {
-        if (navigator.onLine && getUserRights() === EdtUserRightsEnum.SURVEYED) {
+        if (navigator.onLine && role === EdtUserRightsEnum.SURVEYED) {
             initializeDatas(setError).then(() => {
                 setInitialized(true);
             });
-        } else if (getUserRights() === EdtUserRightsEnum.SURVEYED) {
+        } else if (role === EdtUserRightsEnum.SURVEYED) {
             initializeDatas(setError).then(() => {
                 setInitialized(true);
                 setState({});
             });
         }
 
-        if (getUserRights() == EdtUserRightsEnum.REVIEWER && !isDemo) {
+        if (role == EdtUserRightsEnum.REVIEWER && !isDemo) {
             userDatas = userDatasMap();
             const idsSurveysSelected = userDatas
                 .map(data => data.data.surveyUnitId)
@@ -122,7 +121,7 @@ const HomeSurveyedPage = () => {
             } else {
                 initHome(idsSurveysSelected);
             }
-        } else if (getUserRights() == EdtUserRightsEnum.REVIEWER && isDemo) {
+        } else if (role == EdtUserRightsEnum.REVIEWER && isDemo) {
             let userDatas = userDatasMap();
             setDatas(userDatas);
         }
@@ -130,7 +129,7 @@ const HomeSurveyedPage = () => {
 
     const alertProps = {
         isAlertDisplayed: isAlertDisplayed,
-        onCompleteCallBack: useCallback(() => disconnect(), []),
+        onCompleteCallBack: logout,
         onCancelCallBack: useCallback(() => setIsAlertDisplayed(false), [isAlertDisplayed]),
         labels: {
             boldContent: t("page.home.logout-popup.content"),
@@ -154,11 +153,6 @@ const HomeSurveyedPage = () => {
     const onDisconnect = useCallback(() => {
         setIsAlertDisplayed(true);
     }, [isAlertDisplayed]);
-
-    const disconnect = useCallback(() => {
-        window.localStorage.clear();
-        lunaticDatabase.clear().then(() => logout());
-    }, []);
 
     const onCloseAddActivityOrRoute = useCallback(() => {
         setIsAddActivityOrRouteOpen(false);
@@ -388,7 +382,7 @@ const HomeSurveyedPage = () => {
     };
 
     const renderHome = () => {
-        if (getUserRights() === EdtUserRightsEnum.REVIEWER) {
+        if (role === EdtUserRightsEnum.REVIEWER) {
             return renderHomeReviewer();
         } else {
             return renderHomeInterviewer();

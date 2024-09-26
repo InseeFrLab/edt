@@ -1,42 +1,40 @@
 import { EdtUserRightsEnum } from "../enumerations/EdtUserRightsEnum";
-import { AuthContextProps, User } from "oidc-react";
+import { AuthContextProps } from "oidc-react";
+import { useOnline } from "../hooks/useOnline.ts";
 
-let user: any;
-let userToken: string;
-let auth: AuthContextProps;
+let globalAuth: AuthContextProps | undefined;
 
-export const setUser = (loggedUser: User | null): void => {
-    user = loggedUser;
-};
+/**
+ * @deprecated This method is kept to avoid to edit a lot of code but should not be used
+ */
+export const useGlobalUserState = (auth: AuthContextProps) => {
+    const isOnline = useOnline();
+    if (!isOnline) {
+        return;
+    }
 
-export const setAuth = (authContext: AuthContextProps): void => {
-    auth = authContext;
+    globalAuth = auth;
 };
 
 export const getAuth = (): AuthContextProps => {
-    return auth;
+    if (!globalAuth) {
+        throw new Error("User must be authenticated");
+    }
+    return globalAuth;
 };
 
 export const getUserToken = (): string => {
-    return userToken;
+    return globalAuth?.userData?.access_token ?? "";
 };
 
-export const setUserToken = (token: string): void => {
-    userToken = token;
-};
-
+/**
+ * @deprecated
+ */
 export const getUserRights = (): EdtUserRightsEnum => {
-    if (
-        user?.profile?.inseegroupedefaut?.includes(
-            import.meta.env.VITE_REVIEWER_ROLE ?? EdtUserRightsEnum.REVIEWER,
-        )
-    ) {
+    const groups = globalAuth?.userData?.profile?.inseegroupedefaut as string[];
+    if (groups?.includes(import.meta.env.VITE_REVIEWER_ROLE ?? EdtUserRightsEnum.REVIEWER)) {
         return EdtUserRightsEnum.REVIEWER;
-    } else if (
-        user?.profile?.inseegroupedefaut?.includes(
-            import.meta.env.VITE_SURVEYED_ROLE ?? EdtUserRightsEnum.SURVEYED,
-        )
-    ) {
+    } else if (groups?.includes(import.meta.env.VITE_SURVEYED_ROLE ?? EdtUserRightsEnum.SURVEYED)) {
         return EdtUserRightsEnum.SURVEYED;
     } else {
         return EdtUserRightsEnum.NO_RIGHTS;
