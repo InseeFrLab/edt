@@ -3,7 +3,6 @@ import WhoAreYouImg from "../../assets/illustration/who-are-you.svg?react";
 import SurveyPageStep from "../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "../../interface/lunatic/Lunatic";
-import { callbackHolder } from "../../orchestrator/Orchestrator";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { surveyReadOnly } from "../../service/survey-activity-service";
 import { validateAllGroup } from "../../service/survey-service";
