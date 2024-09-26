@@ -16,8 +16,13 @@ export function OidcProvider({ children }: PropsWithChildren) {
     if (!isOnline) {
         return (
             <AuthProvider
+                userManager={undefined}
+                authority={import.meta.env.VITE_KEYCLOAK_AUTHORITY}
+                clientId={import.meta.env.VITE_KEYCLOAK_CLIENT_ID}
+                redirectUri={import.meta.env.VITE_KEYCLOAK_REDIRECT_URI}
                 automaticSilentRenew={false}
-                silentRedirectUri={`${window.location.protocol}//${window.location.hostname}`}
+                autoSignIn={false}
+                autoSignOut={false}
             >
                 {children}
             </AuthProvider>

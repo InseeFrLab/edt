@@ -16,7 +16,7 @@ const App = () => {
     const { t } = useTranslation();
     const { isAuthenticated, role } = useAuth({ persistState: true });
     const isOnline = useOnline();
-    const [isReady, setIsReady] = useState(false);
+    const [isReady, setIsReady] = useState(!isOnline);
     const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
 
     // TODO: Explain this code
@@ -33,16 +33,16 @@ const App = () => {
 
     // Initialize data when user is authenticated
     useAsyncEffect(async () => {
-        if (!isOnline || !isAuthenticated) {
+        if (!isOnline || !isAuthenticated || isReady) {
             return;
         }
 
-        await initializeDatas(setError);
+        await initializeDatas(setError).catch(console.error);
         if (role === EdtUserRightsEnum.REVIEWER) {
-            await initializeListSurveys(setError);
+            await initializeListSurveys(setError).catch(console.error);
         }
         setIsReady(true);
-    }, [isAuthenticated, role]);
+    }, [isAuthenticated, role, isReady]);
 
     if (error) {
         console.error("Error on App level", error);
