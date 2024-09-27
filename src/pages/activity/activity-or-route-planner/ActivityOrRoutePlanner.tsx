@@ -550,7 +550,6 @@ const ActivityOrRoutePlannerPage = () => {
             deleteActivity(idSurvey, source, iteration);
             activitiesRoutesOrGaps.splice(iteration);
             navToActivityRoutePlanner(idSurvey, source);
-            window.location.reload();
         },
         [],
     );
