@@ -549,7 +549,8 @@ const ActivityOrRoutePlannerPage = () => {
         (idSurvey: string, source: LunaticModel, iteration: number) => {
             deleteActivity(idSurvey, source, iteration);
             activitiesRoutesOrGaps.splice(iteration);
-            navToActivityRoutePlanner(idSurvey, source);
+            //navToActivityRoutePlanner(idSurvey, source);
+            window.location.reload();
         },
         [],
     );
