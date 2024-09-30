@@ -59,6 +59,7 @@
         "lint": "eslint .",
         "preview": "vite preview --port 3000",
         "build:staging": "dotenv -e .env.staging -- tsc -b && vite build",
+        "build:production": "dotenv -e .env.production -- tsc -b && vite build",
         "start-with-lib": "concurrently \"yarn run dev\" \"cd ./node_modules/@inseefrlab/lunatic-edt && tsc-watch\""
     },
     "eslintConfig": {
