@@ -135,6 +135,9 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     });
 };
 
+/**
+ * @deprecated useData should not be set in the database
+ */
 const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
     const dataState: DataState = {
         data: {
@@ -155,16 +158,6 @@ const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
         },
     };
     return lunaticDatabase.save(DATA_STATE, dataState).then(() => {
-        return dataState;
-    });
-};
-
-const getAuthCache = (): Promise<DataState> => {
-    const clientTokenKey =
-        "oidc.user:https://auth.demo.insee.io/auth/realms/questionnaires-edt/:client-edt";
-    return lunaticDatabase.get(DATA_STATE).then(data => {
-        let dataState = data as DataState;
-        sessionStorage.setItem(clientTokenKey, JSON.stringify(dataState));
         return dataState;
     });
 };
@@ -1725,7 +1718,6 @@ export {
     createDataEmpty,
     createNameSurveyMap,
     existVariableEdited,
-    getAuthCache,
     getComponentId,
     getComponentsOfVariable,
     getCurrentPage,

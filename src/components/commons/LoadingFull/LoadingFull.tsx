@@ -5,9 +5,7 @@ import PageIcon from "../../../components/commons/PageIcon/PageIcon";
 import { useTranslation } from "react-i18next";
 import { makeStyles } from "tss-react/mui";
 import PowerSettingsIcon from "../../../assets/illustration/mui-icon/power-settings.svg?react";
-import { useCallback } from "react";
-import { lunaticDatabase } from "../../../service/lunatic-database";
-import { logout } from "../../../service/auth-service";
+import { useAuth } from "../../../hooks/useAuth.ts";
 
 interface LoadingFullProps {
     message: string;
@@ -18,11 +16,7 @@ const LoadingFull = (props: LoadingFullProps) => {
     const { message, thanking } = props;
     const { t } = useTranslation();
     const { classes } = useStyles({});
-
-    const disconnect = useCallback(() => {
-        window.localStorage.clear();
-        lunaticDatabase.clear().then(() => logout());
-    }, []);
+    const { logout } = useAuth();
 
     return (
         <>
@@ -49,7 +43,7 @@ const LoadingFull = (props: LoadingFullProps) => {
                             aria-label={t("accessibility.asset.mui-icon.power-settings")}
                         />
                     }
-                    onClick={disconnect}
+                    onClick={logout}
                     id={"button-logout"}
                 >
                     {t("page.home.navigation.logout")}

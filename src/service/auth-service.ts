@@ -1,6 +1,6 @@
 import { WebStorageStateStore } from "oidc-client-ts";
 import { UserManager } from "oidc-react";
-import { getAuth, setUserToken } from "./user-service";
+import { getAuth } from "./user-service";
 
 const url = import.meta.env.VITE_KEYCLOAK_AUTHORITY ?? "";
 const clientId = import.meta.env.VITE_KEYCLOAK_CLIENT_ID ?? "";
@@ -64,11 +64,6 @@ const createUserManager = () => {
         metadata: navigator.onLine ? METADATA_OIDC : undefined,
     });
 
-    userManager.events.addUserLoaded(user => {
-        console.log("add user", user);
-        setUserToken(user?.access_token || "");
-    });
-
     userManager.events.addAccessTokenExpired(() => {
         if (navigator.onLine) {
             signinSilent(userManager);
@@ -76,37 +71,6 @@ const createUserManager = () => {
     });
 
     return userManager;
-};
-
-const getUser = async (userManager: UserManager) => {
-    const user = await userManager.getUser();
-    if (!user) {
-        return await userManager.signinRedirectCallback();
-    }
-    return user;
-};
-
-export const parseJwt = (token: string) => {
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace("-", "+").replace("_", "/");
-    return JSON.parse(window.atob(base64));
-};
-
-const signinRedirect = (userManager: UserManager) => {
-    localStorage.setItem("redirectUri", window.location.pathname);
-    userManager.signinRedirect({});
-};
-
-const isAuthenticated = () => {
-    const url = import.meta.env.VITE_AUTH_URL;
-    const clientId = import.meta.env.VITE_IDENTITY_CLIENT_ID;
-    if (url != null && clientId != null) {
-        const item = `oidc.user:${url}:${clientId}`;
-        const oidcStorage = JSON.parse(sessionStorage.getItem(item) ?? "");
-
-        return !!oidcStorage && !!oidcStorage.access_token;
-    }
-    return false;
 };
 
 const signinSilent = (userManager: UserManager) => {
@@ -118,25 +82,6 @@ const signinSilent = (userManager: UserManager) => {
         .catch(err => {
             console.log(err);
         });
-};
-
-const signinSilentCallback = (userManager: UserManager) => {
-    userManager.signinSilentCallback();
-};
-
-const logoutClearData = (userManager: UserManager) => {
-    userManager.signoutRedirect({
-        id_token_hint: localStorage.getItem("id_token") ?? "",
-    });
-    userManager.clearStaleState();
-};
-
-const signoutRedirectCallback = (userManager: UserManager) => {
-    userManager.signoutRedirectCallback().then(() => {
-        localStorage.clear();
-        window.location.replace(import.meta.env.VITE_PUBLIC_URL ?? "");
-    });
-    userManager.clearStaleState();
 };
 
 const logout = () => {
@@ -155,15 +100,4 @@ const logout = () => {
         .then(() => window.location.replace(import.meta.env.VITE_PUBLIC_URL ?? ""));
 };
 
-export {
-    createUserManager,
-    getUser,
-    isAuthenticated,
-    isSSO,
-    logoutClearData,
-    logout,
-    signinRedirect,
-    signinSilent,
-    signinSilentCallback,
-    signoutRedirectCallback,
-};
+export { createUserManager, isSSO, logout, signinSilent };

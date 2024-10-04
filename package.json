@@ -55,6 +55,7 @@
     },
     "scripts": {
         "dev": "vite",
+        "check": "tsc -b",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview --port 3000",
