@@ -6,6 +6,7 @@ import App from "./App";
 import "./index.css";
 import { OidcProvider } from "./components/OidcProvider.tsx";
 
+
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
 root.render(
