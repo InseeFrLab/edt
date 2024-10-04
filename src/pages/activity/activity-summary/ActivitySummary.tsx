@@ -7,7 +7,7 @@ import {
     makeStylesEdt,
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
-import { Box, Button, Divider, Switch, Typography } from "@mui/material";
+import { Box, Button, Divider, Link, Switch, Typography } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import ErrorIcon from "../../../assets/illustration/error/activity.svg?react";
 import InfoAlertIcon from "../../../assets/illustration/info-alert.svg?react";
@@ -254,6 +254,12 @@ const ActivitySummaryPage = () => {
         idSurvey = getSurveyIdFromUrl(context, location);
         context.idSurvey = idSurvey;
     });
+
+    const DownloadLink: React.FC<{ url: string; loading: boolean; error: boolean }> = ({ url, loading, error }) => {
+        if (loading) return <>{t("page.activity-summary.loading")}</>;
+        if (error) return <>{t("page.activity-summary.error")}</>;
+        return <Link href={url} download className={classes.downloadLink}>{t("page.activity-summary.download-pdf")}</Link>;
+    };
 
     const navToCard = useCallback(
         (iteration: number) => () => navToActivityOrRoute(iteration),
@@ -675,7 +681,7 @@ const ActivitySummaryPage = () => {
                                         ".pdf"
                                     }
                                 >
-                                    {() => t("page.activity-summary.download-pdf")}
+                                    <DownloadLink url="" loading={false} error={false} />
                                 </PDFDownloadLink>
                             </Button>
                             <Button
@@ -705,7 +711,7 @@ const ActivitySummaryPage = () => {
                                     ".pdf"
                                 }
                             >
-                                {() => t("page.activity-summary.download-pdf")}
+                                    <DownloadLink url="" loading={false} error={false} />
                             </PDFDownloadLink>
                         </Button>
                     )}
