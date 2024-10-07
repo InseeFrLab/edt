@@ -74,8 +74,8 @@ const ActivityDurationPage = () => {
         },
     };
 
-    let startTimeDay: Dayjs;
-    let endTimeDay: Dayjs;
+    let startTimeDay: Dayjs = dayjs();
+    let endTimeDay: Dayjs = dayjs();
 
     const isAfterEndTime = () => {
         const data = callbackHolder.getData();
