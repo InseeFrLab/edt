@@ -32,4 +32,11 @@ export default defineConfig({
             "@inseefr/lunatic",
         ],
     },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                api: 'modern-compiler'
+            }
+        }
+    }
 });
