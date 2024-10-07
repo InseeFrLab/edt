@@ -21,4 +21,15 @@ export default defineConfig({
     server: {
         port: 3000,
     },
+    resolve: {
+        dedupe: [
+            "@mui/material",
+            "@mui/styles",
+            "@mui/utils",
+            "@emotion/react",
+            "react",
+            "react-dom",
+            "@inseefr/lunatic",
+        ],
+    },
 });
