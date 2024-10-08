@@ -1,5 +1,8 @@
 import * as lunaticComponents from "@inseefr/lunatic/lib/index";
-import * as lunaticEDT from "@inseefrlab/lunatic-edt";
+import * as lunaticEDTInterface from "../interface/lunatic-edt";
+import * as lunaticEdtComponents from "../components/lunatic-edt";
+import * as lunaticEdtTheme from "../theme";
+import * as lunaticEdtUtils from "../utils/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "../components/commons/FlexCenter/FlexCenter";
 import { FieldNameEnum, FieldNameEnumActivity } from "../enumerations/FieldNameEnum";
@@ -10,6 +13,13 @@ import { isReviewer } from "../service/user-service";
 import { makeStylesEdt } from "../theme";
 import { important } from "../utils/lunatic-edt";
 
+const lunaticEDT = {
+    ...lunaticEdtComponents,
+    ...lunaticEDTInterface,
+    ...lunaticEdtTheme,
+    ...lunaticEdtUtils,
+};
+console.log("lunaticEdtObject", lunaticEDT);
 const { ...edtComponents } = lunaticEDT;
 
 const lunatic = { ...lunaticComponents };
