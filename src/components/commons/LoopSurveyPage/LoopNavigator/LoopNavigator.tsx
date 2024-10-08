@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, Button } from "@mui/material";
 import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios.svg?react";
 import ArrowForwardIosIcon from "../../../../assets/illustration/mui-icon/arrow-forward-ios.svg?react";
@@ -8,6 +8,7 @@ import { useCallback } from "react";
 import { isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { isDesktop } from "../../../../service/responsive";
+import { makeStylesEdt } from "../../../../theme";
 
 interface LoopNavigatorProps {
     onNext?(event?: React.MouseEvent): void;

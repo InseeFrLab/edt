@@ -1,11 +1,4 @@
-import {
-    formateDateToFrenchFormat,
-    generateDateFromStringInput,
-    important,
-    InfoProps,
-    makeStylesEdt,
-    TooltipInfo,
-} from "@inseefrlab/lunatic-edt";
+
 import { Box, Button, Modal, Typography } from "@mui/material";
 import InfoIcon from "../../../../assets/illustration/info.svg?react";
 import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg?react";
@@ -32,6 +25,10 @@ import { getLanguage } from "../../../../service/referentiel-service";
 import { isDesktop, isMobile, isPwa, isTablet } from "../../../../service/responsive";
 import { mockActivitiesRoutesOrGaps } from "../../../../service/survey-activity-service";
 import { v4 as uuidv4 } from "uuid";
+import { TooltipInfo } from "../../../../components/lunatic-edt";
+import { InfoProps } from "../../../../interface/lunatic-edt";
+import { makeStylesEdt } from "../../../../theme";
+import { formateDateToFrenchFormat, generateDateFromStringInput, important } from "../../../../utils/lunatic-edt";
 
 const HelpActivity = () => {
     const navigate = useNavigate();

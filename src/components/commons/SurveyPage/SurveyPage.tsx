@@ -1,4 +1,4 @@
-import { makeStylesEdt, ProgressBar } from "@inseefrlab/lunatic-edt";
+
 import { Box } from "@mui/material";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import LoopNavigator from "../../../components/commons/LoopSurveyPage/LoopNavigator/LoopNavigator";
@@ -17,6 +17,8 @@ import { getLastCompletedStep } from "../../../service/navigation-service";
 import { isMobile, isPwa } from "../../../service/responsive";
 import { activityComplementaryQuestionsStepperData } from "../../../service/stepper.service";
 import { getScore } from "../../../service/survey-activity-service";
+import { ProgressBar } from "../../lunatic-edt";
+import { makeStylesEdt } from "../../../theme";
 
 interface SurveyPageProps {
     children: JSX.Element[] | JSX.Element;

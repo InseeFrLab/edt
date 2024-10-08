@@ -1,4 +1,4 @@
-import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, Button, Paper, Typography } from "@mui/material";
 import InstallImg from "../../../../assets/illustration/mui-icon/download.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { getNavigatePath, navToHome } from "../../../../service/navigation-service";
 import { isPwa } from "../../../../service/responsive";
 import packageJson from "../../../../../package.json";
+import { makeStylesEdt } from "../../../../theme";
+import { important } from "../../../../utils/lunatic-edt";
 
 const HelpInstallPage = () => {
     const { classes, cx } = useStyles();

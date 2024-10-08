@@ -1,12 +1,4 @@
-import {
-    Alert,
-    formateDateToFrenchFormat,
-    generateDateFromStringInput,
-    Info,
-    InfoProps,
-    makeStylesEdt,
-    TooltipInfo,
-} from "@inseefrlab/lunatic-edt";
+
 import { Box, Divider, IconButton, Snackbar, Switch, Typography } from "@mui/material";
 import EmptyActivityImg from "../../../assets/illustration/empty-activity.svg?react";
 import ErrorIcon from "../../../assets/illustration/error/activity.svg?react";
@@ -75,6 +67,11 @@ import { isDemoMode, isSurveyLocked, lockSurvey } from "../../../service/survey-
 import { isReviewer } from "../../../service/user-service";
 import { getClassCondition, getSurveyIdFromUrl } from "../../../utils/utils";
 import { v4 as uuidv4 } from "uuid";
+import Alert from "../../../components/lunatic-edt/Alert";
+import { TooltipInfo, Info } from "../../../components/lunatic-edt";
+import { InfoProps } from "../../../interface/lunatic-edt";
+import { makeStylesEdt } from "../../../theme";
+import { formateDateToFrenchFormat, generateDateFromStringInput } from "../../../utils/lunatic-edt";
 
 const getSurveyDatePlanner = (idSurvey: string) => {
     return getSurveyDate(idSurvey) ?? "";

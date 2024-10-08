@@ -1,11 +1,4 @@
-import {
-    AutoCompleteActiviteOption,
-    CheckboxOneCustomOption,
-    findItemInAutoCompleteRef,
-    findItemInCategoriesNomenclature,
-    NomenclatureActivityOption,
-    SelectedActivity,
-} from "@inseefrlab/lunatic-edt";
+
 import { FieldNameEnum } from "../enumerations/FieldNameEnum";
 import { ReferentielsEnum } from "../enumerations/ReferentielsEnum";
 import i18n from "i18next";
@@ -15,6 +8,8 @@ import { validate } from "uuid";
 import { REFERENTIELS_ID } from "../interface/lunatic/Lunatic";
 import { Dispatch, SetStateAction } from "react";
 import { CreateIndex, optionsFiltered, setIndexSuggester } from "./suggester-service";
+import { findItemInAutoCompleteRef, findItemInCategoriesNomenclature } from "../components/lunatic-edt";
+import { AutoCompleteActiviteOption, NomenclatureActivityOption, CheckboxOneCustomOption, SelectedActivity } from "../interface/lunatic-edt";
 
 export const getAutoCompleteRef = (): AutoCompleteActiviteOption[] => {
     return getReferentiel(ReferentielsEnum.ACTIVITYAUTOCOMPLETE) as AutoCompleteActiviteOption[];
@@ -219,10 +214,9 @@ export const createNewActivityInCategory = (
         const category = findItemInCategoriesNomenclature(categoryId, referentiel);
         const categoryParent = category?.parent ?? category?.item;
         const parentCategoryId = categoryParent?.id;
-        const existCategory = category?.item.subs.find((cat: any) => cat.label == newItem.label);
-        console.log("existCategory", existCategory, category, parentCategoryId);
+        const existCategory = category?.item.subs?.find((cat: any) => cat.label == newItem.label) ?? false;
         if (!existCategory) {
-            category?.item.subs.push({
+            category?.item.subs?.push({
                 id: newItem.id,
                 rang: category?.item.rang + 1,
                 label: newItem.label,

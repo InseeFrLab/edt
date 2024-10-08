@@ -1,9 +1,10 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { ReactElement } from "react";
 import { isMobile } from "../../../service/responsive";
 import BreadcrumbsReviewer from "../BreadcrumbsReviewer/BreadcrumbsReviewer";
+import { makeStylesEdt } from "../../../theme";
 
 interface ReviewerPageProps {
     onClickHome: () => void;

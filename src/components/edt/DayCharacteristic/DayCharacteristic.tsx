@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, Divider, Popover, Typography } from "@mui/material";
 import AddCircleIcon from "../../../assets/illustration/mui-icon/add-circle.svg?react";
 import CommuteIcon from "../../../assets/illustration/mui-icon/commute.svg?react";
@@ -10,6 +10,7 @@ import WorkIcon from "../../../assets/illustration/mui-icon/work.svg?react";
 import { UserActivitiesCharacteristics } from "../../../interface/entity/ActivitiesSummary";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { makeStylesEdt } from "../../../theme";
 
 interface DayCharacteristicsProps {
     userActivitiesCharacteristics?: UserActivitiesCharacteristics;

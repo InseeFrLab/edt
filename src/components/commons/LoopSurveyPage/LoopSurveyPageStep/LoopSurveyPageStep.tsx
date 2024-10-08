@@ -1,4 +1,4 @@
-import { Alert, Info } from "@inseefrlab/lunatic-edt";
+
 import InfoIcon from "../../../../assets/illustration/info.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
 import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "../../../../constants/constants";
@@ -19,6 +19,7 @@ import { surveyReadOnly } from "../../../../service/survey-activity-service";
 import { getData, getValue } from "../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../utils/utils";
 import LoopSurveyPage from "../LoopSurveyPage";
+import { Alert, Info } from "../../../lunatic-edt";
 
 export interface LoopSurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;

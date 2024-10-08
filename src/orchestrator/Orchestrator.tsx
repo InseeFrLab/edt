@@ -1,6 +1,5 @@
 import * as lunaticComponents from "@inseefr/lunatic/lib/index";
 import * as lunaticEDT from "@inseefrlab/lunatic-edt";
-import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "../components/commons/FlexCenter/FlexCenter";
 import { FieldNameEnum, FieldNameEnumActivity } from "../enumerations/FieldNameEnum";
@@ -8,6 +7,8 @@ import { LunaticData, LunaticModel } from "../interface/lunatic/Lunatic";
 import React from "react";
 import { getCurrentPageSource } from "../service/orchestrator-service";
 import { isReviewer } from "../service/user-service";
+import { makeStylesEdt } from "../theme";
+import { important } from "../utils/lunatic-edt";
 
 const { ...edtComponents } = lunaticEDT;
 

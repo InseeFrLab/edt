@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import Box from "@mui/material/Box";
 import PersonSunCloseIcon from "../../../assets/illustration/card/person-sun-close.svg?react";
 import PersonSunIcon from "../../../assets/illustration/card/person-sun.svg?react";
@@ -11,6 +11,7 @@ import { getQualityScore } from "../../../service/summary-service";
 import { getActivitiesOrRoutes, getScore } from "../../../service/survey-activity-service";
 import { getStatutSurvey, isDemoMode } from "../../../service/survey-state-service";
 import { isReviewer } from "../../../service/user-service";
+import { makeStylesEdt } from "../../../theme";
 
 interface DayCardProps {
     labelledBy: string;

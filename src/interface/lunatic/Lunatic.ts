@@ -1,8 +1,4 @@
-import {
-    AutoCompleteActiviteOption,
-    CheckboxOneCustomOption,
-    NomenclatureActivityOption,
-} from "@inseefrlab/lunatic-edt";
+
 import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
 import { EdtSurveyRightsEnum } from "../../enumerations/EdtSurveyRightsEnum";
 import { ReferentielsEnum } from "../../enumerations/ReferentielsEnum";
@@ -10,6 +6,8 @@ import { SourcesEnum } from "../../enumerations/SourcesEnum";
 import { SurveysIdsEnum } from "../../enumerations/SurveysIdsEnum";
 import { ActivityRouteOrGap } from "../entity/ActivityRouteOrGap.ts";
 import { StateData, UserSurveys } from "../entity/Api.ts";
+import { NomenclatureActivityOption, AutoCompleteActiviteOption } from "../lunatic-edt/ActivityTypes.ts";
+import { CheckboxOneCustomOption } from "../lunatic-edt/CheckboxOptions.ts";
 
 export const REFERENTIELS_ID = "referentiels";
 export const SOURCES_MODELS = "sources";

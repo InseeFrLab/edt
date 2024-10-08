@@ -1,4 +1,4 @@
-import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, Button } from "@mui/material";
 import ArrowBackIosIcon from "../../../assets/illustration/mui-icon/arrow-back-ios.svg?react";
 import ArrowForwardIosIcon from "../../../assets/illustration/mui-icon/arrow-forward-ios.svg?react";
@@ -8,6 +8,8 @@ import { isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "../../../service/navigation-service";
+import { makeStylesEdt } from "../../../theme";
+import { important } from "../../../utils/lunatic-edt";
 
 interface NavigationStepProps {
     step: number;

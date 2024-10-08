@@ -1,8 +1,9 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useTranslation } from "react-i18next";
 import Icon from "../Icon/Icon";
+import { makeStylesEdt } from "../../../theme";
 
 interface AddActivityOrRouteStepperStepperProps {
     numberOfSteps: number;

@@ -1,10 +1,4 @@
-import {
-    WeeklyPlannerSpecificProps,
-    getArrayFromSession,
-    makeStylesEdt,
-    responsesHourChecker,
-} from "@inseefrlab/lunatic-edt";
-import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
+
 import { Box } from "@mui/material";
 import InfoIcon from "../../../assets/illustration/info.svg?react";
 import ExpandLessWhiteIcon from "../../../assets/illustration/mui-icon/expand-less-white.svg?react";
@@ -50,7 +44,10 @@ import {
     saveData,
 } from "../../../service/survey-service";
 import { isReviewer } from "../../../service/user-service";
-import { getSurveyIdFromUrl } from "../../../utils/utils";
+import { getArrayFromSession, getSurveyIdFromUrl } from "../../../utils/utils";
+import { responsesHourChecker, WeeklyPlannerSpecificProps } from "../../../interface/lunatic-edt";
+import { IODataStructure } from "../../../interface/lunatic-edt/WeeklyPlannerTypes";
+import { makeStylesEdt } from "../../../theme";
 
 
 const WeeklyPlannerPage = () => {

@@ -1,4 +1,5 @@
-import { Info, InfoProps, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
+
 import { Box, Button, Typography } from "@mui/material";
 import InfoIcon from "../../assets/illustration/info.svg?react";
 import SendIcon from "../../assets/illustration/mui-icon/send.svg?react";
@@ -25,6 +26,9 @@ import { isPwa } from "../../service/responsive";
 import { surveyReadOnly } from "../../service/survey-activity-service";
 import { getCurrentPage, initializeSurveysDatasCache, saveData, setValue } from "../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../utils/utils";
+import { InfoProps } from "../../interface/lunatic-edt";
+import { Info } from "../../components/lunatic-edt";
+import { makeStylesEdt } from "../../theme";
 
 const isActivity = () => {
     return getCurrentSurveyRootPage() === EdtRoutesNameEnum.ACTIVITY;

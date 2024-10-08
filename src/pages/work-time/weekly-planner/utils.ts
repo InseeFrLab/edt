@@ -1,4 +1,5 @@
-import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
+
+import { IODataStructure } from "../../../interface/lunatic-edt/WeeklyPlannerTypes";
 import { LunaticData } from "../../../interface/lunatic/Lunatic";
 
 /**

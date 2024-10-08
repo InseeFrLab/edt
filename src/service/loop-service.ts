@@ -1,4 +1,4 @@
-import { NomenclatureActivityOption } from "@inseefrlab/lunatic-edt";
+
 import {
     CODES_ACTIVITY_IGNORE_GOAL,
     CODES_ACTIVITY_IGNORE_LOCATION,
@@ -44,6 +44,7 @@ import {
     saveAndNavLocally,
 } from "./navigation-service";
 import { getNomenclatureRef } from "./referentiel-service";
+import { NomenclatureActivityOption } from "../interface/lunatic-edt";
 
 const loopPageInfo: Map<LoopEnum, LoopData> = new Map();
 loopPageInfo.set(LoopEnum.ACTIVITY_OR_ROUTE, {

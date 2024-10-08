@@ -1,4 +1,4 @@
-import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, Paper, Typography } from "@mui/material";
 import ContactImg from "../../../assets/illustration/contact.svg?react";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "../../../service/navigation-service";
 import { isMobile as isMobileImage, isPwa, isTablet } from "../../../service/responsive";
 import packageJson from "../../../../package.json";
+import { makeStylesEdt } from "../../../theme";
+import { important } from "../../../utils/lunatic-edt";
 
 const ContactPage = () => {
     const { classes, cx } = useStyles({ "innerHeight": window.innerHeight });

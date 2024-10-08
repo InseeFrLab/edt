@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import Box from "@mui/material/Box";
 import CalendarMonthIcon from "../../../assets/illustration/mui-icon/calendar-month.svg?react";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { isMobile } from "../../../service/responsive";
 import { isDemoMode } from "../../../service/survey-service";
 import { isReviewer } from "../../../service/user-service";
+import { makeStylesEdt } from "../../../theme";
 
 interface WeekCardProps {
     labelledBy: string;

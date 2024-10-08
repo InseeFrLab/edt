@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { makeStylesEdt } from "../../theme/make-style-edt.ts";
 import { Box } from "@mui/material";
 import { Default } from "../../components/commons/Responsive/Responsive";
 import SurveySelecter from "../../components/edt/SurveySelecter/SurveySelecter";

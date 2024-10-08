@@ -1,10 +1,11 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, Button, Divider } from "@mui/material";
 import ArrowForwardIosIcon from "../../../assets/illustration/mui-icon/arrow-forward-ios.svg?react";
 import CloseIcon from "../../../assets/illustration/mui-icon/close.svg?react";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import { useTranslation } from "react-i18next";
 import Icon from "../Icon/Icon";
+import { makeStylesEdt } from "../../../theme";
 
 interface AddActivityOrRouteMobileProps {
     handleClose(): void;

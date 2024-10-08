@@ -1,4 +1,4 @@
-import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
 import ExpandMoreIcon from "../../../assets/illustration/mui-icon/expand-more-white.svg?react";
 import CatIcon from "../../../assets/illustration/person/cat.svg?react";
@@ -31,6 +31,8 @@ import {
     getSurveyRights,
     getValue,
 } from "../../../service/survey-service";
+import { important } from "../../../utils/lunatic-edt";
+import { makeStylesEdt } from "../../../theme";
 
 interface PersonCardProps {
     values: Person[];

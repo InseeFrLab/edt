@@ -20,11 +20,6 @@ import {
     validateLocally,
 } from "../../../../../service/navigation-service";
 
-import {
-    ActivitySelecterSpecificProps,
-    Alert,
-    AutoCompleteActiviteOption,
-} from "@inseefrlab/lunatic-edt";
 import CatIcon100 from "../../../../../assets/illustration/activity-categories/1.svg?react";
 import CatIcon200 from "../../../../../assets/illustration/activity-categories/2.svg?react";
 import CatIcon300 from "../../../../../assets/illustration/activity-categories/3.svg?react";
@@ -56,6 +51,8 @@ import { CreateIndexation, getIndexSuggester } from "../../../../../service/sugg
 import { surveyReadOnly } from "../../../../../service/survey-activity-service";
 import { getData } from "../../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../../utils/utils";
+import Alert from "../../../../../components/lunatic-edt/Alert";
+import { AutoCompleteActiviteOption, ActivitySelecterSpecificProps } from "../../../../../interface/lunatic-edt";
 
 const MainActivityPage = () => {
     const { t } = useTranslation();

@@ -1,4 +1,4 @@
-import { important, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
+
 import { Box, Button, Modal } from "@mui/material";
 import ImageHelpIcon from "../../../../assets/illustration/hourpicker.svg?react";
 import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg?react";
@@ -21,6 +21,9 @@ import { getLoopPageSubpage, getStepData } from "../../../../service/loop-steppe
 import { getIdSurveyContext, getNavigatePath, navToHome } from "../../../../service/navigation-service";
 import { getActivitiesOrRoutes, mockData } from "../../../../service/survey-activity-service";
 import { getSource } from "../../../../service/survey-service";
+import { TimepickerSpecificProps } from "../../../../interface/lunatic-edt";
+import { makeStylesEdt } from "../../../../theme";
+import { important } from "../../../../utils/lunatic-edt";
 
 const HelpDuration = () => {
     const navigate = useNavigate();

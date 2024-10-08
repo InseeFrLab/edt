@@ -1,10 +1,4 @@
-import {
-    AutoCompleteActiviteOption,
-    getProgressBarValue,
-    SelectedActivity,
-    transformToWeeklyPlannerDataType,
-} from "@inseefrlab/lunatic-edt";
-import { IODataStructure } from "@inseefrlab/lunatic-edt/src/interface/WeeklyPlannerTypes";
+
 import { edtActivitySurvey } from "../assets/surveyData";
 import { DAY_LABEL, FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "../constants/constants";
 import dayjs from "dayjs";
@@ -41,6 +35,9 @@ import { getStatutSurvey } from "./survey-state-service";
 import { ModePersistenceEnum } from "../enumerations/ModePersistenceEnum";
 import { getQualityScore } from "./summary-service";
 import { t } from "i18next";
+import { AutoCompleteActiviteOption, SelectedActivity } from "../interface/lunatic-edt/ActivityTypes";
+import { transformToWeeklyPlannerDataType, getProgressBarValue } from "../components/lunatic-edt";
+import { IODataStructure } from "../interface/lunatic-edt/WeeklyPlannerTypes";
 
 const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: ActivityRouteOrGap) => {
     const mainActivityId = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_ID, i) as string;

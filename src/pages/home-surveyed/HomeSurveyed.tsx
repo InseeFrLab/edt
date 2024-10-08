@@ -1,4 +1,4 @@
-import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, Button } from "@mui/material";
 import DisconnectIcon from "../../assets/illustration/disconnect.svg?react";
 import logo from "../../assets/illustration/logo.png";
@@ -50,6 +50,8 @@ import {
 import { isDemoMode, lockAllSurveys, validateAllEmptySurveys } from "../../service/survey-state-service";
 import { groupBy } from "../../utils/utils";
 import { useAuth } from "../../hooks/useAuth.ts";
+import Alert from "../../components/lunatic-edt/Alert/Alert.tsx";
+import { makeStylesEdt } from "../../theme/make-style-edt.ts";
 
 const HomeSurveyedPage = () => {
     const { t } = useTranslation();

@@ -1,4 +1,4 @@
-import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import DisconnectIcon from "../../assets/illustration/disconnect.svg?react";
@@ -16,6 +16,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { getNavigatePath } from "../../service/navigation-service";
 import { initializeSurveysIdsDemo } from "../../service/survey-service";
 import { useAuth } from "../../hooks/useAuth.ts";
+import { makeStylesEdt } from "../../theme/make-style-edt.ts";
+import Alert from "../../components/lunatic-edt/Alert/Alert.tsx";
 
 const HomeReviewerPage = () => {
     const { classes } = useStyles();

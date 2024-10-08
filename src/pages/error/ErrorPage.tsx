@@ -1,4 +1,4 @@
-import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, Button, Typography } from "@mui/material";
 import { edtActivitySurvey } from "../../assets/surveyData";
 import DisconnectIcon from "../../assets/illustration/disconnect.svg?react";
@@ -21,6 +21,8 @@ import { NavigateFunction, useNavigate } from "react-router-dom";
 import { getNavigatePath, setEnviro } from "../../service/navigation-service";
 import { getData, getSurveyRights, surveysIds } from "../../service/survey-service";
 import { useAuth } from "../../hooks/useAuth.ts";
+import Alert from "../../components/lunatic-edt/Alert/Alert.tsx";
+import { makeStylesEdt } from "../../theme/make-style-edt.ts";
 
 export type ErrorPageProps = {
     errorCode?: ErrorCodeEnum;

@@ -1,4 +1,4 @@
-import { Alert, makeStylesEdt, TimepickerSpecificProps } from "@inseefrlab/lunatic-edt";
+
 import { IconButton, Snackbar } from "@mui/material";
 import ErrorIcon from "../../../../assets/illustration/error/activity.svg?react";
 import CloseIcon from "../../../../assets/illustration/mui-icon/close.svg?react";
@@ -33,6 +33,9 @@ import { isDesktop } from "../../../../service/responsive";
 import { getActivitiesOrRoutes, surveyReadOnly } from "../../../../service/survey-activity-service";
 import { getData, getValue, getValueOfData, saveData } from "../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../utils/utils";
+import Alert from "../../../../components/lunatic-edt/Alert/Alert";
+import { TimepickerSpecificProps } from "../../../../interface/lunatic-edt";
+import { makeStylesEdt } from "../../../../theme";
 
 const ActivityDurationPage = () => {
     const navigate = useNavigate();

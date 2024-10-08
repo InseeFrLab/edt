@@ -1,9 +1,11 @@
-import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, Button, Divider, Popover, Typography } from "@mui/material";
 import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios.svg?react";
 import MoreHorizontalImage from "../../../../assets/illustration/mui-icon/more-horizontal.svg?react";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { makeStylesEdt } from "../../../../theme";
+import { important } from "../../../../utils/lunatic-edt";
 
 interface SurveyPageEditHeaderProps {
     firstName: string;

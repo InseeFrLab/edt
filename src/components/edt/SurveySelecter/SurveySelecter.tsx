@@ -1,10 +1,11 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { AppBar, Box, Divider, Tab, Tabs, Typography } from "@mui/material";
 import PersonSunIcon from "../../../assets/illustration/card/person-sun.svg?react";
 import CalendarMonthIcon from "../../../assets/illustration/mui-icon/calendar-month.svg?react";
 import { TabData } from "../../../interface/component/Component";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { makeStylesEdt } from "../../../theme";
 
 interface SurveySelecterProps {
     id: string;

@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Breadcrumbs } from "@mui/material";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getFlatLocalStorageValue } from "../../../service/local-storage-service";
 import { getNavigatePath } from "../../../service/navigation-service";
+import { makeStylesEdt } from "../../../theme";
 
 interface BreadcrumbsReviewerProps {
     labelBreadcrumbPrincipal: string;

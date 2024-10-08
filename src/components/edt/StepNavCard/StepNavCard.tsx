@@ -1,9 +1,9 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Typography } from "@mui/material";
 import ArrowForwardIosIcon from "../../../assets/illustration/mui-icon/arrow-forward-ios.svg?react";
 import { useTranslation } from "react-i18next";
 import { StepData } from "../../../service/loop-stepper-service";
 import Icon from "../Icon/Icon";
+import { makeStylesEdt } from "../../../theme";
 
 interface StepNavCardProps {
     onClick(): void;

@@ -1,6 +1,7 @@
-import { ModalEdt } from "@inseefrlab/lunatic-edt";
+
 import FelicitationsIcon from "../../../../assets/illustration/felicitations.svg?react";
 import { useTranslation } from "react-i18next";
+import ModalEdt from "../../../lunatic-edt/ModalEdt";
 
 interface FelicitationModalProps {
     content: string;

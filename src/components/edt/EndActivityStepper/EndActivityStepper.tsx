@@ -1,6 +1,7 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, CircularProgress } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import { makeStylesEdt } from "../../../theme";
 
 interface EndActivityStepperProps {
     numberOfSteps: number;

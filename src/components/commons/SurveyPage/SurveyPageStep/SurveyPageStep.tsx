@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box } from "@mui/material";
 import ExtensionIcon from "../../../../assets/illustration/mui-icon/extension.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
@@ -28,6 +28,7 @@ import { surveyReadOnly } from "../../../../service/survey-activity-service";
 import { getData, getPrintedFirstName, getPrintedSurveyDate } from "../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../utils/utils";
 import SurveyPage from "../SurveyPage";
+import { makeStylesEdt } from "../../../../theme";
 
 export interface SurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;

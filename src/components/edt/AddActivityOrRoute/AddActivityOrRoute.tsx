@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { makeStylesEdt } from "../../theme/make-style-edt.ts";
 import { Box, Modal } from "@mui/material";
 import ActivityIcon from "../../../assets/illustration/activity.svg?react";
 import RouteIcon from "../../../assets/illustration/route.svg?react";

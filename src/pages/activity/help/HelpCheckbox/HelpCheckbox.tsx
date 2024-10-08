@@ -1,4 +1,4 @@
-import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, Button, Modal } from "@mui/material";
 import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg?react";
 import ArrowForwardIosIcon from "../../../../assets/illustration/mui-icon/arrow-forward-ios-white.svg?react";
@@ -32,6 +32,8 @@ import {
 } from "../../../../service/navigation-service";
 import { mockData } from "../../../../service/survey-activity-service";
 import { getSource } from "../../../../service/survey-service";
+import { makeStylesEdt } from "../../../../theme/make-style-edt";
+import { important } from "../../../../utils/lunatic-edt";
 
 const HelpCheckbox = () => {
     const navigate = useNavigate();

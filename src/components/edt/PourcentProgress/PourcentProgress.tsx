@@ -1,5 +1,6 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box } from "@mui/material";
+import { makeStylesEdt } from "../../../theme";
 
 interface PourcentProgressProps {
     labelledBy: string;

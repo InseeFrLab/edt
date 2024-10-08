@@ -1,4 +1,4 @@
-import { Alert, CheckboxBooleanEdtSpecificProps } from "@inseefrlab/lunatic-edt";
+
 import ErrorIcon from "../../../../assets/illustration/error/screen.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
 import LoopSurveyPage from "../../../../components/commons/LoopSurveyPage/LoopSurveyPage";
@@ -28,6 +28,8 @@ import {
 } from "../../../../service/navigation-service";
 import { getValue } from "../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../utils/utils";
+import Alert from "../../../../components/lunatic-edt/Alert/Alert";
+import { CheckboxBooleanEdtSpecificProps } from "../../../../interface/lunatic-edt/ComponentsSpecificProps";
 
 const WithScreenPage = () => {
     const { t } = useTranslation();

@@ -1,10 +1,4 @@
-import {
-    ActivitySelecterSpecificProps,
-    Alert,
-    AutoCompleteActiviteOption,
-    important,
-    makeStylesEdt,
-} from "@inseefrlab/lunatic-edt";
+
 import { Box, Button, Modal } from "@mui/material";
 import CatIcon100 from "../../../../assets/illustration/activity-categories/1.svg?react";
 import CatIcon200 from "../../../../assets/illustration/activity-categories/2.svg?react";
@@ -49,6 +43,11 @@ import { getAutoCompleteRef, getNomenclatureRef } from "../../../../service/refe
 import { CreateIndexation, getIndexSuggester } from "../../../../service/suggester-service";
 import { mockData } from "../../../../service/survey-activity-service";
 import { addToAutocompleteActivityReferentiel, getSource } from "../../../../service/survey-service";
+import { AutoCompleteActiviteOption } from "../../../../interface/lunatic-edt/ActivityTypes";
+import { ActivitySelecterSpecificProps } from "../../../../interface/lunatic-edt/ComponentsSpecificProps";
+import Alert from "../../../../components/lunatic-edt/Alert";
+import { makeStylesEdt } from "../../../../theme/make-style-edt";
+import { important } from "../../../../utils/lunatic-edt/utils";
 
 const HelpCategoryActivity = () => {
     const navigate = useNavigate();

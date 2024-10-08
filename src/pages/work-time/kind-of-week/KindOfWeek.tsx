@@ -1,4 +1,4 @@
-import { Alert, CheckboxOneSpecificProps } from "@inseefrlab/lunatic-edt";
+
 import CalendarWeekImg from "../../../assets/illustration/kind-of-week-categories/calendar-week.svg?react";
 import KindOfWeekImg from "../../../assets/illustration/kind-of-week.svg?react";
 import ExtensionIcon from "../../../assets/illustration/mui-icon/extension.svg?react";
@@ -24,6 +24,8 @@ import {
 import { getKindOfWeekRef } from "../../../service/referentiel-service";
 import { getData, getPrintedFirstName } from "../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../utils/utils";
+import { CheckboxOneSpecificProps } from "../../../interface/lunatic-edt";
+import { Alert } from "../../../components/lunatic-edt";
 
 const KindOfWeekPage = () => {
     const context: OrchestratorContext = useOutletContext();

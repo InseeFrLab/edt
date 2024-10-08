@@ -6,9 +6,9 @@ import { useTranslation } from "react-i18next";
 import DefaultErrorIcon from "../../assets/illustration/error/error.svg?react";
 import PowerSettingsIcon from "../../assets/illustration/mui-icon/power-settings-white.svg?react";
 import PageIcon from "../../components/commons/PageIcon/PageIcon";
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { navToHome } from "../../service/navigation-service";
 import { useAuth } from "../../hooks/useAuth.ts";
+import { makeStylesEdt } from "../../theme/make-style-edt.ts";
 
 const ErrorProvider = () => {
     const { t } = useTranslation();

@@ -1,9 +1,4 @@
-import {
-    important,
-    makeStylesEdt,
-    responsesHourChecker,
-    WeeklyPlannerSpecificProps,
-} from "@inseefrlab/lunatic-edt";
+
 import { Box, Button, Modal } from "@mui/material";
 import InfoIcon from "../../../../assets/illustration/info.svg?react";
 import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios-white.svg?react";
@@ -43,8 +38,11 @@ import {
     getPrintedFirstName,
     getSource,
     getSurveyDate,
-    saveDataLocally,
+    saveData,
 } from "../../../../service/survey-service";
+import { WeeklyPlannerSpecificProps, responsesHourChecker } from "../../../../interface/lunatic-edt";
+import { makeStylesEdt } from "../../../../theme";
+import { important } from "../../../../utils/lunatic-edt";
 
 const HelpWorkTime = () => {
     const navigate = useNavigate();
@@ -101,7 +99,7 @@ const HelpWorkTime = () => {
             dates: "DATES",
             datesStarted: "DATES_STARTED",
         },
-        saveAll: () => saveDataLocally(idSurvey, data),
+        saveAll: () => saveData(idSurvey, data, true),
         language: getLanguage(),
         helpStep: helpStep,
         moreIcon: <MoreHorizontalIcon aria-label={t("accessibility.asset.mui-icon.more-horizontal")} />,

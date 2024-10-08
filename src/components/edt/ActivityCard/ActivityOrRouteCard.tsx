@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, Button, Divider, Popover, Typography } from "@mui/material";
 import activityErrorIconSvg from "../../../assets/illustration/error/activity.svg?react";
 import locationErrorIconSvg from "../../../assets/illustration/error/location.svg?react";
@@ -15,6 +15,7 @@ import { type TFunction } from "i18next";
 import { EdtRoutesNameEnum } from "../../../routes/EdtRoutesMapping";
 import { filtrePage } from "../../../service/loop-service";
 import Icon from "../Icon/Icon";
+import { makeStylesEdt } from "../../../theme";
 
 interface ActivityOrRouteCardProps {
     labelledBy: string;

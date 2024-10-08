@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { makeStylesEdt } from "../../theme/make-style-edt.ts";
 import { Box, Button, Typography } from "@mui/material";
 import PageIcon from "../../components/commons/PageIcon/PageIcon";
 import HomeIcon from "../../assets/illustration/mui-icon/home.svg?react";

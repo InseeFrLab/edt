@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, Typography } from "@mui/material";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import SurveyPage from "../../../components/commons/SurveyPage/SurveyPage";
@@ -14,6 +14,7 @@ import { loopActivityRouteStepperData, loopActivityStepperData } from "../../../
 import { getLoopParameterizedNavigatePath, navFullPath } from "../../../service/navigation-service";
 import { surveyReadOnly } from "../../../service/survey-activity-service";
 import { getSurveyIdFromUrl } from "../../../utils/utils";
+import { makeStylesEdt } from "../../../theme";
 
 const EditActivityInformationPage = () => {
     const { t } = useTranslation();

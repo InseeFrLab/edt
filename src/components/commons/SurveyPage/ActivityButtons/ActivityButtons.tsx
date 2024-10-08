@@ -1,9 +1,11 @@
-import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Button } from "@mui/material";
 import AddIcon from "../../../../assets/illustration/mui-icon/add.svg?react";
 import FlexCenter from "../../../../components/commons/FlexCenter/FlexCenter";
 import { isIOS, isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
+import { makeStylesEdt } from "../../../../theme";
+import { important } from "../../../../utils/lunatic-edt";
 
 interface ActivityButtonsProps {
     onClickFinish(idSurvey: any): void;

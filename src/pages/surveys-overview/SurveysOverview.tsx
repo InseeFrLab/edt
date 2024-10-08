@@ -1,4 +1,4 @@
-import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import {
     Button,
     Checkbox,
@@ -38,6 +38,8 @@ import {
     saveDatas,
 } from "../../service/survey-service";
 import { getUniquesValues } from "../../utils/utils";
+import { important } from "../../utils/lunatic-edt/utils";
+import { makeStylesEdt } from "../../theme/make-style-edt";
 
 const getListCampaigns = (dataHouseholds: Household[], t: TFunction<"translation", undefined>) => {
     const subCampaignIds = getUniquesValues(dataHouseholds.map(household => household.campaingId)).map(

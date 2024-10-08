@@ -1,4 +1,4 @@
-import { generateDateFromStringInput, getFrenchDayFromDate } from "@inseefrlab/lunatic-edt";
+
 import dayjs from "dayjs";
 import { EdtRoutesNameEnum } from "../enumerations/EdtRoutesNameEnum";
 import { EdtSurveyRightsEnum } from "../enumerations/EdtSurveyRightsEnum";
@@ -79,6 +79,7 @@ import {
     isSurveyValidated,
 } from "./survey-state-service";
 import { createDataWeeklyPlanner } from "../pages/work-time/weekly-planner/utils";
+import { generateDateFromStringInput, getFrenchDayFromDate } from "../utils/lunatic-edt";
 
 const datas = new Map<string, LunaticData>();
 const oldDatas = new Map<string, LunaticData>();

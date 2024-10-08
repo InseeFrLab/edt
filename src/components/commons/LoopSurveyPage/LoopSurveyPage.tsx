@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box } from "@mui/material";
 import AddActivityOrRouteStepper from "../../../components/edt/AddActivityOrRouteStepper/AddActivityOrRouteStepper";
 import { LoopEnum } from "../../../enumerations/LoopEnum";
@@ -13,6 +13,7 @@ import { getSurveyIdFromUrl } from "../../../utils/utils";
 import LoopNavigator from "./LoopNavigator/LoopNavigator";
 import LoopSurveyPageHeader from "./LoopSurveyPageHeader/LoopSurveyPageHeader";
 import LoopSurveyPageSimpleHeader from "./LoopSurveyPageSimpleHeader/LoopSurveyPageSimpleHeader";
+import { makeStylesEdt } from "../../../theme";
 
 interface LoopSurveyPageProps {
     onNext?(event?: React.MouseEvent): void;

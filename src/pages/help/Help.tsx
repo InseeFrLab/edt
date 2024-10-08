@@ -1,4 +1,4 @@
-import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
+import { makeStylesEdt } from "../../theme/make-style-edt.ts";
 import { Box, Paper, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import packageJson from "../../../package.json";

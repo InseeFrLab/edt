@@ -1,4 +1,4 @@
-import { Info, important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box } from "@mui/material";
 import InfoIcon from "../../../assets/illustration/info.svg?react";
 import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
@@ -11,6 +11,9 @@ import { isMobile as isMobileScreen } from "../../../service/responsive";
 import FlexCenter from "../FlexCenter/FlexCenter";
 import NavigationStep from "../NavigationStep/NavigationStep";
 import SurveyPageSimpleHeader from "../SurveyPage/SurveyPageSimpleHeader/SurveyPageSimpleHeader";
+import { makeStylesEdt } from "../../../theme";
+import { important } from "../../../utils/lunatic-edt";
+import { Info } from "../../lunatic-edt";
 
 interface InstallPageStepProps {
     icon: ReactElement<any>;

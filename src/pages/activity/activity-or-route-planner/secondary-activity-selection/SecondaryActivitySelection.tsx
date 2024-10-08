@@ -1,4 +1,4 @@
-import { CheckboxOneCustomOption } from "@inseefrlab/lunatic-edt";
+
 import ErrorIcon from "../../../../assets/illustration/error/activity.svg?react";
 import AddLightBlueIcon from "../../../../assets/illustration/mui-icon/add-light-blue.svg?react";
 import AddWhiteIcon from "../../../../assets/illustration/mui-icon/add.svg?react";
@@ -24,6 +24,7 @@ import { CreateIndexation, getIndexSuggester } from "../../../../service/suggest
 import { surveyReadOnly } from "../../../../service/survey-activity-service";
 import { getValue } from "../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../utils/utils";
+import { CheckboxOneCustomOption } from "../../../../interface/lunatic-edt";
 
 const SecondaryActivitySelectionPage = () => {
     const context: OrchestratorContext = useOutletContext();

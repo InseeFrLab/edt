@@ -1,10 +1,11 @@
-import { theme } from "@inseefrlab/lunatic-edt";
+
 import { CssBaseline, StyledEngineProvider, ThemeProvider } from "@mui/material";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import { OidcProvider } from "./components/OidcProvider.tsx";
+import { theme } from "./theme/theme.tsx";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);

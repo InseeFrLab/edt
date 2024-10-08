@@ -1,4 +1,4 @@
-import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
+
 import { Box, Divider, Typography } from "@mui/material";
 import { EdtRoutesNameEnum } from "../../../enumerations/EdtRoutesNameEnum";
 import { LocalStorageVariableEnum } from "../../../enumerations/LocalStorageVariableEnum";
@@ -6,6 +6,8 @@ import { ReactElement, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "../../../service/navigation-service";
 import { isMobile } from "../../../service/responsive";
+import { makeStylesEdt } from "../../../theme";
+import { important } from "../../../utils/lunatic-edt";
 
 interface HouseholdCardProps {
     idHousehold: string;
