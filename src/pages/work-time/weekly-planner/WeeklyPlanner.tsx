@@ -100,7 +100,7 @@ const WeeklyPlannerPage = () => {
         }
     };
 
-    const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
+    const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]], localSaveOnly?: boolean): void => {
         const dataBdd = getData(idSurvey);
         if (data && data[1].length > 0) {
             if (dataBdd.COLLECTED) {
@@ -118,7 +118,7 @@ const WeeklyPlannerPage = () => {
                     dataBdd.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
                     dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
                 }
-                saveData(idSurvey, dataBdd);
+                saveData(idSurvey, dataBdd, localSaveOnly);
             }
         }
     };
@@ -235,8 +235,8 @@ const WeeklyPlannerPage = () => {
 
     const validateAndNav = (): void => {
         if (displayDayOverview) {
-            saveData(idSurvey, callbackHolder.getData());
             if (isPlaceWorkDisplayed) {
+                saveData(idSurvey, callbackHolder.getData());
                 setDisplayDayOverview(true);
                 setIsPlaceWorkDisplayed(false);
                 isPlaceWorkDisplayed = false;
