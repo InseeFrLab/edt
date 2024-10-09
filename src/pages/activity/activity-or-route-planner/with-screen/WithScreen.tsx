@@ -78,19 +78,17 @@ const WithScreenPage = () => {
             );
         },
         onSelectValue: () => {
-            validate(idSurvey).then(() => {
-                saveAndNav(
-                    idSurvey,
-                    isCloture
-                        ? summaryRoutePath
-                        : getCurrentNavigatePath(
-                              idSurvey,
-                              EdtRoutesNameEnum.ACTIVITY,
-                              getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                              context.source,
-                          ),
-                );
-            });
+            saveAndNav(
+                idSurvey,
+                isCloture
+                    ? summaryRoutePath
+                    : getCurrentNavigatePath(
+                        idSurvey,
+                        EdtRoutesNameEnum.ACTIVITY,
+                        getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                        context.source,
+                    ),
+            );
         },
         labels: getLabels("with-screen-selecter"),
         errorIcon: <ErrorIcon />,
