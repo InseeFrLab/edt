@@ -133,6 +133,7 @@ const MainActivityPage = () => {
         },
         nextClickCallback: (routeToGoal: boolean) => {
             const codeActivity = getValueOfActivity(callbackHolder.getData(), currentIteration) ?? "";
+            console.log('Main Activity EDT next click callback', codeActivity);
             const skip = filtrePage(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL, codeActivity);
             if (routeToGoal && !skip) {
                 saveAndLoopNavigate(
@@ -154,6 +155,7 @@ const MainActivityPage = () => {
             }
         },
         onSelectValue: () => {
+            console.log('Value selected')
             validateLocally(idSurvey).then(() => {
                 skipNextPage(idSurvey, context.source, currentIteration, currentPage);
             });

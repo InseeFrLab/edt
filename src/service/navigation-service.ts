@@ -267,12 +267,12 @@ const validate = (idSurvey: string): Promise<void | LunaticData> => {
 };
 
 const validateLocally = (idSurvey: string): Promise<void | LunaticData> => {
-    return saveDataLocally(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }, true).then(
+    return saveData(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }, true).then(
         () => {
-            return saveDataLocally(
+            return saveData(
                 idSurvey,
                 { ...getData(idSurvey), ..._callbackHolder.getData() },
-                false,
+                true,
             );
         },
     );
