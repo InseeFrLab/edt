@@ -35,7 +35,7 @@ import { ActivityRouteOrGap } from "../../../interface/entity/ActivityRouteOrGap
 import { LunaticModel, OrchestratorContext } from "../../../interface/lunatic/Lunatic";
 import { callbackHolder } from "../../../orchestrator/Orchestrator";
 import ErrorPage from "../../../pages/error/ErrorPage";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type TFunction } from "i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
@@ -255,11 +255,21 @@ const ActivitySummaryPage = () => {
         context.idSurvey = idSurvey;
     });
 
-    const DownloadLink: React.FC<{ url: string; loading: boolean; error: boolean }> = ({ url, loading, error }) => {
-        if (loading) return <>{t("page.activity-summary.loading")}</>;
-        if (error) return <>{t("page.activity-summary.error")}</>;
-        return <Link href={url} download className={classes.downloadLink}>{t("page.activity-summary.download-pdf")}</Link>;
-    };
+    const DownloadLink = useMemo(() => {
+        return React.memo(({
+            url,
+            loading = false,
+            error = false
+        }: {
+            url: string;
+            loading?: boolean;
+            error?: boolean
+        }) => {
+            if (loading) return <>{t("page.activity-summary.loading")}</>;
+            if (error) return <>{t("page.activity-summary.error")}</>;
+            return <Link href={url} download className={classes.downloadLink}>{t("page.activity-summary.download-pdf")}</Link>;
+        });
+    }, []);
 
     const navToCard = useCallback(
         (iteration: number) => () => navToActivityOrRoute(iteration),
@@ -681,7 +691,7 @@ const ActivitySummaryPage = () => {
                                         ".pdf"
                                     }
                                 >
-                                    <DownloadLink url="" loading={false} error={false} />
+                                    <DownloadLink url="" />
                                 </PDFDownloadLink>
                             </Button>
                             <Button
@@ -711,7 +721,7 @@ const ActivitySummaryPage = () => {
                                     ".pdf"
                                 }
                             >
-                                    <DownloadLink url="" loading={false} error={false} />
+                                    <DownloadLink url="" />
                             </PDFDownloadLink>
                         </Button>
                     )}

@@ -209,7 +209,8 @@ export const remoteGetSurveyStateData = (
                 } else if (err.response?.status != 404) {
                     setError?.(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
                 }
-                //TODO: Temp fix for reviewer refresh mode
+                //Temp fix for reviewer refresh mode when state data is not available (when survey is not started) 
+                //data is initialized on first login but state data isn't 
                 const stateData = initStateData()
                 resolve(stateData)
             });
