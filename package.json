@@ -5,7 +5,7 @@
     "licence": "MIT",
     "dependencies": {
         "@inseefr/lunatic": "2.0.7-v2",
-        "@inseefrlab/lunatic-edt": "^0.14.2",
+        "@inseefrlab/lunatic-edt": "^0.14.3",
         "@mui/material": "^6.0.2",
         "@mui/styles": "^6.0.2",
         "@mui/utils": "^6.0.2",
