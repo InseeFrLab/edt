@@ -218,7 +218,6 @@ export const createNewActivityInCategory = (
         const categoryParent = category?.parent ?? category?.item;
         const parentCategoryId = categoryParent?.id;
         const existCategory = category?.item.subs.find((cat: any) => cat.label == newItem.label);
-
         if (!existCategory) {
             category?.item.subs.push({
                 id: newItem.id,
@@ -226,6 +225,7 @@ export const createNewActivityInCategory = (
                 label: newItem.label,
             });
             const indexParentCategory = ref.findIndex((opt: any) => opt.id == parentCategoryId);
+
 
             ref[indexParentCategory] = categoryParent;
             return updateReferentielAutoComplete(currentData, newItem, newActivity, index, setIndex);

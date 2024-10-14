@@ -11,9 +11,9 @@ import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { getLabels, getLabelsWhenQuit } from "../../../../service/alert-service";
-import { getLoopInitialPage, skipBackPage, skipNextPage } from "../../../../service/loop-service";
+import { filtrePage, getLoopInitialPage, getValueOfActivity, skipBackPage, skipNextPage } from "../../../../service/loop-service";
 import { getLoopPageSubpage, getStepData } from "../../../../service/loop-stepper-service";
-import { onClose, onNext, onPrevious, setEnviro, validateLocally } from "../../../../service/navigation-service";
+import { onClose, onNext, onPrevious, setEnviro, validate, validateLocally } from "../../../../service/navigation-service";
 import { getLanguage } from "../../../../service/referentiel-service";
 import { surveyReadOnly } from "../../../../service/survey-activity-service";
 import { getData, getValue } from "../../../../service/survey-service";
@@ -93,6 +93,20 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
             <IconError aria-label={t("component.activity-selecter.clickable-list-icon-no-result-alt")} />
         ),
         onSelectValue: () => {
+            //Filter whether the page should be saved or not (when the withScreen page is not displayed)
+            const codeActivity = getValueOfActivity(getData(idSurvey), currentIteration) ?? "";
+            const shouldSave = filtrePage(EdtRoutesNameEnum.WITH_SCREEN, codeActivity);
+            shouldSave ? validate(idSurvey).then(() => {
+                skipNextPage(
+                    idSurvey,
+                    context.source,
+                    currentIteration,
+                    currentPage,
+                    fieldConditionNext,
+                    nextRoute,
+                    isRoute,
+                );
+            }) : 
             validateLocally(idSurvey).then(() => {
                 skipNextPage(
                     idSurvey,

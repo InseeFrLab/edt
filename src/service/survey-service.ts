@@ -73,6 +73,7 @@ import {
     initStateData,
     isDemoMode,
     isSurveyClosed,
+    isSurveyCompleted,
     isSurveyLocked,
     isSurveyStarted,
     isSurveyValidated,
@@ -134,6 +135,9 @@ const initializeDatas = (setError: (error: ErrorCodeEnum) => void): Promise<bool
     });
 };
 
+/**
+ * @deprecated useData should not be set in the database
+ */
 const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
     const dataState: DataState = {
         data: {
@@ -154,16 +158,6 @@ const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
         },
     };
     return lunaticDatabase.save(DATA_STATE, dataState).then(() => {
-        return dataState;
-    });
-};
-
-const getAuthCache = (): Promise<DataState> => {
-    const clientTokenKey =
-        "oidc.user:https://auth.demo.insee.io/auth/realms/questionnaires-edt/:client-edt";
-    return lunaticDatabase.get(DATA_STATE).then(data => {
-        let dataState = data as DataState;
-        sessionStorage.setItem(clientTokenKey, JSON.stringify(dataState));
         return dataState;
     });
 };
@@ -458,6 +452,7 @@ const refreshSurveyData = (
         ),
         initializeSurveysDatasCache(),
     );
+
     return Promise.all(promisesToWait);
 };
 
@@ -542,9 +537,15 @@ const getRemoteSavedSurveyData = (
                         }
 
                         //TODO: fix a bug where other variable are overwrited if there is no weeklyPlanner
-                        return getSurveyStateDataFunction(surveyId, setError).then(stateData => {
-                            return saveInDatabase(surveyId, { ...remoteSurveyData, stateData });
-                        });
+                        return getSurveyStateDataFunction(surveyId, setError)
+                            .then(stateData => {
+                                return saveInDatabase(surveyId, { ...remoteSurveyData, stateData });
+                            })
+                            .catch(error => {
+                                console.error(`Error in getSurveyStateDataFunction or saveInDatabase for surveyId ${surveyId}:`, error);
+                                // Handle the error and return a fallback value
+                                return saveInDatabase(surveyId, { ...remoteSurveyData, stateData: null });
+                            });
                     }
                 }
             });
@@ -559,7 +560,18 @@ const getRemoteSavedSurveysDatas = (
     surveysIds: string[],
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<any[]> => {
-    return Promise.all(surveysIds.map(surveyId => getRemoteSavedSurveyData(surveyId, setError)));
+
+    const promises = surveysIds.map((surveyId) =>
+        getRemoteSavedSurveyData(surveyId, setError).then(result => {
+            return result;
+        }).catch(() => {
+            return undefined;
+        })
+    );
+
+    return Promise.all(promises).then(results => {
+        return results.filter(result => result !== undefined);
+    });
 };
 
 const shouldSaveRemoteData = (remoteSurveyData: any, localSurveyData: any): boolean => {
@@ -855,6 +867,7 @@ const getDataUpdatedOffline = () => {
             data.lastLocalSaveDate > data.lastRemoteSaveDate ||
             data.lastLocalSaveDate > data.stateData?.date
         ) {
+            console.log('Survey', idSurvey, ' needs to be updated')
             surveysToUpdated.set(idSurvey, data);
         }
     });
@@ -867,7 +880,7 @@ const saveDatas = () => {
         promisesToWait.push(saveData(key, value, false, true));
     });
     return Promise.all(promisesToWait).then(result => {
-        console.log(result);
+        console.log('Save datas results ', result);
     });
 };
 
@@ -1526,18 +1539,16 @@ const getStatsHousehold = (surveys: UserSurveys[]): StatsHousehold => {
         const isValidated = isSurveyValidated(idSurvey);
         const isClosed = isSurveyClosed(idSurvey);
         const isStarted = isSurveyStarted(idSurvey);
+        const isCompleted = isSurveyCompleted(idSurvey);
+        numHouseholds++;
 
         if (isValidated) {
             numHouseholdsValidated++;
-        }
-        if (isClosed && !isValidated) {
+        } else if (isClosed || isCompleted) {
             numHouseholdsClosed++;
-        }
-
-        if (!isValidated && !isClosed && isStarted) {
+        } else if (isStarted) {
             numHouseholdsInProgress++;
         }
-        numHouseholds++;
     });
 
     if (numHouseholds == numHouseholdsValidated) state = StateHouseholdEnum.VALIDATED;
@@ -1707,7 +1718,6 @@ export {
     createDataEmpty,
     createNameSurveyMap,
     existVariableEdited,
-    getAuthCache,
     getComponentId,
     getComponentsOfVariable,
     getCurrentPage,

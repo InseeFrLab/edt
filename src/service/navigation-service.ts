@@ -34,6 +34,7 @@ import {
 } from "./survey-service";
 import { getLastPageStep } from "./stepper.service";
 import { surveyReadOnly } from "./survey-activity-service";
+import { isSurveyClosed, isSurveyCompleted, isSurveyValidated } from "./survey-state-service";
 
 let _context: OrchestratorContext;
 let _navigate: NavigateFunction;
@@ -497,10 +498,12 @@ const navToActivityOrPlannerOrSummary = (
     navigate: any,
     source: LunaticModel,
 ) => {
-    const surveyIsClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED);
-    if (surveyIsClosed) {
+    const surveyIsClosed = isSurveyClosed(idSurvey);
+    const surveyIsValidated = isSurveyValidated(idSurvey);
+    const surveyIsCompleted = isSurveyCompleted(idSurvey);
+    if (surveyIsClosed || surveyIsValidated || surveyIsCompleted) {
         const surveyIsEnvoyed = getValue(idSurvey, FieldNameEnum.ISENVOYED);
-        if (surveyIsEnvoyed) {
+        if (surveyIsEnvoyed || surveyIsValidated) {
             navigate(
                 getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
                     getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),

@@ -7,36 +7,13 @@ import DefaultErrorIcon from "../../assets/illustration/error/error.svg?react";
 import PowerSettingsIcon from "../../assets/illustration/mui-icon/power-settings-white.svg?react";
 import PageIcon from "../../components/commons/PageIcon/PageIcon";
 import { makeStylesEdt } from "@inseefrlab/lunatic-edt";
-import { useAuth } from "oidc-react";
-import { useCallback } from "react";
-import { lunaticDatabase } from "../../service/lunatic-database";
 import { navToHome } from "../../service/navigation-service";
-
-// export type ErrorProviderProps = {
-//     errorCode?: ErrorCodeEnum;
-//     error?: Error;
-//     resetErrorBoundary?: () => void;
-// };
+import { useAuth } from "../../hooks/useAuth.ts";
 
 const ErrorProvider = () => {
     const { t } = useTranslation();
     const { classes } = useStyles();
-    const auth = useAuth();
-
-    const disconnect = useCallback(() => {
-        auth.userManager.signoutRedirect({
-            id_token_hint: localStorage.getItem("id_token") ?? undefined,
-        });
-        auth.userManager.clearStaleState();
-        auth.userManager.signoutRedirectCallback().then(() => {
-            localStorage.clear();
-            lunaticDatabase.clear();
-            setTimeout(() => {
-                window.location.replace(import.meta.env.VITE_PUBLIC_URL || "");
-                auth.userManager.clearStaleState();
-            }, 200);
-        });
-    }, []);
+    const { logout, username } = useAuth();
 
     return (
         <>
@@ -46,9 +23,7 @@ const ErrorProvider = () => {
                 <br />
                 <Typography>{t("common.error.error-default")}</Typography>
                 <br />
-                <Typography>
-                    {t("common.error.error-user-info") + auth.userData?.profile?.preferred_username}
-                </Typography>
+                <Typography>{t("common.error.error-user-info") + username}</Typography>
             </Box>
 
             <FlexCenter>
@@ -73,7 +48,7 @@ const ErrorProvider = () => {
                                 aria-label={t("accessibility.asset.mui-icon.power-settings")}
                             />
                         }
-                        onClick={disconnect}
+                        onClick={logout}
                     >
                         {t("page.home.navigation.logout")}
                     </Button>

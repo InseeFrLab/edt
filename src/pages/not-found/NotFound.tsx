@@ -9,29 +9,13 @@ import ErrorPage from "../../pages/error/ErrorPage";
 import { useTranslation } from "react-i18next";
 import FlexCenter from "../../components/commons/FlexCenter/FlexCenter";
 import { useCallback } from "react";
-import { useAuth } from "oidc-react";
-import { lunaticDatabase } from "../../service/lunatic-database";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth.ts";
 
 const NotFoundPage = () => {
     const { t } = useTranslation();
     const { classes } = useStyles();
-    const auth = useAuth();
-
-    const disconnect = useCallback(() => {
-        auth.userManager.signoutRedirect({
-            id_token_hint: localStorage.getItem("id_token") ?? undefined,
-        });
-        auth.userManager.clearStaleState();
-        auth.userManager.signoutRedirectCallback().then(() => {
-            localStorage.clear();
-            lunaticDatabase.clear();
-            setTimeout(() => {
-                window.location.replace(import.meta.env.VITE_PUBLIC_URL || "");
-                auth.userManager.clearStaleState();
-            }, 200);
-        });
-    }, []);
+    const { logout } = useAuth();
 
     let navigate: NavigateFunction = useNavigate();
 
@@ -72,7 +56,7 @@ const NotFoundPage = () => {
                                 aria-label={t("accessibility.asset.mui-icon.power-settings")}
                             />
                         }
-                        onClick={disconnect}
+                        onClick={logout}
                     >
                         {t("page.home.navigation.logout")}
                     </Button>

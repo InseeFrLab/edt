@@ -9,6 +9,7 @@ import {
     getCurrentPage,
     saveData,
     getSurveysIdsForHousehold,
+    setValue,
 } from "./survey-service";
 import { Collected, LunaticData } from "../interface/lunatic/Lunatic";
 import { StateData } from "../interface/entity/Api";
@@ -123,7 +124,7 @@ const lockAllSurveys = (idHousehold: string) => {
 };
 
 const validateSurvey = (idSurvey: string) => {
-    const data = getData(idSurvey);
+    const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
     const stateData = getLocalSurveyStateData(getData(idSurvey));
     if (stateData.state != StateDataStateEnum.VALIDATED) {
         const validatedStateData: StateData = {
@@ -132,9 +133,10 @@ const validateSurvey = (idSurvey: string) => {
             date: Date.now(),
             currentPage: getCurrentPage(getData(idSurvey)),
         };
-        return saveData(idSurvey, data, false, true, validatedStateData);
+        data.stateData = validatedStateData;
+        return saveData(idSurvey, data, false, true);
     } else {
-        return saveData(idSurvey, data, false, true, stateData);
+        return saveData(idSurvey, data, false, true);
     }
 };
 

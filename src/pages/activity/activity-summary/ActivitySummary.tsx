@@ -7,7 +7,7 @@ import {
     makeStylesEdt,
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
-import { Box, Button, Divider, Switch, Typography } from "@mui/material";
+import { Box, Button, Divider, Link, Switch, Typography } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import ErrorIcon from "../../../assets/illustration/error/activity.svg?react";
 import InfoAlertIcon from "../../../assets/illustration/info-alert.svg?react";
@@ -35,9 +35,9 @@ import { ActivityRouteOrGap } from "../../../interface/entity/ActivityRouteOrGap
 import { LunaticModel, OrchestratorContext } from "../../../interface/lunatic/Lunatic";
 import { callbackHolder } from "../../../orchestrator/Orchestrator";
 import ErrorPage from "../../../pages/error/ErrorPage";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {type TFunction} from "i18next";
+import { type TFunction } from "i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { getFlatLocalStorageValue, getLocalStorageValue } from "../../../service/local-storage-service";
 import { getLoopSize, setLoopSize } from "../../../service/loop-service";
@@ -54,7 +54,10 @@ import {
     setEnviro,
 } from "../../../service/navigation-service";
 import { getLanguage } from "../../../service/referentiel-service";
-import { getUserActivitiesCharacteristics, getUserActivitiesSummary } from "../../../service/summary-service";
+import {
+    getUserActivitiesCharacteristics,
+    getUserActivitiesSummary,
+} from "../../../service/summary-service";
 import {
     deleteActivity,
     getActivitiesOrRoutes,
@@ -70,16 +73,14 @@ import {
     getSurveyDate,
     getSurveyRights,
     getValue,
-    isDemoMode,
-    refreshSurvey,
     saveData,
     setValue,
 } from "../../../service/survey-service";
 import { isSurveyLocked, lockSurvey, validateSurvey } from "../../../service/survey-state-service";
-import { getUserRights } from "../../../service/user-service";
 import ActivitiesSummaryExportTemplate from "../../../template/summary-export/ActivitiesSummaryExportTemplate";
 import { getClassCondition, getSurveyIdFromUrl } from "../../../utils/utils";
 import { v4 as uuidv4 } from "uuid";
+import { useAuth } from "../../../hooks/useAuth.ts";
 
 const getSurveyDatePlanner = (idSurvey: string) => {
     return getSurveyDate(idSurvey) ?? "";
@@ -183,6 +184,7 @@ const ActivitySummaryPage = () => {
     const [score, setScore] = React.useState<number | undefined>(undefined);
     const [isAddActivityOrRouteOpen, setIsAddActivityOrRouteOpen] = React.useState(false);
     const [isHelpMenuOpen, setIsHelpMenuOpen] = React.useState(false);
+    const { role } = useAuth();
 
     const localIsSummaryEdited = getLocalStorageValue(
         idSurvey,
@@ -196,8 +198,8 @@ const ActivitySummaryPage = () => {
     const [addActivityOrRouteFromGap, setAddActivityOrRouteFromGap] = React.useState(false);
     const [gapStartTime, setGapStartTime] = React.useState<string>();
     const [gapEndTime, setGapEndTime] = React.useState<string>();
-    const [initialized, setInitialized] = React.useState<boolean>(false);
-    const [error, setError] = useState<ErrorCodeEnum | undefined>(undefined);
+    const [initialized] = React.useState<boolean>(true);
+    const [error] = useState<ErrorCodeEnum | undefined>(undefined);
     const [isRoute, setIsRoute] = React.useState(false);
     const [activityOrRoute, setActivityOrRoute] = React.useState<ActivityRouteOrGap | undefined>(
         undefined,
@@ -222,22 +224,22 @@ const ActivitySummaryPage = () => {
     const { classes } = useStyles({ "modifiable": modifiable });
 
     const isDemo = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
-    const isReviewer = getUserRights() == EdtUserRightsEnum.REVIEWER;
+    const isReviewer = role == EdtUserRightsEnum.REVIEWER;
     const isReviewerMode = isReviewer && !isDemo;
 
     useEffect(() => {
         setScore(getScore(idSurvey, t));
     }, [activitiesRoutesOrGaps]);
 
-    useEffect(() => {
-        if (navigator.onLine && !isDemoMode()) {
-            refreshSurvey(idSurvey, setError).finally(() => {
-                setInitialized(true);
-            });
-        } else {
-            setInitialized(true);
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (navigator.onLine && !isDemoMode()) {
+    //         refreshSurvey(idSurvey, setError).finally(() => {
+    //             setInitialized(true);
+    //         });
+    //     } else {
+    //         setInitialized(true);
+    //     }
+    // }, []);
 
     useEffect(() => {
         //The loop have to have a default size in source but it's updated depending on the data array size
@@ -252,6 +254,22 @@ const ActivitySummaryPage = () => {
         idSurvey = getSurveyIdFromUrl(context, location);
         context.idSurvey = idSurvey;
     });
+
+    const DownloadLink = useMemo(() => {
+        return React.memo(({
+            url,
+            loading = false,
+            error = false
+        }: {
+            url: string;
+            loading?: boolean;
+            error?: boolean
+        }) => {
+            if (loading) return <>{t("page.activity-summary.loading")}</>;
+            if (error) return <>{t("page.activity-summary.error")}</>;
+            return <Link href={url} download className={classes.downloadLink}>{t("page.activity-summary.download-pdf")}</Link>;
+        });
+    }, []);
 
     const navToCard = useCallback(
         (iteration: number) => () => navToActivityOrRoute(iteration),
@@ -673,7 +691,7 @@ const ActivitySummaryPage = () => {
                                         ".pdf"
                                     }
                                 >
-                                    {() => t("page.activity-summary.download-pdf")}
+                                    <DownloadLink url="" />
                                 </PDFDownloadLink>
                             </Button>
                             <Button
@@ -703,7 +721,7 @@ const ActivitySummaryPage = () => {
                                     ".pdf"
                                 }
                             >
-                                {() => t("page.activity-summary.download-pdf")}
+                                    <DownloadLink url="" />
                             </PDFDownloadLink>
                         </Button>
                     )}

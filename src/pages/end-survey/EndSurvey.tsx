@@ -82,7 +82,8 @@ const EndSurveyPage = () => {
     }, []);
 
     const remoteSaveSurveyAndGoBackHome = useCallback(() => {
-        const dataWithIsEnvoyed = setValue(idSurvey, FieldNameEnum.ISENVOYED, true);
+        setValue(idSurvey, FieldNameEnum.ISENVOYED, true);
+        const dataWithIsClosed = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
         const stateData: StateData = {
             state: StateDataStateEnum.COMPLETED,
             date: Date.now(),
@@ -91,7 +92,7 @@ const EndSurveyPage = () => {
 
         const surveyData: SurveyData = {
             stateData: stateData,
-            data: dataWithIsEnvoyed ?? callbackHolder.getData(),
+            data: dataWithIsClosed ?? callbackHolder.getData(),
         };
 
         // const handleSuccess = (surveyDataAnswer: any) => {

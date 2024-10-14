@@ -13,11 +13,15 @@ export default defineConfig({
         VitePWA({
             workbox: {
                 maximumFileSizeToCacheInBytes: 15_000_000,
+                sourcemap: true
             },
             registerType: "autoUpdate",
         }),
     ],
     server: {
         port: 3000,
+    },
+    build: {
+        minify: false,
     },
 });

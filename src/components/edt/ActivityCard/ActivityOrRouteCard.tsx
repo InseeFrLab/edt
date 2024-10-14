@@ -437,7 +437,7 @@ const useStyles = makeStylesEdt({ "name": { ActivityOrRouteCard } })(theme => ({
     popOver: {
         "& .MuiPopover-paper": {
             backgroundColor: theme.variables.white,
-            padding: "0.5rem",
+            padding: "0.2rem",
         },
         top: "-132px",
     },
