@@ -49,7 +49,14 @@ const checkForMainActivity = (idSurvey: string, i: number, activityOrRoute: Acti
         FieldNameEnum.MAINACTIVITY_SUGGESTERID,
         i,
     ) as string;
-    const mainActivityLabel = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL, i) as string;
+    let mainActivityLabel = getValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL, i) as string;
+    if (!mainActivityLabel) {
+        const activityHistory = getValue(idSurvey, FieldNameEnum.ACTIVITY_SELECTER_HISTORY, i) as string;
+        if (activityHistory) {
+            const historyArray = activityHistory.split(';');
+            mainActivityLabel = historyArray[historyArray.length - 1];
+        }
+    }
     const mainActivityIsFullyCompleted = getValue(
         idSurvey,
         FieldNameEnum.MAINACTIVITY_ISFULLYCOMPLETED,

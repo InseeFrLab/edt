@@ -54,8 +54,9 @@ import {
 } from "../../../../../service/referentiel-service";
 import { CreateIndexation, getIndexSuggester } from "../../../../../service/suggester-service";
 import { surveyReadOnly } from "../../../../../service/survey-activity-service";
-import { getData } from "../../../../../service/survey-service";
+import { getData, saveData, setValue } from "../../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../../utils/utils";
+import { FieldNameEnum } from "../../../../../enumerations/FieldNameEnum";
 
 const MainActivityPage = () => {
     const { t } = useTranslation();
@@ -133,8 +134,15 @@ const MainActivityPage = () => {
         },
         nextClickCallback: (routeToGoal: boolean) => {
             const codeActivity = getValueOfActivity(callbackHolder.getData(), currentIteration) ?? "";
-            console.log('Main Activity EDT next click callback', codeActivity);
             const skip = filtrePage(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL, codeActivity);
+            // TEST
+            let data = setValue(idSurvey, FieldNameEnum.ACTIVITY_SELECTER_HISTORY, localStorage.getItem('selectionValue - label'), currentIteration);
+            data = setValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL, localStorage.getItem('selectedIdNewActivity'), currentIteration);
+            saveData(idSurvey, data, true).then(() => {
+                //Clean history to avoid data overflow
+                localStorage.removeItem('selectionValue - label');
+                localStorage.removeItem('selectedIdNewActivity');
+            });
             if (routeToGoal && !skip) {
                 saveAndLoopNavigate(
                     idSurvey,
@@ -155,7 +163,6 @@ const MainActivityPage = () => {
             }
         },
         onSelectValue: () => {
-            console.log('Value selected')
             validateLocally(idSurvey).then(() => {
                 skipNextPage(idSurvey, context.source, currentIteration, currentPage);
             });
