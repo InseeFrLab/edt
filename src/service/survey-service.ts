@@ -938,7 +938,6 @@ const saveData = (
     let stateData: StateData = data?.stateData ?? getLocalSurveyStateData(data) ?? initStateData(data);
 
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
-
     if (isChange) {
         data = saveQualityScore(idSurvey, data);
 
