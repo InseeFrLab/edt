@@ -13,9 +13,9 @@ export default defineConfig({
         VitePWA({
             workbox: {
                 maximumFileSizeToCacheInBytes: 15_000_000,
-                sourcemap: true
+                sourcemap: true,
             },
-            registerType: "autoUpdate",
+            registerType: "prompt",
         }),
     ],
     server: {
