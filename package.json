@@ -26,6 +26,7 @@
         "react-router-dom": "^6.26.1",
         "tss-react": "^4.9.13",
         "uuidv4": "^6.2.13",
+        "vite-envs": "^4.4.5",
         "web-vitals": "^4.2.3"
     },
     "resolutions": {
@@ -62,6 +63,7 @@
         "build:staging": "dotenv -e .env.staging -- tsc -b && vite build",
         "build:production": "dotenv -e .env.production -- tsc -b && vite build",
         "start-with-lib": "concurrently \"yarn run dev\" \"cd ./node_modules/@inseefrlab/lunatic-edt && tsc-watch\""
+        // "postinstall": "vite-envs update-types"
     },
     "eslintConfig": {
         "extends": [
