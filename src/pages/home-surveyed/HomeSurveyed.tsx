@@ -146,7 +146,7 @@ const HomeSurveyedPage = () => {
             promises.push(saveData(idSurvey, {}));
         });
         Promise.all(promises).then(() => {
-            window.location.replace(import.meta.env.VITE_PUBLIC_URL || "");
+            window.location.replace(import.meta.env.BASE_URL || "");
         });
     }, []);
 

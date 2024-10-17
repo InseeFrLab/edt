@@ -97,7 +97,7 @@ const logout = () => {
             localStorage.clear();
         })
         .then(() => auth.userManager.clearStaleState())
-        .then(() => window.location.replace(import.meta.env.VITE_PUBLIC_URL ?? ""));
+        .then(() => window.location.replace(import.meta.env.BASE_URL ?? ""));
 };
 
 export { createUserManager, isSSO, logout, signinSilent };

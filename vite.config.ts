@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 import { VitePWA } from "vite-plugin-pwa";
+import { viteEnvs } from 'vite-envs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,6 +18,9 @@ export default defineConfig({
             },
             registerType: "autoUpdate",
         }),
+        viteEnvs({
+            declarationFile: ".env.staging"
+        })
     ],
     server: {
         port: 3000,

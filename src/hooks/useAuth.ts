@@ -46,7 +46,7 @@ export function useAuth({ persistState = false }: { persistState: boolean } = { 
         await lunaticDatabase.clear();
 
         if (!auth.userManager) {
-            window.location.replace(import.meta.env.VITE_PUBLIC_URL || "");
+            window.location.replace(import.meta.env.BASE_URL || "");
             return;
         }
         await auth.userManager.signoutRedirect({
@@ -54,7 +54,7 @@ export function useAuth({ persistState = false }: { persistState: boolean } = { 
         });
         await auth.userManager.clearStaleState();
         await auth.userManager.signoutRedirectCallback();
-        window.location.replace(import.meta.env.VITE_PUBLIC_URL || "");
+        window.location.replace(import.meta.env.BASE_URL || "");
     };
 
     // Persist the auth state

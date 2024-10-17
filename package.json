@@ -59,6 +59,7 @@
         "check": "tsc -b",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
+        "postinstall": "vite-envs update-types",
         "preview": "vite preview --port 3000",
         "build:staging": "dotenv -e .env.staging -- tsc -b && vite build",
         "build:production": "dotenv -e .env.production -- tsc -b && vite build",
