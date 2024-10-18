@@ -522,7 +522,9 @@ const getRemoteSavedSurveyData = (
                     const stateData = getLocalSurveyStateData(surveyData);
                     return saveInDatabase(surveyId, { ...surveyData, stateData });
                 } else {
-                    if (shouldSaveRemoteData(remoteSurveyData, localSurveyData)) {
+                    if (shouldPushLocalData(remoteSurveyData, localSurveyData)) {
+                        return saveData(surveyId, localSurveyData as any);
+                    } else if (shouldSaveRemoteData(remoteSurveyData, localSurveyData)) {
                         // TEMP: WeeklyPlanner stuff (to be removed)
                         if (remoteSurveyData.COLLECTED && "WEEKTYPE" in remoteSurveyData.COLLECTED) {
                             const weeklyPlannerData = createDataWeeklyPlanner(remoteSurveyData);
@@ -542,9 +544,15 @@ const getRemoteSavedSurveyData = (
                                 return saveInDatabase(surveyId, { ...remoteSurveyData, stateData });
                             })
                             .catch(error => {
-                                console.error(`Error in getSurveyStateDataFunction or saveInDatabase for surveyId ${surveyId}:`, error);
+                                console.error(
+                                    `Error in getSurveyStateDataFunction or saveInDatabase for surveyId ${surveyId}:`,
+                                    error,
+                                );
                                 // Handle the error and return a fallback value
-                                return saveInDatabase(surveyId, { ...remoteSurveyData, stateData: null });
+                                return saveInDatabase(surveyId, {
+                                    ...remoteSurveyData,
+                                    stateData: null,
+                                });
                             });
                     }
                 }
@@ -560,13 +568,14 @@ const getRemoteSavedSurveysDatas = (
     surveysIds: string[],
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<any[]> => {
-
-    const promises = surveysIds.map((surveyId) =>
-        getRemoteSavedSurveyData(surveyId, setError).then(result => {
-            return result;
-        }).catch(() => {
-            return undefined;
-        })
+    const promises = surveysIds.map(surveyId =>
+        getRemoteSavedSurveyData(surveyId, setError)
+            .then(result => {
+                return result;
+            })
+            .catch(() => {
+                return undefined;
+            }),
     );
 
     return Promise.all(promises).then(results => {
@@ -587,6 +596,17 @@ const shouldSaveRemoteData = (remoteSurveyData: any, localSurveyData: any): bool
     if (lastRemoteSaveDate >= lastLocalSaveDate) return true;
     if (lastLocalSaveDate <= remoteStateDataDate) return true;
     return false;
+};
+
+/**
+ * Should local data be sent to the server
+ */
+const shouldPushLocalData = (remoteGetSurveyData: any, localSurveyData: any): boolean => {
+    return (
+        localSurveyData?.lastLocalSaveDate &&
+        remoteGetSurveyData?.lastRemoteSaveDate &&
+        localSurveyData.lastLocalSaveDate > remoteGetSurveyData.lastRemoteSaveDate
+    );
 };
 
 /**
@@ -867,7 +887,7 @@ const getDataUpdatedOffline = () => {
             data.lastLocalSaveDate > data.lastRemoteSaveDate ||
             data.lastLocalSaveDate > data.stateData?.date
         ) {
-            console.log('Survey', idSurvey, ' needs to be updated')
+            console.log("Survey", idSurvey, " needs to be updated");
             surveysToUpdated.set(idSurvey, data);
         }
     });
@@ -880,7 +900,7 @@ const saveDatas = () => {
         promisesToWait.push(saveData(key, value, false, true));
     });
     return Promise.all(promisesToWait).then(result => {
-        console.log('Save datas results ', result);
+        console.log("Save datas results ", result);
     });
 };
 

@@ -29,7 +29,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getNavigatePath } from "../../service/navigation-service";
 import { isMobile } from "../../service/responsive";
-import type {TFunction} from 'i18next'
+import type { TFunction } from "i18next";
 import {
     getListSurveysHousehold,
     initializeListSurveys,
