@@ -86,7 +86,7 @@ const oldDatas = new Map<string, LunaticData>();
 const NUM_MAX_ACTIVITY_SURVEYS = import.meta.env.VITE_NUM_ACTIVITY_SURVEYS ?? 6;
 const NUM_MAX_WORKTIME_SURVEYS = 3;
 //TODO: Find a way to remove these goddamn global variables
-let referentielsData: ReferentielData;
+let referentielsData = {} as ReferentielData;
 let sourcesData: SourceData;
 let surveysIds: SurveysIds = {
     [SurveysIdsEnum.ALL_SURVEYS_IDS]: [],
@@ -164,6 +164,7 @@ const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
 
 const initializeRefs = () => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
+        console.log({DatabaseReferentiel: refData, REFERENTIELS_ID})
         if (!refData && navigator.onLine) {
             return fetchReferentiels().then(refs => {
                 return saveReferentiels(refs);
@@ -396,7 +397,9 @@ const initializeHomeSurveys = (idHousehold: string) => {
         addArrayToSession("userDatasWorkTime", userDatasWorkTime);
         addArrayToSession("userDatasActivity", userDatasActivity);
         addArrayToSession("userDatas", userDatas);
-        resolve(true);
+        initializeRefs().then(() => {
+            resolve(true);
+        })
     });
 };
 
@@ -1086,7 +1089,10 @@ const getVariable = (source: LunaticModel, dependency: string): LunaticModelVari
     return source.variables.find(v => v.variableType === "COLLECTED" && v.name === dependency);
 };
 const getReferentiel = (refName: ReferentielsEnum) => {
-    return referentielsData[refName];
+    if (refName in referentielsData) {
+        return referentielsData[refName];
+    }
+    return [];
 };
 
 //Return the last lunatic model page that has been fill with data
