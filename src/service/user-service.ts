@@ -1,44 +1,45 @@
 import { EdtUserRightsEnum } from "../enumerations/EdtUserRightsEnum";
 import { AuthContextProps } from "oidc-react";
-import { useOnline } from "../hooks/useOnline.ts";
 
-let globalAuth: AuthContextProps | undefined;
+type AuthContext = {
+    role?: string;
+    oidcAuth?: AuthContextProps;
+};
+
+let globalAuth: AuthContext | undefined;
 
 /**
  * @deprecated This method is kept to avoid to edit a lot of code but should not be used
  */
-export const useGlobalUserState = (auth: AuthContextProps) => {
-    const isOnline = useOnline();
-    if (!isOnline) {
-        return;
-    }
-
+export const useGlobalUserState = (auth: AuthContext) => {
     globalAuth = auth;
 };
 
+/**
+ * @deprecated This method should not be used directly
+ */
 export const getAuth = (): AuthContextProps => {
-    if (!globalAuth) {
+    if (!globalAuth?.oidcAuth) {
         throw new Error("User must be authenticated");
     }
-    return globalAuth;
+    return globalAuth?.oidcAuth;
 };
 
 export const getUserToken = (): string => {
-    return globalAuth?.userData?.access_token ?? "";
+    return globalAuth?.oidcAuth?.userData?.access_token ?? "";
 };
 
 /**
  * @deprecated
  */
 export const getUserRights = (): EdtUserRightsEnum => {
-    const groups = globalAuth?.userData?.profile?.inseegroupedefaut as string[];
-    if (groups?.includes(import.meta.env.VITE_REVIEWER_ROLE ?? EdtUserRightsEnum.REVIEWER)) {
+    const role = globalAuth?.role;
+    if (role?.includes(import.meta.env.VITE_REVIEWER_ROLE ?? EdtUserRightsEnum.REVIEWER)) {
         return EdtUserRightsEnum.REVIEWER;
-    } else if (groups?.includes(import.meta.env.VITE_SURVEYED_ROLE ?? EdtUserRightsEnum.SURVEYED)) {
+    } else if (role?.includes(import.meta.env.VITE_SURVEYED_ROLE ?? EdtUserRightsEnum.SURVEYED)) {
         return EdtUserRightsEnum.SURVEYED;
-    } else {
-        return EdtUserRightsEnum.NO_RIGHTS;
     }
+    return EdtUserRightsEnum.NO_RIGHTS;
 };
 
 export const isReviewer = (): boolean => getUserRights() === EdtUserRightsEnum.REVIEWER;
