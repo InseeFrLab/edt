@@ -2,6 +2,7 @@ import { AutoCompleteActiviteOption } from "@inseefrlab/lunatic-edt";
 import elasticlunr, { Index } from "elasticlunrjs";
 import { Dispatch, SetStateAction } from "react";
 import { stopWordsFrench, synonymesMisspellings } from "../assets/surveyData";
+import { memoize } from "lodash";
 
 /**
  * Remove accents
@@ -76,22 +77,31 @@ export const activitesFiltredMap = (optionsFiltered: AutoCompleteActiviteOption[
     return optionsFilteredMap;
 };
 
-export const CreateIndexation = (optionsFiltered: AutoCompleteActiviteOption[]) => {
-    const optionsFilteredMap = activitesFiltredMap(optionsFiltered);
+/**
+ * Create an index for searchable activity
+ * Cache the result to avoid recalculation since it costs a lot
+ */
+export const CreateIndexation = memoize(
+    (optionsFiltered: AutoCompleteActiviteOption[]) => {
+        const optionsFilteredMap = activitesFiltredMap(optionsFiltered);
 
-    elasticlunr.clearStopWords();
-    elasticlunr.addStopWords(stopWordsFrench);
+        elasticlunr.clearStopWords();
+        elasticlunr.addStopWords(stopWordsFrench);
 
-    const temp: Index<AutoCompleteActiviteOption> = elasticlunr();
-    temp.addField("label");
-    temp.addField("synonymes");
-    temp.setRef("id");
+        const temp: Index<AutoCompleteActiviteOption> = elasticlunr();
+        temp.addField("label");
+        temp.addField("synonymes");
+        temp.setRef("id");
 
-    for (const doc of optionsFilteredMap) {
-        temp.addDoc(doc);
-    }
-    return temp;
-};
+        for (const doc of optionsFilteredMap) {
+            temp.addDoc(doc);
+        }
+        return temp;
+    },
+    (optionsFiltered: AutoCompleteActiviteOption[]) => {
+        return optionsFiltered.map(o => o.id).join("");
+    },
+);
 
 export function CreateIndex(
     optionsFiltered: AutoCompleteActiviteOption[],
