@@ -60,7 +60,10 @@ export function useAuth({ persistState = false }: { persistState: boolean } = { 
     // Persist the auth state
     if (persistState) {
         // Make auth info globally available (so API call can use access token for instance)
-        useGlobalUserState(auth);
+        useGlobalUserState({
+            role: isOnline ? role : offlineData?.role,
+            oidcAuth: auth,
+        });
 
         // Persist some key user info in the localStorage for offline usage
         useEffect(() => {
