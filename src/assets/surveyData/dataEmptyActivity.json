@@ -271,5 +271,12 @@
         "INPUTED": null,
         "PREVIOUS": null,
         "COLLECTED": null
+    },
+    "ISVALIDATED": {
+        "EDITED": null,
+        "FORCED": null,
+        "INPUTED": null,
+        "PREVIOUS": null,
+        "COLLECTED": null
     }
 }
