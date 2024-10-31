@@ -164,7 +164,6 @@ const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
 
 const initializeRefs = () => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
-        console.log({DatabaseReferentiel: refData, REFERENTIELS_ID})
         if (!refData && navigator.onLine) {
             return fetchReferentiels().then(refs => {
                 return saveReferentiels(refs);
@@ -540,8 +539,6 @@ const getRemoteSavedSurveyData = (
                             };
                             remoteSurveyData.COLLECTED["WEEKLYPLANNER"] = WeeklyPlannerVariable;
                         }
-
-                        //TODO: fix a bug where other variable are overwrited if there is no weeklyPlanner
                         return getSurveyStateDataFunction(surveyId, setError)
                             .then(stateData => {
                                 return saveInDatabase(surveyId, { ...remoteSurveyData, stateData });
@@ -890,7 +887,6 @@ const getDataUpdatedOffline = () => {
             data.lastLocalSaveDate > data.lastRemoteSaveDate ||
             data.lastLocalSaveDate > data.stateData?.date
         ) {
-            console.log("Survey", idSurvey, " needs to be updated");
             surveysToUpdated.set(idSurvey, data);
         }
     });
@@ -953,7 +949,6 @@ const saveData = (
                 data: data,
             };
             data.lastRemoteSaveDate = stateData.date;
-            console.log('Dara with stateData', data);
             if (isReviewerMode) {
                 return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
                     stateData.date = Math.max(stateData.date, data.lastLocalSaveDate ?? 0);
