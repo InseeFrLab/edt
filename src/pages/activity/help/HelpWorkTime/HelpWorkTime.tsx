@@ -247,7 +247,7 @@ const HelpWorkTime = () => {
                     <OrchestratorForStories
                         source={source}
                         data={data}
-                        cbHolder={callbackHolder}
+                        callbackHolder={callbackHolder}
                         page={getOrchestratorPage(currentPage)}
                         componentSpecificProps={specificProps}
                     ></OrchestratorForStories>

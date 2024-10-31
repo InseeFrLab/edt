@@ -247,7 +247,7 @@ const ActivityDurationPage = () => {
                 <OrchestratorForStories
                     source={context.source}
                     data={getData(idSurvey)}
-                    cbHolder={callbackHolder}
+                    callbackHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}

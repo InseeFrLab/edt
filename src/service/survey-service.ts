@@ -953,7 +953,7 @@ const saveData = (
                 data: data,
             };
             data.lastRemoteSaveDate = stateData.date;
-
+            console.log('Dara with stateData', data);
             if (isReviewerMode) {
                 return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
                     stateData.date = Math.max(stateData.date, data.lastLocalSaveDate ?? 0);
@@ -1164,7 +1164,7 @@ const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: num
 
     if (iteration != null) {
         let value = valueCollected;
-        if (modePersistenceEdited && valueEdited && valueEdited[iteration] != null) value = valueEdited;
+        if (modePersistenceEdited && valueEdited?.[iteration] != null) value = valueEdited;
         return Array.isArray(value) ? value[iteration] : null;
     } else {
         let value = modePersistenceEdited && valueEdited != null ? valueEdited : valueCollected;
@@ -1196,7 +1196,7 @@ const getDataModePersistOfArray = (
     value: string | boolean,
     iteration: number,
 ) => {
-    if (dataAct?.COLLECTED && dataAct.COLLECTED[variableName]) {
+    if (dataAct?.COLLECTED?.[variableName]) {
         let dataAsArray = modePersistenceEdited
             ? dataAct.COLLECTED[variableName].EDITED
             : dataAct.COLLECTED[variableName].COLLECTED;
@@ -1221,7 +1221,7 @@ const getDataModePersist = (
     iteration?: number,
 ) => {
     const modePersistenceEdited = getModePersistence(dataAct) == ModePersistenceEnum.EDITED;
-    if (dataAct?.COLLECTED && dataAct.COLLECTED[variableName]) {
+    if (dataAct?.COLLECTED?.[variableName]) {
         if (iteration != null && value != null) {
             dataAct = getDataModePersistOfArray(
                 dataAct,
@@ -1243,7 +1243,7 @@ const getDataModePersist = (
         }
     }
     datas.set(idSurvey, dataAct);
-    addItemToSession(idSurvey, dataAct);
+    saveInDatabase(idSurvey, dataAct);
     return dataAct;
 };
 
@@ -1610,7 +1610,7 @@ const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
 
     for (let prop in FieldNameEnum as any) {
         if (prop == FieldNameEnum.FIRSTNAME) continue;
-        const surveyData = dataOfSurvey && dataOfSurvey[prop];
+        const surveyData = dataOfSurvey?.[prop];
         const ifArrayInputed =
             surveyData?.EDITED &&
             Array.isArray(surveyData.EDITED) &&

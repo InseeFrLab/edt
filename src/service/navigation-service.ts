@@ -28,7 +28,6 @@ import {
     getSource,
     getValue,
     saveData,
-    saveDataLocally,
     setValue,
     surveysIds,
 } from "./survey-service";
@@ -219,14 +218,11 @@ const saveAndNav = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
+    console.log('Get data: ', getData(idSurvey));
+    console.log('Callback holder data: ', _callbackHolder.getData());
     saveData(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
-    /*
-    saveData(idSurvey, , {...Data(idSurvey), ..._callbackHolder.getData()})then(() => {
-        navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
-    });
-*/
 };
 
 /**
@@ -239,7 +235,7 @@ const saveAndNavLocally = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
-    saveDataLocally(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }).then(() => {
+    saveData(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }, true).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
@@ -694,15 +690,6 @@ const validateAndNextStep = (idSurvey: string, source: LunaticModel, page: EdtRo
     });
 };
 
-const loopNavigateTemp = (
-    idSurvey: string,
-    page: EdtRoutesNameEnum,
-    loop: LoopEnum,
-    iteration: number,
-) => {
-    _navigate(getLoopParameterizedNavigatePath(idSurvey, page, loop, iteration));
-};
-
 const loopNavigate = (
     idSurvey: string,
     source: LunaticModel,
@@ -832,7 +819,6 @@ export {
     isActivityPage,
     isPageGlobal,
     loopNavigate,
-    loopNavigateTemp,
     navFullPath,
     navToActivityOrPlannerOrSummary,
     navToActivityRoutePlanner,

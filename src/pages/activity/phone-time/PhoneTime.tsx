@@ -73,7 +73,7 @@ const PhoneTimePage = () => {
     const orchestratorProps = {
         source: context.source,
         data: getData(idSurvey),
-        cbHolder: callbackHolder,
+        callbackHolder: callbackHolder,
         page: getOrchestratorPage(currentPage, context.surveyRootPage),
         componentSpecificProps: componentLunaticProps,
         idSurvey: idSurvey,

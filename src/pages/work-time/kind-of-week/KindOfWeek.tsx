@@ -98,7 +98,7 @@ const KindOfWeekPage = () => {
                 <OrchestratorForStories
                     source={context.source}
                     data={getData(idSurvey)}
-                    cbHolder={callbackHolder}
+                    callbackHolder={callbackHolder}
                     page={getOrchestratorPage(currentPage)}
                     componentSpecificProps={specificProps}
                     overrideOptions={getKindOfWeekRef()}

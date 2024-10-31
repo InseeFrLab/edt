@@ -12,6 +12,7 @@ import {
     getStepData,
 } from "../../../../../service/loop-stepper-service";
 import {
+    loopNavigate,
     onClose,
     onNext,
     onPrevious,
@@ -136,15 +137,20 @@ const MainActivityPage = () => {
             const codeActivity = getValueOfActivity(callbackHolder.getData(), currentIteration) ?? "";
             const skip = filtrePage(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL, codeActivity);
             // TEST
-            let data = setValue(idSurvey, FieldNameEnum.ACTIVITY_SELECTER_HISTORY, localStorage.getItem('selectionValue - label'), currentIteration);
-            data = setValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL, localStorage.getItem('selectedIdNewActivity'), currentIteration);
-            saveData(idSurvey, data, true).then(() => {
+            // Data is saved in local database but not remotely saved because the data in the callbackHolder is not updated
+            // TODO: regarder comment update des données du callbackHolder
+            setValue(idSurvey, FieldNameEnum.ACTIVITY_SELECTER_HISTORY, localStorage.getItem('historyActivitySelecter'), currentIteration);
+            setValue(idSurvey, FieldNameEnum.MAINACTIVITY_SUGGESTERID, localStorage.getItem('selectedIdNewActivity'), currentIteration);
+            let data = setValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL, localStorage.getItem('selectionValue - label'), currentIteration);
+            console.log('history activity', localStorage.getItem('historyActivitySelecter'));
+            console.log('data after local storage usage', data);
+            saveData(idSurvey, data, true, true).then(() => {
                 //Clean history to avoid data overflow
-                localStorage.removeItem('selectionValue - label');
-                localStorage.removeItem('selectedIdNewActivity');
+                localStorage.removeItem('historyInputSuggester');
+                // localStorage.removeItem('selectedIdNewActivity');
             });
             if (routeToGoal && !skip) {
-                saveAndLoopNavigate(
+                loopNavigate(
                     idSurvey,
                     context.source,
                     EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
@@ -153,7 +159,7 @@ const MainActivityPage = () => {
                 );
             } else {
                 const skip = filtrePage(EdtRoutesNameEnum.SECONDARY_ACTIVITY, codeActivity);
-                saveAndLoopNavigate(
+                loopNavigate(
                     idSurvey,
                     context.source,
                     skip ? EdtRoutesNameEnum.ACTIVITY_LOCATION : getNextLoopPage(currentPage),
@@ -259,7 +265,7 @@ const MainActivityPage = () => {
                 <OrchestratorForStories
                     source={context.source}
                     data={getData(idSurvey)}
-                    cbHolder={callbackHolder}
+                    callbackHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}

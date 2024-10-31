@@ -288,7 +288,7 @@ const HelpSubCategoryActivity = () => {
                     <OrchestratorForStories
                         source={source}
                         data={data}
-                        cbHolder={callbackHolder}
+                        callbackHolder={callbackHolder}
                         page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                         subPage={getLoopPageSubpage(currentPage)}
                         iteration={0}

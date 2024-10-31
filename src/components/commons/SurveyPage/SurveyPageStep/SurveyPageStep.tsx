@@ -160,7 +160,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const orchestratorProps = {
         source: context.source,
         data: getData(idSurvey), //context.data,
-        cbHolder: callbackHolder,
+        callbackHolder: callbackHolder,
         page: getOrchestratorPage(currentPage, context.surveyRootPage),
         overrideOptions: specifiquesProps?.referentiel,
         componentSpecificProps: componentLunaticProps,
