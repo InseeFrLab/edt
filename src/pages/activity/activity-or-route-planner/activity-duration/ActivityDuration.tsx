@@ -34,6 +34,9 @@ import { getActivitiesOrRoutes, surveyReadOnly } from "../../../../service/surve
 import { getData, getValue, getValueOfData, saveData } from "../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../utils/utils";
 
+
+const today: Dayjs = dayjs();
+
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -74,8 +77,8 @@ const ActivityDurationPage = () => {
         },
     };
 
-    let startTimeDay: Dayjs = dayjs();
-    let endTimeDay: Dayjs = dayjs();
+    let startTimeDay: Dayjs = today;
+    let endTimeDay: Dayjs = today;
 
     const isAfterEndTime = () => {
         const data = callbackHolder.getData();
