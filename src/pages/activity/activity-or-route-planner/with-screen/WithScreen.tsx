@@ -24,7 +24,6 @@ import {
     saveAndLoopNavigate,
     saveAndNav,
     setEnviro,
-    validate,
 } from "../../../../service/navigation-service";
 import { getValue } from "../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../utils/utils";

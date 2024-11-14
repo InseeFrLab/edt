@@ -352,6 +352,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 >
                     {components.map(function (component: any) {
                         const { id, componentType, response, options, value, ...other } = component;
+                        // @ts-ignore Temp ignoring
                         const Component = (props.components ?? lunatic)[componentType];
                         return (
                             <div className="lunatic lunatic-component" key={`component-${id}`}>

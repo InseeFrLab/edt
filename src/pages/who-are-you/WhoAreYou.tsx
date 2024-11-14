@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import WhoAreYouImg from "../../assets/illustration/who-are-you.svg?react";
 import SurveyPageStep from "../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
