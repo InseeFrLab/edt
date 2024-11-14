@@ -36,6 +36,8 @@ export type OrchestratorProps = {
     iteration?: number;
     componentSpecificProps?: any;
     overrideOptions?: any;
+    // Replace lunatic components
+    components?: Record<string, any>;
 };
 
 const renderLoading = () => {
@@ -350,7 +352,7 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
                 >
                     {components.map(function (component: any) {
                         const { id, componentType, response, options, value, ...other } = component;
-                        const Component = (lunatic as any)[componentType];
+                        const Component = (props.components ?? lunatic)[componentType];
                         return (
                             <div className="lunatic lunatic-component" key={`component-${id}`}>
                                 <Component

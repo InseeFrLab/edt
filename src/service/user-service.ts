@@ -2,7 +2,7 @@ import { EdtUserRightsEnum } from "../enumerations/EdtUserRightsEnum";
 import { AuthContextProps } from "oidc-react";
 
 type AuthContext = {
-    role?: string;
+    role?: EdtUserRightsEnum;
     oidcAuth?: AuthContextProps;
 };
 
@@ -33,13 +33,7 @@ export const getUserToken = (): string => {
  * @deprecated
  */
 export const getUserRights = (): EdtUserRightsEnum => {
-    const role = globalAuth?.role;
-    if (role?.includes(import.meta.env.VITE_REVIEWER_ROLE ?? EdtUserRightsEnum.REVIEWER)) {
-        return EdtUserRightsEnum.REVIEWER;
-    } else if (role?.includes(import.meta.env.VITE_SURVEYED_ROLE ?? EdtUserRightsEnum.SURVEYED)) {
-        return EdtUserRightsEnum.SURVEYED;
-    }
-    return EdtUserRightsEnum.NO_RIGHTS;
+    return globalAuth?.role ?? EdtUserRightsEnum.NO_RIGHTS;
 };
 
-export const isReviewer = (): boolean => getUserRights() === EdtUserRightsEnum.REVIEWER;
+export const isReviewer = (): boolean => globalAuth?.role === EdtUserRightsEnum.REVIEWER;

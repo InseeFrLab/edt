@@ -7,7 +7,7 @@ import { FORMAT_TIME, MINUTE_LABEL, START_TIME_DAY } from "../../../../constants
 import { EdtRoutesNameEnum } from "../../../../enumerations/EdtRoutesNameEnum";
 import { OrchestratorContext } from "../../../../interface/lunatic/Lunatic";
 import { OrchestratorForStories, callbackHolder } from "../../../../orchestrator/Orchestrator";
-import { SetStateAction, useCallback, useEffect, useState } from "react";
+import { SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
 import { isAndroid, isIOS } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router";
@@ -40,6 +40,7 @@ export interface SurveyPageStepProps {
     disableButton?: boolean;
     validateButton?: () => void;
     withBottomPadding?: boolean;
+    lunaticComponents?: Record<string, any>;
 }
 
 const SurveyPageStep = (props: SurveyPageStepProps) => {
@@ -83,21 +84,24 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 
     const [isModalDisplayed, setIsModalDisplayed] = useState<boolean>(false);
 
-    const componentLunaticProps: any = {
-        onSelectValue: () => validateAndNextStep(idSurvey, context.source, currentPage),
-        options: specifiquesProps?.options,
-        defaultIcon: specifiquesProps?.defaultIcon,
-        icon: specifiquesProps?.icon,
-        language: getLanguage(),
-        constants: {
-            START_TIME_DAY: START_TIME_DAY,
-            FORMAT_TIME: FORMAT_TIME,
-            MINUTE_LABEL: MINUTE_LABEL,
-        },
-        extensionIcon: <ExtensionIcon aria-label={t("accessibility.asset.mui-icon.extension")} />,
-        modifiable: modifiable,
-        defaultLanguage: "fr",
-    };
+    const componentLunaticProps: any = useMemo(
+        () => ({
+            onSelectValue: () => validateAndNextStep(idSurvey, context.source, currentPage),
+            options: specifiquesProps?.options,
+            defaultIcon: specifiquesProps?.defaultIcon,
+            icon: specifiquesProps?.icon,
+            language: getLanguage(),
+            constants: {
+                START_TIME_DAY: START_TIME_DAY,
+                FORMAT_TIME: FORMAT_TIME,
+                MINUTE_LABEL: MINUTE_LABEL,
+            },
+            extensionIcon: <ExtensionIcon aria-label={t("accessibility.asset.mui-icon.extension")} />,
+            modifiable: modifiable,
+            defaultLanguage: "fr",
+        }),
+        [specifiquesProps, modifiable],
+    );
 
     const IconError = errorIcon as React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 
@@ -156,17 +160,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         disableNav: disableButton,
         modifiable: modifiable,
     };
-
-    const orchestratorProps = {
-        source: context.source,
-        data: getData(idSurvey), //context.data,
-        callbackHolder: callbackHolder,
-        page: getOrchestratorPage(currentPage, context.surveyRootPage),
-        overrideOptions: specifiquesProps?.referentiel,
-        componentSpecificProps: componentLunaticProps,
-        idSurvey: idSurvey,
-    };
-
+  
     const validateAndNav = (
         forceQuit: boolean,
         setIsModalDisplayed: (value: SetStateAction<boolean>) => void,
@@ -178,6 +172,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         }
     };
     const surveyPageProps = isStep ? surveyPageStepProps : surveyPageNotStepProps;
+    const surveyData = useMemo(() => getData(idSurvey), [idSurvey]);
 
     return (
         <Box
@@ -195,7 +190,15 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
                         )}
                         content={t("component.modal-edt.modal-felicitation.activity-content")}
                     />
-                    <OrchestratorForStories {...orchestratorProps} />
+                    <OrchestratorForStories
+                        source={context.source}
+                        data={surveyData}
+                        cbHolder={callbackHolder}
+                        page={getOrchestratorPage(currentPage, context.surveyRootPage)}
+                        overrideOptions={specifiquesProps?.referentiel}
+                        componentSpecificProps={componentLunaticProps}
+                        components={props.lunaticComponents}
+                    />
                 </FlexCenter>
             </SurveyPage>
         </Box>
