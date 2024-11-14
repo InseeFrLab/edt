@@ -28,7 +28,7 @@ function groupBy<T>(arr: T[], fn: (item: T) => any) {
 }
 
 function hasOwnProperty(obj: any, prop: string) {
-    return obj != null && Object.prototype.hasOwnProperty.call(obj, prop);
+    return obj != null && Object.hasOwn(obj, prop);
 }
 
 function objectEquals(a: any, b: any) {

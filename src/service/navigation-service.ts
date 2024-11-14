@@ -28,13 +28,13 @@ import {
     getSource,
     getValue,
     saveData,
-    saveDataLocally,
     setValue,
     surveysIds,
 } from "./survey-service";
 import { getLastPageStep } from "./stepper.service";
 import { surveyReadOnly } from "./survey-activity-service";
 import { isSurveyClosed, isSurveyCompleted, isSurveyValidated } from "./survey-state-service";
+import { mergeObjects } from "../utils/utils";
 
 let _context: OrchestratorContext;
 let _navigate: NavigateFunction;
@@ -219,14 +219,10 @@ const saveAndNav = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
-    saveData(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }).then(() => {
+    const mergedData = mergeObjects(getData(idSurvey), _callbackHolder.getData());
+    saveData(idSurvey, mergedData).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
-    /*
-    saveData(idSurvey, , {...Data(idSurvey), ..._callbackHolder.getData()})then(() => {
-        navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
-    });
-*/
 };
 
 /**
@@ -239,7 +235,8 @@ const saveAndNavLocally = (
     routeNotSelection?: string,
     currentIteration?: number,
 ): void => {
-    saveDataLocally(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }).then(() => {
+    const mergedData = mergeObjects(getData(idSurvey), _callbackHolder.getData());
+    saveData(idSurvey, mergedData, true).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
@@ -261,18 +258,20 @@ const closeFormularieAndNav = (idSurvey: string, route: string) => {
  * we need to make the call twice to be able to retrieve the current state of the database
  */
 const validate = (idSurvey: string): Promise<void | LunaticData> => {
-    return saveData(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }, true).then(() => {
-        return saveData(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }, false);
+    const mergedData = mergeObjects(getData(idSurvey), _callbackHolder.getData());
+    return saveData(idSurvey, mergedData, true).then(() => {
+        return saveData(idSurvey, mergedData, false);
     });
 };
 
 const validateLocally = (idSurvey: string): Promise<void | LunaticData> => {
-    return saveDataLocally(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }, true).then(
+    const mergedData = mergeObjects(getData(idSurvey), _callbackHolder.getData());
+    return saveData(idSurvey, mergedData, true).then(
         () => {
-            return saveDataLocally(
+            return saveData(
                 idSurvey,
                 { ...getData(idSurvey), ..._callbackHolder.getData() },
-                false,
+                true,
             );
         },
     );
@@ -694,15 +693,6 @@ const validateAndNextStep = (idSurvey: string, source: LunaticModel, page: EdtRo
     });
 };
 
-const loopNavigateTemp = (
-    idSurvey: string,
-    page: EdtRoutesNameEnum,
-    loop: LoopEnum,
-    iteration: number,
-) => {
-    _navigate(getLoopParameterizedNavigatePath(idSurvey, page, loop, iteration));
-};
-
 const loopNavigate = (
     idSurvey: string,
     source: LunaticModel,
@@ -832,7 +822,6 @@ export {
     isActivityPage,
     isPageGlobal,
     loopNavigate,
-    loopNavigateTemp,
     navFullPath,
     navToActivityOrPlannerOrSummary,
     navToActivityRoutePlanner,

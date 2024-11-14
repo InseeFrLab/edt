@@ -160,7 +160,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         disableNav: disableButton,
         modifiable: modifiable,
     };
-
+  
     const validateAndNav = (
         forceQuit: boolean,
         setIsModalDisplayed: (value: SetStateAction<boolean>) => void,

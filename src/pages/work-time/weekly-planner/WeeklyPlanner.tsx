@@ -100,7 +100,7 @@ const WeeklyPlannerPage = () => {
         }
     };
 
-    const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]]): void => {
+    const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]], localSaveOnly?: boolean): void => {
         const dataBdd = getData(idSurvey);
         if (data && data[1].length > 0) {
             if (dataBdd.COLLECTED) {
@@ -118,7 +118,7 @@ const WeeklyPlannerPage = () => {
                     dataBdd.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
                     dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
                 }
-                saveData(idSurvey, dataBdd);
+                saveData(idSurvey, dataBdd, localSaveOnly);
             }
         }
     };
@@ -316,7 +316,7 @@ const WeeklyPlannerPage = () => {
                         <OrchestratorForStories
                             source={context.source}
                             data={getData(idSurvey)}
-                            cbHolder={callbackHolder}
+                            callbackHolder={callbackHolder}
                             page={getOrchestratorPage(currentPage)}
                             componentSpecificProps={specificProps}
                         ></OrchestratorForStories>

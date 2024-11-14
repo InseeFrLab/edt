@@ -34,6 +34,9 @@ import { getActivitiesOrRoutes, surveyReadOnly } from "../../../../service/surve
 import { getData, getValue, getValueOfData, saveData } from "../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../utils/utils";
 
+
+const today: Dayjs = dayjs();
+
 const ActivityDurationPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -74,8 +77,8 @@ const ActivityDurationPage = () => {
         },
     };
 
-    let startTimeDay: Dayjs;
-    let endTimeDay: Dayjs;
+    let startTimeDay: Dayjs = today;
+    let endTimeDay: Dayjs = today;
 
     const isAfterEndTime = () => {
         const data = callbackHolder.getData();
@@ -154,7 +157,7 @@ const ActivityDurationPage = () => {
         }
 
         if ((skip && isAfter) || !isAfter) {
-            saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }, true).then(() => {
+            saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }).then(() => {
                 navigate(
                     getLoopParameterizedNavigatePath(
                         idSurvey,
@@ -247,7 +250,7 @@ const ActivityDurationPage = () => {
                 <OrchestratorForStories
                     source={context.source}
                     data={getData(idSurvey)}
-                    cbHolder={callbackHolder}
+                    callbackHolder={callbackHolder}
                     page={getLoopInitialPage(LoopEnum.ACTIVITY_OR_ROUTE)}
                     subPage={getLoopPageSubpage(currentPage)}
                     iteration={currentIteration}

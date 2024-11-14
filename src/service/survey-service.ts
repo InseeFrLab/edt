@@ -164,7 +164,6 @@ const initPropsAuth = (auth: AuthContextProps): Promise<DataState> => {
 
 const initializeRefs = () => {
     return lunaticDatabase.get(REFERENTIELS_ID).then(refData => {
-        console.log({DatabaseReferentiel: refData, REFERENTIELS_ID})
         if (!refData && navigator.onLine) {
             return fetchReferentiels().then(refs => {
                 return saveReferentiels(refs);
@@ -540,8 +539,6 @@ const getRemoteSavedSurveyData = (
                             };
                             remoteSurveyData.COLLECTED["WEEKLYPLANNER"] = WeeklyPlannerVariable;
                         }
-
-                        //TODO: fix a bug where other variable are overwrited if there is no weeklyPlanner
                         return getSurveyStateDataFunction(surveyId, setError)
                             .then(stateData => {
                                 return saveInDatabase(surveyId, { ...remoteSurveyData, stateData });
@@ -890,7 +887,6 @@ const getDataUpdatedOffline = () => {
             data.lastLocalSaveDate > data.lastRemoteSaveDate ||
             data.lastLocalSaveDate > data.stateData?.date
         ) {
-            console.log("Survey", idSurvey, " needs to be updated");
             surveysToUpdated.set(idSurvey, data);
         }
     });
@@ -938,7 +934,6 @@ const saveData = (
     let stateData: StateData = data?.stateData ?? getLocalSurveyStateData(data) ?? initStateData(data);
 
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
-
     if (isChange) {
         data = saveQualityScore(idSurvey, data);
 
@@ -954,7 +949,6 @@ const saveData = (
                 data: data,
             };
             data.lastRemoteSaveDate = stateData.date;
-
             if (isReviewerMode) {
                 return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
                     stateData.date = Math.max(stateData.date, data.lastLocalSaveDate ?? 0);
@@ -1165,7 +1159,7 @@ const getValue = (idSurvey: string, variableName: FieldNameEnum, iteration?: num
 
     if (iteration != null) {
         let value = valueCollected;
-        if (modePersistenceEdited && valueEdited && valueEdited[iteration] != null) value = valueEdited;
+        if (modePersistenceEdited && valueEdited?.[iteration] != null) value = valueEdited;
         return Array.isArray(value) ? value[iteration] : null;
     } else {
         let value = modePersistenceEdited && valueEdited != null ? valueEdited : valueCollected;
@@ -1197,7 +1191,7 @@ const getDataModePersistOfArray = (
     value: string | boolean,
     iteration: number,
 ) => {
-    if (dataAct?.COLLECTED && dataAct.COLLECTED[variableName]) {
+    if (dataAct?.COLLECTED?.[variableName]) {
         let dataAsArray = modePersistenceEdited
             ? dataAct.COLLECTED[variableName].EDITED
             : dataAct.COLLECTED[variableName].COLLECTED;
@@ -1222,7 +1216,7 @@ const getDataModePersist = (
     iteration?: number,
 ) => {
     const modePersistenceEdited = getModePersistence(dataAct) == ModePersistenceEnum.EDITED;
-    if (dataAct?.COLLECTED && dataAct.COLLECTED[variableName]) {
+    if (dataAct?.COLLECTED?.[variableName]) {
         if (iteration != null && value != null) {
             dataAct = getDataModePersistOfArray(
                 dataAct,
@@ -1244,7 +1238,7 @@ const getDataModePersist = (
         }
     }
     datas.set(idSurvey, dataAct);
-    addItemToSession(idSurvey, dataAct);
+    saveInDatabase(idSurvey, dataAct);
     return dataAct;
 };
 
@@ -1611,7 +1605,7 @@ const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
 
     for (let prop in FieldNameEnum as any) {
         if (prop == FieldNameEnum.FIRSTNAME) continue;
-        const surveyData = dataOfSurvey && dataOfSurvey[prop];
+        const surveyData = dataOfSurvey?.[prop];
         const ifArrayInputed =
             surveyData?.EDITED &&
             Array.isArray(surveyData.EDITED) &&

@@ -30,7 +30,7 @@ export const callbackHolder: { getData(): LunaticData; getErrors(): { [key: stri
 export type OrchestratorProps = {
     source?: LunaticModel;
     data?: LunaticData;
-    cbHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } };
+    callbackHolder: { getData(): LunaticData; getErrors(): { [key: string]: [] } };
     page: string;
     subPage?: string;
     iteration?: number;
@@ -310,7 +310,7 @@ const getVariables = (
 };
 
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    let { source, data, cbHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
+    let { source, data, callbackHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
         props;
     const { classes, cx } = useStyles();
     const { getComponents, getCurrentErrors, getData } = (lunatic as any).useLunatic(source, data, {
@@ -331,8 +331,8 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
         return dataLocal;
     };
 
-    cbHolder.getData = getDataLocal;
-    cbHolder.getErrors = getCurrentErrors;
+    callbackHolder.getData = getDataLocal;
+    callbackHolder.getErrors = getCurrentErrors;
 
     if (!source) {
         source = getCurrentPageSource();
