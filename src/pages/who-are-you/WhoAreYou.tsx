@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import WhoAreYouImg from "../../assets/illustration/who-are-you.svg?react";
 import SurveyPageStep from "../../components/commons/SurveyPage/SurveyPageStep/SurveyPageStep";
 import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
@@ -7,6 +7,10 @@ import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { surveyReadOnly } from "../../service/survey-activity-service";
 import { validateAllGroup } from "../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../utils/utils";
+import * as lunaticComponents from "@inseefr/lunatic/lib/index";
+
+// We will inject a custom handleChange on component to intercept value change
+const originalComponents = lunaticComponents as Record<string, any>;
 
 const WhoAreYouPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -20,36 +24,29 @@ const WhoAreYouPage = () => {
     const idSurvey = getSurveyIdFromUrl(context, location);
     const navigate = useNavigate();
 
-    // const keydownChange = useCallback(() => {
-    //     const input = (document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement)?.value;
-    //     if (input) {
-    //         setDisabledButton(input.length <= 1);
-    //     }
-    // }, []);
-
-    // React.useEffect(() => {
-    //     document.addEventListener("keyup", keydownChange, true);
-    //     return () => document.removeEventListener("keyup", keydownChange, true);
-    // }, [keydownChange]);
-
-    const keypressChange = useCallback((event: KeyboardEvent) => {
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        if (event.key === "Enter" && isMobile) {
-            (document.activeElement as HTMLElement)?.blur();
-        }
-        const input = (document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement)?.value;
-        setDisabledButton(!input || input.length <= 1);
-    }, []);
-
-    React.useEffect(() => {
-        document.addEventListener("keypress", keypressChange, true);
-        return () => document.removeEventListener("keypress", keypressChange, true);
-    }, [keypressChange]);
-
     const validate = useCallback(() => {
-        const input = (document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement)?.value;
+        const input = (document.getElementsByClassName("MuiInputBase-input")?.[0] as HTMLInputElement)
+            ?.value;
         validateAllGroup(navigate, idSurvey, input);
     }, [navigate, idSurvey]);
+
+    // Create a list of lunatic components with a spy on handleChange to detect an input
+    const components = useMemo(
+        () => ({
+            ...lunaticComponents,
+            Input: (props: any) => {
+                const handleChange = useCallback(
+                    (response: unknown, value: string, ...rest: any) => {
+                        setDisabledButton(value.length <= 1);
+                        props.handleChange(response, value, ...rest);
+                    },
+                    [props.handleChange, setDisabledButton],
+                );
+                return <originalComponents.Input {...props} handleChange={handleChange} />;
+            },
+        }),
+        [setDisabledButton],
+    );
 
     return (
         <SurveyPageStep
@@ -59,9 +56,9 @@ const WhoAreYouPage = () => {
             isStep={false}
             disableButton={modifiable ? disabledButton : true}
             validateButton={validate}
+            lunaticComponents={components}
         />
     );
-
 };
 
 export default WhoAreYouPage;
