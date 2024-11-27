@@ -2,7 +2,6 @@ import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import DisconnectIcon from "../../assets/illustration/disconnect.svg?react";
-import logo from "../../assets/illustration/logo.png";
 import ArrowForwardIosIcon from "../../assets/illustration/mui-icon/arrow-forward-blue.svg?react";
 import PowerSettingsIcon from "../../assets/illustration/mui-icon/power-settings.svg?react";
 import VisibilityIcon from "../../assets/illustration/mui-icon/visibility.svg?react";
@@ -62,7 +61,7 @@ const HomeReviewerPage = () => {
                     <>
                         <img
                             className={classes.logoImg}
-                            src={logo}
+                            src="/assets/illustration/logo.png"
                             alt={t("accessibility.asset.logo-alt")}
                         />
                         <h1 className={classes.emptyHeader}>Header</h1>

@@ -58,7 +58,7 @@
         "check": "tsc -b",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
-        "preview": "vite preview --port 3000",
+        "preview": "vite build --watch & vite preview --port=3000",
         "build:staging": "tsc -b && vite build --mode staging",
         "build:production": "tsc -b && vite build --mode production",
         "start-with-lib": "concurrently \"yarn run dev\" \"cd ./node_modules/@inseefrlab/lunatic-edt && tsc-watch\""

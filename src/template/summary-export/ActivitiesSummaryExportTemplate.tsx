@@ -1,5 +1,4 @@
 import { Document, Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
-import logoInsee from "../../assets/illustration/logo.png";
 import { ActivitiesSummaryExportData } from "../../interface/entity/ActivitiesSummary";
 import { useTranslation } from "react-i18next";
 import { ActivitiesPlanningExportTemplate } from "./ActivitiesPlanningExportTemplate.tsx";
@@ -25,7 +24,7 @@ const ActivitiesSummaryExportTemplate = (props: ActivitiesSummaryExportTemplateP
                     <View style={classes.headerRow}>
                         <View>
                             <Text style={classes.title}>
-                                <Image style={classes.logo} src={logoInsee} />
+                                <Image style={classes.logo} src="/assets/illustration/logo.png" />
                             </Text>
                         </View>
                         <View>
