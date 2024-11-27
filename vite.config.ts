@@ -11,6 +11,7 @@ export default defineConfig({
         react(),
         nodePolyfills(),
         VitePWA({
+            includeAssets: ["assets/fonts/marianne-regular-webfont.woff", "assets/illustration/*.png"],
             workbox: {
                 maximumFileSizeToCacheInBytes: 15_000_000,
                 sourcemap: true,
@@ -27,8 +28,8 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             scss: {
-                api: 'modern-compiler'
-            }
-        }
-    }
+                api: "modern-compiler",
+            },
+        },
+    },
 });

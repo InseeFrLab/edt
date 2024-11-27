@@ -1,7 +1,6 @@
 import { Alert, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button } from "@mui/material";
 import DisconnectIcon from "../../assets/illustration/disconnect.svg?react";
-import logo from "../../assets/illustration/logo.png";
 import HelpIcon from "../../assets/illustration/mui-icon/help.svg?react";
 import HomeIcon from "../../assets/illustration/mui-icon/home.svg?react";
 import LockIcon from "../../assets/illustration/mui-icon/lock.svg?react";
@@ -421,7 +420,7 @@ const HomeSurveyedPage = () => {
                         <>
                             <img
                                 className={classes.logoImg}
-                                src={logo}
+                                src={"/assets/illustration/logo.png"}
                                 alt={t("accessibility.asset.logo-alt")}
                             />
                             <h1 className={classes.emptyHeader}>Header</h1>
