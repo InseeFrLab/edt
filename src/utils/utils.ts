@@ -59,12 +59,11 @@ function getSurveyIdFromUrl(context: OrchestratorContext, location: Location) {
 }
 
 function addItemToSession(idSurvey: string, item: any) {
-    sessionStorage.setItem(idSurvey, JSON.stringify(item));
+    localStorage.setItem(`session${idSurvey}`, JSON.stringify(item));
 }
 
 function getItemFromSession(idSurvey: string) {
-    const item = JSON.parse(sessionStorage.getItem(idSurvey ?? "") ?? "{}");
-    return item;
+    return JSON.parse(localStorage.getItem(`session${idSurvey ?? ""}`) ?? "{}");
 }
 
 function addArrayToSession(nameItem: string, array: any[]) {
@@ -74,16 +73,15 @@ function addArrayToSession(nameItem: string, array: any[]) {
         copyArray += JSON.stringify(item);
     });
     let arrayToString = copyArray.toString();
-    sessionStorage.setItem(nameItem, arrayToString);
+    localStorage.setItem(`session${nameItem}`, arrayToString);
 }
 
 function getArrayFromSession(nameItem: string): any[] {
-    let stringArray = sessionStorage.getItem(nameItem);
-    if (stringArray) {
-        let copyArrayString = stringArray.split(";;");
-        let array = copyArrayString.map(c => JSON.parse(c ?? "{}"));
-        return array;
-    } else return [];
+    const str = localStorage.getItem(`session${nameItem}`);
+    if (str) {
+        return str.split(";;").map(c => JSON.parse(c ?? "{}"));
+    }
+    return [];
 }
 
 function getUniquesValues(listValues: any[]): any[] {
