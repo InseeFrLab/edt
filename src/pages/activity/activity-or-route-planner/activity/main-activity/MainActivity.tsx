@@ -136,21 +136,22 @@ const MainActivityPage = () => {
         nextClickCallback: (routeToGoal: boolean) => {
             const codeActivity = getValueOfActivity(callbackHolder.getData(), currentIteration) ?? "";
             const skip = filtrePage(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL, codeActivity);
-            // TEST
-            // Data is saved in local database but not remotely saved because the data in the callbackHolder is not updated
             // TODO: regarder comment update des données du callbackHolder
-            setValue(idSurvey, FieldNameEnum.ACTIVITY_SELECTER_HISTORY, localStorage.getItem('historyActivitySelecter'), currentIteration);
-            setValue(idSurvey, FieldNameEnum.MAINACTIVITY_SUGGESTERID, localStorage.getItem('selectedIdNewActivity'), currentIteration);
-            let data = setValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL, localStorage.getItem('selectionValue - label'), currentIteration);
-            console.log('history activity', localStorage.getItem('historyActivitySelecter'));
-            console.log('data after local storage usage', data);
-            saveData(idSurvey, data, true, true).then(() => {
-                //Clean history to avoid data overflow
-                localStorage.removeItem('historyInputSuggester');
-                // localStorage.removeItem('selectedIdNewActivity');
-            });
+            const customActivityLabel = localStorage.getItem('selectionValue - label');
+            const loopNavigateFunction = customActivityLabel !== null ? loopNavigate : saveAndLoopNavigate;
+            console.log('loopNavigateFunction', loopNavigateFunction);
+            if (customActivityLabel !== null) {
+                setValue(idSurvey, FieldNameEnum.ACTIVITY_SELECTER_HISTORY, localStorage.getItem('historyActivitySelecter'), currentIteration);
+                setValue(idSurvey, FieldNameEnum.MAINACTIVITY_SUGGESTERID, localStorage.getItem('selectedIdNewActivity'), currentIteration);
+                let data = setValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL, localStorage.getItem('selectionValue - label'), currentIteration);
+
+                saveData(idSurvey, data, true, true).then(() => {
+                    //Clean history to avoid data overflow
+                    localStorage.removeItem('historyInputSuggester');
+                });
+            }
             if (routeToGoal && !skip) {
-                loopNavigate(
+                loopNavigateFunction(
                     idSurvey,
                     context.source,
                     EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL,
@@ -159,7 +160,7 @@ const MainActivityPage = () => {
                 );
             } else {
                 const skip = filtrePage(EdtRoutesNameEnum.SECONDARY_ACTIVITY, codeActivity);
-                loopNavigate(
+                loopNavigateFunction(
                     idSurvey,
                     context.source,
                     skip ? EdtRoutesNameEnum.ACTIVITY_LOCATION : getNextLoopPage(currentPage),
