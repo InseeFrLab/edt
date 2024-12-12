@@ -139,7 +139,6 @@ const MainActivityPage = () => {
             // TODO: regarder comment update des données du callbackHolder
             const customActivityLabel = localStorage.getItem('selectionValue - label');
             const loopNavigateFunction = customActivityLabel !== null ? loopNavigate : saveAndLoopNavigate;
-            console.log('loopNavigateFunction', loopNavigateFunction);
             if (customActivityLabel !== null) {
                 setValue(idSurvey, FieldNameEnum.ACTIVITY_SELECTER_HISTORY, localStorage.getItem('historyActivitySelecter'), currentIteration);
                 setValue(idSurvey, FieldNameEnum.MAINACTIVITY_SUGGESTERID, localStorage.getItem('selectedIdNewActivity'), currentIteration);
