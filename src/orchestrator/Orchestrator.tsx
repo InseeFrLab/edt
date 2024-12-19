@@ -310,8 +310,16 @@ const getVariables = (
 };
 
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    let { source, data, callbackHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
-        props;
+    let {
+        source,
+        data,
+        callbackHolder,
+        page,
+        subPage,
+        iteration,
+        componentSpecificProps,
+        overrideOptions,
+    } = props;
     const { classes, cx } = useStyles();
     const { getComponents, getCurrentErrors, getData } = (lunatic as any).useLunatic(source, data, {
         initialPage:
@@ -325,10 +333,14 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
     const currentErrors = getCurrentErrors();
 
     const getDataLocal = () => {
+        // Since we want to disable EDITED, only consider collected data
+        return getDataInterviewer(getData, data, source);
+        /*
         const dataLocal = isReviewer()
             ? getDataReviewer(getData, data, components, iteration)
             : getDataInterviewer(getData, data, source);
         return dataLocal;
+         */
     };
 
     callbackHolder.getData = getDataLocal;
