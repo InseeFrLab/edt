@@ -136,9 +136,14 @@ const MainActivityPage = () => {
         nextClickCallback: (routeToGoal: boolean) => {
             const codeActivity = getValueOfActivity(callbackHolder.getData(), currentIteration) ?? "";
             const skip = filtrePage(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL, codeActivity);
-            // TODO: regarder comment update des données du callbackHolder
+            // TODO: regarder comment update des données du callbackHolder directement à la sélection de l'activité
+
+            // Check if the user has selected an existing activity or created a new one
+            // If the user has selected an existing activity, the data is saved as intended during a lunatic loop 
+            // If not, the save process is delayed to the next page (to go back into a lunatic loop)
             const customActivityLabel = localStorage.getItem('selectionValue - label');
             const loopNavigateFunction = customActivityLabel !== null ? loopNavigate : saveAndLoopNavigate;
+
             if (customActivityLabel !== null) {
                 setValue(idSurvey, FieldNameEnum.ACTIVITY_SELECTER_HISTORY, localStorage.getItem('historyActivitySelecter'), currentIteration);
                 setValue(idSurvey, FieldNameEnum.MAINACTIVITY_SUGGESTERID, localStorage.getItem('selectedIdNewActivity'), currentIteration);
