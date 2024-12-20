@@ -48,51 +48,51 @@ const renderLoading = () => {
     );
 };
 
-const getDataOfLoop = (collected: any, editedSaved: any, iteration: number | undefined) => {
-    let maxLenght = Number(localStorage.getItem("loopSize") ?? 0);
-    for (let i = 0; i < maxLenght; i++) {
-        if (i != iteration || (collected[i] == null && i == iteration)) {
-            collected[i] = editedSaved[i];
-        }
-    }
-    return collected;
-};
+// const getDataOfLoop = (collected: any, editedSaved: any, iteration: number | undefined) => {
+//     let maxLenght = Number(localStorage.getItem("loopSize") ?? 0);
+//     for (let i = 0; i < maxLenght; i++) {
+//         if (i != iteration || (collected[i] == null && i == iteration)) {
+//             collected[i] = editedSaved[i];
+//         }
+//     }
+//     return collected;
+// };
 
-const getDataOfCurrentBinding = (
-    collected: any,
-    edited: any,
-    collectedSaved: any,
-    editedSaved: any,
-    dataOfField: any,
-    iteration: number | undefined,
-) => {
-    // partie collected dejà set (mode enquete) -> set values of collected (value current lunawtic) to edited
-    // and collected remains with the collected value on bdd
+// const getDataOfCurrentBinding = (
+//     collected: any,
+//     edited: any,
+//     collectedSaved: any,
+//     editedSaved: any,
+//     dataOfField: any,
+//     iteration: number | undefined,
+// ) => {
+//     // partie collected dejà set (mode enquete) -> set values of collected (value current lunawtic) to edited
+//     // and collected remains with the collected value on bdd
 
-    if (collected) {
-        if (editedSaved && Array.isArray(collected)) {
-            collected = getDataOfLoop(collected, editedSaved, iteration);
-        }
-        dataOfField.EDITED = collected;
-        dataOfField.COLLECTED = collectedSaved;
-    } else if (dataOfField) {
-        dataOfField.EDITED = edited ?? editedSaved;
-        dataOfField.COLLECTED = collectedSaved;
-    }
+//     if (collected) {
+//         if (editedSaved && Array.isArray(collected)) {
+//             collected = getDataOfLoop(collected, editedSaved, iteration);
+//         }
+//         dataOfField.EDITED = collected;
+//         dataOfField.COLLECTED = collectedSaved;
+//     } else if (dataOfField) {
+//         dataOfField.EDITED = edited ?? editedSaved;
+//         dataOfField.COLLECTED = collectedSaved;
+//     }
 
-    return dataOfField;
-};
+//     return dataOfField;
+// };
 
 //prop is for activity and prop being modified
-const isPropCurrent = (prop: string, bindings?: string[]) => {
-    return bindings?.includes(prop) ?? false;
-};
+// const isPropCurrent = (prop: string, bindings?: string[]) => {
+//     return bindings?.includes(prop) ?? false;
+// };
 
 //return a copy of a object
-const copyObject = (object: any) => {
-    if (object == null) return object;
-    return Array.isArray(object) ? [...object] : JSON.parse(JSON.stringify(object));
-};
+// const copyObject = (object: any) => {
+//     if (object == null) return object;
+//     return Array.isArray(object) ? [...object] : JSON.parse(JSON.stringify(object));
+// };
 
 const isWorkTime = (source: LunaticModel | undefined) => {
     return source ? source.label == "WorkTime" : getCurrentPageSource().label == "WorkTime";
@@ -112,93 +112,93 @@ const propsWorkTime = (source: LunaticModel): string[] => {
 };
 
 //if weekly planner, doesn't distinction edited/collected, so edited/collected get value of collected
-const setDataOfWorkTimeReviewer = (
-    source: LunaticModel | undefined,
-    data: LunaticData | undefined,
-    dataCollected: any,
-) => {
-    if (!source) {
-        source = getCurrentPageSource();
-    }
+// const setDataOfWorkTimeReviewer = (
+//     source: LunaticModel | undefined,
+//     data: LunaticData | undefined,
+//     dataCollected: any,
+// ) => {
+//     if (!source) {
+//         source = getCurrentPageSource();
+//     }
 
-    const weeklyPlannerProps = propsWorkTime(source);
-    weeklyPlannerProps.forEach(prop => {
-        let dataOfField = dataCollected[prop];
-        const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
-        const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
-        if (dataOfField) {
-            dataOfField.EDITED = editedSaved;
-            dataOfField.COLLECTED = collectedSaved;
-        }
-    });
+//     const weeklyPlannerProps = propsWorkTime(source);
+//     weeklyPlannerProps.forEach(prop => {
+//         let dataOfField = dataCollected[prop];
+//         const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
+//         const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
+//         if (dataOfField) {
+//             dataOfField.EDITED = editedSaved;
+//             dataOfField.COLLECTED = collectedSaved;
+//         }
+//     });
 
-    return dataCollected;
-};
+//     return dataCollected;
+// };
 
-const setDataOfActivityReviewer = (
-    dataCollected: any,
-    data: LunaticData | undefined,
-    components: any,
-    iteration: number | undefined,
-) => {
-    const bindings: string[] = components?.filter(
-        (component: any) => component.componentType != "Sequence",
-    )[0]?.bindingDependencies;
-    for (let prop in FieldNameEnumActivity as any) {
-        let dataOfField = dataCollected[prop];
-        const collected = dataOfField?.COLLECTED;
-        const edited = dataOfField?.EDITED;
-        const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
-        const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
-        //prop activity + prop currently being edited
-        if (isPropCurrent(prop, bindings)) {
-            //get data of current prop ->
-            //COLLECTED : value of bdd (COLLECTED)
-            //EDITED: if exist EDITED -> value of lunatic for value[iteration], other -> value of bdd (EDITED)
-            dataOfField = getDataOfCurrentBinding(
-                copyObject(collected),
-                copyObject(edited),
-                copyObject(collectedSaved),
-                copyObject(editedSaved),
-                dataOfField,
-                iteration,
-            );
-        } else if (dataOfField) {
-            //prop activity + prop not currently being edited,
-            //so edited get value of edited in bdd, and collected get value of partie collected in bdd
-            dataOfField.EDITED = copyObject(editedSaved);
-            dataOfField.COLLECTED = copyObject(collectedSaved);
-        }
-        dataCollected[prop] = dataOfField;
-    }
-    return dataCollected;
-};
+// const setDataOfActivityReviewer = (
+//     dataCollected: any,
+//     data: LunaticData | undefined,
+//     components: any,
+//     iteration: number | undefined,
+// ) => {
+//     const bindings: string[] = components?.filter(
+//         (component: any) => component.componentType != "Sequence",
+//     )[0]?.bindingDependencies;
+//     for (let prop in FieldNameEnumActivity as any) {
+//         let dataOfField = dataCollected[prop];
+//         const collected = dataOfField?.COLLECTED;
+//         const edited = dataOfField?.EDITED;
+//         const editedSaved = data?.COLLECTED?.[prop]?.EDITED;
+//         const collectedSaved = data?.COLLECTED?.[prop]?.COLLECTED;
+//         //prop activity + prop currently being edited
+//         if (isPropCurrent(prop, bindings)) {
+//             //get data of current prop ->
+//             //COLLECTED : value of bdd (COLLECTED)
+//             //EDITED: if exist EDITED -> value of lunatic for value[iteration], other -> value of bdd (EDITED)
+//             dataOfField = getDataOfCurrentBinding(
+//                 copyObject(collected),
+//                 copyObject(edited),
+//                 copyObject(collectedSaved),
+//                 copyObject(editedSaved),
+//                 dataOfField,
+//                 iteration,
+//             );
+//         } else if (dataOfField) {
+//             //prop activity + prop not currently being edited,
+//             //so edited get value of edited in bdd, and collected get value of partie collected in bdd
+//             dataOfField.EDITED = copyObject(editedSaved);
+//             dataOfField.COLLECTED = copyObject(collectedSaved);
+//         }
+//         dataCollected[prop] = dataOfField;
+//     }
+//     return dataCollected;
+// };
 
 //data of a reviewer
-const getDataReviewer = (
-    getData: any,
-    data: LunaticData | undefined,
-    components: any,
-    iteration: number | undefined,
-    source?: LunaticModel,
-) => {
-    const callbackholder = getData();
-    let dataCollected = callbackholder.COLLECTED;
+// const getDataReviewer = (
+//     getData: any,
+//     data: LunaticData | undefined,
+//     components: any,
+//     iteration: number | undefined,
+//     source?: LunaticModel,
+// ) => {
+//     const callbackholder = getData();
+//     let dataCollected = callbackholder.COLLECTED;
 
-    if (!source) {
-        source = getCurrentPageSource();
-    }
-    // data -> get data of bdd, callbackholder -> lunatic / current data
-    if (callbackholder && dataCollected) {
-        if (isWorkTime(source)) {
-            dataCollected = setDataOfWorkTimeReviewer(source, data, dataCollected);
-        } else {
-            dataCollected = setDataOfActivityReviewer(dataCollected, data, components, iteration);
-        }
-    }
-    callbackholder.COLLECTED = dataCollected;
-    return callbackholder;
-};
+//     if (!source) {
+//         source = getCurrentPageSource();
+//     }
+//     // data -> get data of bdd, callbackholder -> lunatic / current data
+//     if (callbackholder && dataCollected) {
+//         if (isWorkTime(source)) {
+//             dataCollected = setDataOfWorkTimeReviewer(source, data, dataCollected);
+//         } else {
+//             dataCollected = setDataOfActivityReviewer(dataCollected, data, components, iteration);
+//         }
+//     }
+//     callbackholder.COLLECTED = dataCollected;
+//     return callbackholder;
+// };
 
 /**
  * Retrieves and updates interviewer data.

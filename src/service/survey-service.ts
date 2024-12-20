@@ -1619,6 +1619,7 @@ const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
     return false;
 };
 
+// @ts-ignore
 const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum => {
     // We don't want to use EDITED anymore, to minimize changes we will simulate COLLECTED for everything
     return ModePersistenceEnum.COLLECTED;

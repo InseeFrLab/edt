@@ -254,7 +254,7 @@ const createGapsOverlaps = (idSurvey: string, activitiesRoutes: ActivityRouteOrG
         } else if (
             previousActivity &&
             hourToNormalizedTimeStamp(act.startTime, idSurvey) >
-                hourToNormalizedTimeStamp(previousActivity.endTime, idSurvey)
+            hourToNormalizedTimeStamp(previousActivity.endTime, idSurvey)
         ) {
             const index = activitiesRoutes.indexOf(act);
             activitiesRoutes.splice(index, 0, {
@@ -267,8 +267,8 @@ const createGapsOverlaps = (idSurvey: string, activitiesRoutes: ActivityRouteOrG
         if (
             previousActivity &&
             hourToNormalizedTimeStamp(act.startTime, idSurvey) -
-                hourToNormalizedTimeStamp(previousActivity.endTime, idSurvey) <
-                0
+            hourToNormalizedTimeStamp(previousActivity.endTime, idSurvey) <
+            0
         ) {
             overlaps.push({
                 prev: previousActivity.startTime,
