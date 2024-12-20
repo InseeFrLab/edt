@@ -398,7 +398,7 @@ const initializeHomeSurveys = (idHousehold: string) => {
         addArrayToSession("userDatas", userDatas);
         initializeRefs().then(() => {
             resolve(true);
-        })
+        });
     });
 };
 
@@ -1620,11 +1620,15 @@ const existVariableEdited = (idSurvey?: string, data?: LunaticData) => {
 };
 
 const getModePersistence = (data: LunaticData | undefined): ModePersistenceEnum => {
+    // We don't want to use EDITED anymore, to minimize changes we will simulate COLLECTED for everything
+    return ModePersistenceEnum.COLLECTED;
+    /*
     const isReviewerMode = isReviewer();
     const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED as boolean;
     return isReviewerMode || isLocked || existVariableEdited(undefined, data)
         ? ModePersistenceEnum.EDITED
         : ModePersistenceEnum.COLLECTED;
+     */
 };
 
 const getValueWithData = (
