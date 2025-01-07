@@ -47,7 +47,7 @@
         "globals": "^15.9.0",
         "jsdom": "^25.0.1",
         "prettier": "^3.3.3",
-        "typescript": "^5.5.3",
+        "typescript": "^5.7.2",
         "typescript-eslint": "^8.0.1",
         "vite": "^5.4.1",
         "vite-plugin-node-polyfills": "^0.22.0",
@@ -63,7 +63,8 @@
         "preview": "vite build --watch & vite preview --port=3000",
         "build:staging": "tsc -b && vite build --mode staging",
         "build:production": "tsc -b && vite build --mode production",
-        "start-with-lib": "concurrently \"yarn run dev\" \"cd ./node_modules/@inseefrlab/lunatic-edt && tsc-watch\""
+        "start-with-lib": "concurrently \"yarn run dev\" \"cd ./node_modules/@inseefrlab/lunatic-edt && tsc-watch\"",
+        "test": "vitest"
     },
     "eslintConfig": {
         "extends": [
