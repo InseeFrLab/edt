@@ -135,6 +135,9 @@ const setAlertSnackbar = (
                 t("page.activity-planner.end-alert"),
         );
         if (!skip) setOpenSnackbar(true);
+    } else {
+        setSnackbarText(undefined);
+        setOpenSnackbar(false);
     }
 };
 
