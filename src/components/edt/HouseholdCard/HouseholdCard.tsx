@@ -34,16 +34,6 @@ const HouseholdCard = (props: HouseholdCardProps) => {
     const { classes, cx } = useStyles();
     const navigate = useNavigate();
 
-    const getType = (): string => {
-        if (dataHousehold.stats?.numHouseholdsValidated == dataHousehold.stats?.numHouseholds) {
-            return classes.gray;
-        } else if (dataHousehold.stats?.numHouseholdsClosed >= 1) {
-            return classes.green;
-        } else {
-            return classes.orange;
-        }
-    };
-
     const hasStarted =
         dataHousehold.stats?.numHouseholdsInProgress >= 1 ||
         (dataHousehold.stats?.numHouseholdsClosed == 0 &&
@@ -66,7 +56,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
     const renderCard = () => {
         return (
             <>
-                <Box className={cx(classes.iconBox, getType())}>{iconPerson}</Box>
+                <Box className={cx(classes.iconBox, classes.green)}>{iconPerson}</Box>
                 <Box className={classes.identityBox}>
                     <Typography className={classes.label}>{householdStaticLabel}</Typography>
                     <Typography className={classes.labelBold}>{dataHousehold.idHousehold}</Typography>
@@ -131,7 +121,7 @@ const HouseholdCard = (props: HouseholdCardProps) => {
                         <Box
                             className={cx(
                                 classes.iconBox,
-                                getType(),
+                                classes.green,
                                 isItMobile ? classes.iconBoxMobile : "",
                             )}
                         >
