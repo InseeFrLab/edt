@@ -757,8 +757,8 @@ const getIfArrayIsChange = (
         | boolean[]
         | null[]
         | {
-              [key: string]: string;
-          }[],
+            [key: string]: string;
+        }[],
     data:
         | string
         | boolean
@@ -766,8 +766,8 @@ const getIfArrayIsChange = (
         | boolean[]
         | null[]
         | {
-              [key: string]: string;
-          }[],
+            [key: string]: string;
+        }[],
     isChange: boolean,
 ) => {
     let isChangeArray = isChange;
@@ -941,7 +941,7 @@ const updateLocked = (idSurvey: string, data: LunaticData) => {
     if (existVariableEdited(idSurvey, data) && data.COLLECTED) {
         data.COLLECTED[FieldNameEnum.ISLOCKED] = {
             COLLECTED: true,
-            EDITED: true,
+            EDITED: null,
             FORCED: null,
             INPUTED: null,
             PREVIOUS: null,
@@ -1119,13 +1119,13 @@ const saveSurveysIds = (data: SurveysIds): Promise<SurveysIds> => {
 const saveUserSurveysData = (data: UserSurveysData): Promise<UserSurveys[]> => {
     return data.data?.length > 0
         ? lunaticDatabase.save(USER_SURVEYS_DATA, data).then(() => {
-              userDatas = data.data;
-              return data.data;
-          })
+            userDatas = data.data;
+            return data.data;
+        })
         : lunaticDatabase.get(USER_SURVEYS_DATA).then(userDatas => {
-              let userDatasLocal = userDatas as UserSurveysData;
-              return userDatasLocal?.data;
-          });
+            let userDatasLocal = userDatas as UserSurveysData;
+            return userDatasLocal?.data;
+        });
 };
 
 const getUserDatasActivity = (): UserSurveys[] => {
@@ -1628,15 +1628,15 @@ const createUserDataMap = (usersurvey: UserSurveys[]): Person[] => {
             }
             return data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
                 ? {
-                      data: data,
-                      firstName: "zzzz " + (numInterviewer + 1),
-                      num: numInterviewer + 1,
-                  }
+                    data: data,
+                    firstName: "zzzz " + (numInterviewer + 1),
+                    num: numInterviewer + 1,
+                }
                 : {
-                      data: data,
-                      firstName: "zzzzz " + index + 1,
-                      num: index + 1,
-                  };
+                    data: data,
+                    firstName: "zzzzz " + index + 1,
+                    num: index + 1,
+                };
         })
         .sort((u1, u2) => u1.data.surveyUnitId.localeCompare(u2.data.surveyUnitId));
 };
@@ -1773,7 +1773,7 @@ const lockSurvey = (idSurvey: string) => {
     const data = getData(idSurvey || "");
     const variable: Collected = {
         COLLECTED: true,
-        EDITED: true,
+        EDITED: null,
         FORCED: null,
         INPUTED: null,
         PREVIOUS: null,
@@ -1796,7 +1796,7 @@ const lockAllSurveys = (idHousehold: string) => {
         if (value == null || (value != null && !value)) {
             const variable: Collected = {
                 COLLECTED: true,
-                EDITED: true,
+                EDITED: null,
                 FORCED: null,
                 INPUTED: null,
                 PREVIOUS: null,
@@ -1823,7 +1823,7 @@ const validateSurvey = (idSurvey: string) => {
     const data = getData(idSurvey || "");
     const variable: Collected = {
         COLLECTED: true,
-        EDITED: true,
+        EDITED: null,
         FORCED: null,
         INPUTED: null,
         PREVIOUS: null,
@@ -1850,7 +1850,7 @@ const validateAllEmptySurveys = (idHousehold: string) => {
     const promisesToWait: Promise<any>[] = [];
     const variable: Collected = {
         COLLECTED: true,
-        EDITED: true,
+        EDITED: null,
         FORCED: null,
         INPUTED: null,
         PREVIOUS: null,
