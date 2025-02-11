@@ -868,7 +868,7 @@ const updateLocked = (idSurvey: string, data: LunaticData) => {
     if (existVariableEdited(idSurvey, data) && data.COLLECTED) {
         data.COLLECTED[FieldNameEnum.ISLOCKED] = {
             COLLECTED: true,
-            EDITED: true,
+            EDITED: null,
             FORCED: null,
             INPUTED: null,
             PREVIOUS: null,
