@@ -77,7 +77,7 @@ const lockSurvey = (idSurvey: string) => {
     const data = getData(idSurvey || "");
     const variable: Collected = {
         COLLECTED: true,
-        EDITED: true,
+        EDITED: null,
         FORCED: null,
         INPUTED: null,
         PREVIOUS: null,
@@ -100,7 +100,7 @@ const lockAllSurveys = (idHousehold: string) => {
         if (value == null || (value != null && !value)) {
             const variable: Collected = {
                 COLLECTED: true,
-                EDITED: true,
+                EDITED: null,
                 FORCED: null,
                 INPUTED: null,
                 PREVIOUS: null,
