@@ -160,11 +160,10 @@ const ActivityDurationPage = () => {
 
         if (startTime.length === endTime.length) {
             return true;
-        } else {
-            setSnackbarText(t("page.activity-duration.error-time"));
-            setOpenSnackbar(true);
-            return false;
         }
+        setSnackbarText(t("page.activity-duration.error-time"));
+        setOpenSnackbar(true);
+        return false;
     };
 
     const onNext = () => {
