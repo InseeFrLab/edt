@@ -668,32 +668,27 @@ const ActivitySummaryPage = () => {
                             <Button variant="outlined" onClick={back} className={classes.buttonNav}>
                                 {t("common.navigation.back")}
                             </Button>
-                            <Button
-                                variant="outlined"
-                                className={classes.buttonNav}
-                                startIcon={
-                                    <DownloadIcon
-                                        aria-label={t("accessibility.asset.mui-icon.download")}
-                                        className={classes.midSizeButton}
-                                    />
+
+                            <PDFDownloadLink
+                                className={classes.downloadLinkReviewer}
+                                document={
+                                    <ActivitiesSummaryExportTemplate exportData={exportData} />
+                                }
+                                fileName={
+                                    t("export.activities-summary.file-name") +
+                                    getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
+                                    "_" +
+                                    getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
+                                    ".pdf"
                                 }
                             >
-                                <PDFDownloadLink
-                                    className={classes.downloadLinkReviewer}
-                                    document={
-                                        <ActivitiesSummaryExportTemplate exportData={exportData} />
-                                    }
-                                    fileName={
-                                        t("export.activities-summary.file-name") +
-                                        getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
-                                        "_" +
-                                        getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
-                                        ".pdf"
-                                    }
+                                <Button
+                                    variant="contained"
                                 >
-                                    <DownloadLink url="" />
-                                </PDFDownloadLink>
-                            </Button>
+                                    {t("page.activity-summary.download-pdf")}
+                                </Button>
+                            </PDFDownloadLink>
+
                             <Button
                                 variant="contained"
                                 onClick={openPopup}
@@ -709,21 +704,23 @@ const ActivitySummaryPage = () => {
                             </Button>
                         </>
                     ) : (
-                        <Button variant="contained" className={classes.downloadButton}>
-                            <PDFDownloadLink
-                                className={classes.downloadLink}
-                                document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
-                                fileName={
-                                    t("export.activities-summary.file-name") +
-                                    getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
-                                    "_" +
-                                    getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
-                                    ".pdf"
-                                }
-                            >
-                                    <DownloadLink url="" />
-                            </PDFDownloadLink>
-                        </Button>
+
+                        <PDFDownloadLink
+                            className={classes.downloadLink}
+                            document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
+                            fileName={
+                                t("export.activities-summary.file-name") +
+                                getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
+                                "_" +
+                                getValue(idSurvey, FieldNameEnum.SURVEYDATE) +
+                                ".pdf"
+                            }
+                        >
+                            <Button variant="contained" >
+                                {t("page.activity-summary.download-pdf")}
+                            </Button>
+                        </PDFDownloadLink>
+
                     )}
                 </FlexCenter>
 
@@ -820,12 +817,12 @@ const useStyles = makeStylesEdt<{ modifiable: boolean }>({ "name": { ActivitySum
         downloadLink: {
             textDecoration: "none",
             color: theme.variables.white,
-            padding: "6px 6px",
+            padding: "0px 6px",
         },
         downloadLinkReviewer: {
             textDecoration: "none",
             color: theme.palette.primary.main,
-            padding: "6px 6px",
+            padding: "0px 6px",
         },
         h1: {
             fontSize: "18px",
@@ -849,6 +846,7 @@ const useStyles = makeStylesEdt<{ modifiable: boolean }>({ "name": { ActivitySum
             marginRight: "1rem",
         },
         midSizeButton: {
+            color: theme.variables.white,
             height: "24px",
         },
     }),
