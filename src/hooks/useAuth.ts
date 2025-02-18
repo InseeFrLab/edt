@@ -81,9 +81,17 @@ export function useAuth({ persistState = false }: { persistState: boolean } = { 
             }
         }, [authUsername, role]);
 
-        // Disconnect the user on renewal error
+        // Disconnect the user on renewal error if online
         useEffect(() => {
-            auth.userManager.events.addSilentRenewError(logout);
+            const cb = () => {
+                if (window.navigator.onLine) {
+                    logout().catch(console.error);
+                }
+            };
+            auth.userManager.events.addSilentRenewError(cb);
+            return () => {
+                auth.userManager.events.removeSilentRenewError(cb);
+            };
         }, [auth]);
     }
 
