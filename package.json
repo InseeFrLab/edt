@@ -1,7 +1,7 @@
 {
     "name": "edt",
-    "version": "4.2.2",
-    "dateVersion": "17/02/2025",
+    "version": "4.2.3",
+    "dateVersion": "19/02/2025",
     "licence": "MIT",
     "dependencies": {
         "@inseefr/lunatic": "2.0.7-v2",
