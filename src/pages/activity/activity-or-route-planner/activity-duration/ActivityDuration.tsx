@@ -106,7 +106,6 @@ const ActivityDurationPage = () => {
         startTimeDay = addDayOfStartDay(startTimeDay, init);
         endTimeDay = addDayEndTime(startTimeDay, endTimeDay, init);
 
-        // Add a condition to prevent the user from validating the time period if the end time is not set correctly
         if (startTimeDay.isAfter(endTimeDay)) {
             isAfter = true;
         }
@@ -149,45 +148,25 @@ const ActivityDurationPage = () => {
         return skip;
     };
 
-    const isCompleteTimeframe = (): boolean => {
-        const data = callbackHolder.getData();
-        if (!data) {
-            return false;
-        }
-
-        const startTime = getValueOfData(data, FieldNameEnum.START_TIME) as string[];
-        const endTime = getValueOfData(data, FieldNameEnum.END_TIME) as string[];
-
-        if (startTime.length === endTime.length) {
-            return true;
-        }
-        setSnackbarText(t("page.activity-duration.error-time"));
-        setOpenSnackbar(true);
-        return false;
-    };
-
     const onNext = () => {
-        const isComplete = isCompleteTimeframe();
         const isAfter = isAfterEndTime();
         const skip = endTimeAfterStartTime(isAfter);
 
-        if (!isComplete) {
-            if (isAfter) {
-                setLastEndTime(endTimeDay);
-            }
+        if (isAfter) {
+            setLastEndTime(endTimeDay);
+        }
 
-            if ((skip && isAfter) || !isAfter) {
-                saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }).then(() => {
-                    navigate(
-                        getLoopParameterizedNavigatePath(
-                            idSurvey,
-                            getNextLoopPage(currentPage, isRoute),
-                            LoopEnum.ACTIVITY_OR_ROUTE,
-                            currentIteration,
-                        ),
-                    );
-                });
-            }
+        if ((skip && isAfter) || !isAfter) {
+            saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }).then(() => {
+                navigate(
+                    getLoopParameterizedNavigatePath(
+                        idSurvey,
+                        getNextLoopPage(currentPage, isRoute),
+                        LoopEnum.ACTIVITY_OR_ROUTE,
+                        currentIteration,
+                    ),
+                );
+            });
         }
     };
 
