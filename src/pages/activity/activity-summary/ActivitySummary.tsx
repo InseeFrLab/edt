@@ -13,7 +13,6 @@ import ErrorIcon from "../../../assets/illustration/error/activity.svg?react";
 import InfoAlertIcon from "../../../assets/illustration/info-alert.svg?react";
 import InfoIcon from "../../../assets/illustration/info.svg?react";
 import CheckIcon from "../../../assets/illustration/mui-icon/check.svg?react";
-import DownloadIcon from "../../../assets/illustration/mui-icon/download.svg?react";
 import InfoTooltipIcon from "../../../assets/illustration/mui-icon/info.svg?react";
 import FlexCenter from "../../../components/commons/FlexCenter/FlexCenter";
 import LoadingFull from "../../../components/commons/LoadingFull/LoadingFull";
@@ -254,22 +253,6 @@ const ActivitySummaryPage = () => {
         idSurvey = getSurveyIdFromUrl(context, location);
         context.idSurvey = idSurvey;
     });
-
-    const DownloadLink = useMemo(() => {
-        return React.memo(({
-            url,
-            loading = false,
-            error = false
-        }: {
-            url: string;
-            loading?: boolean;
-            error?: boolean
-        }) => {
-            if (loading) return <>{t("page.activity-summary.loading")}</>;
-            if (error) return <>{t("page.activity-summary.error")}</>;
-            return <Link href={url} download className={classes.downloadLink}>{t("page.activity-summary.download-pdf")}</Link>;
-        });
-    }, []);
 
     const navToCard = useCallback(
         (iteration: number) => () => navToActivityOrRoute(iteration),
