@@ -7,7 +7,7 @@ import {
     makeStylesEdt,
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
-import { Box, Button, Divider, Link, Switch, Typography } from "@mui/material";
+import { Box, Button, Divider, Switch, Typography } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import ErrorIcon from "../../../assets/illustration/error/activity.svg?react";
 import InfoAlertIcon from "../../../assets/illustration/info-alert.svg?react";
@@ -34,7 +34,7 @@ import { ActivityRouteOrGap } from "../../../interface/entity/ActivityRouteOrGap
 import { LunaticModel, OrchestratorContext } from "../../../interface/lunatic/Lunatic";
 import { callbackHolder } from "../../../orchestrator/Orchestrator";
 import ErrorPage from "../../../pages/error/ErrorPage";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type TFunction } from "i18next";
 import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
