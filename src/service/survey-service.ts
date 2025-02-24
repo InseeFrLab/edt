@@ -864,8 +864,8 @@ const getVarBooleanModepersistance = (
     return data as (boolean | null)[];
 };
 
-const updateLocked = (idSurvey: string, data: LunaticData) => {
-    if (existVariableEdited(idSurvey, data) && data.COLLECTED) {
+const updateLocked = (isReviewerMode: boolean, data: LunaticData) => {
+    if (isReviewerMode && data.COLLECTED) {
         data.COLLECTED[FieldNameEnum.ISLOCKED] = {
             COLLECTED: true,
             EDITED: null,
@@ -922,17 +922,19 @@ const saveData = (
         data.houseReference = idSurvey.replace(regexp, "");
     }
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
-    const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
+
     fixConditionals(data);
     let oldDataSurvey = datas.get(idSurvey) ?? {};
     const dataIsChanged = dataIsChange(idSurvey, data, oldDataSurvey);
     const isChange = forceUpdate || dataIsChanged;
     datas.set(idSurvey, data);
-    data = updateLocked(idSurvey, data);
+    const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
+
     let stateData: StateData = data?.stateData ?? getLocalSurveyStateData(data) ?? initStateData(data);
 
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
     if (isChange) {
+        data = updateLocked(isReviewerMode, data);
         data = saveQualityScore(idSurvey, data);
 
         if (!navigator.onLine) {

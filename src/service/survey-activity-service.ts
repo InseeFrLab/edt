@@ -615,7 +615,7 @@ const saveQualityScore = (idSurvey: string, data: LunaticData) => {
     if (data?.COLLECTED?.[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS]) {
         data.COLLECTED[FieldNameEnum.QUALITY_SCORE_SUBSTRACT_POINTS] = {
             COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? qualityScore.points : null,
-            EDITED: modePersistence == ModePersistenceEnum.EDITED ? qualityScore.points : null,
+            EDITED: null,
             FORCED: null,
             INPUTED: null,
             PREVIOUS: null,
@@ -624,7 +624,7 @@ const saveQualityScore = (idSurvey: string, data: LunaticData) => {
     if (data?.COLLECTED?.[FieldNameEnum.QUALITY_SCORE]) {
         data.COLLECTED[FieldNameEnum.QUALITY_SCORE] = {
             COLLECTED: modePersistence == ModePersistenceEnum.COLLECTED ? qualityScore.group : null,
-            EDITED: modePersistence == ModePersistenceEnum.EDITED ? qualityScore.group : null,
+            EDITED: null,
             FORCED: null,
             INPUTED: null,
             PREVIOUS: null,
