@@ -129,10 +129,10 @@ const setAlertSnackbar = (
     if (haveOverlaps) {
         setSnackbarText(
             t("page.activity-planner.start-alert") +
-                overlaps
-                    .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current ?? ""))
-                    .join(", ") +
-                t("page.activity-planner.end-alert"),
+            overlaps
+                .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current ?? ""))
+                .join(", ") +
+            t("page.activity-planner.end-alert"),
         );
         if (!skip) setOpenSnackbar(true);
     } else {
@@ -716,6 +716,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                 (isReviewerMode() ? (
                                                     <Box className={classes.headerActivityLockBox}>
                                                         <Alert
+
                                                             isAlertDisplayed={isAlertLockDisplayed}
                                                             onCompleteCallBack={lock}
                                                             onCancelCallBack={displayAlert(
@@ -754,7 +755,7 @@ const ActivityOrRoutePlannerPage = () => {
                                                             <Switch
                                                                 checked={isLocked}
                                                                 onChange={lockActivity}
-                                                                disabled={!modifiable}
+                                                                disabled={isLocked}
                                                             />
                                                         </Box>
                                                     </Box>

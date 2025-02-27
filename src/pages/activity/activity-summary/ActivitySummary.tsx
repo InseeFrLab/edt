@@ -549,7 +549,7 @@ const ActivitySummaryPage = () => {
                                         <Switch
                                             checked={isLocked}
                                             onChange={lockActivity}
-                                            disabled={!modifiable}
+                                            disabled={isLocked}
                                             inputProps={{
                                                 "aria-label": t("page.reviewer-home.lock-survey"),
                                             }}
