@@ -79,7 +79,7 @@ const DayOfSurveyPage = () => {
         let dataSurveyDate = {
             COLLECTED:
                 getModePersistence(dataBdd) == ModePersistenceEnum.COLLECTED ? inputFormatted : null,
-            EDITED: getModePersistence(dataBdd) == ModePersistenceEnum.EDITED ? inputFormatted : null,
+            EDITED: null,
             FORCED: null,
             INPUTED: null,
             PREVIOUS: null,
