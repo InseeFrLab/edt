@@ -931,7 +931,7 @@ const saveData = (
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
 
     let stateData: StateData = data?.stateData ?? getLocalSurveyStateData(data) ?? initStateData(data);
-
+    console.log('save data ', data, stateData);
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
     if (isChange) {
         data = updateLocked(isReviewerMode, data);

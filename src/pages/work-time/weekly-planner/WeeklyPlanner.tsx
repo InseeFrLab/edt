@@ -109,15 +109,9 @@ const WeeklyPlannerPage = () => {
                     FieldNameEnum.DATES,
                     FieldNameEnum.DATES_STARTED,
                 ]);
-                if (isReviewer()) {
-                    dataBdd.COLLECTED[FieldNameEnum.WEEKLYPLANNER].EDITED = data[0];
-                    dataBdd.COLLECTED[FieldNameEnum.DATES].EDITED = data[1];
-                    dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].EDITED = data[2];
-                } else {
-                    dataBdd.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data[0];
-                    dataBdd.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
-                    dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
-                }
+                dataBdd.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data[0];
+                dataBdd.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
+                dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
                 saveData(idSurvey, dataBdd, localSaveOnly);
             }
         }
@@ -147,22 +141,20 @@ const WeeklyPlannerPage = () => {
         }
 
 
-        if (
-            isReviewer() &&
-            (dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].EDITED ==
-                dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].EDITED ||
-                dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
-                dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED)
-        ) {
+        if (isReviewer() && dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
+            dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED) {
+
             response.names.forEach(name => {
-                const responsesValues: string[] =
-                    dataCopy?.COLLECTED?.[name]?.EDITED ?? dataCopy?.COLLECTED?.[name]?.COLLECTED;
-                let quartier = Object.assign(responsesValues ?? []);
+                const responsesValues = dataCopy?.COLLECTED?.[name]?.COLLECTED;
 
-                quartier[currentDateIndex] = response.values[name] + "";
+                if (Array.isArray(responsesValues)) {
+                    let quartier = [...responsesValues];
 
-                if (dataCopy?.COLLECTED) {
-                    dataCopy.COLLECTED[name].EDITED = quartier;
+                    quartier[currentDateIndex] = response.values[name] + "";
+
+                    if (dataCopy?.COLLECTED) {
+                        dataCopy.COLLECTED[name].COLLECTED = quartier as any;
+                    }
                 }
             });
             saveData(idSurveyResponse, dataCopy, true);
