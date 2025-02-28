@@ -559,7 +559,7 @@ const getRemoteSavedSurveyData = (
             });
         })
         .catch(err => {
-            console.log(err);
+            console.error(err);
             setError(err);
         });
 };
@@ -682,7 +682,7 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                 return saveUserSurveysData({ data: userDatas });
             })
             .catch(err => {
-                console.log(err);
+                console.error(err);
                 return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {
                     let datas = data as UserSurveysData;
                     return datas.data;
@@ -931,7 +931,6 @@ const saveData = (
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
 
     let stateData: StateData = data?.stateData ?? getLocalSurveyStateData(data) ?? initStateData(data);
-    console.log('save data ', data, stateData);
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
     if (isChange) {
         data = updateLocked(isReviewerMode, data);
