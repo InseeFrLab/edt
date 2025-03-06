@@ -5,7 +5,7 @@ import { Box, CircularProgress } from "@mui/material";
 import FlexCenter from "../components/commons/FlexCenter/FlexCenter";
 import { FieldNameEnum, FieldNameEnumActivity } from "../enumerations/FieldNameEnum";
 import { LunaticData, LunaticModel } from "../interface/lunatic/Lunatic";
-import React from "react";
+import React, { useEffect } from "react";
 import { getCurrentPageSource } from "../service/orchestrator-service";
 import { isReviewer } from "../service/user-service";
 
@@ -394,6 +394,14 @@ export const OrchestratorForStories = (props: OrchestratorProps) => {
             </Box>
         );
     };
+
+    // Empty callbackHolder when component is unmounted
+    useEffect(() => {
+        return () => {
+            callbackHolder.getData = () => ({});
+            callbackHolder.getErrors = () => ({});
+        };
+    }, []);
 
     return source && data ? renderComponent() : renderLoading();
 };
