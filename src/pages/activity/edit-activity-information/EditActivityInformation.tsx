@@ -10,7 +10,10 @@ import { OrchestratorContext } from "../../../interface/lunatic/Lunatic";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { loopActivityRouteStepperData, loopActivityStepperData } from "../../../service/loop-stepper-service";
+import {
+    loopActivityRouteStepperData,
+    loopActivityStepperData,
+} from "../../../service/loop-stepper-service";
 import { getLoopParameterizedNavigatePath, navFullPath } from "../../../service/navigation-service";
 import { surveyReadOnly } from "../../../service/survey-activity-service";
 import { getSurveyIdFromUrl } from "../../../utils/utils";

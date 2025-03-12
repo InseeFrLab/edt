@@ -12,7 +12,11 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { getLabels, getLabelsWhenQuit } from "../../../../service/alert-service";
 import { getLoopInitialPage } from "../../../../service/loop-service";
-import { getLoopPageSubpage, getPreviousLoopPage, getStepData } from "../../../../service/loop-stepper-service";
+import {
+    getLoopPageSubpage,
+    getPreviousLoopPage,
+    getStepData,
+} from "../../../../service/loop-stepper-service";
 import {
     getCurrentNavigatePath,
     getNavigatePath,
@@ -82,11 +86,11 @@ const WithScreenPage = () => {
                 isCloture
                     ? summaryRoutePath
                     : getCurrentNavigatePath(
-                        idSurvey,
-                        EdtRoutesNameEnum.ACTIVITY,
-                        getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-                        context.source,
-                    ),
+                          idSurvey,
+                          EdtRoutesNameEnum.ACTIVITY,
+                          getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+                          context.source,
+                      ),
             );
         },
         labels: getLabels("with-screen-selecter"),

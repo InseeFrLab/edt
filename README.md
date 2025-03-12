@@ -13,17 +13,17 @@ Stromae Back Office API which is used to GET all required nomenclatures for the 
 
 > Linked repositories :
 >
-> -   EDT Application : https://github.com/InseeFrLab/edt
-> -   Lunatic : https://github.com/InseeFr/Lunatic
-> -   Lunatic-EDT : https://github.com/InseeFrLab/lunatic-edt
-> -   Edt-pilotage API : https://github.com/InseeFrLab/edt-management-api
-> -   Stromae Back Office API : https://github.com/InseeFr/Queen-Back-Office
+> - EDT Application : https://github.com/InseeFrLab/edt
+> - Lunatic : https://github.com/InseeFr/Lunatic
+> - Lunatic-EDT : https://github.com/InseeFrLab/lunatic-edt
+> - Edt-pilotage API : https://github.com/InseeFrLab/edt-management-api
+> - Stromae Back Office API : https://github.com/InseeFr/Queen-Back-Office
 
 ### Lunatic usage
 
 Lunatic is used by EDT to :
 
--   Print the questions and associated surveys fields from the lunatic sources provided. In the case of EDT, the sources ids are `edt-activity-survey` and `edt-work-time-survey` (recovered via API call to [Queen Back Office `GET questionnaire/{id}`](#api-queen-back-office)).
+- Print the questions and associated surveys fields from the lunatic sources provided. In the case of EDT, the sources ids are `edt-activity-survey` and `edt-work-time-survey` (recovered via API call to [Queen Back Office `GET questionnaire/{id}`](#api-queen-back-office)).
 
 <details>
 <summary>Source example : </summary>
@@ -335,9 +335,9 @@ Also, the `ISVALIDATED` variable is updated by the value state on state-data whe
 
 This information concerns the surveyer interface. A color code have been set to allow surveyers to know what is the household state. The state is defined as follow :
 
--   Orange : When no survey in the household has the state ISCLOSED to true.
--   Green : When at least one survey in the household has the ISCLOSED state to true.
--   Black : When all surveys in the household have the ISVALIDATED to true.
+- Orange : When no survey in the household has the state ISCLOSED to true.
+- Green : When at least one survey in the household has the ISCLOSED state to true.
+- Black : When all surveys in the household have the ISVALIDATED to true.
 
 Those states have been defined to ease the visibility of the ongoing current survey campain for the surveyer.
 

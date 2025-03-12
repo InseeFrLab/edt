@@ -1053,13 +1053,13 @@ const saveSurveysIds = (data: SurveysIds): Promise<SurveysIds> => {
 const saveUserSurveysData = (data: UserSurveysData): Promise<UserSurveys[]> => {
     return data.data?.length > 0
         ? lunaticDatabase.save(USER_SURVEYS_DATA, data).then(() => {
-            userDatas = data.data;
-            return data.data;
-        })
+              userDatas = data.data;
+              return data.data;
+          })
         : lunaticDatabase.get(USER_SURVEYS_DATA).then(userDatas => {
-            let userDatasLocal = userDatas as UserSurveysData;
-            return userDatasLocal?.data;
-        });
+              let userDatasLocal = userDatas as UserSurveysData;
+              return userDatasLocal?.data;
+          });
 };
 
 const getUserDatasActivity = (): UserSurveys[] => {
@@ -1470,15 +1470,15 @@ const createUserDataMap = (usersurvey: UserSurveys[]): Person[] => {
             }
             return data.questionnaireModelId == SourcesEnum.ACTIVITY_SURVEY
                 ? {
-                    data: data,
-                    firstName: "zzzz " + (numInterviewer + 1),
-                    num: numInterviewer + 1,
-                }
+                      data: data,
+                      firstName: "zzzz " + (numInterviewer + 1),
+                      num: numInterviewer + 1,
+                  }
                 : {
-                    data: data,
-                    firstName: "zzzzz " + index + 1,
-                    num: index + 1,
-                };
+                      data: data,
+                      firstName: "zzzzz " + index + 1,
+                      num: index + 1,
+                  };
         })
         .sort((u1, u2) => u1.data.surveyUnitId.localeCompare(u2.data.surveyUnitId));
 };

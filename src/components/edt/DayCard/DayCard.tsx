@@ -27,7 +27,7 @@ const getIsModeReviewer = () => {
 };
 
 const getClassClose = (isClose: boolean, classNameClose: any, classNameNotClose?: any) => {
-    return isClose ? classNameClose : classNameNotClose ?? "";
+    return isClose ? classNameClose : (classNameNotClose ?? "");
 };
 
 const getClassModePersist = (

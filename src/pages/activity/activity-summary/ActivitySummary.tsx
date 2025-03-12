@@ -654,9 +654,7 @@ const ActivitySummaryPage = () => {
 
                             <PDFDownloadLink
                                 className={classes.downloadLinkReviewer}
-                                document={
-                                    <ActivitiesSummaryExportTemplate exportData={exportData} />
-                                }
+                                document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
                                 fileName={
                                     t("export.activities-summary.file-name") +
                                     getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
@@ -665,9 +663,7 @@ const ActivitySummaryPage = () => {
                                     ".pdf"
                                 }
                             >
-                                <Button
-                                    variant="contained"
-                                >
+                                <Button variant="contained">
                                     {t("page.activity-summary.download-pdf")}
                                 </Button>
                             </PDFDownloadLink>
@@ -687,7 +683,6 @@ const ActivitySummaryPage = () => {
                             </Button>
                         </>
                     ) : (
-
                         <PDFDownloadLink
                             className={classes.downloadLink}
                             document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
@@ -699,11 +694,10 @@ const ActivitySummaryPage = () => {
                                 ".pdf"
                             }
                         >
-                            <Button variant="contained" >
+                            <Button variant="contained">
                                 {t("page.activity-summary.download-pdf")}
                             </Button>
                         </PDFDownloadLink>
-
                     )}
                 </FlexCenter>
 

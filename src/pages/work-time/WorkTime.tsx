@@ -19,7 +19,13 @@ import {
 } from "../../service/navigation-service";
 import { getCurrentSurveyRootPage } from "../../service/orchestrator-service";
 import { isPwa } from "../../service/responsive";
-import { getData, getGroupOfPerson, getSource, getSurveyRights, getTabsData } from "../../service/survey-service";
+import {
+    getData,
+    getGroupOfPerson,
+    getSource,
+    getSurveyRights,
+    getTabsData,
+} from "../../service/survey-service";
 
 const WorkTimePage = () => {
     let { idSurvey } = useParams();

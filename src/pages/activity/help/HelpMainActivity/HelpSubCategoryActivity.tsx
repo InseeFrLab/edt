@@ -37,7 +37,13 @@ import { useNavigate } from "react-router-dom";
 import { getLabelsWhenQuit } from "../../../../service/alert-service";
 import { getLoopInitialPage } from "../../../../service/loop-service";
 import { getLoopPageSubpage, getStepData } from "../../../../service/loop-stepper-service";
-import { getNavigatePath, navToHome, onClose, onNext, onPrevious } from "../../../../service/navigation-service";
+import {
+    getNavigatePath,
+    navToHome,
+    onClose,
+    onNext,
+    onPrevious,
+} from "../../../../service/navigation-service";
 import { getAutoCompleteRef, getNomenclatureRef } from "../../../../service/referentiel-service";
 import { CreateIndexation, getIndexSuggester } from "../../../../service/suggester-service";
 import { mockData } from "../../../../service/survey-activity-service";

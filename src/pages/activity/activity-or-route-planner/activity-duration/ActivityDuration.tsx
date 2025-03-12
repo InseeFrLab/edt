@@ -34,7 +34,6 @@ import { getActivitiesOrRoutes, surveyReadOnly } from "../../../../service/surve
 import { getData, getValue, getValueOfData, saveData } from "../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../utils/utils";
 
-
 const today: Dayjs = dayjs();
 
 const ActivityDurationPage = () => {
@@ -197,9 +196,11 @@ const ActivityDurationPage = () => {
         if (!openSnackbar) {
             if (!isCompleted) {
                 if (forceQuit) {
-                    saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }, true).then(() => {
-                        navIsClompleted(isCloture);
-                    });
+                    saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }, true).then(
+                        () => {
+                            navIsClompleted(isCloture);
+                        },
+                    );
                 } else {
                     setIsAlertDisplayed(true);
                 }
