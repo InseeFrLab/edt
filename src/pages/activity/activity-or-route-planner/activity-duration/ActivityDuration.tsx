@@ -148,7 +148,20 @@ const ActivityDurationPage = () => {
         return skip;
     };
 
+    const isCompleteTimeframe = () => {
+        const data = callbackHolder.getData();
+
+        const startTime = getValueOfData(data, FieldNameEnum.START_TIME) as string[];
+        const endTime = getValueOfData(data, FieldNameEnum.END_TIME) as string[];
+
+        if (startTime.length != endTime.length) {
+            setSnackbarText(t("page.activity-duration.error-time"));
+            setOpenSnackbar(true);
+        }
+    };
+
     const onNext = () => {
+        isCompleteTimeframe();
         const isAfter = isAfterEndTime();
         const skip = endTimeAfterStartTime(isAfter);
 
