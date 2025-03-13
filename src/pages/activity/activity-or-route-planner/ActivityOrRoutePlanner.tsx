@@ -129,10 +129,10 @@ const setAlertSnackbar = (
     if (haveOverlaps) {
         setSnackbarText(
             t("page.activity-planner.start-alert") +
-                overlaps
-                    .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current ?? ""))
-                    .join(", ") +
-                t("page.activity-planner.end-alert"),
+            overlaps
+                .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current ?? ""))
+                .join(", ") +
+            t("page.activity-planner.end-alert"),
         );
         if (!skip) setOpenSnackbar(true);
     } else {
@@ -308,20 +308,6 @@ const openAddActivityOrRoute = (
     }
 };
 
-// const init = (
-//     idSurvey: string,
-//     setError: React.Dispatch<React.SetStateAction<ErrorCodeEnum | undefined>>,
-//     setInitialized: (value: React.SetStateAction<boolean>) => void,
-// ) => {
-//     if (navigator.onLine && !isDemoMode()) {
-//         refreshSurvey(idSurvey, setError).finally(() => {
-//             setInitialized(true);
-//         });
-//     } else {
-//         setInitialized(true);
-//     }
-// };
-
 const updateSubChildDisplayed = (
     isSubchildDisplayed: boolean,
     setIsSubChildDisplayed: React.Dispatch<React.SetStateAction<boolean>>,
@@ -417,6 +403,8 @@ const ActivityOrRoutePlannerPage = () => {
             getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE),
         );
         setAlertSnackbar(setSnackbarText, setOpenSnackbar, skip, overlaps.length > 0, overlaps, t);
+
+        saveData(idSurvey, { ...source, ...getData(idSurvey) }, false, true);
     }, []);
 
     useEffect(() => {
