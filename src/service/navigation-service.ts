@@ -220,7 +220,7 @@ const saveAndNav = (
     currentIteration?: number,
 ): void => {
     const mergedData = mergeObjects(getData(idSurvey), _callbackHolder.getData());
-    saveData(idSurvey, mergedData).then(() => {
+    saveData(idSurvey, mergedData, false, true).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
