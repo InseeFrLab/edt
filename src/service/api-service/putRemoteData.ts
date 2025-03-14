@@ -54,6 +54,9 @@ export const requestPutSurveyData = (
 };
 
 export const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<SurveyData> => {
+    if (!navigator.onLine) {
+        return Promise.resolve(data);
+    }
     const now = new Date();
     const tokenExpiresAt = jwt<JwtPayload>(getUserToken() ?? "").exp;
     // * 1000 because tokenExpiresAt is in seconds and now.getTime() in milliseconds
