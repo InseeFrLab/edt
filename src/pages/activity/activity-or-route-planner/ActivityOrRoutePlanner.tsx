@@ -404,7 +404,6 @@ const ActivityOrRoutePlannerPage = () => {
         );
         setAlertSnackbar(setSnackbarText, setOpenSnackbar, skip, overlaps.length > 0, overlaps, t);
 
-        saveData(idSurvey, { ...source, ...getData(idSurvey) }, false, true);
     }, []);
 
     useEffect(() => {
