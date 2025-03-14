@@ -24,7 +24,7 @@ export const useOnline = (): boolean => {
             window.removeEventListener("online", toggleOnlineStatus);
             window.removeEventListener("offline", toggleOnlineStatus);
         };
-    }, [isOnline]);
+    }, []);
 
     return isOnline;
 };
