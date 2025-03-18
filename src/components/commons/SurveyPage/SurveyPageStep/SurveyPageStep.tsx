@@ -13,7 +13,9 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useOutletContext } from "react-router";
 import { useLocation } from "react-router-dom";
 import {
+    getNavigatePath,
     getOrchestratorPage,
+    getParameterizedNavigatePath,
     saveAndNav,
     saveAndNavFullPath,
     saveAndNavLocally,
@@ -28,6 +30,9 @@ import { surveyReadOnly } from "../../../../service/survey-activity-service";
 import { getData, getPrintedFirstName, getPrintedSurveyDate } from "../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../utils/utils";
 import SurveyPage from "../SurveyPage";
+import { EdtUserRightsEnum } from "../../../../enumerations/EdtUserRightsEnum";
+import { getUserRights } from "../../../../service/user-service";
+import _ from "lodash";
 
 export interface SurveyPageStepProps {
     currentPage: EdtRoutesNameEnum;
@@ -67,6 +72,10 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     useEffect(() => {
         setEnviro(context, navigate, callbackHolder);
     });
+
+    const navigateHome = useCallback(() => {
+        return navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
+    }, []);
 
     const { classes, cx } = useStyles({
         "isMobile": !isPwa(),
@@ -108,22 +117,47 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const surveyPageStepProps = {
         idSurvey: idSurvey,
         onNavigateBack: useCallback(
-            () =>
-                specifiquesProps?.displayModal
-                    ? validateAndNav(false, setIsModalDisplayed)
-                    : saveAndNavLocally(idSurvey),
+            () => {
+                const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
+                if (!isReviewerMode) {
+                    console.log("saveData");
+                    if (specifiquesProps?.displayModal) {
+                        validateAndNav(false, setIsModalDisplayed);
+                    } else {
+                        saveAndNavLocally(idSurvey);
+                    }
+                }
+                navigateHome();
+            },
+
             [isModalDisplayed],
         ),
-        onNext: useCallback(
-            () =>
-                specifiquesProps?.displayModal
-                    ? validateAndNav(false, setIsModalDisplayed)
-                    : saveAndNextStep(idSurvey, context.source, EdtRoutesNameEnum.ACTIVITY, currentPage),
-            [isModalDisplayed],
-        ),
+        onNext: useCallback(() => {
+            const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
+            if (!isReviewerMode) {
+                if (specifiquesProps?.displayModal) {
+                    validateAndNav(false, setIsModalDisplayed);
+                } else {
+                    saveAndNextStep(idSurvey, context.source, EdtRoutesNameEnum.ACTIVITY, currentPage);
+                }
+            }
+
+        }, [isModalDisplayed]),
         onPrevious: useCallback(
-            () => (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNavLocally(idSurvey)),
-            [],
+            () => {
+                const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
+                if (!isReviewerMode) {
+                    (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNavLocally(idSurvey))
+
+                }
+                navigate(
+                    backRoute
+                        ? getNavigatePath(backRoute)
+                        : `${getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey)}${getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)}`
+                );
+            },
+
+            []
         ),
         simpleHeader: true,
         simpleHeaderLabel: t("page.complementary-questions.simple-header-label"),
@@ -142,25 +176,44 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             if (!validateButton) {
                 return;
             }
-            validateButton();
-            if (nextRoute) {
-                saveAndNavFullPath(idSurvey, nextRoute);
-            } else {
-                saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage);
+            const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
+            if (!isReviewerMode) {
+                validateButton();
+                if (nextRoute) {
+                    saveAndNavFullPath(idSurvey, nextRoute);
+                } else {
+                    saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage);
+                }
             }
+
+
         }, []),
         icon: errorIcon ? <IconError aria-label={t(errorAltIcon ?? "")} /> : undefined,
-        onNavigateBack: useCallback(() => saveAndNavLocally(idSurvey), []),
+        onNavigateBack: useCallback(() => {
+            const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
+            if (!isReviewerMode) {
+                saveAndNavLocally(idSurvey);
+            }
+
+            navigateHome();
+        }, []),
         onPrevious: useCallback(
-            () => (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNavLocally(idSurvey)),
-            [],
+            () => {
+                const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
+                if (!isReviewerMode) {
+                    (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNavLocally(idSurvey))
+
+                }
+                navigate(getNavigatePath(backRoute ?? EdtRoutesNameEnum.ACTIVITY));
+            },
+            []
         ),
         firstName: getPrintedFirstName(idSurvey),
         surveyDate: getPrintedSurveyDate(idSurvey, context.surveyRootPage),
         disableNav: disableButton,
         modifiable: modifiable,
     };
-  
+
     const validateAndNav = (
         forceQuit: boolean,
         setIsModalDisplayed: (value: SetStateAction<boolean>) => void,

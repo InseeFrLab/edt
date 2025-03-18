@@ -22,6 +22,8 @@ import {
     setValue,
 } from "../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../utils/utils";
+import { getUserRights } from "../../service/user-service";
+import { EdtUserRightsEnum } from "../../enumerations/EdtUserRightsEnum";
 
 const DayOfSurveyPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -99,10 +101,14 @@ const DayOfSurveyPage = () => {
             personAct?.data?.questionnaireModelId == SourcesEnum.WORK_TIME_SURVEY
                 ? EdtRoutesNameEnum.WORK_TIME
                 : EdtRoutesNameEnum.ACTIVITY;
-        const dataUpdated = setSurveyDate(input);
-        saveData(idSurvey, dataUpdated, false, true).then(() => {
-            navigate(navToPlanner(idSurvey, surveyRootPage));
-        });
+
+        const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
+        if (!isReviewerMode) {
+            const dataUpdated = setSurveyDate(input);
+            saveData(idSurvey, dataUpdated, false, true).then(() => {
+                navigate(navToPlanner(idSurvey, surveyRootPage));
+            })
+        }
     }, []);
 
     return (
