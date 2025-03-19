@@ -181,6 +181,7 @@ export {
     isDemoMode,
     isSurveyLocked,
     isSurveyValidated,
+    isSurveyExtracted,
     isSurveyClosed,
     isSurveyStarted,
     isSurveyCompleted,
