@@ -82,7 +82,7 @@ const DaySummaryExportTemplate = (props: DaySummaryExportTemplateProps) => {
                                     {exportData.userActivitiesSummary?.homeTasksTimeLabel}
                                 </Text>
                                 <Text>
-                                    {t("export.activities-summary.day-summary.house-tasks-time")}
+                                    {t("export.activities-summary.day-summary.house-time")}
                                 </Text>
                             </View>
                         </View>
@@ -92,6 +92,26 @@ const DaySummaryExportTemplate = (props: DaySummaryExportTemplateProps) => {
                                     {exportData.userActivitiesSummary?.realRouteTimeLabel}
                                 </Text>
                                 <Text>{t("export.activities-summary.day-summary.real-route-time")}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={classes.tableRow}>
+                        <View style={classes.tableCol50}>
+                            <View style={classes.valueAndLabel}>
+                                <Text style={classes.value}>
+                                    {exportData.userActivitiesSummary?.aloneTimeLabel}
+                                </Text>
+                                <Text>
+                                    {t("export.activities-summary.day-summary.alone-time")}
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={classes.tableCol50}>
+                            <View style={classes.valueAndLabel}>
+                                <Text style={classes.value}>
+                                    {exportData.userActivitiesSummary?.domesticTasksTimeLabel}
+                                </Text>
+                                <Text>{t("export.activities-summary.day-summary.house-tasks-time")}</Text>
                             </View>
                         </View>
                     </View>
