@@ -608,6 +608,8 @@
                 "working-time": "Temps de travail",
                 "sleeping-time": "Temps de sommeil",
                 "house-tasks-time": "Temps de tâches ménagères",
+                "house-time": "Temps passé à son domicile",
+                "alone-time": "Temps passé seul",
                 "other-house-tasks-time": "Temps pour un autre ménage",
                 "amount-activity-or-route-with-screen": "Nombre d'activités/trajets avec un écran",
                 "time-activity-with-screen": "Temps d'activité avec un écran",
