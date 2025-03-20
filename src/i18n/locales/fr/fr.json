@@ -300,7 +300,8 @@
             "and": " et ",
             "end-alert": " se chevauchent.",
             "info": "Indiquez vos différentes occupations de la journée. Par défaut, votre première activité débute à 4h du matin.",
-            "lock": "Verrouiller le carnet"
+            "lock": "Verrouiller le carnet",
+            "locked-info": "Le carnet est verrouillé. Vous ne pouvez plus le modifier."
         },
         "secondary-activity": {
             "info-light": "Discuter, écouter de la musique, lire un article, regarder la télévision, manger, etc...",

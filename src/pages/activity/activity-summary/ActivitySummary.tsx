@@ -7,7 +7,7 @@ import {
     makeStylesEdt,
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
-import { Box, Button, Divider, Switch, Typography } from "@mui/material";
+import { Box, Button, Divider, Switch, Tooltip, Typography } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import ErrorIcon from "../../../assets/illustration/error/activity.svg?react";
 import InfoAlertIcon from "../../../assets/illustration/info-alert.svg?react";
@@ -603,13 +603,17 @@ const ActivitySummaryPage = () => {
                     ))}
                 </Box>
                 <FlexCenter className={classes.addActivityOrRouteButtonBox}>
-                    <Button
-                        variant="contained"
-                        onClick={onOpenAddActivityOrRoute}
-                        disabled={!modifiable}
-                    >
-                        {t("page.activity-summary.add-activity-or-route")}
-                    </Button>
+                    <Tooltip title={!modifiable ? t("page.activity-planner.locked-info") : ""}>
+                        <span>
+                            <Button
+                                variant="contained"
+                                onClick={onOpenAddActivityOrRoute}
+                                disabled={!modifiable}
+                            >
+                                {t("page.activity-summary.add-activity-or-route")}
+                            </Button>
+                        </span>
+                    </Tooltip>
                 </FlexCenter>
                 <Divider variant="middle" flexItem />
                 {isSummaryEdited ? (
