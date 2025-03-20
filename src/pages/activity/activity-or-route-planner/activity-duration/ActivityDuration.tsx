@@ -147,7 +147,7 @@ const ActivityDurationPage = () => {
         return skip;
     };
 
-    const isCompleteTimeframe = () => {
+    const checkTimeframeConsistency = () => {
         const data = callbackHolder.getData();
 
         const startTime = getValueOfData(data, FieldNameEnum.START_TIME) as string[];
@@ -160,7 +160,7 @@ const ActivityDurationPage = () => {
     };
 
     const onNext = () => {
-        isCompleteTimeframe();
+        checkTimeframeConsistency();
         const isAfter = isAfterEndTime();
         const skip = endTimeAfterStartTime(isAfter);
 

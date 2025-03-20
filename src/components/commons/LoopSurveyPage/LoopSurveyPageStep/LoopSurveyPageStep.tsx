@@ -109,29 +109,18 @@ const LoopSurveyPageStep = (props: LoopSurveyPageStepProps) => {
             //Filter whether the page should be saved or not (when the withScreen page is not displayed)
             const codeActivity = getValueOfActivity(getData(idSurvey), currentIteration) ?? "";
             const shouldSave = filtrePage(EdtRoutesNameEnum.WITH_SCREEN, codeActivity);
-            shouldSave
-                ? validate(idSurvey).then(() => {
-                      skipNextPage(
-                          idSurvey,
-                          context.source,
-                          currentIteration,
-                          currentPage,
-                          fieldConditionNext,
-                          nextRoute,
-                          isRoute,
-                      );
-                  })
-                : validateLocally(idSurvey).then(() => {
-                      skipNextPage(
-                          idSurvey,
-                          context.source,
-                          currentIteration,
-                          currentPage,
-                          fieldConditionNext,
-                          nextRoute,
-                          isRoute,
-                      );
-                  });
+            const validationFn = shouldSave ? validate : validateLocally
+            validationFn(idSurvey).then(() => {
+                skipNextPage(
+                    idSurvey,
+                    context.source,
+                    currentIteration,
+                    currentPage,
+                    fieldConditionNext,
+                    nextRoute,
+                    isRoute,
+                );
+            })
         },
         language: getLanguage(),
         constants: {
