@@ -167,7 +167,7 @@ const getCurrentNavigatePath = (
         page = mappingPageOrchestrator.find(
             link =>
                 link.surveyPage ===
-                (firstEmptyPage > Number(maxPage) ? maxPage : firstEmptyPage).toString() &&
+                    (firstEmptyPage > Number(maxPage) ? maxPage : firstEmptyPage).toString() &&
                 link.parentPage === rootPage,
         )?.page;
     }
@@ -266,15 +266,9 @@ const validate = (idSurvey: string): Promise<void | LunaticData> => {
 
 const validateLocally = (idSurvey: string): Promise<void | LunaticData> => {
     const mergedData = mergeObjects(getData(idSurvey), _callbackHolder.getData());
-    return saveData(idSurvey, mergedData, true).then(
-        () => {
-            return saveData(
-                idSurvey,
-                { ...getData(idSurvey), ..._callbackHolder.getData() },
-                true,
-            );
-        },
-    );
+    return saveData(idSurvey, mergedData, true).then(() => {
+        return saveData(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }, true);
+    });
 };
 
 const navToRouteOrRouteNotSelection = (
@@ -505,7 +499,7 @@ const navToActivityOrPlannerOrSummary = (
         if (surveyIsEnvoyed || surveyIsValidated) {
             navigate(
                 getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
-                getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
+                    getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
             );
         } else {
             const currentPathNav = getCurrentNavigatePath(
@@ -568,7 +562,7 @@ const navToWeeklyPlannerOrClose = (idSurvey: string, navigate: any, source: Luna
 const navToActivitySummary = (idSurvey: string) => {
     _navigate(
         getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
-        getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
+            getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY),
     );
 };
 
@@ -757,13 +751,13 @@ const onClose = (
     const isActivity = isActivityPage();
     const pathNav = isCloture
         ? getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey) +
-        getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)
+          getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)
         : getCurrentNavigatePath(
-            idSurvey,
-            EdtRoutesNameEnum.ACTIVITY,
-            getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
-            source,
-        );
+              idSurvey,
+              EdtRoutesNameEnum.ACTIVITY,
+              getOrchestratorPage(EdtRoutesNameEnum.ACTIVITY_OR_ROUTE_PLANNER),
+              source,
+          );
     const weeklyPlannerRoute = getCurrentNavigatePath(
         idSurvey,
         EdtRoutesNameEnum.WORK_TIME,

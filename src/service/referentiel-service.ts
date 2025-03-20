@@ -226,7 +226,6 @@ export const createNewActivityInCategory = (
             });
             const indexParentCategory = ref.findIndex((opt: any) => opt.id == parentCategoryId);
 
-
             ref[indexParentCategory] = categoryParent;
             return updateReferentielAutoComplete(currentData, newItem, newActivity, index, setIndex);
         }
