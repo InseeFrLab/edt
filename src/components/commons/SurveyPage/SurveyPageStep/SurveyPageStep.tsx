@@ -68,10 +68,22 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
     const idSurvey = getSurveyIdFromUrl(context, location);
 
     const navigate = useNavigate();
+    const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
 
     useEffect(() => {
         setEnviro(context, navigate, callbackHolder);
     });
+
+    const validateAndNav = (
+        forceQuit: boolean,
+        setIsModalDisplayed: (value: SetStateAction<boolean>) => void,
+    ): void => {
+        if (forceQuit) {
+            saveAndNav(idSurvey);
+        } else {
+            setIsModalDisplayed(true);
+        }
+    };
 
     const navigateHome = useCallback(() => {
         return navigate(getNavigatePath(EdtRoutesNameEnum.SURVEYED_HOME));
@@ -118,9 +130,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         idSurvey: idSurvey,
         onNavigateBack: useCallback(
             () => {
-                const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
                 if (!isReviewerMode) {
-                    console.log("saveData");
                     if (specifiquesProps?.displayModal) {
                         validateAndNav(false, setIsModalDisplayed);
                     } else {
@@ -129,11 +139,9 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
                 }
                 navigateHome();
             },
-
-            [isModalDisplayed],
+            [isReviewerMode, isModalDisplayed, idSurvey, navigateHome, validateAndNav, saveAndNavLocally],
         ),
         onNext: useCallback(() => {
-            const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
             if (!isReviewerMode) {
                 if (specifiquesProps?.displayModal) {
                     validateAndNav(false, setIsModalDisplayed);
@@ -141,23 +149,38 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
                     saveAndNextStep(idSurvey, context.source, EdtRoutesNameEnum.ACTIVITY, currentPage);
                 }
             }
-
-        }, [isModalDisplayed]),
+        }, [
+            isReviewerMode,
+            isModalDisplayed,
+            saveAndNextStep,
+            validateAndNav,
+            idSurvey,
+            context,
+            currentPage,
+        ]),
         onPrevious: useCallback(
             () => {
-                const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
                 if (!isReviewerMode) {
-                    (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNavLocally(idSurvey))
-
+                    backRoute
+                        ? saveAndNavFullPath(idSurvey, backRoute)
+                        : saveAndNavLocally(idSurvey);
                 }
                 navigate(
                     backRoute
                         ? getNavigatePath(backRoute)
-                        : `${getParameterizedNavigatePath(EdtRoutesNameEnum.ACTIVITY, idSurvey)}${getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)}`
+                        : `${getParameterizedNavigatePath(
+                            EdtRoutesNameEnum.ACTIVITY,
+                            idSurvey,
+                        )}${getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)}`,
                 );
             },
-
-            []
+            [
+                isReviewerMode,
+                backRoute,
+                idSurvey,
+                saveAndNavFullPath,
+                saveAndNavLocally
+            ],
         ),
         simpleHeader: true,
         simpleHeaderLabel: t("page.complementary-questions.simple-header-label"),
@@ -176,7 +199,6 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             if (!validateButton) {
                 return;
             }
-            const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
             if (!isReviewerMode) {
                 validateButton();
                 if (nextRoute) {
@@ -185,28 +207,39 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
                     saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage);
                 }
             }
-
-
-        }, []),
+        }, [
+            isReviewerMode,
+            nextRoute,
+            saveAndNavFullPath,
+            saveAndNextStep,
+            idSurvey,
+            context,
+            currentPage,
+        ]),
         icon: errorIcon ? <IconError aria-label={t(errorAltIcon ?? "")} /> : undefined,
         onNavigateBack: useCallback(() => {
-            const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
             if (!isReviewerMode) {
                 saveAndNavLocally(idSurvey);
             }
-
             navigateHome();
-        }, []),
+        }, [isReviewerMode, saveAndNavLocally, idSurvey, navigateHome]),
         onPrevious: useCallback(
             () => {
-                const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
                 if (!isReviewerMode) {
-                    (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNavLocally(idSurvey))
-
+                    backRoute
+                        ? saveAndNavFullPath(idSurvey, backRoute)
+                        : saveAndNavLocally(idSurvey);
                 }
                 navigate(getNavigatePath(backRoute ?? EdtRoutesNameEnum.ACTIVITY));
             },
-            []
+            [
+                isReviewerMode,
+                backRoute,
+                saveAndNavFullPath,
+                saveAndNavLocally,
+                idSurvey,
+                getNavigatePath,
+            ],
         ),
         firstName: getPrintedFirstName(idSurvey),
         surveyDate: getPrintedSurveyDate(idSurvey, context.surveyRootPage),
@@ -214,16 +247,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         modifiable: modifiable,
     };
 
-    const validateAndNav = (
-        forceQuit: boolean,
-        setIsModalDisplayed: (value: SetStateAction<boolean>) => void,
-    ): void => {
-        if (forceQuit) {
-            saveAndNav(idSurvey);
-        } else {
-            setIsModalDisplayed(true);
-        }
-    };
+
     const surveyPageProps = isStep ? surveyPageStepProps : surveyPageNotStepProps;
     const surveyData = useMemo(() => getData(idSurvey), [idSurvey]);
 
