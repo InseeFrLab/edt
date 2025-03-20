@@ -247,7 +247,6 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         modifiable: modifiable,
     };
 
-
     const surveyPageProps = isStep ? surveyPageStepProps : surveyPageNotStepProps;
     const surveyData = useMemo(() => getData(idSurvey), [idSurvey]);
 

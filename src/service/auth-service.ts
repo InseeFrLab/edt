@@ -70,10 +70,20 @@ const createUserManager = () => {
         }
     });
 
+    window.addEventListener("online", () => {
+        userManager.startSilentRenew();
+    });
+    window.addEventListener("offline", () => {
+        userManager.stopSilentRenew();
+    });
+
     return userManager;
 };
 
 const signinSilent = (userManager: UserManager) => {
+    if (!navigator.onLine) {
+        return;
+    }
     userManager
         .signinSilent()
         .then(user => {

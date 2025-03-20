@@ -4,7 +4,12 @@ import { EdtRoutesNameEnum } from "../../../../../enumerations/EdtRoutesNameEnum
 import { OrchestratorContext } from "../../../../../interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "../../../../../orchestrator/Orchestrator";
 import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { filtrePage, getLoopInitialPage, getValueOfActivity, skipNextPage } from "../../../../../service/loop-service";
+import {
+    filtrePage,
+    getLoopInitialPage,
+    getValueOfActivity,
+    skipNextPage,
+} from "../../../../../service/loop-service";
 import {
     getLoopPageSubpage,
     getNextLoopPage,
@@ -139,19 +144,35 @@ const MainActivityPage = () => {
             // TODO: regarder comment update des données du callbackHolder directement à la sélection de l'activité
 
             // Check if the user has selected an existing activity or created a new one
-            // If the user has selected an existing activity, the data is saved as intended during a lunatic loop 
+            // If the user has selected an existing activity, the data is saved as intended during a lunatic loop
             // If not, the save process is delayed to the next page (to go back into a lunatic loop)
-            const customActivityLabel = localStorage.getItem('selectionValue - label');
-            const loopNavigateFunction = customActivityLabel !== null ? loopNavigate : saveAndLoopNavigate;
+            const customActivityLabel = localStorage.getItem("selectionValue - label");
+            const loopNavigateFunction =
+                customActivityLabel !== null ? loopNavigate : saveAndLoopNavigate;
 
             if (customActivityLabel !== null) {
-                setValue(idSurvey, FieldNameEnum.ACTIVITY_SELECTER_HISTORY, localStorage.getItem('historyActivitySelecter'), currentIteration);
-                setValue(idSurvey, FieldNameEnum.MAINACTIVITY_SUGGESTERID, localStorage.getItem('selectedIdNewActivity'), currentIteration);
-                let data = setValue(idSurvey, FieldNameEnum.MAINACTIVITY_LABEL, localStorage.getItem('selectionValue - label'), currentIteration);
+                setValue(
+                    idSurvey,
+                    FieldNameEnum.ACTIVITY_SELECTER_HISTORY,
+                    localStorage.getItem("historyActivitySelecter"),
+                    currentIteration,
+                );
+                setValue(
+                    idSurvey,
+                    FieldNameEnum.MAINACTIVITY_SUGGESTERID,
+                    localStorage.getItem("selectedIdNewActivity"),
+                    currentIteration,
+                );
+                let data = setValue(
+                    idSurvey,
+                    FieldNameEnum.MAINACTIVITY_LABEL,
+                    localStorage.getItem("selectionValue - label"),
+                    currentIteration,
+                );
 
                 saveData(idSurvey, data, true, true).then(() => {
                     //Clean history to avoid data overflow
-                    localStorage.removeItem('historyInputSuggester');
+                    localStorage.removeItem("historyInputSuggester");
                 });
             }
             if (routeToGoal && !skip) {

@@ -35,12 +35,17 @@ const isSurveyValidated = (idSurvey: string) => {
 const isSurveyStarted = (idSurvey: string) => {
     const survey = getData(idSurvey);
     return survey.COLLECTED != null && survey.COLLECTED.SURVEYDATE?.COLLECTED != null;
-}
+};
 
 const isSurveyCompleted = (idSurvey: string) => {
     const stateData = getLocalSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.COMPLETED;
 };
+
+const isSurveyExtracted = (idSurvey: string) => {
+    const stateData = getLocalSurveyStateData(getData(idSurvey));
+    return stateData.state == StateDataStateEnum.EXTRACTED;
+}
 
 const isSurveyClosed = (idSurvey: string) => {
     const isClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
@@ -52,15 +57,21 @@ const isSurveyLocked = (idSurvey: string) => {
     return (isLocked != null && isLocked) || existVariableEdited(idSurvey);
 };
 
-const getStatutSurvey = (idSurvey: string) => {
+const getStatutSurvey = (idSurvey: string): StateDataStateEnum => {
     const isLocked = getValue(idSurvey, FieldNameEnum.ISLOCKED) as boolean;
     const isValidated = isSurveyValidated(idSurvey);
     const variableEdited = existVariableEdited(idSurvey);
-    if (isValidated != null && isValidated) {
+    const isExtracted = isSurveyExtracted(idSurvey);
+
+    if (isValidated || isExtracted) {
         return StateDataStateEnum.VALIDATED;
-    } else if ((isLocked != null && isLocked) || variableEdited) {
+    }
+
+    if (isLocked || variableEdited) {
         return StateDataStateEnum.LOCKED;
-    } else return StateDataStateEnum.INIT;
+    }
+
+    return StateDataStateEnum.INIT;
 };
 
 const getLocalSurveyStateData = (data: LunaticData): StateData => {
@@ -170,6 +181,7 @@ export {
     isDemoMode,
     isSurveyLocked,
     isSurveyValidated,
+    isSurveyExtracted,
     isSurveyClosed,
     isSurveyStarted,
     isSurveyCompleted,

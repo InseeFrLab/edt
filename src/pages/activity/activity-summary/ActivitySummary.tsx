@@ -7,7 +7,7 @@ import {
     makeStylesEdt,
     TooltipInfo,
 } from "@inseefrlab/lunatic-edt";
-import { Box, Button, Divider, Switch, Typography } from "@mui/material";
+import { Box, Button, Divider, Switch, Tooltip, Typography } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import ErrorIcon from "../../../assets/illustration/error/activity.svg?react";
 import InfoAlertIcon from "../../../assets/illustration/info-alert.svg?react";
@@ -603,13 +603,17 @@ const ActivitySummaryPage = () => {
                     ))}
                 </Box>
                 <FlexCenter className={classes.addActivityOrRouteButtonBox}>
-                    <Button
-                        variant="contained"
-                        onClick={onOpenAddActivityOrRoute}
-                        disabled={!modifiable}
-                    >
-                        {t("page.activity-summary.add-activity-or-route")}
-                    </Button>
+                    <Tooltip title={!modifiable ? t("page.activity-planner.locked-info") : ""}>
+                        <span>
+                            <Button
+                                variant="contained"
+                                onClick={onOpenAddActivityOrRoute}
+                                disabled={!modifiable}
+                            >
+                                {t("page.activity-summary.add-activity-or-route")}
+                            </Button>
+                        </span>
+                    </Tooltip>
                 </FlexCenter>
                 <Divider variant="middle" flexItem />
                 {isSummaryEdited ? (
@@ -654,9 +658,7 @@ const ActivitySummaryPage = () => {
 
                             <PDFDownloadLink
                                 className={classes.downloadLinkReviewer}
-                                document={
-                                    <ActivitiesSummaryExportTemplate exportData={exportData} />
-                                }
+                                document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
                                 fileName={
                                     t("export.activities-summary.file-name") +
                                     getValue(idSurvey, FieldNameEnum.FIRSTNAME) +
@@ -665,9 +667,7 @@ const ActivitySummaryPage = () => {
                                     ".pdf"
                                 }
                             >
-                                <Button
-                                    variant="contained"
-                                >
+                                <Button variant="contained">
                                     {t("page.activity-summary.download-pdf")}
                                 </Button>
                             </PDFDownloadLink>
@@ -687,7 +687,6 @@ const ActivitySummaryPage = () => {
                             </Button>
                         </>
                     ) : (
-
                         <PDFDownloadLink
                             className={classes.downloadLink}
                             document={<ActivitiesSummaryExportTemplate exportData={exportData} />}
@@ -699,11 +698,10 @@ const ActivitySummaryPage = () => {
                                 ".pdf"
                             }
                         >
-                            <Button variant="contained" >
+                            <Button variant="contained">
                                 {t("page.activity-summary.download-pdf")}
                             </Button>
                         </PDFDownloadLink>
-
                     )}
                 </FlexCenter>
 

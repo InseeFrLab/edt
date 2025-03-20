@@ -60,6 +60,8 @@
         "check": "tsc -b",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
+        "_format": "prettier \"**/*.{ts,tsx,json,md}\"",
+        "format": "npm run _format -- --write",
         "preview": "vite build --watch & vite preview --port=3000",
         "build:staging": "tsc -b && vite build --mode staging",
         "build:production": "tsc -b && vite build --mode production",

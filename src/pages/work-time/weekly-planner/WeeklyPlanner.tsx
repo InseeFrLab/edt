@@ -43,15 +43,9 @@ import {
 } from "../../../service/navigation-service";
 import { getLanguage } from "../../../service/referentiel-service";
 import { isMobile, isPwa } from "../../../service/responsive";
-import {
-    getData,
-    getPrintedFirstName,
-    getSurveyDate,
-    saveData,
-} from "../../../service/survey-service";
+import { getData, getPrintedFirstName, getSurveyDate, saveData } from "../../../service/survey-service";
 import { isReviewer } from "../../../service/user-service";
 import { getSurveyIdFromUrl } from "../../../utils/utils";
-
 
 const WeeklyPlannerPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -100,7 +94,11 @@ const WeeklyPlannerPage = () => {
         }
     };
 
-    const save = (idSurvey: string, data?: [IODataStructure[], string[], string[], any[]], localSaveOnly?: boolean): void => {
+    const save = (
+        idSurvey: string,
+        data?: [IODataStructure[], string[], string[], any[]],
+        localSaveOnly?: boolean,
+    ): void => {
         const dataBdd = getData(idSurvey);
         if (data && data[1].length > 0) {
             if (dataBdd.COLLECTED) {
@@ -127,7 +125,7 @@ const WeeklyPlannerPage = () => {
         if (
             !isReviewer() &&
             dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
-            dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
+                dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
         ) {
             response.names.forEach(name => {
                 let quartier = Object.assign(dataCopy?.COLLECTED?.[name]?.COLLECTED as string[]);
@@ -140,10 +138,11 @@ const WeeklyPlannerPage = () => {
             saveData(idSurveyResponse, dataCopy, true);
         }
 
-
-        if (isReviewer() && dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
-            dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED) {
-
+        if (
+            isReviewer() &&
+            dataResponse.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED ==
+                dataCopy.COLLECTED?.[FieldNameEnum.FIRSTNAME].COLLECTED
+        ) {
             response.names.forEach(name => {
                 const responsesValues = dataCopy?.COLLECTED?.[name]?.COLLECTED;
 
