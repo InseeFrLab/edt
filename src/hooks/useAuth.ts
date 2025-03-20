@@ -9,12 +9,34 @@ export const authKey = "auth";
 
 type AuthCache = { username: string; role: EdtUserRightsEnum };
 
+const offlineOidcAuth: ReturnType<typeof useOidcAuth> = {
+    isLoading: false,
+    signIn(): Promise<void> {
+        return Promise.resolve(undefined);
+    },
+    signInPopup(): Promise<void> {
+        return Promise.resolve(undefined);
+    },
+    signOut(): Promise<void> {
+        return Promise.resolve(undefined);
+    },
+    signOutRedirect(): Promise<void> {
+        return Promise.resolve(undefined);
+    },
+    // @ts-expect-error userManager doesn't exist if we are offline
+    userManager: undefined,
+    userData: null
+}
+
 /**
  * Custom auth hook to provide essential functionalities
  */
 export function useAuth({ persistState = false }: { persistState: boolean } = { persistState: false }) {
     const isOnline = useOnline();
-    const auth = useOidcAuth();
+    let auth = offlineOidcAuth
+    try {
+        auth = useOidcAuth();
+    } catch (e) {}
     const authUsername = auth.userData?.profile.preferred_username;
     const groups = auth.userData?.profile?.inseegroupedefaut as string[] | undefined;
     const role = useMemo(() => {
@@ -83,6 +105,9 @@ export function useAuth({ persistState = false }: { persistState: boolean } = { 
 
         // Disconnect the user on renewal error if online
         useEffect(() => {
+            if(!auth.userManager) {
+                return;
+            }
             const cb = () => {
                 if (window.navigator.onLine) {
                     logout().catch(console.error);
@@ -94,6 +119,14 @@ export function useAuth({ persistState = false }: { persistState: boolean } = { 
             };
         }, [auth]);
     }
+
+    console.log(
+    {
+        isAuthenticated: !!username,
+            username,
+            role: isOnline ? role : offlineData?.role,
+        logout,
+    })
 
     return {
         isAuthenticated: !!username,
