@@ -27,7 +27,7 @@ import { getLanguage } from "../../../../service/referentiel-service";
 import { isPwa } from "../../../../service/responsive";
 import { getStepData } from "../../../../service/stepper.service";
 import { surveyReadOnly } from "../../../../service/survey-activity-service";
-import { getData, getPrintedFirstName, getPrintedSurveyDate } from "../../../../service/survey-service";
+import { getData, getPrintedFirstName, getPrintedSurveyDate, isDemoMode } from "../../../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../../../utils/utils";
 import SurveyPage from "../SurveyPage";
 import { EdtUserRightsEnum } from "../../../../enumerations/EdtUserRightsEnum";
@@ -69,6 +69,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
 
     const navigate = useNavigate();
     const isReviewerMode = getUserRights() === EdtUserRightsEnum.REVIEWER;
+    const isDemo = isDemoMode();
 
     useEffect(() => {
         setEnviro(context, navigate, callbackHolder);
@@ -130,7 +131,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
         idSurvey: idSurvey,
         onNavigateBack: useCallback(
             () => {
-                if (!isReviewerMode) {
+                if (!isReviewerMode || isDemo) {
                     if (specifiquesProps?.displayModal) {
                         validateAndNav(false, setIsModalDisplayed);
                     } else {
@@ -139,10 +140,11 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
                 }
                 navigateHome();
             },
-            [isReviewerMode, isModalDisplayed, idSurvey, navigateHome, validateAndNav, saveAndNavLocally],
+            [isReviewerMode, isModalDisplayed, idSurvey, navigateHome, validateAndNav, saveAndNavLocally, isDemo],
         ),
         onNext: useCallback(() => {
-            if (!isReviewerMode) {
+
+            if (!isReviewerMode || isDemo) {
                 if (specifiquesProps?.displayModal) {
                     validateAndNav(false, setIsModalDisplayed);
                 } else {
@@ -157,10 +159,11 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             idSurvey,
             context,
             currentPage,
+            isDemo
         ]),
         onPrevious: useCallback(
             () => {
-                if (!isReviewerMode) {
+                if (!isReviewerMode || isDemo) {
                     backRoute
                         ? saveAndNavFullPath(idSurvey, backRoute)
                         : saveAndNavLocally(idSurvey);
@@ -179,7 +182,9 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
                 backRoute,
                 idSurvey,
                 saveAndNavFullPath,
-                saveAndNavLocally
+                saveAndNavLocally,
+                isDemo
+
             ],
         ),
         simpleHeader: true,
@@ -199,7 +204,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             if (!validateButton) {
                 return;
             }
-            if (!isReviewerMode) {
+            if (!isReviewerMode || isDemo) {
                 validateButton();
                 if (nextRoute) {
                     saveAndNavFullPath(idSurvey, nextRoute);
@@ -215,17 +220,18 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             idSurvey,
             context,
             currentPage,
+            isDemo
         ]),
         icon: errorIcon ? <IconError aria-label={t(errorAltIcon ?? "")} /> : undefined,
         onNavigateBack: useCallback(() => {
-            if (!isReviewerMode) {
+            if (!isReviewerMode || isDemo) {
                 saveAndNavLocally(idSurvey);
             }
             navigateHome();
-        }, [isReviewerMode, saveAndNavLocally, idSurvey, navigateHome]),
+        }, [isReviewerMode, saveAndNavLocally, idSurvey, navigateHome, isDemo]),
         onPrevious: useCallback(
             () => {
-                if (!isReviewerMode) {
+                if (!isReviewerMode || isDemo) {
                     backRoute
                         ? saveAndNavFullPath(idSurvey, backRoute)
                         : saveAndNavLocally(idSurvey);
@@ -239,6 +245,7 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
                 saveAndNavLocally,
                 idSurvey,
                 getNavigatePath,
+                isDemo
             ],
         ),
         firstName: getPrintedFirstName(idSurvey),
