@@ -160,6 +160,12 @@ const MainActivityPage = () => {
                 setValue(
                     idSurvey,
                     FieldNameEnum.MAINACTIVITY_SUGGESTERID,
+                    localStorage.getItem("selectedSuggesterIdNewActivity"),
+                    currentIteration,
+                );
+                setValue(
+                    idSurvey,
+                    FieldNameEnum.MAINACTIVITY_ID,
                     localStorage.getItem("selectedIdNewActivity"),
                     currentIteration,
                 );

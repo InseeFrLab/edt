@@ -36,4 +36,15 @@ export default defineConfig({
             },
         },
     },
+    resolve: {
+        dedupe: [
+            "@mui/material",
+            "@mui/styles",
+            "@mui/utils",
+            "@emotion/react",
+            "react",
+            "react-dom",
+            "@inseefr/lunatic",
+        ],
+    },
 });
