@@ -187,7 +187,7 @@ export const updateReferentielAutoComplete = (
     return saveReferentiels(currentData).then(() => {
         addToAutocompleteActivityReferentiel(newItem).then(referentielData => {
             const newAutocompleteRef = referentielData[ReferentielsEnum.ACTIVITYAUTOCOMPLETE];
-            localStorage.setItem("selectedIdNewActivity", newActivity);
+            localStorage.setItem("selectedSuggesterIdNewActivity", newActivity);
             updateIndexAutoComplete(newAutocompleteRef, index, setIndex);
         });
     });
