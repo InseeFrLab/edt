@@ -15,7 +15,17 @@ export function OidcProvider({ children }: PropsWithChildren) {
     const isOnline = useOnline();
     if (!isOnline) {
         return (
-            children
+            <AuthProvider
+                userManager={undefined}
+                authority={import.meta.env.VITE_KEYCLOAK_AUTHORITY}
+                clientId={import.meta.env.VITE_KEYCLOAK_CLIENT_ID}
+                redirectUri={import.meta.env.VITE_KEYCLOAK_REDIRECT_URI}
+                automaticSilentRenew={false}
+                autoSignIn={false}
+                autoSignOut={false}
+            >
+                {children}
+            </AuthProvider>
         );
     }
     return (
