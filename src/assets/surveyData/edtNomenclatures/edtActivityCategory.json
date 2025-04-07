@@ -18,6 +18,11 @@
                         "label": "Sieste"
                     },
                     {
+                        "id": "115",
+                        "rang": 3,
+                        "label": "Se reposer, ne rien faire, se détendre"
+                    },
+                    {
                         "id": "112",
                         "rang": 3,
                         "label": "Malade (au lit, sur son canapé)"
@@ -59,7 +64,7 @@
                     {
                         "id": "137",
                         "rang": 3,
-                        "label": "Se soigner se faire soigner par un proche"
+                        "label": "Se soigner, se faire soigner par un proche"
                     },
                     {
                         "id": "138",
@@ -262,7 +267,7 @@
                             {
                                 "id": "332",
                                 "rang": 4,
-                                "label": "Repasser"
+                                "label": "Repasser, plier le linge"
                             },
                             {
                                 "id": "335",
@@ -354,7 +359,7 @@
                         "label": "Accueillir un service à domicile (ménage, plombier, baby-sitter...)"
                     }
                 ],
-                "label": "Acheter un service sur internet ou sur place : billets de train, garagiste, pressing"
+                "label": "Acheter un service sur internet ou sur place : billets de train, ménage, pressing"
             },
             {
                 "id": "370",
@@ -579,7 +584,7 @@
                     {
                         "id": "545",
                         "rang": 3,
-                        "label": "Aider à des travaux de bricolage ou jardinage"
+                        "label": "Entraîner ou encadrer des activités sportives"
                     },
                     {
                         "id": "543",
@@ -655,12 +660,12 @@
                     {
                         "id": "516",
                         "rang": 3,
-                        "label": "Avec repas"
+                        "label": "Réception/visite avec repas"
                     },
                     {
                         "id": "517",
                         "rang": 3,
-                        "label": "Sans repas"
+                        "label": "Réception/visite sans repas"
                     }
                 ],
                 "label": "Recevoir/visiter des amis, de la famille"
@@ -687,12 +692,12 @@
                     {
                         "id": "528",
                         "rang": 3,
-                        "label": "Avec repas"
+                        "label": "Sorties avec repas"
                     },
                     {
                         "id": "529",
                         "rang": 3,
-                        "label": "Sans repas"
+                        "label": "Sorties sans repas"
                     }
                 ],
                 "label": "Sorties (café, bar, discothèque)"
@@ -738,12 +743,12 @@
                     {
                         "id": "602",
                         "rang": 3,
-                        "label": "Avec repas"
+                        "label": "Sorties avec repas"
                     },
                     {
                         "id": "603",
                         "rang": 3,
-                        "label": "Sans repas"
+                        "label": "Sorties sans repas"
                     }
                 ],
                 "label": "Sorties (café, bar, discothèque)"
@@ -775,7 +780,7 @@
                     {
                         "id": "655",
                         "rang": 3,
-                        "label": "Aller au spectacle (théâtre, concerts, cirque)"
+                        "label": "Aller au spectacle (théâtre, concert, cirque)"
                     },
                     {
                         "id": "651",
@@ -809,12 +814,12 @@
                     {
                         "id": "649",
                         "rang": 3,
-                        "label": "Regarder la télévision, des séries, des DVD, des videos"
+                        "label": "Regarder la télévision, des séries, des DVD, des vidéos"
                     },
                     {
                         "id": "648",
                         "rang": 3,
-                        "label": "Regarder des videos sur les réseaux sociaux"
+                        "label": "Regarder des vidéos sur les réseaux sociaux"
                     },
                     {
                         "id": "636",
@@ -846,7 +851,7 @@
                     {
                         "id": "673",
                         "rang": 3,
-                        "label": "Rechercher des informations sur Internet, visite de sites"
+                        "label": "Recherche d'informations sur Internet, visite de sites"
                     },
                     {
                         "id": "672",
@@ -942,7 +947,7 @@
                     {
                         "id": "617",
                         "rang": 3,
-                        "label": "Natation, sports nautiques"
+                        "label": "Natation, sports nautiques yc aquagym"
                     },
                     {
                         "id": "619",
