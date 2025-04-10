@@ -147,10 +147,10 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
                 specifiquesProps?.displayModal
                     ? validateAndNav(false, setIsModalDisplayed)
                     : saveAndNextStep(idSurvey, context.source, EdtRoutesNameEnum.ACTIVITY, currentPage),
-            [isModalDisplayed]),
+            [isModalDisplayed, specifiquesProps, currentPage, context.source],),
         onPrevious: useCallback(
             () => (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNavLocally(idSurvey)),
-            [],
+            [backRoute, idSurvey],
         ),
         simpleHeader: true,
         simpleHeaderLabel: t("page.complementary-questions.simple-header-label"),
