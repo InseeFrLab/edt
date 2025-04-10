@@ -142,50 +142,15 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             },
             [isReviewerMode, isModalDisplayed, idSurvey, navigateHome, validateAndNav, saveAndNavLocally, isDemo],
         ),
-        onNext: useCallback(() => {
-
-            if (!isReviewerMode || isDemo) {
-                if (specifiquesProps?.displayModal) {
-                    validateAndNav(false, setIsModalDisplayed);
-                } else {
-                    saveAndNextStep(idSurvey, context.source, EdtRoutesNameEnum.ACTIVITY, currentPage);
-                }
-            }
-        }, [
-            isReviewerMode,
-            isModalDisplayed,
-            saveAndNextStep,
-            validateAndNav,
-            idSurvey,
-            context,
-            currentPage,
-            isDemo
-        ]),
+        onNext: useCallback(
+            () =>
+                specifiquesProps?.displayModal
+                    ? validateAndNav(false, setIsModalDisplayed)
+                    : saveAndNextStep(idSurvey, context.source, EdtRoutesNameEnum.ACTIVITY, currentPage),
+            [isModalDisplayed, specifiquesProps, currentPage, context.source],),
         onPrevious: useCallback(
-            () => {
-                if (!isReviewerMode || isDemo) {
-                    backRoute
-                        ? saveAndNavFullPath(idSurvey, backRoute)
-                        : saveAndNavLocally(idSurvey);
-                }
-                navigate(
-                    backRoute
-                        ? getNavigatePath(backRoute)
-                        : `${getParameterizedNavigatePath(
-                            EdtRoutesNameEnum.ACTIVITY,
-                            idSurvey,
-                        )}${getNavigatePath(EdtRoutesNameEnum.ACTIVITY_SUMMARY)}`,
-                );
-            },
-            [
-                isReviewerMode,
-                backRoute,
-                idSurvey,
-                saveAndNavFullPath,
-                saveAndNavLocally,
-                isDemo
-
-            ],
+            () => (backRoute ? saveAndNavFullPath(idSurvey, backRoute) : saveAndNavLocally(idSurvey)),
+            [backRoute, idSurvey],
         ),
         simpleHeader: true,
         simpleHeaderLabel: t("page.complementary-questions.simple-header-label"),
