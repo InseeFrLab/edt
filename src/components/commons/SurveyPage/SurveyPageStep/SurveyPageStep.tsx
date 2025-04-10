@@ -15,7 +15,6 @@ import { useLocation } from "react-router-dom";
 import {
     getNavigatePath,
     getOrchestratorPage,
-    getParameterizedNavigatePath,
     saveAndNav,
     saveAndNavFullPath,
     saveAndNavLocally,
