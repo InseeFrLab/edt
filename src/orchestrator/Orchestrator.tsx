@@ -212,7 +212,7 @@ const getDataInterviewer = (getData: any, data: LunaticData | undefined, source?
     const dataCollected = callbackholder.COLLECTED;
     //dataCollected values get of lunatic
     if (callbackholder && dataCollected && source) {
-        for (let prop in FieldNameEnumActivity as any) {
+        for (const prop in FieldNameEnumActivity) {
             const dataOfField = dataCollected[prop];
             //set values edited with values in bdd, because we don't recover the edited part with lunatic
             if (dataOfField) {
@@ -244,17 +244,17 @@ const getVariablesActivity = (
     bindingDependencies: string[],
     value: any,
 ) => {
-    let variables = new Map<string, any>();
+    const variables = new Map<string, any>();
     const isReviewerMode = isReviewer();
     const isLocked = data?.COLLECTED?.[FieldNameEnum.ISLOCKED]?.COLLECTED;
     bindingDependencies?.forEach((bindingDependency: string) => {
-        let varE = data?.COLLECTED?.[bindingDependency]?.EDITED;
-        let varC = data?.COLLECTED?.[bindingDependency]?.COLLECTED;
+        const varE = data?.COLLECTED?.[bindingDependency]?.EDITED;
+        const varC = data?.COLLECTED?.[bindingDependency]?.COLLECTED;
 
         const variableEdited = iteration != null && varE && Array.isArray(varE) ? varE[iteration] : varE;
         let variableCollected = iteration != null && Array.isArray(varC) ? varC[iteration] : varC;
         variableCollected = variableCollected ?? value?.[bindingDependency];
-        let variable =
+        const variable =
             isReviewerMode || isLocked ? (variableEdited ?? variableCollected) : variableCollected;
         variables.set(bindingDependency, variable);
     });
@@ -281,7 +281,7 @@ const getVariablesWeeklyPlanner = (
     bindingDependencies: string[],
     value: any,
 ) => {
-    let variables = new Map<string, any>();
+    const variables = new Map<string, any>();
 
     bindingDependencies?.forEach((bindingDependency: string) => {
         const varC = dataBdd?.COLLECTED?.[bindingDependency]?.COLLECTED;
@@ -310,16 +310,9 @@ const getVariables = (
 };
 
 export const OrchestratorForStories = (props: OrchestratorProps) => {
-    let {
-        source,
-        data,
-        callbackHolder,
-        page,
-        subPage,
-        iteration,
-        componentSpecificProps,
-        overrideOptions,
-    } = props;
+    const { data, callbackHolder, page, subPage, iteration, componentSpecificProps, overrideOptions } =
+        props;
+    let source = props.source;
     const { classes, cx } = useStyles();
     const { getComponents, getCurrentErrors, getData } = (lunatic as any).useLunatic(source, data, {
         initialPage:

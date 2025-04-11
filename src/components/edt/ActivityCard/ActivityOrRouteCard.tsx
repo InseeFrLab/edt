@@ -244,7 +244,6 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
                     className={classes.insideAlertIcon}
                 />
                 <Typography className={classes.insideAlertText}>
-                    {" "}
                     {insideAlertLabels[type].label}{" "}
                 </Typography>
             </Box>
@@ -255,6 +254,11 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
         e.stopPropagation();
         setAnchorEl(e.currentTarget as HTMLButtonElement);
     }, []);
+
+    const invalidTimes =
+        activityOrRoute.startTime &&
+        activityOrRoute.endTime &&
+        activityOrRoute.startTime > activityOrRoute.endTime;
 
     const renderActivityOrRoute = (index?: number) => {
         return (
@@ -268,7 +272,11 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
             >
                 <Box className={classes.timeBox}>
                     <Box className={classes.hour}>{activityOrRoute.startTime}</Box>
-                    <Box>{activityOrRoute.durationLabel}</Box>
+                    <Box className={invalidTimes ? classes.insideAlertText : ""}>
+                        {invalidTimes
+                            ? t("page.activity-planner.wrong-times")
+                            : activityOrRoute.durationLabel}
+                    </Box>
                     <Box className={classes.hour}>{activityOrRoute.endTime}</Box>
                 </Box>
                 <Divider orientation="vertical" variant="middle" flexItem />

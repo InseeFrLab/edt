@@ -13,7 +13,7 @@ import { FieldNameEnum } from "../../../../enumerations/FieldNameEnum";
 import { LoopEnum } from "../../../../enumerations/LoopEnum";
 import { OrchestratorContext } from "../../../../interface/lunatic/Lunatic";
 import { callbackHolder, OrchestratorForStories } from "../../../../orchestrator/Orchestrator";
-import { Fragment, useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { getLabelsWhenQuit } from "../../../../service/alert-service";
@@ -76,44 +76,47 @@ const ActivityDurationPage = () => {
         },
     };
 
-    let startTimeDay: Dayjs = today;
-    let endTimeDay: Dayjs = today;
+    const startTimeDay = useRef(today);
+    const endTimeDay = useRef(today);
 
-    const isAfterEndTime = () => {
+    const setStartEndTime = useCallback(
+        (startTime: string[], endTime: string[]) => {
+            let isAfter = false;
+            const newStart = dayjs(startTime[currentIteration], "HH:mm");
+            const newEnd = dayjs(endTime[currentIteration], "HH:mm");
+            const init = dayjs(START_TIME_DAY, FORMAT_TIME);
+
+            startTimeDay.current = addDayOfStartDay(newStart, init);
+            endTimeDay.current = addDayEndTime(newStart, newEnd, init);
+
+            if (startTimeDay.current.isAfter(endTimeDay.current)) {
+                isAfter = true;
+            }
+            return [startTimeDay.current, endTimeDay.current, isAfter] as const;
+        },
+        [currentIteration],
+    );
+
+    const isAfterEndTime = useCallback(() => {
         const data = callbackHolder.getData();
-        let isAfter = false;
         if (data) {
             const startTime = getValueOfData(data, FieldNameEnum.START_TIME) as string[];
             const endTime = getValueOfData(data, FieldNameEnum.END_TIME) as string[];
 
             dayjs.extend(customParseFormat);
             if (startTime && endTime) {
-                const setter = setStartEndTime(isAfter, startTime, endTime);
-                startTimeDay = setter[0] as dayjs.Dayjs;
-                endTimeDay = setter[1] as dayjs.Dayjs;
-                isAfter = setter[2] as boolean;
+                const setter = setStartEndTime(startTime, endTime);
+                startTimeDay.current = setter[0];
+                endTimeDay.current = setter[1];
+                return setter[2];
             }
         }
-        return isAfter;
-    };
-
-    const setStartEndTime = (isAfter: boolean, startTime: string[], endTime: string[]) => {
-        startTimeDay = dayjs(startTime[currentIteration], "HH:mm");
-        endTimeDay = dayjs(endTime[currentIteration], "HH:mm");
-        let init = dayjs(START_TIME_DAY, FORMAT_TIME);
-
-        startTimeDay = addDayOfStartDay(startTimeDay, init);
-        endTimeDay = addDayEndTime(startTimeDay, endTimeDay, init);
-
-        if (startTimeDay.isAfter(endTimeDay)) {
-            isAfter = true;
-        }
-        return [startTimeDay, endTimeDay, isAfter];
-    };
+        return false;
+    }, [setStartEndTime]);
 
     // when the start time < 4 and the end time is >=4, it is counted as the same day
     const addDayOfStartDay = (startTimeDay: dayjs.Dayjs, init: dayjs.Dayjs) => {
-        if (startTimeDay.hour() < 4 && endTimeDay.isAfter(init)) {
+        if (startTimeDay.hour() < 4 && endTimeDay.current.isAfter(init)) {
             startTimeDay = startTimeDay.add(1, DAY_LABEL);
         }
         return startTimeDay;
@@ -132,22 +135,25 @@ const ActivityDurationPage = () => {
         return endTimeDay;
     };
 
-    const endTimeAfterStartTime = (isAfter: boolean) => {
-        let skip = false;
-        if (isAfter) {
-            setSnackbarText(t("page.activity-duration.hour-alert"));
-            if (endTimeDay.isSame(lastEndTime)) {
+    const endTimeAfterStartTime = useCallback(
+        (isAfter: boolean) => {
+            let skip = false;
+            if (isAfter) {
+                setSnackbarText(t("page.activity-duration.hour-alert"));
+                if (endTimeDay.current.isSame(lastEndTime)) {
+                    skip = true;
+                }
+                setLastEndTime(endTimeDay.current);
+            } else {
                 skip = true;
             }
-            setLastEndTime(endTimeDay);
-        } else {
-            skip = true;
-        }
-        setOpenSnackbar(!skip);
-        return skip;
-    };
+            setOpenSnackbar(!skip);
+            return skip;
+        },
+        [endTimeDay, lastEndTime, t],
+    );
 
-    const checkTimeframeConsistency = () => {
+    const checkTimeframeConsistency = useCallback(() => {
         const data = callbackHolder.getData();
 
         const startTime = getValueOfData(data, FieldNameEnum.START_TIME) as string[];
@@ -157,19 +163,19 @@ const ActivityDurationPage = () => {
             setSnackbarText(t("page.activity-duration.error-time"));
             setOpenSnackbar(true);
         }
-    };
+    }, [t]);
 
-    const onNext = () => {
+    const onNext = useCallback(() => {
         checkTimeframeConsistency();
         const isAfter = isAfterEndTime();
         const skip = endTimeAfterStartTime(isAfter);
 
         if (isAfter) {
-            setLastEndTime(endTimeDay);
+            setLastEndTime(endTimeDay.current);
         }
 
-        if ((skip && isAfter) || !isAfter) {
-            saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }).then(() => {
+        saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }).then(() => {
+            if ((skip && isAfter) || !isAfter) {
                 navigate(
                     getLoopParameterizedNavigatePath(
                         idSurvey,
@@ -178,61 +184,77 @@ const ActivityDurationPage = () => {
                         currentIteration,
                     ),
                 );
-            });
-        }
-    };
+            }
+        });
+    }, [
+        checkTimeframeConsistency,
+        context.data,
+        currentIteration,
+        currentPage,
+        endTimeAfterStartTime,
+        endTimeDay,
+        idSurvey,
+        isAfterEndTime,
+        isRoute,
+        navigate,
+    ]);
 
-    const navIsClompleted = (isCloture: boolean) => {
-        if (isCloture) {
-            navToActivitySummary(idSurvey);
-        } else {
-            navToActivityRoutePlanner(idSurvey, context.source);
-        }
-    };
-
-    const onClose = (forceQuit: boolean) => {
-        const isCompleted = getValue(idSurvey, FieldNameEnum.ISCOMPLETED, currentIteration) as boolean;
-        const isCloture = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
-        if (!openSnackbar) {
-            if (!isCompleted) {
-                if (forceQuit) {
-                    saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }, true).then(
-                        () => {
-                            navIsClompleted(isCloture);
-                        },
-                    );
-                } else {
-                    setIsAlertDisplayed(true);
-                }
+    const navIsClompleted = useCallback(
+        (isCloture: boolean) => {
+            if (isCloture) {
+                navToActivitySummary(idSurvey);
             } else {
-                navIsClompleted(isCloture);
+                navToActivityRoutePlanner(idSurvey, context.source);
             }
-        }
-    };
-
-    const handleCloseSnackBar = useCallback(
-        (_: unknown, reason?: string) => {
-            if (reason === "clickaway") {
-                return;
-            }
-            setOpenSnackbar(false);
         },
-        [openSnackbar],
+        [context.source, idSurvey],
     );
 
+    const onClose = useCallback(
+        (forceQuit: boolean) => {
+            const isCompleted = getValue(
+                idSurvey,
+                FieldNameEnum.ISCOMPLETED,
+                currentIteration,
+            ) as boolean;
+            const isCloture = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
+
+            if (!openSnackbar) {
+                if (!isCompleted) {
+                    if (forceQuit) {
+                        saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }, true).then(
+                            () => {
+                                navIsClompleted(isCloture);
+                            },
+                        );
+                    } else {
+                        setIsAlertDisplayed(true);
+                    }
+                } else {
+                    navIsClompleted(isCloture);
+                }
+            }
+        },
+        [context.data, currentIteration, idSurvey, navIsClompleted, openSnackbar],
+    );
+
+    const handleCloseSnackBar = useCallback((_: unknown, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setOpenSnackbar(false);
+    }, []);
+
     const snackbarAction = (
-        <Fragment>
-            <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
-                <CloseIcon aria-label={t("accessibility.asset.mui-icon.close")} />
-            </IconButton>
-            <></>
-        </Fragment>
+        <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
+            <CloseIcon aria-label={t("accessibility.asset.mui-icon.close")} />
+        </IconButton>
     );
 
     return (
         <LoopSurveyPage
-            onNext={useCallback(() => onNext(), [snackbarText, lastEndTime, openSnackbar])}
-            onClose={useCallback(() => onClose(false), [isAlertDisplayed])}
+            onNext={useCallback(() => onNext(), [onNext])}
+            onClose={useCallback(() => onClose(false), [onClose])}
             currentStepIcon={stepData.stepIcon}
             currentStepIconAlt={stepData.stepIconAlt}
             currentStepNumber={stepData.stepNumber}
@@ -242,14 +264,11 @@ const ActivityDurationPage = () => {
             <FlexCenter>
                 <Alert
                     isAlertDisplayed={isAlertDisplayed}
-                    onCompleteCallBack={useCallback(
-                        () => setIsAlertDisplayed(false),
-                        [isAlertDisplayed],
-                    )}
-                    onCancelCallBack={useCallback(cancel => onClose(cancel), [])}
+                    onCompleteCallBack={useCallback(() => setIsAlertDisplayed(false), [])}
+                    onCancelCallBack={useCallback(cancel => onClose(cancel), [onClose])}
                     labels={getLabelsWhenQuit(isRoute)}
                     icon={<ErrorIcon aria-label={t("page.alert-when-quit.alt-alert-icon")} />}
-                ></Alert>
+                />
                 <Snackbar
                     className={isDesktop() ? classes.snackbarDesktop : classes.snackbar}
                     open={openSnackbar}
