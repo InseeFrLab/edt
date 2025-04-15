@@ -285,6 +285,7 @@ const ActivitySummaryPage = () => {
             const isEditedSummary: { [key: string]: string } = {
                 [LocalStorageVariableEnum.IS_EDITED_SUMMARY]: "true",
             };
+            console.log('activity in summary', activity);
             localStorage.setItem(idSurvey, JSON.stringify(isEditedSummary));
             setIsSummaryEdited(true);
             setActivityOrRoute(activity);
@@ -590,7 +591,7 @@ const ActivitySummaryPage = () => {
                                 onClick={navToCard(getIterationOrZero(activity))}
                                 onClickGap={onOpenAddActivityOrRoute}
                                 activityOrRoute={activity}
-                                onEdit={onEditActivity(getIterationOrZero(activity), activity)}
+                                onEdit={navToCard(getIterationOrZero(activity))}
                                 onDelete={onDeleteActivity(
                                     idSurvey,
                                     context.source,

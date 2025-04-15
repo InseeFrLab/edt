@@ -45,6 +45,7 @@ const EditActivityInformationPage = () => {
         [],
     );
 
+    console.log('context.activityOrRoute', context.activityOrRoute);
     return (
         <SurveyPage
             idSurvey={idSurvey}

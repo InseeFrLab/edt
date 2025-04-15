@@ -532,6 +532,7 @@ const ActivityOrRoutePlannerPage = () => {
 
     const onEditActivityOrRoute = useCallback((iteration: number, activity: ActivityRouteOrGap) => {
         setActivityOrRoute(activity);
+        console.log('activity', activityOrRoute);
         navToEditActivity(idSurvey, iteration);
     }, []);
 
