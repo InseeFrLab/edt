@@ -168,24 +168,13 @@ const SurveyPageStep = (props: SurveyPageStepProps) => {
             if (!validateButton) {
                 return;
             }
-            if (!isReviewerMode || isDemo) {
-                validateButton();
-                if (nextRoute) {
-                    saveAndNavFullPath(idSurvey, nextRoute);
-                } else {
-                    saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage);
-                }
+            validateButton();
+            if (nextRoute) {
+                saveAndNavFullPath(idSurvey, nextRoute);
+            } else {
+                saveAndNextStep(idSurvey, context.source, context.surveyRootPage, currentPage);
             }
-        }, [
-            isReviewerMode,
-            nextRoute,
-            saveAndNavFullPath,
-            saveAndNextStep,
-            idSurvey,
-            context,
-            currentPage,
-            isDemo
-        ]),
+        }, [idSurvey, nextRoute, validateButton]),
         icon: errorIcon ? <IconError aria-label={t(errorAltIcon ?? "")} /> : undefined,
         onNavigateBack: useCallback(() => {
             if (!isReviewerMode || isDemo) {
