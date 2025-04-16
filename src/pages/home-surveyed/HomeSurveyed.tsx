@@ -206,7 +206,7 @@ const HomeSurveyedPage = () => {
     const displayAlert = useCallback(
         (setDisplayAlert: React.Dispatch<React.SetStateAction<boolean>>, display: boolean) => () =>
             setDisplayAlert(display),
-        [],
+        []
     );
 
     const renderReminderNote = () => {
@@ -293,6 +293,7 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const lockSurveys = useCallback(() => {
+        console.log('lockSurveys');
         lockAllSurveys(idHousehold ?? "").then(() => {
             userDatas = userDatasMap();
             const idsSurveysSelected = userDatas
@@ -364,7 +365,7 @@ const HomeSurveyedPage = () => {
                         </Button>
                         <Button
                             variant="contained"
-                            onClick={displayAlert(setIsAlertLockDisplayed, true)}
+                            onClick={lockSurveys}
                             className={cx(classes.navButton)}
                             disabled={!navigator.onLine}
                         >
