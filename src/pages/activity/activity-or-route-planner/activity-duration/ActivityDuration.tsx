@@ -174,21 +174,24 @@ const ActivityDurationPage = () => {
             setLastEndTime(endTimeDay.current);
         }
 
-        saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }).then(() => {
-            if ((skip && isAfter) || !isAfter) {
-                navigate(
-                    getLoopParameterizedNavigatePath(
-                        idSurvey,
-                        getNextLoopPage(currentPage, isRoute),
-                        LoopEnum.ACTIVITY_OR_ROUTE,
-                        currentIteration,
-                    ),
-                );
-            }
-        });
+        const wrongTimeValuesOrSkip = (skip && isAfter) || !isAfter;
+
+        saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }, wrongTimeValuesOrSkip).then(
+            () => {
+                if (wrongTimeValuesOrSkip) {
+                    navigate(
+                        getLoopParameterizedNavigatePath(
+                            idSurvey,
+                            getNextLoopPage(currentPage, isRoute),
+                            LoopEnum.ACTIVITY_OR_ROUTE,
+                            currentIteration,
+                        ),
+                    );
+                }
+            },
+        );
     }, [
         checkTimeframeConsistency,
-        context.data,
         currentIteration,
         currentPage,
         endTimeAfterStartTime,

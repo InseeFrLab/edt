@@ -150,7 +150,7 @@ const MainActivityPage = () => {
             const loopNavigateFunction =
                 customActivityLabel !== null ? loopNavigate : saveAndLoopNavigate;
 
-            if (customActivityLabel !== null) {
+            if (customActivityLabel !== null && customActivityLabel !== "") {
                 setValue(
                     idSurvey,
                     FieldNameEnum.ACTIVITY_SELECTER_HISTORY,
@@ -169,7 +169,7 @@ const MainActivityPage = () => {
                     localStorage.getItem("selectedSuggesterIdNewActivity"),
                     currentIteration,
                 );
-                let data = setValue(
+                const data = setValue(
                     idSurvey,
                     FieldNameEnum.MAINACTIVITY_LABEL,
                     localStorage.getItem("selectionValue - label"),
