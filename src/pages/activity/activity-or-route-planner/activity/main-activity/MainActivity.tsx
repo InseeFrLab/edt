@@ -139,16 +139,13 @@ const MainActivityPage = () => {
             );
         },
         nextClickCallback: (routeToGoal: boolean) => {
-            const codeActivity = getValueOfActivity(callbackHolder.getData(), currentIteration) ?? "";
-            const skip = filtrePage(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL, codeActivity);
-            // TODO: regarder comment update des données du callbackHolder directement à la sélection de l'activité
-
-            // Check if the user has selected an existing activity or created a new one
-            // If the user has selected an existing activity, the data is saved as intended during a lunatic loop
-            // If not, the save process is delayed to the next page (to go back into a lunatic loop)
+            const initialCodeActivity = getValueOfActivity(callbackHolder.getData(), currentIteration) ?? "";
             const customActivityLabel = localStorage.getItem("selectionValue - label");
-            const loopNavigateFunction =
-                customActivityLabel !== null ? loopNavigate : saveAndLoopNavigate;
+
+            const codeActivity =
+                customActivityLabel !== null && customActivityLabel !== ""
+                    ? localStorage.getItem("selectedSuggesterIdNewActivity") ?? ""
+                    : initialCodeActivity;
 
             if (customActivityLabel !== null && customActivityLabel !== "") {
                 setValue(
@@ -177,11 +174,18 @@ const MainActivityPage = () => {
                 );
 
                 saveData(idSurvey, data, true, true).then(() => {
-                    //Clean history to avoid data overflow
+                    // Clean history to avoid data overflow
                     localStorage.removeItem("historyInputSuggester");
                 });
             }
-            if (routeToGoal && !skip) {
+
+            const loopNavigateFunction =
+                customActivityLabel !== null && customActivityLabel !== ""
+                    ? loopNavigate
+                    : saveAndLoopNavigate;
+
+            const skipToGoal = filtrePage(EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL, codeActivity);
+            if (routeToGoal && !skipToGoal) {
                 loopNavigateFunction(
                     idSurvey,
                     context.source,
@@ -190,11 +194,13 @@ const MainActivityPage = () => {
                     currentIteration,
                 );
             } else {
-                const skip = filtrePage(EdtRoutesNameEnum.SECONDARY_ACTIVITY, codeActivity);
+                const skipToSecondary = filtrePage(EdtRoutesNameEnum.SECONDARY_ACTIVITY, codeActivity);
                 loopNavigateFunction(
                     idSurvey,
                     context.source,
-                    skip ? EdtRoutesNameEnum.ACTIVITY_LOCATION : getNextLoopPage(currentPage),
+                    skipToSecondary
+                        ? EdtRoutesNameEnum.ACTIVITY_LOCATION
+                        : getNextLoopPage(currentPage),
                     LoopEnum.ACTIVITY_OR_ROUTE,
                     currentIteration,
                 );
