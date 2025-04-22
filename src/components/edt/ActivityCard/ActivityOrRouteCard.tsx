@@ -15,6 +15,7 @@ import { type TFunction } from "i18next";
 import { EdtRoutesNameEnum } from "../../../routes/EdtRoutesMapping";
 import { filtrePage } from "../../../service/loop-service";
 import Icon from "../Icon/Icon";
+import { JUST_BEFORE_MIDNIGHT, MIDNIGHT, START_TIME_DAY } from "../../../constants/constants";
 
 interface ActivityOrRouteCardProps {
     labelledBy: string;
@@ -258,7 +259,13 @@ const ActivityOrRouteCard = (props: ActivityOrRouteCardProps) => {
     const invalidTimes =
         activityOrRoute.startTime &&
         activityOrRoute.endTime &&
-        activityOrRoute.startTime > activityOrRoute.endTime;
+        activityOrRoute.startTime > activityOrRoute.endTime &&
+        !(
+            activityOrRoute.startTime >= START_TIME_DAY &&
+            activityOrRoute.startTime <= JUST_BEFORE_MIDNIGHT &&
+            activityOrRoute.endTime >= MIDNIGHT &&
+            activityOrRoute.endTime <= START_TIME_DAY
+        );
 
     const renderActivityOrRoute = (index?: number) => {
         return (

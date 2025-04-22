@@ -1,4 +1,6 @@
 export const START_TIME_DAY = "04:00";
+export const MIDNIGHT = "00:00";
+export const JUST_BEFORE_MIDNIGHT = "23:59";
 export const FORMAT_TIME = "HH:mm";
 export const MINUTE_LABEL = "minute";
 export const DAY_LABEL = "day";
