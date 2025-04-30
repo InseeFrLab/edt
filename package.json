@@ -1,7 +1,7 @@
 {
     "name": "edt",
-    "version": "4.4.3",
-    "dateVersion": "22/04/2025",
+    "version": "4.4.4",
+    "dateVersion": "30/04/2025",
     "licence": "MIT",
     "type": "module",
     "dependencies": {

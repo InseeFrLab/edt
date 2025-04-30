@@ -23,14 +23,12 @@ export const requestPutSurveyData = (
     delete tempData.data.COLLECTED?.WEEKLYPLANNER;
     delete tempData.data.stateData;
 
-    /*
     // Temporary fix to prevent data from being lost, do not submit data if activity is empty
     const endTime = tempData.data?.COLLECTED?.END_TIME?.COLLECTED;
     if (!Array.isArray(endTime) || endTime.length === 0) {
         console.log("Skip submitting data");
         return Promise.resolve(data);
     }
-    */
 
     const putLunaticData = axios.put(
         `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/data`,
