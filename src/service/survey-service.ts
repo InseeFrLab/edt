@@ -974,7 +974,6 @@ const saveData = (
                     data.stateData = stateData;
                     const revertedTranformedData = revertTransformedArray(data.COLLECTED);
                     data.COLLECTED = revertedTranformedData;
-                    data.COLLECTED = revertedTranformedData;
                     if (data.COLLECTED && "WEEKTYPE" in data.COLLECTED) {
                         const weeklyPlannerData = createDataWeeklyPlanner(data);
                         const WeeklyPlannerVariable: MultiCollected = {

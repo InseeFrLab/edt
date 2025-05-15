@@ -8,6 +8,12 @@ import { stromaeBackOfficeApiBaseUrl, getHeader } from "./getRemoteData";
 import jwt, { JwtPayload } from "jwt-decode";
 import { logout } from "../../service/auth-service";
 import { transformCollectedArray } from "../../utils/utils";
+import { getCurrentSurveyRootPage } from "../orchestrator-service";
+import { EdtRoutesNameEnum } from "../../enumerations/EdtRoutesNameEnum";
+
+const isActivity = () => {
+    return getCurrentSurveyRootPage() === EdtRoutesNameEnum.ACTIVITY;
+};
 
 export const requestPutSurveyData = (
     idSurvey: string,
@@ -25,7 +31,7 @@ export const requestPutSurveyData = (
 
     // Temporary fix to prevent data from being lost, do not submit data if activity is empty
     const endTime = tempData.data?.COLLECTED?.END_TIME?.COLLECTED;
-    if (!Array.isArray(endTime) || endTime.length === 0) {
+    if (isActivity() && (!Array.isArray(endTime) || endTime.length === 0)) {
         console.log("Skip submitting data");
         return Promise.resolve(data);
     }

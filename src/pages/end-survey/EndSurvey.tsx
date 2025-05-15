@@ -12,7 +12,7 @@ import { FieldNameEnum } from "../../enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "../../enumerations/LocalStorageVariableEnum";
 import { StateDataStateEnum } from "../../enumerations/StateDataStateEnum";
 import { StateData, SurveyData } from "../../interface/entity/Api";
-import { OrchestratorContext } from "../../interface/lunatic/Lunatic";
+import { LunaticData, OrchestratorContext } from "../../interface/lunatic/Lunatic";
 import { callbackHolder } from "../../orchestrator/Orchestrator";
 import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
@@ -39,6 +39,13 @@ import { getSurveyIdFromUrl } from "../../utils/utils";
 const isActivity = () => {
     return getCurrentSurveyRootPage() === EdtRoutesNameEnum.ACTIVITY;
 };
+
+const isWorkEmpty = (collectedWorkTimeSurvey: LunaticData["COLLECTED"]) =>
+    !collectedWorkTimeSurvey?.WORK?.COLLECTED ||
+    !Array.isArray(collectedWorkTimeSurvey.WORK.COLLECTED) ||
+    !collectedWorkTimeSurvey.WORK.COLLECTED.length ||
+    (collectedWorkTimeSurvey.WORK.COLLECTED.length === 1 &&
+        collectedWorkTimeSurvey.WORK.COLLECTED[0] === null);
 
 const isNavMobile = !isPwa() && isMobile;
 
@@ -83,13 +90,16 @@ const EndSurveyPage = () => {
         border: true,
     };
 
-    const saveDataAndInit = useCallback((surveyData: SurveyData, forceUpdate?: boolean) => {
-        saveData(idSurvey, surveyData, false, forceUpdate).then(() => {
-            initializeSurveysDatasCache().finally(() => {
-                setIsModalDisplayed(true);
+    const saveDataAndInit = useCallback(
+        (surveyData: SurveyData, forceUpdate?: boolean) => {
+            saveData(idSurvey, surveyData, false, forceUpdate).then(() => {
+                initializeSurveysDatasCache().finally(() => {
+                    setIsModalDisplayed(true);
+                });
             });
-        });
-    }, []);
+        },
+        [idSurvey],
+    );
 
     const remoteSaveSurveyAndGoBackHome = useCallback(() => {
         setValue(idSurvey, FieldNameEnum.ISENVOYED, true);
@@ -116,10 +126,14 @@ const EndSurveyPage = () => {
         if (isDemoMode) {
             return saveDataAndInit(surveyData, true);
         }
+        if (!isActivitySurvey && isWorkEmpty(surveyData.data.COLLECTED)) {
+            console.error("Le semainier a son contenu qui vide, on ne l'envoie pas");
+            return handleError();
+        }
         saveData(idSurvey, { ...surveyData.data, stateData: stateData }, false, true)
             .then(navToHome)
             .catch(handleError);
-    }, []);
+    }, [context.source, idSurvey, isActivitySurvey, isDemoMode, saveDataAndInit]);
 
     const onPrevious = useCallback(() => {
         if (isActivitySurvey) {
@@ -133,7 +147,7 @@ const EndSurveyPage = () => {
                     getNavigatePath(EdtRoutesNameEnum.KIND_OF_WEEK),
             );
         }
-    }, []);
+    }, [idSurvey, isActivitySurvey, navigate]);
 
     const validateAndNav = (
         forceQuit: boolean,
@@ -215,6 +229,8 @@ const EndSurveyPage = () => {
                                 {t("common.navigation.send")}
                             </Button>
                         )}
+                    </FlexCenter>
+                    <FlexCenter className={classes.actionBox}>
                         {errorSubmit ? (
                             <Typography className={classes.errorSubmit}>
                                 {t("common.error.error-submit-survey")}
