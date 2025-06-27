@@ -1075,9 +1075,7 @@ const getStateOfSurvey = (idSurvey: string): StateDataStateEnum => {
     const isValidated = surveyValidated(idSurvey);
     let state: StateDataStateEnum = StateDataStateEnum.INIT;
 
-    if (isSent) {
-        state = StateDataStateEnum.COMPLETED;
-    } else if (isValidated) {
+    if (isSent || isValidated) {
         state = StateDataStateEnum.VALIDATED;
     }
     return state;

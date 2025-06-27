@@ -91,7 +91,7 @@ const EndSurveyPage = () => {
     const remoteSaveSurveyAndGoBackHome = useCallback(() => {
         const dataWithIsEnvoyed = setValue(idSurvey, FieldNameEnum.ISENVOYED, true);
         const stateData: StateData = {
-            state: StateDataStateEnum.COMPLETED,
+            state: StateDataStateEnum.VALIDATED,
             date: Date.now(),
             currentPage: getCurrentPage(callbackHolder.getData(), context.source),
         };
