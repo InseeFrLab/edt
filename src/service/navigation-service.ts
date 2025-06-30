@@ -33,7 +33,7 @@ import {
 } from "./survey-service";
 import { getLastPageStep } from "./stepper.service";
 import { surveyReadOnly } from "./survey-activity-service";
-import { isSurveyClosed, isSurveyCompleted, isSurveyValidated } from "./survey-state-service";
+import { isSurveyClosed, isSurveyValidated } from "./survey-state-service";
 import { mergeObjects } from "../utils/utils";
 
 let _context: OrchestratorContext;
@@ -493,8 +493,7 @@ const navToActivityOrPlannerOrSummary = (
 ) => {
     const surveyIsClosed = isSurveyClosed(idSurvey);
     const surveyIsValidated = isSurveyValidated(idSurvey);
-    const surveyIsCompleted = isSurveyCompleted(idSurvey);
-    if (surveyIsClosed || surveyIsValidated || surveyIsCompleted) {
+    if (surveyIsClosed || surveyIsValidated) {
         const surveyIsEnvoyed = getValue(idSurvey, FieldNameEnum.ISENVOYED);
         if (surveyIsEnvoyed || surveyIsValidated) {
             navigate(
