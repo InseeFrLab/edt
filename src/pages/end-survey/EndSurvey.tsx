@@ -95,7 +95,7 @@ const EndSurveyPage = () => {
         setValue(idSurvey, FieldNameEnum.ISENVOYED, true);
         const dataWithIsClosed = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
         const stateData: StateData = {
-            state: StateDataStateEnum.VALIDATED,
+            state: StateDataStateEnum.COMPLETED,
             date: Date.now(),
             currentPage: getCurrentPage(callbackHolder.getData(), context.source),
         };

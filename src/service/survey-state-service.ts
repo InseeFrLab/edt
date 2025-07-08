@@ -37,10 +37,15 @@ const isSurveyStarted = (idSurvey: string) => {
     return survey.COLLECTED != null && survey.COLLECTED.SURVEYDATE?.COLLECTED != null;
 };
 
+const isSurveyCompleted = (idSurvey: string) => {
+    const stateData = getLocalSurveyStateData(getData(idSurvey));
+    return stateData.state == StateDataStateEnum.COMPLETED;
+};
+
 const isSurveyExtracted = (idSurvey: string) => {
     const stateData = getLocalSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.EXTRACTED;
-};
+}
 
 const isSurveyClosed = (idSurvey: string) => {
     const isClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
@@ -179,6 +184,7 @@ export {
     isSurveyExtracted,
     isSurveyClosed,
     isSurveyStarted,
+    isSurveyCompleted,
     getStatutSurvey,
     getLocalSurveyStateData,
     lockAllSurveys,
