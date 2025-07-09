@@ -129,10 +129,10 @@ const setAlertSnackbar = (
     if (haveOverlaps) {
         setSnackbarText(
             t("page.activity-planner.start-alert") +
-            overlaps
-                .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current ?? ""))
-                .join(", ") +
-            t("page.activity-planner.end-alert"),
+                overlaps
+                    .map(o => o?.prev?.concat(t("page.activity-planner.and"), o?.current ?? ""))
+                    .join(", ") +
+                t("page.activity-planner.end-alert"),
         );
         if (!skip) setOpenSnackbar(true);
     } else {
@@ -166,7 +166,11 @@ const onFinish = (
 ) => {
     if (closed) {
         const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
-        saveData(idSurvey, { ...data, ...callbackHolder.getData() }, false, true).then(() => {
+        saveData(
+            idSurvey,
+            { ...data, ...callbackHolder.getData() },
+            { localSaveOnly: false, forceUpdate: true },
+        ).then(() => {
             navigate(
                 getCurrentNavigatePath(
                     idSurvey,
@@ -403,7 +407,6 @@ const ActivityOrRoutePlannerPage = () => {
             getLoopSize(idSurvey, LoopEnum.ACTIVITY_OR_ROUTE),
         );
         setAlertSnackbar(setSnackbarText, setOpenSnackbar, skip, overlaps.length > 0, overlaps, t);
-
     }, []);
 
     useEffect(() => {
@@ -422,7 +425,7 @@ const ActivityOrRoutePlannerPage = () => {
         );
         contextIteration = loopSize - 1;
         const routeData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
-        saveData(idSurvey, routeData).then(() => {
+        saveData(idSurvey, routeData, {}).then(() => {
             navToActivityOrRoute(idSurvey, contextIteration, isRouteBool);
         });
     };
@@ -442,7 +445,7 @@ const ActivityOrRoutePlannerPage = () => {
         setValueOrNull(idSurvey, FieldNameEnum.START_TIME, startTime, contextIteration);
         setValueOrNull(idSurvey, FieldNameEnum.END_TIME, endTime, contextIteration);
         const updatedData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
-        saveData(idSurvey, updatedData).then(() => {
+        saveData(idSurvey, updatedData, {}).then(() => {
             onCloseAddActivityOrRoute();
             setIsRoute(isRouteBool);
             navigate(

@@ -176,20 +176,22 @@ const ActivityDurationPage = () => {
 
         const wrongTimeValuesOrSkip = (skip && isAfter) || !isAfter;
 
-        saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }, wrongTimeValuesOrSkip).then(
-            () => {
-                if (wrongTimeValuesOrSkip) {
-                    navigate(
-                        getLoopParameterizedNavigatePath(
-                            idSurvey,
-                            getNextLoopPage(currentPage, isRoute),
-                            LoopEnum.ACTIVITY_OR_ROUTE,
-                            currentIteration,
-                        ),
-                    );
-                }
-            },
-        );
+        saveData(
+            idSurvey,
+            { ...context.data, ...callbackHolder.getData() },
+            { localSaveOnly: wrongTimeValuesOrSkip },
+        ).then(() => {
+            if (wrongTimeValuesOrSkip) {
+                navigate(
+                    getLoopParameterizedNavigatePath(
+                        idSurvey,
+                        getNextLoopPage(currentPage, isRoute),
+                        LoopEnum.ACTIVITY_OR_ROUTE,
+                        currentIteration,
+                    ),
+                );
+            }
+        });
     }, [
         checkTimeframeConsistency,
         currentIteration,
@@ -225,11 +227,13 @@ const ActivityDurationPage = () => {
             if (!openSnackbar) {
                 if (!isCompleted) {
                     if (forceQuit) {
-                        saveData(idSurvey, { ...context.data, ...callbackHolder.getData() }, true).then(
-                            () => {
-                                navIsClompleted(isCloture);
-                            },
-                        );
+                        saveData(
+                            idSurvey,
+                            { ...context.data, ...callbackHolder.getData() },
+                            { localSaveOnly: true },
+                        ).then(() => {
+                            navIsClompleted(isCloture);
+                        });
                     } else {
                         setIsAlertDisplayed(true);
                     }

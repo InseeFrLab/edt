@@ -220,7 +220,7 @@ const saveAndNav = (
     currentIteration?: number,
 ): void => {
     const mergedData = mergeObjects(getData(idSurvey), _callbackHolder.getData());
-    saveData(idSurvey, mergedData, false, true).then(() => {
+    saveData(idSurvey, mergedData, { localSaveOnly: false, forceUpdate: true }).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
@@ -236,7 +236,7 @@ const saveAndNavLocally = (
     currentIteration?: number,
 ): void => {
     const mergedData = mergeObjects(getData(idSurvey), _callbackHolder.getData());
-    saveData(idSurvey, mergedData, true).then(() => {
+    saveData(idSurvey, mergedData, { localSaveOnly: true }).then(() => {
         navToRouteOrRouteNotSelection(idSurvey, route, value, routeNotSelection, currentIteration);
     });
 };
@@ -247,7 +247,7 @@ const saveAndNavLocally = (
  */
 const closeFormularieAndNav = (idSurvey: string, route: string) => {
     const data = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
-    saveData(idSurvey, data).then(() => {
+    saveData(idSurvey, data, {}).then(() => {
         _navigate(route);
     });
 };
@@ -259,15 +259,19 @@ const closeFormularieAndNav = (idSurvey: string, route: string) => {
  */
 const validate = (idSurvey: string): Promise<void | LunaticData> => {
     const mergedData = mergeObjects(getData(idSurvey), _callbackHolder.getData());
-    return saveData(idSurvey, mergedData, true).then(() => {
-        return saveData(idSurvey, mergedData, false);
+    return saveData(idSurvey, mergedData, { localSaveOnly: true }).then(() => {
+        return saveData(idSurvey, mergedData, { localSaveOnly: false });
     });
 };
 
 const validateLocally = (idSurvey: string): Promise<void | LunaticData> => {
     const mergedData = mergeObjects(getData(idSurvey), _callbackHolder.getData());
-    return saveData(idSurvey, mergedData, true).then(() => {
-        return saveData(idSurvey, { ...getData(idSurvey), ..._callbackHolder.getData() }, true);
+    return saveData(idSurvey, mergedData, { localSaveOnly: true }).then(() => {
+        return saveData(
+            idSurvey,
+            { ...getData(idSurvey), ..._callbackHolder.getData() },
+            { localSaveOnly: true },
+        );
     });
 };
 
@@ -353,7 +357,7 @@ const setNamesOfGroup = (
                 newSurvey,
                 dateAct,
             );
-            promises.push(saveData(idSurveyOfGroup, emptydata));
+            promises.push(saveData(idSurveyOfGroup, emptydata, {}));
         }
     });
     return promises;

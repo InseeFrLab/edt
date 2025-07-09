@@ -84,7 +84,7 @@ const EndSurveyPage = () => {
     };
 
     const saveDataAndInit = useCallback((surveyData: SurveyData, forceUpdate?: boolean) => {
-        saveData(idSurvey, surveyData, false, forceUpdate).then(() => {
+        saveData(idSurvey, surveyData, { localSaveOnly: false, forceUpdate }).then(() => {
             initializeSurveysDatasCache().finally(() => {
                 setIsModalDisplayed(true);
             });
@@ -116,7 +116,11 @@ const EndSurveyPage = () => {
         if (isDemoMode) {
             return saveDataAndInit(surveyData, true);
         }
-        saveData(idSurvey, { ...surveyData.data, stateData: stateData }, false, true)
+        saveData(
+            idSurvey,
+            { ...surveyData.data, stateData: stateData },
+            { localSaveOnly: false, forceUpdate: true },
+        )
             .then(navToHome)
             .catch(handleError);
     }, []);
@@ -141,9 +145,11 @@ const EndSurveyPage = () => {
     ): void => {
         if (forceQuit) {
             const dataWithIsEnvoyed = setValue(idSurvey, FieldNameEnum.ISENVOYED, true);
-            saveData(idSurvey, dataWithIsEnvoyed, false, true).then(() => {
-                navToHome();
-            });
+            saveData(idSurvey, dataWithIsEnvoyed, { localSaveOnly: false, forceUpdate: true }).then(
+                () => {
+                    navToHome();
+                },
+            );
         } else {
             setIsModalDisplayed(true);
         }

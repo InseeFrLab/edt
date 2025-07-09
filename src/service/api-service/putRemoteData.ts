@@ -8,10 +8,12 @@ import { stromaeBackOfficeApiBaseUrl, getHeader } from "./getRemoteData";
 import jwt, { JwtPayload } from "jwt-decode";
 import { logout } from "../../service/auth-service";
 import { transformCollectedArray } from "../../utils/utils";
+import { SourcesEnum } from "../../enumerations/SourcesEnum";
 
 export const requestPutSurveyData = (
     idSurvey: string,
     data: SurveyData,
+    surveyType: SourcesEnum,
     token?: string,
 ): Promise<SurveyData> => {
     const stateData = data.stateData;
@@ -23,11 +25,13 @@ export const requestPutSurveyData = (
     delete tempData.data.COLLECTED?.WEEKLYPLANNER;
     delete tempData.data.stateData;
 
-    // Temporary fix to prevent data from being lost, do not submit data if activity is empty
-    const endTime = tempData.data?.COLLECTED?.END_TIME?.COLLECTED;
-    if (!Array.isArray(endTime) || endTime.length === 0) {
-        console.log("Skip submitting data");
-        return Promise.resolve(data);
+    if (surveyType === SourcesEnum.ACTIVITY_SURVEY) {
+        // Temporary fix to prevent data from being lost, do not submit data if activity is empty
+        const endTime = tempData.data?.COLLECTED?.END_TIME?.COLLECTED;
+        if (!Array.isArray(endTime) || endTime.length === 0) {
+            console.log("Skip submitting data");
+            return Promise.resolve(data);
+        }
     }
 
     const putLunaticData = axios.put(
@@ -51,7 +55,11 @@ export const requestPutSurveyData = (
         });
 };
 
-export const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise<SurveyData> => {
+export const remotePutSurveyData = (
+    idSurvey: string,
+    data: SurveyData,
+    surveyType: SourcesEnum,
+): Promise<SurveyData> => {
     if (!navigator.onLine) {
         return Promise.resolve(data);
     }
@@ -63,14 +71,14 @@ export const remotePutSurveyData = (idSurvey: string, data: SurveyData): Promise
         return auth.userManager
             .signinSilent()
             .then((user: User | null) => {
-                return requestPutSurveyData(idSurvey, data, user?.access_token);
+                return requestPutSurveyData(idSurvey, data, surveyType, user?.access_token);
             })
             .catch(err => {
                 logout();
                 return Promise.reject(err);
             });
     } else {
-        return requestPutSurveyData(idSurvey, data);
+        return requestPutSurveyData(idSurvey, data, surveyType);
     }
 };
 

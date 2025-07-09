@@ -142,7 +142,7 @@ const HomeSurveyedPage = () => {
     const resetDemoDataAndReload = useCallback(() => {
         const promises: any[] = [];
         surveysIds[SurveysIdsEnum.ALL_SURVEYS_IDS].forEach(idSurvey => {
-            promises.push(saveData(idSurvey, {}));
+            promises.push(saveData(idSurvey, {}, {}));
         });
         Promise.all(promises).then(() => {
             window.location.replace(import.meta.env.VITE_PUBLIC_URL || "");
@@ -206,7 +206,7 @@ const HomeSurveyedPage = () => {
     const displayAlert = useCallback(
         (setDisplayAlert: React.Dispatch<React.SetStateAction<boolean>>, display: boolean) => () =>
             setDisplayAlert(display),
-        []
+        [],
     );
 
     const renderReminderNote = () => {
@@ -293,7 +293,7 @@ const HomeSurveyedPage = () => {
     }, []);
 
     const lockSurveys = useCallback(() => {
-        console.log('lockSurveys');
+        console.log("lockSurveys");
         lockAllSurveys(idHousehold ?? "").then(() => {
             userDatas = userDatasMap();
             const idsSurveysSelected = userDatas
