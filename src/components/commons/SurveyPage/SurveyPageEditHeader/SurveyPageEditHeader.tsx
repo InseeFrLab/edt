@@ -2,7 +2,7 @@ import { important, makeStylesEdt } from "@inseefrlab/lunatic-edt";
 import { Box, Button, Divider, Popover, Typography } from "@mui/material";
 import ArrowBackIosIcon from "../../../../assets/illustration/mui-icon/arrow-back-ios.svg?react";
 import MoreHorizontalImage from "../../../../assets/illustration/mui-icon/more-horizontal.svg?react";
-import React, { useCallback } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 interface SurveyPageEditHeaderProps {
@@ -18,16 +18,19 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
     const { firstName, firstNamePrefix, onNavigateBack, onEdit, onHelp, modifiable = true } = props;
     const { classes } = useStyles();
     const { t } = useTranslation();
+
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     const openPopOver = Boolean(anchorEl);
     const id = openPopOver ? "edit-or-help-popover" : undefined;
-    const handleClose = useCallback(() => {
-        setAnchorEl(null);
-    }, [anchorEl]);
 
-    const onEditSurvey = useCallback((e: any) => {
-        setAnchorEl(e.currentTarget);
-    }, []);
+    const handleOpen = (event: any) => {
+        setAnchorEl(event.currentTarget);
+    };
 
     return (
         <>
@@ -46,36 +49,36 @@ const SurveyPageEditHeader = (props: SurveyPageEditHeaderProps) => {
                     ></Button>
                     <Typography className={classes.infoText}>{firstNamePrefix + firstName}</Typography>
                 </Box>
-                <Box onClick={onEditSurvey} onKeyUp={onEditSurvey}>
+                <Box onClick={handleOpen} onKeyUp={handleOpen}>
                     <MoreHorizontalImage
                         aria-label={t("accessibility.asset.mui-icon.more-horizontal")}
                         className={classes.actionIcon}
                     />
-                    <Popover
-                        id={id}
-                        open={openPopOver}
-                        anchorEl={anchorEl}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "left",
-                        }}
-                        className={classes.popOver}
-                    >
-                        {onEdit && modifiable && (
-                            <Typography onClick={onEdit} className={classes.clickableText}>
-                                {t("common.navigation.edit")}
-                            </Typography>
-                        )}
-                        {onHelp && (
-                            <Typography onClick={onHelp} className={classes.clickableText}>
-                                {t("common.navigation.help")}
-                            </Typography>
-                        )}
-                    </Popover>
                 </Box>
             </Box>
             <Divider light />
+            <Popover
+                id={id}
+                open={openPopOver}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                }}
+                className={classes.popOver}
+            >
+                {onEdit && modifiable && (
+                    <Typography onClick={onEdit} className={classes.clickableText}>
+                        {t("common.navigation.edit")}
+                    </Typography>
+                )}
+                {onHelp && (
+                    <Typography onClick={onHelp} className={classes.clickableText}>
+                        {t("common.navigation.help")}
+                    </Typography>
+                )}
+            </Popover>
         </>
     );
 };
