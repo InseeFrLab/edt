@@ -95,7 +95,7 @@ const EndSurveyPage = () => {
         setValue(idSurvey, FieldNameEnum.ISENVOYED, true);
         const dataWithIsClosed = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
         const stateData: StateData = {
-            state: StateDataStateEnum.COMPLETED,
+            state: isActivitySurvey ? StateDataStateEnum.COMPLETED : StateDataStateEnum.VALIDATED,
             date: Date.now(),
             currentPage: getCurrentPage(callbackHolder.getData(), context.source),
         };
@@ -104,11 +104,6 @@ const EndSurveyPage = () => {
             stateData: stateData,
             data: dataWithIsClosed ?? callbackHolder.getData(),
         };
-
-        // const handleSuccess = (surveyDataAnswer: any) => {
-        //     surveyData.data.lastRemoteSaveDate = surveyDataAnswer.stateData?.date;
-        //     return saveDataAndInit(surveyData, true);
-        // };
 
         const handleError = () => {
             setErrorSubmit(true);
