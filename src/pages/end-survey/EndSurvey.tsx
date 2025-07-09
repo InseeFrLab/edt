@@ -12,7 +12,7 @@ import { FieldNameEnum } from "../../enumerations/FieldNameEnum";
 import { LocalStorageVariableEnum } from "../../enumerations/LocalStorageVariableEnum";
 import { StateDataStateEnum } from "../../enumerations/StateDataStateEnum";
 import { StateData, SurveyData } from "../../interface/entity/Api";
-import { OrchestratorContext } from "../../interface/lunatic/Lunatic";
+import { LunaticData, OrchestratorContext } from "../../interface/lunatic/Lunatic";
 import { callbackHolder } from "../../orchestrator/Orchestrator";
 import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
@@ -39,6 +39,17 @@ import { getSurveyIdFromUrl } from "../../utils/utils";
 const isActivity = () => {
     return getCurrentSurveyRootPage() === EdtRoutesNameEnum.ACTIVITY;
 };
+
+/** Whether or not the work survey (weekly) is empty and shouldn't be sent to API. */
+function isWorkEmpty(collectedWorkTimeSurvey: LunaticData["COLLECTED"]): boolean {
+    return (
+        !collectedWorkTimeSurvey?.WORK?.COLLECTED ||
+        !Array.isArray(collectedWorkTimeSurvey.WORK.COLLECTED) ||
+        !collectedWorkTimeSurvey.WORK.COLLECTED.length ||
+        (collectedWorkTimeSurvey.WORK.COLLECTED.length === 1 &&
+            collectedWorkTimeSurvey.WORK.COLLECTED[0] === null)
+    );
+}
 
 const isNavMobile = !isPwa() && isMobile;
 
@@ -83,14 +94,6 @@ const EndSurveyPage = () => {
         border: true,
     };
 
-    const saveDataAndInit = useCallback((surveyData: SurveyData, forceUpdate?: boolean) => {
-        saveData(idSurvey, surveyData, { localSaveOnly: false, forceUpdate }).then(() => {
-            initializeSurveysDatasCache().finally(() => {
-                setIsModalDisplayed(true);
-            });
-        });
-    }, []);
-
     const remoteSaveSurveyAndGoBackHome = useCallback(() => {
         setValue(idSurvey, FieldNameEnum.ISENVOYED, true);
         const dataWithIsClosed = setValue(idSurvey, FieldNameEnum.ISCLOSED, true);
@@ -109,7 +112,17 @@ const EndSurveyPage = () => {
             setErrorSubmit(true);
         };
         if (isDemoMode) {
-            return saveDataAndInit(surveyData, true);
+            return saveData(idSurvey, surveyData, { localSaveOnly: false, forceUpdate: true }).then(
+                () => {
+                    initializeSurveysDatasCache().finally(() => {
+                        setIsModalDisplayed(true);
+                    });
+                },
+            );
+        }
+        if (!isActivitySurvey && isWorkEmpty(surveyData.data.COLLECTED)) {
+            console.error("The work survey is empty, do not send it");
+            return handleError();
         }
         saveData(
             idSurvey,
@@ -118,7 +131,7 @@ const EndSurveyPage = () => {
         )
             .then(navToHome)
             .catch(handleError);
-    }, []);
+    }, [context.source, idSurvey, isActivitySurvey, isDemoMode]);
 
     const onPrevious = useCallback(() => {
         if (isActivitySurvey) {
@@ -216,6 +229,8 @@ const EndSurveyPage = () => {
                                 {t("common.navigation.send")}
                             </Button>
                         )}
+                    </FlexCenter>
+                    <FlexCenter className={classes.actionBox}>
                         {errorSubmit ? (
                             <Typography className={classes.errorSubmit}>
                                 {t("common.error.error-submit-survey")}
@@ -230,10 +245,7 @@ const EndSurveyPage = () => {
             <FlexCenter>
                 <FelicitationModal
                     isModalDisplayed={isModalDisplayed}
-                    onCompleteCallBack={useCallback(
-                        () => validateAndNav(true, setIsModalDisplayed),
-                        [isModalDisplayed],
-                    )}
+                    onCompleteCallBack={() => validateAndNav(true, setIsModalDisplayed)}
                     content={
                         isActivitySurvey
                             ? t("component.modal-edt.modal-felicitation.activity-content")
