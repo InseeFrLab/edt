@@ -27,7 +27,7 @@ import { FieldNameEnum } from "../../../enumerations/FieldNameEnum";
 import { LunaticData, MultiCollected, OrchestratorContext } from "../../../interface/lunatic/Lunatic";
 import { OrchestratorForStories, callbackHolder } from "../../../orchestrator/Orchestrator";
 import ErrorProvider from "../../../pages/error/ErrorProvider";
-import React, { useCallback } from "react";
+import React from "react";
 import { isAndroid, isIOS } from "react-device-detect";
 import { ErrorBoundary } from "react-error-boundary";
 import { useTranslation } from "react-i18next";
@@ -46,6 +46,7 @@ import { isMobile, isPwa } from "../../../service/responsive";
 import { getData, getPrintedFirstName, getSurveyDate, saveData } from "../../../service/survey-service";
 import { isReviewer } from "../../../service/user-service";
 import { getSurveyIdFromUrl } from "../../../utils/utils";
+import { SourcesEnum } from "../../../enumerations/SourcesEnum";
 
 const WeeklyPlannerPage = () => {
     const context: OrchestratorContext = useOutletContext();
@@ -70,7 +71,7 @@ const WeeklyPlannerPage = () => {
     });
 
     const [displayDayOverview, setDisplayDayOverview] = React.useState<boolean>(false);
-    let [isPlaceWorkDisplayed, setIsPlaceWorkDisplayed] = React.useState<boolean>(false);
+    const [isPlaceWorkDisplayed, setIsPlaceWorkDisplayed] = React.useState<boolean>(false);
     const [isHelpMenuOpen, setIsHelpMenuOpen] = React.useState(false);
 
     const [displayedDayHeader, setDisplayedDayHeader] = React.useState<string>("");
@@ -110,7 +111,7 @@ const WeeklyPlannerPage = () => {
                 dataBdd.COLLECTED[FieldNameEnum.WEEKLYPLANNER].COLLECTED = data[0];
                 dataBdd.COLLECTED[FieldNameEnum.DATES].COLLECTED = data[1];
                 dataBdd.COLLECTED[FieldNameEnum.DATES_STARTED].COLLECTED = data[2];
-                saveData(idSurvey, dataBdd, localSaveOnly);
+                saveData(idSurvey, dataBdd, { localSaveOnly });
             }
         }
     };
@@ -135,7 +136,7 @@ const WeeklyPlannerPage = () => {
                     dataCopy.COLLECTED[name].COLLECTED = quartier;
                 }
             });
-            saveData(idSurveyResponse, dataCopy, true);
+            saveData(idSurveyResponse, dataCopy, { localSaveOnly: true });
         }
 
         if (
@@ -156,7 +157,7 @@ const WeeklyPlannerPage = () => {
                     }
                 }
             });
-            saveData(idSurveyResponse, dataCopy, true);
+            saveData(idSurveyResponse, dataCopy, { localSaveOnly: true });
         }
     };
 
@@ -164,8 +165,8 @@ const WeeklyPlannerPage = () => {
         surveyDate: getSurveyDate(idSurvey),
         isSubChildDisplayed: displayDayOverview,
         setIsSubChildDisplayed: setDisplayDayOverview,
-        isPlaceWorkDisplayed: isPlaceWorkDisplayed,
-        setIsPlaceWorkDisplayed: setIsPlaceWorkDisplayed,
+        isPlaceWorkDisplayed,
+        setIsPlaceWorkDisplayed,
         displayedDayHeader: displayedDayHeader,
         setDisplayedDayHeader: setDisplayedDayHeader,
         labels: {
@@ -227,10 +228,11 @@ const WeeklyPlannerPage = () => {
     const validateAndNav = (): void => {
         if (displayDayOverview) {
             if (isPlaceWorkDisplayed) {
-                saveData(idSurvey, callbackHolder.getData());
+                saveData(idSurvey, callbackHolder.getData(), {
+                    surveyType: SourcesEnum.WORK_TIME_SURVEY,
+                });
                 setDisplayDayOverview(true);
                 setIsPlaceWorkDisplayed(false);
-                isPlaceWorkDisplayed = false;
             } else {
                 save(idSurvey);
                 setDisplayDayOverview(false);
@@ -247,39 +249,12 @@ const WeeklyPlannerPage = () => {
         navFullPath(idSurvey, EdtRoutesNameEnum.EDIT_GLOBAL_INFORMATION, EdtRoutesNameEnum.WORK_TIME);
     };
 
-    const onCloseHelpMenu = useCallback(() => {
-        setIsHelpMenuOpen(false);
-    }, [isHelpMenuOpen]);
+    const onCloseHelpMenu = () => setIsHelpMenuOpen(false);
+    const navToContactPage = () => navigate(getNavigatePath(EdtRoutesNameEnum.CONTACT));
+    const navToInstallPage = () => navigate(getNavigatePath(EdtRoutesNameEnum.INSTALL));
+    const navToHelpPages = () => navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
+    const onHelp = () => setIsHelpMenuOpen(true);
 
-    const navToContactPage = useCallback(() => {
-        navigate(getNavigatePath(EdtRoutesNameEnum.CONTACT));
-    }, []);
-
-    const navToInstallPage = useCallback(() => {
-        navigate(getNavigatePath(EdtRoutesNameEnum.INSTALL));
-    }, []);
-
-    const navToHelpPages = useCallback(() => {
-        navigate(getNavigatePath(EdtRoutesNameEnum.HELP_ACTIVITY));
-    }, []);
-
-    const renderMenuHelp = () => {
-        return (
-            <HelpMenu
-                labelledBy={""}
-                describedBy={""}
-                onClickContact={navToContactPage}
-                onClickInstall={navToInstallPage}
-                onClickHelp={navToHelpPages}
-                handleClose={onCloseHelpMenu}
-                open={isHelpMenuOpen}
-            />
-        );
-    };
-
-    const onHelp = useCallback(() => {
-        setIsHelpMenuOpen(true);
-    }, []);
     return (
         <ErrorBoundary FallbackComponent={ErrorProvider}>
             <Box
@@ -289,13 +264,21 @@ const WeeklyPlannerPage = () => {
                         : classes.pageDesktop,
                 )}
             >
-                {renderMenuHelp()}
+                <HelpMenu
+                    labelledBy={""}
+                    describedBy={""}
+                    onClickContact={navToContactPage}
+                    onClickInstall={navToInstallPage}
+                    onClickHelp={navToHelpPages}
+                    handleClose={onCloseHelpMenu}
+                    open={isHelpMenuOpen}
+                />
                 <SurveyPage
                     idSurvey={idSurvey}
-                    validate={useCallback(() => validateAndNav(), [displayDayOverview])}
-                    onNavigateBack={useCallback(() => saveAndNavLocally(idSurvey), [displayDayOverview])}
-                    onPrevious={useCallback(() => saveAndNavLocally(idSurvey), [])}
-                    onEdit={useCallback(() => onEdit(), [])}
+                    validate={validateAndNav}
+                    onNavigateBack={() => saveAndNavLocally(idSurvey)}
+                    onPrevious={() => saveAndNavLocally(idSurvey)}
+                    onEdit={onEdit}
                     onHelp={onHelp}
                     firstName={getPrintedFirstName(idSurvey)}
                     firstNamePrefix={t("component.survey-page-edit-header.week-of")}

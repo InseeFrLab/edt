@@ -139,12 +139,13 @@ const MainActivityPage = () => {
             );
         },
         nextClickCallback: (routeToGoal: boolean) => {
-            const initialCodeActivity = getValueOfActivity(callbackHolder.getData(), currentIteration) ?? "";
+            const initialCodeActivity =
+                getValueOfActivity(callbackHolder.getData(), currentIteration) ?? "";
             const customActivityLabel = localStorage.getItem("selectionValue - label");
 
             const codeActivity =
                 customActivityLabel !== null && customActivityLabel !== ""
-                    ? localStorage.getItem("selectedSuggesterIdNewActivity") ?? ""
+                    ? (localStorage.getItem("selectedSuggesterIdNewActivity") ?? "")
                     : initialCodeActivity;
 
             if (customActivityLabel !== null && customActivityLabel !== "") {
@@ -173,7 +174,7 @@ const MainActivityPage = () => {
                     currentIteration,
                 );
 
-                saveData(idSurvey, data, true, true).then(() => {
+                saveData(idSurvey, data, { localSaveOnly: true, forceUpdate: true }).then(() => {
                     // Clean history to avoid data overflow
                     localStorage.removeItem("historyInputSuggester");
                 });
@@ -198,9 +199,7 @@ const MainActivityPage = () => {
                 loopNavigateFunction(
                     idSurvey,
                     context.source,
-                    skipToSecondary
-                        ? EdtRoutesNameEnum.ACTIVITY_LOCATION
-                        : getNextLoopPage(currentPage),
+                    skipToSecondary ? EdtRoutesNameEnum.ACTIVITY_LOCATION : getNextLoopPage(currentPage),
                     LoopEnum.ACTIVITY_OR_ROUTE,
                     currentIteration,
                 );

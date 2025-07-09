@@ -645,7 +645,7 @@ const deleteActivity = (idSurvey: string, source: LunaticModel, iteration: numbe
                 }
             }
         });
-        saveData(idSurvey, data, false, true).then(() => {
+        saveData(idSurvey, data, { localSaveOnly: false, forceUpdate: true }).then(() => {
             window.location.reload();
         });
     }

@@ -352,7 +352,7 @@ const ActivitySummaryPage = () => {
         setValueOrNull(idSurvey, FieldNameEnum.END_TIME, endTime, contextIteration);
         const updatedData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
 
-        saveData(idSurvey, updatedData, false, true).then(() => {
+        saveData(idSurvey, updatedData, { localSaveOnly: false, forceUpdate: true }).then(() => {
             onCloseAddActivityOrRoute();
             setIsRoute(isRouteBool);
             navigate(
@@ -376,7 +376,7 @@ const ActivitySummaryPage = () => {
         contextIteration = loopSize - 1;
         const routeData = setValue(idSurvey, FieldNameEnum.ISROUTE, isRouteBool, contextIteration);
         context.isRoute = isRouteBool;
-        saveData(idSurvey, routeData, false, true).then(() => {
+        saveData(idSurvey, routeData, { localSaveOnly: false, forceUpdate: true }).then(() => {
             navToActivityOrRoute(contextIteration, isRouteBool);
         });
     };

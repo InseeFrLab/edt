@@ -278,13 +278,11 @@ const ignoreDepsOfCheckboxGroup = (
 };
 
 const filtrePage = (page: EdtRoutesNameEnum, activityCode: string) => {
-
     let listToIgnore: string[] = [];
 
     const activityCodeOrSuggesterCode =
         activityCode.split("-").length > 1 ? activityCode.split("-")[0] : activityCode;
     switch (page) {
-
         case EdtRoutesNameEnum.MAIN_ACTIVITY_GOAL:
             listToIgnore = CODES_ACTIVITY_IGNORE_GOAL;
             break;
@@ -499,10 +497,10 @@ const findItemInCategoriesNomenclature = (
     parent?: NomenclatureActivityOption,
 ):
     | {
-        item: NomenclatureActivityOption;
-        parent: NomenclatureActivityOption | undefined;
-        index?: number;
-    }
+          item: NomenclatureActivityOption;
+          parent: NomenclatureActivityOption | undefined;
+          index?: number;
+      }
     | undefined => {
     let res = referentiel.find(a => a.id === id);
     if (res) {
@@ -634,7 +632,7 @@ const getCurrentLoopPage = (
 const setLoopCompleted = (idSurvey: string, iteration: number | undefined, isCompleted: boolean) => {
     const completed = setValue(idSurvey, FieldNameEnum.ISCOMPLETED, isCompleted, iteration);
     if (completed) {
-        saveData(idSurvey, completed);
+        saveData(idSurvey, completed, {});
     }
 };
 

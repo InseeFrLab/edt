@@ -45,7 +45,7 @@ const isSurveyCompleted = (idSurvey: string) => {
 const isSurveyExtracted = (idSurvey: string) => {
     const stateData = getLocalSurveyStateData(getData(idSurvey));
     return stateData.state == StateDataStateEnum.EXTRACTED;
-}
+};
 
 const isSurveyClosed = (idSurvey: string) => {
     const isClosed = getValue(idSurvey, FieldNameEnum.ISCLOSED) as boolean;
@@ -99,7 +99,7 @@ const lockSurvey = (idSurvey: string) => {
     } else if (data.COLLECTED) {
         data.COLLECTED.ISLOCKED = variable;
     }
-    return saveData(idSurvey, data, false, true);
+    return saveData(idSurvey, data, { localSaveOnly: false, forceUpdate: true });
 };
 
 const lockAllSurveys = (idHousehold: string) => {
@@ -119,10 +119,10 @@ const lockAllSurveys = (idHousehold: string) => {
 
             if (data.COLLECTED?.[FieldNameEnum.ISLOCKED]) {
                 data.COLLECTED[FieldNameEnum.ISLOCKED] = variable;
-                promisesToWait.push(saveData(idSurvey, data));
+                promisesToWait.push(saveData(idSurvey, data, {}));
             } else if (data.COLLECTED) {
                 data.COLLECTED.ISLOCKED = variable;
-                promisesToWait.push(saveData(idSurvey, data));
+                promisesToWait.push(saveData(idSurvey, data, {}));
             }
         }
     });
@@ -145,9 +145,9 @@ const validateSurvey = (idSurvey: string) => {
             currentPage: getCurrentPage(getData(idSurvey)),
         };
         data.stateData = validatedStateData;
-        return saveData(idSurvey, data, false, true);
+        return saveData(idSurvey, data, { localSaveOnly: false, forceUpdate: true });
     } else {
-        return saveData(idSurvey, data, false, true);
+        return saveData(idSurvey, data, { localSaveOnly: false, forceUpdate: true });
     }
 };
 
@@ -166,7 +166,13 @@ const validateAllEmptySurveys = (idHousehold: string) => {
         const value = getValue(idSurvey, FieldNameEnum.FIRSTNAME) as string;
         if (value == null || value.length == 0) {
             data.stateData = validatedStateData;
-            promisesToWait.push(saveData(idSurvey, data, false, true, validatedStateData));
+            promisesToWait.push(
+                saveData(idSurvey, data, {
+                    localSaveOnly: false,
+                    forceUpdate: true,
+                    stateDataForced: validatedStateData,
+                }),
+            );
         }
     });
 

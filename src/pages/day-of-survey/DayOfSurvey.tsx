@@ -105,9 +105,9 @@ const DayOfSurveyPage = () => {
         const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
         if (!isReviewerMode) {
             const dataUpdated = setSurveyDate(input);
-            saveData(idSurvey, dataUpdated, false, true).then(() => {
+            saveData(idSurvey, dataUpdated, { localSaveOnly: false, forceUpdate: true }).then(() => {
                 navigate(navToPlanner(idSurvey, surveyRootPage));
-            })
+            });
         }
     }, []);
 

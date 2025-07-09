@@ -526,7 +526,7 @@ const getRemoteSavedSurveyData = (
                     return saveInDatabase(surveyId, { ...surveyData, stateData });
                 } else {
                     if (shouldPushLocalData(remoteSurveyData, localSurveyData)) {
-                        return saveData(surveyId, localSurveyData as any);
+                        return saveData(surveyId, localSurveyData as any, {});
                     } else if (shouldSaveRemoteData(remoteSurveyData, localSurveyData)) {
                         // TEMP: WeeklyPlanner stuff (to be removed)
                         if (remoteSurveyData.COLLECTED && "WEEKTYPE" in remoteSurveyData.COLLECTED) {
@@ -897,21 +897,33 @@ const getDataUpdatedOffline = () => {
 const saveDatas = () => {
     const promisesToWait: Promise<any>[] = [];
     getDataUpdatedOffline().forEach((value, key) => {
-        promisesToWait.push(saveData(key, value, false, true));
+        promisesToWait.push(saveData(key, value, { localSaveOnly: false, forceUpdate: true }));
     });
     return Promise.all(promisesToWait);
+};
+
+type SaveDataOptions = {
+    localSaveOnly?: boolean;
+    forceUpdate?: boolean;
+    stateDataForced?: StateData;
+    surveyType?: SourcesEnum;
 };
 
 /**
  * Save data in the local database and push to the server if necessary
  */
-const saveData = (
+async function saveData(
     idSurvey: string,
     data: LunaticData,
-    localSaveOnly = false,
-    forceUpdate = false,
-    stateDataForced?: StateData,
-): Promise<LunaticData> => {
+    options: SaveDataOptions,
+): Promise<LunaticData> {
+    const {
+        localSaveOnly = false,
+        forceUpdate = false,
+        stateDataForced,
+        surveyType = SourcesEnum.ACTIVITY_SURVEY,
+    } = options;
+
     if (stateDataForced) {
         console.error(
             "stateDataForced parameter was removed, put state data inside the data object instead",
@@ -925,13 +937,13 @@ const saveData = (
     const isDemoMode = getFlatLocalStorageValue(LocalStorageVariableEnum.IS_DEMO_MODE) === "true";
 
     fixConditionals(data);
-    let oldDataSurvey = datas.get(idSurvey) ?? {};
+    const oldDataSurvey = datas.get(idSurvey) ?? {};
     const dataIsChanged = dataIsChange(idSurvey, data, oldDataSurvey);
     const isChange = forceUpdate || dataIsChanged;
     datas.set(idSurvey, data);
     const isReviewerMode = getUserRights() == EdtUserRightsEnum.REVIEWER;
 
-    let stateData: StateData = data?.stateData ?? getLocalSurveyStateData(data) ?? initStateData(data);
+    const stateData: StateData = data?.stateData ?? getLocalSurveyStateData(data) ?? initStateData(data);
     if (!navigator.onLine || isDemoMode || localSaveOnly) stateData.date = 0;
     if (isChange) {
         data = updateLocked(isReviewerMode, data);
@@ -950,6 +962,7 @@ const saveData = (
             };
             data.lastRemoteSaveDate = stateData.date;
             if (isReviewerMode) {
+                // We're in async
                 return remotePutSurveyDataReviewer(idSurvey, stateData, data).then(() => {
                     stateData.date = Math.max(stateData.date, data.lastLocalSaveDate ?? 0);
                     data.stateData = stateData;
@@ -970,7 +983,7 @@ const saveData = (
                     return saveInDatabase(idSurvey, data);
                 });
             } else {
-                return remotePutSurveyData(idSurvey, surveyData).then(() => {
+                return remotePutSurveyData(idSurvey, surveyData, surveyType).then(() => {
                     data.stateData = stateData;
                     const revertedTranformedData = revertTransformedArray(data.COLLECTED);
                     data.COLLECTED = revertedTranformedData;
@@ -998,7 +1011,7 @@ const saveData = (
         data.stateData = stateData;
         return saveInDatabase(idSurvey, data);
     }
-};
+}
 
 /**
  * @deprecated use saveData with the right parameters instead
@@ -1011,7 +1024,7 @@ const saveDataLocally = (
     forceUpdate = false,
     stateDataForced?: StateData,
 ): Promise<LunaticData> => {
-    return saveData(idSurvey, data, true, forceUpdate, stateDataForced);
+    return saveData(idSurvey, data, { localSaveOnly: true, forceUpdate, stateDataForced });
 };
 
 /**
