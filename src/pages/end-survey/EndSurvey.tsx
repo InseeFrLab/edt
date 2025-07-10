@@ -35,6 +35,7 @@ import {
     setValue,
 } from "../../service/survey-service";
 import { getSurveyIdFromUrl } from "../../utils/utils";
+import { SourcesEnum } from "../../enumerations/SourcesEnum";
 
 const isActivity = () => {
     return getCurrentSurveyRootPage() === EdtRoutesNameEnum.ACTIVITY;
@@ -127,7 +128,13 @@ const EndSurveyPage = () => {
         saveData(
             idSurvey,
             { ...surveyData.data, stateData: stateData },
-            { localSaveOnly: false, forceUpdate: true },
+            {
+                localSaveOnly: false,
+                forceUpdate: true,
+                surveyType: isActivitySurvey
+                    ? SourcesEnum.ACTIVITY_SURVEY
+                    : SourcesEnum.WORK_TIME_SURVEY,
+            },
         )
             .then(navToHome)
             .catch(handleError);
