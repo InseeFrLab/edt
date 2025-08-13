@@ -519,7 +519,7 @@ This API is used to GET all required nomenclatures for the application such as q
 
 ---
 
-`GET /survey-unit/{id}` : get a survey unit by id
+`GET /interrogations/{id}` : get a survey unit by interrogation id
 
 <details>
 <summary>Answer format</summary>
@@ -545,7 +545,7 @@ This API is used to GET all required nomenclatures for the application such as q
 
 ---
 
-`PUT /survey-unit/{id}` : Edit a survey unit by id
+`PUT /interrogations/{id}` : Edit a survey unit by interrogation id
 
 
 <details>
@@ -1381,12 +1381,12 @@ The application is completely functional offline in browser or in the applicatio
 
 For the reviewer mode, the information recovered is done on two requetes:
 
-- To retrieve the data: VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/data"
-- To retrieve the stateData : VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey + "/state-data"
+- To retrieve the data: VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/interrogations/" + idSurvey + "/data"
+- To retrieve the stateData : VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/interrogations/" + idSurvey + "/state-data"
 
 For the interviewer mode, the information retrieved is done on the following request:
 
-- VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/survey-unit/" + idSurvey.
+- VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/interrogations/" + idSurvey.
 
 Same mechanism used to save information relevant to surveys.
 
