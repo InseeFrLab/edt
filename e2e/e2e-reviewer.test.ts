@@ -11,7 +11,7 @@ jest.mock("axios");
 const urlHost = import.meta.env.VITE_KEYCLOAK_REDIRECT_URI;
 const urlUserSurvey = edtOrganisationApiBaseUrl + "api/survey-assigment/interviewer/my-surveys";
 const urlSurveysDataReviewer = edtOrganisationApiBaseUrl + "api/survey-assigment/reviewer/my-surveys";
-const urlSurveyData = stromaeBackOfficeApiBaseUrl + "api/survey-unit/";
+const urlSurveyData = stromaeBackOfficeApiBaseUrl + "api/interrogations/";
 
 const userServiceMock = jest.fn(isReviewer).mockImplementationOnce(() => true);
 
@@ -43,7 +43,7 @@ describe("App.ts", () => {
     };
 
     const mockSurveyData = (request: any, url: string) => {
-        const idSurvey = Number.parseInt(url.split("survey-unit/")[1].split("-")[1] ?? 0);
+        const idSurvey = Number.parseInt(url.split("interrogations/")[1].split("-")[1] ?? 0);
         request.respond({
             headers: mockHeaders,
             body: JSON.stringify(userData[idSurvey - 1]),

@@ -164,7 +164,7 @@ export const remoteGetSurveyData = (
     return new Promise(resolve => {
         axios
             .get(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
+                stromaeBackOfficeApiBaseUrl + "api/interrogations/" + idSurvey + "/data",
                 getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {
@@ -196,7 +196,7 @@ export const remoteGetSurveyStateData = (
     return new Promise(resolve => {
         axios
             .get(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
+                stromaeBackOfficeApiBaseUrl + "api/interrogations/" + idSurvey + "/state-data",
                 getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {
@@ -240,7 +240,7 @@ export const requestGetDataReviewer = (
     return new Promise<LunaticData>(resolve => {
         axios
             .get(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
+                stromaeBackOfficeApiBaseUrl + "api/interrogations/" + idSurvey + "/data",
                 getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {

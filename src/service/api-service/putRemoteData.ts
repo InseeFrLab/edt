@@ -35,13 +35,13 @@ export const requestPutSurveyData = (
     }
 
     const putLunaticData = axios.put(
-        `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/data`,
+        `${stromaeBackOfficeApiBaseUrl}api/interrogations/${idSurvey}/data`,
         tempData.data,
         getHeader(stromaeBackOfficeApiBaseUrl, token),
     );
 
     const putStateData = axios.put(
-        `${stromaeBackOfficeApiBaseUrl}api/survey-unit/${idSurvey}/state-data`,
+        `${stromaeBackOfficeApiBaseUrl}api/interrogations/${idSurvey}/state-data`,
         stateData,
         getHeader(stromaeBackOfficeApiBaseUrl, token),
     );
@@ -121,7 +121,7 @@ export const requestPutDataReviewer = (
     return new Promise<LunaticData>(resolve => {
         axios
             .put(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/data",
+                stromaeBackOfficeApiBaseUrl + "api/interrogations/" + idSurvey + "/data",
                 tempData,
                 getHeader(stromaeBackOfficeApiBaseUrl, token),
             )
@@ -139,7 +139,7 @@ export const requestPutStateReviewer = (
     return new Promise<StateData>(resolve => {
         axios
             .put(
-                stromaeBackOfficeApiBaseUrl + "api/survey-unit/" + idSurvey + "/state-data",
+                stromaeBackOfficeApiBaseUrl + "api/interrogations/" + idSurvey + "/state-data",
                 data,
                 getHeader(stromaeBackOfficeApiBaseUrl, token),
             )
