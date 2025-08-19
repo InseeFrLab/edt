@@ -410,6 +410,7 @@ This API is used to GET the surveys ids to which the surveyed or the surveyers h
   {
     "id": 0,
     "interviewerId": "string",
+    "interrogationId": "string",
     "surveyUnitId": "string",
     "reviewerId": "string",
     "campaignId": "string",
@@ -1395,12 +1396,12 @@ The application is completely functional offline in browser or in the applicatio
 
 For the reviewer mode, the information recovered is done on two requetes:
 
-- To retrieve the data: VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/interrogations/" + idSurvey + "/data"
-- To retrieve the stateData : VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/interrogations/" + idSurvey + "/state-data"
+- To retrieve the data: VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/interrogations/" + interrogationId + "/data"
+- To retrieve the stateData : VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/interrogations/" + interrogationId + "/state-data"
 
 For the interviewer mode, the information retrieved is done on the following request:
 
-- VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/interrogations/" + idSurvey.
+- VITE_STROMAE_BACK_OFFICE_API_BASE_URL + "api/interrogations/" + interrogationId.
 
 Same mechanism used to save information relevant to surveys.
 

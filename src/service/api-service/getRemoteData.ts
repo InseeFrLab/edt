@@ -1,10 +1,9 @@
 import axios from "axios";
 import { ErrorCodeEnum } from "../../enumerations/ErrorCodeEnum";
 import { StateData, SurveyData, UserSurveys } from "../../interface/entity/Api";
-import { LunaticData, ReferentielData, SourceData } from "../../interface/lunatic/Lunatic";
+import { LunaticData } from "../../interface/lunatic/Lunatic";
 import { initStateData, initSurveyData } from "../survey-service";
-import { getUserToken, isReviewer } from "../user-service";
-import { ReferentielsEnum } from "../../enumerations/ReferentielsEnum";
+import { getUserToken } from "../user-service";
 import { revertTransformedArray } from "../../utils/utils";
 
 export const edtOrganisationApiBaseUrl = import.meta.env.VITE_EDT_ORGANISATION_API_BASE_URL;
@@ -33,52 +32,6 @@ export const getHeader = (origin?: string, userToken?: string) => {
     };
 };
 
-export const fetchRemoteReferentiels = (
-    setError: (error: ErrorCodeEnum) => void,
-): Promise<ReferentielData> => {
-    let refs: ReferentielData = {
-        [ReferentielsEnum.ACTIVITYNOMENCLATURE]: [],
-        [ReferentielsEnum.ACTIVITYAUTOCOMPLETE]: [],
-        [ReferentielsEnum.ROUTE]: [],
-        [ReferentielsEnum.MEANOFTRANSPORT]: [],
-        [ReferentielsEnum.ACTIVITYSECONDARYACTIVITY]: [],
-        [ReferentielsEnum.ROUTESECONDARYACTIVITY]: [],
-        [ReferentielsEnum.LOCATION]: [],
-        [ReferentielsEnum.KINDOFWEEK]: [],
-        [ReferentielsEnum.KINDOFDAY]: [],
-        [ReferentielsEnum.ACTIVITYGOAL]: [],
-    };
-    let refsEndPoints: string[] = [];
-    Object.values(ReferentielsEnum).forEach(value => {
-        refsEndPoints.push("api/nomenclature/" + value);
-    });
-
-    return new Promise(resolve => {
-        axios
-            .all(
-                refsEndPoints.map(endPoint =>
-                    axios.get(
-                        stromaeBackOfficeApiBaseUrl + endPoint,
-                        getHeader(stromaeBackOfficeApiBaseUrl),
-                    ),
-                ),
-            )
-            .then(res => {
-                Object.values(ReferentielsEnum).forEach((key, index) => {
-                    refs[key as ReferentielsEnum] = res[index].data;
-                });
-                resolve(refs);
-            })
-            .catch(err => {
-                if (err.response?.status === 403) {
-                    setError(ErrorCodeEnum.NO_RIGHTS);
-                } else {
-                    setError(ErrorCodeEnum.UNREACHABLE_NOMENCLATURES);
-                }
-            });
-    });
-};
-
 export const fetchUserSurveysInfo = (
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<UserSurveys[]> => {
@@ -102,42 +55,9 @@ export const fetchUserSurveysInfo = (
     });
 };
 
-export const fetchSurveysSourcesByIds = (
-    sourcesIds: string[],
-    setError: (error: ErrorCodeEnum) => void,
-): Promise<SourceData> => {
-    let sources: any = {};
-    let sourcesEndPoints: string[] = [];
-    sourcesIds.forEach(sourceId => sourcesEndPoints.push("api/questionnaire/" + sourceId));
-    return new Promise(resolve => {
-        axios
-            .all(
-                sourcesEndPoints.map(endPoint =>
-                    axios.get(
-                        stromaeBackOfficeApiBaseUrl + endPoint,
-                        getHeader(stromaeBackOfficeApiBaseUrl),
-                    ),
-                ),
-            )
-            .then(res => {
-                sourcesIds.forEach((idSource, index) => {
-                    sources[idSource] = res[index].data.value;
-                });
-                resolve(sources as SourceData);
-            })
-            .catch(err => {
-                if (err.response?.status === 403) {
-                    setError(ErrorCodeEnum.NO_RIGHTS);
-                } else {
-                    setError(ErrorCodeEnum.UNREACHABLE_SOURCE);
-                }
-            });
-    });
-};
-
 export const fetchReviewerSurveysAssignments = (
     setError: (error: ErrorCodeEnum) => void,
-): Promise<any> => {
+): Promise<UserSurveys[]> => {
     return new Promise(resolve => {
         axios
             .get(
@@ -158,13 +78,13 @@ export const fetchReviewerSurveysAssignments = (
 };
 
 export const remoteGetSurveyData = (
-    idSurvey: string,
+    interrogationId: string,
     setError?: (error: ErrorCodeEnum) => void,
 ): Promise<SurveyData> => {
     return new Promise(resolve => {
         axios
             .get(
-                stromaeBackOfficeApiBaseUrl + "api/interrogations/" + idSurvey + "/data",
+                `${stromaeBackOfficeApiBaseUrl}api/interrogations/${interrogationId}/data`,
                 getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {
@@ -190,13 +110,13 @@ export const remoteGetSurveyData = (
 };
 
 export const remoteGetSurveyStateData = (
-    idSurvey: string,
+    interrogationId: string,
     setError?: (error: ErrorCodeEnum) => void,
 ): Promise<StateData> => {
     return new Promise(resolve => {
         axios
             .get(
-                stromaeBackOfficeApiBaseUrl + "api/interrogations/" + idSurvey + "/state-data",
+                `${stromaeBackOfficeApiBaseUrl}api/interrogations/${interrogationId}/state-data`,
                 getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {
@@ -216,31 +136,16 @@ export const remoteGetSurveyStateData = (
             });
     });
 };
-export const remoteGetSurveyDataSurveyed = (
-    idSurvey: string,
-    setError: (error: ErrorCodeEnum) => void,
-): Promise<SurveyData> => {
-    return remoteGetSurveyData(idSurvey, setError).then(data => {
-        return remoteGetSurveyStateData(idSurvey, setError).then((stateData: StateData) => {
-            return new Promise(resolve => {
-                const surveyData: SurveyData = {
-                    stateData: stateData,
-                    data: data,
-                };
-                resolve(surveyData);
-            });
-        });
-    });
-};
 
 export const requestGetDataReviewer = (
     idSurvey: string,
+    interrogationId: string,
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<LunaticData> => {
     return new Promise<LunaticData>(resolve => {
         axios
             .get(
-                stromaeBackOfficeApiBaseUrl + "api/interrogations/" + idSurvey + "/data",
+                `${stromaeBackOfficeApiBaseUrl}api/interrogations/${interrogationId}/data`,
                 getHeader(stromaeBackOfficeApiBaseUrl),
             )
             .then(response => {
@@ -264,52 +169,7 @@ export const requestGetDataReviewer = (
                 } else {
                     console.error(err);
                     setError(ErrorCodeEnum.UNREACHABLE_SURVEYS_DATAS);
-                    //requestGetDataReviewer(idSurvey, setError);
                 }
             });
     });
-};
-
-export const requestGetSurveyDataReviewer = (
-    idSurvey: string,
-    setError: (error: ErrorCodeEnum) => void,
-): Promise<SurveyData> => {
-    return requestGetDataReviewer(idSurvey, setError).then(data => {
-        return remoteGetSurveyStateData(idSurvey, setError).then((stateData: StateData) => {
-            return new Promise(resolve => {
-                const surveyData: SurveyData = {
-                    stateData: stateData,
-                    data: data,
-                };
-                resolve(surveyData);
-            });
-        });
-    });
-};
-
-/**
- * @deprecated This function is deprecated and it is not used anymore.
- * Please use `requestGetSurveyDataReviewer` instead.
- */
-export const remoteGetSurveyDataReviewer = (
-    idSurvey: string,
-    setError: (error: ErrorCodeEnum) => void,
-): Promise<SurveyData> => {
-    const isReviewerMode = isReviewer();
-    if (!isReviewerMode) setError?.(ErrorCodeEnum.NO_RIGHTS);
-    return requestGetSurveyDataReviewer(idSurvey, setError)
-        .then(response => {
-            return response;
-        })
-        .catch(err => {
-            if (err.response?.status === 403) {
-                setError?.(ErrorCodeEnum.NO_RIGHTS);
-            } else {
-                return {
-                    data: initSurveyData(idSurvey),
-                    stateData: initStateData(),
-                };
-            }
-            return Promise.reject(err);
-        });
 };
