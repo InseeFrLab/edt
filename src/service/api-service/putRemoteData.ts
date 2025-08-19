@@ -10,8 +10,8 @@ import { logout } from "../../service/auth-service";
 import { transformCollectedArray } from "../../utils/utils";
 import { SourcesEnum } from "../../enumerations/SourcesEnum";
 
-export const requestPutSurveyData = (
-    idSurvey: string,
+const requestPutSurveyData = (
+    interrogationId: string,
     data: SurveyData,
     surveyType: SourcesEnum,
     token?: string,
@@ -35,13 +35,13 @@ export const requestPutSurveyData = (
     }
 
     const putLunaticData = axios.put(
-        `${stromaeBackOfficeApiBaseUrl}api/interrogations/${idSurvey}/data`,
+        `${stromaeBackOfficeApiBaseUrl}api/interrogations/${interrogationId}/data`,
         tempData.data,
         getHeader(stromaeBackOfficeApiBaseUrl, token),
     );
 
     const putStateData = axios.put(
-        `${stromaeBackOfficeApiBaseUrl}api/interrogations/${idSurvey}/state-data`,
+        `${stromaeBackOfficeApiBaseUrl}api/interrogations/${interrogationId}/state-data`,
         stateData,
         getHeader(stromaeBackOfficeApiBaseUrl, token),
     );
@@ -56,7 +56,7 @@ export const requestPutSurveyData = (
 };
 
 export const remotePutSurveyData = (
-    idSurvey: string,
+    interrogationId: string,
     data: SurveyData,
     surveyType: SourcesEnum,
 ): Promise<SurveyData> => {
@@ -67,23 +67,23 @@ export const remotePutSurveyData = (
     const tokenExpiresAt = jwt<JwtPayload>(getUserToken() ?? "").exp;
     // * 1000 because tokenExpiresAt is in seconds and now.getTime() in milliseconds
     if (!tokenExpiresAt || tokenExpiresAt * 1000 < now.getTime()) {
-        let auth = getAuth();
+        const auth = getAuth();
         return auth.userManager
             .signinSilent()
             .then((user: User | null) => {
-                return requestPutSurveyData(idSurvey, data, surveyType, user?.access_token);
+                return requestPutSurveyData(interrogationId, data, surveyType, user?.access_token);
             })
             .catch(err => {
                 logout();
                 return Promise.reject(err);
             });
     } else {
-        return requestPutSurveyData(idSurvey, data, surveyType);
+        return requestPutSurveyData(interrogationId, data, surveyType);
     }
 };
 
 export const remotePutSurveyDataReviewer = (
-    idSurvey: string,
+    interrogationId: string,
     stateData: StateData,
     data: LunaticData,
 ): Promise<SurveyData> => {
@@ -91,23 +91,28 @@ export const remotePutSurveyDataReviewer = (
     const tokenExpiresAt = jwt<JwtPayload>(getUserToken() ?? "").exp;
     // * 1000 because tokenExpiresAt is in seconds and now.getTime() in milliseconds
     if (!tokenExpiresAt || tokenExpiresAt * 1000 < now.getTime()) {
-        let auth = getAuth();
+        const auth = getAuth();
         return auth.userManager
             .signinSilent()
             .then((user: User | null) => {
-                return requestPutSurveyDataReviewer(idSurvey, data, stateData, user?.access_token);
+                return requestPutSurveyDataReviewer(
+                    interrogationId,
+                    data,
+                    stateData,
+                    user?.access_token,
+                );
             })
             .catch(err => {
                 logout();
                 return Promise.reject(err);
             });
     } else {
-        return requestPutSurveyDataReviewer(idSurvey, data, stateData);
+        return requestPutSurveyDataReviewer(interrogationId, data, stateData);
     }
 };
 
-export const requestPutDataReviewer = (
-    idSurvey: string,
+const requestPutDataReviewer = (
+    interrogationId: string,
     data: LunaticData,
     token?: string,
 ): Promise<LunaticData> => {
@@ -121,7 +126,7 @@ export const requestPutDataReviewer = (
     return new Promise<LunaticData>(resolve => {
         axios
             .put(
-                stromaeBackOfficeApiBaseUrl + "api/interrogations/" + idSurvey + "/data",
+                `${stromaeBackOfficeApiBaseUrl}api/interrogations/${interrogationId}/data`,
                 tempData,
                 getHeader(stromaeBackOfficeApiBaseUrl, token),
             )
@@ -131,15 +136,15 @@ export const requestPutDataReviewer = (
     });
 };
 
-export const requestPutStateReviewer = (
-    idSurvey: string,
+const requestPutStateReviewer = (
+    interrogationId: string,
     data: StateData,
     token?: string,
 ): Promise<StateData> => {
     return new Promise<StateData>(resolve => {
         axios
             .put(
-                stromaeBackOfficeApiBaseUrl + "api/interrogations/" + idSurvey + "/state-data",
+                `${stromaeBackOfficeApiBaseUrl}api/interrogations/${interrogationId}/state-data`,
                 data,
                 getHeader(stromaeBackOfficeApiBaseUrl, token),
             )
@@ -159,14 +164,14 @@ export const requestPutStateReviewer = (
     });
 };
 
-export const requestPutSurveyDataReviewer = (
-    idSurvey: string,
+const requestPutSurveyDataReviewer = (
+    interrogationId: string,
     data: LunaticData,
     stateData: StateData,
     token?: string,
 ): Promise<SurveyData> => {
-    return requestPutDataReviewer(idSurvey, data, token).then(() => {
-        requestPutStateReviewer(idSurvey, stateData, token);
+    return requestPutDataReviewer(interrogationId, data, token).then(() => {
+        requestPutStateReviewer(interrogationId, stateData, token);
         const surveyData: SurveyData = {
             stateData: stateData,
             data: data,

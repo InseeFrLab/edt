@@ -6,6 +6,7 @@ export interface UserSurveys {
     campaignId: string;
     subCampaignId?: string;
     interviewerId: string;
+    interrogationId: string;
     questionnaireModelId: string;
     reviewerId?: string;
     surveyUnitId: string;
