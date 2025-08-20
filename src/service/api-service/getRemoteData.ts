@@ -25,7 +25,7 @@ axios.interceptors.response.use(
 export const getHeader = (origin?: string, userToken?: string) => {
     return {
         headers: {
-            "Authorization": "Bearer " + (userToken ?? getUserToken()),
+            "Authorization": `Bearer ${userToken ?? getUserToken()}`,
             "Access-Control-Allow-Origin": origin ?? "*",
             "Content-type": "application/json",
         },
@@ -38,7 +38,7 @@ export const fetchUserSurveysInfo = (
     return new Promise(resolve => {
         axios
             .get(
-                edtOrganisationApiBaseUrl + "api/survey-assigment/interviewer/my-surveys",
+                `${edtOrganisationApiBaseUrl}api/survey-assigment/interviewer/my-surveys`,
                 getHeader(edtOrganisationApiBaseUrl),
             )
             .then(response => {
@@ -61,7 +61,7 @@ export const fetchReviewerSurveysAssignments = (
     return new Promise(resolve => {
         axios
             .get(
-                edtOrganisationApiBaseUrl + "api/survey-assigment/reviewer/my-surveys",
+                `${edtOrganisationApiBaseUrl}api/survey-assigment/reviewer/my-surveys`,
                 getHeader(edtOrganisationApiBaseUrl),
             )
             .then(response => {
