@@ -148,6 +148,32 @@ const initializeRefs = () => {
     });
 };
 
+/**
+ * Populate the surveyIdToInterrogationId global variable to get the
+ * interrogation id from our survey id to get / put data through the
+ * interrogation endpoint.
+ */
+const initInterrogationIdMapping = (setError: (error: ErrorCodeEnum) => void) => {
+    if (navigator.onLine) {
+        return fetchUserSurveysInfo(setError).then(userSurveyData => {
+            // Compute the interrogation ids related to our user
+            userSurveyData.forEach(surveyData => {
+                surveyIdToInterrogationId.set(surveyData.surveyUnitId, surveyData.interrogationId);
+            });
+        });
+    } else {
+        return lunaticDatabase.get(USER_SURVEYS_DATA).then((data: LunaticData | undefined) => {
+            const userDaras = data as UserSurveysData;
+            const userSurveyData = userDaras.data;
+
+            // Compute the interrogation ids related to our user
+            userSurveyData.forEach(surveyData => {
+                surveyIdToInterrogationId.set(surveyData.surveyUnitId, surveyData.interrogationId);
+            });
+        });
+    }
+};
+
 const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
     if (navigator.onLine) {
         return fetchUserSurveysInfo(setError).then(userSurveyData => {
@@ -243,7 +269,10 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
 
 const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void): Promise<unknown> => {
     const promises: Promise<unknown>[] = [];
-    return lunaticDatabase.get(SURVEYS_IDS).then(data => {
+    return lunaticDatabase.get(SURVEYS_IDS).then(async data => {
+        // map the interrogation id with our survey ids
+        await initInterrogationIdMapping(setError);
+
         const surveyIdsData = data as SurveysIds;
         const existSurveysIds = surveyIdsData?.[SurveysIdsEnum.ALL_SURVEYS_IDS].length > 0;
 
