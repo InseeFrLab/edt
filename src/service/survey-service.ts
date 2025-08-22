@@ -696,6 +696,7 @@ const initializeListSurveys = (setError: (error: ErrorCodeEnum) => void) => {
                 surveysData = data;
                 addArrayToSession("surveysData", surveysData);
                 data.forEach((surveyData: UserSurveys) => {
+                    surveyIdToInterrogationId.set(surveyData.surveyUnitId, surveyData.interrogationId);
                     if (!userDatas?.find(user => user.surveyUnitId == surveyData.surveyUnitId)) {
                         if (userDatas == null) userDatas = [];
                         if (surveyData.questionnaireModelId === SourcesEnum.ACTIVITY_SURVEY) {

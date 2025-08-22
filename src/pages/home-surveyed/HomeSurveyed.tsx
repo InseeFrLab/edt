@@ -80,10 +80,6 @@ const HomeSurveyedPage = () => {
 
     const initHome = (idsSurveysSelected: string[]) => {
         initializeHomeSurveys(idHousehold ?? "").then(() => {
-            // initializeSurveysDatasCache(idsSurveysSelected).finally(() => {
-
-            // });
-
             userDatas = userDatasMap();
             if (getData(idsSurveysSelected[0]) != undefined) {
                 setState(getData(idsSurveysSelected[0]));
@@ -94,18 +90,27 @@ const HomeSurveyedPage = () => {
     };
 
     useEffect(() => {
-        if (navigator.onLine && role === EdtUserRightsEnum.SURVEYED) {
-            initializeDatas(setError).then(() => {
-                setInitialized(true);
-            });
-        } else if (role === EdtUserRightsEnum.SURVEYED) {
-            initializeDatas(setError).then(() => {
-                setInitialized(true);
-                setState({});
-            });
+        if (role === EdtUserRightsEnum.SURVEYED) {
+            if (navigator.onLine) {
+                initializeDatas(setError).then(() => {
+                    setInitialized(true);
+                });
+            } else {
+                initializeDatas(setError).then(() => {
+                    setInitialized(true);
+                    setState({});
+                });
+            }
+            return;
         }
 
-        if (role == EdtUserRightsEnum.REVIEWER && !isDemo) {
+        if (role === EdtUserRightsEnum.REVIEWER) {
+            if (isDemo) {
+                const userDatas = userDatasMap();
+                setDatas(userDatas);
+                return;
+            }
+
             userDatas = userDatasMap();
             const idsSurveysSelected = userDatas
                 .map(data => data.data.surveyUnitId)
@@ -113,6 +118,7 @@ const HomeSurveyedPage = () => {
                     (survey: string) =>
                         !survey.startsWith("activitySurvey") && !survey.startsWith("workTimeSurvey"),
                 );
+
             if (navigator.onLine) {
                 getRemoteSavedSurveysDatas(idsSurveysSelected, setError).then(() => {
                     initHome(idsSurveysSelected);
@@ -120,9 +126,6 @@ const HomeSurveyedPage = () => {
             } else {
                 initHome(idsSurveysSelected);
             }
-        } else if (role == EdtUserRightsEnum.REVIEWER && isDemo) {
-            let userDatas = userDatasMap();
-            setDatas(userDatas);
         }
     }, []);
 
