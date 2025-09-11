@@ -61,7 +61,7 @@ const HomeReviewerPage = () => {
                     <>
                         <img
                             className={classes.logoImg}
-                            src="/assets/illustration/logo.png"
+                            src="/assets/illustration/logo.svg"
                             alt={t("accessibility.asset.logo-alt")}
                         />
                         <h1 className={classes.emptyHeader}>Header</h1>
@@ -138,7 +138,7 @@ const useStyles = makeStylesEdt({ "name": { HomeReviewerPage } })(theme => ({
         height: "4rem",
     },
     logoImg: {
-        width: "40px",
+        height: "46px",
     },
     titleBox: {
         textAlign: "center",

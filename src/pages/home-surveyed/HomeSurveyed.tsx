@@ -424,7 +424,7 @@ const HomeSurveyedPage = () => {
                         <>
                             <img
                                 className={classes.logoImg}
-                                src={"/assets/illustration/logo.png"}
+                                src={"/assets/illustration/logo.svg"}
                                 alt={t("accessibility.asset.logo-alt")}
                             />
                             <h1 className={classes.emptyHeader}>Header</h1>
@@ -493,7 +493,7 @@ const useStyles = makeStylesEdt({ "name": { NavButton: HomeSurveyedPage } })(the
         flexFlow: "wrap",
     },
     logoImg: {
-        width: "40px",
+        height: "46px",
     },
     helpBox: {
         paddingRight: "0.5rem",

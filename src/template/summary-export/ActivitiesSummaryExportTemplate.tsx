@@ -24,7 +24,7 @@ const ActivitiesSummaryExportTemplate = (props: ActivitiesSummaryExportTemplateP
                     <View style={classes.headerRow}>
                         <View>
                             <Text style={classes.title}>
-                                <Image style={classes.logo} src="/assets/illustration/logo.png" />
+                                <Image style={classes.logo} src="/assets/illustration/logo.svg" />
                             </Text>
                         </View>
                         <View>
@@ -75,7 +75,6 @@ const classes = StyleSheet.create({
         fontSize: 15,
     },
     logo: {
-        width: "40px",
         height: "46px",
     },
     headerRow: {
