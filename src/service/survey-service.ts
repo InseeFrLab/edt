@@ -268,8 +268,9 @@ const initDataForSurveys = (setError: (error: ErrorCodeEnum) => void) => {
 };
 
 const initializeSurveysIdsAndSources = (setError: (error: ErrorCodeEnum) => void): Promise<unknown> => {
-    const promises: Promise<unknown>[] = [];
     return lunaticDatabase.get(SURVEYS_IDS).then(async data => {
+        const promises: Promise<unknown>[] = [];
+
         // map the interrogation id with our survey ids
         await initInterrogationIdMapping(setError);
 
@@ -593,7 +594,7 @@ const getRemoteSavedSurveysDatas = (
     setError: (error: ErrorCodeEnum) => void,
 ): Promise<unknown[]> => {
     const promises = surveysIds.map(surveyId => {
-        getRemoteSavedSurveyData(surveyId, setError)
+        return getRemoteSavedSurveyData(surveyId, setError)
             .then(result => {
                 return result;
             })
