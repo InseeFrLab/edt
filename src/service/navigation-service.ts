@@ -174,9 +174,7 @@ const getCurrentNavigatePath = (
         // since it is not displayed, we cannot access the page.
         // Quick fix: Try again with the page right before.
         if (page === undefined) {
-            const fixedTargetPage = (
-                firstEmptyPage > Number(maxPage) ? Number(maxPage) - 1 : firstEmptyPage - 1
-            ).toString();
+            const fixedTargetPage = (Number(targetPage) - 1).toString();
             page = mappingPageOrchestrator.find(
                 link => link.surveyPage === fixedTargetPage && link.parentPage === rootPage,
             )?.page;
