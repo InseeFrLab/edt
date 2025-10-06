@@ -164,12 +164,23 @@ const getCurrentNavigatePath = (
     } else {
         const currentPage = getCurrentPage(surveyData, source);
         const firstEmptyPage = nextPage ?? currentPage;
+        const targetPage = (firstEmptyPage > Number(maxPage) ? maxPage : firstEmptyPage).toString();
         page = mappingPageOrchestrator.find(
-            link =>
-                link.surveyPage ===
-                    (firstEmptyPage > Number(maxPage) ? maxPage : firstEmptyPage).toString() &&
-                link.parentPage === rootPage,
+            link => link.surveyPage === targetPage && link.parentPage === rootPage,
         )?.page;
+        // Sometimes app cannot find target page in orchestrator.
+        // It is because targetPage does not exist in the orchestrator mapping:
+        // for some reason we want to access Lunatic "sequence end" page but
+        // since it is not displayed, we cannot access the page.
+        // Quick fix: Try again with the page right before.
+        if (page === undefined) {
+            const fixedTargetPage = (
+                firstEmptyPage > Number(maxPage) ? Number(maxPage) - 1 : firstEmptyPage - 1
+            ).toString();
+            page = mappingPageOrchestrator.find(
+                link => link.surveyPage === fixedTargetPage && link.parentPage === rootPage,
+            )?.page;
+        }
     }
     return getPathOfPage(idSurvey, rootPage, subpage, page, parentPage, iteration);
 };
