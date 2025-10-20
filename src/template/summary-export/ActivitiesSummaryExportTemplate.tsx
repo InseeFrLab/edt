@@ -6,6 +6,7 @@ import { DayCharacteristicsExportTemplate } from "./DayCharacteristicsExportTemp
 import { DaySummaryExportTemplate } from "./DaySummaryExportTemplate.tsx";
 import { GlobalOrganisationExportTemplate } from "./GlobalOrganisationExportTemplate.tsx";
 import { RoutesPlanningExportTemplate } from "./RoutesPlanningExportTemplate.tsx";
+import logoInsee from '../../assets/illustration/logo.png'
 
 interface ActivitiesSummaryExportTemplateProps {
     exportData: ActivitiesSummaryExportData;
@@ -24,7 +25,7 @@ const ActivitiesSummaryExportTemplate = (props: ActivitiesSummaryExportTemplateP
                     <View style={classes.headerRow}>
                         <View>
                             <Text style={classes.title}>
-                                <Image style={classes.logo} src="/assets/illustration/logo.svg" />
+                                <Image style={classes.logo} src={logoInsee} />
                             </Text>
                         </View>
                         <View>
@@ -75,7 +76,8 @@ const classes = StyleSheet.create({
         fontSize: 15,
     },
     logo: {
-        height: "46px",
+        width: 92,
+        height: 80
     },
     headerRow: {
         display: "flex",
