@@ -59,17 +59,19 @@
         "vitest": "^3.2.6"
     },
     "scripts": {
-        "dev": "vite",
-        "check": "tsc -b",
-        "build": "tsc -b && vite build",
-        "lint": "eslint .",
-        "_format": "prettier \"**/*.{ts,tsx,json,md}\"",
-        "format": "npm run _format -- --write",
-        "preview": "vite build --watch & vite preview --port=3000",
-        "build:staging": "tsc -b && vite build --mode staging",
-        "build:production": "tsc -b && vite build --mode production",
-        "start-with-lib": "concurrently \"yarn run dev\" \"cd ./node_modules/@inseefrlab/lunatic-edt && tsc-watch\"",
-        "test": "vitest"
+      "dev": "vite",
+      "check": "tsc -b",
+      "build": "tsc -b && vite build",
+      "lint": "eslint .",
+      "lint:check": "eslint .",
+      "format": "prettier \"**/*.{ts,tsx,json,md}\" --write",
+      "format:check": "prettier \"**/*.{ts,tsx,json,md}\" --check",
+      "preview": "vite build --watch & vite preview --port=3000",
+      "build:staging": "tsc -b && vite build --mode staging",
+      "build:production": "tsc -b && vite build --mode production",
+      "start-with-lib": "concurrently \"yarn run dev\" \"cd ./node_modules/@inseefrlab/lunatic-edt && tsc-watch\"",
+      "test": "vitest",
+      "test:ci": "vitest run --coverage"
     },
     "eslintConfig": {
         "extends": [
